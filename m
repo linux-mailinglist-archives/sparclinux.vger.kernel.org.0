@@ -2,89 +2,70 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B234FB1D
-	for <lists+sparclinux@lfdr.de>; Tue, 30 Apr 2019 16:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 251C810132
+	for <lists+sparclinux@lfdr.de>; Tue, 30 Apr 2019 22:53:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727462AbfD3OKi (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 30 Apr 2019 10:10:38 -0400
-Received: from mga02.intel.com ([134.134.136.20]:61608 "EHLO mga02.intel.com"
+        id S1727178AbfD3UxD (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 30 Apr 2019 16:53:03 -0400
+Received: from mleia.com ([178.79.152.223]:57188 "EHLO mail.mleia.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726758AbfD3OKi (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 30 Apr 2019 10:10:38 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Apr 2019 07:10:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,414,1549958400"; 
-   d="scan'208";a="342158227"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
-  by fmsmga006.fm.intel.com with ESMTP; 30 Apr 2019 07:10:31 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hLTSn-0006VO-Gw; Tue, 30 Apr 2019 17:10:29 +0300
-Date:   Tue, 30 Apr 2019 17:10:29 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Christophe Leroy <christophe.leroy@c-s.fr>
-Cc:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        linux-kernel@vger.kernel.org, lorenzo.pieralisi@arm.com,
-        linux-ia64@vger.kernel.org, linux-serial@vger.kernel.org,
-        andrew@aj.id.au, gregkh@linuxfoundation.org, sudeep.holla@arm.com,
-        liviu.dudau@arm.com, linux-mips@vger.kernel.org, vz@mleia.com,
-        linux@prisktech.co.nz, sparclinux@vger.kernel.org,
-        khilman@baylibre.com, macro@linux-mips.org,
-        slemieux.tyco@gmail.com, matthias.bgg@gmail.com, jacmet@sunsite.dk,
+        id S1726612AbfD3UxC (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 30 Apr 2019 16:53:02 -0400
+Received: from mail.mleia.com (localhost [127.0.0.1])
+        by mail.mleia.com (Postfix) with ESMTP id 6A35D4668DD;
+        Tue, 30 Apr 2019 21:53:00 +0100 (BST)
+Subject: Re: [PATCH 41/41] drivers: tty: serial: lpc32xx_hs: fill mapsize and
+ use it
+To:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        linux-kernel@vger.kernel.org
+Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
+        andriy.shevchenko@linux.intel.com, macro@linux-mips.org,
+        slemieux.tyco@gmail.com, khilman@baylibre.com, liviu.dudau@arm.com,
+        sudeep.holla@arm.com, lorenzo.pieralisi@arm.com,
+        davem@davemloft.net, jacmet@sunsite.dk, linux@prisktech.co.nz,
+        matthias.bgg@gmail.com, linux-mips@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-ia64@vger.kernel.org,
         linux-amlogic@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        davem@davemloft.net
-Subject: Re: [PATCH 22/41] drivers: tty: serial: cpm_uart: fix logging calls
-Message-ID: <20190430141029.GK9224@smile.fi.intel.com>
+        sparclinux@vger.kernel.org
 References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-23-git-send-email-info@metux.net>
- <a00ba23b-e73e-c964-a6d0-347cb605b8c8@c-s.fr>
+ <1556369542-13247-42-git-send-email-info@metux.net>
+From:   Vladimir Zapolskiy <vz@mleia.com>
+Message-ID: <3cfc4396-b152-e9a6-bf29-a4c901ac90e6@mleia.com>
+Date:   Tue, 30 Apr 2019 23:52:58 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a00ba23b-e73e-c964-a6d0-347cb605b8c8@c-s.fr>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1556369542-13247-42-git-send-email-info@metux.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20190430_215300_466850_76BEA83B 
+X-CRM114-Status: UNSURE (   6.73  )
+X-CRM114-Notice: Please train this message. 
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Apr 29, 2019 at 05:59:04PM +0200, Christophe Leroy wrote:
-> Le 27/04/2019 à 14:52, Enrico Weigelt, metux IT consult a écrit :
-> > Fix checkpatch warnings by using pr_err():
-> > 
-> >      WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
-> >      #109: FILE: drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c:109:
-> >      +		printk(KERN_ERR
-> > 
-> >      WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
-> >      #128: FILE: drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c:128:
-> >      +		printk(KERN_ERR
-> > 
-> >      WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
-> >      +           printk(KERN_ERR
-> > 
-> >      WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
-> >      +           printk(KERN_ERR
-> > 
-> > Signed-off-by: Enrico Weigelt <info@metux.net>
+Hi Enrico,
+
+On 04/27/2019 03:52 PM, Enrico Weigelt, metux IT consult wrote:
+> Fill the struct uart_port->mapsize field and use it, insteaf of
+
+typo, s/insteaf/instead/
+
+> hardcoded values in many places. This makes the code layout a bit
+> more consistent and easily allows using generic helpers for the
+> io memory handling.
 > 
-> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Candidates for such helpers could be eg. the request+ioremap and
+> iounmap+release combinations.
 > 
-> But is that really worth doing those changes ?
-> 
-> If we want to do something useful, wouldn't it make more sense to introduce
-> the use of dev_err() in order to identify the faulting device in the message
-> ?
+> Signed-off-by: Enrico Weigelt <info@metux.net>
 
-+1 for switching to dev_*().
+Acked-by: Vladimir Zapolskiy <vz@mleia.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--
+Best wishes,
+Vladimir
