@@ -2,72 +2,92 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 671DF124F1
-	for <lists+sparclinux@lfdr.de>; Fri,  3 May 2019 01:15:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BB5B12F78
+	for <lists+sparclinux@lfdr.de>; Fri,  3 May 2019 15:48:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726289AbfEBXPr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 2 May 2019 19:15:47 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:50848 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726053AbfEBXPr (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 2 May 2019 19:15:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=x1JkGI4CQYrmvxuM8WIiLxnMqgmcALyQZwo7P71BME0=; b=aMGrAGbRVDdw1l/sw+gckS+sI
-        yDZRI+3C+9JVbYF5x2TNO2v6ZU46vYBCxSlqgSFAyRpfREdxjyopf5mVIOuO+jPgRBsXJd2WNYSnF
-        /I8A7c2f4ZPKJ2BAsrHVAa3XgZa1Qf5UknK5MzQ/VET/Ij0UeqKBGlYDO7wlzooU0qq4VGVtOuSH8
-        FfL6+e4qqO0V8zFTtborrXEeCSKP8gI1CQxx/4VKLrA/KtJTKs3viL4v8Jq+vuEbUwPtPTqSnacch
-        i7OH8Qeq65dZyi5x87J8wju+DihRuYLLXhCq55dy1ya/+objw3Kmmh7K6U5nQGlGqynqD2RbtFQiK
-        OqNefzOAw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hMKvW-0006KY-Ob; Thu, 02 May 2019 23:15:42 +0000
-Date:   Thu, 2 May 2019 16:15:42 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Hillf Danton <dhillf@gmail.com>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        Paul Mundt <lethal@linux-sh.org>, Stas Sergeev <stsp@list.ru>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        id S1726681AbfECNsr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 3 May 2019 09:48:47 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:49082 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726463AbfECNsr (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 3 May 2019 09:48:47 -0400
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x43Dm45B003020
+        for <sparclinux@vger.kernel.org>; Fri, 3 May 2019 09:48:45 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2s8mtb5jt0-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <sparclinux@vger.kernel.org>; Fri, 03 May 2019 09:48:29 -0400
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <sparclinux@vger.kernel.org> from <heiko.carstens@de.ibm.com>;
+        Fri, 3 May 2019 14:47:26 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Fri, 3 May 2019 14:47:22 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x43DlLHG23330858
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 3 May 2019 13:47:21 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 27CA642045;
+        Fri,  3 May 2019 13:47:21 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9B8E742041;
+        Fri,  3 May 2019 13:47:20 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.21])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Fri,  3 May 2019 13:47:20 +0000 (GMT)
+Date:   Fri, 3 May 2019 15:47:19 +0200
+From:   Heiko Carstens <heiko.carstens@de.ibm.com>
+To:     Mike Rapoport <rppt@linux.ibm.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Christoph Hellwig <hch@infradead.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
-        Nitin Gupta <nitin.m.gupta@oracle.com>,
-        sparclinux@vger.kernel.org
-Subject: Re: Linux 5.1-rc5
-Message-ID: <20190502231542.GA9336@infradead.org>
-References: <CAHk-=wjvcuyCQGnfOhooaL1H4H63qXO=xgo+9yncSOG=eK+kbA@mail.gmail.com>
- <20190415051919.GA31481@infradead.org>
- <CAHk-=wj7jgMOVFW0tiU-X+zhg6+Rn7mEBTej+f26rV3zXezOSA@mail.gmail.com>
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] s390: remove ARCH_SELECT_MEMORY_MODEL
+References: <1556740577-4140-1-git-send-email-rppt@linux.ibm.com>
+ <1556740577-4140-3-git-send-email-rppt@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wj7jgMOVFW0tiU-X+zhg6+Rn7mEBTej+f26rV3zXezOSA@mail.gmail.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <1556740577-4140-3-git-send-email-rppt@linux.ibm.com>
+X-TM-AS-GCONF: 00
+x-cbid: 19050313-0012-0000-0000-00000317F2E3
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050313-0013-0000-0000-0000215065E1
+Message-Id: <20190503134719.GB5602@osiris>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-03_07:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=858 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905030087
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Apr 15, 2019 at 09:17:10AM -0700, Linus Torvalds wrote:
-> I ruthlessly also entirely ignored MIPS, SH and sparc, since they seem
-> largely irrelevant, partly since even theoretically this whole issue
-> needs a _lot_ of memory.
+On Wed, May 01, 2019 at 10:56:16PM +0300, Mike Rapoport wrote:
+> The only reason s390 has ARCH_SELECT_MEMORY_MODEL option in
+> arch/s390/Kconfig is an ancient compile error with allnoconfig which was
+> fixed by commit 97195d6b411f ("[S390] fix sparsemem related compile error
+> with allnoconfig on s390") by adding the ARCH_SELECT_MEMORY_MODEL option.
+> 
+> Since then a lot have changed and now allnoconfig builds just fine without
+> ARCH_SELECT_MEMORY_MODEL, so it can be removed.
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  arch/s390/Kconfig | 3 ---
+>  1 file changed, 3 deletions(-)
 
-Adding the relevant people - while the might be irrelevant, at least
-mips and sparc have some giant memory systems.  And I'd really like
-to see the arch-specific GUP implementations to go away for other
-reasons, as we have a few issues to sort out with GUP usage now
-(we just had discussions at LSF/MM), and the less implementations we
-have to deal with the better.
+Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
+
