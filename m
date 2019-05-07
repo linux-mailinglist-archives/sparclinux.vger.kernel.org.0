@@ -2,92 +2,75 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BB5B12F78
-	for <lists+sparclinux@lfdr.de>; Fri,  3 May 2019 15:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CD3F15B1D
+	for <lists+sparclinux@lfdr.de>; Tue,  7 May 2019 07:52:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726681AbfECNsr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 3 May 2019 09:48:47 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:49082 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726463AbfECNsr (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 3 May 2019 09:48:47 -0400
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x43Dm45B003020
-        for <sparclinux@vger.kernel.org>; Fri, 3 May 2019 09:48:45 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2s8mtb5jt0-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <sparclinux@vger.kernel.org>; Fri, 03 May 2019 09:48:29 -0400
-Received: from localhost
-        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <sparclinux@vger.kernel.org> from <heiko.carstens@de.ibm.com>;
-        Fri, 3 May 2019 14:47:26 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Fri, 3 May 2019 14:47:22 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x43DlLHG23330858
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 3 May 2019 13:47:21 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 27CA642045;
-        Fri,  3 May 2019 13:47:21 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9B8E742041;
-        Fri,  3 May 2019 13:47:20 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.21])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Fri,  3 May 2019 13:47:20 +0000 (GMT)
-Date:   Fri, 3 May 2019 15:47:19 +0200
-From:   Heiko Carstens <heiko.carstens@de.ibm.com>
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Christoph Hellwig <hch@infradead.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] s390: remove ARCH_SELECT_MEMORY_MODEL
-References: <1556740577-4140-1-git-send-email-rppt@linux.ibm.com>
- <1556740577-4140-3-git-send-email-rppt@linux.ibm.com>
+        id S1728476AbfEGFjj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 7 May 2019 01:39:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59202 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728479AbfEGFjh (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 7 May 2019 01:39:37 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6401620578;
+        Tue,  7 May 2019 05:39:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1557207577;
+        bh=Xr2lq4+YQIty+EgsKo1pDRwS9bE6NkkxmsNUf3Zmo5M=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=DdH2GT6XVaGEkPOFDUxoiwY1j9h6ysCuyfRQ6rNgpIwxnHqvtOQo18wSchcQ0nmqd
+         9YattNngqtGGJtKJy9FolJv2t3AtF9anKMKzEDh398wTR5O/4Y90f0mKMjst8S8QN7
+         DavOx9pjGF8sox4CxCpAFV1KNSEOhBEuboKNK1VU=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <alexander.levin@microsoft.com>,
+        sparclinux@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 35/95] sparc64: Export __node_distance.
+Date:   Tue,  7 May 2019 01:37:24 -0400
+Message-Id: <20190507053826.31622-35-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190507053826.31622-1-sashal@kernel.org>
+References: <20190507053826.31622-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1556740577-4140-3-git-send-email-rppt@linux.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 19050313-0012-0000-0000-00000317F2E3
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050313-0013-0000-0000-0000215065E1
-Message-Id: <20190503134719.GB5602@osiris>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-03_07:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=858 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905030087
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, May 01, 2019 at 10:56:16PM +0300, Mike Rapoport wrote:
-> The only reason s390 has ARCH_SELECT_MEMORY_MODEL option in
-> arch/s390/Kconfig is an ancient compile error with allnoconfig which was
-> fixed by commit 97195d6b411f ("[S390] fix sparsemem related compile error
-> with allnoconfig on s390") by adding the ARCH_SELECT_MEMORY_MODEL option.
-> 
-> Since then a lot have changed and now allnoconfig builds just fine without
-> ARCH_SELECT_MEMORY_MODEL, so it can be removed.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  arch/s390/Kconfig | 3 ---
->  1 file changed, 3 deletions(-)
+From: "David S. Miller" <davem@davemloft.net>
 
-Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
+[ Upstream commit 2b4792eaa9f553764047d157365ed8b7787751a3 ]
+
+Some drivers reference it via node_distance(), for example the
+NVME host driver core.
+
+ERROR: "__node_distance" [drivers/nvme/host/nvme-core.ko] undefined!
+make[1]: *** [scripts/Makefile.modpost:92: __modpost] Error 1
+
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <alexander.levin@microsoft.com>
+---
+ arch/sparc/mm/init_64.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index 984e9d65ea0d..76977296dc9c 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -1383,6 +1383,7 @@ int __node_distance(int from, int to)
+ 	}
+ 	return numa_latency[from][to];
+ }
++EXPORT_SYMBOL(__node_distance);
+ 
+ static int __init find_best_numa_node_for_mlgroup(struct mdesc_mlgroup *grp)
+ {
+-- 
+2.20.1
 
