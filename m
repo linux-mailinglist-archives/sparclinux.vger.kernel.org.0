@@ -2,171 +2,79 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8A5F1C9ED
-	for <lists+sparclinux@lfdr.de>; Tue, 14 May 2019 16:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BD641E691
+	for <lists+sparclinux@lfdr.de>; Wed, 15 May 2019 03:15:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726362AbfENODw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 14 May 2019 10:03:52 -0400
-Received: from mga05.intel.com ([192.55.52.43]:47295 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726347AbfENODA (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 14 May 2019 10:03:00 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 May 2019 07:02:58 -0700
-X-ExtLoop1: 1
-Received: from unknown (HELO luv-build.sc.intel.com) ([172.25.110.25])
-  by fmsmga005.fm.intel.com with ESMTP; 14 May 2019 07:02:58 -0700
-From:   Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@suse.de>
-Cc:     Ashok Raj <ashok.raj@intel.com>, Joerg Roedel <joro@8bytes.org>,
-        Andi Kleen <andi.kleen@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Ravi V. Shankar" <ravi.v.shankar@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
-        Ricardo Neri <ricardo.neri@intel.com>,
-        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Tony Luck <tony.luck@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Don Zickus <dzickus@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Babu Moger <Babu.Moger@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Byungchul Park <byungchul.park@lge.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        "Luis R. Rodriguez" <mcgrof@kernel.org>,
-        Waiman Long <longman@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        David Rientjes <rientjes@google.com>,
-        Stephane Eranian <eranian@google.com>,
-        Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
-        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v3 10/21] watchdog/hardlockup: Add function to enable NMI watchdog on all allowed CPUs at once
-Date:   Tue, 14 May 2019 07:02:03 -0700
-Message-Id: <1557842534-4266-11-git-send-email-ricardo.neri-calderon@linux.intel.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1557842534-4266-1-git-send-email-ricardo.neri-calderon@linux.intel.com>
-References: <1557842534-4266-1-git-send-email-ricardo.neri-calderon@linux.intel.com>
+        id S1726195AbfEOBPa convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Tue, 14 May 2019 21:15:30 -0400
+Received: from smtp-proxy.vodafone.com.gh ([80.87.74.13]:34766 "HELO
+        smtp-proxy.vodafone.com.gh" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with SMTP id S1726148AbfEOBPa (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 14 May 2019 21:15:30 -0400
+X-Greylist: delayed 9659 seconds by postgrey-1.27 at vger.kernel.org; Tue, 14 May 2019 21:15:20 EDT
+Received: from mailhost.vodafone.com.gh (mailhost.vodafone.com.gh [80.87.74.11])
+        by smtp-proxy.vodafone.com.gh (Postfix) with ESMTP id C3018488F23F;
+        Tue, 14 May 2019 21:47:42 +0000 (GMT)
+Received: from localhost (localhost [127.0.0.1])
+        by mailhost.vodafone.com.gh (Postfix) with ESMTP id 734E42976A2C;
+        Tue, 14 May 2019 21:49:14 +0000 (GMT)
+Received: from mailhost.vodafone.com.gh ([127.0.0.1])
+        by localhost (mailhost.vodafone.com.gh [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id RwvVZH2nxwOc; Tue, 14 May 2019 21:49:12 +0000 (GMT)
+Received: from localhost (localhost [127.0.0.1])
+        by mailhost.vodafone.com.gh (Postfix) with ESMTP id 427B7297680F;
+        Tue, 14 May 2019 21:49:11 +0000 (GMT)
+X-Virus-Scanned: amavisd-new at vodafone.com.gh
+Received: from mailhost.vodafone.com.gh ([127.0.0.1])
+        by localhost (mailhost.vodafone.com.gh [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 8EBensqJY0vd; Tue, 14 May 2019 21:49:10 +0000 (GMT)
+Received: from mailhost.vodafone.com.gh (mailhost.vodafone.com.gh [80.87.74.11])
+        by mailhost.vodafone.com.gh (Postfix) with ESMTP id 170822971476;
+        Tue, 14 May 2019 21:49:05 +0000 (GMT)
+Date:   Tue, 14 May 2019 21:49:05 +0000 (GMT)
+From:   "Deputy Managing Director (IMF)" <afrilog@vodafone.com.gh>
+Reply-To: "Deputy Managing Director (IMF)" <info@imfukunit.co.uk>
+Message-ID: <1569161178.4425505.1557870545056.JavaMail.zimbra@vodafone.com.gh>
+Subject: =?utf-8?B?67O07IOBIOyngOu2iCDthrXsp4A=?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+X-Originating-IP: [80.87.74.11]
+X-Mailer: Zimbra 8.7.6_GA_1776 (ZimbraWebClient - FF66 (Win)/8.7.6_GA_1776)
+Thread-Index: s/kHcbzbCoO2glYsGko7VsSg3YJT6w==
+Thread-Topic: =?utf-8?B?67O07IOBIOyngOu2iCDthrXsp4A=?=
+Content-Transfer-Encoding: 8BIT
+To:     unlisted-recipients:; (no To-header on input)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-When there are more than one implementation of the NMI watchdog, there may
-be situations in which switching from one to another is needed (e.g., if
-the time-stamp counter becomes unstable, the HPET-based NMI watchdog can
-no longer be used.
+주의 : 수혜자,
 
-The perf-based implementation of the hardlockup detector makes use of
-various per-CPU variables which are accessed via this_cpu operations.
-Hence, each CPU needs to enable its own NMI watchdog if using the perf
-implementation.
+이 메일이 왜 왔는지 이해하지 못할 수도 있습니다. 국제 통화 기금 (IMF)의 고위 공무원들에 의해 상원의 외채 상환위원회와 상응 보조금 이행 패널 (카테고리 D)이 개최되었으며, 이는 전세계의 모든 사기 피해자들에 관한 것이었다. 시체. 주제에 관해 당신에게 연락하는 것이 필수적이되었습니다.
 
-Add functionality to switch from one NMI watchdog to another and do it
-from each allowed CPU.
+이 이메일은 선취 수수료 사기로 인해 사기가 났거나 돈을 강탈당한 모든 사람들과 자국 정부로부터 팁 서비스 혜택을받지 못한 모든 퇴직자들에게 발송됩니다.
 
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ashok Raj <ashok.raj@intel.com>
-Cc: Andi Kleen <andi.kleen@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc: Don Zickus <dzickus@redhat.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Babu Moger <Babu.Moger@amd.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Philippe Ombredanne <pombredanne@nexb.com>
-Cc: Colin Ian King <colin.king@canonical.com>
-Cc: Byungchul Park <byungchul.park@lge.com>
-Cc: "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-Cc: "Luis R. Rodriguez" <mcgrof@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>
-Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
-Cc: x86@kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
----
- include/linux/nmi.h |  2 ++
- kernel/watchdog.c   | 15 +++++++++++++++
- 2 files changed, 17 insertions(+)
+국제 통화 기금 (IMF), 세계 은행 그룹 (WB) 및 연방 수사 국 (FBI)은 여러분 모두에게 $ 1,000,000.00USD의 총액을 보상하기로 동의했습니다. 퇴직 연금 수령자, 모든 외국인 계약자 / 친척 및 미완료 거래가있는 사람 또는 정부 문제 또는 비정규로 인해 실패한 국제 사업을 포함합니다.
 
-diff --git a/include/linux/nmi.h b/include/linux/nmi.h
-index e5f1a86e20b7..6d828334348b 100644
---- a/include/linux/nmi.h
-+++ b/include/linux/nmi.h
-@@ -83,9 +83,11 @@ static inline void reset_hung_task_detector(void) { }
- 
- #if defined(CONFIG_HARDLOCKUP_DETECTOR)
- extern void hardlockup_detector_disable(void);
-+extern void hardlockup_start_all(void);
- extern unsigned int hardlockup_panic;
- #else
- static inline void hardlockup_detector_disable(void) {}
-+static inline void hardlockup_start_all(void) {}
- #endif
- 
- #if defined(CONFIG_HAVE_NMI_WATCHDOG) || defined(CONFIG_HARDLOCKUP_DETECTOR)
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 7f9e7b9306fe..be589001200a 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -566,6 +566,21 @@ int lockup_detector_offline_cpu(unsigned int cpu)
- 	return 0;
- }
- 
-+static int hardlockup_start_fn(void *data)
-+{
-+	watchdog_nmi_enable(smp_processor_id());
-+	return 0;
-+}
-+
-+void hardlockup_start_all(void)
-+{
-+	int cpu;
-+
-+	cpumask_copy(&watchdog_allowed_mask, &watchdog_cpumask);
-+	for_each_cpu(cpu, &watchdog_allowed_mask)
-+		smp_call_on_cpu(cpu, hardlockup_start_fn, NULL, false);
-+}
-+
- static void lockup_detector_reconfigure(void)
- {
- 	cpus_read_lock();
--- 
-2.17.1
+회의에서 잠재적 인 모든 보상 수혜자 기금은 ATM 카드 또는 수표로 지불해야하며 각 국가로 보내야한다고 결론지었습니다.
 
+모든 수혜자는 인터넷을 통해 2 천 7 백만 전자 메일 주소로 작성된 글로벌 무작위 통합 시스템을 통해 선정되었으며 행운의 수혜자는이 보상 프로그램에서 혜택을 얻으려는 티켓을 구입할 필요가 없습니다. 귀하의 이메일은 우리의 명단에 올랐습니다. 그래서 저희가 귀하에게 연락하는 이유는 국제 통화 기금 (IMF) 이사회와 세계 은행 그룹 관리 위원들에 의해 동의되고 서명되었습니다.
+
+보상금 지불을 위해 귀하의 이름과 같은 전체 세부 사항 (전화 번호 : 나이 : 성별 및 주소, 파일 참조 번호 (IMF-90690_WB))을 보내주십시오.
+
+담당자 : Mr. Joaquim Levy.
+======= 최고 재무 책임자 (CFO)
+        (세계 은행 그룹) =======
+전자 메일 : info@joaquimlevy.com
+전화 번호 : 44-7452286707
+
+보상금을 수령하면 바로 연락 드리겠습니다. 질문이 있으시면 언제든지 이메일을 보내 주시기 바랍니다. (info@imfukunit.co.uk)
+
+문안 인사,
+후루사와 미츠히로 (IMF 부회장)
+CC : Mrs. Kristalina Georgieva (세계 은행 총재)
+CC : Mr. Christopher A. Wray (FBI, 감독)
+*************************************************** *************************************************** *************************************************** ************************
+참고 : 귀하의 스팸 / BULK 폴더에서이 메시지를받은 경우, 이는 귀하의 인터넷 서비스 공급자에 의해 구현 된 제한 때문에, 우리 (국제 통화 기금 (IMF))는 당신이 진정으로 그것을 취급 할 것을 촉구합니다.
