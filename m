@@ -2,66 +2,150 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CA851C19F
-	for <lists+sparclinux@lfdr.de>; Tue, 14 May 2019 06:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 548741C9DF
+	for <lists+sparclinux@lfdr.de>; Tue, 14 May 2019 16:04:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725985AbfENE6k (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 14 May 2019 00:58:40 -0400
-Received: from mx2.cyber.ee ([193.40.6.72]:57986 "EHLO mx2.cyber.ee"
+        id S1726336AbfENOC7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 14 May 2019 10:02:59 -0400
+Received: from mga05.intel.com ([192.55.52.43]:47286 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725562AbfENE6k (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 14 May 2019 00:58:40 -0400
-Subject: Re: bpf VM_FLUSH_RESET_PERMS breaks sparc64 boot
-To:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Cc:     "davem@davemloft.net" <davem@davemloft.net>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "namit@vmware.com" <namit@vmware.com>
-References: <4401874b-31b9-42a0-31bd-32bef5b36f2a@linux.ee>
- <b8493de00d9973f6f054814ed69d146b29207d3e.camel@intel.com>
- <102313756736cf8b34b36b1025102e2b75d16426.camel@intel.com>
-From:   Meelis Roos <mroos@linux.ee>
-Message-ID: <a30b1eac-4a98-de52-e381-91a7a59f8042@linux.ee>
-Date:   Tue, 14 May 2019 07:58:29 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <102313756736cf8b34b36b1025102e2b75d16426.camel@intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: et-EE
-Content-Transfer-Encoding: 7bit
+        id S1726283AbfENOC6 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 14 May 2019 10:02:58 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 May 2019 07:02:57 -0700
+X-ExtLoop1: 1
+Received: from unknown (HELO luv-build.sc.intel.com) ([172.25.110.25])
+  by fmsmga005.fm.intel.com with ESMTP; 14 May 2019 07:02:57 -0700
+From:   Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@suse.de>
+Cc:     Ashok Raj <ashok.raj@intel.com>, Joerg Roedel <joro@8bytes.org>,
+        Andi Kleen <andi.kleen@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Ravi V. Shankar" <ravi.v.shankar@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+        Ricardo Neri <ricardo.neri@intel.com>,
+        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Tony Luck <tony.luck@intel.com>,
+        Don Zickus <dzickus@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Babu Moger <Babu.Moger@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        "Luis R. Rodriguez" <mcgrof@kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
+        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v3 07/21] watchdog/hardlockup: Define a generic function to detect hardlockups
+Date:   Tue, 14 May 2019 07:02:00 -0700
+Message-Id: <1557842534-4266-8-git-send-email-ricardo.neri-calderon@linux.intel.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557842534-4266-1-git-send-email-ricardo.neri-calderon@linux.intel.com>
+References: <1557842534-4266-1-git-send-email-ricardo.neri-calderon@linux.intel.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-> I'm having trouble getting Debian Buster up and running on qemu-system-
-> sparc64 and so haven't been able to reproduce. Is this currently working for
-> people?
+The procedure to detect hardlockups is independent of the underlying
+mechanism that generates the non-maskable interrupt used to drive the
+detector. Thus, it can be put in a separate, generic function. In this
+manner, it can be invoked by various implementations of the NMI watchdog.
 
-I just reinstalled the machine from
-https://cdimage.debian.org/cdimage/ports/2019-05-09/debian-10.0-sparc64-NETINST-1.iso
-and there's a even newer build upe one directory level.
+For this purpose, move the bulk of watchdog_overflow_callback() to the
+new function inspect_for_hardlockups(). This function can then be called
+from the applicable NMI handlers.
 
-> This patch involves re-setting memory permissions when freeing executable
-> memory. It looks like Sparc64 Linux doesn't have support for the set_memory_()
-> functions so that part shouldn't be changing anything. The main other thing that
-> is changed here is always doing a TLB flush in vfree when the BPF JITs are
-> freed. It will already sometimes happen so that shouldn't be too different
-> either.
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ashok Raj <ashok.raj@intel.com>
+Cc: Andi Kleen <andi.kleen@intel.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Don Zickus <dzickus@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Babu Moger <Babu.Moger@amd.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Philippe Ombredanne <pombredanne@nexb.com>
+Cc: Colin Ian King <colin.king@canonical.com>
+Cc: "Luis R. Rodriguez" <mcgrof@kernel.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>
+Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
+Cc: x86@kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+---
+ include/linux/nmi.h   |  1 +
+ kernel/watchdog_hld.c | 18 +++++++++++-------
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-That part I do not know.
-
-> So it doesn't seem extra especially likely to cause a sparc specific problem
-> that I can see. Is there any chance this is an intermittent issue?
-
-So far it seemed 100% reproducible, at least in the bisect that led here.
-The only variation I saw was if it just sat there for newer git snapshot or spew
-out RCU and workqueue lockup warnings soon like I posed.
-
-I can do some tests and boot the same kernel some more times.
-
+diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+index 9003e29cde46..5a8b19749769 100644
+--- a/include/linux/nmi.h
++++ b/include/linux/nmi.h
+@@ -212,6 +212,7 @@ extern int proc_watchdog_thresh(struct ctl_table *, int ,
+ 				void __user *, size_t *, loff_t *);
+ extern int proc_watchdog_cpumask(struct ctl_table *, int,
+ 				 void __user *, size_t *, loff_t *);
++void inspect_for_hardlockups(struct pt_regs *regs);
+ 
+ #ifdef CONFIG_HAVE_ACPI_APEI_NMI
+ #include <asm/nmi.h>
+diff --git a/kernel/watchdog_hld.c b/kernel/watchdog_hld.c
+index 247bf0b1582c..b352e507b17f 100644
+--- a/kernel/watchdog_hld.c
++++ b/kernel/watchdog_hld.c
+@@ -106,14 +106,8 @@ static struct perf_event_attr wd_hw_attr = {
+ 	.disabled	= 1,
+ };
+ 
+-/* Callback function for perf event subsystem */
+-static void watchdog_overflow_callback(struct perf_event *event,
+-				       struct perf_sample_data *data,
+-				       struct pt_regs *regs)
++void inspect_for_hardlockups(struct pt_regs *regs)
+ {
+-	/* Ensure the watchdog never gets throttled */
+-	event->hw.interrupts = 0;
+-
+ 	if (__this_cpu_read(watchdog_nmi_touch) == true) {
+ 		__this_cpu_write(watchdog_nmi_touch, false);
+ 		return;
+@@ -163,6 +157,16 @@ static void watchdog_overflow_callback(struct perf_event *event,
+ 	return;
+ }
+ 
++/* Callback function for perf event subsystem */
++static void watchdog_overflow_callback(struct perf_event *event,
++				       struct perf_sample_data *data,
++				       struct pt_regs *regs)
++{
++	/* Ensure the watchdog never gets throttled */
++	event->hw.interrupts = 0;
++	inspect_for_hardlockups(regs);
++}
++
+ static int hardlockup_detector_event_create(void)
+ {
+ 	unsigned int cpu = smp_processor_id();
 -- 
-Meelis Roos
+2.17.1
+
