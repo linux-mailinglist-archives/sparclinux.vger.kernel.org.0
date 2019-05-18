@@ -2,141 +2,171 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C100B21F4F
-	for <lists+sparclinux@lfdr.de>; Fri, 17 May 2019 23:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAADF222C3
+	for <lists+sparclinux@lfdr.de>; Sat, 18 May 2019 11:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727909AbfEQVFK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 17 May 2019 17:05:10 -0400
-Received: from mga01.intel.com ([192.55.52.88]:33100 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727001AbfEQVFK (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 17 May 2019 17:05:10 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 May 2019 14:05:09 -0700
-X-ExtLoop1: 1
-Received: from linksys13920.jf.intel.com (HELO rpedgeco-DESK5.jf.intel.com) ([10.54.75.11])
-  by fmsmga004.fm.intel.com with ESMTP; 17 May 2019 14:05:09 -0700
-From:   Rick Edgecombe <rick.p.edgecombe@intel.com>
-To:     peterz@infradead.org, linux-mm@kvack.org,
-        sparclinux@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Cc:     dave.hansen@intel.com, namit@vmware.com,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Meelis Roos <mroos@linux.ee>,
-        "David S. Miller" <davem@davemloft.net>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>
-Subject: [PATCH 1/1] vmalloc: Fix issues with flush flag
-Date:   Fri, 17 May 2019 14:01:23 -0700
-Message-Id: <20190517210123.5702-2-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190517210123.5702-1-rick.p.edgecombe@intel.com>
-References: <20190517210123.5702-1-rick.p.edgecombe@intel.com>
+        id S1729876AbfERJsH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 18 May 2019 05:48:07 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:33854 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729533AbfERJsH (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 18 May 2019 05:48:07 -0400
+Received: by mail-pg1-f193.google.com with SMTP id c13so4467497pgt.1
+        for <sparclinux@vger.kernel.org>; Sat, 18 May 2019 02:48:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=3iehYO9/3dGuR87aVQtHa+k708l2fZGn5LAWJUJw+bI=;
+        b=jbJ+akl1Oebe/G2zixKM7D3g8/7+hvJdUcG9NJHMi65TbSXZ/qBbCGH1hwdCWFXEia
+         v5u721IWYUqsCoQEJBSjN5yxaOqNgOIUlFkv4bfOYzMj0px06ZqOaLQiVXwSfSdOtkCb
+         eut+PHPZD1xgK0wVWmv7MP53RNVrElPU0eYIU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=3iehYO9/3dGuR87aVQtHa+k708l2fZGn5LAWJUJw+bI=;
+        b=pmTfLqR+WS01DOCQbEXgec8qagUoJk+79TC5O+DCdP9rvF8tYWfQvUXReAc/cE/4An
+         2thPEapwAyPml9ExTIfLIjN4s3ePXyNXko4X6sv1M82qYBhve8pYUJkQpaU2PmwIA3BE
+         MXgRrmsXTmIgZWwzl4j+AU+wWGT53Ui3HsCdeJBQmN00m9MRILdLyJKYck8Hh8pjI+b5
+         jmvyzdBKf6bK0wFJf21fQhEQLriEJVBQFJlqv4+keDOWb0Kakz2KkZojGFlc1Jp/1VkY
+         sltTiYKRU4PtJS2fXsP9eN/JUP/AFHdiSZI8SwiALNUp8uGXbuNBJ/fyDy9coN36dQ5L
+         SRPA==
+X-Gm-Message-State: APjAAAUWF9DGBGHbxuy2WnUvcNJODDRWKXR1t64PFQXijaeQqLrMrx+e
+        87aV4Ktlfhm6jSIg1C4hEV0++w==
+X-Google-Smtp-Source: APXvYqxxxsUFV7eN5OTaebnkzWDt0kd+NHIjUI5fT4y6JUXpDdAsQ8fqEFtPRx00MMYQQHacYxzw8Q==
+X-Received: by 2002:a63:f813:: with SMTP id n19mr60994204pgh.273.1558172886290;
+        Sat, 18 May 2019 02:48:06 -0700 (PDT)
+Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
+        by smtp.gmail.com with ESMTPSA id q4sm14705283pgb.39.2019.05.18.02.48.04
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 18 May 2019 02:48:05 -0700 (PDT)
+Date:   Sat, 18 May 2019 05:48:03 -0400
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Christian Brauner <christian@brauner.io>
+Cc:     jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
+        torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
+        arnd@arndb.de, akpm@linux-foundation.org, cyphar@cyphar.com,
+        dhowells@redhat.com, ebiederm@xmission.com,
+        elena.reshetova@intel.com, keescook@chromium.org,
+        luto@amacapital.net, luto@kernel.org, tglx@linutronix.de,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.orgg, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-api@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        dancol@google.com, serge@hallyn.com, surenb@google.com,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v1 1/2] pid: add pidfd_open()
+Message-ID: <20190516224949.GA15401@localhost>
+References: <20190516135944.7205-1-christian@brauner.io>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190516135944.7205-1-christian@brauner.io>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Meelis Roos reported issues with the new VM_FLUSH_RESET_PERMS flag on the
-sparc architecture.
+Hi Christian,
 
-When freeing many BPF JITs at once the free operations can become stuck
-waiting for locks as they each try to vm_unmap_aliases(). Calls to this
-function happen frequently on some archs, but in vmalloc itself the lazy
-purge operations happens more rarely, where only in extreme cases could
-multiple purges be happening at once. Since this is cross platform code we
-shouldn't do this here where it could happen concurrently in a burst, and
-instead just flush the TLB. Also, add a little logic to skip calls to
-page_address() when possible to further speed this up, since they may have
-locking on some archs.
+For next revision, could you also CC surenb@google.com as well? He is also
+working on the low memory killer. And also suggest CC to
+kernel-team@android.com. And mentioned some comments below, thanks.
 
-Lastly, it appears that the calculation of the address range to flush
-was broken at some point, so fix that as well.
+On Thu, May 16, 2019 at 03:59:42PM +0200, Christian Brauner wrote:
+[snip]  
+> diff --git a/kernel/pid.c b/kernel/pid.c
+> index 20881598bdfa..4afca3d6dcb8 100644
+> --- a/kernel/pid.c
+> +++ b/kernel/pid.c
+> @@ -38,6 +38,7 @@
+>  #include <linux/syscalls.h>
+>  #include <linux/proc_ns.h>
+>  #include <linux/proc_fs.h>
+> +#include <linux/sched/signal.h>
+>  #include <linux/sched/task.h>
+>  #include <linux/idr.h>
+>  
+> @@ -451,6 +452,55 @@ struct pid *find_ge_pid(int nr, struct pid_namespace *ns)
+>  	return idr_get_next(&ns->idr, &nr);
+>  }
+>  
+> +/**
+> + * pidfd_open() - Open new pid file descriptor.
+> + *
+> + * @pid:   pid for which to retrieve a pidfd
+> + * @flags: flags to pass
+> + *
+> + * This creates a new pid file descriptor with the O_CLOEXEC flag set for
+> + * the process identified by @pid. Currently, the process identified by
+> + * @pid must be a thread-group leader. This restriction currently exists
+> + * for all aspects of pidfds including pidfd creation (CLONE_PIDFD cannot
+> + * be used with CLONE_THREAD) and pidfd polling (only supports thread group
+> + * leaders).
+> + *
+> + * Return: On success, a cloexec pidfd is returned.
+> + *         On error, a negative errno number will be returned.
+> + */
+> +SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
+> +{
+> +	int fd, ret;
+> +	struct pid *p;
+> +	struct task_struct *tsk;
+> +
+> +	if (flags)
+> +		return -EINVAL;
+> +
+> +	if (pid <= 0)
+> +		return -EINVAL;
+> +
+> +	p = find_get_pid(pid);
+> +	if (!p)
+> +		return -ESRCH;
+> +
+> +	ret = 0;
+> +	rcu_read_lock();
+> +	/*
+> +	 * If this returns non-NULL the pid was used as a thread-group
+> +	 * leader. Note, we race with exec here: If it changes the
+> +	 * thread-group leader we might return the old leader.
+> +	 */
+> +	tsk = pid_task(p, PIDTYPE_TGID);
 
-Fixes: 868b104d7379 ("mm/vmalloc: Add flag for freeing of special permsissions")
-Reported-by: Meelis Roos <mroos@linux.ee>
-Cc: Meelis Roos <mroos@linux.ee>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Nadav Amit <namit@vmware.com>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
----
- mm/vmalloc.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+Just trying to understand the comment here. The issue is that we might either
+return the new leader, or the old leader depending on the overlap with
+concurrent de_thread right? In either case, we don't care though.
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 67bbb8d2a0a8..5daa7ec8950f 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -1531,9 +1531,10 @@ static inline void set_area_direct_map(const struct vm_struct *area,
- /* Handle removing and resetting vm mappings related to the vm_struct. */
- static void vm_remove_mappings(struct vm_struct *area, int deallocate_pages)
- {
-+	const bool has_set_direct = IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP);
-+	const bool flush_reset = area->flags & VM_FLUSH_RESET_PERMS;
- 	unsigned long addr = (unsigned long)area->addr;
--	unsigned long start = ULONG_MAX, end = 0;
--	int flush_reset = area->flags & VM_FLUSH_RESET_PERMS;
-+	unsigned long start = addr, end = addr + get_vm_area_size(area);
- 	int i;
- 
- 	/*
-@@ -1542,7 +1543,7 @@ static void vm_remove_mappings(struct vm_struct *area, int deallocate_pages)
- 	 * This is concerned with resetting the direct map any an vm alias with
- 	 * execute permissions, without leaving a RW+X window.
- 	 */
--	if (flush_reset && !IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
-+	if (flush_reset && !has_set_direct) {
- 		set_memory_nx(addr, area->nr_pages);
- 		set_memory_rw(addr, area->nr_pages);
- 	}
-@@ -1555,22 +1556,24 @@ static void vm_remove_mappings(struct vm_struct *area, int deallocate_pages)
- 
- 	/*
- 	 * If not deallocating pages, just do the flush of the VM area and
--	 * return.
-+	 * return. If the arch doesn't have set_direct_map_(), also skip the
-+	 * below work.
- 	 */
--	if (!deallocate_pages) {
--		vm_unmap_aliases();
-+	if (!deallocate_pages || !has_set_direct) {
-+		flush_tlb_kernel_range(addr, get_vm_area_size(area));
- 		return;
- 	}
- 
- 	/*
- 	 * If execution gets here, flush the vm mapping and reset the direct
- 	 * map. Find the start and end range of the direct mappings to make sure
--	 * the vm_unmap_aliases() flush includes the direct map.
-+	 * the flush_tlb_kernel_range() includes the direct map.
- 	 */
- 	for (i = 0; i < area->nr_pages; i++) {
--		if (page_address(area->pages[i])) {
-+		addr = (unsigned long)page_address(area->pages[i]);
-+		if (addr) {
- 			start = min(addr, start);
--			end = max(addr, end);
-+			end = max(addr + PAGE_SIZE, end);
- 		}
- 	}
- 
-@@ -1580,7 +1583,7 @@ static void vm_remove_mappings(struct vm_struct *area, int deallocate_pages)
- 	 * reset the direct map permissions to the default.
- 	 */
- 	set_area_direct_map(area, set_direct_map_invalid_noflush);
--	_vm_unmap_aliases(start, end, 1);
-+	flush_tlb_kernel_range(start, end);
- 	set_area_direct_map(area, set_direct_map_default_noflush);
- }
- 
--- 
-2.17.1
+I suggest to remove the "Note..." part of the comment since it doesn't seem the
+race is relevant here unless we are doing something else with tsk in the
+function, but if you want to keep it that's also fine. Comment text should
+probably should be 'return the new leader' though.
 
+> +	if (!tsk)
+> +		ret = -ESRCH;
+
+Perhaps -EINVAL?  AFAICS, this can only happen if a CLONE_THREAD pid was
+passed as argument to pidfd_open which is invalid. But let me know what you
+had in mind..
+
+thanks,
+
+ - Joel
+
+> +	rcu_read_unlock();
+> +
+> +	fd = ret ?: pidfd_create(p);
+> +	put_pid(p);
+> +	return fd;
+> +}
+> +
+>  void __init pid_idr_init(void)
+>  {
+>  	/* Verify no one has done anything silly: */
+> -- 
+> 2.21.0
+> 
