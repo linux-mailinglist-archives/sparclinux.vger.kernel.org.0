@@ -2,174 +2,111 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BB7222309
-	for <lists+sparclinux@lfdr.de>; Sat, 18 May 2019 12:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF46422A90
+	for <lists+sparclinux@lfdr.de>; Mon, 20 May 2019 05:57:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729733AbfERKFI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 18 May 2019 06:05:08 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:46015 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729704AbfERKFH (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 18 May 2019 06:05:07 -0400
-Received: by mail-ed1-f65.google.com with SMTP id g57so14662355edc.12
-        for <sparclinux@vger.kernel.org>; Sat, 18 May 2019 03:05:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=kuxvODYNXQX1UADGYTekrXKJHl9GqTdixhHyMJoLFkg=;
-        b=MzXf8JwF72gJj2Pq8n12P+UywZxc2BVXTvpiVUKrEniJVb1LIFP3IbcOliQYISdvq7
-         CigvtYVzwi+8s8BzhGA7JzeYEAEgELRKSJUGXkBeKo3jIoY+k+AIz1NIGNQ3IbqWFvd/
-         pZcoiBfjP1G87UNeXXgpYPrDlzF+SvvAxTS1B9J01RvJsEbVREubCnWtrpwlE+W8uhC8
-         abJb2p1WNSljrqCFAQH7at9A4yXrlhg+5ZrhECybT+pFDJTv4XLPhvmKoEIQriQEdsEE
-         2qeWRYeIhjWVjN8Omnws0ZotrB2BKKuxhO4+QGekj7Ec6VajrUKLl5oRB10tcR/KFGxb
-         SomA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=kuxvODYNXQX1UADGYTekrXKJHl9GqTdixhHyMJoLFkg=;
-        b=DxY/h+JPEq9Jm4WxzSkCzxhOfLV/DeqnS+XPmpUlxqJGuV+m+EAdQVSxAtwZbXyua9
-         Hgevqzl75JYqK8cDD4H7c61uzwE18K7WsVb8tSpEtuIewNtJNek7AHWSSRB4XyPdwP4d
-         gWS5CKOGYjAyGs3b6lWxg/J7f3o56jup86B0TvZvNlOo418ygX1ke7jm0v57PV3uH8H8
-         2o59WG2q6zMiN8akcmpHtVk3bJeTda5xLX/4cUAM0Zo//lXPVzIpU3N33GMdX5/cVc7T
-         WGUUSJXJ8pickKe9po0YHc8xWp0T7JtQXz8VXh/twB7dX/aR2dZQG5ZRbB055xUlSVMp
-         b7Vg==
-X-Gm-Message-State: APjAAAXIYkDV8B5MVDK+w30I4dUvvoJT4AYSp0WkmjVPmut4fLpvQPpR
-        ZQ19etcdWIrtnMfDHjvRoP4BnA==
-X-Google-Smtp-Source: APXvYqyJ8cSwup5T+wLOXgE4G1RIJN3Q14FiCUfotn6HCvE35vO+QFm+mQrHo4U4TisKcq8ZEYMBDQ==
-X-Received: by 2002:a50:b82d:: with SMTP id j42mr63022736ede.186.1558173905455;
-        Sat, 18 May 2019 03:05:05 -0700 (PDT)
-Received: from brauner.io ([46.183.103.8])
-        by smtp.gmail.com with ESMTPSA id y30sm3741910edc.83.2019.05.18.03.04.59
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 18 May 2019 03:05:04 -0700 (PDT)
-Date:   Sat, 18 May 2019 12:04:46 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
-        torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
-        arnd@arndb.de, akpm@linux-foundation.org, cyphar@cyphar.com,
-        dhowells@redhat.com, ebiederm@xmission.com,
-        elena.reshetova@intel.com, keescook@chromium.org,
-        luto@amacapital.net, luto@kernel.org, tglx@linutronix.de,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.orgg, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-api@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        dancol@google.com, serge@hallyn.com, surenb@google.com,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        kernel-team@android.com
-Subject: Re: [PATCH v1 1/2] pid: add pidfd_open()
-Message-ID: <20190518100435.c5bqpcnra53dsr6p@brauner.io>
-References: <20190516135944.7205-1-christian@brauner.io>
- <20190516224949.GA15401@localhost>
+        id S1727626AbfETDyn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 19 May 2019 23:54:43 -0400
+Received: from mga06.intel.com ([134.134.136.31]:57644 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727057AbfETDyn (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 19 May 2019 23:54:43 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 May 2019 20:54:41 -0700
+X-ExtLoop1: 1
+Received: from orsmsx105.amr.corp.intel.com ([10.22.225.132])
+  by FMSMGA003.fm.intel.com with ESMTP; 19 May 2019 20:54:41 -0700
+Received: from orsmsx157.amr.corp.intel.com (10.22.240.23) by
+ ORSMSX105.amr.corp.intel.com (10.22.225.132) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Sun, 19 May 2019 20:54:40 -0700
+Received: from orsmsx112.amr.corp.intel.com ([169.254.3.79]) by
+ ORSMSX157.amr.corp.intel.com ([169.254.9.37]) with mapi id 14.03.0415.000;
+ Sun, 19 May 2019 20:54:40 -0700
+From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>
+CC:     "bp@alien8.de" <bp@alien8.de>, "mroos@linux.ee" <mroos@linux.ee>,
+        "luto@kernel.org" <luto@kernel.org>,
+        "namit@vmware.com" <namit@vmware.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "mingo@redhat.com" <mingo@redhat.com>
+Subject: Re: [PATCH 1/1] vmalloc: Fix issues with flush flag
+Thread-Topic: [PATCH 1/1] vmalloc: Fix issues with flush flag
+Thread-Index: AQHVDPQ89Mk/2ntUo0SzbjfhLaw0JaZz2GuA
+Date:   Mon, 20 May 2019 03:54:40 +0000
+Message-ID: <371f4eab57d4fa919b33cf4c3b6e5e0eb9eabc20.camel@intel.com>
+References: <20190517210123.5702-1-rick.p.edgecombe@intel.com>
+         <20190517210123.5702-2-rick.p.edgecombe@intel.com>
+In-Reply-To: <20190517210123.5702-2-rick.p.edgecombe@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
+x-originating-ip: [10.254.94.129]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <91FB6DBB8B06D942BDD652676B3D5840@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190516224949.GA15401@localhost>
-User-Agent: NeoMutt/20180716
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sat, May 18, 2019 at 05:48:03AM -0400, Joel Fernandes wrote:
-> Hi Christian,
-> 
-> For next revision, could you also CC surenb@google.com as well? He is also
-> working on the low memory killer. And also suggest CC to
-> kernel-team@android.com. And mentioned some comments below, thanks.
-
-Yip, totally. Just added them both to my Cc list. :)
-(I saw you added Suren manually. I added the Android kernel team now too.)
-
-> 
-> On Thu, May 16, 2019 at 03:59:42PM +0200, Christian Brauner wrote:
-> [snip]  
-> > diff --git a/kernel/pid.c b/kernel/pid.c
-> > index 20881598bdfa..4afca3d6dcb8 100644
-> > --- a/kernel/pid.c
-> > +++ b/kernel/pid.c
-> > @@ -38,6 +38,7 @@
-> >  #include <linux/syscalls.h>
-> >  #include <linux/proc_ns.h>
-> >  #include <linux/proc_fs.h>
-> > +#include <linux/sched/signal.h>
-> >  #include <linux/sched/task.h>
-> >  #include <linux/idr.h>
-> >  
-> > @@ -451,6 +452,55 @@ struct pid *find_ge_pid(int nr, struct pid_namespace *ns)
-> >  	return idr_get_next(&ns->idr, &nr);
-> >  }
-> >  
-> > +/**
-> > + * pidfd_open() - Open new pid file descriptor.
-> > + *
-> > + * @pid:   pid for which to retrieve a pidfd
-> > + * @flags: flags to pass
-> > + *
-> > + * This creates a new pid file descriptor with the O_CLOEXEC flag set for
-> > + * the process identified by @pid. Currently, the process identified by
-> > + * @pid must be a thread-group leader. This restriction currently exists
-> > + * for all aspects of pidfds including pidfd creation (CLONE_PIDFD cannot
-> > + * be used with CLONE_THREAD) and pidfd polling (only supports thread group
-> > + * leaders).
-> > + *
-> > + * Return: On success, a cloexec pidfd is returned.
-> > + *         On error, a negative errno number will be returned.
-> > + */
-> > +SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
-> > +{
-> > +	int fd, ret;
-> > +	struct pid *p;
-> > +	struct task_struct *tsk;
-> > +
-> > +	if (flags)
-> > +		return -EINVAL;
-> > +
-> > +	if (pid <= 0)
-> > +		return -EINVAL;
-> > +
-> > +	p = find_get_pid(pid);
-> > +	if (!p)
-> > +		return -ESRCH;
-> > +
-> > +	ret = 0;
-> > +	rcu_read_lock();
-> > +	/*
-> > +	 * If this returns non-NULL the pid was used as a thread-group
-> > +	 * leader. Note, we race with exec here: If it changes the
-> > +	 * thread-group leader we might return the old leader.
-> > +	 */
-> > +	tsk = pid_task(p, PIDTYPE_TGID);
-> 
-> Just trying to understand the comment here. The issue is that we might either
-> return the new leader, or the old leader depending on the overlap with
-> concurrent de_thread right? In either case, we don't care though.
-> 
-> I suggest to remove the "Note..." part of the comment since it doesn't seem the
-> race is relevant here unless we are doing something else with tsk in the
-> function, but if you want to keep it that's also fine. Comment text should
-> probably should be 'return the new leader' though.
-
-Nah, I actually removed the comment already independently (cf. see [1]).
-
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git/commit/?h=pidfd_open&id=dcfc98c2d957bf3ac14b06414cb2cf4c673fc297
-> 
-> > +	if (!tsk)
-> > +		ret = -ESRCH;
-> 
-> Perhaps -EINVAL?  AFAICS, this can only happen if a CLONE_THREAD pid was
-> passed as argument to pidfd_open which is invalid. But let me know what you
-> had in mind..
-
-Hm, from the kernel's perspective ESRCH is correct but I guess EINVAL is
-nicer for userspace. So I don't have objections to using EINVAL. My
-first version did too I think.
-
-Thanks!
-Christian
+SGksDQoNCkFmdGVyIGludmVzdGlnYXRpbmcgdGhpcyBtb3JlLCBJIGFtIG5vdCBwb3NpdGl2ZSB3
+aHkgdGhpcyBmaXhlcyB0aGUNCmlzc3VlIG9uIHNwYXJjLiBJIHdpbGwgY29udGludWUgdG8gaW52
+ZXN0aWdhdGUgYXMgYmVzdCBJIGNhbiwgYnV0IHdvdWxkDQpsaWtlIHRvIHJlcXVlc3QgaGVscCBm
+cm9tIHNvbWUgc3BhcmMgZXhwZXJ0cyBvbiBldmFsdWF0aW5nIG15IGxpbmUgb2YNCnRoaW5raW5n
+LiBJIHRoaW5rIHRoZSBjaGFuZ2VzIGluIHRoaXMgcGF0Y2ggYXJlIHN0aWxsIHZlcnkgd29ydGh3
+aGlsZQ0KZ2VuZXJhbGx5IHRob3VnaC4NCg0KDQpCZXNpZGVzIGZpeGluZyB0aGUgc3BhcmMgaXNz
+dWU6DQoNCjEuIFRoZSBmaXhlcyBmb3IgdGhlIGNhbGN1bGF0aW9uIG9mIHRoZSBkaXJlY3QgbWFw
+IGFkZHJlc3MgcmFuZ2UgYXJlDQppbXBvcnRhbnQgb24geDg2IGluIGNhc2UgYSBSTyBkaXJlY3Qg
+bWFwIGFsaWFzIGV2ZXIgZ2V0cyBsb2FkZWQgaW50bw0KdGhlIFRMQi4gVGhpcyBzaG91bGRuJ3Qg
+bm9ybWFsbHkgaGFwcGVuLCBidXQgaXQgY291bGQgY2F1c2UgdGhlDQpwZXJtaXNzaW9ucyB0byBu
+b3QgZ2V0IHJlc2V0IG9uIHRoZSBkaXJlY3QgbWFwIGFsaWFzLCBhbmQgdGhlbiB0aGUgcGFnZQ0K
+d291bGQgcmV0dXJuIGZyb20gdGhlIHBhZ2UgYWxsb2NhdG9yIHRvIHNvbWUgb3RoZXIgY29tcG9u
+ZW50IGFzIFJPIGFuZA0KY2F1c2UgYSBjcmFzaC4gVGhpcyB3YXMgbW9zdGx5IGJyb2tlbiBpbXBs
+ZW1lbnRpbmcgYSBzdHlsZSBzdWdnZXN0aW9uDQpsYXRlIGluIHRoZSBkZXZlbG9wbWVudC4gQXMg
+YmVzdCBJIGNhbiB0ZWxsLCBpdCBzaG91bGRuJ3QgaGF2ZSBhbnkNCmVmZmVjdCBvbiBzcGFyYy4N
+Cg0KMi4gU2ltcGx5IGZsdXNoaW5nIHRoZSBUTEIgaW5zdGVhZCBvZiB0aGUgd2hvbGUgdm1fdW5t
+YXBfYWxpYXMoKQ0Kb3BlcmF0aW9uIG1ha2VzIHRoZSBmcmVlcyBmYXN0ZXIgYW5kIHB1c2hlcyB0
+aGUgaGVhdnkgd29yayB0byBoYXBwZW4gb24NCmFsbG9jYXRpb24gd2hlcmUgaXQgd291bGQgYmUg
+bW9yZSBleHBlY3RlZC4gdm1fdW5tYXBfYWxpYXMoKSB0YWtlcyBzb21lDQpsb2NrcyBpbmNsdWRp
+bmcgYSBsb25nIGhvbGQgb2Ygdm1hcF9wdXJnZV9sb2NrLCB3aGljaCB3aWxsIG1ha2UgYWxsDQpv
+dGhlciBWTV9GTFVTSF9SRVNFVF9QRVJNUyB2ZnJlZXMgd2FpdCB3aGlsZSB0aGUgcHVyZ2Ugb3Bl
+cmF0aW9uDQpoYXBwZW5zLg0KDQoNClRoZSBpc3N1ZSBvYnNlcnZlZCBvbiBhbiBVbHRyYVNwYXJj
+IElJSSBzeXN0ZW0gd2FzIGEgaGFuZyBvbiBib290LiBUaGUNCm9ubHkgc2lnbmlmaWNhbnQgZGlm
+ZmVyZW5jZSBJIGNhbiBmaW5kIGluIGhvdyBTcGFyYyB3b3JrcyBpbiB0aGlzIGFyZWENCmlzIHRo
+YXQgdGhlcmUgaXMgYWN0dWFsbHkgc3BlY2lhbCBvcHRpbWl6YXRpb24gaW4gdGhlIFRMQiBmbHVz
+aCBmb3INCmhhbmRsaW5nIHZtYWxsb2MgbGF6eSBwdXJnZSBvcGVyYXRpb25zLg0KDQpTb21lIGZp
+cm13YXJlIG1hcHBpbmdzIGxpdmUgYmV0d2VlbiB0aGUgbW9kdWxlcyBhbmQgdm1hbGxvYyByYW5n
+ZXMsIGFuZA0KaWYgdGhlaXIgdHJhbnNsYXRpb25zIGFyZSBmbHVzaGVkIGNhbiBjYXVzZSAiaGFy
+ZCBoYW5ncyBhbmQgY3Jhc2hlcw0KWzFdLiBBZGRpdGlvbmFsbHkgaW4gdGhlIG1peCwgInNwYXJj
+NjQga2VybmVsIGxlYXJucyBhYm91dA0Kb3BlbmZpcm13YXJlJ3MgZHluYW1pYyBtYXBwaW5ncyBp
+biB0aGlzIHJlZ2lvbiBlYXJseSBpbiB0aGUgYm9vdCwgYW5kDQp0aGVuIHNlcnZpY2VzIFRMQiBt
+aXNzZXMgaW4gdGhpcyBhcmVhIi5bMV0gVGhlIGZpcm13YXJlIHByb3RlY3Rpb24NCmxvZ2ljIHNl
+ZW1zIHRvIGJlIGluIHBsYWNlLCBob3dldmVyIGxhdGVyIGFub3RoZXIgY2hhbmdlIHdhcyBtYWRl
+IGluDQp0aGUgbG93ZXIgYXNtIHRvIGRvIGEgImZsdXNoIGFsbCIgaWYgdGhlIHJhbmdlIHdhcyBi
+aWcgZW5vdWdoIG9uIHRoaXMNCmNwdSBbMl0uIFdpdGggdGhlIGFkdmVudCBvZiB0aGUgY2hhbmdl
+IHRoaXMgcGF0Y2ggYWRkcmVzc2VzLCB0aGUgcHVyZ2UNCm9wZXJhdGlvbnMgd291bGQgYmUgaGFw
+cGVuaW5nIG11Y2ggZWFybGllciB0aGFuIGJlZm9yZSwgd2l0aCB0aGUgZmlyc3QNCnNwZWNpYWwg
+cGVybWlzc2lvbmVkIHZmcmVlLCBpbnN0ZWFkIG9mIGFmdGVyIHRoZSBtYWNoaW5lIGhhcyBiZWVu
+DQpydW5uaW5nIGZvciBzb21lIHRpbWUgYW5kIHRoZSB2bWFsbG9jIHNwYWNlcyBoYWQgYmVjb21l
+IGZyYWdtZW50ZWQuDQoNClNvIG15IGJlc3QgdGhlb3J5IGlzIHRoYXQgdGhlIGhpc3Rvcnkgb2Yg
+dm1hbGxvYyBsYXp5IHB1cmdlcyBjYXVzaW5nDQpoYW5ncyBvbiB0aGUgc3BhcmMgaGFzIGNvbWUg
+aW50byBwbGF5IGhlcmUgc29tZWhvdywgdHJpZ2dlcmVkIGJ5IHRoYXQNCndlIHdlcmUgZG9pbmcg
+dGhlIHB1cmdlcyBtdWNoIGVhcmxpZXIuIElmIGl0IHdhcyBzb21ldGhpbmcgbGlrZSB0aGlzLA0K
+dGhlIGZhY3QgdGhhdCB3ZSBpbnN0ZWFkIG9ubHkgZmx1c2ggdGhlIHNtYWxsIGFsbG9jYXRpb24g
+aXRzZWxmIG9uDQpzcGFyYyBhZnRlciB0aGlzIHBhdGNoIHdvdWxkIGJlIHRoZSByZWFzb24gd2h5
+IGl0IGZpeGVzIGl0Lg0KDQpBZG1pdHRlZGx5LCB0aGVyZSBhcmUgc29tZSBtaXNzaW5nIHBpZWNl
+cyBpbiB0aGUgdGhlb3J5LiBJZiB0aGVyZSBhcmUNCmFueSBzcGFyYyBhcmNoaXRlY3R1cmUgZXhw
+ZXJ0cyB0aGF0IGNhbiBoZWxwIGVubGlnaHRlbiBtZSBpZiB0aGlzDQpzb3VuZHMgcmVhc29uYWJs
+ZSBhdCBhbGwgSSB3b3VsZCByZWFsbHkgYXBwcmVjaWF0ZSBpdC4NCg0KVGhhbmtzLA0KDQpSaWNr
+DQoNClsxXSBodHRwczovL3BhdGNod29yay5vemxhYnMub3JnL3BhdGNoLzM3NjUyMy8NClsyXSBo
+dHRwczovL3BhdGNod29yay5vemxhYnMub3JnL3BhdGNoLzY4Nzc4MC8gDQoNCg==
