@@ -2,54 +2,64 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13CDA24398
-	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 00:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E405D2446E
+	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 01:39:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727000AbfETWs7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 20 May 2019 18:48:59 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:58900 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726478AbfETWs7 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 20 May 2019 18:48:59 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 2E3EF12DAD571;
-        Mon, 20 May 2019 15:48:58 -0700 (PDT)
-Date:   Mon, 20 May 2019 15:48:55 -0700 (PDT)
-Message-Id: <20190520.154855.2207738976381931092.davem@davemloft.net>
-To:     rick.p.edgecombe@intel.com
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        peterz@infradead.org, mroos@linux.ee, netdev@vger.kernel.org,
-        sparclinux@vger.kernel.org, bp@alien8.de, luto@kernel.org,
-        mingo@redhat.com, namit@vmware.com, dave.hansen@intel.com
-Subject: Re: [PATCH v2] vmalloc: Fix issues with flush flag
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <c6020a01e81d08342e1a2b3ae7e03d55858480ba.camel@intel.com>
-References: <20190520200703.15997-1-rick.p.edgecombe@intel.com>
-        <90f8a4e1-aa71-0c10-1a91-495ba0cb329b@linux.ee>
-        <c6020a01e81d08342e1a2b3ae7e03d55858480ba.camel@intel.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 20 May 2019 15:48:58 -0700 (PDT)
+        id S1727000AbfETXjF (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 20 May 2019 19:39:05 -0400
+Received: from mga03.intel.com ([134.134.136.65]:25217 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725681AbfETXjF (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 20 May 2019 19:39:05 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 May 2019 16:39:04 -0700
+X-ExtLoop1: 1
+Received: from rpedgeco-mobl.amr.corp.intel.com (HELO localhost.intel.com) ([10.254.114.95])
+  by fmsmga008.fm.intel.com with ESMTP; 20 May 2019 16:39:03 -0700
+From:   Rick Edgecombe <rick.p.edgecombe@intel.com>
+To:     linux-kernel@vger.kernel.org, peterz@infradead.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org,
+        netdev@vger.kernel.org, luto@amacapital.net
+Cc:     dave.hansen@intel.com, namit@vmware.com, davem@davemloft.net,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: [PATCH v2 0/2] Fix issues with vmalloc flush flag
+Date:   Mon, 20 May 2019 16:38:39 -0700
+Message-Id: <20190520233841.17194-1-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Date: Mon, 20 May 2019 22:17:49 +0000
+These two patches address issues with the recently added
+VM_FLUSH_RESET_PERMS vmalloc flag. It is now split into two patches, which
+made sense to me, but can split it further if desired.
 
-> Thanks for testing. So I guess that suggests it's the TLB flush causing
-> the problem on sparc and not any lazy purge deadlock. I had sent Meelis
-> another test patch that just flushed the entire 0 to ULONG_MAX range to
-> try to always the get the "flush all" logic and apprently it didn't
-> boot mostly either. It also showed that it's not getting stuck anywhere
-> in the vm_remove_alias() function. Something just hangs later.
+Patch 1 is the most critical and addresses an issue that could cause a
+crash on x86.
 
-I wonder if an address is making it to the TLB flush routines which is
-not page aligned.  Or a TLB flush is being done before the callsites
-are patched properly for the given cpu type.
+Patch 2 is to try to reduce the work done in the free operation to push
+it to allocation time where it would be more expected. This shouldn't be
+a big issue most of the time, but I thought it was slightly better.
+
+v2->v3:
+ - Split into two patches
+
+v1->v2:
+ - Update commit message with more detail
+ - Fix flush end range on !CONFIG_ARCH_HAS_SET_DIRECT_MAP case
+
+Rick Edgecombe (2):
+  vmalloc: Fix calculation of direct map addr range
+  vmalloc: Remove work as from vfree path
+
+ mm/vmalloc.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
+
+-- 
+2.20.1
+
