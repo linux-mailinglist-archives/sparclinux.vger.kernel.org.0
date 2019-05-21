@@ -2,122 +2,101 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B9B7255D9
-	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 18:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26C0425613
+	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 18:52:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728862AbfEUQlv (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 21 May 2019 12:41:51 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:38052 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728067AbfEUQlr (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 21 May 2019 12:41:47 -0400
-Received: by mail-wm1-f67.google.com with SMTP id t5so3584626wmh.3
-        for <sparclinux@vger.kernel.org>; Tue, 21 May 2019 09:41:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=QRw4dWFrlFKNeC2Hv6jFCNR7pmJ9ZVloUzzaJsWHe3k=;
-        b=DrUfMEDjMCX/F/kpAns9Xje6tAglSh3UhG5Ut0HpXQH/i/WF067F5FUZoHtyFcz92J
-         B9zO7Q3xmWBLCoBBlKTKoCtUiQsaTMx3Npeppmj4pHHAb15DBLIi9tECGzeTa0qz68HY
-         5SJCekbjPP909njq82OecOWv07W5VLYr5VkHE6sbSe+2o5Mw73nXEvvOijdE8vUJH9BM
-         uSenbJ2wN1Uv1xiE6qAy9CpI8LAAlCfwF/dLDfgYTm5Xge0CjqlWt1lxcYk7Ou9/XL7L
-         lIMEXS/i0lcGD5hbzAqtPxjiA1/NY2p62maSbnW0JtvlH3GgYQ9nmlSCeM60N0klvzp1
-         geRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=QRw4dWFrlFKNeC2Hv6jFCNR7pmJ9ZVloUzzaJsWHe3k=;
-        b=qbsmnCQPKLyaOTMajEWjTX5aHi3hr4ypKZPDnJCjOw87uvVTneILnFFRsLGtfTGFho
-         gHDSxI3pXzhb3vfGQczU5XoPzqJOXpwLDQyh/SKeESwQdsXJaeBLruW0SbS0wWpYdJ51
-         Ko/2cIeCywxXsA4XFO+oNfWIbSN9sO1wVc8TFPIE6BTRHlTc5H1Fv20gS+aeokpaSYX5
-         q22UOSPybHTdLRt4ZMZw3EH/bFAzAvVVd6UTYeRr30SNPoMypXYHPy6azXdPDd/lF5YT
-         7xZuD4gMgNDszQ+ReJ8kQNcIOMzKAuASKCvts+JyFwUZuP84tJ+8QMH2463KSpF9MXIk
-         e78A==
-X-Gm-Message-State: APjAAAVJqm2OC9RbnNggTpjuGmQ2eIXLWKHvvaXsdkXjPQAhZdlGvkDm
-        fBVygN0QWHF/S8wTgAuET3mJsA==
-X-Google-Smtp-Source: APXvYqy9lGE6AuIM688BrnvZ7pn7z99PmptY1DxlEejau1I+HdIPSmSJeaZzuDaCQae7Ot/VplE6/A==
-X-Received: by 2002:a7b:c40e:: with SMTP id k14mr3957899wmi.114.1558456904711;
-        Tue, 21 May 2019 09:41:44 -0700 (PDT)
-Received: from brauner.io ([212.91.227.56])
-        by smtp.gmail.com with ESMTPSA id q14sm7089531wrx.86.2019.05.21.09.41.43
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 21 May 2019 09:41:44 -0700 (PDT)
-Date:   Tue, 21 May 2019 18:41:42 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        jannh@google.com, fweimer@redhat.com, oleg@redhat.com,
-        tglx@linutronix.de, torvalds@linux-foundation.org, arnd@arndb.de,
-        shuah@kernel.org, tkjos@android.com, ldv@altlinux.org,
-        miklos@szeredi.hu, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH 1/2] open: add close_range()
-Message-ID: <20190521164141.rbehqnghiej3gfua@brauner.io>
-References: <20190521150006.GJ17978@ZenIV.linux.org.uk>
- <20190521113448.20654-1-christian@brauner.io>
- <28114.1558456227@warthog.procyon.org.uk>
+        id S1729023AbfEUQvz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 21 May 2019 12:51:55 -0400
+Received: from mga09.intel.com ([134.134.136.24]:31932 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728961AbfEUQvz (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 21 May 2019 12:51:55 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 May 2019 09:51:54 -0700
+X-ExtLoop1: 1
+Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
+  by fmsmga004.fm.intel.com with ESMTP; 21 May 2019 09:51:53 -0700
+Received: from orsmsx151.amr.corp.intel.com (10.22.226.38) by
+ ORSMSX103.amr.corp.intel.com (10.22.225.130) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Tue, 21 May 2019 09:51:53 -0700
+Received: from orsmsx112.amr.corp.intel.com ([169.254.3.79]) by
+ ORSMSX151.amr.corp.intel.com ([169.254.7.185]) with mapi id 14.03.0415.000;
+ Tue, 21 May 2019 09:51:53 -0700
+From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To:     "luto@kernel.org" <luto@kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "mroos@linux.ee" <mroos@linux.ee>,
+        "redgecombe.lkml@gmail.com" <redgecombe.lkml@gmail.com>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "namit@vmware.com" <namit@vmware.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] vmalloc: Remove work as from vfree path
+Thread-Topic: [PATCH v2 2/2] vmalloc: Remove work as from vfree path
+Thread-Index: AQHVD2U3KZTtLX0Fp0SruELxCLk0rqZ2N/EAgAAJloA=
+Date:   Tue, 21 May 2019 16:51:52 +0000
+Message-ID: <4e353614f017c7c13a21d168992852dae1762aba.camel@intel.com>
+References: <20190520233841.17194-1-rick.p.edgecombe@intel.com>
+         <20190520233841.17194-3-rick.p.edgecombe@intel.com>
+         <CALCETrUdfBrTV3kMjdVHv2JDtEOGSkVvoV++96x4zjvue0GpZA@mail.gmail.com>
+In-Reply-To: <CALCETrUdfBrTV3kMjdVHv2JDtEOGSkVvoV++96x4zjvue0GpZA@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
+x-originating-ip: [10.254.114.95]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <DACEB64281EDB048B2BD8C11B17A6282@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <28114.1558456227@warthog.procyon.org.uk>
-User-Agent: NeoMutt/20180716
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, May 21, 2019 at 05:30:27PM +0100, David Howells wrote:
-> Al Viro <viro@zeniv.linux.org.uk> wrote:
-> 
-> > Umm...  That's going to be very painful if you dup2() something to MAX_INT and
-> > then run that; roughly 2G iterations of bouncing ->file_lock up and down,
-> > without anything that would yield CPU in process.
-> > 
-> > If anything, I would suggest something like
-> > 
-> > 	fd = *start_fd;
-> > 	grab the lock
-> >         fdt = files_fdtable(files);
-> > more:
-> > 	look for the next eviction candidate in ->open_fds, starting at fd
-> > 	if there's none up to max_fd
-> > 		drop the lock
-> > 		return NULL
-> > 	*start_fd = fd + 1;
-> > 	if the fscker is really opened and not just reserved
-> > 		rcu_assign_pointer(fdt->fd[fd], NULL);
-> > 		__put_unused_fd(files, fd);
-> > 		drop the lock
-> > 		return the file we'd got
-> > 	if (unlikely(need_resched()))
-> > 		drop lock
-> > 		cond_resched();
-> > 		grab lock
-> > 		fdt = files_fdtable(files);
-> > 	goto more;
-> > 
-> > with the main loop being basically
-> > 	while ((file = pick_next(files, &start_fd, max_fd)) != NULL)
-> > 		filp_close(file, files);
-> 
-> If we can live with close_from(int first) rather than close_range(), then this
-> can perhaps be done a lot more efficiently by:
-
-Yeah, you mentioned this before. I do like being able to specify an
-upper bound to have the ability to place fds strategically after said
-upper bound.
-I have used this quite a few times where I know that given task may have
-inherited up to m fds and I want to inherit a specific pipe who's fd I
-know. Then I'd dup2(pipe_fd, <upper_bound + 1>) and then close all
-other fds. Is that too much of a corner case?
-
-Christian
+T24gVHVlLCAyMDE5LTA1LTIxIGF0IDA5OjE3IC0wNzAwLCBBbmR5IEx1dG9taXJza2kgd3JvdGU6
+DQo+IE9uIE1vbiwgTWF5IDIwLCAyMDE5IGF0IDQ6MzkgUE0gUmljayBFZGdlY29tYmUNCj4gPHJp
+Y2sucC5lZGdlY29tYmVAaW50ZWwuY29tPiB3cm90ZToNCj4gPiBGcm9tOiBSaWNrIEVkZ2Vjb21i
+ZSA8cmVkZ2Vjb21iZS5sa21sQGdtYWlsLmNvbT4NCj4gPiANCj4gPiBDYWxsaW5nIHZtX3VubWFw
+X2FsaWFzKCkgaW4gdm1fcmVtb3ZlX21hcHBpbmdzKCkgY291bGQgcG90ZW50aWFsbHkNCj4gPiBi
+ZSBhDQo+ID4gbG90IG9mIHdvcmsgdG8gZG8gb24gYSBmcmVlIG9wZXJhdGlvbi4gU2ltcGx5IGZs
+dXNoaW5nIHRoZSBUTEINCj4gPiBpbnN0ZWFkIG9mDQo+ID4gdGhlIHdob2xlIHZtX3VubWFwX2Fs
+aWFzKCkgb3BlcmF0aW9uIG1ha2VzIHRoZSBmcmVlcyBmYXN0ZXIgYW5kDQo+ID4gcHVzaGVzDQo+
+ID4gdGhlIGhlYXZ5IHdvcmsgdG8gaGFwcGVuIG9uIGFsbG9jYXRpb24gd2hlcmUgaXQgd291bGQg
+YmUgbW9yZQ0KPiA+IGV4cGVjdGVkLg0KPiA+IEluIGFkZGl0aW9uIHRvIHRoZSBleHRyYSB3b3Jr
+LCB2bV91bm1hcF9hbGlhcygpIHRha2VzIHNvbWUgbG9ja3MNCj4gPiBpbmNsdWRpbmcNCj4gPiBh
+IGxvbmcgaG9sZCBvZiB2bWFwX3B1cmdlX2xvY2ssIHdoaWNoIHdpbGwgbWFrZSBhbGwgb3RoZXIN
+Cj4gPiBWTV9GTFVTSF9SRVNFVF9QRVJNUyB2ZnJlZXMgd2FpdCB3aGlsZSB0aGUgcHVyZ2Ugb3Bl
+cmF0aW9uIGhhcHBlbnMuDQo+ID4gDQo+ID4gTGFzdGx5LCBwYWdlX2FkZHJlc3MoKSBjYW4gaW52
+b2x2ZSBsb2NraW5nIGFuZCBsb29rdXBzIG9uIHNvbWUNCj4gPiBjb25maWd1cmF0aW9ucywgc28g
+c2tpcCBjYWxsaW5nIHRoaXMgYnkgZXhpdGluZyBvdXQgZWFybHkgd2hlbg0KPiA+ICFDT05GSUdf
+QVJDSF9IQVNfU0VUX0RJUkVDVF9NQVAuDQo+IA0KPiBIbW0uICBJIHdvdWxkIGhhdmUgZXhwZWN0
+ZWQgdGhhdCB0aGUgbWFqb3IgY29zdCBvZiB2bV91bm1hcF9hbGlhc2VzKCkNCj4gd291bGQgYmUg
+dGhlIGZsdXNoLCBhbmQgYXQgbGVhc3QgaW5mb3JtaW5nIHRoZSBjb2RlIHRoYXQgdGhlIGZsdXNo
+DQo+IGhhcHBlbmVkIHNlZW1zIHZhbHVhYmxlLiAgU28gd291bGQgZ3Vlc3MgdGhhdCB0aGlzIHBh
+dGNoIGlzIGFjdHVhbGx5DQo+IGENCj4gbG9zcyBpbiB0aHJvdWdocHV0Lg0KPiANCllvdSBhcmUg
+cHJvYmFibHkgcmlnaHQgYWJvdXQgdGhlIGZsdXNoIHRha2luZyB0aGUgbG9uZ2VzdC4gVGhlIG9y
+aWdpbmFsDQppZGVhIG9mIHVzaW5nIGl0IHdhcyBleGFjdGx5IHRvIGltcHJvdmUgdGhyb3VnaHB1
+dCBieSBzYXZpbmcgYSBmbHVzaC4NCkhvd2V2ZXIgd2l0aCB2bV91bm1hcF9hbGlhc2VzKCkgdGhl
+IGZsdXNoIHdpbGwgYmUgb3ZlciBhIGxhcmdlciByYW5nZQ0KdGhhbiBiZWZvcmUgZm9yIG1vc3Qg
+YXJjaCdzIHNpbmNlIGl0IHdpbGwgbGlrbGV5IHNwYW4gZnJvbSB0aGUgbW9kdWxlDQpzcGFjZSB0
+byB2bWFsbG9jLiBGcm9tIHBva2luZyBhcm91bmQgdGhlIHNwYXJjIHRsYiBmbHVzaCBoaXN0b3J5
+LCBJDQpndWVzcyB0aGUgbGF6eSBwdXJnZXMgdXNlZCB0byBiZSAoc3RpbGwgYXJlPykgYSBwcm9i
+bGVtIGZvciB0aGVtDQpiZWNhdXNlIGl0IHdvdWxkIHRyeSB0byBmbHVzaCBlYWNoIHBhZ2UgaW5k
+aXZpZHVhbGx5IGZvciBzb21lIENQVXMuIE5vdA0Kc3VyZSBhYm91dCBhbGwgb2YgdGhlIG90aGVy
+IGFyY2hpdGVjdHVyZXMsIGJ1dCBmb3IgYW55IGltcGxlbWVudGF0aW9uDQpsaWtlIHRoYXQsIHVz
+aW5nIHZtX3VubWFwX2FsaWFzKCkgd291bGQgdHVybiBhbiBvY2Nhc2lvbmFsIGxvbmcNCm9wZXJh
+dGlvbiBpbnRvIGEgbW9yZSBmcmVxdWVudCBvbmUuDQoNCk9uIHg4NiwgaXQgc2hvdWxkbid0IGJl
+IGEgcHJvYmxlbSB0byB1c2UgaXQuIFdlIGFscmVhZHkgdXNlZCB0byBjYWxsDQp0aGlzIGZ1bmN0
+aW9uIHNldmVyYWwgdGltZXMgYXJvdW5kIGEgZXhlYyBwZXJtaXNzaW9uIHZmcmVlLiANCg0KSSBn
+dWVzcyBpdHMgYSB0cmFkZW9mZiB0aGF0IGRlcGVuZHMgb24gaG93IGZhc3QgbGFyZ2UgcmFuZ2Ug
+VExCIGZsdXNoZXMNCnVzdWFsbHkgYXJlIGNvbXBhcmVkIHRvIHNtYWxsIG9uZXMuIEkgYW0gb2sg
+ZHJvcHBpbmcgaXQsIGlmIGl0IGRvZXNuJ3QNCnNlZW0gd29ydGggaXQuDQo=
