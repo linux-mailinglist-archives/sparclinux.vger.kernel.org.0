@@ -2,114 +2,61 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D91B125643
-	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 19:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6429325827
+	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 21:20:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728862AbfEURAt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 21 May 2019 13:00:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38542 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728807AbfEURAs (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 21 May 2019 13:00:48 -0400
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E08312184E
-        for <sparclinux@vger.kernel.org>; Tue, 21 May 2019 17:00:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558458048;
-        bh=9OojUtYA0LbZL0IhpfNco/9wKFwUCoXQNI7zcdJGSfw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=0gl6NyxD+CezqGhCgUYDdISkwzLC9LT/TjqEDC7NKDw9fmLVIKRHEqm82nKW1csm3
-         cE0HjimltJnBGVQQdoffgyP2IJ0TiD9IKvWxA96cOBzK3d0lDx8aoxwEBAIBJs3fxW
-         /jGBD7ITYvyqevJV3g7a4BIzqpezsORPVZzudX8k=
-Received: by mail-wr1-f44.google.com with SMTP id d9so6497975wrx.0
-        for <sparclinux@vger.kernel.org>; Tue, 21 May 2019 10:00:47 -0700 (PDT)
-X-Gm-Message-State: APjAAAU/irjdZ6C+KvO+i0vkGmfZ/P1+te6NexImEfwgTp7Ju2hhtmQE
-        cHfyk99LT7f5Qlc0N0F8ai5d8YaFKeVDUCwqULt5RA==
-X-Google-Smtp-Source: APXvYqy0+HXvib4u95W6GDx3x8TJ88A00fWg0+I4MlCynnn4IjJhpkVLQ7CkvVvng88ywRDO2oq6ShUuw1AFJx7R3ko=
-X-Received: by 2002:adf:f74a:: with SMTP id z10mr5273655wrp.291.1558458046385;
- Tue, 21 May 2019 10:00:46 -0700 (PDT)
+        id S1727275AbfEUTUX (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 21 May 2019 15:20:23 -0400
+Received: from zeniv.linux.org.uk ([195.92.253.2]:37620 "EHLO
+        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726525AbfEUTUW (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 21 May 2019 15:20:22 -0400
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hTAIz-0003v8-BX; Tue, 21 May 2019 19:20:09 +0000
+Date:   Tue, 21 May 2019 20:20:09 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Christian Brauner <christian@brauner.io>,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-api@vger.kernel.org, jannh@google.com, fweimer@redhat.com,
+        oleg@redhat.com, tglx@linutronix.de, torvalds@linux-foundation.org,
+        arnd@arndb.de, shuah@kernel.org, tkjos@android.com,
+        ldv@altlinux.org, miklos@szeredi.hu, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH 1/2] open: add close_range()
+Message-ID: <20190521192009.GK17978@ZenIV.linux.org.uk>
+References: <20190521150006.GJ17978@ZenIV.linux.org.uk>
+ <20190521113448.20654-1-christian@brauner.io>
+ <28114.1558456227@warthog.procyon.org.uk>
 MIME-Version: 1.0
-References: <20190520233841.17194-1-rick.p.edgecombe@intel.com>
- <20190520233841.17194-3-rick.p.edgecombe@intel.com> <CALCETrUdfBrTV3kMjdVHv2JDtEOGSkVvoV++96x4zjvue0GpZA@mail.gmail.com>
- <4e353614f017c7c13a21d168992852dae1762aba.camel@intel.com>
-In-Reply-To: <4e353614f017c7c13a21d168992852dae1762aba.camel@intel.com>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Tue, 21 May 2019 10:00:34 -0700
-X-Gmail-Original-Message-ID: <CALCETrXfnkLKv-jJzquj+547QWiwEBSxKtM3du3UqK80FNSSGg@mail.gmail.com>
-Message-ID: <CALCETrXfnkLKv-jJzquj+547QWiwEBSxKtM3du3UqK80FNSSGg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] vmalloc: Remove work as from vfree path
-To:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc:     "luto@kernel.org" <luto@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "mroos@linux.ee" <mroos@linux.ee>,
-        "redgecombe.lkml@gmail.com" <redgecombe.lkml@gmail.com>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "namit@vmware.com" <namit@vmware.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <28114.1558456227@warthog.procyon.org.uk>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, May 21, 2019 at 9:51 AM Edgecombe, Rick P
-<rick.p.edgecombe@intel.com> wrote:
->
-> On Tue, 2019-05-21 at 09:17 -0700, Andy Lutomirski wrote:
-> > On Mon, May 20, 2019 at 4:39 PM Rick Edgecombe
-> > <rick.p.edgecombe@intel.com> wrote:
-> > > From: Rick Edgecombe <redgecombe.lkml@gmail.com>
-> > >
-> > > Calling vm_unmap_alias() in vm_remove_mappings() could potentially
-> > > be a
-> > > lot of work to do on a free operation. Simply flushing the TLB
-> > > instead of
-> > > the whole vm_unmap_alias() operation makes the frees faster and
-> > > pushes
-> > > the heavy work to happen on allocation where it would be more
-> > > expected.
-> > > In addition to the extra work, vm_unmap_alias() takes some locks
-> > > including
-> > > a long hold of vmap_purge_lock, which will make all other
-> > > VM_FLUSH_RESET_PERMS vfrees wait while the purge operation happens.
-> > >
-> > > Lastly, page_address() can involve locking and lookups on some
-> > > configurations, so skip calling this by exiting out early when
-> > > !CONFIG_ARCH_HAS_SET_DIRECT_MAP.
-> >
-> > Hmm.  I would have expected that the major cost of vm_unmap_aliases()
-> > would be the flush, and at least informing the code that the flush
-> > happened seems valuable.  So would guess that this patch is actually
-> > a
-> > loss in throughput.
-> >
-> You are probably right about the flush taking the longest. The original
-> idea of using it was exactly to improve throughput by saving a flush.
-> However with vm_unmap_aliases() the flush will be over a larger range
-> than before for most arch's since it will likley span from the module
-> space to vmalloc. From poking around the sparc tlb flush history, I
-> guess the lazy purges used to be (still are?) a problem for them
-> because it would try to flush each page individually for some CPUs. Not
-> sure about all of the other architectures, but for any implementation
-> like that, using vm_unmap_alias() would turn an occasional long
-> operation into a more frequent one.
->
-> On x86, it shouldn't be a problem to use it. We already used to call
-> this function several times around a exec permission vfree.
->
-> I guess its a tradeoff that depends on how fast large range TLB flushes
-> usually are compared to small ones. I am ok dropping it, if it doesn't
-> seem worth it.
+On Tue, May 21, 2019 at 05:30:27PM +0100, David Howells wrote:
 
-On x86, a full flush is probably not much slower than just flushing a
-page or two -- the main cost is in the TLB refill.  I don't know about
-other architectures.  I would drop this patch unless you have numbers
-suggesting that it's a win.
+> If we can live with close_from(int first) rather than close_range(), then this
+> can perhaps be done a lot more efficiently by:
+> 
+> 	new = alloc_fdtable(first);
+> 	spin_lock(&files->file_lock);
+> 	old = files_fdtable(files);
+> 	copy_fds(new, old, 0, first - 1);
+> 	rcu_assign_pointer(files->fdt, new);
+> 	spin_unlock(&files->file_lock);
+> 	clear_fds(old, 0, first - 1);
+> 	close_fdt_from(old, first);
+> 	kfree_rcu(old);
+
+I really hate to think how that would interact with POSIX locks...
