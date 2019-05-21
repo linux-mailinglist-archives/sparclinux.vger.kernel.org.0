@@ -2,101 +2,259 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26C0425613
-	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 18:52:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C43B525625
+	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 18:54:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729023AbfEUQvz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 21 May 2019 12:51:55 -0400
-Received: from mga09.intel.com ([134.134.136.24]:31932 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728961AbfEUQvz (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 21 May 2019 12:51:55 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 May 2019 09:51:54 -0700
-X-ExtLoop1: 1
-Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
-  by fmsmga004.fm.intel.com with ESMTP; 21 May 2019 09:51:53 -0700
-Received: from orsmsx151.amr.corp.intel.com (10.22.226.38) by
- ORSMSX103.amr.corp.intel.com (10.22.225.130) with Microsoft SMTP Server (TLS)
- id 14.3.408.0; Tue, 21 May 2019 09:51:53 -0700
-Received: from orsmsx112.amr.corp.intel.com ([169.254.3.79]) by
- ORSMSX151.amr.corp.intel.com ([169.254.7.185]) with mapi id 14.03.0415.000;
- Tue, 21 May 2019 09:51:53 -0700
-From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To:     "luto@kernel.org" <luto@kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "mroos@linux.ee" <mroos@linux.ee>,
-        "redgecombe.lkml@gmail.com" <redgecombe.lkml@gmail.com>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "namit@vmware.com" <namit@vmware.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] vmalloc: Remove work as from vfree path
-Thread-Topic: [PATCH v2 2/2] vmalloc: Remove work as from vfree path
-Thread-Index: AQHVD2U3KZTtLX0Fp0SruELxCLk0rqZ2N/EAgAAJloA=
-Date:   Tue, 21 May 2019 16:51:52 +0000
-Message-ID: <4e353614f017c7c13a21d168992852dae1762aba.camel@intel.com>
-References: <20190520233841.17194-1-rick.p.edgecombe@intel.com>
-         <20190520233841.17194-3-rick.p.edgecombe@intel.com>
-         <CALCETrUdfBrTV3kMjdVHv2JDtEOGSkVvoV++96x4zjvue0GpZA@mail.gmail.com>
-In-Reply-To: <CALCETrUdfBrTV3kMjdVHv2JDtEOGSkVvoV++96x4zjvue0GpZA@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
-x-originating-ip: [10.254.114.95]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DACEB64281EDB048B2BD8C11B17A6282@intel.com>
-Content-Transfer-Encoding: base64
+        id S1729169AbfEUQxz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 21 May 2019 12:53:55 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:35141 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729152AbfEUQxz (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 21 May 2019 12:53:55 -0400
+Received: by mail-wr1-f68.google.com with SMTP id m3so6476214wrv.2
+        for <sparclinux@vger.kernel.org>; Tue, 21 May 2019 09:53:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brauner.io; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=RjB7EuozO9SbpuWjY+CIL5jhjOJH/kZTishJT3qd1so=;
+        b=DVrrdj/uSypBpQeJ7w1A/QlA+FyxTxrTjqgIjCbG0reYil1YwuJTymbPcq5VHJqvVz
+         +ycMes6cu/p9bim38A9JdNpiuhKR9vQv7DKRlOjTKaH0aqGgcMNm9LyZRCsl86xL9T/2
+         v52uCPRsGaEw7QZ8JAwWz7Kq/Yj8TlXF4sm4C/8FN/Sr2m4ymsOhSa0mlT/aKrxO9iLl
+         j1mrN/7F1XvRVqFUi9infQrf5nFqVWvyb3hSIPgiuXrpPOdfJR8Np8CmTFbMGebX0RJF
+         ggWVReABajaL93O9n4VuSlBrHfB9XuQYf2S00X4VsMQ9qcMjAtgT2YCUTAII0Ql7QzsL
+         6EMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=RjB7EuozO9SbpuWjY+CIL5jhjOJH/kZTishJT3qd1so=;
+        b=g+py4mKJPCB6RRBIs4JZzaliBtSizlkwX8AghLceDoj5fIYjDgVtEiZUIu6DdCIONL
+         kV/gKbX2Nsbj4a6qd7vxUNFtj0jggIA448OHZa+2L56KefrkBf9GYy5g6ZSrMLajBHtW
+         6GyOz6GF1scVEwKG4UgxbYlfn/7HEdRPgYcdoW4oGbpKaOzT84Kfs6KgYB4PRlrXaC4u
+         9GcuyZyLVYWo2ZqboICLDPQh0sVDe5HIAF4CeoKjsF0F4LdFlpMdOe0IzDgzLGFlwOKy
+         p2cwcwzprm7eFWZ5Od5AFypXhumODNyS6Zj0XjQ7bDbj1EbrfIpGRSukqz0wp8zpVDGz
+         V6Sg==
+X-Gm-Message-State: APjAAAWysByYYDfyI+pUrKlCwoaiFyoPBBF0N0L3DzCeSEMRUqtnPIIo
+        s4kk3PU4KBJqFGlZkHTRHPSAzQ==
+X-Google-Smtp-Source: APXvYqzvE8cesTA8vFkWKOJDTA1w0C5Fkm0j+9nhaMupM7B34j2tZxI4AHBlMWgH0cSYuDDVbKye1A==
+X-Received: by 2002:a5d:4d46:: with SMTP id a6mr13850707wru.142.1558457632993;
+        Tue, 21 May 2019 09:53:52 -0700 (PDT)
+Received: from brauner.io ([212.91.227.56])
+        by smtp.gmail.com with ESMTPSA id t194sm6090599wmt.3.2019.05.21.09.53.51
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 21 May 2019 09:53:52 -0700 (PDT)
+Date:   Tue, 21 May 2019 18:53:50 +0200
+From:   Christian Brauner <christian@brauner.io>
+To:     Al Viro <viro@zeniv.linux.org.uk>
+Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-api@vger.kernel.org, jannh@google.com, fweimer@redhat.com,
+        oleg@redhat.com, tglx@linutronix.de, torvalds@linux-foundation.org,
+        arnd@arndb.de, shuah@kernel.org, dhowells@redhat.com,
+        tkjos@android.com, ldv@altlinux.org, miklos@szeredi.hu,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 1/2] open: add close_range()
+Message-ID: <20190521165349.lduphxylwnfgael4@brauner.io>
+References: <20190521113448.20654-1-christian@brauner.io>
+ <20190521150006.GJ17978@ZenIV.linux.org.uk>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190521150006.GJ17978@ZenIV.linux.org.uk>
+User-Agent: NeoMutt/20180716
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-T24gVHVlLCAyMDE5LTA1LTIxIGF0IDA5OjE3IC0wNzAwLCBBbmR5IEx1dG9taXJza2kgd3JvdGU6
-DQo+IE9uIE1vbiwgTWF5IDIwLCAyMDE5IGF0IDQ6MzkgUE0gUmljayBFZGdlY29tYmUNCj4gPHJp
-Y2sucC5lZGdlY29tYmVAaW50ZWwuY29tPiB3cm90ZToNCj4gPiBGcm9tOiBSaWNrIEVkZ2Vjb21i
-ZSA8cmVkZ2Vjb21iZS5sa21sQGdtYWlsLmNvbT4NCj4gPiANCj4gPiBDYWxsaW5nIHZtX3VubWFw
-X2FsaWFzKCkgaW4gdm1fcmVtb3ZlX21hcHBpbmdzKCkgY291bGQgcG90ZW50aWFsbHkNCj4gPiBi
-ZSBhDQo+ID4gbG90IG9mIHdvcmsgdG8gZG8gb24gYSBmcmVlIG9wZXJhdGlvbi4gU2ltcGx5IGZs
-dXNoaW5nIHRoZSBUTEINCj4gPiBpbnN0ZWFkIG9mDQo+ID4gdGhlIHdob2xlIHZtX3VubWFwX2Fs
-aWFzKCkgb3BlcmF0aW9uIG1ha2VzIHRoZSBmcmVlcyBmYXN0ZXIgYW5kDQo+ID4gcHVzaGVzDQo+
-ID4gdGhlIGhlYXZ5IHdvcmsgdG8gaGFwcGVuIG9uIGFsbG9jYXRpb24gd2hlcmUgaXQgd291bGQg
-YmUgbW9yZQ0KPiA+IGV4cGVjdGVkLg0KPiA+IEluIGFkZGl0aW9uIHRvIHRoZSBleHRyYSB3b3Jr
-LCB2bV91bm1hcF9hbGlhcygpIHRha2VzIHNvbWUgbG9ja3MNCj4gPiBpbmNsdWRpbmcNCj4gPiBh
-IGxvbmcgaG9sZCBvZiB2bWFwX3B1cmdlX2xvY2ssIHdoaWNoIHdpbGwgbWFrZSBhbGwgb3RoZXIN
-Cj4gPiBWTV9GTFVTSF9SRVNFVF9QRVJNUyB2ZnJlZXMgd2FpdCB3aGlsZSB0aGUgcHVyZ2Ugb3Bl
-cmF0aW9uIGhhcHBlbnMuDQo+ID4gDQo+ID4gTGFzdGx5LCBwYWdlX2FkZHJlc3MoKSBjYW4gaW52
-b2x2ZSBsb2NraW5nIGFuZCBsb29rdXBzIG9uIHNvbWUNCj4gPiBjb25maWd1cmF0aW9ucywgc28g
-c2tpcCBjYWxsaW5nIHRoaXMgYnkgZXhpdGluZyBvdXQgZWFybHkgd2hlbg0KPiA+ICFDT05GSUdf
-QVJDSF9IQVNfU0VUX0RJUkVDVF9NQVAuDQo+IA0KPiBIbW0uICBJIHdvdWxkIGhhdmUgZXhwZWN0
-ZWQgdGhhdCB0aGUgbWFqb3IgY29zdCBvZiB2bV91bm1hcF9hbGlhc2VzKCkNCj4gd291bGQgYmUg
-dGhlIGZsdXNoLCBhbmQgYXQgbGVhc3QgaW5mb3JtaW5nIHRoZSBjb2RlIHRoYXQgdGhlIGZsdXNo
-DQo+IGhhcHBlbmVkIHNlZW1zIHZhbHVhYmxlLiAgU28gd291bGQgZ3Vlc3MgdGhhdCB0aGlzIHBh
-dGNoIGlzIGFjdHVhbGx5DQo+IGENCj4gbG9zcyBpbiB0aHJvdWdocHV0Lg0KPiANCllvdSBhcmUg
-cHJvYmFibHkgcmlnaHQgYWJvdXQgdGhlIGZsdXNoIHRha2luZyB0aGUgbG9uZ2VzdC4gVGhlIG9y
-aWdpbmFsDQppZGVhIG9mIHVzaW5nIGl0IHdhcyBleGFjdGx5IHRvIGltcHJvdmUgdGhyb3VnaHB1
-dCBieSBzYXZpbmcgYSBmbHVzaC4NCkhvd2V2ZXIgd2l0aCB2bV91bm1hcF9hbGlhc2VzKCkgdGhl
-IGZsdXNoIHdpbGwgYmUgb3ZlciBhIGxhcmdlciByYW5nZQ0KdGhhbiBiZWZvcmUgZm9yIG1vc3Qg
-YXJjaCdzIHNpbmNlIGl0IHdpbGwgbGlrbGV5IHNwYW4gZnJvbSB0aGUgbW9kdWxlDQpzcGFjZSB0
-byB2bWFsbG9jLiBGcm9tIHBva2luZyBhcm91bmQgdGhlIHNwYXJjIHRsYiBmbHVzaCBoaXN0b3J5
-LCBJDQpndWVzcyB0aGUgbGF6eSBwdXJnZXMgdXNlZCB0byBiZSAoc3RpbGwgYXJlPykgYSBwcm9i
-bGVtIGZvciB0aGVtDQpiZWNhdXNlIGl0IHdvdWxkIHRyeSB0byBmbHVzaCBlYWNoIHBhZ2UgaW5k
-aXZpZHVhbGx5IGZvciBzb21lIENQVXMuIE5vdA0Kc3VyZSBhYm91dCBhbGwgb2YgdGhlIG90aGVy
-IGFyY2hpdGVjdHVyZXMsIGJ1dCBmb3IgYW55IGltcGxlbWVudGF0aW9uDQpsaWtlIHRoYXQsIHVz
-aW5nIHZtX3VubWFwX2FsaWFzKCkgd291bGQgdHVybiBhbiBvY2Nhc2lvbmFsIGxvbmcNCm9wZXJh
-dGlvbiBpbnRvIGEgbW9yZSBmcmVxdWVudCBvbmUuDQoNCk9uIHg4NiwgaXQgc2hvdWxkbid0IGJl
-IGEgcHJvYmxlbSB0byB1c2UgaXQuIFdlIGFscmVhZHkgdXNlZCB0byBjYWxsDQp0aGlzIGZ1bmN0
-aW9uIHNldmVyYWwgdGltZXMgYXJvdW5kIGEgZXhlYyBwZXJtaXNzaW9uIHZmcmVlLiANCg0KSSBn
-dWVzcyBpdHMgYSB0cmFkZW9mZiB0aGF0IGRlcGVuZHMgb24gaG93IGZhc3QgbGFyZ2UgcmFuZ2Ug
-VExCIGZsdXNoZXMNCnVzdWFsbHkgYXJlIGNvbXBhcmVkIHRvIHNtYWxsIG9uZXMuIEkgYW0gb2sg
-ZHJvcHBpbmcgaXQsIGlmIGl0IGRvZXNuJ3QNCnNlZW0gd29ydGggaXQuDQo=
+On Tue, May 21, 2019 at 04:00:06PM +0100, Al Viro wrote:
+> On Tue, May 21, 2019 at 01:34:47PM +0200, Christian Brauner wrote:
+> 
+> > This adds the close_range() syscall. It allows to efficiently close a range
+> > of file descriptors up to all file descriptors of a calling task.
+> > 
+> > The syscall came up in a recent discussion around the new mount API and
+> > making new file descriptor types cloexec by default. During this
+> > discussion, Al suggested the close_range() syscall (cf. [1]). Note, a
+> > syscall in this manner has been requested by various people over time.
+> > 
+> > First, it helps to close all file descriptors of an exec()ing task. This
+> > can be done safely via (quoting Al's example from [1] verbatim):
+> > 
+> >         /* that exec is sensitive */
+> >         unshare(CLONE_FILES);
+> >         /* we don't want anything past stderr here */
+> >         close_range(3, ~0U);
+> >         execve(....);
+> > 
+> > The code snippet above is one way of working around the problem that file
+> > descriptors are not cloexec by default. This is aggravated by the fact that
+> > we can't just switch them over without massively regressing userspace. For
+> > a whole class of programs having an in-kernel method of closing all file
+> > descriptors is very helpful (e.g. demons, service managers, programming
+> > language standard libraries, container managers etc.).
+> > (Please note, unshare(CLONE_FILES) should only be needed if the calling
+> >  task is multi-threaded and shares the file descriptor table with another
+> >  thread in which case two threads could race with one thread allocating
+> >  file descriptors and the other one closing them via close_range(). For the
+> >  general case close_range() before the execve() is sufficient.)
+> > 
+> > Second, it allows userspace to avoid implementing closing all file
+> > descriptors by parsing through /proc/<pid>/fd/* and calling close() on each
+> > file descriptor. From looking at various large(ish) userspace code bases
+> > this or similar patterns are very common in:
+> > - service managers (cf. [4])
+> > - libcs (cf. [6])
+> > - container runtimes (cf. [5])
+> > - programming language runtimes/standard libraries
+> >   - Python (cf. [2])
+> >   - Rust (cf. [7], [8])
+> > As Dmitry pointed out there's even a long-standing glibc bug about missing
+> > kernel support for this task (cf. [3]).
+> > In addition, the syscall will also work for tasks that do not have procfs
+> > mounted and on kernels that do not have procfs support compiled in. In such
+> > situations the only way to make sure that all file descriptors are closed
+> > is to call close() on each file descriptor up to UINT_MAX or RLIMIT_NOFILE,
+> > OPEN_MAX trickery (cf. comment [8] on Rust).
+> > 
+> > The performance is striking. For good measure, comparing the following
+> > simple close_all_fds() userspace implementation that is essentially just
+> > glibc's version in [6]:
+> > 
+> > static int close_all_fds(void)
+> > {
+> >         DIR *dir;
+> >         struct dirent *direntp;
+> > 
+> >         dir = opendir("/proc/self/fd");
+> >         if (!dir)
+> >                 return -1;
+> > 
+> >         while ((direntp = readdir(dir))) {
+> >                 int fd;
+> >                 if (strcmp(direntp->d_name, ".") == 0)
+> >                         continue;
+> >                 if (strcmp(direntp->d_name, "..") == 0)
+> >                         continue;
+> >                 fd = atoi(direntp->d_name);
+> >                 if (fd == 0 || fd == 1 || fd == 2)
+> >                         continue;
+> >                 close(fd);
+> >         }
+> > 
+> >         closedir(dir); /* cannot fail */
+> >         return 0;
+> > }
+> > 
+> > to close_range() yields:
+> > 1. closing 4 open files:
+> >    - close_all_fds(): ~280 us
+> >    - close_range():    ~24 us
+> > 
+> > 2. closing 1000 open files:
+> >    - close_all_fds(): ~5000 us
+> >    - close_range():   ~800 us
+> > 
+> > close_range() is designed to allow for some flexibility. Specifically, it
+> > does not simply always close all open file descriptors of a task. Instead,
+> > callers can specify an upper bound.
+> > This is e.g. useful for scenarios where specific file descriptors are
+> > created with well-known numbers that are supposed to be excluded from
+> > getting closed.
+> > For extra paranoia close_range() comes with a flags argument. This can e.g.
+> > be used to implement extension. Once can imagine userspace wanting to stop
+> > at the first error instead of ignoring errors under certain circumstances.
+> > There might be other valid ideas in the future. In any case, a flag
+> > argument doesn't hurt and keeps us on the safe side.
+> > 
+> > >From an implementation side this is kept rather dumb. It saw some input
+> > from David and Jann but all nonsense is obviously my own!
+> > - Errors to close file descriptors are currently ignored. (Could be changed
+> >   by setting a flag in the future if needed.)
+> > - __close_range() is a rather simplistic wrapper around __close_fd().
+> >   My reasoning behind this is based on the nature of how __close_fd() needs
+> >   to release an fd. But maybe I misunderstood specifics:
+> >   We take the files_lock and rcu-dereference the fdtable of the calling
+> >   task, we find the entry in the fdtable, get the file and need to release
+> >   files_lock before calling filp_close().
+> >   In the meantime the fdtable might have been altered so we can't just
+> >   retake the spinlock and keep the old rcu-reference of the fdtable
+> >   around. Instead we need to grab a fresh reference to the fdtable.
+> >   If my reasoning is correct then there's really no point in fancyfying
+> >   __close_range(): We just need to rcu-dereference the fdtable of the
+> >   calling task once to cap the max_fd value correctly and then go on
+> >   calling __close_fd() in a loop.
+> 
+> > +/**
+> > + * __close_range() - Close all file descriptors in a given range.
+> > + *
+> > + * @fd:     starting file descriptor to close
+> > + * @max_fd: last file descriptor to close
+> > + *
+> > + * This closes a range of file descriptors. All file descriptors
+> > + * from @fd up to and including @max_fd are closed.
+> > + */
+> > +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
+> > +{
+> > +	unsigned int cur_max;
+> > +
+> > +	if (fd > max_fd)
+> > +		return -EINVAL;
+> > +
+> > +	rcu_read_lock();
+> > +	cur_max = files_fdtable(files)->max_fds;
+> > +	rcu_read_unlock();
+> > +
+> > +	/* cap to last valid index into fdtable */
+> > +	if (max_fd >= cur_max)
+> > +		max_fd = cur_max - 1;
+> > +
+> > +	while (fd <= max_fd)
+> > +		__close_fd(files, fd++);
+> > +
+> > +	return 0;
+> > +}
+> 
+> Umm...  That's going to be very painful if you dup2() something to MAX_INT and
+> then run that; roughly 2G iterations of bouncing ->file_lock up and down,
+> without anything that would yield CPU in process.
+> 
+> If anything, I would suggest something like
+> 
+> 	fd = *start_fd;
+> 	grab the lock
+>         fdt = files_fdtable(files);
+> more:
+> 	look for the next eviction candidate in ->open_fds, starting at fd
+> 	if there's none up to max_fd
+> 		drop the lock
+> 		return NULL
+> 	*start_fd = fd + 1;
+> 	if the fscker is really opened and not just reserved
+> 		rcu_assign_pointer(fdt->fd[fd], NULL);
+> 		__put_unused_fd(files, fd);
+> 		drop the lock
+> 		return the file we'd got
+> 	if (unlikely(need_resched()))
+> 		drop lock
+> 		cond_resched();
+> 		grab lock
+> 		fdt = files_fdtable(files);
+> 	goto more;
+> 
+> with the main loop being basically
+> 	while ((file = pick_next(files, &start_fd, max_fd)) != NULL)
+> 		filp_close(file, files);
+
+That's obviously much more clever than what I had.
+I honestly have never thought about using open_fds before this. Seemed
+extremely localized to file.c
+Thanks for the pointers!
+
+Christian
