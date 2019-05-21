@@ -2,131 +2,158 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B21BA2522C
-	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 16:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 710E725293
+	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 16:48:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728598AbfEUOck (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 21 May 2019 10:32:40 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:40875 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728583AbfEUOck (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 21 May 2019 10:32:40 -0400
-Received: by mail-pl1-f196.google.com with SMTP id g69so8547311plb.7
-        for <sparclinux@vger.kernel.org>; Tue, 21 May 2019 07:32:39 -0700 (PDT)
+        id S1728688AbfEUOrs (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 21 May 2019 10:47:48 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:42323 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727044AbfEUOrr (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 21 May 2019 10:47:47 -0400
+Received: by mail-pg1-f195.google.com with SMTP id 145so8706065pgg.9;
+        Tue, 21 May 2019 07:47:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=CyEpPRrV9RS3Zg004GbU3opzLF2psDEeRox6G2Dzgi4=;
-        b=R7tC9jV5a+mxQO62x+PWvbdzprD7UnwlstIi1E921IR8MQwvIjqpWXEjFq96wgtFnG
-         fTY3nrMJ7vCArpwoCVItDxzdQ40Qirw2JBMtmG9CODfWHtTXbOzlgqZAKYfvraG5V/E/
-         frjGG7jnSr228cVlsj/AYjMiDaehudskW3T4AmnYaTekKHbr2YRWH9MAzfQSuPvXNkig
-         nGR3hP9fBOFFBpPON8OQVuBm2SSMmqqE80W+7bGmI4VUShRRrCVcCUx8VLhizIP/+v8d
-         eMhf2YFuLCOUzRqivSwvxO5aWPP4xWsn3q69TEqczL5TXIDQcUFBiSLNtQvcQ37Ukm91
-         n7lQ==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=vWapel5oQFRL5IS9nITnTDS1CiQKS+fkgwKTVcUkRi8=;
+        b=J+wfUmDSL7gurwPNzxB20Y9csHlDX+J2lMuxHU1BjO7Ee4cmiTK3EE9XkA8tMMn42W
+         tpNPg1ZAjRJesMpVd8tltQp5G3UdZSkYd7s2iUQZnoF4ZHlXjn1NwcMWf0p+gms2GcSW
+         uOK0LiORxiKO8x2i6QVei6lCzwf/Opm9dLSkMSuxG6bWc+lYkLbmpcV9askG7wkwCGeZ
+         p+qPqk66IZYb5VzlNCh1Llg/fKpj/4lGWf/W63jm8IekkNnB+EVElP15Ay/Iz57W50SU
+         8VulXzLuTttSDYpHHb9B4whok/Yqx9b5E1gk68sEd01REGO192+SgL/PDwIKH8M1JkcA
+         k7gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=CyEpPRrV9RS3Zg004GbU3opzLF2psDEeRox6G2Dzgi4=;
-        b=H4rSdj6cLIW8pfVdFyclBRTFRi7Lxg2KyR6kOyBpq4w4JOAyUrtc/hzd1BtGG55fBJ
-         trSjdLaBd/+tunj3jiwV2U3OQaCulNYWbeOYMOBbrCbjCAtt8zEIZrcThBGDGVdd9PN3
-         HcsHtJXLvLoCqt8caXhpCIznfJamWipIukOw0kWajCHSuT7QUJJi2Z2kmjcc0/eok6TH
-         VWvzh+tVLIYg/medCio2kKYfH0HXfJF13JAcXNLUvLGalaobJ6VDGAgtrEEep9yxYWvV
-         15FA06F+bgyPr1TEodlKtHnjqUMBdlCkFuiDpUWAHeE6OInEtS4Gb8eBFtkWSiBB8Gcf
-         oB4g==
-X-Gm-Message-State: APjAAAXHbplbIETns30vt4oT8R9tBy75s5Y/qC/oM4vKsFoTUTFVkuQd
-        keqh+FzPpkicU+ruO7pqAdT9vw==
-X-Google-Smtp-Source: APXvYqzfSnHKDaWx/UeH1zZV9VxL0yBVD2SxGAqwuR5ORrqMhe2WMo1TCAFF94hkLIeOM4eQM6MVkw==
-X-Received: by 2002:a17:902:ba88:: with SMTP id k8mr9263163pls.16.1558449159148;
-        Tue, 21 May 2019 07:32:39 -0700 (PDT)
-Received: from brauner.io ([208.54.39.182])
-        by smtp.gmail.com with ESMTPSA id q5sm25819914pfb.51.2019.05.21.07.32.25
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 21 May 2019 07:32:38 -0700 (PDT)
-Date:   Tue, 21 May 2019 16:32:22 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
-        torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
-        arnd@arndb.de
-Cc:     akpm@linux-foundation.org, cyphar@cyphar.com, dhowells@redhat.com,
-        ebiederm@xmission.com, elena.reshetova@intel.com,
-        keescook@chromium.org, luto@amacapital.net, luto@kernel.org,
-        tglx@linutronix.de, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, joel@joelfernandes.org,
-        dancol@google.com, serge@hallyn.com, surenb@google.com,
-        kernel-team@android.com
-Subject: Re: [PATCH v3 1/2] pid: add pidfd_open()
-Message-ID: <20190521143220.crb2zyvdov3fl4g7@brauner.io>
-References: <20190520155630.21684-1-christian@brauner.io>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190520155630.21684-1-christian@brauner.io>
-User-Agent: NeoMutt/20180716
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=vWapel5oQFRL5IS9nITnTDS1CiQKS+fkgwKTVcUkRi8=;
+        b=FrDfaKdWEfdmhoCpSEH2sRgwN/pOCx6i/SKXjX7vRKFe1DRbV9RaGc0UgvlPssi97X
+         vNEUPtSLQ6aQ7vX1VbzyYIzthgZ2NjMrePOKwjaYFQ7qd3du/vbvEPIie7Qvo+RH/MYS
+         +wcccbXKL/28Petvz7zkbajiPSVMOL4mayknFEWmYkjpaWLhL0QbKQJUQoAjnwvxhGhI
+         /smuZbnmwBsoFlmgoyJmXpI4G3Jq/7r9C/xwIBdd6iScdNZmk1vBb382NbNAdj0FdNU6
+         7lsDRLipoJxq6R1XgvyIpOVku1Gt8WSbLFlZtZElaRZEBs0O559Ss9sS5rmcjBjocw1E
+         EPVA==
+X-Gm-Message-State: APjAAAUOgwe9EogSr3h/Ix6QYOaSuY3pJjpC1//j8UWUhbHAkyO2OxHc
+        p8YeR1e4jdf303IrRswtyeY=
+X-Google-Smtp-Source: APXvYqzLKro+yl9TmaN24S/pQj0fpek+/qhlfX1j1ZWZnpe6kEvnbtW9El8eBXcB5losLDhepUyYKA==
+X-Received: by 2002:a62:304:: with SMTP id 4mr70248166pfd.186.1558450067108;
+        Tue, 21 May 2019 07:47:47 -0700 (PDT)
+Received: from localhost ([43.224.245.181])
+        by smtp.gmail.com with ESMTPSA id a7sm40112206pgj.42.2019.05.21.07.47.45
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 21 May 2019 07:47:46 -0700 (PDT)
+From:   houweitao <houweitaoo@gmail.com>
+X-Google-Original-From: houweitao <houweitao@xiaomi.com>
+To:     linus.walleij@linaro.org, yamada.masahiro@socionext.com,
+        a.zummo@towertech.it, alexandre.belloni@bootlin.com,
+        baohua@kernel.org, gregkh@linuxfoundation.org, jslaby@suse.com,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, davem@davemloft.net,
+        rostedt@goodmis.org, mingo@redhat.com
+Cc:     linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-serial@vger.kernel.org, sparclinux@vger.kernel.org,
+        houweitao <houweitao@xiaomi.com>
+Subject: [PATCH] tracing: fix typos in code and comments
+Date:   Tue, 21 May 2019 22:47:40 +0800
+Message-Id: <20190521144740.22490-1-houweitao@xiaomi.com>
+X-Mailer: git-send-email 2.18.0
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, May 20, 2019 at 05:56:29PM +0200, Christian Brauner wrote:
-> This adds the pidfd_open() syscall. It allows a caller to retrieve pollable
-> pidfds for a process which did not get created via CLONE_PIDFD, i.e. for a
-> process that is created via traditional fork()/clone() calls that is only
-> referenced by a PID:
-> 
-> int pidfd = pidfd_open(1234, 0);
-> ret = pidfd_send_signal(pidfd, SIGSTOP, NULL, 0);
-> 
-> With the introduction of pidfds through CLONE_PIDFD it is possible to
-> created pidfds at process creation time.
-> However, a lot of processes get created with traditional PID-based calls
-> such as fork() or clone() (without CLONE_PIDFD). For these processes a
-> caller can currently not create a pollable pidfd. This is a problem for
-> Android's low memory killer (LMK) and service managers such as systemd.
-> Both are examples of tools that want to make use of pidfds to get reliable
-> notification of process exit for non-parents (pidfd polling) and race-free
-> signal sending (pidfd_send_signal()). They intend to switch to this API for
-> process supervision/management as soon as possible. Having no way to get
-> pollable pidfds from PID-only processes is one of the biggest blockers for
-> them in adopting this api. With pidfd_open() making it possible to retrieve
-> pidfds for PID-based processes we enable them to adopt this api.
-> 
-> In line with Arnd's recent changes to consolidate syscall numbers across
-> architectures, I have added the pidfd_open() syscall to all architectures
-> at the same time.
-> 
-> Signed-off-by: Christian Brauner <christian@brauner.io>
-> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+fix ingore to ignore in kernel; since there are other
+mistakes can be found with "git grep ",fix all
 
-This now also carries a Reviewed-by from David.
+Signed-off-by: houweitao <houweitao@xiaomi.com>
+---
+ drivers/pinctrl/uniphier/pinctrl-uniphier-core.c | 2 +-
+ drivers/rtc/rtc-sirfsoc.c                        | 2 +-
+ drivers/tty/serial/mxs-auart.c                   | 2 +-
+ drivers/tty/serial/serial_txx9.c                 | 2 +-
+ drivers/tty/serial/sunsab.c                      | 2 +-
+ kernel/trace/trace.c                             | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Jann Horn <jannh@google.com>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: Andy Lutomirsky <luto@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Aleksa Sarai <cyphar@cyphar.com>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Cc: Al Viro <viro@zeniv.linux.org.uk>
-> Cc: linux-api@vger.kernel.org
+diff --git a/drivers/pinctrl/uniphier/pinctrl-uniphier-core.c b/drivers/pinctrl/uniphier/pinctrl-uniphier-core.c
+index 57babf31e320..9f56863ed481 100644
+--- a/drivers/pinctrl/uniphier/pinctrl-uniphier-core.c
++++ b/drivers/pinctrl/uniphier/pinctrl-uniphier-core.c
+@@ -399,7 +399,7 @@ static int uniphier_conf_pin_bias_set(struct pinctrl_dev *pctldev,
+ 		}
+ 
+ 		if (arg == 0)
+-			return 0; /* configuration ingored */
++			return 0; /* configuration ignored */
+ 		break;
+ 	default:
+ 		BUG();
+diff --git a/drivers/rtc/rtc-sirfsoc.c b/drivers/rtc/rtc-sirfsoc.c
+index 9ba28d1ebd87..af1b7ba403fc 100644
+--- a/drivers/rtc/rtc-sirfsoc.c
++++ b/drivers/rtc/rtc-sirfsoc.c
+@@ -121,7 +121,7 @@ static int sirfsoc_rtc_set_alarm(struct device *dev,
+ 		rtc_status_reg = sirfsoc_rtc_readl(rtcdrv, RTC_STATUS);
+ 		if (rtc_status_reg & SIRFSOC_RTC_AL0E) {
+ 			/*
+-			 * An ongoing alarm in progress - ingore it and not
++			 * An ongoing alarm in progress - ignore it and not
+ 			 * to return EBUSY
+ 			 */
+ 			dev_info(dev, "An old alarm was set, will be replaced by a new one\n");
+diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
+index 4c188f4079b3..9f83a387d6ed 100644
+--- a/drivers/tty/serial/mxs-auart.c
++++ b/drivers/tty/serial/mxs-auart.c
+@@ -667,7 +667,7 @@ static void mxs_auart_rx_char(struct mxs_auart_port *s)
+ 	}
+ 
+ 	/*
+-	 * Mask off conditions which should be ingored.
++	 * Mask off conditions which should be ignored.
+ 	 */
+ 	stat &= s->port.read_status_mask;
+ 
+diff --git a/drivers/tty/serial/serial_txx9.c b/drivers/tty/serial/serial_txx9.c
+index d22ccb32aa9b..372890e3b896 100644
+--- a/drivers/tty/serial/serial_txx9.c
++++ b/drivers/tty/serial/serial_txx9.c
+@@ -314,7 +314,7 @@ receive_chars(struct uart_txx9_port *up, unsigned int *status)
+ 			}
+ 
+ 			/*
+-			 * Mask off conditions which should be ingored.
++			 * Mask off conditions which should be ignored.
+ 			 */
+ 			disr &= up->port.read_status_mask;
+ 
+diff --git a/drivers/tty/serial/sunsab.c b/drivers/tty/serial/sunsab.c
+index 72131b5e132e..daae2b0dbe11 100644
+--- a/drivers/tty/serial/sunsab.c
++++ b/drivers/tty/serial/sunsab.c
+@@ -200,7 +200,7 @@ receive_chars(struct uart_sunsab_port *up,
+ 				up->port.icount.overrun++;
+ 
+ 			/*
+-			 * Mask off conditions which should be ingored.
++			 * Mask off conditions which should be ignored.
+ 			 */
+ 			stat->sreg.isr0 &= (up->port.read_status_mask & 0xff);
+ 			stat->sreg.isr1 &= ((up->port.read_status_mask >> 8) & 0xff);
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 2c92b3d9ea30..bfa5ab0663e7 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -8554,7 +8554,7 @@ init_tracer_tracefs(struct trace_array *tr, struct dentry *d_tracer)
+ 	ftrace_init_tracefs(tr, d_tracer);
+ }
+ 
+-static struct vfsmount *trace_automount(struct dentry *mntpt, void *ingore)
++static struct vfsmount *trace_automount(struct dentry *mntpt, void *ignore)
+ {
+ 	struct vfsmount *mnt;
+ 	struct file_system_type *type;
+-- 
+2.18.0
 
-I've moved pidfd_open() into my for-next branch together with Joel's
-pidfd polling changes. Everything is based on v5.2-rc1.
-
-The chosen syscall number for now is 434. David is going to send out
-another pile of mount api related syscalls. I'll coordinate with him
-accordingly prior to the 5.3 merge window.
-
-Thanks!
-Christian
