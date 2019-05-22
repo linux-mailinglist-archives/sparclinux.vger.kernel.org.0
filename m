@@ -2,148 +2,72 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2093268B3
-	for <lists+sparclinux@lfdr.de>; Wed, 22 May 2019 18:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0FF26941
+	for <lists+sparclinux@lfdr.de>; Wed, 22 May 2019 19:40:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730226AbfEVQ6T (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 22 May 2019 12:58:19 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:42698 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729641AbfEVQ6S (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 22 May 2019 12:58:18 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 494B93053878;
-        Wed, 22 May 2019 16:57:52 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.159])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 69B5560BE5;
-        Wed, 22 May 2019 16:57:40 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Wed, 22 May 2019 18:57:50 +0200 (CEST)
-Date:   Wed, 22 May 2019 18:57:37 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Christian Brauner <christian@brauner.io>
-Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        torvalds@linux-foundation.org, fweimer@redhat.com,
-        jannh@google.com, tglx@linutronix.de, arnd@arndb.de,
-        shuah@kernel.org, dhowells@redhat.com, tkjos@android.com,
-        ldv@altlinux.org, miklos@szeredi.hu, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH v1 1/2] open: add close_range()
-Message-ID: <20190522165737.GC4915@redhat.com>
-References: <20190522155259.11174-1-christian@brauner.io>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190522155259.11174-1-christian@brauner.io>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Wed, 22 May 2019 16:58:18 +0000 (UTC)
+        id S1729057AbfEVRkV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 22 May 2019 13:40:21 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:59166 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727499AbfEVRkV (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 22 May 2019 13:40:21 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 39F1515002414;
+        Wed, 22 May 2019 10:40:20 -0700 (PDT)
+Date:   Wed, 22 May 2019 10:40:19 -0700 (PDT)
+Message-Id: <20190522.104019.40493905027242516.davem@davemloft.net>
+To:     rick.p.edgecombe@intel.com
+Cc:     linux-kernel@vger.kernel.org, peterz@infradead.org,
+        linux-mm@kvack.org, mroos@linux.ee, mingo@redhat.com,
+        namit@vmware.com, luto@kernel.org, bp@alien8.de,
+        netdev@vger.kernel.org, dave.hansen@intel.com,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2] vmalloc: Fix issues with flush flag
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <339ef85d984f329aa66f29fa80781624e6e4aecc.camel@intel.com>
+References: <a43f9224e6b245ade4b587a018c8a21815091f0f.camel@intel.com>
+        <20190520.184336.743103388474716249.davem@davemloft.net>
+        <339ef85d984f329aa66f29fa80781624e6e4aecc.camel@intel.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 22 May 2019 10:40:20 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 05/22, Christian Brauner wrote:
->
-> +static struct file *pick_file(struct files_struct *files, unsigned fd)
->  {
-> -	struct file *file;
-> +	struct file *file = NULL;
->  	struct fdtable *fdt;
->  
->  	spin_lock(&files->file_lock);
-> @@ -632,15 +629,65 @@ int __close_fd(struct files_struct *files, unsigned fd)
->  		goto out_unlock;
->  	rcu_assign_pointer(fdt->fd[fd], NULL);
->  	__put_unused_fd(files, fd);
-> -	spin_unlock(&files->file_lock);
-> -	return filp_close(file, files);
->  
->  out_unlock:
->  	spin_unlock(&files->file_lock);
-> -	return -EBADF;
-> +	return file;
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Date: Tue, 21 May 2019 01:59:54 +0000
 
-...
+> On Mon, 2019-05-20 at 18:43 -0700, David Miller wrote:
+>> From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+>> Date: Tue, 21 May 2019 01:20:33 +0000
+>> 
+>> > Should it handle executing an unmapped page gracefully? Because
+>> > this
+>> > change is causing that to happen much earlier. If something was
+>> > relying
+>> > on a cached translation to execute something it could find the
+>> > mapping
+>> > disappear.
+>> 
+>> Does this work by not mapping any kernel mappings at the beginning,
+>> and then filling in the BPF mappings in response to faults?
+> No, nothing too fancy. It just flushes the vm mapping immediatly in
+> vfree for execute (and RO) mappings. The only thing that happens around
+> allocation time is setting of a new flag to tell vmalloc to do the
+> flush.
+> 
+> The problem before was that the pages would be freed before the execute
+> mapping was flushed. So then when the pages got recycled, random,
+> sometimes coming from userspace, data would be mapped as executable in
+> the kernel by the un-flushed tlb entries.
 
-> +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
-> +{
-> +	unsigned int cur_max;
-> +
-> +	if (fd > max_fd)
-> +		return -EINVAL;
-> +
-> +	rcu_read_lock();
-> +	cur_max = files_fdtable(files)->max_fds;
-> +	rcu_read_unlock();
-> +
-> +	/* cap to last valid index into fdtable */
-> +	if (max_fd >= cur_max)
-> +		max_fd = cur_max - 1;
-> +
-> +	while (fd <= max_fd) {
-> +		struct file *file;
-> +
-> +		file = pick_file(files, fd++);
-
-Well, how about something like
-
-	static unsigned int find_next_opened_fd(struct fdtable *fdt, unsigned start)
-	{
-		unsigned int maxfd = fdt->max_fds;
-		unsigned int maxbit = maxfd / BITS_PER_LONG;
-		unsigned int bitbit = start / BITS_PER_LONG;
-
-		bitbit = find_next_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
-		if (bitbit > maxfd)
-			return maxfd;
-		if (bitbit > start)
-			start = bitbit;
-		return find_next_bit(fdt->open_fds, maxfd, start);
-	}
-
-	unsigned close_next_fd(struct files_struct *files, unsigned start, unsigned maxfd)
-	{
-		unsigned fd;
-		struct file *file;
-		struct fdtable *fdt;
-	
-		spin_lock(&files->file_lock);
-		fdt = files_fdtable(files);
-		fd = find_next_opened_fd(fdt, start);
-		if (fd >= fdt->max_fds || fd > maxfd) {
-			fd = -1;
-			goto out;
-		}
-
-		file = fdt->fd[fd];
-		rcu_assign_pointer(fdt->fd[fd], NULL);
-		__put_unused_fd(files, fd);
-	out:
-		spin_unlock(&files->file_lock);
-
-		if (fd == -1u)
-			return fd;
-
-		filp_close(file, files);
-		return fd + 1;
-	}
-
-?
-
-Then close_range() can do
-
-	while (fd < max_fd)
-		fd = close_next_fd(fd, maxfd);
-
-Oleg.
-
+If I am to understand things correctly, there was a case where 'end'
+could be smaller than 'start' when doing a range flush.  That would
+definitely kill some of the sparc64 TLB flush routines.
