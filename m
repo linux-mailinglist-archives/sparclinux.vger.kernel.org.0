@@ -2,103 +2,116 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B28125985
-	for <lists+sparclinux@lfdr.de>; Tue, 21 May 2019 22:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 039C525F29
+	for <lists+sparclinux@lfdr.de>; Wed, 22 May 2019 10:12:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727825AbfEUUxX (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 21 May 2019 16:53:23 -0400
-Received: from mga11.intel.com ([192.55.52.93]:29665 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727136AbfEUUxR (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 21 May 2019 16:53:17 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 May 2019 13:53:17 -0700
-X-ExtLoop1: 1
-Received: from rpedgeco-mobl.amr.corp.intel.com (HELO localhost.intel.com) ([10.254.91.116])
-  by orsmga001.jf.intel.com with ESMTP; 21 May 2019 13:53:16 -0700
-From:   Rick Edgecombe <rick.p.edgecombe@intel.com>
-To:     linux-kernel@vger.kernel.org, peterz@infradead.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        netdev@vger.kernel.org, luto@kernel.org
-Cc:     dave.hansen@intel.com, namit@vmware.com,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Meelis Roos <mroos@linux.ee>,
-        "David S. Miller" <davem@davemloft.net>,
-        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>
-Subject: [PATCH v4 2/2] vmalloc: Avoid rare case of flushing tlb with weird arguements
-Date:   Tue, 21 May 2019 13:51:37 -0700
-Message-Id: <20190521205137.22029-3-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190521205137.22029-1-rick.p.edgecombe@intel.com>
-References: <20190521205137.22029-1-rick.p.edgecombe@intel.com>
+        id S1728610AbfEVIM3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 22 May 2019 04:12:29 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:33753 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728406AbfEVIMY (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 22 May 2019 04:12:24 -0400
+Received: by mail-lf1-f65.google.com with SMTP id x132so993882lfd.0
+        for <sparclinux@vger.kernel.org>; Wed, 22 May 2019 01:12:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brauner.io; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NinRxNHyDYbCj8IbjH00ChDPuWJUmzxEB5UBBCZfvuk=;
+        b=FQpPrYcaQxCAFGTYiUsPu0qLO+TyOcW7gshxdKkzEdBEoeF7zfGLnQVrcgcr4gKCeX
+         LJ4YXrL36Z8UOIkkUcBOLv8jo3+1wy2Zrr1Gv+mEl7u90rBwnDVcVlXzHgwabis+F7I/
+         dlJlteIhWCGDFh11b+aiyTTGML6DsZQmYr7FjOpjo+237NiSY/93FSEYu5SmcuC+kMHi
+         w+QbDlfq/QnsLdgPfA6Jf+xdMdism6B4eELfwRuNPZvO4gmtKOqxk/k31Xt7g6ek0i6A
+         6O4E/le0sudnktBxl+9AFEIeQt8N5n9ZAVs90K2h9eXQLV3Rz/8qfSLtahw9cvbBcJ3h
+         1JTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NinRxNHyDYbCj8IbjH00ChDPuWJUmzxEB5UBBCZfvuk=;
+        b=o4/sNwOeoqC5DP8C5SiyNxNKgEBl3iid8W5aZN3LP8VjN3Q4ci4KIDo7WzcMAspoMa
+         dEpASjkjvaDWy8WBpnCflwtZFPOCBr82ckLquAiQwGhKlGHZNBptYhA7p6w4+0Ryp4d1
+         2dqVhRqKPXYkW66MzRUvqbgtd3mHvhqsOMQlQLvpIMyCL6H2i1VlNKSyIIjoE2M60G3K
+         rOp2LbGAieRxZhB8TpMqh87SI49DkEBphqn/qBrfOU9nrum/2dY5/vg4Uxb8uO5Rycqb
+         s4MJL6T5S9WcmbAsoTxbh6akW+oL9JQIgyk1EzmOF/t3gsvPICShBs8m8YS2MLHX8ahu
+         aWTA==
+X-Gm-Message-State: APjAAAWo+7xlWGfRqDrxQrQ3BDfIrjx8ycOp0NypBZp6K52W35rwWwrV
+        mc1t/5aWcpkY2urA+4No9YSxH9Bg3Fe1fpfEn4cMcQ==
+X-Google-Smtp-Source: APXvYqx7pLLI28SrC6KCXMaRxdNQfwff8OtpKLPW6FHDJY0UodmrushWU4y7kAd+10dOgbbxHnK3LHfXY1UCm8GAhHE=
+X-Received: by 2002:a05:6512:1c1:: with SMTP id f1mr4469627lfp.125.1558512742198;
+ Wed, 22 May 2019 01:12:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190521150006.GJ17978@ZenIV.linux.org.uk> <20190521113448.20654-1-christian@brauner.io>
+ <28114.1558456227@warthog.procyon.org.uk> <20190521164141.rbehqnghiej3gfua@brauner.io>
+ <CAHk-=wgtHm4t71oKbykE=awiVv2H2wCy8yH0L_FsyhHQ5OSO+Q@mail.gmail.com>
+In-Reply-To: <CAHk-=wgtHm4t71oKbykE=awiVv2H2wCy8yH0L_FsyhHQ5OSO+Q@mail.gmail.com>
+From:   Christian Brauner <christian@brauner.io>
+Date:   Wed, 22 May 2019 10:12:11 +0200
+Message-ID: <CAHrFyr4NV_5Z7TRSXTaurd4KCTLiHqKb47dN=bdY46HiL9ZY3Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] open: add close_range()
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Jann Horn <jannh@google.com>,
+        Florian Weimer <fweimer@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
+        Todd Kjos <tkjos@android.com>,
+        "Dmitry V. Levin" <ldv@altlinux.org>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-ia64@vger.kernel.org,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-In a rare case, flush_tlb_kernel_range() could be called with a start
-higher than the end. Most architectures should be fine with with this, but
-some may not like it, so avoid doing this.
+On Tue, May 21, 2019 at 10:23 PM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> On Tue, May 21, 2019 at 9:41 AM Christian Brauner <christian@brauner.io> wrote:
+> >
+> > Yeah, you mentioned this before. I do like being able to specify an
+> > upper bound to have the ability to place fds strategically after said
+> > upper bound.
+>
+> I suspect that's the case.
+>
+> And if somebody really wants to just close everything and uses a large
+> upper bound, we can - if we really want to - just compare the upper
+> bound to the file table size, and do an optimized case for that. We do
+> that upper bound comparison anyway to limit the size of the walk, so
+> *if* it's a big deal, that case could then do the whole "shrink
+> fdtable" case too.
 
-In vm_remove_mappings(), in case page_address() returns 0 for all pages,
-_vm_unmap_aliases() will be called with start = ULONG_MAX, end = 0 and
-flush = 1.
+Makes sense.
 
-If at the same time, the vmalloc purge operation is triggered by something
-else while the current operation is between remove_vm_area() and
-_vm_unmap_aliases(), then the vm mapping just removed will be already
-purged. In this case the call of vm_unmap_aliases() may not find any other
-mappings to flush and so end up flushing start = ULONG_MAX, end = 0. So
-only set flush = true if we find something in the direct mapping that we
-need to flush, and this way this can't happen.
+>
+> But I don't believe it's worth optimizing for unless somebody really
+> has a load where that is shown to be a big deal.   Just do the silly
+> and simple loop, and add a cond_resched() in the loop, like
+> close_files() does for the "we have a _lot_ of files open" case.
 
-Fixes: 868b104d7379 ("mm/vmalloc: Add flag for freeing of special permsissions")
-Cc: Meelis Roos <mroos@linux.ee>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Nadav Amit <namit@vmware.com>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
----
- mm/vmalloc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Ok. I will resend a v1 later with the cond_resched() logic you and Al
+suggested added.
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 836888ae01f6..537d1134b40e 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2125,6 +2125,7 @@ static void vm_remove_mappings(struct vm_struct *area, int deallocate_pages)
- 	unsigned long addr = (unsigned long)area->addr;
- 	unsigned long start = ULONG_MAX, end = 0;
- 	int flush_reset = area->flags & VM_FLUSH_RESET_PERMS;
-+	int flush_dmap = 0;
- 	int i;
- 
- 	/*
-@@ -2163,6 +2164,7 @@ static void vm_remove_mappings(struct vm_struct *area, int deallocate_pages)
- 		if (addr) {
- 			start = min(addr, start);
- 			end = max(addr + PAGE_SIZE, end);
-+			flush_dmap = 1;
- 		}
- 	}
- 
-@@ -2172,7 +2174,7 @@ static void vm_remove_mappings(struct vm_struct *area, int deallocate_pages)
- 	 * reset the direct map permissions to the default.
- 	 */
- 	set_area_direct_map(area, set_direct_map_invalid_noflush);
--	_vm_unmap_aliases(start, end, 1);
-+	_vm_unmap_aliases(start, end, flush_dmap);
- 	set_area_direct_map(area, set_direct_map_default_noflush);
- }
- 
--- 
-2.20.1
-
+Thanks!
+Christian
