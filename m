@@ -2,116 +2,237 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B5A92726D
-	for <lists+sparclinux@lfdr.de>; Thu, 23 May 2019 00:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E1AF27C32
+	for <lists+sparclinux@lfdr.de>; Thu, 23 May 2019 13:51:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727492AbfEVWkE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 22 May 2019 18:40:04 -0400
-Received: from mga12.intel.com ([192.55.52.136]:12447 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726218AbfEVWkE (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 22 May 2019 18:40:04 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 May 2019 15:40:03 -0700
-X-ExtLoop1: 1
-Received: from orsmsx110.amr.corp.intel.com ([10.22.240.8])
-  by fmsmga006.fm.intel.com with ESMTP; 22 May 2019 15:40:03 -0700
-Received: from orsmsx112.amr.corp.intel.com ([169.254.3.79]) by
- ORSMSX110.amr.corp.intel.com ([169.254.10.7]) with mapi id 14.03.0415.000;
- Wed, 22 May 2019 15:40:02 -0700
-From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To:     "davem@davemloft.net" <davem@davemloft.net>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "mroos@linux.ee" <mroos@linux.ee>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "namit@vmware.com" <namit@vmware.com>,
-        "luto@kernel.org" <luto@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
-Subject: Re: [PATCH v2] vmalloc: Fix issues with flush flag
-Thread-Topic: [PATCH v2] vmalloc: Fix issues with flush flag
-Thread-Index: AQHVD0ezpbXySuUS5EinefGl750kkaZ0/uwAgAALkwCAAAiygIAAGYEAgAADqwCAAA0vgIAABnMAgAAEjYCAApkWgIAAHb0AgAA1/4A=
-Date:   Wed, 22 May 2019 22:40:02 +0000
-Message-ID: <2d8c59be7e591a0d0ff17627ea34ea1eaa110a09.camel@intel.com>
-References: <a43f9224e6b245ade4b587a018c8a21815091f0f.camel@intel.com>
-         <20190520.184336.743103388474716249.davem@davemloft.net>
-         <339ef85d984f329aa66f29fa80781624e6e4aecc.camel@intel.com>
-         <20190522.104019.40493905027242516.davem@davemloft.net>
-         <01a23900329e605fcd41ad8962cfd8f2d9b1fa44.camel@intel.com>
-In-Reply-To: <01a23900329e605fcd41ad8962cfd8f2d9b1fa44.camel@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
-x-originating-ip: [10.254.91.116]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <92CE99CE339FFD40BC573E4C2B685475@intel.com>
-Content-Transfer-Encoding: base64
+        id S1730602AbfEWLv3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 23 May 2019 07:51:29 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:35286 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730402AbfEWLvZ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 23 May 2019 07:51:25 -0400
+Received: by mail-ed1-f65.google.com with SMTP id p26so8862003edr.2
+        for <sparclinux@vger.kernel.org>; Thu, 23 May 2019 04:51:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brauner.io; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=DxrwlFYynfpKWcnso1ASEMJy1QePVih8VzbqwCBkVwk=;
+        b=S/Ixtxvc2rCTBfYbzQGiR2W1gdfRhjumXOGgdu6z5ZJn93UKfws6k6ee18PWPXzlDD
+         34VNSUVl1F53yAPBVRFXImrLpe7sp1R3RWU6ueWOjvI6M8sU1iNP4im0skwaqTuQRUI3
+         sJIA+/8okDM6QZIbI5rbYpsc3IcvP6Y2vT3m/sqm3D8RJWvk/pCqLrz+0Bww9JTf0nJB
+         iYoTll8Maxv4hlDHAWHuPjFK29juGO9XVC/XtHjE4Ia93dBRDXi9FTYBwym4yIuDO3bU
+         KpK6X02jkldIOkbi8+Z06PuUo/TGQJMyBrB/dAr/0sdCeNd8eYTqTlNcvQeNZ+q4dvvT
+         hkvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=DxrwlFYynfpKWcnso1ASEMJy1QePVih8VzbqwCBkVwk=;
+        b=Kr5r5BRKZ2VfkmqwJVydWE3FtX5AWOY0/sTtDgXG8NNTYZyBxMMjSgk7042GB+kKXR
+         YQutP7ivuI/uJBHPxYFltPlp0JC5GuMJmnRbg2SS6RrFd7te/mGYOrr+ewfCgTgWsOXk
+         rehqzLfnsGxxvbccyNWwg0HxUmNbwmwkt0TesgKWO3DyNT+I+EU32GNe1Ai2U0mIh6HZ
+         5/vZeHwBz/yupJwHd6VfuKGwnwAruIMLsNKGBZgWlQ/OmFbBt0IjApPM8GTKSR+H/DqA
+         EVXiAqYr9b7sPOBoKtjZ/h//W7LDkE1/W76uFyVh4xtJ8vOP7OQ4T4Y4mnHpp+ijH1vZ
+         xMvA==
+X-Gm-Message-State: APjAAAXk4LxqRQ5zGlSj5zbhsiNEaT1qMuk8danEW7+E7G3mdgYHtWAs
+        felh2kSOb2F7ih0QxuRUWZOEqQ==
+X-Google-Smtp-Source: APXvYqx7/y/DNnexBZOnXkDyT0N3tMuirzQAMafDXHp1AgKt73Se0dTImjP3o0mVoffNMpPelxEu9Q==
+X-Received: by 2002:a50:84a1:: with SMTP id 30mr95678372edq.105.1558612282526;
+        Thu, 23 May 2019 04:51:22 -0700 (PDT)
+Received: from brauner.io (178-197-142-46.pool.kielnet.net. [46.142.197.178])
+        by smtp.gmail.com with ESMTPSA id h23sm4406908ejc.34.2019.05.23.04.51.21
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 23 May 2019 04:51:22 -0700 (PDT)
+Date:   Thu, 23 May 2019 13:51:20 +0200
+From:   Christian Brauner <christian@brauner.io>
+To:     Oleg Nesterov <oleg@redhat.com>
+Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        torvalds@linux-foundation.org, fweimer@redhat.com,
+        jannh@google.com, tglx@linutronix.de, arnd@arndb.de,
+        shuah@kernel.org, dhowells@redhat.com, tkjos@android.com,
+        ldv@altlinux.org, miklos@szeredi.hu, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH v1 1/2] open: add close_range()
+Message-ID: <20190523115118.pmscbd6kaqy37dym@brauner.io>
+References: <20190522155259.11174-1-christian@brauner.io>
+ <20190522165737.GC4915@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190522165737.GC4915@redhat.com>
+User-Agent: NeoMutt/20180716
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-T24gV2VkLCAyMDE5LTA1LTIyIGF0IDEyOjI2IC0wNzAwLCBSaWNrIEVkZ2Vjb21iZSB3cm90ZToN
-Cj4gT24gV2VkLCAyMDE5LTA1LTIyIGF0IDEwOjQwIC0wNzAwLCBEYXZpZCBNaWxsZXIgd3JvdGU6
-DQo+ID4gRnJvbTogIkVkZ2Vjb21iZSwgUmljayBQIiA8cmljay5wLmVkZ2Vjb21iZUBpbnRlbC5j
-b20+DQo+ID4gRGF0ZTogVHVlLCAyMSBNYXkgMjAxOSAwMTo1OTo1NCArMDAwMA0KPiA+IA0KPiA+
-ID4gT24gTW9uLCAyMDE5LTA1LTIwIGF0IDE4OjQzIC0wNzAwLCBEYXZpZCBNaWxsZXIgd3JvdGU6
-DQo+ID4gPiA+IEZyb206ICJFZGdlY29tYmUsIFJpY2sgUCIgPHJpY2sucC5lZGdlY29tYmVAaW50
-ZWwuY29tPg0KPiA+ID4gPiBEYXRlOiBUdWUsIDIxIE1heSAyMDE5IDAxOjIwOjMzICswMDAwDQo+
-ID4gPiA+IA0KPiA+ID4gPiA+IFNob3VsZCBpdCBoYW5kbGUgZXhlY3V0aW5nIGFuIHVubWFwcGVk
-IHBhZ2UgZ3JhY2VmdWxseT8NCj4gPiA+ID4gPiBCZWNhdXNlDQo+ID4gPiA+ID4gdGhpcw0KPiA+
-ID4gPiA+IGNoYW5nZSBpcyBjYXVzaW5nIHRoYXQgdG8gaGFwcGVuIG11Y2ggZWFybGllci4gSWYg
-c29tZXRoaW5nDQo+ID4gPiA+ID4gd2FzDQo+ID4gPiA+ID4gcmVseWluZw0KPiA+ID4gPiA+IG9u
-IGEgY2FjaGVkIHRyYW5zbGF0aW9uIHRvIGV4ZWN1dGUgc29tZXRoaW5nIGl0IGNvdWxkIGZpbmQN
-Cj4gPiA+ID4gPiB0aGUNCj4gPiA+ID4gPiBtYXBwaW5nDQo+ID4gPiA+ID4gZGlzYXBwZWFyLg0K
-PiA+ID4gPiANCj4gPiA+ID4gRG9lcyB0aGlzIHdvcmsgYnkgbm90IG1hcHBpbmcgYW55IGtlcm5l
-bCBtYXBwaW5ncyBhdCB0aGUNCj4gPiA+ID4gYmVnaW5uaW5nLA0KPiA+ID4gPiBhbmQgdGhlbiBm
-aWxsaW5nIGluIHRoZSBCUEYgbWFwcGluZ3MgaW4gcmVzcG9uc2UgdG8gZmF1bHRzPw0KPiA+ID4g
-Tm8sIG5vdGhpbmcgdG9vIGZhbmN5LiBJdCBqdXN0IGZsdXNoZXMgdGhlIHZtIG1hcHBpbmcgaW1t
-ZWRpYXRseQ0KPiA+ID4gaW4NCj4gPiA+IHZmcmVlIGZvciBleGVjdXRlIChhbmQgUk8pIG1hcHBp
-bmdzLiBUaGUgb25seSB0aGluZyB0aGF0IGhhcHBlbnMNCj4gPiA+IGFyb3VuZA0KPiA+ID4gYWxs
-b2NhdGlvbiB0aW1lIGlzIHNldHRpbmcgb2YgYSBuZXcgZmxhZyB0byB0ZWxsIHZtYWxsb2MgdG8g
-ZG8NCj4gPiA+IHRoZQ0KPiA+ID4gZmx1c2guDQo+ID4gPiANCj4gPiA+IFRoZSBwcm9ibGVtIGJl
-Zm9yZSB3YXMgdGhhdCB0aGUgcGFnZXMgd291bGQgYmUgZnJlZWQgYmVmb3JlIHRoZQ0KPiA+ID4g
-ZXhlY3V0ZQ0KPiA+ID4gbWFwcGluZyB3YXMgZmx1c2hlZC4gU28gdGhlbiB3aGVuIHRoZSBwYWdl
-cyBnb3QgcmVjeWNsZWQsIHJhbmRvbSwNCj4gPiA+IHNvbWV0aW1lcyBjb21pbmcgZnJvbSB1c2Vy
-c3BhY2UsIGRhdGEgd291bGQgYmUgbWFwcGVkIGFzDQo+ID4gPiBleGVjdXRhYmxlDQo+ID4gPiBp
-bg0KPiA+ID4gdGhlIGtlcm5lbCBieSB0aGUgdW4tZmx1c2hlZCB0bGIgZW50cmllcy4NCj4gPiAN
-Cj4gPiBJZiBJIGFtIHRvIHVuZGVyc3RhbmQgdGhpbmdzIGNvcnJlY3RseSwgdGhlcmUgd2FzIGEg
-Y2FzZSB3aGVyZQ0KPiA+ICdlbmQnDQo+ID4gY291bGQgYmUgc21hbGxlciB0aGFuICdzdGFydCcg
-d2hlbiBkb2luZyBhIHJhbmdlIGZsdXNoLiAgVGhhdCB3b3VsZA0KPiA+IGRlZmluaXRlbHkga2ls
-bCBzb21lIG9mIHRoZSBzcGFyYzY0IFRMQiBmbHVzaCByb3V0aW5lcy4NCj4gDQo+IE9rLCB0aGFu
-a3MuDQo+IA0KPiBUaGUgcGF0Y2ggYXQgdGhlIGJlZ2lubmluZyBvZiB0aGlzIHRocmVhZCBkb2Vz
-bid0IGhhdmUgdGhhdCBiZWhhdmlvcg0KPiB0aG91Z2ggYW5kIGl0IGFwcGFyZW50bHkgc3RpbGwg
-aHVuZy4gSSBhc2tlZCBpZiBNZWVsaXMgY291bGQgdGVzdA0KPiB3aXRoDQo+IHRoaXMgZmVhdHVy
-ZSBkaXNhYmxlZCBhbmQgREVCVUdfUEFHRUFMTE9DIG9uLCBzaW5jZSBpdCBmbHVzaGVzIG9uDQo+
-IGV2ZXJ5DQo+IHZmcmVlIGFuZCBpcyBub3QgbmV3IGxvZ2ljLCBhbmQgYWxzbyB3aXRoIGEgcGF0
-Y2ggdGhhdCBsb2dzIGV4YWN0IFRMQg0KPiBmbHVzaCByYW5nZXMgYW5kIGZhdWx0IGFkZHJlc3Nl
-cyBvbiB0b3Agb2YgdGhlIGtlcm5lbCBoYXZpbmcgdGhpcw0KPiBpc3N1ZS4gSG9wZWZ1bGx5IHRo
-YXQgd2lsbCBzaGVkIHNvbWUgbGlnaHQuDQo+IA0KPiBTb3JyeSBmb3IgYWxsIHRoZSBub2lzZSBh
-bmQgc3BlY3VsYXRpb24gb24gdGhpcy4gSXQgaGFzIGJlZW4NCj4gZGlmZmljdWx0DQo+IHRvIGRl
-YnVnIHJlbW90ZWx5IHdpdGggYSB0ZXN0ZXIgYW5kIGRldmVsb3BlciBpbiBkaWZmZXJlbnQgdGlt
-ZQ0KPiB6b25lcy4NCj4gDQo+IA0KT2ssIHNvIHdpdGggYSBwYXRjaCB0byBkaXNhYmxlIHNldHRp
-bmcgdGhlIG5ldyB2bWFsbG9jIGZsdXNoIGZsYWcgb24NCmFyY2hpdGVjdHVyZXMgdGhhdCBoYXZl
-IG5vcm1hbCBtZW1vcnkgYXMgZXhlY3V0YWJsZSAoaW5jbHVkZXMgc3BhcmMpLA0KYm9vdCBzdWNj
-ZWVkcy4NCg0KV2l0aCB0aGlzIGRpc2FibGUgcGF0Y2ggYW5kIERFQlVHX1BBR0VBTExPQyBvbiwg
-aXQgaGFuZ3MgZWFybGllciB0aGFuDQpiZWZvcmUuIEdvaW5nIGZyb20gY2x1ZXMgaW4gb3RoZXIg
-bG9ncywgaXQgbG9va3MgbGlrZSBpdCBoYW5ncyByaWdodCBhdA0KdGhlIGZpcnN0IG5vcm1hbCB2
-ZnJlZS4NCg0KVGhhbmtzIGZvciBhbGwgdGhlIHRlc3RpbmcgTWVlbGlzIQ0KDQpTbyBpdCBzZWVt
-cyBsaWtlIG90aGVyLCBub3QgbmV3LCBUTEIgZmx1c2hlcyBhbHNvIHRyaWdnZXIgdGhlIGhhbmcu
-DQoNCkZyb20gZWFybGllciBsb2dzIHByb3ZpZGVkLCB0aGlzIHZmcmVlIHdvdWxkIGJlIHRoZSBm
-aXJzdCBjYWxsIHRvDQpmbHVzaF90bGJfa2VybmVsX3JhbmdlKCksIGFuZCBiZWZvcmUgYW55IEJQ
-RiBhbGxvY2F0aW9ucyBhcHBlYXIgaW4gdGhlDQpsb2dzLiBTbyBJIGFtIHN1c3BlY3Rpbmcgc29t
-ZSBvdGhlciBjYXVzZSB0aGFuIHRoZSBiaXNlY3RlZCBwYXRjaCBhdA0KdGhpcyBwb2ludCwgYnV0
-IEkgZ3Vlc3MgaXQncyBub3QgZnVsbHkgY29uY2x1c2l2ZS4NCg0KSXQgY291bGQgYmUgaW5mb3Jt
-YXRpdmUgdG8gYmlzZWN0IHVwc3RyZWFtIGFnYWluIHdpdGggdGhlDQpERUJVR19QQUdFQUxMT0Mg
-Y29uZmlncyBvbiwgdG8gc2VlIGlmIGl0IGluZGVlZCBwb2ludHMgdG8gYW4gZWFybGllcg0KY29t
-bWl0Lg0K
+On Wed, May 22, 2019 at 06:57:37PM +0200, Oleg Nesterov wrote:
+> On 05/22, Christian Brauner wrote:
+> >
+> > +static struct file *pick_file(struct files_struct *files, unsigned fd)
+> >  {
+> > -	struct file *file;
+> > +	struct file *file = NULL;
+> >  	struct fdtable *fdt;
+> >  
+> >  	spin_lock(&files->file_lock);
+> > @@ -632,15 +629,65 @@ int __close_fd(struct files_struct *files, unsigned fd)
+> >  		goto out_unlock;
+> >  	rcu_assign_pointer(fdt->fd[fd], NULL);
+> >  	__put_unused_fd(files, fd);
+> > -	spin_unlock(&files->file_lock);
+> > -	return filp_close(file, files);
+> >  
+> >  out_unlock:
+> >  	spin_unlock(&files->file_lock);
+> > -	return -EBADF;
+> > +	return file;
+> 
+> ...
+> 
+> > +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
+> > +{
+> > +	unsigned int cur_max;
+> > +
+> > +	if (fd > max_fd)
+> > +		return -EINVAL;
+> > +
+> > +	rcu_read_lock();
+> > +	cur_max = files_fdtable(files)->max_fds;
+> > +	rcu_read_unlock();
+> > +
+> > +	/* cap to last valid index into fdtable */
+> > +	if (max_fd >= cur_max)
+> > +		max_fd = cur_max - 1;
+> > +
+> > +	while (fd <= max_fd) {
+> > +		struct file *file;
+> > +
+> > +		file = pick_file(files, fd++);
+> 
+> Well, how about something like
+> 
+> 	static unsigned int find_next_opened_fd(struct fdtable *fdt, unsigned start)
+> 	{
+> 		unsigned int maxfd = fdt->max_fds;
+> 		unsigned int maxbit = maxfd / BITS_PER_LONG;
+> 		unsigned int bitbit = start / BITS_PER_LONG;
+> 
+> 		bitbit = find_next_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
+> 		if (bitbit > maxfd)
+> 			return maxfd;
+> 		if (bitbit > start)
+> 			start = bitbit;
+> 		return find_next_bit(fdt->open_fds, maxfd, start);
+> 	}
+
+> 
+> 	unsigned close_next_fd(struct files_struct *files, unsigned start, unsigned maxfd)
+> 	{
+> 		unsigned fd;
+> 		struct file *file;
+> 		struct fdtable *fdt;
+> 	
+> 		spin_lock(&files->file_lock);
+> 		fdt = files_fdtable(files);
+> 		fd = find_next_opened_fd(fdt, start);
+> 		if (fd >= fdt->max_fds || fd > maxfd) {
+> 			fd = -1;
+> 			goto out;
+> 		}
+> 
+> 		file = fdt->fd[fd];
+> 		rcu_assign_pointer(fdt->fd[fd], NULL);
+> 		__put_unused_fd(files, fd);
+> 	out:
+> 		spin_unlock(&files->file_lock);
+> 
+> 		if (fd == -1u)
+> 			return fd;
+> 
+> 		filp_close(file, files);
+> 		return fd + 1;
+> 	}
+
+Thanks, Oleg!
+
+I kept it dumb and was about to reply that your solution introduces more
+code when it seemed we wanted to keep this very simple for now.
+But then I saw that find_next_opened_fd() already exists as
+find_next_fd(). So it's actually not bad compared to what I sent in v1.
+So - with some small tweaks (need to test it and all now) - how do we
+feel about?:
+
+/**
+ * __close_next_open_fd() - Close the nearest open fd.
+ *
+ * @curfd: lowest file descriptor to consider
+ * @maxfd: highest file descriptor to consider
+ *
+ * This function will close the nearest open fd, i.e. it will either
+ * close @curfd if it is open or the closest open file descriptor
+ * c greater than @curfd that
+ * is smaller or equal to maxfd.
+ * If the function found a file descriptor to close it will return 0 and
+ * place the file descriptor it closed in @curfd. If it did not find a
+ * file descriptor to close it will return -EBADF.
+ */
+static int __close_next_open_fd(struct files_struct *files, unsigned *curfd, unsigned maxfd)
+{
+        struct file *file = NULL;
+	unsigned fd;
+	struct fdtable *fdt;
+
+	spin_lock(&files->file_lock);
+	fdt = files_fdtable(files);
+	fd = find_next_fd(fdt, *curfd);
+	if (fd >= fdt->max_fds || fd > maxfd)
+		goto out_unlock;
+
+	file = fdt->fd[fd];
+	rcu_assign_pointer(fdt->fd[fd], NULL);
+	__put_unused_fd(files, fd);
+
+out_unlock:
+	spin_unlock(&files->file_lock);
+
+	if (!file)
+		return -EBADF;
+
+	*curfd = fd;
+	filp_close(file, files);
+	return 0;
+}
+
+int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
+{
+	if (fd > max_fd)
+		return -EINVAL;
+
+	while (fd <= max_fd) {
+		if (__close_next_fd(files, &fd, maxfd))
+			break;
+
+		cond_resched();
+		fd++;
+	}
+
+	return 0;
+}
+
+SYSCALL_DEFINE3(close_range, unsigned int, fd, unsigned int, max_fd,
+		unsigned int, flags)
+{
+	if (flags)
+		return -EINVAL;
+
+	return __close_range(current->files, fd, max_fd);
+}
