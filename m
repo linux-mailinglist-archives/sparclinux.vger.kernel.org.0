@@ -2,136 +2,104 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CC5329667
-	for <lists+sparclinux@lfdr.de>; Fri, 24 May 2019 12:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3573C296A6
+	for <lists+sparclinux@lfdr.de>; Fri, 24 May 2019 13:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390565AbfEXKyN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 24 May 2019 06:54:13 -0400
-Received: from mail-it1-f195.google.com ([209.85.166.195]:40595 "EHLO
-        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390699AbfEXKyM (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 24 May 2019 06:54:12 -0400
-Received: by mail-it1-f195.google.com with SMTP id h11so13156023itf.5
-        for <sparclinux@vger.kernel.org>; Fri, 24 May 2019 03:54:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=CfQCPeLhxIRZNFUFprUfxjdraaUe3oFHAGmuDz7teoQ=;
-        b=Em430Lcwry47jSvpo2CX3tGth2isfe0jStpDuxS7CMmLdA3d0PXEVPlYO1LA5R1mzt
-         HY4rafqjGQJavFGnE3XaT/sGBtGX54ySCbaX7DVDZMmxBcy/N79r+hv4lU4j2oA3k9uH
-         3qZj79cuHnNGNu2oYXdLcTSXDzUD2I8KQ+AfcVybt1p+pDbSSV/BxOdIjemHzveC4b7q
-         duRReG8ScM5eer/3Afm7cUzTfGgmoE34PFQheJOvRIbKuqLqZGUfkiFLLL9ErcrO39tc
-         F/9MwQeUr7EmYtaiFsYdYlVOLNriujpFjX0na3vmEkcAGEzSA9rJkFtPpvRuu71lHiOs
-         lhuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=CfQCPeLhxIRZNFUFprUfxjdraaUe3oFHAGmuDz7teoQ=;
-        b=V5Ojh3qzzRFHErLDO/1LpRfSQl1H42e0ZyY24ASJQiw1n52srY8voiMTHMctNVEt7R
-         ejdsQ0M6G6ZYaxQ22+QMWnFYgbTm1c69Mpd4dsQ3jRL2PneiQHkuxFkEOq/GMBI7ZZgz
-         behve0r2EB3B4ZeCyhmJE2Yqpfa3UoUxeyhcweiAAYIeR8ke+RnIDWbg9WIdGhMxlAXf
-         TTtuLhVCm8TzxuQMFtRqec41sa3NXvOQwhUwv86NnF7iMteQqMgyZSHf17itVXRvWsBB
-         fgXpnUTbWvygKOetaczebUn6wmtg5XPmCk5ovzcW6KMzz2276vDyfZ/8WXqeYjmW8gZ4
-         I9yQ==
-X-Gm-Message-State: APjAAAUILWDx1hT7Q6vgeAGx7iDy4f6NDyOE6kJgcHYpZSOop3GVFvXb
-        e1m2jXj8depJUAfsHgSzzJSb/w==
-X-Google-Smtp-Source: APXvYqzek4vSIIuFlylSllnN9c1fb45hmMMLlcQcM2y40ZIswZUPrKTiVfMzOtV1j/enrZtL4iFGng==
-X-Received: by 2002:a24:4043:: with SMTP id n64mr17805822ita.25.1558695251429;
-        Fri, 24 May 2019 03:54:11 -0700 (PDT)
-Received: from brauner.io ([172.56.12.37])
-        by smtp.gmail.com with ESMTPSA id f14sm955704itb.31.2019.05.24.03.54.02
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 24 May 2019 03:54:10 -0700 (PDT)
-Date:   Fri, 24 May 2019 12:54:00 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
-        torvalds@linux-foundation.org, arnd@arndb.de
-Cc:     akpm@linux-foundation.org, cyphar@cyphar.com, dhowells@redhat.com,
-        ebiederm@xmission.com, elena.reshetova@intel.com,
-        keescook@chromium.org, luto@amacapital.net, luto@kernel.org,
-        tglx@linutronix.de, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, joel@joelfernandes.org,
-        dancol@google.com, serge@hallyn.com, surenb@google.com,
-        kernel-team@android.com
-Subject: Re: [PATCH v3 1/2] pid: add pidfd_open()
-Message-ID: <20190524105358.dfnelxhxodkvwbcn@brauner.io>
-References: <20190520155630.21684-1-christian@brauner.io>
- <20190521143220.crb2zyvdov3fl4g7@brauner.io>
+        id S2390565AbfEXLJ4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 24 May 2019 07:09:56 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:32923 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2390535AbfEXLJ4 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 24 May 2019 07:09:56 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.85)
+          with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id <1hU85B-000oDc-BE>; Fri, 24 May 2019 13:09:53 +0200
+Received: from suse-laptop.physik.fu-berlin.de ([160.45.32.140])
+          by inpost2.zedat.fu-berlin.de (Exim 4.85)
+          with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id <1hU85B-002twI-6G>; Fri, 24 May 2019 13:09:53 +0200
+Subject: Re: Making MAX_PHYS_ADDRESS_BITS configurable
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     sparclinux@vger.kernel.org
+Cc:     debian-sparc <debian-sparc@lists.debian.org>,
+        James Clarke <jrtc27@debian.org>
+References: <2be3335c-1870-9867-0f25-01cf798ca84b@physik.fu-berlin.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <b03ce514-5b35-1cfe-0a1d-ed69805a2aec@physik.fu-berlin.de>
+Date:   Fri, 24 May 2019 13:09:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
+In-Reply-To: <2be3335c-1870-9867-0f25-01cf798ca84b@physik.fu-berlin.de>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190521143220.crb2zyvdov3fl4g7@brauner.io>
-User-Agent: NeoMutt/20180716
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: 160.45.32.140
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, May 21, 2019 at 04:32:20PM +0200, Christian Brauner wrote:
-> On Mon, May 20, 2019 at 05:56:29PM +0200, Christian Brauner wrote:
-> > This adds the pidfd_open() syscall. It allows a caller to retrieve pollable
-> > pidfds for a process which did not get created via CLONE_PIDFD, i.e. for a
-> > process that is created via traditional fork()/clone() calls that is only
-> > referenced by a PID:
-> > 
-> > int pidfd = pidfd_open(1234, 0);
-> > ret = pidfd_send_signal(pidfd, SIGSTOP, NULL, 0);
-> > 
-> > With the introduction of pidfds through CLONE_PIDFD it is possible to
-> > created pidfds at process creation time.
-> > However, a lot of processes get created with traditional PID-based calls
-> > such as fork() or clone() (without CLONE_PIDFD). For these processes a
-> > caller can currently not create a pollable pidfd. This is a problem for
-> > Android's low memory killer (LMK) and service managers such as systemd.
-> > Both are examples of tools that want to make use of pidfds to get reliable
-> > notification of process exit for non-parents (pidfd polling) and race-free
-> > signal sending (pidfd_send_signal()). They intend to switch to this API for
-> > process supervision/management as soon as possible. Having no way to get
-> > pollable pidfds from PID-only processes is one of the biggest blockers for
-> > them in adopting this api. With pidfd_open() making it possible to retrieve
-> > pidfds for PID-based processes we enable them to adopt this api.
-> > 
-> > In line with Arnd's recent changes to consolidate syscall numbers across
-> > architectures, I have added the pidfd_open() syscall to all architectures
-> > at the same time.
-> > 
-> > Signed-off-by: Christian Brauner <christian@brauner.io>
-> > Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-> 
-> This now also carries a Reviewed-by from David.
-> 
-> > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> > Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-> > Cc: Kees Cook <keescook@chromium.org>
-> > Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
-> > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > Cc: Jann Horn <jannh@google.com>
-> > Cc: David Howells <dhowells@redhat.com>
-> > Cc: Andy Lutomirsky <luto@kernel.org>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: Aleksa Sarai <cyphar@cyphar.com>
-> > Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> > Cc: Al Viro <viro@zeniv.linux.org.uk>
-> > Cc: linux-api@vger.kernel.org
-> 
-> I've moved pidfd_open() into my for-next branch together with Joel's
-> pidfd polling changes. Everything is based on v5.2-rc1.
-> 
-> The chosen syscall number for now is 434. David is going to send out
-> another pile of mount api related syscalls. I'll coordinate with him
-> accordingly prior to the 5.3 merge window.
+On 5/24/19 12:24 PM, John Paul Adrian Glaubitz wrote:
+> On sparc64, MAX_PHYS_ADDRESS_BITS is currently defined as 53 meaning that
+> a lot of JITs crash on a sparc64 userspace [1].
 
-After talking to Arnd, I split the syscall addition and the per-arch
-wiring-up of pidfd_open() into two patches. There are no functional
-changes and everything is still sitting in for-next.
+Correction, it shouldn't be MAX_PHYS_ADDRESS_BITS but sparc64_va_hole_top as
+defined in mm/init_64.c.
 
-Thanks!
-Christian
+Thanks,
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
