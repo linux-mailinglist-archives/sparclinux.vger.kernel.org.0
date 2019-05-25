@@ -2,64 +2,57 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFB792A004
-	for <lists+sparclinux@lfdr.de>; Fri, 24 May 2019 22:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4912E2A491
+	for <lists+sparclinux@lfdr.de>; Sat, 25 May 2019 15:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404022AbfEXUmq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 24 May 2019 16:42:46 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:42976 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404241AbfEXUmp (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 24 May 2019 16:42:45 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 83C6314E2EBF5;
-        Fri, 24 May 2019 13:42:44 -0700 (PDT)
-Date:   Fri, 24 May 2019 13:42:43 -0700 (PDT)
-Message-Id: <20190524.134243.691473240566371408.davem@davemloft.net>
-To:     glaubitz@physik.fu-berlin.de
-Cc:     sparclinux@vger.kernel.org, debian-sparc@lists.debian.org,
-        jrtc27@debian.org
-Subject: Re: Making MAX_PHYS_ADDRESS_BITS configurable
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <dcae8f67-9577-4f97-8a79-b82a952567b5@physik.fu-berlin.de>
-References: <2be3335c-1870-9867-0f25-01cf798ca84b@physik.fu-berlin.de>
-        <20190524.092002.806233524692651218.davem@davemloft.net>
-        <dcae8f67-9577-4f97-8a79-b82a952567b5@physik.fu-berlin.de>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 24 May 2019 13:42:44 -0700 (PDT)
+        id S1726979AbfEYNcS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 25 May 2019 09:32:18 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:50350 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726838AbfEYNcR (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 25 May 2019 09:32:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=Fclx2EkLgGZXMWSnoaUIWWcWHkhmXZk15XX3q1+NpkY=; b=qMmTNCLA+cd0wrgFY7M1IdfhH
+        a7UH0ogu20h1J5SiJ/CDdmDVN9+6plSUgOdLtw3s3GA2P9KXe6LQZlEXEKL0WcNscFuhnXCdw2lxO
+        VuHb5eNnQXbvfmNnQUqHuEmqKzqRxazORsOaeMyDwmRz5w9p3gMNhCdrtTJ4VLUohQnwaiDFp1Qsv
+        XFRTyZ3rwPRms3QA30d7IAPD/xQIcNt9mcpAZSyEVPZA+e3w2S28DBaUJrnQVYVIthXWpPO2fQy8i
+        uQ1Z5oaqOxJXFLu3lOo+SJMMZQNl9Yl23YrszkAJElJUuHdqZlRJdv2gxlf3DCUZk3fInV7so85zJ
+        WqCevvc0g==;
+Received: from 213-225-10-46.nat.highway.a1.net ([213.225.10.46] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hUWmM-0006Xn-Vj; Sat, 25 May 2019 13:32:07 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-mips@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: RFC: switch the remaining architectures to use generic GUP
+Date:   Sat, 25 May 2019 15:31:57 +0200
+Message-Id: <20190525133203.25853-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Date: Fri, 24 May 2019 20:51:33 +0200
+Hi Linus and maintainers,
 
-> On 5/24/19 6:20 PM, David Miller wrote:
->>> On the other hand, arm64 currently allows the virtual address size
->>> to be configurable, currently defaulting to 48 bits [2, 3]. I was
->>> therefore wondering whether we could make MAX_PHYS_ADDRESS_BITS [4]
->>> configurable as well to be able to support these JITs on
->>> Debian/sparc64 for the foreseeable future by limiting the virtual
->>> address space to 47 or 48 bits.
->> 
->> You can't just do this.
->> 
->> It is possible that all physical memory is mapped to the top of the
->> mappable physical address range, therefore we really need to use the
->> full maximum setting supported by the CPU.
-> 
-> Yes, my initial mail was incorrect. What I actually meant was reducing
-> the size of the va_hole in userspace so that the top-most address that
-> mmap() would return is not beyond 2^47.
-> 
-> Would it be possible to add such a workaround until the JITs have fixed
-> their broken code?
-
-I suppose that's doable, sure.
+below is a series to switch mips, sh and sparc64 to use the generic
+GUP code so that we only have one codebase to touch for further
+improvements to this code.  I don't have hardware for any of these
+architectures, and generally no clue about their page table
+management, so handle with care.  But it at least survives a
+basic defconfig compile test..
