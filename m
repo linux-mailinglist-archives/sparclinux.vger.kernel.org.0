@@ -2,75 +2,59 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 786462BDD5
-	for <lists+sparclinux@lfdr.de>; Tue, 28 May 2019 05:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 083552C0C2
+	for <lists+sparclinux@lfdr.de>; Tue, 28 May 2019 10:02:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728050AbfE1Dnw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 27 May 2019 23:43:52 -0400
-Received: from ozlabs.org ([203.11.71.1]:42453 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727804AbfE1Dnw (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 27 May 2019 23:43:52 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 45Cfp83y01z9s9N;
-        Tue, 28 May 2019 13:43:43 +1000 (AEST)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Christian Brauner <christian@brauner.io>, viro@zeniv.linux.org.uk,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        torvalds@linux-foundation.org, fweimer@redhat.com
-Cc:     jannh@google.com, oleg@redhat.com, tglx@linutronix.de,
-        arnd@arndb.de, shuah@kernel.org, dhowells@redhat.com,
-        tkjos@android.com, ldv@altlinux.org, miklos@szeredi.hu,
-        Christian Brauner <christian@brauner.io>,
-        linux-api@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v3 2/3] arch: wire-up close_range()
-In-Reply-To: <20190524111047.6892-3-christian@brauner.io>
-References: <20190524111047.6892-1-christian@brauner.io> <20190524111047.6892-3-christian@brauner.io>
-Date:   Tue, 28 May 2019 13:43:43 +1000
-Message-ID: <87woibp7kg.fsf@concordia.ellerman.id.au>
+        id S1727380AbfE1ICA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 28 May 2019 04:02:00 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:46892 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726203AbfE1ICA (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 28 May 2019 04:02:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=5Anq1qwGKoGsIX6kb9ZWLK4o9JgSaVCCm8wVkC+oVCE=; b=AUfFmnK9XzeNtgYFLAw32vYpg
+        uHV8PlXfVQ8TVUhu+7QmSiTGyVi9+JtQqh6ES2ANR77xHCPHIea/pNle1cd/kpxZs7jF/S0QPtYlh
+        4H+WGxCtJ588MjkDyGPi25GnNQuQ6g0qkn/2A4IAemeQAWpii2+4Vq1yDIzJBNuVQ17tCMsnWghwR
+        HgA0EieTjD/ELwj3HL9UR3qjzAUkM6i47p4SCrEPQGdRwT0hS8OUEDiwEWiZQwRde+rmtEoPmOP46
+        GWKL83J16ZVG0bJYENsh+lIg5TwAG7fYcaMCjxdAUejy5dczD2i1PVruv7VulObHGR+3Rk7oDE+uS
+        eG/JZb/bQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hVX3Q-0001oC-40; Tue, 28 May 2019 08:01:52 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 8CAA52073CF8D; Tue, 28 May 2019 10:01:49 +0200 (CEST)
+Date:   Tue, 28 May 2019 10:01:49 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-mm@kvack.org, netdev@vger.kernel.org, luto@kernel.org,
+        dave.hansen@intel.com, namit@vmware.com
+Subject: Re: [PATCH v5 0/2] Fix issues with vmalloc flush flag
+Message-ID: <20190528080149.GJ2623@hirez.programming.kicks-ass.net>
+References: <20190527211058.2729-1-rick.p.edgecombe@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190527211058.2729-1-rick.p.edgecombe@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Christian Brauner <christian@brauner.io> writes:
-> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-> index 103655d84b4b..ba2c1f078cbd 100644
-> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
-> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-> @@ -515,3 +515,4 @@
->  431	common	fsconfig			sys_fsconfig
->  432	common	fsmount				sys_fsmount
->  433	common	fspick				sys_fspick
-> +435	common	close_range			sys_close_range
+On Mon, May 27, 2019 at 02:10:56PM -0700, Rick Edgecombe wrote:
+> These two patches address issues with the recently added
+> VM_FLUSH_RESET_PERMS vmalloc flag.
+> 
+> Patch 1 addresses an issue that could cause a crash after other
+> architectures besides x86 rely on this path.
+> 
+> Patch 2 addresses an issue where in a rare case strange arguments
+> could be provided to flush_tlb_kernel_range(). 
 
-With a minor build fix the selftest passes for me on ppc64le:
-
-  # ./close_range_test 
-  1..9
-  ok 1 do not allow invalid flag values for close_range()
-  ok 2 close_range() from 3 to 53
-  ok 3 fcntl() verify closed range from 3 to 53
-  ok 4 close_range() from 54 to 95
-  ok 5 fcntl() verify closed range from 54 to 95
-  ok 6 close_range() from 96 to 102
-  ok 7 fcntl() verify closed range from 96 to 102
-  ok 8 close_range() closed single file descriptor
-  ok 9 fcntl() verify closed single file descriptor
-  # Pass 9 Fail 0 Xfail 0 Xpass 0 Skip 0 Error 0
-
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
+Thanks!
