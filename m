@@ -2,59 +2,147 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 083552C0C2
-	for <lists+sparclinux@lfdr.de>; Tue, 28 May 2019 10:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 054FA2C3BA
+	for <lists+sparclinux@lfdr.de>; Tue, 28 May 2019 11:58:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727380AbfE1ICA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 28 May 2019 04:02:00 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:46892 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726203AbfE1ICA (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 28 May 2019 04:02:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=5Anq1qwGKoGsIX6kb9ZWLK4o9JgSaVCCm8wVkC+oVCE=; b=AUfFmnK9XzeNtgYFLAw32vYpg
-        uHV8PlXfVQ8TVUhu+7QmSiTGyVi9+JtQqh6ES2ANR77xHCPHIea/pNle1cd/kpxZs7jF/S0QPtYlh
-        4H+WGxCtJ588MjkDyGPi25GnNQuQ6g0qkn/2A4IAemeQAWpii2+4Vq1yDIzJBNuVQ17tCMsnWghwR
-        HgA0EieTjD/ELwj3HL9UR3qjzAUkM6i47p4SCrEPQGdRwT0hS8OUEDiwEWiZQwRde+rmtEoPmOP46
-        GWKL83J16ZVG0bJYENsh+lIg5TwAG7fYcaMCjxdAUejy5dczD2i1PVruv7VulObHGR+3Rk7oDE+uS
-        eG/JZb/bQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hVX3Q-0001oC-40; Tue, 28 May 2019 08:01:52 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 8CAA52073CF8D; Tue, 28 May 2019 10:01:49 +0200 (CEST)
-Date:   Tue, 28 May 2019 10:01:49 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-mm@kvack.org, netdev@vger.kernel.org, luto@kernel.org,
-        dave.hansen@intel.com, namit@vmware.com
-Subject: Re: [PATCH v5 0/2] Fix issues with vmalloc flush flag
-Message-ID: <20190528080149.GJ2623@hirez.programming.kicks-ass.net>
-References: <20190527211058.2729-1-rick.p.edgecombe@intel.com>
+        id S1726713AbfE1J6K (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 28 May 2019 05:58:10 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:39036 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726649AbfE1J6J (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 28 May 2019 05:58:09 -0400
+Received: by mail-ot1-f65.google.com with SMTP id r7so17173876otn.6
+        for <sparclinux@vger.kernel.org>; Tue, 28 May 2019 02:58:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brauner.io; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=n8mEOfFlOrFfQ5ADoq5IltTLDgmtoxRa6B+153SpHAE=;
+        b=cpeK2sktn7NMSf704YRsePZcwMV5rEfvSYWLdkbE0oo7SEPsGyf2Sg/RoHTcSoQfPd
+         wKUtklR660LzAKMlYxgcivpoPmw+LSf5RppXvWNS6o1G0soFTMAvZUcbgBxvK2BECrI0
+         Rle3mXgyvD783k6/0SbYAStUQCihPJGyFt818iQ5hLWys0KtqDqC6rX9cnEeWCbwKNG0
+         tdk47Ttoh8A9F1CCaGanOIYDEl/ZdHErWc8Wv5KldYhEb6ofWf7dsBtFYzjTibWrsdhA
+         MZ+zwyNHz+uR8reJwzBhLz8RLg8uhrkcEzyfZuKsJUXFqTqSWw3bOPqffMHHTUaHwhxW
+         1OcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=n8mEOfFlOrFfQ5ADoq5IltTLDgmtoxRa6B+153SpHAE=;
+        b=sWMJ852xpWLq+9xMjN9h6NxPr/eE36VZ9eiNCs8mbPX8cyi283/dOIn02zf4CkzXv9
+         YXNePps3zZ7Xwq4vwvGSRLeo+evaXp9ilNu09uv3GuXkQQcelFRDFXEJk/38dvDrgLMG
+         deDtTP7y1bkk/AxHGh0uOV5cu2W09n9doEVPHngMQYM/xS/CKZKHHFlSDw0G6otfjivB
+         /7kpTp64SVAGKAMw3J3ptE7iw9EEDtPcm29zhrk6VDIeCTdVQcVxgh/VznNtYsLhkJDF
+         BrLYk1qqh7VvwYn355veSZchiICqVS5L6oa/c4fg4HPqVzgwkAXpxa1xm3EajtEMEuBt
+         aJ7w==
+X-Gm-Message-State: APjAAAVLGBxpGpXxVXYCkDzfrvy6cbGQmR19uh16QyYswBSiM2oZX8eq
+        bYWuw1zyGgEfU8zeUyx+I9jK3g==
+X-Google-Smtp-Source: APXvYqwNLIyMiw7dADjTCxSmg48ETPJlltLpV+f/5L0odOCbBrMF/Z9t2SkD+zCcao739KqAxW23xA==
+X-Received: by 2002:a05:6830:214f:: with SMTP id r15mr4126904otd.143.1559037489020;
+        Tue, 28 May 2019 02:58:09 -0700 (PDT)
+Received: from brauner.io ([172.56.7.242])
+        by smtp.gmail.com with ESMTPSA id n187sm2440013oif.25.2019.05.28.02.57.59
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 28 May 2019 02:58:08 -0700 (PDT)
+Date:   Tue, 28 May 2019 11:57:56 +0200
+From:   Christian Brauner <christian@brauner.io>
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        torvalds@linux-foundation.org, fweimer@redhat.com,
+        jannh@google.com, oleg@redhat.com, tglx@linutronix.de,
+        arnd@arndb.de, shuah@kernel.org, dhowells@redhat.com,
+        tkjos@android.com, ldv@altlinux.org, miklos@szeredi.hu,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v2 2/2] tests: add close_range() tests
+Message-ID: <20190528095754.peumcgjysw2nq24y@brauner.io>
+References: <20190523154747.15162-1-christian@brauner.io>
+ <20190523154747.15162-3-christian@brauner.io>
+ <8736kzqpdm.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190527211058.2729-1-rick.p.edgecombe@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <8736kzqpdm.fsf@concordia.ellerman.id.au>
+User-Agent: NeoMutt/20180716
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, May 27, 2019 at 02:10:56PM -0700, Rick Edgecombe wrote:
-> These two patches address issues with the recently added
-> VM_FLUSH_RESET_PERMS vmalloc flag.
+On Tue, May 28, 2019 at 12:33:41PM +1000, Michael Ellerman wrote:
+> Christian Brauner <christian@brauner.io> writes:
+> > This adds basic tests for the new close_range() syscall.
+> > - test that no invalid flags can be passed
+> > - test that a range of file descriptors is correctly closed
+> > - test that a range of file descriptors is correctly closed if there there
+> >   are already closed file descriptors in the range
+> > - test that max_fd is correctly capped to the current fdtable maximum
+> >
+> > Signed-off-by: Christian Brauner <christian@brauner.io>
+> > Cc: Arnd Bergmann <arnd@arndb.de>
+> > Cc: Jann Horn <jannh@google.com>
+> > Cc: David Howells <dhowells@redhat.com>
+> > Cc: Dmitry V. Levin <ldv@altlinux.org>
+> > Cc: Oleg Nesterov <oleg@redhat.com>
+> > Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> > Cc: Florian Weimer <fweimer@redhat.com>
+> > Cc: linux-api@vger.kernel.org
+> > ---
+> > v1: unchanged
+> > v2:
+> > - Christian Brauner <christian@brauner.io>:
+> >   - verify that close_range() correctly closes a single file descriptor
+> > ---
+> >  tools/testing/selftests/Makefile              |   1 +
+> >  tools/testing/selftests/core/.gitignore       |   1 +
+> >  tools/testing/selftests/core/Makefile         |   6 +
+> >  .../testing/selftests/core/close_range_test.c | 142 ++++++++++++++++++
+> >  4 files changed, 150 insertions(+)
+> >  create mode 100644 tools/testing/selftests/core/.gitignore
+> >  create mode 100644 tools/testing/selftests/core/Makefile
+> >  create mode 100644 tools/testing/selftests/core/close_range_test.c
+> >
+> > diff --git a/tools/testing/selftests/core/.gitignore b/tools/testing/selftests/core/.gitignore
+> > new file mode 100644
+> > index 000000000000..6e6712ce5817
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/core/.gitignore
+> > @@ -0,0 +1 @@
+> > +close_range_test
+> > diff --git a/tools/testing/selftests/core/Makefile b/tools/testing/selftests/core/Makefile
+> > new file mode 100644
+> > index 000000000000..de3ae68aa345
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/core/Makefile
+> > @@ -0,0 +1,6 @@
+> > +CFLAGS += -g -I../../../../usr/include/ -I../../../../include
 > 
-> Patch 1 addresses an issue that could cause a crash after other
-> architectures besides x86 rely on this path.
+> Your second -I pulls the unexported kernel headers in, userspace
+> programs shouldn't include unexported kernel headers.
 > 
-> Patch 2 addresses an issue where in a rare case strange arguments
-> could be provided to flush_tlb_kernel_range(). 
+> It breaks the build on powerpc with eg:
+> 
+>   powerpc64le-linux-gnu-gcc -g -I../../../../usr/include/ -I../../../../include    close_range_test.c  -o /output/kselftest/core/close_range_test
+>   In file included from /usr/powerpc64le-linux-gnu/include/bits/fcntl-linux.h:346,
+>                    from /usr/powerpc64le-linux-gnu/include/bits/fcntl.h:62,
+>                    from /usr/powerpc64le-linux-gnu/include/fcntl.h:35,
+>                    from close_range_test.c:5:
+>   ../../../../include/linux/falloc.h:13:2: error: unknown type name '__s16'
+>     __s16  l_type;
+>     ^~~~~
+> 
+> 
+> Did you do that on purpose or just copy it from one of the other
+> Makefiles? :)
 
-Thanks!
+I originally did that on purpose because checkpatch was yammering on
+about me not having used ARRAY_SIZE(). But that include can go, you are
+right.
+
+Christian
