@@ -2,57 +2,92 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 071A52D2D2
-	for <lists+sparclinux@lfdr.de>; Wed, 29 May 2019 02:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C6FD2D3BC
+	for <lists+sparclinux@lfdr.de>; Wed, 29 May 2019 04:20:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727036AbfE2AX3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 28 May 2019 20:23:29 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:54434 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726515AbfE2AX2 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 28 May 2019 20:23:28 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 3319E1400E0D1;
-        Tue, 28 May 2019 17:23:28 -0700 (PDT)
-Date:   Tue, 28 May 2019 17:23:27 -0700 (PDT)
-Message-Id: <20190528.172327.2113097810388476996.davem@davemloft.net>
-To:     rick.p.edgecombe@intel.com
-Cc:     linux-kernel@vger.kernel.org, peterz@infradead.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        netdev@vger.kernel.org, luto@kernel.org, dave.hansen@intel.com,
-        namit@vmware.com
-Subject: Re: [PATCH v5 0/2] Fix issues with vmalloc flush flag
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190527211058.2729-1-rick.p.edgecombe@intel.com>
-References: <20190527211058.2729-1-rick.p.edgecombe@intel.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 28 May 2019 17:23:28 -0700 (PDT)
+        id S1726141AbfE2CUm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 28 May 2019 22:20:42 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:33193 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725828AbfE2CUm (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 28 May 2019 22:20:42 -0400
+Received: by mail-pf1-f193.google.com with SMTP id z28so564897pfk.0;
+        Tue, 28 May 2019 19:20:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=2Yv4K1hvNpR1+8DJIElCyNMLM6mZWuYhgbyhs82Pwy0=;
+        b=u5iwkDqn/7K1GBHkfYzQ6ohCsd80jlRZIQL7NT5PE3xEOQsIS3czAim4X1myyKuVYB
+         icmZlTZGffyuWWfEQlLOB36V3jCiO3Ha3iPRWFQSHli1ONp5HT65vHEaNNMYUd/qMF/L
+         bKNGxM7iBNcqevO415eDA8rAFrLxdmeoEaFJwYs3OtZnIYsNuxQtFESUsqFvWrUOI3pS
+         VIw9nBbg74YcE8NSTNJgN7QpX0gzxQCW48gU1A83TsuWr9vrP3lISPf9tF+ivk7EGQgz
+         CH5rBYq8i4bNotc+9dHGcfRvslh64Az2F+v6HThaI8Y7I6VvxBDwCZCvUbqpPd7t15nd
+         6Khg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=2Yv4K1hvNpR1+8DJIElCyNMLM6mZWuYhgbyhs82Pwy0=;
+        b=gUdxyG+l+nGU9NABioWsr3V2vbRmdX05QUAwYMFPhTOFOUtqNE9zgoyHrv4Ly7ypDp
+         eD2dZ0uznfJKKlrQsTC/wUWkcQUZStuSbKVoLCq9Tf/jKBbddX3lP3EeajEqgeQOAgy6
+         oMGQIaeYPpTijfs87jpvHwGjQO1k4cyj4tsLSItNy2NrpPDIXFSXfDcsmlXRAUHYhPJI
+         fhPKE5EVzQxOztnX8xrH/hMCSIlWyX/L7gGUMd54NFbgVOjhn8gCctDisxXvdqBwYp27
+         DZCxoIkB7ycLpiEYuFX6eOcxu0e1n0PPF6/Q/Qn4M188Wz70II3IFT6pbBfit5j/lTdD
+         DxuQ==
+X-Gm-Message-State: APjAAAWQaSpYmfctt7aYWwct480FVzhr1FDe1gKPqH3Xb24rwwvl0kNP
+        PqxVgSkFHt1ek9XrGS0z1RI=
+X-Google-Smtp-Source: APXvYqxNIh7asWkaREFXSQyA9gzgUpdhqaCuM1hUeTel87H1TZ9MSDm+yPKtXf3g1oCTKcJPLTwlyA==
+X-Received: by 2002:a17:90a:718c:: with SMTP id i12mr9515577pjk.32.1559096441748;
+        Tue, 28 May 2019 19:20:41 -0700 (PDT)
+Received: from xy-data.openstacklocal (ecs-159-138-22-150.compute.hwclouds-dns.com. [159.138.22.150])
+        by smtp.gmail.com with ESMTPSA id d6sm3623820pjo.32.2019.05.28.19.20.39
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 28 May 2019 19:20:41 -0700 (PDT)
+From:   Young Xiao <92siuyang@gmail.com>
+To:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, davem@davemloft.net,
+        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
+Cc:     Young Xiao <92siuyang@gmail.com>
+Subject: [PATCH] sparc: perf: fix updated event period in response to PERF_EVENT_IOC_PERIOD
+Date:   Wed, 29 May 2019 10:21:48 +0800
+Message-Id: <1559096508-25847-1-git-send-email-92siuyang@gmail.com>
+X-Mailer: git-send-email 2.7.4
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Date: Mon, 27 May 2019 14:10:56 -0700
+The PERF_EVENT_IOC_PERIOD ioctl command can be used to change the
+sample period of a running perf_event. Consequently, when calculating
+the next event period, the new period will only be considered after the
+previous one has overflowed.
 
-> These two patches address issues with the recently added
-> VM_FLUSH_RESET_PERMS vmalloc flag.
-> 
-> Patch 1 addresses an issue that could cause a crash after other
-> architectures besides x86 rely on this path.
-> 
-> Patch 2 addresses an issue where in a rare case strange arguments
-> could be provided to flush_tlb_kernel_range(). 
+This patch changes the calculation of the remaining event ticks so that
+they are offset if the period has changed.
 
-It just occurred to me another situation that would cause trouble on
-sparc64, and that's if someone the address range of the main kernel
-image ended up being passed to flush_tlb_kernel_range().
+See commit 3581fe0ef37c ("ARM: 7556/1: perf: fix updated event period in
+response to PERF_EVENT_IOC_PERIOD") for details.
 
-That would flush the locked kernel mapping and crash the kernel
-instantly in a completely non-recoverable way.
+Signed-off-by: Young Xiao <92siuyang@gmail.com>
+---
+ arch/sparc/kernel/perf_event.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/sparc/kernel/perf_event.c b/arch/sparc/kernel/perf_event.c
+index 6de7c68..a58ae9c 100644
+--- a/arch/sparc/kernel/perf_event.c
++++ b/arch/sparc/kernel/perf_event.c
+@@ -891,6 +891,10 @@ static int sparc_perf_event_set_period(struct perf_event *event,
+ 	s64 period = hwc->sample_period;
+ 	int ret = 0;
+ 
++	/* The period may have been changed by PERF_EVENT_IOC_PERIOD */
++	if (unlikely(period != hwc->last_period))
++		left = period - (hwc->last_period - left);
++
+ 	if (unlikely(left <= -period)) {
+ 		left = period;
+ 		local64_set(&hwc->period_left, left);
+-- 
+2.7.4
+
