@@ -2,92 +2,84 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C6FD2D3BC
-	for <lists+sparclinux@lfdr.de>; Wed, 29 May 2019 04:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AE3C2D501
+	for <lists+sparclinux@lfdr.de>; Wed, 29 May 2019 07:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726141AbfE2CUm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 28 May 2019 22:20:42 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:33193 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725828AbfE2CUm (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 28 May 2019 22:20:42 -0400
-Received: by mail-pf1-f193.google.com with SMTP id z28so564897pfk.0;
-        Tue, 28 May 2019 19:20:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=2Yv4K1hvNpR1+8DJIElCyNMLM6mZWuYhgbyhs82Pwy0=;
-        b=u5iwkDqn/7K1GBHkfYzQ6ohCsd80jlRZIQL7NT5PE3xEOQsIS3czAim4X1myyKuVYB
-         icmZlTZGffyuWWfEQlLOB36V3jCiO3Ha3iPRWFQSHli1ONp5HT65vHEaNNMYUd/qMF/L
-         bKNGxM7iBNcqevO415eDA8rAFrLxdmeoEaFJwYs3OtZnIYsNuxQtFESUsqFvWrUOI3pS
-         VIw9nBbg74YcE8NSTNJgN7QpX0gzxQCW48gU1A83TsuWr9vrP3lISPf9tF+ivk7EGQgz
-         CH5rBYq8i4bNotc+9dHGcfRvslh64Az2F+v6HThaI8Y7I6VvxBDwCZCvUbqpPd7t15nd
-         6Khg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=2Yv4K1hvNpR1+8DJIElCyNMLM6mZWuYhgbyhs82Pwy0=;
-        b=gUdxyG+l+nGU9NABioWsr3V2vbRmdX05QUAwYMFPhTOFOUtqNE9zgoyHrv4Ly7ypDp
-         eD2dZ0uznfJKKlrQsTC/wUWkcQUZStuSbKVoLCq9Tf/jKBbddX3lP3EeajEqgeQOAgy6
-         oMGQIaeYPpTijfs87jpvHwGjQO1k4cyj4tsLSItNy2NrpPDIXFSXfDcsmlXRAUHYhPJI
-         fhPKE5EVzQxOztnX8xrH/hMCSIlWyX/L7gGUMd54NFbgVOjhn8gCctDisxXvdqBwYp27
-         DZCxoIkB7ycLpiEYuFX6eOcxu0e1n0PPF6/Q/Qn4M188Wz70II3IFT6pbBfit5j/lTdD
-         DxuQ==
-X-Gm-Message-State: APjAAAWQaSpYmfctt7aYWwct480FVzhr1FDe1gKPqH3Xb24rwwvl0kNP
-        PqxVgSkFHt1ek9XrGS0z1RI=
-X-Google-Smtp-Source: APXvYqxNIh7asWkaREFXSQyA9gzgUpdhqaCuM1hUeTel87H1TZ9MSDm+yPKtXf3g1oCTKcJPLTwlyA==
-X-Received: by 2002:a17:90a:718c:: with SMTP id i12mr9515577pjk.32.1559096441748;
-        Tue, 28 May 2019 19:20:41 -0700 (PDT)
-Received: from xy-data.openstacklocal (ecs-159-138-22-150.compute.hwclouds-dns.com. [159.138.22.150])
-        by smtp.gmail.com with ESMTPSA id d6sm3623820pjo.32.2019.05.28.19.20.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 28 May 2019 19:20:41 -0700 (PDT)
-From:   Young Xiao <92siuyang@gmail.com>
-To:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
-        namhyung@kernel.org, davem@davemloft.net,
-        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
-Cc:     Young Xiao <92siuyang@gmail.com>
-Subject: [PATCH] sparc: perf: fix updated event period in response to PERF_EVENT_IOC_PERIOD
-Date:   Wed, 29 May 2019 10:21:48 +0800
-Message-Id: <1559096508-25847-1-git-send-email-92siuyang@gmail.com>
-X-Mailer: git-send-email 2.7.4
+        id S1725856AbfE2FL4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 29 May 2019 01:11:56 -0400
+Received: from mga03.intel.com ([134.134.136.65]:52539 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725840AbfE2FL4 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 29 May 2019 01:11:56 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 May 2019 22:11:55 -0700
+X-ExtLoop1: 1
+Received: from orsmsx110.amr.corp.intel.com ([10.22.240.8])
+  by fmsmga005.fm.intel.com with ESMTP; 28 May 2019 22:11:54 -0700
+Received: from orsmsx112.amr.corp.intel.com ([169.254.3.79]) by
+ ORSMSX110.amr.corp.intel.com ([169.254.10.7]) with mapi id 14.03.0415.000;
+ Tue, 28 May 2019 22:11:53 -0700
+From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To:     "davem@davemloft.net" <davem@davemloft.net>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "namit@vmware.com" <namit@vmware.com>,
+        "luto@kernel.org" <luto@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
+Subject: Re: [PATCH v5 0/2] Fix issues with vmalloc flush flag
+Thread-Topic: [PATCH v5 0/2] Fix issues with vmalloc flush flag
+Thread-Index: AQHVFNC+iT2yoslPq0S8A9En17xWb6aBtS+AgABQlQA=
+Date:   Wed, 29 May 2019 05:11:52 +0000
+Message-ID: <abb649f0f076777346cbe6a8a0e5d9f8b3c26b41.camel@intel.com>
+References: <20190527211058.2729-1-rick.p.edgecombe@intel.com>
+         <20190528.172327.2113097810388476996.davem@davemloft.net>
+In-Reply-To: <20190528.172327.2113097810388476996.davem@davemloft.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
+x-originating-ip: [10.252.134.167]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <63D338040718464F89739E472722ADD9@intel.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The PERF_EVENT_IOC_PERIOD ioctl command can be used to change the
-sample period of a running perf_event. Consequently, when calculating
-the next event period, the new period will only be considered after the
-previous one has overflowed.
-
-This patch changes the calculation of the remaining event ticks so that
-they are offset if the period has changed.
-
-See commit 3581fe0ef37c ("ARM: 7556/1: perf: fix updated event period in
-response to PERF_EVENT_IOC_PERIOD") for details.
-
-Signed-off-by: Young Xiao <92siuyang@gmail.com>
----
- arch/sparc/kernel/perf_event.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/sparc/kernel/perf_event.c b/arch/sparc/kernel/perf_event.c
-index 6de7c68..a58ae9c 100644
---- a/arch/sparc/kernel/perf_event.c
-+++ b/arch/sparc/kernel/perf_event.c
-@@ -891,6 +891,10 @@ static int sparc_perf_event_set_period(struct perf_event *event,
- 	s64 period = hwc->sample_period;
- 	int ret = 0;
- 
-+	/* The period may have been changed by PERF_EVENT_IOC_PERIOD */
-+	if (unlikely(period != hwc->last_period))
-+		left = period - (hwc->last_period - left);
-+
- 	if (unlikely(left <= -period)) {
- 		left = period;
- 		local64_set(&hwc->period_left, left);
--- 
-2.7.4
-
+T24gVHVlLCAyMDE5LTA1LTI4IGF0IDE3OjIzIC0wNzAwLCBEYXZpZCBNaWxsZXIgd3JvdGU6DQo+
+IEZyb206IFJpY2sgRWRnZWNvbWJlIDxyaWNrLnAuZWRnZWNvbWJlQGludGVsLmNvbT4NCj4gRGF0
+ZTogTW9uLCAyNyBNYXkgMjAxOSAxNDoxMDo1NiAtMDcwMA0KPiANCj4gPiBUaGVzZSB0d28gcGF0
+Y2hlcyBhZGRyZXNzIGlzc3VlcyB3aXRoIHRoZSByZWNlbnRseSBhZGRlZA0KPiA+IFZNX0ZMVVNI
+X1JFU0VUX1BFUk1TIHZtYWxsb2MgZmxhZy4NCj4gPiANCj4gPiBQYXRjaCAxIGFkZHJlc3NlcyBh
+biBpc3N1ZSB0aGF0IGNvdWxkIGNhdXNlIGEgY3Jhc2ggYWZ0ZXIgb3RoZXINCj4gPiBhcmNoaXRl
+Y3R1cmVzIGJlc2lkZXMgeDg2IHJlbHkgb24gdGhpcyBwYXRoLg0KPiA+IA0KPiA+IFBhdGNoIDIg
+YWRkcmVzc2VzIGFuIGlzc3VlIHdoZXJlIGluIGEgcmFyZSBjYXNlIHN0cmFuZ2UgYXJndW1lbnRz
+DQo+ID4gY291bGQgYmUgcHJvdmlkZWQgdG8gZmx1c2hfdGxiX2tlcm5lbF9yYW5nZSgpLiANCj4g
+DQo+IEl0IGp1c3Qgb2NjdXJyZWQgdG8gbWUgYW5vdGhlciBzaXR1YXRpb24gdGhhdCB3b3VsZCBj
+YXVzZSB0cm91YmxlIG9uDQo+IHNwYXJjNjQsIGFuZCB0aGF0J3MgaWYgc29tZW9uZSB0aGUgYWRk
+cmVzcyByYW5nZSBvZiB0aGUgbWFpbiBrZXJuZWwNCj4gaW1hZ2UgZW5kZWQgdXAgYmVpbmcgcGFz
+c2VkIHRvIGZsdXNoX3RsYl9rZXJuZWxfcmFuZ2UoKS4NCj4gDQo+IFRoYXQgd291bGQgZmx1c2gg
+dGhlIGxvY2tlZCBrZXJuZWwgbWFwcGluZyBhbmQgY3Jhc2ggdGhlIGtlcm5lbA0KPiBpbnN0YW50
+bHkgaW4gYSBjb21wbGV0ZWx5IG5vbi1yZWNvdmVyYWJsZSB3YXkuDQoNCkhtbSwgSSBoYXZlbid0
+IHJlY2VpdmVkIHRoZSBsb2dzIGZyb20gTWVlbGlzIHRoYXQgd2lsbCBzaG93IHRoZSByZWFsDQpy
+YW5nZXMgYmVpbmcgcGFzc2VkIGludG8gZmx1c2hfdGxiX2tlcm5lbF9yYW5nZSgpIG9uIHNwYXJj
+LCBidXQgaXQNCnNob3VsZCBiZSBmbHVzaGluZyBhIHJhbmdlIHNwYW5uaW5nIGZyb20gdGhlIG1v
+ZHVsZXMgdG8gdGhlIGRpcmVjdCBtYXAuDQpJdCBsb29rcyBsaWtlIHRoZSBrZXJuZWwgaXMgYXQg
+dGhlIHZlcnkgYm90dG9tIG9mIHRoZSBhZGRyZXNzIHNwYWNlLCBzbw0Kbm90IGluY2x1ZGVkLiBP
+ciBkbyB5b3UgbWVhbiB0aGUgcGFnZXMgdGhhdCBob2xkIHRoZSBrZXJuZWwgdGV4dCBvbiB0aGUN
+CmRpcmVjdCBtYXA/DQoNCkJ1dCByZWdhcmRsZXNzIG9mIHRoaXMgbmV3IGNvZGUsIERFQlVHX1BB
+R0VBTExPQyBoYW5ncyB3aXRoIHRoZSBmaXJzdA0Kdm1hbGxvYyBmcmVlL3VubWFwLiBUaGF0IHNo
+b3VsZCBiZSBqdXN0IGZsdXNoaW5nIGEgc2luZ2xlIGFsbG9jYXRpb24gaW4NCnRoZSB2bWFsbG9j
+IHJhbmdlLg0KDQpJZiBpdCBpcyBzb21laG93IGNhdGNoaW5nIGEgbG9ja2VkIGVudHJ5IHRob3Vn
+aC4uLiBBcmUgdGhlcmUgYW55IHNwYXJjDQpmbHVzaCBtZWNoYW5pc21zIHRoYXQgY291bGQgYmUg
+dXNlZCBpbiB2bWFsbG9jIHRoYXQgd29uJ3QgdG91Y2ggbG9ja2VkDQplbnRyaWVzPyBQZXRlciBa
+IHdhcyBwb2ludGluZyBvdXQgdGhhdCBmbHVzaF90bGJfYWxsKCkgbWlnaHQgYmUgbW9yZQ0KYXBw
+cm9yaWF0ZSBmb3Igdm1hbGxvYyBhbnl3YXkuDQoNCg==
