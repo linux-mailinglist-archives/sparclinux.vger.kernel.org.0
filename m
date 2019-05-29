@@ -2,119 +2,120 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7DE42D788
-	for <lists+sparclinux@lfdr.de>; Wed, 29 May 2019 10:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D2CE2E510
+	for <lists+sparclinux@lfdr.de>; Wed, 29 May 2019 21:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726015AbfE2IUJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 29 May 2019 04:20:09 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:41290 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725917AbfE2IUJ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 29 May 2019 04:20:09 -0400
-Received: by mail-pl1-f194.google.com with SMTP id s24so608186plr.8;
-        Wed, 29 May 2019 01:20:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Vv80Z7VGeE+yY87s35ZtbvL9SuF+bx88wizFFl2ddXk=;
-        b=cfjTgrmeffoPCrJhI+97W6QXKk6Oei6h+EWkEb+bEn4yMKwe1KRVmiSAlBitS3OzO/
-         c/tyEKG5QaY9H27ocjqX9ClL17ehovMVcUt7YhQ8kf3rHXp6B9XpCCN0CcU6Si2UD4Nx
-         WTLuuegGgJAghoxgukLP6Y9Wo0E6kJgeW38YPyxyZyjfe338LiEpC3p45UFWQN4O+BvI
-         P8+xUi1O2II741hiIEFGS/WMLl/cV3IqvAqIQUVDdyV/KjU3XqOhV1WuYOFjyQW8PnY/
-         amayHly2wRjC94U3jpS4czeAB54sIQF3S61+sOcP7srQnXtmIyeJXkceyyWrL1wlHCJt
-         tFhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Vv80Z7VGeE+yY87s35ZtbvL9SuF+bx88wizFFl2ddXk=;
-        b=TKtqwnpygz5kqP/kUJIUCd8soTgCCN2+gYD8aio6uIfWn8e1uNdpjKExL69cJJACQm
-         pzAYPivclS5hUgTzUktsutSBXl41f2CFEV6T/YBWaSL6YBs/F0Bu2tm6LQkEJ9kEJiKw
-         5mWiG7cN2PAa0RNlGHdf5zX2F7sbDSb5mgJn3QkxglsfLTnxDvlrcJlM+EHNBWsJ50hB
-         SmNbEFa79wzU8x+LCtgJ4ZKdU9ePGw0XcnL8NIOGmlXetrPQ8borpm/hT37Xx8Pi597V
-         N7nga34fmH3GdDPdqbCHXFBw6HPh+LQKPMuhsghOgvn5saMDA7q0VU9KraXn0hT0jMbK
-         s9DQ==
-X-Gm-Message-State: APjAAAXfXJJEByxwaFr+QADho8HPIXphP11fSSvr5j7HVpMPW6qPG7Af
-        DM7CWErhvSPSk6aPN3EoaKyZQyaeTmE2PsPvfpg=
-X-Google-Smtp-Source: APXvYqyfzUdsfOOybUfGF3T6xUuaMylLIfCMpBmv0G9MpnimsL2Jd8Uf2ws2u/OjSpGvnVZhNKSbhFpqsv/52XGO+Xg=
-X-Received: by 2002:a17:902:f212:: with SMTP id gn18mr78134706plb.106.1559118008568;
- Wed, 29 May 2019 01:20:08 -0700 (PDT)
+        id S1726736AbfE2TJC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 29 May 2019 15:09:02 -0400
+Received: from mx2.cyber.ee ([193.40.6.72]:36322 "EHLO mx2.cyber.ee"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725914AbfE2TJB (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 29 May 2019 15:09:01 -0400
+To:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        Dave Miller <davem@davemloft.net>
+From:   Meelis Roos <mroos@linux.ee>
+Subject: [bisected] DEBUG_PAGEALLOC hangs on sparc64
+Cc:     sparclinux@vger.kernel.org, James Clarke <jrtc27@jrtc27.com>
+Message-ID: <86e9d84e-cffa-0bae-f575-7cf6789f5fb8@linux.ee>
+Date:   Wed, 29 May 2019 22:08:26 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-References: <20190525133203.25853-1-hch@lst.de> <20190525133203.25853-5-hch@lst.de>
-In-Reply-To: <20190525133203.25853-5-hch@lst.de>
-From:   Catalin Marinas <catalin.marinas@arm.com>
-Date:   Wed, 29 May 2019 09:19:56 +0100
-Message-ID: <CAHkRjk5ChgbYGXCRG3ob3iCuggC3MVYqeJNNm+nnt6rCqo+b0Q@mail.gmail.com>
-Subject: Re: [PATCH 4/6] mm: add a gup_fixup_start_addr hook
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: et-EE
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Christoph,
+When we debugged Ricks patches, he suggested that it might be
+CONFIG_DEBUG_PAGEALLOC that is broken and suggested I bisect it.
 
-On Sat, 25 May 2019 at 14:33, Christoph Hellwig <hch@lst.de> wrote:
-> diff --git a/mm/gup.c b/mm/gup.c
-> index f173fcbaf1b2..1c21ecfbf38b 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2117,6 +2117,10 @@ static void gup_pgd_range(unsigned long addr, unsigned long end,
->         } while (pgdp++, addr = next, addr != end);
->  }
->
-> +#ifndef gup_fixup_start_addr
-> +#define gup_fixup_start_addr(start)    (start)
-> +#endif
+I did. It was not as simple as I had hoped. Initially I saw the problem with
+current kernel on V445 when I turned on DEBUG_PAGEALLOC. I could go down to
+4.16 on thismachine and no lower (older kernels did not support gcc-8) and
+it was still broken with 4.16.
 
-As you pointed out in a subsequent reply, we could use the
-untagged_addr() macro from Andrey (or a shorter "untag_addr" if you
-want it to look like a verb).
+Next I took V440 with old userspace (gcc 4.9.3) and tried with that. After finding
+out that CONFIG_HIBERNATION disables/hides DEBUG_PAGEALLOC, I was able to turn on
+DEBUG_PAGEALLOC. 4.0 was good, 4.16 was bad, so I started bisecting. On good commits,
+everything worked. On bad commits, it hangs slightly after the first scsi disk
+detection (the exact line varies slightly) and Ricks debug patches for his patch
+showed that it was probably the first vfree() that hangs (please correct me if
+I got it wrong!).
 
->  #ifndef gup_fast_permitted
->  /*
->   * Check if it's allowed to use __get_user_pages_fast() for the range, or
-> @@ -2145,7 +2149,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
->         unsigned long flags;
->         int nr = 0;
->
-> -       start &= PAGE_MASK;
-> +       start = gup_fixup_start_addr(start) & PAGE_MASK;
->         len = (unsigned long) nr_pages << PAGE_SHIFT;
->         end = start + len;
->
-> @@ -2218,7 +2222,7 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
->         unsigned long addr, len, end;
->         int nr = 0, ret = 0;
->
-> -       start &= PAGE_MASK;
-> +       start = gup_fixup_start_addr(start) & PAGE_MASK;
->         addr = start;
->         len = (unsigned long) nr_pages << PAGE_SHIFT;
->         end = start + len;
+Bisecting led me to 4.9 merge window and this patch that broke it:
 
-In Andrey's patch [1] we don't fix __get_user_pages_fast(), only
-__get_user_pages() as it needs to do a find_vma() search. I wonder
-whether this is actually necessary for the *_fast() versions. If the
-top byte is non-zero (i.e. tagged address), 'end' would also have the
-same tag. The page table macros like pgd_index() and pgd_addr_end()
-already take care of masking out the top bits (at least for arm64)
-since they need to work on kernel address with the top bits all 1. So
-gup_pgd_range() should cope with tagged addresses already.
+a74ad5e660a9ee1d071665e7e8ad822784a2dc7f is the first bad commit
+commit a74ad5e660a9ee1d071665e7e8ad822784a2dc7f
+Author: David S. Miller <davem@davemloft.net>
+Date:   Thu Oct 27 09:04:54 2016 -0700
 
-[1] https://lore.kernel.org/lkml/d234cd71774f35229bdfc0a793c34d6712b73093.1557160186.git.andreyknvl@google.com/
+     sparc64: Handle extremely large kernel TLB range flushes more gracefully.
+     
+     When the vmalloc area gets fragmented, and because the firmware
+     mapping area sits between where modules live and the vmalloc area, we
+     can sometimes receive requests for enormous kernel TLB range flushes.
+     
+     When this happens the cpu just spins flushing billions of pages and
+     this triggers the NMI watchdog and other problems.
+     
+     We took care of this on the TSB side by doing a linear scan of the
+     table once we pass a certain threshold.
+     
+     Do something similar for the TLB flush, however we are limited by
+     the TLB flush facilities provided by the different chip variants.
+     
+     First of all we use an (mostly arbitrary) cut-off of 256K which is
+     about 32 pages.  This can be tuned in the future.
+     
+     The huge range code path for each chip works as follows:
+     
+     1) On spitfire we flush all non-locked TLB entries using diagnostic
+        acceses.
+     
+     2) On cheetah we use the "flush all" TLB flush.
+     
+     3) On sun4v/hypervisor we do a TLB context flush on context 0, which
+        unlike previous chips does not remove "permanent" or locked
+        entries.
+     
+     We could probably do something better on spitfire, such as limiting
+     the flush to kernel TLB entries or even doing range comparisons.
+     However that probably isn't worth it since those chips are old and
+     the TLB only had 64 entries.
+     
+     Reported-by: James Clarke <jrtc27@jrtc27.com>
+     Tested-by: James Clarke <jrtc27@jrtc27.com>
+     Signed-off-by: David S. Miller <davem@davemloft.net>
+
+:040000 040000 c55bfc4f1f2140c55c7e00c122794d102025a6eb 0ffe14322d0813244aa7ba2bdc94680eceeccf49 M      arch
+
+This is the CPU in V440:
+$ cat /proc/cpuinfo
+cpu             : TI UltraSparc IIIi (Jalapeno)
+fpu             : UltraSparc IIIi integrated FPU
+pmu             : ultra3i
+prom            : OBP 4.30.4.a 2010/01/06 14:45
+type            : sun4u
+ncpus probed    : 4
+ncpus active    : 4
+D$ parity tl1   : 0
+I$ parity tl1   : 0
+cpucaps         : flush,stbar,swap,muldiv,v9,ultra3,mul32,div32,v8plus,vis,vis2
+Cpu0ClkTck      : 000000004c5a8240
+Cpu1ClkTck      : 000000004c5a8240
+Cpu2ClkTck      : 000000004c5a8240
+Cpu3ClkTck      : 000000004c5a8240
+MMU Type        : Cheetah+
+MMU PGSZs       : 8K,64K,512K,4MB
+State:
+CPU0:           online
+CPU1:           online
+CPU2:           online
+CPU3:           online
+
 
 -- 
-Catalin
+Meelis Roos (mroos@linux.ee)
