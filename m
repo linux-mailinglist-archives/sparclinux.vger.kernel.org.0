@@ -2,59 +2,81 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10E53305CF
-	for <lists+sparclinux@lfdr.de>; Fri, 31 May 2019 02:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66E2130632
+	for <lists+sparclinux@lfdr.de>; Fri, 31 May 2019 03:24:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726326AbfEaAb7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Thu, 30 May 2019 20:31:59 -0400
-Received: from smtp.tjto.jus.br ([189.10.44.215]:47812 "EHLO smtp.tjto.jus.br"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726128AbfEaAb7 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 30 May 2019 20:31:59 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by smtp.tjto.jus.br (Postfix) with ESMTP id 560973E8906;
-        Thu, 30 May 2019 19:20:12 -0300 (BRT)
-Received: from smtp.tjto.jus.br ([127.0.0.1])
-        by localhost (mta-in.tjto.jus.br [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id YsbOOIVk8-Jv; Thu, 30 May 2019 19:20:12 -0300 (BRT)
-Received: from localhost (localhost [127.0.0.1])
-        by smtp.tjto.jus.br (Postfix) with ESMTP id A7E143E8914;
-        Thu, 30 May 2019 19:20:11 -0300 (BRT)
-X-Virus-Scanned: amavisd-new at mta-in.tjto.jus.br
-Received: from smtp.tjto.jus.br ([127.0.0.1])
-        by localhost (mta-in.tjto.jus.br [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id kYdEjAUb-lcF; Thu, 30 May 2019 19:20:11 -0300 (BRT)
-Received: from [192.99.135.118] (ip118.ip-192-99-135.net [192.99.135.118])
-        (Authenticated sender: nelsonsena@tjto.jus.br)
-        by smtp.tjto.jus.br (Postfix) with ESMTPSA id E598F3E893F;
-        Thu, 30 May 2019 19:20:04 -0300 (BRT)
-Content-Type: text/plain; charset="utf-8"
+        id S1726550AbfEaBYg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 30 May 2019 21:24:36 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:33913 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726548AbfEaBYg (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 30 May 2019 21:24:36 -0400
+Received: by mail-pf1-f195.google.com with SMTP id c14so2674785pfi.1;
+        Thu, 30 May 2019 18:24:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=PC1WfumcDjGU0yD+5JvFLw/e1vzZYICqxOgcNlrLZLs=;
+        b=aFgf8y4hxVqo2mpzXb79+1984QnsepjBu5R9D9FVKNJ4T0qgeM7XIkE0xS8vVVGXuu
+         5jWVOqNPrfqb3jvrGomCaykn13NSZ9TcFrq4JeopXIyYJQ4K5We4yEWTsAzIVZqmw2g/
+         /v6XEyGauJL1YvYGiqoMtBhehxgak2gT4SwYZvlKtCoNunBrs3NdoimWQ4y+Jq5VDRBJ
+         H/BT+FcuLZYfoFG1ZhKJ5ho2A0UO79jsHX9c5FwZCmUZtRK4oypm2aBTZQqWqA9W0hAB
+         aqPeSekT5N3TJBPh3Fcp0tlSZhIrqEB3TbF+t5Ye4BoTvTqavM331lDWFks76LhNi2WN
+         tBrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=PC1WfumcDjGU0yD+5JvFLw/e1vzZYICqxOgcNlrLZLs=;
+        b=OuBN92KmeqUt7by4//5gGC1NzYl9dJzmpo4MF53JWrTfpzrUA+iGlD0toWT8S3lyuf
+         HWga5dFf+WaiHw9NMc8ojaVGkc4T+9qjvnTj8GLzOrN63QVixam9Da2kDKuPTYVnkCGJ
+         nRjUvpz+1wYMIheYk6eFw/Qw3z+JKy+5pUV+OpRLu5lGU4eUZrNTGAyi4TA8bKsz8noI
+         Ze0WoRA/fRXfnEhPhXuyj/YN2YerjV4Dq/yK6cOzDXRs5/YU1vv0S3nlqVFST2dxP/lp
+         a9PoMpNlfg5GzqQ8T9zxGSblMHsKFRiuzAsO5hRSskJm99/4V7skj3G3E+wziDU7n/2W
+         IfyA==
+X-Gm-Message-State: APjAAAVkK4irLDhr5xw2iIFfpQ4OYnciBRcPnDHNFx3FqjZsXmjqkYLs
+        IdPAD4y6HWlMHE8ibdW7VUIK2tMQ
+X-Google-Smtp-Source: APXvYqzLXhhYEo3loYmaJI4Wap6Tr4mF1FLkzndADH6DrUxK38ECkn7byFcJ55AOWuhodBQlAO2RBg==
+X-Received: by 2002:a62:4c5:: with SMTP id 188mr6714889pfe.19.1559265875653;
+        Thu, 30 May 2019 18:24:35 -0700 (PDT)
+Received: from zhanggen-UX430UQ ([66.42.35.75])
+        by smtp.gmail.com with ESMTPSA id a8sm4436752pfk.14.2019.05.30.18.24.28
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 30 May 2019 18:24:35 -0700 (PDT)
+Date:   Fri, 31 May 2019 09:24:18 +0800
+From:   Gen Zhang <blackgod016574@gmail.com>
+To:     davem@davemloft.net, rppt@linux.vnet.ibm.com, mhocko@suse.com,
+        akpm@linux-foundation.org, sfr@canb.auug.org.au
+Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] mdesc: fix a missing-check bug in get_vdev_port_node_info()
+Message-ID: <20190531012418.GA4473@zhanggen-UX430UQ>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?b?UmU6IOKCrCAyLDAwMCwwMDAuMDAgRXVybw==?=
-To:     Recipients <nelsonsena@tjto.jus.br>
-From:   nelsonsena@tjto.jus.br
-Date:   Thu, 30 May 2019 15:20:02 -0700
-Reply-To: myburghhugohendrik@gmail.com
-Message-Id: <20190530222004.E598F3E893F@smtp.tjto.jus.br>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Lieber Freund,
+In get_vdev_port_node_info(), 'node_info->vdev_port.name' is allcoated
+by kstrdup_const(), and it returns NULL when fails. So 
+'node_info->vdev_port.name' should be checked.
 
-Ich bin Herr Richard Wahl der Mega-Gewinner von $ 533M In Mega Millions Jackpot spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt. Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt. Ich habe mich freiwillig dazu entschieden, Ihnen den Betrag von € 2.000.000,00 zu spenden eine der ausgewählten 5, um meine Gewinne zu überprüfen, finden Sie auf meiner You Tube Seite unten.
-
-UHR MICH HIER: https://www.youtube.com/watch?v=tne02ExNDrw
-
-Das ist dein Spendencode: [DF00430342018]
-
-Antworten Sie mit dem Spendencode auf diese E-Mail: wahlfoundationorg@gmail.com
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-
-Herr Richard Wahl
+Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
+---
+diff --git a/arch/sparc/kernel/mdesc.c b/arch/sparc/kernel/mdesc.c
+index 9a26b44..8e645dd 100644
+--- a/arch/sparc/kernel/mdesc.c
++++ b/arch/sparc/kernel/mdesc.c
+@@ -356,6 +356,8 @@ static int get_vdev_port_node_info(struct mdesc_handle *md, u64 node,
+ 
+ 	node_info->vdev_port.id = *idp;
+ 	node_info->vdev_port.name = kstrdup_const(name, GFP_KERNEL);
++	if (!node_info->vdev_port.name)
++		return -1;
+ 	node_info->vdev_port.parent_cfg_hdl = *parent_cfg_hdlp;
+ 
+ 	return 0;
+---
