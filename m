@@ -2,89 +2,92 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D208307D2
-	for <lists+sparclinux@lfdr.de>; Fri, 31 May 2019 06:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5ACE30A98
+	for <lists+sparclinux@lfdr.de>; Fri, 31 May 2019 10:47:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726158AbfEaEg1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 31 May 2019 00:36:27 -0400
-Received: from mga09.intel.com ([134.134.136.24]:62066 "EHLO mga09.intel.com"
+        id S1727026AbfEaIri (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 31 May 2019 04:47:38 -0400
+Received: from foss.arm.com ([217.140.101.70]:47918 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725955AbfEaEg1 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 31 May 2019 00:36:27 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 May 2019 21:36:26 -0700
-X-ExtLoop1: 1
-Received: from orsmsx110.amr.corp.intel.com ([10.22.240.8])
-  by orsmga006.jf.intel.com with ESMTP; 30 May 2019 21:36:26 -0700
-Received: from orsmsx112.amr.corp.intel.com ([169.254.3.79]) by
- ORSMSX110.amr.corp.intel.com ([169.254.10.7]) with mapi id 14.03.0415.000;
- Thu, 30 May 2019 21:36:26 -0700
-From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "mroos@linux.ee" <mroos@linux.ee>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        "jeyu@kernel.org" <jeyu@kernel.org>,
-        "ast@kernel.org" <ast@kernel.org>,
-        "ard.biesheuvel@arm.com" <ard.biesheuvel@arm.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "namit@vmware.com" <namit@vmware.com>,
-        "luto@kernel.org" <luto@kernel.org>,
-        "Hansen, Dave" <dave.hansen@intel.com>
-Subject: Re: [PATCH] vmalloc: Don't use flush flag when no exec perm
-Thread-Topic: [PATCH] vmalloc: Don't use flush flag when no exec perm
-Thread-Index: AQHVFeKXsxy+QkOKqU23zfNpAWli4aaDgIiAgABAJ4CAAV2zgA==
-Date:   Fri, 31 May 2019 04:36:25 +0000
-Message-ID: <120f658d6f34c99a72e82c993ec380109f7aef2c.camel@intel.com>
-References: <20190529055104.6822-1-rick.p.edgecombe@intel.com>
-         <89d6dee949e4418f0cca4cc6c4c9b526c1a5c497.camel@intel.com>
-         <67241836-621c-6933-1278-f04aedcefcb3@linux.ee>
-In-Reply-To: <67241836-621c-6933-1278-f04aedcefcb3@linux.ee>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
-x-originating-ip: [10.252.134.167]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B1A8C0F763855B4D836A965D3C862A13@intel.com>
-Content-Transfer-Encoding: base64
+        id S1726002AbfEaIri (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 31 May 2019 04:47:38 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7619E341;
+        Fri, 31 May 2019 01:47:37 -0700 (PDT)
+Received: from [10.162.42.223] (unknown [10.162.42.223])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20D713F59C;
+        Fri, 31 May 2019 01:47:28 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [RFC] mm: Generalize notify_page_fault()
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>
+References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
+ <20190530110639.GC23461@bombadil.infradead.org>
+ <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
+ <20190530133954.GA2024@bombadil.infradead.org>
+Message-ID: <f1995445-d5ab-f292-d26c-809581002184@arm.com>
+Date:   Fri, 31 May 2019 14:17:43 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
+In-Reply-To: <20190530133954.GA2024@bombadil.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-T24gVGh1LCAyMDE5LTA1LTMwIGF0IDEwOjQ0ICswMzAwLCBNZWVsaXMgUm9vcyB3cm90ZToNCj4g
-PiA+IFRoZSBhZGRpdGlvbiBvZiBWTV9GTFVTSF9SRVNFVF9QRVJNUyBmb3IgQlBGIEpJVCBhbGxv
-Y2F0aW9ucyB3YXMNCj4gPiA+IGJpc2VjdGVkIHRvIHByZXZlbnQgYm9vdCBvbiBhbiBVbHRyYVNw
-YXJjIElJSSBtYWNoaW5lLiBJdCB3YXMNCj4gPiA+IGZvdW5kDQo+ID4gPiB0aGF0DQo+ID4gPiBz
-b21ldGltZSBzaG9ydGx5IGFmdGVyIHRoZSBUTEIgZmx1c2ggdGhpcyBmbGFnIGRvZXMgb24gdmZy
-ZWUgb2YNCj4gPiA+IHRoZQ0KPiA+ID4gQlBGDQo+ID4gPiBwcm9ncmFtLCB0aGUgbWFjaGluZSBo
-dW5nLiBGdXJ0aGVyIGludmVzdGlnYXRpb24gc2hvd2VkIHRoYXQNCj4gPiA+IGJlZm9yZQ0KPiA+
-ID4gYW55IG9mDQo+ID4gPiB0aGUgY2hhbmdlcyBmb3IgdGhpcyBmbGFnIHdlcmUgaW50cm9kdWNl
-ZCwgd2l0aA0KPiA+ID4gQ09ORklHX0RFQlVHX1BBR0VBTExPQw0KPiA+ID4gY29uZmlndXJlZCAo
-d2hpY2ggZG9lcyBhIHNpbWlsYXIgVExCIGZsdXNoIG9mIHRoZSB2bWFsbG9jIHJhbmdlDQo+ID4g
-PiBvbg0KPiA+ID4gZXZlcnkgdmZyZWUpLCB0aGlzIG1hY2hpbmUgYWxzbyBodW5nIHNob3J0bHkg
-YWZ0ZXIgdGhlIGZpcnN0DQo+ID4gPiB2bWFsbG9jDQo+ID4gPiB1bm1hcC9mcmVlLg0KPiA+ID4g
-DQo+ID4gPiBTbyB0aGUgZXZpZGVuY2UgcG9pbnRzIHRvIHRoZXJlIGJlaW5nIHNvbWUgZXhpc3Rp
-bmcgaXNzdWUgd2l0aA0KPiA+ID4gdGhlDQo+ID4gPiB2bWFsbG9jIFRMQiBmbHVzaGVzLCBidXQg
-aXQncyBzdGlsbCB1bmtub3duIGV4YWN0bHkgd2h5IHRoZXNlDQo+ID4gPiBoYW5ncw0KPiA+ID4g
-YXJlDQo+ID4gPiBoYXBwZW5pbmcgb24gc3BhcmMuIEl0IGlzIGFsc28gdW5rbm93biB3aGVuIHNv
-bWVvbmUgd2l0aCB0aGlzDQo+ID4gPiBoYXJkd2FyZQ0KPiA+ID4gY291bGQgcmVzb2x2ZSB0aGlz
-LCBhbmQgaW4gdGhlIG1lYW50aW1lIHVzaW5nIHRoaXMgZmxhZyBvbiBpdA0KPiA+ID4gdHVybnMg
-YQ0KPiA+ID4gbHVya2luZyBiZWhhdmlvciBpbnRvIHNvbWV0aGluZyB0aGF0IHByZXZlbnRzIGJv
-b3QuDQo+ID4gDQo+ID4gVGhlIHNwYXJjIFRMQiBmbHVzaCBpc3N1ZSBoYXMgYmVlbiBiaXNlY3Rl
-ZCBhbmQgaXMgYmVpbmcgd29ya2VkIG9uDQo+ID4gbm93LA0KPiA+IHNvIGhvcGVmdWxseSB3ZSB3
-b24ndCBuZWVkIHRoaXMgcGF0Y2g6DQo+ID4gaHR0cHM6Ly9tYXJjLmluZm8vP2w9bGludXgtc3Bh
-cmMmbT0xNTU5MTU2OTQzMDQxMTgmdz0yDQo+IA0KPiBBbmQgdGhlIHNwYXJjNjQgcGF0Y2ggdGhh
-dCBmaXhlcyBDT05GSUdfREVCVUdfUEFHRUFMTE9DIGFsc28gZml4ZXMNCj4gYm9vdGluZw0KPiBv
-ZiB0aGUgbGF0ZXN0IGdpdCBrZXJuZWwgb24gU3VuIFY0NDUgd2hlcmUgbXkgcHJvYmxlbSBpbml0
-aWFsbHkNCj4gaGFwcGVuZWQuDQo+IA0KVGhhbmtzIE1lZWxpcy4gU28gdGhlIFRMQiBmbHVzaCBv
-biB0aGlzIHBsYXRmb3JtIHdpbGwgYmUgZml4ZWQgYW5kIHdlDQp3b24ndCBuZWVkIHRoaXMgcGF0
-Y2guDQo=
+
+
+On 05/30/2019 07:09 PM, Matthew Wilcox wrote:
+> On Thu, May 30, 2019 at 05:31:15PM +0530, Anshuman Khandual wrote:
+>> On 05/30/2019 04:36 PM, Matthew Wilcox wrote:
+>>> The two handle preemption differently.  Why is x86 wrong and this one
+>>> correct?
+>>
+>> Here it expects context to be already non-preemptible where as the proposed
+>> generic function makes it non-preemptible with a preempt_[disable|enable]()
+>> pair for the required code section, irrespective of it's present state. Is
+>> not this better ?
+> 
+> git log -p arch/x86/mm/fault.c
+> 
+> search for 'kprobes'.
+> 
+> tell me what you think.
+> 
+
+Are you referring to these following commits
+
+a980c0ef9f6d ("x86/kprobes: Refactor kprobes_fault() like kprobe_exceptions_notify()")
+b506a9d08bae ("x86: code clarification patch to Kprobes arch code")
+
+In particular the later one (b506a9d08bae). It explains how the invoking context
+in itself should be non-preemptible for the kprobes processing context irrespective
+of whether kprobe_running() or perhaps smp_processor_id() is safe or not. Hence it
+does not make much sense to continue when original invoking context is preemptible.
+Instead just bail out earlier. This seems to be making more sense than preempt
+disable-enable pair. If there are no concerns about this change from other platforms,
+I will change the preemption behavior in proposed generic function next time around.
