@@ -2,81 +2,89 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E2130632
-	for <lists+sparclinux@lfdr.de>; Fri, 31 May 2019 03:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D208307D2
+	for <lists+sparclinux@lfdr.de>; Fri, 31 May 2019 06:36:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbfEaBYg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 30 May 2019 21:24:36 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:33913 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726548AbfEaBYg (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 30 May 2019 21:24:36 -0400
-Received: by mail-pf1-f195.google.com with SMTP id c14so2674785pfi.1;
-        Thu, 30 May 2019 18:24:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=PC1WfumcDjGU0yD+5JvFLw/e1vzZYICqxOgcNlrLZLs=;
-        b=aFgf8y4hxVqo2mpzXb79+1984QnsepjBu5R9D9FVKNJ4T0qgeM7XIkE0xS8vVVGXuu
-         5jWVOqNPrfqb3jvrGomCaykn13NSZ9TcFrq4JeopXIyYJQ4K5We4yEWTsAzIVZqmw2g/
-         /v6XEyGauJL1YvYGiqoMtBhehxgak2gT4SwYZvlKtCoNunBrs3NdoimWQ4y+Jq5VDRBJ
-         H/BT+FcuLZYfoFG1ZhKJ5ho2A0UO79jsHX9c5FwZCmUZtRK4oypm2aBTZQqWqA9W0hAB
-         aqPeSekT5N3TJBPh3Fcp0tlSZhIrqEB3TbF+t5Ye4BoTvTqavM331lDWFks76LhNi2WN
-         tBrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=PC1WfumcDjGU0yD+5JvFLw/e1vzZYICqxOgcNlrLZLs=;
-        b=OuBN92KmeqUt7by4//5gGC1NzYl9dJzmpo4MF53JWrTfpzrUA+iGlD0toWT8S3lyuf
-         HWga5dFf+WaiHw9NMc8ojaVGkc4T+9qjvnTj8GLzOrN63QVixam9Da2kDKuPTYVnkCGJ
-         nRjUvpz+1wYMIheYk6eFw/Qw3z+JKy+5pUV+OpRLu5lGU4eUZrNTGAyi4TA8bKsz8noI
-         Ze0WoRA/fRXfnEhPhXuyj/YN2YerjV4Dq/yK6cOzDXRs5/YU1vv0S3nlqVFST2dxP/lp
-         a9PoMpNlfg5GzqQ8T9zxGSblMHsKFRiuzAsO5hRSskJm99/4V7skj3G3E+wziDU7n/2W
-         IfyA==
-X-Gm-Message-State: APjAAAVkK4irLDhr5xw2iIFfpQ4OYnciBRcPnDHNFx3FqjZsXmjqkYLs
-        IdPAD4y6HWlMHE8ibdW7VUIK2tMQ
-X-Google-Smtp-Source: APXvYqzLXhhYEo3loYmaJI4Wap6Tr4mF1FLkzndADH6DrUxK38ECkn7byFcJ55AOWuhodBQlAO2RBg==
-X-Received: by 2002:a62:4c5:: with SMTP id 188mr6714889pfe.19.1559265875653;
-        Thu, 30 May 2019 18:24:35 -0700 (PDT)
-Received: from zhanggen-UX430UQ ([66.42.35.75])
-        by smtp.gmail.com with ESMTPSA id a8sm4436752pfk.14.2019.05.30.18.24.28
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 30 May 2019 18:24:35 -0700 (PDT)
-Date:   Fri, 31 May 2019 09:24:18 +0800
-From:   Gen Zhang <blackgod016574@gmail.com>
-To:     davem@davemloft.net, rppt@linux.vnet.ibm.com, mhocko@suse.com,
-        akpm@linux-foundation.org, sfr@canb.auug.org.au
-Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mdesc: fix a missing-check bug in get_vdev_port_node_info()
-Message-ID: <20190531012418.GA4473@zhanggen-UX430UQ>
+        id S1726158AbfEaEg1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 31 May 2019 00:36:27 -0400
+Received: from mga09.intel.com ([134.134.136.24]:62066 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725955AbfEaEg1 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 31 May 2019 00:36:27 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 May 2019 21:36:26 -0700
+X-ExtLoop1: 1
+Received: from orsmsx110.amr.corp.intel.com ([10.22.240.8])
+  by orsmga006.jf.intel.com with ESMTP; 30 May 2019 21:36:26 -0700
+Received: from orsmsx112.amr.corp.intel.com ([169.254.3.79]) by
+ ORSMSX110.amr.corp.intel.com ([169.254.10.7]) with mapi id 14.03.0415.000;
+ Thu, 30 May 2019 21:36:26 -0700
+From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "mroos@linux.ee" <mroos@linux.ee>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "daniel@iogearbox.net" <daniel@iogearbox.net>,
+        "jeyu@kernel.org" <jeyu@kernel.org>,
+        "ast@kernel.org" <ast@kernel.org>,
+        "ard.biesheuvel@arm.com" <ard.biesheuvel@arm.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "namit@vmware.com" <namit@vmware.com>,
+        "luto@kernel.org" <luto@kernel.org>,
+        "Hansen, Dave" <dave.hansen@intel.com>
+Subject: Re: [PATCH] vmalloc: Don't use flush flag when no exec perm
+Thread-Topic: [PATCH] vmalloc: Don't use flush flag when no exec perm
+Thread-Index: AQHVFeKXsxy+QkOKqU23zfNpAWli4aaDgIiAgABAJ4CAAV2zgA==
+Date:   Fri, 31 May 2019 04:36:25 +0000
+Message-ID: <120f658d6f34c99a72e82c993ec380109f7aef2c.camel@intel.com>
+References: <20190529055104.6822-1-rick.p.edgecombe@intel.com>
+         <89d6dee949e4418f0cca4cc6c4c9b526c1a5c497.camel@intel.com>
+         <67241836-621c-6933-1278-f04aedcefcb3@linux.ee>
+In-Reply-To: <67241836-621c-6933-1278-f04aedcefcb3@linux.ee>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
+x-originating-ip: [10.252.134.167]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B1A8C0F763855B4D836A965D3C862A13@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-In get_vdev_port_node_info(), 'node_info->vdev_port.name' is allcoated
-by kstrdup_const(), and it returns NULL when fails. So 
-'node_info->vdev_port.name' should be checked.
-
-Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
----
-diff --git a/arch/sparc/kernel/mdesc.c b/arch/sparc/kernel/mdesc.c
-index 9a26b44..8e645dd 100644
---- a/arch/sparc/kernel/mdesc.c
-+++ b/arch/sparc/kernel/mdesc.c
-@@ -356,6 +356,8 @@ static int get_vdev_port_node_info(struct mdesc_handle *md, u64 node,
- 
- 	node_info->vdev_port.id = *idp;
- 	node_info->vdev_port.name = kstrdup_const(name, GFP_KERNEL);
-+	if (!node_info->vdev_port.name)
-+		return -1;
- 	node_info->vdev_port.parent_cfg_hdl = *parent_cfg_hdlp;
- 
- 	return 0;
----
+T24gVGh1LCAyMDE5LTA1LTMwIGF0IDEwOjQ0ICswMzAwLCBNZWVsaXMgUm9vcyB3cm90ZToNCj4g
+PiA+IFRoZSBhZGRpdGlvbiBvZiBWTV9GTFVTSF9SRVNFVF9QRVJNUyBmb3IgQlBGIEpJVCBhbGxv
+Y2F0aW9ucyB3YXMNCj4gPiA+IGJpc2VjdGVkIHRvIHByZXZlbnQgYm9vdCBvbiBhbiBVbHRyYVNw
+YXJjIElJSSBtYWNoaW5lLiBJdCB3YXMNCj4gPiA+IGZvdW5kDQo+ID4gPiB0aGF0DQo+ID4gPiBz
+b21ldGltZSBzaG9ydGx5IGFmdGVyIHRoZSBUTEIgZmx1c2ggdGhpcyBmbGFnIGRvZXMgb24gdmZy
+ZWUgb2YNCj4gPiA+IHRoZQ0KPiA+ID4gQlBGDQo+ID4gPiBwcm9ncmFtLCB0aGUgbWFjaGluZSBo
+dW5nLiBGdXJ0aGVyIGludmVzdGlnYXRpb24gc2hvd2VkIHRoYXQNCj4gPiA+IGJlZm9yZQ0KPiA+
+ID4gYW55IG9mDQo+ID4gPiB0aGUgY2hhbmdlcyBmb3IgdGhpcyBmbGFnIHdlcmUgaW50cm9kdWNl
+ZCwgd2l0aA0KPiA+ID4gQ09ORklHX0RFQlVHX1BBR0VBTExPQw0KPiA+ID4gY29uZmlndXJlZCAo
+d2hpY2ggZG9lcyBhIHNpbWlsYXIgVExCIGZsdXNoIG9mIHRoZSB2bWFsbG9jIHJhbmdlDQo+ID4g
+PiBvbg0KPiA+ID4gZXZlcnkgdmZyZWUpLCB0aGlzIG1hY2hpbmUgYWxzbyBodW5nIHNob3J0bHkg
+YWZ0ZXIgdGhlIGZpcnN0DQo+ID4gPiB2bWFsbG9jDQo+ID4gPiB1bm1hcC9mcmVlLg0KPiA+ID4g
+DQo+ID4gPiBTbyB0aGUgZXZpZGVuY2UgcG9pbnRzIHRvIHRoZXJlIGJlaW5nIHNvbWUgZXhpc3Rp
+bmcgaXNzdWUgd2l0aA0KPiA+ID4gdGhlDQo+ID4gPiB2bWFsbG9jIFRMQiBmbHVzaGVzLCBidXQg
+aXQncyBzdGlsbCB1bmtub3duIGV4YWN0bHkgd2h5IHRoZXNlDQo+ID4gPiBoYW5ncw0KPiA+ID4g
+YXJlDQo+ID4gPiBoYXBwZW5pbmcgb24gc3BhcmMuIEl0IGlzIGFsc28gdW5rbm93biB3aGVuIHNv
+bWVvbmUgd2l0aCB0aGlzDQo+ID4gPiBoYXJkd2FyZQ0KPiA+ID4gY291bGQgcmVzb2x2ZSB0aGlz
+LCBhbmQgaW4gdGhlIG1lYW50aW1lIHVzaW5nIHRoaXMgZmxhZyBvbiBpdA0KPiA+ID4gdHVybnMg
+YQ0KPiA+ID4gbHVya2luZyBiZWhhdmlvciBpbnRvIHNvbWV0aGluZyB0aGF0IHByZXZlbnRzIGJv
+b3QuDQo+ID4gDQo+ID4gVGhlIHNwYXJjIFRMQiBmbHVzaCBpc3N1ZSBoYXMgYmVlbiBiaXNlY3Rl
+ZCBhbmQgaXMgYmVpbmcgd29ya2VkIG9uDQo+ID4gbm93LA0KPiA+IHNvIGhvcGVmdWxseSB3ZSB3
+b24ndCBuZWVkIHRoaXMgcGF0Y2g6DQo+ID4gaHR0cHM6Ly9tYXJjLmluZm8vP2w9bGludXgtc3Bh
+cmMmbT0xNTU5MTU2OTQzMDQxMTgmdz0yDQo+IA0KPiBBbmQgdGhlIHNwYXJjNjQgcGF0Y2ggdGhh
+dCBmaXhlcyBDT05GSUdfREVCVUdfUEFHRUFMTE9DIGFsc28gZml4ZXMNCj4gYm9vdGluZw0KPiBv
+ZiB0aGUgbGF0ZXN0IGdpdCBrZXJuZWwgb24gU3VuIFY0NDUgd2hlcmUgbXkgcHJvYmxlbSBpbml0
+aWFsbHkNCj4gaGFwcGVuZWQuDQo+IA0KVGhhbmtzIE1lZWxpcy4gU28gdGhlIFRMQiBmbHVzaCBv
+biB0aGlzIHBsYXRmb3JtIHdpbGwgYmUgZml4ZWQgYW5kIHdlDQp3b24ndCBuZWVkIHRoaXMgcGF0
+Y2guDQo=
