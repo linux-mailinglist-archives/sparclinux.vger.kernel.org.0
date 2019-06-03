@@ -2,57 +2,67 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F6AB327EC
-	for <lists+sparclinux@lfdr.de>; Mon,  3 Jun 2019 07:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E9AD327F3
+	for <lists+sparclinux@lfdr.de>; Mon,  3 Jun 2019 07:21:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726728AbfFCFQt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 3 Jun 2019 01:16:49 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:52594 "EHLO
+        id S1726510AbfFCFVI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 3 Jun 2019 01:21:08 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:52634 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726257AbfFCFQt (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 3 Jun 2019 01:16:49 -0400
+        with ESMTP id S1726406AbfFCFVI (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 3 Jun 2019 01:21:08 -0400
 Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id E03501340AD6E;
-        Sun,  2 Jun 2019 22:16:48 -0700 (PDT)
-Date:   Sun, 02 Jun 2019 22:16:48 -0700 (PDT)
-Message-Id: <20190602.221648.1225654208143233174.davem@davemloft.net>
-To:     92siuyang@gmail.com
-Cc:     peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
-        namhyung@kernel.org, linux-kernel@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH] sparc: perf: fix updated event period in response to
- PERF_EVENT_IOC_PERIOD
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 086FD1340D53C;
+        Sun,  2 Jun 2019 22:21:08 -0700 (PDT)
+Date:   Sun, 02 Jun 2019 22:21:07 -0700 (PDT)
+Message-Id: <20190602.222107.923223011133534329.davem@davemloft.net>
+To:     torvalds@linux-foundation.org
+CC:     akpm@linux-foundation.org, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [GIT] Sparc
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <1559096508-25847-1-git-send-email-92siuyang@gmail.com>
-References: <1559096508-25847-1-git-send-email-92siuyang@gmail.com>
 X-Mailer: Mew version 6.8 on Emacs 26.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 02 Jun 2019 22:16:49 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 02 Jun 2019 22:21:08 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Young Xiao <92siuyang@gmail.com>
-Date: Wed, 29 May 2019 10:21:48 +0800
 
-> The PERF_EVENT_IOC_PERIOD ioctl command can be used to change the
-> sample period of a running perf_event. Consequently, when calculating
-> the next event period, the new period will only be considered after the
-> previous one has overflowed.
-> 
-> This patch changes the calculation of the remaining event ticks so that
-> they are offset if the period has changed.
-> 
-> See commit 3581fe0ef37c ("ARM: 7556/1: perf: fix updated event period in
-> response to PERF_EVENT_IOC_PERIOD") for details.
-> 
-> Signed-off-by: Young Xiao <92siuyang@gmail.com>
+Please pull to get these three bug fixes, and TLB flushing one is of
+particular brown paper bag quality...
 
-Applied, thanks.
+Thanks.
+
+The following changes since commit f2c7c76c5d0a443053e94adb9f0918fa2fb85c3a:
+
+  Linux 5.2-rc3 (2019-06-02 13:55:33 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git 
+
+for you to fetch changes up to 56cd0aefa475079e9613085b14a0f05037518fed:
+
+  sparc: perf: fix updated event period in response to PERF_EVENT_IOC_PERIOD (2019-06-02 22:16:33 -0700)
+
+----------------------------------------------------------------
+Gen Zhang (1):
+      mdesc: fix a missing-check bug in get_vdev_port_node_info()
+
+James Clarke (1):
+      sparc64: Fix regression in non-hypervisor TLB flush xcall
+
+Young Xiao (1):
+      sparc: perf: fix updated event period in response to PERF_EVENT_IOC_PERIOD
+
+ arch/sparc/kernel/mdesc.c      | 2 ++
+ arch/sparc/kernel/perf_event.c | 4 ++++
+ arch/sparc/mm/ultra.S          | 4 ++--
+ 3 files changed, 8 insertions(+), 2 deletions(-)
