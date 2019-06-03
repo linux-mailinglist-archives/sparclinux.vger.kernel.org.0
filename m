@@ -2,59 +2,118 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 248143212E
-	for <lists+sparclinux@lfdr.de>; Sun,  2 Jun 2019 01:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9CA8327D6
+	for <lists+sparclinux@lfdr.de>; Mon,  3 Jun 2019 06:53:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726655AbfFAXqp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 1 Jun 2019 19:46:45 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:37574 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726211AbfFAXqp (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 1 Jun 2019 19:46:45 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 12DA014FA9CFA;
-        Sat,  1 Jun 2019 16:46:44 -0700 (PDT)
-Date:   Sat, 01 Jun 2019 16:46:43 -0700 (PDT)
-Message-Id: <20190601.164643.756724745563418604.davem@davemloft.net>
-To:     hch@lst.de
-Cc:     torvalds@linux-foundation.org, paul.burton@mips.com,
-        jhogan@kernel.org, ysato@users.sourceforge.jp, dalias@libc.org,
-        npiggin@gmail.com, khalid.aziz@oracle.com, andreyknvl@google.com,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: RFC: switch the remaining architectures to use generic GUP v2
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190601074959.14036-1-hch@lst.de>
-References: <20190601074959.14036-1-hch@lst.de>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        id S1726277AbfFCExU (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 3 Jun 2019 00:53:20 -0400
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:44420 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726221AbfFCExT (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 3 Jun 2019 00:53:19 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A87D1341;
+        Sun,  2 Jun 2019 21:53:18 -0700 (PDT)
+Received: from [10.162.40.144] (p8cg001049571a15.blr.arm.com [10.162.40.144])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC0BB3F5AF;
+        Sun,  2 Jun 2019 21:53:11 -0700 (PDT)
+Subject: Re: [RFC] mm: Generalize notify_page_fault()
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>
+References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
+ <20190530110639.GC23461@bombadil.infradead.org>
+ <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
+ <20190530133954.GA2024@bombadil.infradead.org>
+ <f1995445-d5ab-f292-d26c-809581002184@arm.com>
+ <20190531174854.GA31852@bombadil.infradead.org>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <6338fef8-e097-a76e-5c07-455d0d9b6e24@arm.com>
+Date:   Mon, 3 Jun 2019 10:23:26 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <20190531174854.GA31852@bombadil.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sat, 01 Jun 2019 16:46:44 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Christoph Hellwig <hch@lst.de>
-Date: Sat,  1 Jun 2019 09:49:43 +0200
 
-> below is a series to switch mips, sh and sparc64 to use the generic
-> GUP code so that we only have one codebase to touch for further
-> improvements to this code.  I don't have hardware for any of these
-> architectures, and generally no clue about their page table
-> management, so handle with care.
+
+On 05/31/2019 11:18 PM, Matthew Wilcox wrote:
+> On Fri, May 31, 2019 at 02:17:43PM +0530, Anshuman Khandual wrote:
+>> On 05/30/2019 07:09 PM, Matthew Wilcox wrote:
+>>> On Thu, May 30, 2019 at 05:31:15PM +0530, Anshuman Khandual wrote:
+>>>> On 05/30/2019 04:36 PM, Matthew Wilcox wrote:
+>>>>> The two handle preemption differently.  Why is x86 wrong and this one
+>>>>> correct?
+>>>>
+>>>> Here it expects context to be already non-preemptible where as the proposed
+>>>> generic function makes it non-preemptible with a preempt_[disable|enable]()
+>>>> pair for the required code section, irrespective of it's present state. Is
+>>>> not this better ?
+>>>
+>>> git log -p arch/x86/mm/fault.c
+>>>
+>>> search for 'kprobes'.
+>>>
+>>> tell me what you think.
+>>
+>> Are you referring to these following commits
+>>
+>> a980c0ef9f6d ("x86/kprobes: Refactor kprobes_fault() like kprobe_exceptions_notify()")
+>> b506a9d08bae ("x86: code clarification patch to Kprobes arch code")
+>>
+>> In particular the later one (b506a9d08bae). It explains how the invoking context
+>> in itself should be non-preemptible for the kprobes processing context irrespective
+>> of whether kprobe_running() or perhaps smp_processor_id() is safe or not. Hence it
+>> does not make much sense to continue when original invoking context is preemptible.
+>> Instead just bail out earlier. This seems to be making more sense than preempt
+>> disable-enable pair. If there are no concerns about this change from other platforms,
+>> I will change the preemption behavior in proposed generic function next time around.
 > 
-> Changes since v1:
->  - fix various issues found by the build bot
->  - cherry pick and use the untagged_addr helper form Andrey
->  - add various refactoring patches to share more code over architectures
->  - move the powerpc hugepd code to mm/gup.c and sync it with the generic
->    hup semantics
+> Exactly.
+> 
+> So, any of the arch maintainers know of a reason they behave differently
+> from x86 in this regard?  Or can Anshuman use the x86 implementation
+> for all the architectures supporting kprobes?
 
-I will today look seriously at the sparc64 stuff wrt. tagged pointers.
+So the generic notify_page_fault() will be like this.
+
+int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
+{
+        int ret = 0;
+
+        /*
+         * To be potentially processing a kprobe fault and to be allowed
+         * to call kprobe_running(), we have to be non-preemptible.
+         */
+        if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
+                if (kprobe_running() && kprobe_fault_handler(regs, trap))
+                        ret = 1;
+        }
+        return ret;
+}
