@@ -2,102 +2,89 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 836B33413B
-	for <lists+sparclinux@lfdr.de>; Tue,  4 Jun 2019 10:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F9D2341FF
+	for <lists+sparclinux@lfdr.de>; Tue,  4 Jun 2019 10:38:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727122AbfFDIMG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 4 Jun 2019 04:12:06 -0400
-Received: from foss.arm.com ([217.140.101.70]:37106 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726637AbfFDIMG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 4 Jun 2019 04:12:06 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22F87A78;
-        Tue,  4 Jun 2019 01:12:06 -0700 (PDT)
-Received: from [10.162.40.144] (p8cg001049571a15.blr.arm.com [10.162.40.144])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 82BA43F246;
-        Tue,  4 Jun 2019 01:11:55 -0700 (PDT)
-Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-References: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
- <20190604065401.GE3402@hirez.programming.kicks-ass.net>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <afe886e5-8420-0c33-ed2f-159cd3d55882@arm.com>
-Date:   Tue, 4 Jun 2019 13:42:10 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1726637AbfFDIif (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 4 Jun 2019 04:38:35 -0400
+Received: from condef-08.nifty.com ([202.248.20.73]:57206 "EHLO
+        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726708AbfFDIif (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 4 Jun 2019 04:38:35 -0400
+X-Greylist: delayed 668 seconds by postgrey-1.27 at vger.kernel.org; Tue, 04 Jun 2019 04:38:34 EDT
+Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-08.nifty.com with ESMTP id x548NYoJ016751
+        for <sparclinux@vger.kernel.org>; Tue, 4 Jun 2019 17:23:34 +0900
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-08.nifty.com with ESMTP id x548NH4T009152;
+        Tue, 4 Jun 2019 17:23:17 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com x548NH4T009152
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1559636597;
+        bh=M6kP2JJWJN6+Cw/8ivHLeDg4B72lgCfdxWOW3CJx+Ec=;
+        h=From:To:Cc:Subject:Date:From;
+        b=1Id8E9BGmf6HHkYRz3wNnDpcyQfhlIkWKVGRcxhuWdKgJ3h1PWA+WMgqrV8ZrN33Y
+         n1vZ+7cmz2azh/weNi9+rqV3wNIcC6qvkA9C145NnjaiDH+seKsQtu6ye0v3+rUv4i
+         DLLP6LQjBFBH0L29NMx6paXxphYn5G6+eMKbK+jLl4wZdl0xQlNTFBEnz4KVflaCPP
+         2HHKKXP7dcFnXxXkr/nxytCn1E2qNHV3uS8TyWlRK0rWD/pDfkOorjdgdqWw12kt1k
+         +jtZB9GsbROuw1WD1j551BEiksHAJPECO+wfzciLFxls7UGyYwczybEe9shPyE5syU
+         WS/HJpdbU1cpQ==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] sparc: fix unknown type name u_int in uapi header
+Date:   Tue,  4 Jun 2019 17:23:14 +0900
+Message-Id: <20190604082314.25939-1-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20190604065401.GE3402@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+'u_int' is a shorthand that is only available in the kernel space
+because it is defined in include/linux/types.h, which is not exported
+to the user space.
 
+You cannot use it in uapi headers even if you include <linux/types.h>
 
-On 06/04/2019 12:24 PM, Peter Zijlstra wrote:
-> On Tue, Jun 04, 2019 at 12:04:06PM +0530, Anshuman Khandual wrote:
->> diff --git a/mm/memory.c b/mm/memory.c
->> index ddf20bd..b6bae8f 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -52,6 +52,7 @@
->>  #include <linux/pagemap.h>
->>  #include <linux/memremap.h>
->>  #include <linux/ksm.h>
->> +#include <linux/kprobes.h>
->>  #include <linux/rmap.h>
->>  #include <linux/export.h>
->>  #include <linux/delayacct.h>
->> @@ -141,6 +142,21 @@ static int __init init_zero_pfn(void)
->>  core_initcall(init_zero_pfn);
->>  
->>  
->> +int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
->> +{
->> +	int ret = 0;
->> +
->> +	/*
->> +	 * To be potentially processing a kprobe fault and to be allowed
->> +	 * to call kprobe_running(), we have to be non-preemptible.
->> +	 */
->> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
->> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
->> +			ret = 1;
->> +	}
->> +	return ret;
->> +}
-> 
-> That thing should be called kprobe_page_fault() or something,
-> notify_page_fault() is a horribly crap name for this function.
+Detected by compile-testing exported headers.
 
-Agreed. kprobe_page_fault() sounds good.
+./usr/include/asm/openpromio.h:16:2: error: unknown type name ‘u_int’
+  u_int oprom_size;  /* Actual size of the oprom_array. */
+  ^~~~~
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+ arch/sparc/include/uapi/asm/openpromio.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/sparc/include/uapi/asm/openpromio.h b/arch/sparc/include/uapi/asm/openpromio.h
+index 8817f7d1a70c..d4494b679e99 100644
+--- a/arch/sparc/include/uapi/asm/openpromio.h
++++ b/arch/sparc/include/uapi/asm/openpromio.h
+@@ -4,7 +4,6 @@
+ 
+ #include <linux/compiler.h>
+ #include <linux/ioctl.h>
+-#include <linux/types.h>
+ 
+ /*
+  * SunOS and Solaris /dev/openprom definitions. The ioctl values
+@@ -13,7 +12,7 @@
+ 
+ struct openpromio
+ {
+-	u_int	oprom_size;		/* Actual size of the oprom_array. */
++	unsigned int oprom_size;	/* Actual size of the oprom_array. */
+ 	char	oprom_array[1];		/* Holds property names and values. */
+ };
+ 
+-- 
+2.17.1
+
