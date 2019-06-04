@@ -2,38 +2,52 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83E56345E4
-	for <lists+sparclinux@lfdr.de>; Tue,  4 Jun 2019 13:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3018334622
+	for <lists+sparclinux@lfdr.de>; Tue,  4 Jun 2019 14:04:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727317AbfFDLt4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 4 Jun 2019 07:49:56 -0400
-Received: from mail-eopbgr680073.outbound.protection.outlook.com ([40.107.68.73]:20668
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727301AbfFDLt4 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 4 Jun 2019 07:49:56 -0400
+        id S1727386AbfFDMEw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 4 Jun 2019 08:04:52 -0400
+Received: from mail-vs1-f73.google.com ([209.85.217.73]:37584 "EHLO
+        mail-vs1-f73.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727248AbfFDMEw (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 4 Jun 2019 08:04:52 -0400
+Received: by mail-vs1-f73.google.com with SMTP id a23so3336580vsn.4
+        for <sparclinux@vger.kernel.org>; Tue, 04 Jun 2019 05:04:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector1-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AuvUjLTuUv06KHwWBNifnh3rfmmJqB0eNoQmoWoPShM=;
- b=08LvuO6nLT19eMwPqCH/JHlwPE3DwNgnlsl2k7pTfzleHgzS2iJAnFtTvYg3BL7PVRXdi+G3MFLUWXitq6BDoqKMIYUj58W24YWtmo6PTEAHWvmKrWjA8+rle3r8zIYtKe2W6ZMG8sj2+31r+4jsWGa+vvrpuj69i86DQhZs070=
-Received: from DM5PR12MB1546.namprd12.prod.outlook.com (10.172.36.23) by
- DM5PR12MB1865.namprd12.prod.outlook.com (10.175.87.151) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1943.22; Tue, 4 Jun 2019 11:49:52 +0000
-Received: from DM5PR12MB1546.namprd12.prod.outlook.com
- ([fe80::e1b1:5b6f:b2df:afa5]) by DM5PR12MB1546.namprd12.prod.outlook.com
- ([fe80::e1b1:5b6f:b2df:afa5%7]) with mapi id 15.20.1943.018; Tue, 4 Jun 2019
- 11:49:52 +0000
-From:   "Koenig, Christian" <Christian.Koenig@amd.com>
-To:     Andrey Konovalov <andreyknvl@google.com>
-CC:     Linus Torvalds <torvalds@linux-foundation.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=jQ4jdowRSjR3urFOBjyFZklSNNoQ/ud0fhl6APbdVCA=;
+        b=GowLAStz/2F1T2+1l2LwgSfjTKRmMNBrNNCBZBil5igL4JQyaWlnxhbbmWCoX861Oi
+         B/gqgNlu7CEqXMP2+z7kELt1QAkywzQ/4/CBIgoztk4jhPS0IDaW6f2xT62bZyvCkGPW
+         ChaaC18egrJWcY5tXKS1tu+1ggnllHfRVAt4dSrOhgYxZTnaC50stPSrxwS8K7gbAyLN
+         UjDTA5LQ+N55Gnmek72ZITAekTqyE/lF715JE4SsnddL1vL3d3tMoF9CBM84jFEXZ+Fi
+         /tVHki2lXZ2QdEK7Q+gvSqDXWwBEJ/eJ981jOBPiAFjG2vVRecZEHKzlptA4WkyhnZzl
+         0RUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=jQ4jdowRSjR3urFOBjyFZklSNNoQ/ud0fhl6APbdVCA=;
+        b=O2Rim4UjApgjqBVSCs/2dRj5vEavXF3RybOtS7aNZlYemkyv5x7SPwrDxWZLshtkQw
+         9fvdzIINnt/N2/39goZlcgNCOrvXL2+iUGHYmywPeTQFt5y+o1apHl3BIL+mIMMbS1V4
+         JgC74pgTY5HBtAoSSA1ph6f4lCLcfJMsrpx3I1YvHoUZ97hh/XEDM2h6xuHJwt3ECyJS
+         X6gr81M/CCb8PWtcfjiyx8ZeCht+kPKjj93GhZAix/QoXIKtzTx2MehM55vuYTVHO2kz
+         9IuiMdizDTfKf/wPJdUDSM4j/AN8xZXBP8R9NyVqD9FdUMsDwkDRCPZrrlkrY2QlbkZ/
+         iLRw==
+X-Gm-Message-State: APjAAAUt+Z17EloAH/b5+4n8AJIKMvIQio3PnZdCP2G64qFvTI2bUbRi
+        5IcH7+YUfKsbh1JhIjcrQvu/3Fb5CZcSI4xo
+X-Google-Smtp-Source: APXvYqzbAGU8OQBoy9uHFFBvYRcfDQrSEKOseigLTkDo7YUO7FMQDDHLZj47ajW7+eNrCdw8uM2m21YgNxpjq+Kq
+X-Received: by 2002:ab0:184e:: with SMTP id j14mr15665222uag.91.1559649891290;
+ Tue, 04 Jun 2019 05:04:51 -0700 (PDT)
+Date:   Tue,  4 Jun 2019 14:04:47 +0200
+Message-Id: <c8311f9b759e254308a8e57d9f6eb17728a686a7.1559649879.git.andreyknvl@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.22.0.rc1.311.g5d7573a151-goog
+Subject: [PATCH v2] uaccess: add noop untagged_addr definition
+From:   Andrey Konovalov <andreyknvl@google.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arm-kernel@lists.infradead.org, sparclinux@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         Vincenzo Frascino <vincenzo.frascino@arm.com>,
         Will Deacon <will.deacon@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -41,8 +55,9 @@ CC:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Kees Cook <keescook@chromium.org>,
         Yishai Hadas <yishaih@mellanox.com>,
-        "Kuehling, Felix" <Felix.Kuehling@amd.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alexander Deucher <Alexander.Deucher@amd.com>,
+        Christian Koenig <Christian.Koenig@amd.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Jens Wiklander <jens.wiklander@linaro.org>,
         Alex Williamson <alex.williamson@redhat.com>,
@@ -61,86 +76,49 @@ CC:     Linus Torvalds <torvalds@linux-foundation.org>,
         Ruben Ayrapetyan <Ruben.Ayrapetyan@arm.com>,
         Robin Murphy <robin.murphy@arm.com>,
         Kevin Brodsky <kevin.brodsky@arm.com>,
-        Szabolcs Nagy <Szabolcs.Nagy@arm.com>
-Subject: Re: [PATCH] uaccess: add noop untagged_addr definition
-Thread-Topic: [PATCH] uaccess: add noop untagged_addr definition
-Thread-Index: AQHVGsrrPMdhu+tmg0GkOarNrJ33baaLYLQAgAAAcYCAAAB0AA==
-Date:   Tue, 4 Jun 2019 11:49:52 +0000
-Message-ID: <ff73058a-f57b-526b-af53-c0e30b7b1bc1@amd.com>
-References: <8ab5cd1813b0890f8780018e9784838456ace49e.1559648669.git.andreyknvl@google.com>
- <d74b1621-70a2-94a0-e24b-dae32adc457d@amd.com>
- <CAAeHK+w0_9QdxCJXEf=6nMgZpsb8NyrAaMO010Hh86TW75jJvw@mail.gmail.com>
-In-Reply-To: <CAAeHK+w0_9QdxCJXEf=6nMgZpsb8NyrAaMO010Hh86TW75jJvw@mail.gmail.com>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-x-originating-ip: [2a02:908:1252:fb60:be8a:bd56:1f94:86e7]
-x-clientproxiedby: AM6P195CA0004.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:209:81::17) To DM5PR12MB1546.namprd12.prod.outlook.com
- (2603:10b6:4:8::23)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Christian.Koenig@amd.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b797c529-0a71-4368-46eb-08d6e8e2c115
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:DM5PR12MB1865;
-x-ms-traffictypediagnostic: DM5PR12MB1865:
-x-microsoft-antispam-prvs: <DM5PR12MB1865BD38A6AC9E0DE3677D0283150@DM5PR12MB1865.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-forefront-prvs: 0058ABBBC7
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(366004)(346002)(376002)(136003)(396003)(39860400002)(189003)(199004)(6486002)(65806001)(46003)(66446008)(8936002)(65956001)(2616005)(7736002)(476003)(66556008)(71200400001)(71190400001)(52116002)(81166006)(6436002)(7406005)(64756008)(229853002)(6512007)(81156014)(31696002)(14454004)(72206003)(316002)(66476007)(86362001)(4326008)(53936002)(8676002)(478600001)(36756003)(65826007)(99286004)(6506007)(256004)(6116002)(5660300002)(7416002)(54906003)(76176011)(305945005)(186003)(66946007)(73956011)(58126008)(11346002)(64126003)(68736007)(53546011)(31686004)(486006)(386003)(6916009)(102836004)(6246003)(2906002)(25786009)(446003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR12MB1865;H:DM5PR12MB1546.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 14omzt9GIzLZUiQb3h6pGr9c5vOsiSoeWiuS9rOVo2NJXEndL9vpilTVBtxnECz0dUf7+DLZcPeXxb58B9jDZb7k5raKDR769KHtEr67sq19O8mDLmNc27LQkKTPWgXH8b76BGLA/XKceBqIJzN0rmhZJKLfj6iiHNNwdZN6ws697P0AfrH+XnOlPo1wSsf0EjJShvO1EiT1x5dkcfQmKZygt+Ug5RqmyrHD0LEH2VxwLynFlKTxnSUPhdvgL5kiztR7R9lCdJZiDYCn190kDIuPUVMcvmOdWG7mnPNxlRvVZkt8aZB54rsMOcUhqxEY9UL/k0NVKLMpTTtwpsyilZf/TMp8FK6wJxSa+DeoPs8FV1QAKVQwmZFyP55LnD3MMr4YmiUF+qyj9IlXhD/6s4xLnUIAX95bW8ZbeQ1/fv8=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <18F83B8CBEA40C4E8B90F01B157267FB@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b797c529-0a71-4368-46eb-08d6e8e2c115
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jun 2019 11:49:52.4528
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ckoenig@amd.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1865
+        Szabolcs Nagy <Szabolcs.Nagy@arm.com>,
+        Andrey Konovalov <andreyknvl@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-QW0gMDQuMDYuMTkgdW0gMTM6NDggc2NocmllYiBBbmRyZXkgS29ub3ZhbG92Og0KPiBPbiBUdWUs
-IEp1biA0LCAyMDE5IGF0IDE6NDYgUE0gS29lbmlnLCBDaHJpc3RpYW4NCj4gPENocmlzdGlhbi5L
-b2VuaWdAYW1kLmNvbT4gd3JvdGU6DQo+PiBBbSAwNC4wNi4xOSB1bSAxMzo0NCBzY2hyaWViIEFu
-ZHJleSBLb25vdmFsb3Y6DQo+Pj4gQXJjaGl0ZWN0dXJlcyB0aGF0IHN1cHBvcnQgbWVtb3J5IHRh
-Z2dpbmcgaGF2ZSBhIG5lZWQgdG8gcGVyZm9ybSB1bnRhZ2dpbmcNCj4+PiAoc3RyaXBwaW5nIHRo
-ZSB0YWcpIGluIHZhcmlvdXMgcGFydHMgb2YgdGhlIGtlcm5lbC4gVGhpcyBwYXRjaCBhZGRzIGFu
-DQo+Pj4gdW50YWdnZWRfYWRkcigpIG1hY3JvLCB3aGljaCBpcyBkZWZpbmVkIGFzIG5vb3AgZm9y
-IGFyY2hpdGVjdHVyZXMgdGhhdCBkbw0KPj4+IG5vdCBzdXBwb3J0IG1lbW9yeSB0YWdnaW5nLiBU
-aGUgb25jb21pbmcgcGF0Y2ggc2VyaWVzIHdpbGwgZGVmaW5lIGl0IGF0DQo+Pj4gbGVhc3QgZm9y
-IHNwYXJjNjQgYW5kIGFybTY0Lg0KPj4+DQo+Pj4gQWNrZWQtYnk6IENhdGFsaW4gTWFyaW5hcyA8
-Y2F0YWxpbi5tYXJpbmFzQGFybS5jb20+DQo+Pj4gUmV2aWV3ZWQtYnk6IEtoYWxpZCBBeml6IDxr
-aGFsaWQuYXppekBvcmFjbGUuY29tPg0KPj4+IFNpZ25lZC1vZmYtYnk6IEFuZHJleSBLb25vdmFs
-b3YgPGFuZHJleWtudmxAZ29vZ2xlLmNvbT4NCj4+PiAtLS0NCj4+PiAgICBpbmNsdWRlL2xpbnV4
-L21tLmggfCA0ICsrKysNCj4+PiAgICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspDQo+
-Pj4NCj4+PiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9tbS5oIGIvaW5jbHVkZS9saW51eC9t
-bS5oDQo+Pj4gaW5kZXggMGU4ODM0YWMzMmI3Li45NDlkNDNlOWMwYjYgMTAwNjQ0DQo+Pj4gLS0t
-IGEvaW5jbHVkZS9saW51eC9tbS5oDQo+Pj4gKysrIGIvaW5jbHVkZS9saW51eC9tbS5oDQo+Pj4g
-QEAgLTk5LDYgKzk5LDEwIEBAIGV4dGVybiBpbnQgbW1hcF9ybmRfY29tcGF0X2JpdHMgX19yZWFk
-X21vc3RseTsNCj4+PiAgICAjaW5jbHVkZSA8YXNtL3BndGFibGUuaD4NCj4+PiAgICAjaW5jbHVk
-ZSA8YXNtL3Byb2Nlc3Nvci5oPg0KPj4+DQo+Pj4gKyNpZm5kZWYgdW50YWdnZWRfYWRkcg0KPj4+
-ICsjZGVmaW5lIHVudGFnZ2VkX2FkZHIoYWRkcikgKGFkZHIpDQo+Pj4gKyNlbmRpZg0KPj4+ICsN
-Cj4+IE1heWJlIGFkZCBhIGNvbW1lbnQgd2hhdCB0YWdnaW5nIGFjdHVhbGx5IGlzPyBDYXVzZSB0
-aGF0IGlzIG5vdCByZWFsbHkNCj4+IG9idmlvdXMgZnJvbSB0aGUgY29udGV4dC4NCj4gSGksDQo+
-DQo+IERvIHlvdSBtZWFuIGEgY29tbWVudCBpbiB0aGUgY29kZSBvciBhbiBleHBsYW5hdGlvbiBp
-biB0aGUgcGF0Y2ggZGVzY3JpcHRpb24/DQoNClRoZSBjb2RlLCB0aGUgcGF0Y2ggZGVzY3JpcHRp
-b24gYWN0dWFsbHkgc291bmRzIGdvb2QgdG8gbWUuDQoNCkNocmlzdGlhbi4NCg0KPg0KPiBUaGFu
-a3MhDQo+DQo+PiBDaHJpc3RpYW4uDQo+Pg0KPj4+ICAgICNpZm5kZWYgX19wYV9zeW1ib2wNCj4+
-PiAgICAjZGVmaW5lIF9fcGFfc3ltYm9sKHgpICBfX3BhKFJFTE9DX0hJREUoKHVuc2lnbmVkIGxv
-bmcpKHgpLCAwKSkNCj4+PiAgICAjZW5kaWYNCg0K
+Architectures that support memory tagging have a need to perform untagging
+(stripping the tag) in various parts of the kernel. This patch adds an
+untagged_addr() macro, which is defined as noop for architectures that do
+not support memory tagging. The oncoming patch series will define it at
+least for sparc64 and arm64.
+
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Khalid Aziz <khalid.aziz@oracle.com>
+Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
+---
+ include/linux/mm.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0e8834ac32b7..dd0b5f4e1e45 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -99,6 +99,17 @@ extern int mmap_rnd_compat_bits __read_mostly;
+ #include <asm/pgtable.h>
+ #include <asm/processor.h>
+ 
++/*
++ * Architectures that support memory tagging (assigning tags to memory regions,
++ * embedding these tags into addresses that point to these memory regions, and
++ * checking that the memory and the pointer tags match on memory accesses)
++ * redefine this macro to strip tags from pointers.
++ * It's defined as noop for arcitectures that don't support memory tagging.
++ */
++#ifndef untagged_addr
++#define untagged_addr(addr) (addr)
++#endif
++
+ #ifndef __pa_symbol
+ #define __pa_symbol(x)  __pa(RELOC_HIDE((unsigned long)(x), 0))
+ #endif
+-- 
+2.22.0.rc1.311.g5d7573a151-goog
+
