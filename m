@@ -2,82 +2,102 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 131CA34105
-	for <lists+sparclinux@lfdr.de>; Tue,  4 Jun 2019 10:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 836B33413B
+	for <lists+sparclinux@lfdr.de>; Tue,  4 Jun 2019 10:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727071AbfFDIBD (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 4 Jun 2019 04:01:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60338 "EHLO mail.kernel.org"
+        id S1727122AbfFDIMG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 4 Jun 2019 04:12:06 -0400
+Received: from foss.arm.com ([217.140.101.70]:37106 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726940AbfFDIBD (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 4 Jun 2019 04:01:03 -0400
-Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BC7B324D43;
-        Tue,  4 Jun 2019 08:01:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559635262;
-        bh=3h/Nr6WaRFlqDk+2M+DPyVkXGT3hhjSyN/lx6RKPwQQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=xFy3xZ1qrWFKirbd9n/PTBpB316Unk8Vrhp7t8OHAY06T2tOLV1QJvP+PJcQaY28l
-         Loh4L6GBwUAUaaM8r16rvV+VES07PWRbwpOj/bJxAJrO2JWfJF48+TdPR4ub0zwsET
-         rbtc4vh4hBgJuEzr/XUIUv+he7hvEdEWdnlcdGlk=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] sparc: configs: Remove useless UEVENT_HELPER_PATH
-Date:   Tue,  4 Jun 2019 10:00:59 +0200
-Message-Id: <1559635259-21585-1-git-send-email-krzk@kernel.org>
-X-Mailer: git-send-email 2.7.4
+        id S1726637AbfFDIMG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 4 Jun 2019 04:12:06 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22F87A78;
+        Tue,  4 Jun 2019 01:12:06 -0700 (PDT)
+Received: from [10.162.40.144] (p8cg001049571a15.blr.arm.com [10.162.40.144])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 82BA43F246;
+        Tue,  4 Jun 2019 01:11:55 -0700 (PDT)
+Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+References: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
+ <20190604065401.GE3402@hirez.programming.kicks-ass.net>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <afe886e5-8420-0c33-ed2f-159cd3d55882@arm.com>
+Date:   Tue, 4 Jun 2019 13:42:10 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <20190604065401.GE3402@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Remove the CONFIG_UEVENT_HELPER_PATH because:
-1. It is disabled since commit 1be01d4a5714 ("driver: base: Disable
-   CONFIG_UEVENT_HELPER by default") as its dependency (UEVENT_HELPER) was
-   made default to 'n',
-2. It is not recommended (help message: "This should not be used today
-   [...] creates a high system load") and was kept only for ancient
-   userland,
-3. Certain userland specifically requests it to be disabled (systemd
-   README: "Legacy hotplug slows down the system and confuses udev").
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- arch/sparc/configs/sparc32_defconfig | 1 -
- arch/sparc/configs/sparc64_defconfig | 1 -
- 2 files changed, 2 deletions(-)
 
-diff --git a/arch/sparc/configs/sparc32_defconfig b/arch/sparc/configs/sparc32_defconfig
-index 2d4f34c52c67..7b3efe5edc1a 100644
---- a/arch/sparc/configs/sparc32_defconfig
-+++ b/arch/sparc/configs/sparc32_defconfig
-@@ -27,7 +27,6 @@ CONFIG_INET6_ESP=m
- CONFIG_INET6_IPCOMP=m
- CONFIG_IPV6_TUNNEL=m
- CONFIG_NET_PKTGEN=m
--CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_BLK_DEV_LOOP=m
- CONFIG_BLK_DEV_CRYPTOLOOP=m
- CONFIG_BLK_DEV_RAM=y
-diff --git a/arch/sparc/configs/sparc64_defconfig b/arch/sparc/configs/sparc64_defconfig
-index ea547d596fcf..6c325d53a20a 100644
---- a/arch/sparc/configs/sparc64_defconfig
-+++ b/arch/sparc/configs/sparc64_defconfig
-@@ -57,7 +57,6 @@ CONFIG_IPV6_TUNNEL=m
- CONFIG_VLAN_8021Q=m
- CONFIG_NET_PKTGEN=m
- CONFIG_NET_TCPPROBE=m
--CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- # CONFIG_PREVENT_FIRMWARE_BUILD is not set
- CONFIG_CONNECTOR=m
- CONFIG_BLK_DEV_LOOP=m
--- 
-2.7.4
+On 06/04/2019 12:24 PM, Peter Zijlstra wrote:
+> On Tue, Jun 04, 2019 at 12:04:06PM +0530, Anshuman Khandual wrote:
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index ddf20bd..b6bae8f 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -52,6 +52,7 @@
+>>  #include <linux/pagemap.h>
+>>  #include <linux/memremap.h>
+>>  #include <linux/ksm.h>
+>> +#include <linux/kprobes.h>
+>>  #include <linux/rmap.h>
+>>  #include <linux/export.h>
+>>  #include <linux/delayacct.h>
+>> @@ -141,6 +142,21 @@ static int __init init_zero_pfn(void)
+>>  core_initcall(init_zero_pfn);
+>>  
+>>  
+>> +int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
+>> +{
+>> +	int ret = 0;
+>> +
+>> +	/*
+>> +	 * To be potentially processing a kprobe fault and to be allowed
+>> +	 * to call kprobe_running(), we have to be non-preemptible.
+>> +	 */
+>> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
+>> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
+>> +			ret = 1;
+>> +	}
+>> +	return ret;
+>> +}
+> 
+> That thing should be called kprobe_page_fault() or something,
+> notify_page_fault() is a horribly crap name for this function.
 
+Agreed. kprobe_page_fault() sounds good.
