@@ -2,109 +2,31 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C716F35246
-	for <lists+sparclinux@lfdr.de>; Tue,  4 Jun 2019 23:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5AF13563C
+	for <lists+sparclinux@lfdr.de>; Wed,  5 Jun 2019 07:34:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726379AbfFDVxb (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 4 Jun 2019 17:53:31 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:48004 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726305AbfFDVxb (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 4 Jun 2019 17:53:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=G3wca+SCAKCdsPgfUllmpTtM4KBQO++LAonxpdM2SmA=; b=ovLdSL4iAcKuZnniUJB1ElA5+
-        Fp9dAaModSnLLv5ULQEvzleUTmQu7HgDtfC2fAIoa1LMTHd9ib5dojCWOJUplVR6ywN5ZoFGG4MTj
-        JIp7a8O8J4FCD6qCx/6PrsasyG/i0qdRuVMdJc+uYmunn0avLzwQslZ9VN/CzGhOnT3leHlCOorb7
-        lIvlTdJJrBdQr+7tCEtwVJ3E8w7qIMdthjNLVE5X6Ptegt1KFF3ysvR6dz+kEQNsZdt4KbX5Ib2eI
-        p7eYeJdAxvXE/Vp6/tR4T9J4wFmvruI6CcaAzJz2y7BwsMz6KVhYHtjrH+oOiEvXSF06g15/gCY3H
-        9/zgjJpEA==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hYHN0-0006qf-6V; Tue, 04 Jun 2019 21:53:26 +0000
-Date:   Tue, 4 Jun 2019 14:53:26 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
-Message-ID: <20190604215325.GA2025@bombadil.infradead.org>
-References: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
+        id S1726056AbfFEFeU (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 5 Jun 2019 01:34:20 -0400
+Received: from [60.13.42.65] ([60.13.42.65]:46818 "EHLO localhost.localdomain"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725950AbfFEFeU (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 5 Jun 2019 01:34:20 -0400
+X-Greylist: delayed 1001 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Jun 2019 01:34:19 EDT
+Received: from localhost (localhost [IPv6:::1])
+        by localhost.localdomain (Postfix) with SMTP id 4B8DA11FA7E0
+        for <sparclinux@vger.kernel.org>; Wed,  5 Jun 2019 13:17:29 +0800 (CST)
+From:   sparclinux@vger.kernel.org
+To:     sparclinux@vger.kernel.org
+Reply-To: prodawez@armyspy.com
+Subject: Zdravstvuyte! Vas interesuyut kliyentskiye bazy dannykh?
+Message-Id: <20190605051729.4B8DA11FA7E0@localhost.localdomain>
+Date:   Wed,  5 Jun 2019 13:17:29 +0800 (CST)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Jun 04, 2019 at 12:04:06PM +0530, Anshuman Khandual wrote:
-> +++ b/arch/x86/mm/fault.c
-> @@ -46,23 +46,6 @@ kmmio_fault(struct pt_regs *regs, unsigned long addr)
->  	return 0;
->  }
->  
-> -static nokprobe_inline int kprobes_fault(struct pt_regs *regs)
-> -{
-...
-> -}
+Zdravstvuyte! Vas interesuyut kliyentskiye bazy dannykh?
 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0e8834a..c5a8dcf 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -1778,6 +1778,7 @@ static inline int pte_devmap(pte_t pte)
->  }
->  #endif
->  
-> +int notify_page_fault(struct pt_regs *regs, unsigned int trap);
 
-Why is it now out-of-line?  
 
-> +++ b/mm/memory.c
-> +int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
-> +{
-> +	int ret = 0;
-> +
-> +	/*
-> +	 * To be potentially processing a kprobe fault and to be allowed
-> +	 * to call kprobe_running(), we have to be non-preemptible.
-> +	 */
-> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
-> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
-> +			ret = 1;
-> +	}
-> +	return ret;
-> +}
-> +
-
-I would argue this should be in kprobes.h as a static nokprobe_inline.
