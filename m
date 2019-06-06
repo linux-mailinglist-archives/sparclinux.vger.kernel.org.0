@@ -2,103 +2,54 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A058636D95
-	for <lists+sparclinux@lfdr.de>; Thu,  6 Jun 2019 09:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35EC937319
+	for <lists+sparclinux@lfdr.de>; Thu,  6 Jun 2019 13:39:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726778AbfFFHoG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 6 Jun 2019 03:44:06 -0400
-Received: from hqemgate16.nvidia.com ([216.228.121.65]:4157 "EHLO
-        hqemgate16.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725267AbfFFHoG (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 6 Jun 2019 03:44:06 -0400
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5cf8c4430001>; Thu, 06 Jun 2019 00:44:04 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate102.nvidia.com (PGP Universal service);
-  Thu, 06 Jun 2019 00:44:04 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate102.nvidia.com on Thu, 06 Jun 2019 00:44:04 -0700
-Received: from ngvpn01-171-236.dyn.scz.us.nvidia.com (10.124.1.5) by
- HQMAIL107.nvidia.com (172.20.187.13) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3; Thu, 6 Jun 2019 07:44:02 +0000
-Subject: Re: [PATCH 12/16] mm: consolidate the get_user_pages* implementations
-To:     Christoph Hellwig <hch@lst.de>
-CC:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        <linux-mips@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-        <sparclinux@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-mm@kvack.org>, <x86@kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20190601074959.14036-1-hch@lst.de>
- <20190601074959.14036-13-hch@lst.de>
- <b0b73eae-6d79-b621-ce4e-997ccfbf4446@nvidia.com>
- <20190606062018.GA26745@lst.de>
-X-Nvconfidentiality: public
-From:   John Hubbard <jhubbard@nvidia.com>
-Message-ID: <f7ccf08d-b269-c5e9-7a86-0b5c6176a7c3@nvidia.com>
-Date:   Thu, 6 Jun 2019 00:44:02 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.7.0
+        id S1727983AbfFFLjg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 6 Jun 2019 07:39:36 -0400
+Received: from mail.vodokanal.poltava.ua ([91.219.220.27]:15622 "EHLO
+        mail.vodokanal.poltava.ua" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727374AbfFFLjg (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 6 Jun 2019 07:39:36 -0400
+Received: by mail.vodokanal.poltava.ua (Postfix, from userid 80)
+        id 334F8229242; Thu,  6 Jun 2019 11:41:59 +0300 (EEST)
+Received: from 192.168.0.119
+        (SquirrelMail authenticated user test@vodokanal.poltava.ua)
+        by mail.vodokanal.poltava.ua with HTTP;
+        Thu, 6 Jun 2019 09:41:59 +0100
+Message-ID: <9df43cc55cf7d63eac658f39fe514da9.squirrel@mail.vodokanal.poltava.ua>
+Date:   Thu, 6 Jun 2019 09:41:59 +0100
+Subject: LOANS !!!
+From:   "DIAL DIRECT LOANS SA" <dialdirect@info.org>
+Reply-To: dialdirectloanssa@mail2consultant.com
+User-Agent: SquirrelMail/1.4.21
 MIME-Version: 1.0
-In-Reply-To: <20190606062018.GA26745@lst.de>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1559807044; bh=mMOlfiNeriS8dHk456D4i2uPqqdGUdRNA/UjahArgCQ=;
-        h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
-         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=h3LHlMdQHamD4aUSwPzeTds3U6FI5EEYLkWJ4CyKjK6e+LboNBSAbcSHpVs2ab/a6
-         z9eQd8NbRaW2yWXClwhhhoDwI/Bg8V5MhP9jYxjADW4on9H1UbzwmFXUvBa2QQc0YP
-         3BZxHfWSY+4OVCEed52WcnU8jW1oCIuqanuBVjnZxsQlD1tSrzhAGFH+mkQujZW9MV
-         3WEIf8zeYJc6hdtRCd3LqEJefWg6Q5t5xgsR/hrqbzz+0tbm21c1EGeCCpOskwezjW
-         2zGjfIhkSG9BX9aupNObBuuWNlgR4cVZm3rSLITraOByP9C918Zm94j22vnCvn0l3v
-         eA+GgKwaIXi4w==
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Priority: 3 (Normal)
+Importance: Normal
+To:     undisclosed-recipients:;
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 6/5/19 11:20 PM, Christoph Hellwig wrote:
-> On Wed, Jun 05, 2019 at 11:01:17PM -0700, John Hubbard wrote:
->> I started reviewing this one patch, and it's kind of messy figuring out
->> if the code motion preserves everything because of
->> all the consolidation from other places, plus having to move things in
->> and out of the ifdef blocks.  So I figured I'd check and see if this is
->> going to make it past RFC status soon, and if it's going before or after
->> Ira's recent RFC ("RDMA/FS DAX truncate proposal").
-> 
-> I don't like the huge moves either, but I can't really think of any
-> better way to do it.  Proposals welcome, though.
-> 
 
-One way would be to do it in two patches:
+Dial Direct Loan SA
 
-1) Move the code into gup.c, maybe at the bottom. Surround each function
-or group of functions by whatever ifdefs they need.
 
-2) Move code out of the bottom of gup.c, into the final location.
+Consolidate your debts with Dial Direct Loan SA for your peace of
+mind at a fixed interest rate of 4.75%,personal and business loans
+are also welcome.For details  file in your applications by sending an email
+to:dialdirectloanssa@mail2consultant.com.
 
-...but I'm not certain that will be that much better. In the spirit of
-not creating gratuitous work for others, I could try it out and send
-out something if it looks like it's noticeably easier to verify/review.
 
-thanks,
--- 
-John Hubbard
-NVIDIA
+
+Yours in Service,
+Susan Muller (Mrs.),
+Senior Consultant,
+Loan Application Team
+Dial Direct Loan SA
+Tel No: +27717231058
+
+
