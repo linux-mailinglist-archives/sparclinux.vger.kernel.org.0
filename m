@@ -2,34 +2,24 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 540FE35B34
-	for <lists+sparclinux@lfdr.de>; Wed,  5 Jun 2019 13:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEDA1369BA
+	for <lists+sparclinux@lfdr.de>; Thu,  6 Jun 2019 04:03:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727412AbfFELXf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 5 Jun 2019 07:23:35 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:41390 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726280AbfFELXf (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 5 Jun 2019 07:23:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=sVN3EHsvpO4JEKTL1zRRHRBKbHxUnSg7DWieN951vaQ=; b=ZxNl0qOQMb2nfXeNThDfWARnO
-        IjMcoH4MbKtQUU/nYGjzXO/SzWGoG4bwvM6cBsqxqnboCmwXwdmrZT6ztabNtnUgigfRmXDx8fQga
-        0rKqTEt4/6uc2AluHwNMT79+xCxIagqOb/We+wKGSyrnU5U0zj89HIUQ91CjDb3ocZFKE34NA73Xt
-        ht21jsc6XZzCEdyBsoxDu/s7ytcLxb6tZ+TqSKkA+jPRHteOcwa78zZTOL6egPiRNwQtvKPfLFnxB
-        43TAXA7rZyGVZ8LyRQz4qMmoOohTstIupqEoWtffXXODQJqZlI73n1KFz6tSlAtnVI5oGHg9JPstG
-        ajfQGCbTw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hYU0u-0005Bg-TM; Wed, 05 Jun 2019 11:23:28 +0000
-Date:   Wed, 5 Jun 2019 04:23:28 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        id S1726605AbfFFCDr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 5 Jun 2019 22:03:47 -0400
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:39658 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726593AbfFFCDr (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 5 Jun 2019 22:03:47 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1A9D80D;
+        Wed,  5 Jun 2019 19:03:45 -0700 (PDT)
+Received: from [10.162.43.122] (p8cg001049571a15.blr.arm.com [10.162.43.122])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 519F83F246;
+        Wed,  5 Jun 2019 19:03:37 -0700 (PDT)
+Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
@@ -39,6 +29,7 @@ Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
         Christophe Leroy <christophe.leroy@c-s.fr>,
         Stephen Rothwell <sfr@canb.auug.org.au>,
         Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Paul Mackerras <paulus@samba.org>,
         Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -54,43 +45,72 @@ Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
         Ingo Molnar <mingo@redhat.com>,
         Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
-Message-ID: <20190605112328.GB2025@bombadil.infradead.org>
 References: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
- <87sgsomg91.fsf@concordia.ellerman.id.au>
+ <20190604215325.GA2025@bombadil.infradead.org>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <016a4808-527d-7164-b8a0-3173a4ecfa25@arm.com>
+Date:   Thu, 6 Jun 2019 07:33:52 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87sgsomg91.fsf@concordia.ellerman.id.au>
-User-Agent: Mutt/1.9.2 (2017-12-15)
+In-Reply-To: <20190604215325.GA2025@bombadil.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Jun 05, 2019 at 09:19:22PM +1000, Michael Ellerman wrote:
-> Anshuman Khandual <anshuman.khandual@arm.com> writes:
-> > Similar notify_page_fault() definitions are being used by architectures
-> > duplicating much of the same code. This attempts to unify them into a
-> > single implementation, generalize it and then move it to a common place.
-> > kprobes_built_in() can detect CONFIG_KPROBES, hence notify_page_fault()
-> > need not be wrapped again within CONFIG_KPROBES. Trap number argument can
-> > now contain upto an 'unsigned int' accommodating all possible platforms.
+
+
+On 06/05/2019 03:23 AM, Matthew Wilcox wrote:
+> On Tue, Jun 04, 2019 at 12:04:06PM +0530, Anshuman Khandual wrote:
+>> +++ b/arch/x86/mm/fault.c
+>> @@ -46,23 +46,6 @@ kmmio_fault(struct pt_regs *regs, unsigned long addr)
+>>  	return 0;
+>>  }
+>>  
+>> -static nokprobe_inline int kprobes_fault(struct pt_regs *regs)
+>> -{
 > ...
+>> -}
 > 
-> You've changed several of the architectures from something like above,
-> where it disables preemption around the call into the below:
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 0e8834a..c5a8dcf 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -1778,6 +1778,7 @@ static inline int pte_devmap(pte_t pte)
+>>  }
+>>  #endif
+>>  
+>> +int notify_page_fault(struct pt_regs *regs, unsigned int trap);
 > 
-> 
-> Which skips everything if we're preemptible. Is that an equivalent
-> change? If so can you please explain why in more detail.
+> Why is it now out-of-line?  
 
-See the discussion in v1 of this patch, which you were cc'd on.
+Did not get it. AFAICS it is the same from last version and does not cross
+80 characters limit on that line.
 
-I agree the description here completely fails to mention why the change.
-It should mention commit a980c0ef9f6d8c.
+> 
+>> +++ b/mm/memory.c
+>> +int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
+>> +{
+>> +	int ret = 0;
+>> +
+>> +	/*
+>> +	 * To be potentially processing a kprobe fault and to be allowed
+>> +	 * to call kprobe_running(), we have to be non-preemptible.
+>> +	 */
+>> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
+>> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
+>> +			ret = 1;
+>> +	}
+>> +	return ret;
+>> +}
+>> +
+> 
+> I would argue this should be in kprobes.h as a static nokprobe_inline.
 
-> Also why not have it return bool?
-> 
-> cheers
-> 
+We can do that. Though it will be a stand alone (not inside #ifdef) as it
+already takes care of CONFIG_KPROBES via kprobes_built_in(). Will change
+it and in which case the above declaration in mm.h would not be required.
