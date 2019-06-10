@@ -2,69 +2,91 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD7A839C7A
-	for <lists+sparclinux@lfdr.de>; Sat,  8 Jun 2019 12:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5613ACEC
+	for <lists+sparclinux@lfdr.de>; Mon, 10 Jun 2019 04:23:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726828AbfFHKp4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 8 Jun 2019 06:45:56 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:45382 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726816AbfFHKp4 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 8 Jun 2019 06:45:56 -0400
-Received: by mail-lf1-f66.google.com with SMTP id u10so3417038lfm.12
-        for <sparclinux@vger.kernel.org>; Sat, 08 Jun 2019 03:45:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=b/EA7sxEpDH/rAOY6mBfQtcc7/RGcwqKy+RtgNkAfT8=;
-        b=rVBfvysUBCUr4dHwTLduQ3vrNqUWeBviC3HjlT5OV0ZZcSDfHFbTsBbcjO7EPVJaAf
-         WXY0YNCMBpV/+XsoWPLSHGGAbKKadRx5fcxyZp4cvJ3lJbRQ5rzhFr8QI6ABgWS1kdXK
-         A1ZjdGDp7JBJ0Rs47sSmW/WRlQUrTDY6WKMxkND4McGSDk5W5c6BJonquAVaaMyxt7DA
-         8Y8S/v3YMINUfiyRNOffx3JSYvNL6X2W7EWCYl1qCyuKHTFXR46gACVsbXqpYVgAX6G7
-         msjj5H22kmY7cz1QmVX/lzZXu8PPgS3J06LmbGu2KyzcVvdDAg695S7UE0/MaQGW1FlB
-         dx1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=b/EA7sxEpDH/rAOY6mBfQtcc7/RGcwqKy+RtgNkAfT8=;
-        b=PjL/EN4zTwc4Bf7/5Kik90tdjneGPyacxZmEhG3oZeKaIm2q/sOEAoBOtvEL4h/rL9
-         i5xlTeAvSdLFb+SPlvP7RUD1Ew8cfWs0yc8xmQMOp6aP9OdWOF6mYaWkOZef/2QBq27S
-         o+VzCO1tLsQylZhcATFcOA1GEnfzGmD1Ng/h+nsByY6524v/iv1f9O+IV/03TkiEtlL+
-         lr36JqFJBKD72NQnI8CLqzuYztcsXoGAfoG2eun14J9API5IYg/E5ONP/XLbDz5IDbJN
-         ZrkSwDXa/hm9VfvtCHP6kX3LgpgML/l87D+vg8aqVbowTXb2utUiDy5+KuQav7J9FzM9
-         olEQ==
-X-Gm-Message-State: APjAAAXMGdmF7OEHia6i7mH6lkTac61/SnpamVI51tQbrHqTvOqK3Sm8
-        rWp18PwFDFTvlPlrMS4PRLsHcKmGjtLnnMvIxcM=
-X-Google-Smtp-Source: APXvYqya334yPtVSKOr6isMoTggzfNZZL7EJePcUioSrbl8VpZW/6bEk2jYb5yvS/83E6mWiBuA130ldjNWSvMmD1D0=
-X-Received: by 2002:ac2:410a:: with SMTP id b10mr12434180lfi.175.1559990754319;
- Sat, 08 Jun 2019 03:45:54 -0700 (PDT)
+        id S2387416AbfFJCXG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 9 Jun 2019 22:23:06 -0400
+Received: from foss.arm.com ([217.140.110.172]:35064 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387400AbfFJCXG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 9 Jun 2019 22:23:06 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7520A337;
+        Sun,  9 Jun 2019 19:23:05 -0700 (PDT)
+Received: from [10.162.42.131] (p8cg001049571a15.blr.arm.com [10.162.42.131])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 19D773F557;
+        Sun,  9 Jun 2019 19:22:56 -0700 (PDT)
+Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
+ kprobe_page_fault()
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
+ <20190607220326.1e21fc9c@canb.auug.org.au>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <632eae55-92f5-1bfc-bfe4-24673558e1d8@arm.com>
+Date:   Mon, 10 Jun 2019 07:53:15 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Received: by 2002:a19:6517:0:0:0:0:0 with HTTP; Sat, 8 Jun 2019 03:45:53 -0700 (PDT)
-Reply-To: petjames55@gmail.com
-From:   James Peterson <petjames55@gmail.com>
-Date:   Sat, 8 Jun 2019 10:45:53 +0000
-Message-ID: <CAOOiV0jSSBrshR-Azdve7xJRqj87_YiD=fjdwpHHaXx6ctcJdw@mail.gmail.com>
-Subject: Project Finance
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190607220326.1e21fc9c@canb.auug.org.au>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello
-We are a financial consultant representing a financial platform which
-is a progressive financial asset management group in Europe and they
-are a multinational company base in United Kingdom, Italy, and Russia.
-Your company can apply to get investment loans through our financial
-platform , with an interest rate as low as 1% per annum for a duration
-period of ten years maximum.
-If interested in this offer please kindly contact us immediately to
-enable us introduce you to the financial platform with your business
-plan for the financing of your project.
-We look forward to have a good business relationship with you and your company.
-Your prompt response will be appreciated.
 
-Kind Regards.
-Mr. Peterson James
+
+On 06/07/2019 05:33 PM, Stephen Rothwell wrote:
+> Hi Anshuman,
+> 
+> On Fri,  7 Jun 2019 16:04:15 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+>>
+>> +static nokprobe_inline bool kprobe_page_fault(struct pt_regs *regs,
+>> +					      unsigned int trap)
+>> +{
+>> +	int ret = 0;
+>> +
+>> +	/*
+>> +	 * To be potentially processing a kprobe fault and to be allowed
+>> +	 * to call kprobe_running(), we have to be non-preemptible.
+>> +	 */
+>> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
+>> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
+>> +			ret = 1;
+>> +	}
+>> +	return ret;
+>> +}
+> 
+> Since this is now declared as "bool" (thanks for that), you should make
+> "ret" be bool and use true and false;
+
+Sure, done.
