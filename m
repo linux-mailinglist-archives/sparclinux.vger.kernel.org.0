@@ -2,98 +2,166 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 715AD3D130
-	for <lists+sparclinux@lfdr.de>; Tue, 11 Jun 2019 17:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5473D43B
+	for <lists+sparclinux@lfdr.de>; Tue, 11 Jun 2019 19:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391456AbfFKPoE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 11 Jun 2019 11:44:04 -0400
-Received: from outpost18.zedat.fu-berlin.de ([130.133.4.111]:56813 "EHLO
-        outpost18.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2391766AbfFKPoE (ORCPT
+        id S2406191AbfFKRbh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 11 Jun 2019 13:31:37 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:53302 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2406182AbfFKRbh (ORCPT
         <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 11 Jun 2019 11:44:04 -0400
-X-Greylist: delayed 305 seconds by postgrey-1.27 at vger.kernel.org; Tue, 11 Jun 2019 11:44:03 EDT
-Received: from relay1.zedat.fu-berlin.de ([130.133.4.67])
-          by outpost.zedat.fu-berlin.de (Exim 4.85)
-          with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id <1hairR-003KEN-Lk>; Tue, 11 Jun 2019 17:38:57 +0200
-Received: from suse-laptop.physik.fu-berlin.de ([160.45.32.140])
-          by relay1.zedat.fu-berlin.de (Exim 4.85)
-          with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id <1hairR-002N80-JI>; Tue, 11 Jun 2019 17:38:57 +0200
-Received: by suse-laptop.physik.fu-berlin.de (Postfix, from userid 1000)
-        id 5E7A9761B92; Tue, 11 Jun 2019 17:38:54 +0200 (CEST)
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     sparclinux@vger.kernel.org
-Cc:     debian-sparc@lists.debian.org,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: [PATCH] sunhv: Fix device naming inconsistency between sunhv_console and sunhv_reg
-Date:   Tue, 11 Jun 2019 17:38:37 +0200
-Message-Id: <20190611153836.18950-1-glaubitz@physik.fu-berlin.de>
-X-Mailer: git-send-email 2.21.0
+        Tue, 11 Jun 2019 13:31:37 -0400
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5BHHWwK038204
+        for <sparclinux@vger.kernel.org>; Tue, 11 Jun 2019 13:31:36 -0400
+Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2t2enaekau-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <sparclinux@vger.kernel.org>; Tue, 11 Jun 2019 13:31:36 -0400
+Received: from localhost
+        by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <sparclinux@vger.kernel.org> from <leonardo@linux.ibm.com>;
+        Tue, 11 Jun 2019 18:31:35 +0100
+Received: from b01cxnp22035.gho.pok.ibm.com (9.57.198.25)
+        by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 11 Jun 2019 18:31:27 +0100
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
+        by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5BHVPUl15401272
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 11 Jun 2019 17:31:25 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5393F112061;
+        Tue, 11 Jun 2019 17:31:25 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 89B10112065;
+        Tue, 11 Jun 2019 17:31:18 +0000 (GMT)
+Received: from leobras.br.ibm.com (unknown [9.86.24.233])
+        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+        Tue, 11 Jun 2019 17:31:18 +0000 (GMT)
+Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
+ kprobe_page_fault()
+From:   Leonardo Bras <leonardo@linux.ibm.com>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
+        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+        linux-s390@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Matthew Wilcox <willy@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Will Deacon <will.deacon@arm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Tony Luck <tony.luck@intel.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+Date:   Tue, 11 Jun 2019 14:31:12 -0300
+In-Reply-To: <7b0a7afd-2776-0d95-19c5-3e15959744eb@arm.com>
+References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
+         <ec764ff4-f68a-fce5-ac1e-a4664e1123c7@c-s.fr>
+         <97e9c9b3-89c8-d378-4730-841a900e6800@arm.com>
+         <8dd6168592437378ff4a7c204e0f2962d002b44f.camel@linux.ibm.com>
+         <7b0a7afd-2776-0d95-19c5-3e15959744eb@arm.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-+TvBOjv046XEorglXBMQ"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: 160.45.32.140
-X-ZEDAT-Hint: RV
+X-TM-AS-GCONF: 00
+x-cbid: 19061117-0064-0000-0000-000003ECE701
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011247; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01216523; UDB=6.00639641; IPR=6.00997622;
+ MB=3.00027266; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-11 17:31:34
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061117-0065-0000-0000-00003DDA7110
+Message-Id: <bec5983d50e37953b3962a6e53fca0a243c7158b.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-11_08:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=673 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906110111
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-In d5a2aa24, the name in struct console sunhv_console was changed from "ttyS"
-to "ttyHV" while the name in struct uart_ops sunhv_pops remained unchanged.
 
-This results in the hypervisor console device to be listed as "ttyHV0" under
-/proc/consoles while the device node is still named "ttyS0":
+--=-+TvBOjv046XEorglXBMQ
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-root@osaka:~# cat /proc/consoles
-ttyHV0               -W- (EC p  )    4:64
-tty0                 -WU (E     )    4:1
-root@osaka:~# readlink /sys/dev/char/4:64
-../../devices/root/f02836f0/f0285690/tty/ttyS0
-root@osaka:~#
+On Tue, 2019-06-11 at 10:44 +0530, Anshuman Khandual wrote:
+>=20
+> On 06/10/2019 08:57 PM, Leonardo Bras wrote:
+> > On Mon, 2019-06-10 at 08:09 +0530, Anshuman Khandual wrote:
+> > > > > +    /*
+> > > > > +     * To be potentially processing a kprobe fault and to be all=
+owed
+> > > > > +     * to call kprobe_running(), we have to be non-preemptible.
+> > > > > +     */
+> > > > > +    if (kprobes_built_in() && !preemptible() && !user_mode(regs)=
+) {
+> > > > > +        if (kprobe_running() && kprobe_fault_handler(regs, trap)=
+)
+> > > >=20
+> > > > don't need an 'if A if B', can do 'if A && B'
+> > >=20
+> > > Which will make it a very lengthy condition check.
+> >=20
+> > Well, is there any problem line-breaking the if condition?
+> >=20
+> > if (A && B && C &&
+> >     D && E )
+> >=20
+> > Also, if it's used only to decide the return value, maybe would be fine
+> > to do somethink like that:
+> >=20
+> > return (A && B && C &&
+> >         D && E );=20
+>=20
+> Got it. But as Dave and Matthew had pointed out earlier, the current x86
+> implementation has better readability. Hence will probably stick with it.
+>=20
+Sure, I agree with them. It's way more readable.
 
-This means that any userland code which tries to determine the name of the
-device file of the hypervisor console device can not rely on the information
-provided by /proc/consoles. In particular, booting current versions of debian-
-installer inside a SPARC LDOM will fail with the installer unable to determine
-the console device.
+--=-+TvBOjv046XEorglXBMQ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
-After renaming the device in struct uart_ops sunhv_pops to "ttyHV" as well,
-the inconsistency is fixed and it is possible again to determine the name
-of the device file of the hypervisor console device by reading the contents
-of /proc/console:
+-----BEGIN PGP SIGNATURE-----
 
-root@osaka:~# cat /proc/consoles
-ttyHV0               -W- (EC p  )    4:64
-tty0                 -WU (E     )    4:1
-root@osaka:~# readlink /sys/dev/char/4:64
-../../devices/root/f02836f0/f0285690/tty/ttyHV0
-root@osaka:~#
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAlz/5WAACgkQlQYWtz9S
+ttSg4A/6A45T2BOxIm5qp+PJ+LwF0fbX0ZI762cE3X6nXDk5fJuRrjyQifBfrD0V
+IVWSUrnOXqarYOmPT3CxT33rW05vGtDWObX+OI6J/QW6qU7jSOD1Db1ZUHL0W3WL
+7B27RA3gNmEMugnjmM+JvtMkf5SwTdk3ZLr2IA22revoOBxOF5b8iICzA0HfaXg6
+8lFSegTY8C2nNQipkeSS4d3KiObNEA1TVJUFqhwJ/VA6qYMnOpKD6WR58QCOxFaF
+NIP4ln+HJccwleioGnQ+Q7jFGRD8Hb9zqLKNccpN1MfuZdE9OXcbFB5MXVuPyE/h
+JVYbITwMXbIxpZe8o6/Yoc875Tz1phA2GeprZlEF3FDbw/tH0tyb6U5o+8UNpOXp
+YdrNxy1oJRK6ZzhW0+FqgMJVo/BBh/8OV3r9ECwYxR3o8ELPVFAcyqrx2XEU7E6p
+fBWN/cYXuZFizM0/b2yKd3kO/JIemEdz58/aPOTgJevEb996p7JohS8H8/3lm4gu
+VcnlAsH9ivKDmkoFzz6JuXWJB19OSohPW8j2p9fqP5LA5snz8o+ehsewTjaVQsPJ
+eNlp1HQzVumviM07wrZmXzVc0zoUb3YhWHrUL26xcfvtfDZVQ+gIOCH9baNsgcoe
+U0uI1HQuuUreC4L10sgC2qrlYqbWMUmK5uj6T8fjTRaHlzP1UX8=
+=i2hD
+-----END PGP SIGNATURE-----
 
-With this change, debian-installer works correctly when installing inside
-a SPARC LDOM.
-
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
----
- drivers/tty/serial/sunhv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/tty/serial/sunhv.c b/drivers/tty/serial/sunhv.c
-index 63e34d868de8..f8503f8fc44e 100644
---- a/drivers/tty/serial/sunhv.c
-+++ b/drivers/tty/serial/sunhv.c
-@@ -397,7 +397,7 @@ static const struct uart_ops sunhv_pops = {
- static struct uart_driver sunhv_reg = {
- 	.owner			= THIS_MODULE,
- 	.driver_name		= "sunhv",
--	.dev_name		= "ttyS",
-+	.dev_name		= "ttyHV",
- 	.major			= TTY_MAJOR,
- };
- 
--- 
-2.21.0
+--=-+TvBOjv046XEorglXBMQ--
 
