@@ -2,77 +2,46 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F227E44E13
-	for <lists+sparclinux@lfdr.de>; Thu, 13 Jun 2019 23:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F1A144E1B
+	for <lists+sparclinux@lfdr.de>; Thu, 13 Jun 2019 23:07:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728928AbfFMVF2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 13 Jun 2019 17:05:28 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:60296 "EHLO
+        id S1728596AbfFMVHB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 13 Jun 2019 17:07:01 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:60342 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727274AbfFMVF2 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 13 Jun 2019 17:05:28 -0400
+        with ESMTP id S1725747AbfFMVHB (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 13 Jun 2019 17:07:01 -0400
 Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id ABD8B149CACF5;
-        Thu, 13 Jun 2019 14:05:27 -0700 (PDT)
-Date:   Thu, 13 Jun 2019 14:05:27 -0700 (PDT)
-Message-Id: <20190613.140527.636416300482814151.davem@davemloft.net>
-To:     glaubitz@physik.fu-berlin.de
-Cc:     sparclinux@vger.kernel.org, debian-sparc@lists.debian.org
-Subject: Re: [PATCH] sunhv: Fix device naming inconsistency between
- sunhv_console and sunhv_reg
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 489C8149CD303;
+        Thu, 13 Jun 2019 14:07:01 -0700 (PDT)
+Date:   Thu, 13 Jun 2019 14:07:00 -0700 (PDT)
+Message-Id: <20190613.140700.1064902587962557055.davem@davemloft.net>
+To:     aaro.koskinen@iki.fi
+Cc:     sparclinux@vger.kernel.org
+Subject: Re: [PATCH silo] tilo: fix rootfs size check
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190611153836.18950-1-glaubitz@physik.fu-berlin.de>
-References: <20190611153836.18950-1-glaubitz@physik.fu-berlin.de>
+In-Reply-To: <20190604214748.25377-1-aaro.koskinen@iki.fi>
+References: <20190604214748.25377-1-aaro.koskinen@iki.fi>
 X-Mailer: Mew version 6.8 on Emacs 26.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 13 Jun 2019 14:05:27 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 13 Jun 2019 14:07:01 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Date: Tue, 11 Jun 2019 17:38:37 +0200
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+Date: Wed,  5 Jun 2019 00:47:48 +0300
 
-> In d5a2aa24, the name in struct console sunhv_console was changed from "ttyS"
-> to "ttyHV" while the name in struct uart_ops sunhv_pops remained unchanged.
+> When checking the rootfs size we use the kernel image size instead of the
+> rootfs image. Fix that.
 > 
-> This results in the hypervisor console device to be listed as "ttyHV0" under
-> /proc/consoles while the device node is still named "ttyS0":
-> 
-> root@osaka:~# cat /proc/consoles
-> ttyHV0               -W- (EC p  )    4:64
-> tty0                 -WU (E     )    4:1
-> root@osaka:~# readlink /sys/dev/char/4:64
-> ../../devices/root/f02836f0/f0285690/tty/ttyS0
-> root@osaka:~#
-> 
-> This means that any userland code which tries to determine the name of the
-> device file of the hypervisor console device can not rely on the information
-> provided by /proc/consoles. In particular, booting current versions of debian-
-> installer inside a SPARC LDOM will fail with the installer unable to determine
-> the console device.
-> 
-> After renaming the device in struct uart_ops sunhv_pops to "ttyHV" as well,
-> the inconsistency is fixed and it is possible again to determine the name
-> of the device file of the hypervisor console device by reading the contents
-> of /proc/console:
-> 
-> root@osaka:~# cat /proc/consoles
-> ttyHV0               -W- (EC p  )    4:64
-> tty0                 -WU (E     )    4:1
-> root@osaka:~# readlink /sys/dev/char/4:64
-> ../../devices/root/f02836f0/f0285690/tty/ttyHV0
-> root@osaka:~#
-> 
-> With this change, debian-installer works correctly when installing inside
-> a SPARC LDOM.
-> 
-> Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Fixes: 9f151df0eecf ("tilo: sanity check image sizes")
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Applied and queued up for -stable, thanks.
+Applied, thank you.
