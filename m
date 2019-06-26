@@ -2,61 +2,98 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F60561E3
-	for <lists+sparclinux@lfdr.de>; Wed, 26 Jun 2019 07:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E39156213
+	for <lists+sparclinux@lfdr.de>; Wed, 26 Jun 2019 08:11:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbfFZFuI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 26 Jun 2019 01:50:08 -0400
-Received: from verein.lst.de ([213.95.11.211]:40248 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725790AbfFZFuI (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 26 Jun 2019 01:50:08 -0400
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id 1443D68B05; Wed, 26 Jun 2019 07:49:35 +0200 (CEST)
-Date:   Wed, 26 Jun 2019 07:49:34 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
+        id S1725954AbfFZGLi (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 26 Jun 2019 02:11:38 -0400
+Received: from mx2.suse.de ([195.135.220.15]:57120 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725379AbfFZGLi (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 26 Jun 2019 02:11:38 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 96E90AF25;
+        Wed, 26 Jun 2019 06:11:36 +0000 (UTC)
+Date:   Wed, 26 Jun 2019 08:11:34 +0200
+From:   Michal Hocko <mhocko@kernel.org>
+To:     Hoan Tran OS <hoan@os.amperecomputing.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Oscar Salvador <osalvador@suse.de>,
+        Pavel Tatashin <pavel.tatashin@microsoft.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 14/16] mm: move the powerpc hugepd code to mm/gup.c
-Message-ID: <20190626054934.GA23547@lst.de>
-References: <20190625143715.1689-1-hch@lst.de> <20190625143715.1689-15-hch@lst.de> <20190625123757.ec7e886747bb5a9bc364107d@linux-foundation.org>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Open Source Submission <patches@amperecomputing.com>
+Subject: Re: [PATCH 1/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default
+ for NUMA
+Message-ID: <20190626061134.GD17798@dhcp22.suse.cz>
+References: <1561501810-25163-1-git-send-email-Hoan@os.amperecomputing.com>
+ <1561501810-25163-2-git-send-email-Hoan@os.amperecomputing.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190625123757.ec7e886747bb5a9bc364107d@linux-foundation.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <1561501810-25163-2-git-send-email-Hoan@os.amperecomputing.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 12:37:57PM -0700, Andrew Morton wrote:
-> On Tue, 25 Jun 2019 16:37:13 +0200 Christoph Hellwig <hch@lst.de> wrote:
-> 
-> > +static int gup_huge_pd(hugepd_t hugepd
-> 
-> Naming nitlet: we have hugepd and we also have huge_pd.  We have
-> hugepte and we also have huge_pte.  It make things a bit hard to
-> remember and it would be nice to make it all consistent sometime.
-> 
-> We're consistent with huge_pud and almost consistent with huge_pmd.
-> 
-> To be fully consistent I guess we should make all of them have the
-> underscore.  Or not have it.  
+On Tue 25-06-19 22:30:24, Hoan Tran OS wrote:
+> This patch enables CONFIG_NODES_SPAN_OTHER_NODES by default
+> for NUMA. As some NUMA nodes have memory ranges that span other
+> nodes. Even though a pfn is valid and between a node's start and
+> end pfns, it may not reside on that node.
 
-Either way is fine with me.  Feel free to fix up per your preference.
+Please describe the problem more thoroughly. What is the layout, what
+doesn't work with the default configuration and why do we need this
+particular fix rather than enabling of the config option for the
+specific HW.
+
+> 
+> Signed-off-by: Hoan Tran <Hoan@os.amperecomputing.com>
+> ---
+>  mm/page_alloc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index d66bc8a..6335505 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1413,7 +1413,7 @@ int __meminit early_pfn_to_nid(unsigned long pfn)
+>  }
+>  #endif
+>  
+> -#ifdef CONFIG_NODES_SPAN_OTHER_NODES
+> +#ifdef CONFIG_NUMA
+>  /* Only safe to use early in boot when initialisation is single-threaded */
+>  static inline bool __meminit early_pfn_in_nid(unsigned long pfn, int node)
+>  {
+> -- 
+> 2.7.4
+> 
+
+-- 
+Michal Hocko
+SUSE Labs
