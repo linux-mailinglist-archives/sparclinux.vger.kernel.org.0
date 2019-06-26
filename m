@@ -2,99 +2,117 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAB7C55CE6
-	for <lists+sparclinux@lfdr.de>; Wed, 26 Jun 2019 02:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5A2561AF
+	for <lists+sparclinux@lfdr.de>; Wed, 26 Jun 2019 07:21:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726274AbfFZA2m (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 25 Jun 2019 20:28:42 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:37891 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726223AbfFZA2m (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 25 Jun 2019 20:28:42 -0400
-Received: by mail-io1-f68.google.com with SMTP id j6so1164916ioa.5
-        for <sparclinux@vger.kernel.org>; Tue, 25 Jun 2019 17:28:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=T/uR/4PciUq//wm8VvTrYpqXShwr7/kFFKyCPyP8pcs=;
-        b=YeX/xFTe86cLjtEiwNDGr0CKTn6yvfRoFVYAyjGpJqcjyjOauh0oSms8qNpsPWv76x
-         eRvUUgmWL0+6wScBbr8rD2ZZ/RfhNpAX4UKm1peplkD8GmwmOk+8uVKUsB9hanwxe3Dm
-         H0krLG+sD5Fzr71HJU1x0kXlYQzuI9cWXt4LY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=T/uR/4PciUq//wm8VvTrYpqXShwr7/kFFKyCPyP8pcs=;
-        b=NAMl0EkUW1zWBLLhsC26YJtqLTKKEpOlwG1EUMy4vtZKjsTCVzItczGRNO56iPBr23
-         7i68LxRnWDXh0+i38M612WhSYqtPWm670IanMpgs9NxRzVsLqdC3J/5Jh7AzJoJpSD+z
-         9IbaIyA0AlS5l2OZqZGYQwt9aPZyK+uYvzLBnbQpkdfzerXbxDvI5MWPi/xkRJADB8ZF
-         hdYA8R5weIZN5YrS2u/GDz3MFfgQ5ShO6HWzo4DbPQVqpDZvEJs87a8T6rFMdJYB+T/9
-         alCHYprkMUdBJBhxaoKn7Wlf9EpjuHAoGOgrYkhdto3amLr++TpuGiZ9iSDkmtwa7RNJ
-         itag==
-X-Gm-Message-State: APjAAAVEZEfKgo0EpAzjsXIm+HYBx9Z1DXaACerBGM62ie5wYadL7Em8
-        y/eD01P0F6QWZY5OgyLhhvPwCjdytRjqjLAjoQrg3pKhApcO/w==
-X-Google-Smtp-Source: APXvYqxX0Qrt909cJIALCW0svY89PQl3z7r/J2jSYrLO+BEo6+PoMkKF1jAWxKfLc2PBHctF8DPoeOKanHzXan7VOSY=
-X-Received: by 2002:a6b:6d07:: with SMTP id a7mr1751422iod.254.1561508921439;
- Tue, 25 Jun 2019 17:28:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <1561501810-25163-1-git-send-email-Hoan@os.amperecomputing.com>
-In-Reply-To: <1561501810-25163-1-git-send-email-Hoan@os.amperecomputing.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 26 Jun 2019 08:28:30 +0800
-Message-ID: <CAADWXX8wdEPNZ26SFJUfwrhQson3HPTrZ7D2jju3RhEeMuc+QQ@mail.gmail.com>
-Subject: Re: [PATCH 0/5] Enable CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA
-To:     Hoan Tran OS <hoan@os.amperecomputing.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Oscar Salvador <osalvador@suse.de>,
-        Pavel Tatashin <pavel.tatashin@microsoft.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        "David S . Miller" <davem@davemloft.net>,
+        id S1726076AbfFZFVJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 26 Jun 2019 01:21:09 -0400
+Received: from relay6-d.mail.gandi.net ([217.70.183.198]:47667 "EHLO
+        relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725308AbfFZFVJ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 26 Jun 2019 01:21:09 -0400
+X-Originating-IP: 79.86.19.127
+Received: from [192.168.0.12] (127.19.86.79.rev.sfr.net [79.86.19.127])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id BAAC4C0003;
+        Wed, 26 Jun 2019 05:20:51 +0000 (UTC)
+From:   Alex Ghiti <alex@ghiti.fr>
+To:     Helge Deller <deller@gmx.de>
+Cc:     "James E . J . Bottomley" <james.bottomley@hansenpartnership.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>,
         Christian Borntraeger <borntraeger@de.ibm.com>,
-        "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Open Source Submission <patches@amperecomputing.com>
-Content-Type: text/plain; charset="UTF-8"
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH RESEND 6/8] parisc: Use mmap_base, not mmap_legacy_base,
+ as low_limit for bottom-up mmap
+References: <20190620050328.8942-1-alex@ghiti.fr>
+ <20190620050328.8942-7-alex@ghiti.fr>
+ <438124ff-6838-7ced-044c-ca57a6b9cc91@gmx.de>
+Message-ID: <7fb32983-3444-0747-4e5f-812d1b4d84c2@ghiti.fr>
+Date:   Wed, 26 Jun 2019 01:20:51 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
+MIME-Version: 1.0
+In-Reply-To: <438124ff-6838-7ced-044c-ca57a6b9cc91@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-This is not a comment on the patch series itself, it is a comment on the emails.
-
-Your email is mis-configured and ends up all being marked as spam for
-me, because you go through the wrong smtp server (or maybe your smtp
-server itself is miconfigured)
-
-All your emails fail dmarc, because the "From" header is
-os.amperecomputing.com, but the DKIM signature is for
-amperemail.onmicrosoft.com.
-
-End result: it wil all go into the spam box of anybody who checks DKIM.
-
-                       Linus
-
-On Wed, Jun 26, 2019 at 6:30 AM Hoan Tran OS
-<hoan@os.amperecomputing.com> wrote:
+On 6/25/19 10:09 AM, Helge Deller wrote:
+> On 20.06.19 07:03, Alexandre Ghiti wrote:
+>> Bottom-up mmap scheme is used twice:
+>>
+>> - for legacy mode, in which mmap_legacy_base and mmap_base are equal.
+>>
+>> - in case of mmap failure in top-down mode, where there is no need to go
+>> through the whole address space again for the bottom-up fallback: the goal
+>> of this fallback is to find, as a last resort, space between the top-down
+>> mmap base and the stack, which is the only place not covered by the
+>> top-down mmap.
+>>
+>> Then this commit removes the usage of mmap_legacy_base field from parisc
+>> code.
+>>
+>> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> Boot-tested on parisc and seems to work nicely, thus:
 >
-> This patch set enables CONFIG_NODES_SPAN_OTHER_NODES by default
-> for NUMA. [...]
+> Acked-by: Helge Deller <deller@gmx.de>
+
+Thanks Helge,
+
+Alex
+
+>
+> Helge
+>
+>
+>
+>> ---
+>>   arch/parisc/kernel/sys_parisc.c | 8 +++-----
+>>   1 file changed, 3 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
+>> index 5d458a44b09c..e987f3a8eb0b 100644
+>> --- a/arch/parisc/kernel/sys_parisc.c
+>> +++ b/arch/parisc/kernel/sys_parisc.c
+>> @@ -119,7 +119,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+>>
+>>   	info.flags = 0;
+>>   	info.length = len;
+>> -	info.low_limit = mm->mmap_legacy_base;
+>> +	info.low_limit = mm->mmap_base;
+>>   	info.high_limit = mmap_upper_limit(NULL);
+>>   	info.align_mask = last_mmap ? (PAGE_MASK & (SHM_COLOUR - 1)) : 0;
+>>   	info.align_offset = shared_align_offset(last_mmap, pgoff);
+>> @@ -240,13 +240,11 @@ static unsigned long mmap_legacy_base(void)
+>>    */
+>>   void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+>>   {
+>> -	mm->mmap_legacy_base = mmap_legacy_base();
+>> -	mm->mmap_base = mmap_upper_limit(rlim_stack);
+>> -
+>>   	if (mmap_is_legacy()) {
+>> -		mm->mmap_base = mm->mmap_legacy_base;
+>> +		mm->mmap_base = mmap_legacy_base();
+>>   		mm->get_unmapped_area = arch_get_unmapped_area;
+>>   	} else {
+>> +		mm->mmap_base = mmap_upper_limit(rlim_stack);
+>>   		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
+>>   	}
+>>   }
+>>
