@@ -2,127 +2,114 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03DFC5AC1B
-	for <lists+sparclinux@lfdr.de>; Sat, 29 Jun 2019 17:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2A4A5AE55
+	for <lists+sparclinux@lfdr.de>; Sun, 30 Jun 2019 06:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726892AbfF2PPi (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 29 Jun 2019 11:15:38 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:34947 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726828AbfF2PPi (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 29 Jun 2019 11:15:38 -0400
-Received: by mail-pf1-f194.google.com with SMTP id d126so4412927pfd.2;
-        Sat, 29 Jun 2019 08:15:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=GttoCpwXZ0YnEgD480v+8xB8TagEdr3d83SlTOyEyRY=;
-        b=NroLZ76Oo2crKQBJo8fp4wAzbrnPDUyi6puDLTX4qr11cTGH0bOeLepMhvdQwo020B
-         6pSoWWR3kH9ARotFu1VoLKq6TSkJTxnPuTI+vnkbouCiYTmlB0siA0LLLwkSWELVY4CK
-         B+AHB27xD0ZZtvlZYod6I2Kb2OBLCXiVyLpVClEMHQnK9lP8gLwCCqFYFsjv0bK9djvg
-         Ip/SsNDsbNHaOhOd02uWeVmcEQMegCbYeZeUFqCm22rmEQRnUUfF69IsdbjxePKKKYqS
-         xiuv7ChyahFmSIJuO7fdh+Iu669GD3DcuLWeVzI495UDhi+Douu8YoWlFVimf0oV7mWe
-         xUDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=GttoCpwXZ0YnEgD480v+8xB8TagEdr3d83SlTOyEyRY=;
-        b=OR6vOQFMjQrzauk+EcQ8X4Se1IGWpxi+lgYBp19LU0wp4mZmudOOfquyu8mSPbLW23
-         vhPgRi9ZymSVDugEcEuDrzj4i7jYKz7MJHfRB1YL84p3C6u3B9fz5VNtSv5BxmByaDZ/
-         D9lBCgd9xcfLQI9TaUz2tBdlHR1ijAOiFJXg/394Yg1sx0aaNdjAnuN5pVJAqljAMQmH
-         JDUQ/ssxhhK+4Fme+PgybRouJGyjBvh6vQ+SRhqh5mleONg5Ps65XzRo+KD65dD/dGoq
-         05eA94iR7Yym8c+dWRuSmnui97D+ZItFUdkhb0cCBm1sssCXdJHOPBohueoBLFT7Ax3t
-         f7OQ==
-X-Gm-Message-State: APjAAAVkqlFkv9Z9j0WHGhFk0Zhz94BM63aDg2TQdfFxyMufC4vPJ/Iw
-        Sdu81GNyJEvbtFeYkWprN+s=
-X-Google-Smtp-Source: APXvYqyVpBWX0MYstsM24PSiU2G6Tv937ge94evRwlPCysvJPgEe57082Y4skMOs3eYeU4vWifx+4w==
-X-Received: by 2002:a63:4e58:: with SMTP id o24mr14663917pgl.366.1561821337246;
-        Sat, 29 Jun 2019 08:15:37 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 85sm8120381pfv.130.2019.06.29.08.15.36
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 29 Jun 2019 08:15:36 -0700 (PDT)
-Date:   Sat, 29 Jun 2019 08:15:35 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
+        id S1726208AbfF3Ekt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 30 Jun 2019 00:40:49 -0400
+Received: from foss.arm.com ([217.140.110.172]:44468 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725771AbfF3Eks (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 30 Jun 2019 00:40:48 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A8E728;
+        Sat, 29 Jun 2019 21:40:47 -0700 (PDT)
+Received: from [192.168.0.129] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5ECD73F706;
+        Sat, 29 Jun 2019 21:40:37 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH] mm: Generalize and rename notify_page_fault() as
+ kprobe_page_fault()
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
+        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-s390@vger.kernel.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Matthew Wilcox <willy@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        James Hogan <jhogan@kernel.org>,
+        linux-snps-arc@lists.infradead.org,
+        Fenghua Yu <fenghua.yu@intel.com>,
         Andrey Konovalov <andreyknvl@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 06/16] sh: use the generic get_user_pages_fast code
-Message-ID: <20190629151535.GA18067@roeck-us.net>
-References: <20190625143715.1689-1-hch@lst.de>
- <20190625143715.1689-7-hch@lst.de>
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Tony Luck <tony.luck@intel.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vineet Gupta <vgupta@synopsys.com>, linux-mips@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+References: <1560420444-25737-1-git-send-email-anshuman.khandual@arm.com>
+ <20190629145009.GA28613@roeck-us.net>
+Message-ID: <78863cd0-8cb5-c4fd-ed06-b1136bdbb6ef@arm.com>
+Date:   Sun, 30 Jun 2019 10:11:03 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190625143715.1689-7-hch@lst.de>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <20190629145009.GA28613@roeck-us.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 04:37:05PM +0200, Christoph Hellwig wrote:
-> The sh code is mostly equivalent to the generic one, minus various
-> bugfixes and two arch overrides that this patch adds to pgtable.h.
+Hello Guenter,
+
+On 06/29/2019 08:20 PM, Guenter Roeck wrote:
+> Hi,
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> On Thu, Jun 13, 2019 at 03:37:24PM +0530, Anshuman Khandual wrote:
+>> Architectures which support kprobes have very similar boilerplate around
+>> calling kprobe_fault_handler(). Use a helper function in kprobes.h to unify
+>> them, based on the x86 code.
+>>
+>> This changes the behaviour for other architectures when preemption is
+>> enabled. Previously, they would have disabled preemption while calling the
+>> kprobe handler. However, preemption would be disabled if this fault was
+>> due to a kprobe, so we know the fault was not due to a kprobe handler and
+>> can simply return failure.
+>>
+>> This behaviour was introduced in the commit a980c0ef9f6d ("x86/kprobes:
+>> Refactor kprobes_fault() like kprobe_exceptions_notify()")
+>>
+> 
+> With this patch applied, parisc:allmodconfig images no longer build.
+> 
+> In file included from arch/parisc/mm/fixmap.c:8:
+> include/linux/kprobes.h: In function 'kprobe_page_fault':
+> include/linux/kprobes.h:477:9: error:
+> 	implicit declaration of function 'kprobe_fault_handler'; did you mean 'kprobe_page_fault'?
 
-sh:defconfig no longer builds with this patch applied.
+Yikes.. Arch parisc does not even define (unlike mips which did but never exported)
+now required function kprobe_fault_handler() when CONFIG_KPROBES is enabled.
 
-mm/gup.c: In function 'gup_huge_pud':
-arch/sh/include/asm/pgtable-3level.h:40:36: error:
-	implicit declaration of function 'pud_pfn'; did you mean 'pte_pfn'? 
+I believe rather than defining one stub version only for parsic it would be better
+to have an weak symbol generic stub definition for kprobe_fault_handler() in file
+include/linux/kprobes.h when CONFIG_KPROBES is enabled along side the other stub
+definition when !CONFIG_KPROBES. But arch which wants to use kprobe_page_fault()
+cannot use stub kprobe_fault_handler() definition and will have to provide one.
+I will probably add a comment regarding this.
 
-Bisect log attached.
+> 
+> Reverting the patch fixes the problem.
+> 
+> Guenter
+> 
 
-Guenter
-
----
-# bad: [48568d8c7f479ec45b9c3d02b4b1895f3ef61a03] Add linux-next specific files for 20190628
-# good: [4b972a01a7da614b4796475f933094751a295a2f] Linux 5.2-rc6
-git bisect start 'HEAD' 'v5.2-rc6'
-# good: [89a77c9176fe88f68c3bf7bd255cfea6797258d4] Merge remote-tracking branch 'crypto/master'
-git bisect good 89a77c9176fe88f68c3bf7bd255cfea6797258d4
-# good: [2cedca636ad73ed838bd636685b245404e490c73] Merge remote-tracking branch 'security/next-testing'
-git bisect good 2cedca636ad73ed838bd636685b245404e490c73
-# good: [ea260819fdc2f8a64e6c87f3ad80ecc5e4015921] Merge remote-tracking branch 'char-misc/char-misc-next'
-git bisect good ea260819fdc2f8a64e6c87f3ad80ecc5e4015921
-# good: [aca42ca2a32eacf804ac56a33526f049debc8ec0] Merge remote-tracking branch 'rpmsg/for-next'
-git bisect good aca42ca2a32eacf804ac56a33526f049debc8ec0
-# good: [f4cd0c7f3c07876f7173b5306e974644c6eec141] Merge remote-tracking branch 'pidfd/for-next'
-git bisect good f4cd0c7f3c07876f7173b5306e974644c6eec141
-# bad: [09c57a8ab1fc3474b4a620247a0f9e3ac61c4cfe] mm/sparsemem: support sub-section hotplug
-git bisect bad 09c57a8ab1fc3474b4a620247a0f9e3ac61c4cfe
-# good: [aaffcf10880c363870413c5cdee5dfb6a923e9ae] mm: memcontrol: dump memory.stat during cgroup OOM
-git bisect good aaffcf10880c363870413c5cdee5dfb6a923e9ae
-# bad: [81d90bb2d2784258ed7c0762ecf34d4665198bad] um: switch to generic version of pte allocation
-git bisect bad 81d90bb2d2784258ed7c0762ecf34d4665198bad
-# bad: [dadae650472841f004882a2409aa844e37809c60] sparc64-add-the-missing-pgd_page-definition-fix
-git bisect bad dadae650472841f004882a2409aa844e37809c60
-# good: [d1edd06c6ac8c8c49345ff34de1c72ee571f3f7b] mm: memcg/slab: stop setting page->mem_cgroup pointer for slab pages
-git bisect good d1edd06c6ac8c8c49345ff34de1c72ee571f3f7b
-# good: [b1ceaacca9e63794bd3f574c928e7e6aca01bce7] mm: simplify gup_fast_permitted
-git bisect good b1ceaacca9e63794bd3f574c928e7e6aca01bce7
-# good: [59f238b3353caf43b118e1bb44010aa1abd56d7f] sh: add the missing pud_page definition
-git bisect good 59f238b3353caf43b118e1bb44010aa1abd56d7f
-# bad: [51bbf54b3f26a85217db720f4e5b01a6c4d3f010] sparc64: add the missing pgd_page definition
-git bisect bad 51bbf54b3f26a85217db720f4e5b01a6c4d3f010
-# bad: [be748d6e72113580af7e37ad68a0047659e60189] sh: use the generic get_user_pages_fast code
-git bisect bad be748d6e72113580af7e37ad68a0047659e60189
-# first bad commit: [be748d6e72113580af7e37ad68a0047659e60189] sh: use the generic get_user_pages_fast code
+Thanks for reporting the problem.
