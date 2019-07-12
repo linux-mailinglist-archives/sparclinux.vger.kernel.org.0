@@ -2,164 +2,99 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E190E66FFA
-	for <lists+sparclinux@lfdr.de>; Fri, 12 Jul 2019 15:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB52E67192
+	for <lists+sparclinux@lfdr.de>; Fri, 12 Jul 2019 16:37:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727462AbfGLN0U (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 12 Jul 2019 09:26:20 -0400
-Received: from zeniv.linux.org.uk ([195.92.253.2]:38536 "EHLO
-        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726466AbfGLN0T (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 12 Jul 2019 09:26:19 -0400
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat Linux))
-        id 1hlvYf-0008I4-Sv; Fri, 12 Jul 2019 13:25:53 +0000
-Date:   Fri, 12 Jul 2019 14:25:53 +0100
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Aleksa Sarai <cyphar@cyphar.com>
-Cc:     Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Christian Brauner <christian@brauner.io>,
-        David Drysdale <drysdale@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
+        id S1727074AbfGLOhj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 12 Jul 2019 10:37:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37650 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726449AbfGLOhj (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 12 Jul 2019 10:37:39 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 997A82080A;
+        Fri, 12 Jul 2019 14:37:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562942258;
+        bh=Q0fQ8cIZPQQvRl+HqtEP93tavumXUJrRQeEzq/T0ZjU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oSDuCh7A+Xs42MXbXEieBsFty+Z7wObUN12OgwqLbOFW9oih/BmQBTm6f9I5uATLs
+         k3FxtcxVs2OyWqrnzMXueSISfTrdrWEpEWu7/gxb4zS9dLiXyM0oMjuEOYKj4+vyf3
+         slAytCaCOnyinCVXlJAAWb5BUeKOp+4U+rFpZcIw=
+Date:   Fri, 12 Jul 2019 15:37:30 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Michal Hocko <mhocko@kernel.org>
+Cc:     Hoan Tran OS <hoan@os.amperecomputing.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Open Source Submission <patches@amperecomputing.com>,
+        Pavel Tatashin <pavel.tatashin@microsoft.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
-Message-ID: <20190712132553.GN17978@ZenIV.linux.org.uk>
-References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190706145737.5299-6-cyphar@cyphar.com>
- <20190712043341.GI17978@ZenIV.linux.org.uk>
- <20190712105745.nruaftgeat6irhzr@yavin>
- <20190712123924.GK17978@ZenIV.linux.org.uk>
- <20190712125552.GL17978@ZenIV.linux.org.uk>
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "David S . Miller" <davem@davemloft.net>, willy@infradead.org
+Subject: Re: [PATCH v2 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
+ default for NUMA
+Message-ID: <20190712143730.au3662g4ua2tjudu@willie-the-truck>
+References: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
+ <20190712070247.GM29483@dhcp22.suse.cz>
+ <586ae736-a429-cf94-1520-1a94ffadad88@os.amperecomputing.com>
+ <20190712121223.GR29483@dhcp22.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190712125552.GL17978@ZenIV.linux.org.uk>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <20190712121223.GR29483@dhcp22.suse.cz>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Jul 12, 2019 at 01:55:52PM +0100, Al Viro wrote:
-> On Fri, Jul 12, 2019 at 01:39:24PM +0100, Al Viro wrote:
-> > On Fri, Jul 12, 2019 at 08:57:45PM +1000, Aleksa Sarai wrote:
-> > 
-> > > > > @@ -2350,9 +2400,11 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
-> > > > >  			s = ERR_PTR(error);
-> > > > >  		return s;
-> > > > >  	}
-> > > > > -	error = dirfd_path_init(nd);
-> > > > > -	if (unlikely(error))
-> > > > > -		return ERR_PTR(error);
-> > > > > +	if (likely(!nd->path.mnt)) {
-> > > > 
-> > > > Is that a weird way of saying "if we hadn't already called dirfd_path_init()"?
-> > > 
-> > > Yes. I did it to be more consistent with the other "have we got the
-> > > root" checks elsewhere. Is there another way you'd prefer I do it?
-> > 
-> > "Have we got the root" checks are inevitable evil; here you are making the
-> > control flow in a single function hard to follow.
-> > 
-> > I *think* what you are doing is
-> > 	absolute pathname, no LOOKUP_BENEATH:
-> > 		set_root
-> > 		error = nd_jump_root(nd)
-> > 	else
-> > 		error = dirfd_path_init(nd)
-> > 	return unlikely(error) ? ERR_PTR(error) : s;
-> > which should be a lot easier to follow (not to mention shorter), but I might
-> > be missing something in all of that.
+Hi all,
+
+On Fri, Jul 12, 2019 at 02:12:23PM +0200, Michal Hocko wrote:
+> On Fri 12-07-19 10:56:47, Hoan Tran OS wrote:
+> [...]
+> > It would be good if we can enable it by-default. Otherwise, let arch 
+> > enables it by them-self. Do you have any suggestions?
 > 
-> PS: if that's what's going on, I would be tempted to turn the entire
-> path_init() part into this:
-> 	if (flags & LOOKUP_BENEATH)
-> 		while (*s == '/')
-> 			s++;
-> in the very beginning (plus the handling of nd_jump_root() prototype
-> change, but that belongs with nd_jump_root() change itself, obviously).
-> Again, I might be missing something here...
+> I can hardly make any suggestions when it is not really clear _why_ you
+> want to remove this config option in the first place. Please explain
+> what motivated you to make this change.
 
-Argh... I am, at that - you have setting path->root (and grabbing it)
-in LOOKUP_BENEATH cases and you do it after dirfd_path_init().  So
-how about
-	if (flags & LOOKUP_BENEATH)
-		while (*s == '/')
-			s++;
-before the whole thing and
-        if (*s == '/') { /* can happen only without LOOKUP_BENEATH */
-                set_root(nd);
-		error = nd_jump_root(nd);
-		if (unlikely(error))
-			return ERR_PTR(error);
-        } else if (nd->dfd == AT_FDCWD) {
-                if (flags & LOOKUP_RCU) {
-                        struct fs_struct *fs = current->fs;
-                        unsigned seq;
+Sorry, I think this confusion might actually be my fault and Hoan has just
+been implementing my vague suggestion here:
 
-                        do {
-                                seq = read_seqcount_begin(&fs->seq);
-                                nd->path = fs->pwd;
-                                nd->inode = nd->path.dentry->d_inode;
-                                nd->seq = __read_seqcount_begin(&nd->path.dentry->d_seq);
-                        } while (read_seqcount_retry(&fs->seq, seq));
-                } else {
-                        get_fs_pwd(current->fs, &nd->path);
-                        nd->inode = nd->path.dentry->d_inode;
-                }  
-        } else {
-                /* Caller must check execute permissions on the starting path component */
-                struct fd f = fdget_raw(nd->dfd);
-                struct dentry *dentry;
+https://lore.kernel.org/linux-arm-kernel/20190625101245.s4vxfosoop52gl4e@willie-the-truck/
 
-                if (!f.file)
-                        return ERR_PTR(-EBADF);
+If the preference of the mm folks is to leave CONFIG_NODES_SPAN_OTHER_NODES
+as it is, then we can define it for arm64. I just find it a bit weird that
+the majority of NUMA-capable architectures have to add a symbol in the arch
+Kconfig file, for what appears to be a performance optimisation applicable
+only to ia64, mips and sh.
 
-                dentry = f.file->f_path.dentry;
+At the very least we could make the thing selectable.
 
-                if (*s && unlikely(!d_can_lookup(dentry))) {
-                        fdput(f);
-                        return ERR_PTR(-ENOTDIR);
-                }
-
-                nd->path = f.file->f_path;
-                if (flags & LOOKUP_RCU) {
-                        nd->inode = nd->path.dentry->d_inode;
-                        nd->seq = read_seqcount_begin(&nd->path.dentry->d_seq);
-                } else {
-                        path_get(&nd->path);
-                        nd->inode = nd->path.dentry->d_inode;
-                }
-                fdput(f);
-        }
-	if (flags & LOOKUP_BENEATH) {
-		nd->root = nd->path;
-		if (!(flags & LOOKUP_RCU))
-			path_get(&nd->root);
-		else
-			nd->root_seq = nd->seq;
-	}
-	return s;
-replacing the part in the end?  Makes for much smaller change; it might
-very well still make sense to add dirfd_path_init() as a separate
-cleanup (perhaps with the *s == '/' case included), though.
+Will
