@@ -2,104 +2,87 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4949167274
-	for <lists+sparclinux@lfdr.de>; Fri, 12 Jul 2019 17:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE20677A6
+	for <lists+sparclinux@lfdr.de>; Sat, 13 Jul 2019 04:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727245AbfGLPde (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 12 Jul 2019 11:33:34 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:10600 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726930AbfGLPdd (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 12 Jul 2019 11:33:33 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id A1467511F2;
-        Fri, 12 Jul 2019 17:33:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id QDRC6RVdbb1k; Fri, 12 Jul 2019 17:33:19 +0200 (CEST)
-Date:   Sat, 13 Jul 2019 01:32:27 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
+        id S1727525AbfGMCmV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 12 Jul 2019 22:42:21 -0400
+Received: from zeniv.linux.org.uk ([195.92.253.2]:48010 "EHLO
+        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727338AbfGMCmU (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 12 Jul 2019 22:42:20 -0400
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hm7yz-0001A3-CY; Sat, 13 Jul 2019 02:41:53 +0000
+Date:   Sat, 13 Jul 2019 03:41:53 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Aleksa Sarai <cyphar@cyphar.com>
 Cc:     Jeff Layton <jlayton@kernel.org>,
         "J. Bruce Fields" <bfields@fieldses.org>,
         Arnd Bergmann <arnd@arndb.de>,
         David Howells <dhowells@redhat.com>,
         Shuah Khan <shuah@kernel.org>,
         Shuah Khan <skhan@linuxfoundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Jann Horn <jannh@google.com>,
         Christian Brauner <christian@brauner.io>,
         David Drysdale <drysdale@google.com>,
-        Tycho Andersen <tycho@tycho.ws>,
-        Kees Cook <keescook@chromium.org>,
+        Andy Lutomirski <luto@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        containers@lists.linux-foundation.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        Eric Biederman <ebiederm@xmission.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
         Chanho Min <chanho.min@lge.com>,
         Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
         linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v9 00/10] namei: openat2(2) path resolution restrictions
-Message-ID: <20190712153227.owkjmx47lzrggweo@yavin>
+Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
+Message-ID: <20190713024153.GA3817@ZenIV.linux.org.uk>
 References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190712151118.GP17978@ZenIV.linux.org.uk>
+ <20190706145737.5299-6-cyphar@cyphar.com>
+ <20190712043341.GI17978@ZenIV.linux.org.uk>
+ <20190712105745.nruaftgeat6irhzr@yavin>
+ <20190712123924.GK17978@ZenIV.linux.org.uk>
+ <20190712125552.GL17978@ZenIV.linux.org.uk>
+ <20190712132553.GN17978@ZenIV.linux.org.uk>
+ <20190712150026.GO17978@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="whm56wbfs3ehouyz"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190712151118.GP17978@ZenIV.linux.org.uk>
+In-Reply-To: <20190712150026.GO17978@ZenIV.linux.org.uk>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+On Fri, Jul 12, 2019 at 04:00:26PM +0100, Al Viro wrote:
+> On Fri, Jul 12, 2019 at 02:25:53PM +0100, Al Viro wrote:
+> 
+> > 	if (flags & LOOKUP_BENEATH) {
+> > 		nd->root = nd->path;
+> > 		if (!(flags & LOOKUP_RCU))
+> > 			path_get(&nd->root);
+> > 		else
+> > 			nd->root_seq = nd->seq;
+> 
+> BTW, this assignment is needed for LOOKUP_RCU case.  Without it
+> you are pretty much guaranteed that lazy pathwalk will fail,
+> when it comes to complete_walk().
+> 
+> Speaking of which, what would happen if LOOKUP_ROOT/LOOKUP_BENEATH
+> combination would someday get passed?
 
---whm56wbfs3ehouyz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I don't understand what's going on with ->r_seq in there - your
+call of path_is_under() is after having (re-)sampled rename_lock,
+but if that was the only .. in there, who's going to recheck
+the value?  For that matter, what's to guarantee that the thing
+won't get moved just as you are returning from handle_dots()?
 
-On 2019-07-12, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Sun, Jul 07, 2019 at 12:57:27AM +1000, Aleksa Sarai wrote:
-> > Patch changelog:
-> >   v9:
-> >     * Replace resolveat(2) with openat2(2). [Linus]
-> >     * Output a warning to dmesg if may_open_magiclink() is violated.
-> >     * Add an openat2(O_CREAT) testcase.
->=20
-> One general note for the future, BTW: for such series it's generally
-> a good idea to put it into a public git tree somewhere and mention that
-> in the announcement...
-
-Sure, I'll mention it next time. For the record the tree is
-  <https://github.com/cyphar/linux/tree/resolveat/master>
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---whm56wbfs3ehouyz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXSioAwAKCRCdlLljIbnQ
-EgzkAQChn28FqDC8mwoRBSpKSsYawQ4zVuMzbt7zKNknJNg7nQD/cmJDlKpmnt40
-Jbd8FP1RPFVHA8Y7yVeIE+cOpg3nbw4=
-=RciL
------END PGP SIGNATURE-----
-
---whm56wbfs3ehouyz--
+IOW, what does LOOKUP_IN_ROOT guarantee for caller (openat2())?
