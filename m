@@ -2,152 +2,340 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EC886A37A
-	for <lists+sparclinux@lfdr.de>; Tue, 16 Jul 2019 10:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FF956A4A7
+	for <lists+sparclinux@lfdr.de>; Tue, 16 Jul 2019 11:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731006AbfGPIEG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 16 Jul 2019 04:04:06 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:35732 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727042AbfGPIEF (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 16 Jul 2019 04:04:05 -0400
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id 65FB4506CB;
-        Tue, 16 Jul 2019 10:03:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
-        with ESMTP id FP9J3tccLygu; Tue, 16 Jul 2019 10:03:51 +0200 (CEST)
-Date:   Tue, 16 Jul 2019 18:03:38 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Christian Brauner <christian@brauner.io>,
-        David Drysdale <drysdale@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org,
-        rgb@redhat.com, paul@paul-moore.com, raven@themaw.net,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
-Message-ID: <20190716080338.al4cnwdfvdbpzh3r@yavin>
-References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190706145737.5299-6-cyphar@cyphar.com>
- <20190712043341.GI17978@ZenIV.linux.org.uk>
- <20190712105745.nruaftgeat6irhzr@yavin>
- <20190712123924.GK17978@ZenIV.linux.org.uk>
- <20190712125552.GL17978@ZenIV.linux.org.uk>
- <20190712132553.GN17978@ZenIV.linux.org.uk>
- <20190712150026.GO17978@ZenIV.linux.org.uk>
- <20190713024153.GA3817@ZenIV.linux.org.uk>
- <20190714035826.GQ17978@ZenIV.linux.org.uk>
+        id S1730429AbfGPJMB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 16 Jul 2019 05:12:01 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:44541 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727889AbfGPJMB (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 16 Jul 2019 05:12:01 -0400
+Received: by mail-ed1-f66.google.com with SMTP id k8so18842489edr.11
+        for <sparclinux@vger.kernel.org>; Tue, 16 Jul 2019 02:11:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=7xb+PSVShlISQIFnATJZ4hvYAhKaCaZUdlpPqb7ZdlI=;
+        b=mhvtdbFi1jorvTYx8o5bLLkEJtCx2PElBWlSO0PgRkWsBtHj8HviDmmxFDsgOq9Qrl
+         TMkkmmEhqUQZpAckNsI8RWLmybhm3wdTjNHUDnsSIn3huvRAilE9GIFAsRcQsSHF8GhY
+         HGfJBLTHz3qIwF4R49XB1+IzsYB1msoHuFYSkcInL6zfAlZl1Q6qo+BD4tLxOj/9fn0N
+         Ib43te3YSKdV11novXBaYdYbt1f+r+M2NhzsAkFgKly1hEr1uyyU6C7dVDitDsnlWn3u
+         517HYBalZzYjGpvx8ImebR3cf5pyTcgKppozuIo4BQgADK2xnEdw3xrX/uiXB9/M4UjU
+         az0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=7xb+PSVShlISQIFnATJZ4hvYAhKaCaZUdlpPqb7ZdlI=;
+        b=t4vHLJ9gWAdhx+GA8DY4YE4R8NN9qSvB2Xv8SGAJGZHxKEdJnIKsxowyoEdz93hvwT
+         PzfCHchm5J/AwK2A8l2/2jNRN64u8DGpxT+O1SE1AIIQ5/I9KyWdDkVqc5fk5V38GmE0
+         JUvrXHmzJRVaJ9RvJE5eojJlHIA4Ougfn3N3Z/IOqrooZms8ZR7DpTUkW4m/fNP2mTCW
+         yQCu00sSskzYwAcH5NNqeIW5W7P6j1hUizZwS0SyrCT5KQ8jVU5MfJMCkzr4uqEbJ6/t
+         h9OxBTCjhRZuttK0Zqrnc1Zd88J/mYDQTuRPz1zZdcfzePUZluOCdXg7kkeFE2Ce7/sy
+         CQ0g==
+X-Gm-Message-State: APjAAAU0+LEP1pJ9uGI3jvwNap5lZBv2yrWDKr3NT2V75Zsbw/FBqR+b
+        k5Sd5oRezVzENLd1NMnOsdgXNUSC1wXNX52Job8RWLEIPIo=
+X-Google-Smtp-Source: APXvYqwedaW6M5H3p7++gLpKPchtVcul9ZbtUgtzsbfE07hRbUnL+x9Ub4iqHRCHqkC/A6z7fum3PNFByDqvL/sNv2s=
+X-Received: by 2002:a50:a56d:: with SMTP id z42mr28503464edb.241.1563268318830;
+ Tue, 16 Jul 2019 02:11:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="lshvdcpckvdb4crm"
-Content-Disposition: inline
-In-Reply-To: <20190714035826.GQ17978@ZenIV.linux.org.uk>
+References: <CADxRZqxP8A7+8QdB5Q2df4g_OeBbARB1UAg-acaEL=mGJWr_rw@mail.gmail.com>
+ <24f38250-b989-9893-066e-1e1f5e60d0d9@linux.ee> <CADxRZqzyQUTNA-ethJHzLQacdE+D6fx4dNpQEDU6zcc2CpGvbA@mail.gmail.com>
+In-Reply-To: <CADxRZqzyQUTNA-ethJHzLQacdE+D6fx4dNpQEDU6zcc2CpGvbA@mail.gmail.com>
+From:   Anatoly Pugachev <matorola@gmail.com>
+Date:   Tue, 16 Jul 2019 12:11:47 +0300
+Message-ID: <CADxRZqzoz2LSKv0OzsgJzHWrF1d451Gjd5S39fFCgR=qpKgOmA@mail.gmail.com>
+Subject: Re: [sparc64] soft lockup - CPU stuck , KGDB_TESTS_ON_BOOT
+To:     Sparc kernel list <sparclinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+On Mon, Feb 4, 2019 at 6:24 PM Anatoly Pugachev <matorola@gmail.com> wrote:
+> > > My current LDOM configuration allocated 3 cores (3x8 = 24 vcpus).
+> > > Tried as well with 2 vcpus and 1 vcpu. Any configuration, except 1
+> > > vcpu, does not boot, but single vcpu boots ok.
+> > >
+> > > Enabled the following kernel config options:
+> > >
+> > > CONFIG_KGDB_TESTS=y
+> > > CONFIG_KGDB_TESTS_ON_BOOT=y
 
---lshvdcpckvdb4crm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+still valid for 5.2.0-10808-g9637d517347e , but goes to OOPS even
+faster (without first kgdb tests as in previous logs):
 
-On 2019-07-14, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Sat, Jul 13, 2019 at 03:41:53AM +0100, Al Viro wrote:
-> > On Fri, Jul 12, 2019 at 04:00:26PM +0100, Al Viro wrote:
-> > > On Fri, Jul 12, 2019 at 02:25:53PM +0100, Al Viro wrote:
-> > >=20
-> > > > 	if (flags & LOOKUP_BENEATH) {
-> > > > 		nd->root =3D nd->path;
-> > > > 		if (!(flags & LOOKUP_RCU))
-> > > > 			path_get(&nd->root);
-> > > > 		else
-> > > > 			nd->root_seq =3D nd->seq;
-> > >=20
-> > > BTW, this assignment is needed for LOOKUP_RCU case.  Without it
-> > > you are pretty much guaranteed that lazy pathwalk will fail,
-> > > when it comes to complete_walk().
-> > >=20
-> > > Speaking of which, what would happen if LOOKUP_ROOT/LOOKUP_BENEATH
-> > > combination would someday get passed?
-> >=20
-> > I don't understand what's going on with ->r_seq in there - your
-> > call of path_is_under() is after having (re-)sampled rename_lock,
-> > but if that was the only .. in there, who's going to recheck
-> > the value?  For that matter, what's to guarantee that the thing
-> > won't get moved just as you are returning from handle_dots()?
-> >=20
-> > IOW, what does LOOKUP_IN_ROOT guarantee for caller (openat2())?
->=20
-> Sigh...  Usual effects of trying to document things:
->=20
-> 1) LOOKUP_NO_EVAL looks bogus.  It had been introduced by commit 57d46577=
-16ac
-> (audit: ignore fcaps on umount) and AFAICS it's crap.  It is set in
-> ksys_umount() and nowhere else.  It's ignored by everything except
-> filename_mountpoint().  The thing is, call graph for filename_mountpoint()
-> is
-> 	filename_mountpoint()
-> 		<- user_path_mountpoint_at()
-> 			<- ksys_umount()
-> 		<- kern_path_mountpoint()
-> 			<- autofs_dev_ioctl_ismountpoint()
-> 			<- find_autofs_mount()
-> 				<- autofs_dev_ioctl_open_mountpoint()
-> 				<- autofs_dev_ioctl_requester()
-> 				<- autofs_dev_ioctl_ismountpoint()
-> In other words, that flag is basically "was filename_mountpoint()
-> been called by umount(2) or has it come from an autofs ioctl?".
-> And looking at the rationale in that commit, autofs ioctls need
-> it just as much as umount(2) does.  Why is it not set for those
-> as well?  And why is it conditional at all?
+[    2.169180] sunvdc: Virtual Hard disk vdiska
+[    2.169237] sunvdc: vdiska: 31457280 sectors (15360 MB) protocol 1.2
+[    2.170214]  vdiska: vdiska1 vdiska2 vdiska3 vdiska4
+[    2.218420] KGDB: Registered I/O driver kgdbts
+[    2.219011] kgdbts:RUN plant and detach test
 
-In addition, LOOKUP_NO_EVAL =3D=3D LOOKUP_OPEN (0x100). Is that meant to be
-the case? Also I just saw you have a patch in work.namei that fixes this
-up -- do you want me to rebase on top of that?
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---lshvdcpckvdb4crm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXS2E1wAKCRCdlLljIbnQ
-EvUWAP4hDKNKmCaghR/nSF7B9A3mjchQtut9n7vItMKjRPJjLAD9GRABOJCnZ47q
-TqUSuZfxKfq260PQMTx91hQd/K+//QE=
-=XoHc
------END PGP SIGNATURE-----
-
---lshvdcpckvdb4crm--
+Entering kdb (current=0xfff80024a0f5c020, pid 1) [    2.220160]
+------------[ cut here ]------------
+[    2.220217] WARNING: CPU: 10 PID: 1 at drivers/tty/vt/vt.c:3846
+con_is_visible+0x44/0x80
+[    2.220233] Modules linked in:
+[    2.220255] CPU: 10 PID: 1 Comm: swapper/0 Not tainted
+5.2.0-10808-g9637d517347e #1080
+[    2.220272] Call Trace:
+[    2.220299]  [00000000004642c0] __warn+0xc0/0x100
+[    2.220317]  [0000000000464750] warn_slowpath_null+0x2c/0x3c
+[    2.220335]  [00000000008ef624] con_is_visible+0x44/0x80
+[    2.220354]  [00000000008f1398] con_scroll+0x58/0x200
+[    2.220371]  [00000000008f1574] lf+0x34/0xa0
+[    2.220389]  [00000000008f17ec] vt_console_print+0x20c/0x3a0
+[    2.220416]  [000000000055d934] vkdb_printf+0x4f4/0xa00
+[    2.220435]  [000000000055c98c] kdb_printf+0x2c/0x40
+[    2.220453]  [0000000000561580] kdb_main_loop+0x100/0x8a0
+[    2.220472]  [0000000000564b24] kdb_stub+0x304/0x460
+[    2.220490]  [000000000055a254] kgdb_cpu_enter+0x574/0x800
+[    2.220508]  [000000000055a848] kgdb_handle_exception+0x1e8/0x220
+[    2.220528]  [0000000000442e70] kgdb_trap+0x50/0xa0
+[    2.220548]  [00000000004274d8] sys_call_table+0x7c8/0x970
+[    2.220571]  [0000000000405ec4] arch_kgdb_breakpoint+0x0/0xc
+[    2.220593]  [000000000091df9c] run_plant_and_detach_test+0x5c/0xe0
+[    2.220609] irq event stamp: 460692
+[    2.220628] hardirqs last  enabled at (460691):
+[<00000000004e2470>] console_unlock+0x630/0x6c0
+[    2.220647] hardirqs last disabled at (460692):
+[<00000000004274cc>] sys_call_table+0x7bc/0x970
+[    2.220670] softirqs last  enabled at (458662):
+[<0000000000ac9674>] __do_softirq+0x494/0x500
+[    2.220693] softirqs last disabled at (458655):
+[<000000000042d014>] do_softirq_own_stack+0x34/0x60
+[    2.220726] ---[ end trace 30d9f6bedad411c5 ]---
+[    2.220782] ------------[ cut here ]------------
+[    2.220800] WARNING: CPU: 10 PID: 1 at drivers/tty/vt/vt.c:3846
+con_is_visible+0x44/0x80
+[    2.220816] Modules linked in:
+[    2.220835] CPU: 10 PID: 1 Comm: swapper/0 Tainted: G        W
+   5.2.0-10808-g9637d517347e #1080
+[    2.220851] Call Trace:
+[    2.220868]  [00000000004642c0] __warn+0xc0/0x100
+[    2.220885]  [0000000000464750] warn_slowpath_null+0x2c/0x3c
+[    2.220903]  [00000000008ef624] con_is_visible+0x44/0x80
+[    2.220921]  [00000000008f18f4] vt_console_print+0x314/0x3a0
+[    2.220939]  [000000000055d934] vkdb_printf+0x4f4/0xa00
+[    2.220957]  [000000000055c98c] kdb_printf+0x2c/0x40
+[    2.220974]  [0000000000561580] kdb_main_loop+0x100/0x8a0
+[    2.220991]  [0000000000564b24] kdb_stub+0x304/0x460
+[    2.221009]  [000000000055a254] kgdb_cpu_enter+0x574/0x800
+[    2.221026]  [000000000055a848] kgdb_handle_exception+0x1e8/0x220
+[    2.221044]  [0000000000442e70] kgdb_trap+0x50/0xa0
+[    2.221061]  [00000000004274d8] sys_call_table+0x7c8/0x970
+[    2.221079]  [0000000000405ec4] arch_kgdb_breakpoint+0x0/0xc
+[    2.221097]  [000000000091df9c] run_plant_and_detach_test+0x5c/0xe0
+[    2.221115]  [000000000091efe8] configure_kgdbts+0x1e8/0x5a0
+[    2.221143]  [0000000000dfafb8] init_kgdbts+0x20/0x34
+[    2.221159] irq event stamp: 460692
+[    2.221177] hardirqs last  enabled at (460691):
+[<00000000004e2470>] console_unlock+0x630/0x6c0
+[    2.221197] hardirqs last disabled at (460692):
+[<00000000004274cc>] sys_call_table+0x7bc/0x970
+[    2.221217] softirqs last  enabled at (458662):
+[<0000000000ac9674>] __do_softirq+0x494/0x500
+[    2.221237] softirqs last disabled at (458655):
+[<000000000042d014>] do_softirq_own_stack+0x34/0x60
+[    2.221254] ---[ end trace 30d9f6bedad411c6 ]---
+on processor 10 [    2.221302] ------------[ cut here ]------------
+[    2.221325] WARNING: CPU: 10 PID: 1 at drivers/tty/vt/vt.c:3846
+con_is_visible+0x44/0x80
+[    2.221342] Modules linked in:
+[    2.221362] CPU: 10 PID: 1 Comm: swapper/0 Tainted: G        W
+   5.2.0-10808-g9637d517347e #1080
+[    2.221378] Call Trace:
+[    2.221398]  [00000000004642c0] __warn+0xc0/0x100
+[    2.221416]  [0000000000464750] warn_slowpath_null+0x2c/0x3c
+[    2.221432]  [00000000008ef624] con_is_visible+0x44/0x80
+[    2.221450]  [00000000008f18f4] vt_console_print+0x314/0x3a0
+[    2.221469]  [000000000055d934] vkdb_printf+0x4f4/0xa00
+[    2.221486]  [000000000055c98c] kdb_printf+0x2c/0x40
+[    2.221504]  [0000000000561590] kdb_main_loop+0x110/0x8a0
+[    2.221522]  [0000000000564b24] kdb_stub+0x304/0x460
+[    2.221540]  [000000000055a254] kgdb_cpu_enter+0x574/0x800
+[    2.221560]  [000000000055a848] kgdb_handle_exception+0x1e8/0x220
+[    2.221580]  [0000000000442e70] kgdb_trap+0x50/0xa0
+[    2.221597]  [00000000004274d8] sys_call_table+0x7c8/0x970
+[    2.221617]  [0000000000405ec4] arch_kgdb_breakpoint+0x0/0xc
+[    2.221635]  [000000000091df9c] run_plant_and_detach_test+0x5c/0xe0
+[    2.221653]  [000000000091efe8] configure_kgdbts+0x1e8/0x5a0
+[    2.221670]  [0000000000dfafb8] init_kgdbts+0x20/0x34
+[    2.221686] irq event stamp: 460692
+[    2.221703] hardirqs last  enabled at (460691):
+[<00000000004e2470>] console_unlock+0x630/0x6c0
+[    2.221722] hardirqs last disabled at (460692):
+[<00000000004274cc>] sys_call_table+0x7bc/0x970
+[    2.221742] softirqs last  enabled at (458662):
+[<0000000000ac9674>] __do_softirq+0x494/0x500
+[    2.221761] softirqs last disabled at (458655):
+[<000000000042d014>] do_softirq_own_stack+0x34/0x60
+[    2.221778] ---[ end trace 30d9f6bedad411c7 ]---
+due to Keyboard Entry
+[    2.221815] ------------[ cut here ]------------
+[    2.221836] WARNING: CPU: 10 PID: 1 at drivers/tty/vt/vt.c:3846
+con_is_visible+0x44/0x80
+[    2.221851] Modules linked in:
+[    2.221871] CPU: 10 PID: 1 Comm: swapper/0 Tainted: G        W
+   5.2.0-10808-g9637d517347e #1080
+[    2.221887] Call Trace:
+[    2.221904]  [00000000004642c0] __warn+0xc0/0x100
+[    2.221921]  [0000000000464750] warn_slowpath_null+0x2c/0x3c
+[    2.221939]  [00000000008ef624] con_is_visible+0x44/0x80
+[    2.221956]  [00000000008f174c] vt_console_print+0x16c/0x3a0
+[    2.221975]  [000000000055d934] vkdb_printf+0x4f4/0xa00
+[    2.221993]  [000000000055c98c] kdb_printf+0x2c/0x40
+[    2.222010]  [00000000005616b0] kdb_main_loop+0x230/0x8a0
+[    2.222029]  [0000000000564b24] kdb_stub+0x304/0x460
+[    2.222046]  [000000000055a254] kgdb_cpu_enter+0x574/0x800
+[    2.222064]  [000000000055a848] kgdb_handle_exception+0x1e8/0x220
+[    2.222083]  [0000000000442e70] kgdb_trap+0x50/0xa0
+[    2.222100]  [00000000004274d8] sys_call_table+0x7c8/0x970
+[    2.222121]  [0000000000405ec4] arch_kgdb_breakpoint+0x0/0xc
+[    2.222142]  [000000000091df9c] run_plant_and_detach_test+0x5c/0xe0
+[    2.222163]  [000000000091efe8] configure_kgdbts+0x1e8/0x5a0
+[    2.222187]  [0000000000dfafb8] init_kgdbts+0x20/0x34
+[    2.222203] irq event stamp: 460692
+[    2.222221] hardirqs last  enabled at (460691):
+[<00000000004e2470>] console_unlock+0x630/0x6c0
+[    2.222240] hardirqs last disabled at (460692):
+[<00000000004274cc>] sys_call_table+0x7bc/0x970
+[    2.222259] softirqs last  enabled at (458662):
+[<0000000000ac9674>] __do_softirq+0x494/0x500
+[    2.222277] softirqs last disabled at (458655):
+[<000000000042d014>] do_softirq_own_stack+0x34/0x60
+[    2.222296] ---[ end trace 30d9f6bedad411c8 ]---
+[    2.222313] ------------[ cut here ]------------
+[    2.222332] WARNING: CPU: 10 PID: 1 at drivers/tty/vt/vt.c:3846
+con_is_visible+0x44/0x80
+[    2.222348] Modules linked in:
+[    2.222368] CPU: 10 PID: 1 Comm: swapper/0 Tainted: G        W
+   5.2.0-10808-g9637d517347e #1080
+[    2.222384] Call Trace:
+[    2.222402]  [00000000004642c0] __warn+0xc0/0x100
+[    2.222420]  [0000000000464750] warn_slowpath_null+0x2c/0x3c
+[    2.222437]  [00000000008ef624] con_is_visible+0x44/0x80
+[    2.222456]  [00000000008f1398] con_scroll+0x58/0x200
+[    2.222473]  [00000000008f1574] lf+0x34/0xa0
+[    2.222491]  [00000000008f17ec] vt_console_print+0x20c/0x3a0
+[    2.222509]  [000000000055d934] vkdb_printf+0x4f4/0xa00
+[    2.222527]  [000000000055c98c] kdb_printf+0x2c/0x40
+[    2.222546]  [00000000005616b0] kdb_main_loop+0x230/0x8a0
+[    2.222565]  [0000000000564b24] kdb_stub+0x304/0x460
+[    2.222585]  [000000000055a254] kgdb_cpu_enter+0x574/0x800
+[    2.222604]  [000000000055a848] kgdb_handle_exception+0x1e8/0x220
+[    2.222623]  [0000000000442e70] kgdb_trap+0x50/0xa0
+[    2.222642]  [00000000004274d8] sys_call_table+0x7c8/0x970
+[    2.222663]  [0000000000405ec4] arch_kgdb_breakpoint+0x0/0xc
+[    2.222682]  [000000000091df9c] run_plant_and_detach_test+0x5c/0xe0
+[    2.222698] irq event stamp: 460692
+[    2.222715] hardirqs last  enabled at (460691):
+[<00000000004e2470>] console_unlock+0x630/0x6c0
+[    2.222733] hardirqs last disabled at (460692):
+[<00000000004274cc>] sys_call_table+0x7bc/0x970
+[    2.222752] softirqs last  enabled at (458662):
+[<0000000000ac9674>] __do_softirq+0x494/0x500
+[    2.222774] softirqs last disabled at (458655):
+[<000000000042d014>] do_softirq_own_stack+0x34/0x60
+[    2.222790] ---[ end trace 30d9f6bedad411c9 ]---
+[    2.222817] ------------[ cut here ]------------
+[    2.222836] WARNING: CPU: 10 PID: 1 at drivers/tty/vt/vt.c:3846
+con_is_visible+0x44/0x80
+[    2.222852] Modules linked in:
+[    2.222871] CPU: 10 PID: 1 Comm: swapper/0 Tainted: G        W
+   5.2.0-10808-g9637d517347e #1080
+[    2.222887] Call Trace:
+[    2.222905]  [00000000004642c0] __warn+0xc0/0x100
+[    2.222923]  [0000000000464750] warn_slowpath_null+0x2c/0x3c
+[    2.222941]  [00000000008ef624] con_is_visible+0x44/0x80
+[    2.222959]  [00000000008f174c] vt_console_print+0x16c/0x3a0
+[    2.222978]  [000000000055d934] vkdb_printf+0x4f4/0xa00
+[    2.222997]  [000000000055c98c] kdb_printf+0x2c/0x40
+[    2.223013]  [00000000005616b0] kdb_main_loop+0x230/0x8a0
+[    2.223030]  [0000000000564b24] kdb_stub+0x304/0x460
+[    2.223047]  [000000000055a254] kgdb_cpu_enter+0x574/0x800
+[    2.223064]  [000000000055a848] kgdb_handle_exception+0x1e8/0x220
+[    2.223083]  [0000000000442e70] kgdb_trap+0x50/0xa0
+[    2.223100]  [00000000004274d8] sys_call_table+0x7c8/0x970
+[    2.223119]  [0000000000405ec4] arch_kgdb_breakpoint+0x0/0xc
+[    2.223138]  [000000000091df9c] run_plant_and_detach_test+0x5c/0xe0
+[    2.223156]  [000000000091efe8] configure_kgdbts+0x1e8/0x5a0
+[    2.223182]  [0000000000dfafb8] init_kgdbts+0x20/0x34
+[    2.223199] irq event stamp: 460692
+[    2.223218] hardirqs last  enabled at (460691):
+[<00000000004e2470>] console_unlock+0x630/0x6c0
+[    2.223237] hardirqs last disabled at (460692):
+[<00000000004274cc>] sys_call_table+0x7bc/0x970
+[    2.223257] softirqs last  enabled at (458662):
+[<0000000000ac9674>] __do_softirq+0x494/0x500
+[    2.223277] softirqs last disabled at (458655):
+[<000000000042d014>] do_softirq_own_stack+0x34/0x60
+[    2.223294] ---[ end trace 30d9f6bedad411ca ]---
+[    2.223311] ------------[ cut here ]------------
+[    2.223330] WARNING: CPU: 10 PID: 1 at drivers/tty/vt/vt.c:3846
+con_is_visible+0x44/0x80
+[    2.223346] Modules linked in:
+[    2.223365] CPU: 10 PID: 1 Comm: swapper/0 Tainted: G        W
+   5.2.0-10808-g9637d517347e #1080
+[    2.223382] Call Trace:
+[    2.223404]  [00000000004642c0] __warn+0xc0/0x100
+[    2.223421]  [0000000000464750] warn_slowpath_null+0x2c/0x3c
+[    2.223441]  [00000000008ef624] con_is_visible+0x44/0x80
+[    2.223460]  [00000000008f1398] con_scroll+0x58/0x200
+[    2.223478]  [00000000008f1574] lf+0x34/0xa0
+[    2.223496]  [00000000008f17ec] vt_console_print+0x20c/0x3a0
+[    2.223516]  [000000000055d934] vkdb_printf+0x4f4/0xa00
+[    2.223534]  [000000000055c98c] kdb_printf+0x2c/0x40
+[    2.223551]  [00000000005616b0] kdb_main_loop+0x230/0x8a0
+[    2.223569]  [0000000000564b24] kdb_stub+0x304/0x460
+[    2.223589]  [000000000055a254] kgdb_cpu_enter+0x574/0x800
+[    2.223609]  [000000000055a848] kgdb_handle_exception+0x1e8/0x220
+[    2.223635]  [0000000000442e70] kgdb_trap+0x50/0xa0
+[    2.223654]  [00000000004274d8] sys_call_table+0x7c8/0x970
+[    2.223676]  [0000000000405ec4] arch_kgdb_breakpoint+0x0/0xc
+[    2.223695]  [000000000091df9c] run_plant_and_detach_test+0x5c/0xe0
+[    2.223711] irq event stamp: 460692
+[    2.223730] hardirqs last  enabled at (460691):
+[<00000000004e2470>] console_unlock+0x630/0x6c0
+[    2.223748] hardirqs last disabled at (460692):
+[<00000000004274cc>] sys_call_table+0x7bc/0x970
+[    2.223767] softirqs last  enabled at (458662):
+[<0000000000ac9674>] __do_softirq+0x494/0x500
+[    2.223788] softirqs last disabled at (458655):
+[<000000000042d014>] do_softirq_own_stack+0x34/0x60
+[    2.223804] ---[ end trace 30d9f6bedad411cb ]---
+[10]kdb> [    2.223857] ------------[ cut here ]------------
+[    2.223879] WARNING: CPU: 10 PID: 1 at drivers/tty/vt/vt.c:3846
+con_is_visible+0x44/0x80
+[    2.223895] Modules linked in:
+[    2.223915] CPU: 10 PID: 1 Comm: swapper/0 Tainted: G        W
+   5.2.0-10808-g9637d517347e #1080
+[    2.223931] Call Trace:
+[    2.223950]  [00000000004642c0] __warn+0xc0/0x100
+[    2.223967]  [0000000000464750] warn_slowpath_null+0x2c/0x3c
+[    2.223984]  [00000000008ef624] con_is_visible+0x44/0x80
+[    2.224001]  [00000000008f18f4] vt_console_print+0x314/0x3a0
+[    2.224020]  [000000000055d934] vkdb_printf+0x4f4/0xa00
+[    2.224038]  [000000000055c98c] kdb_printf+0x2c/0x40
+[    2.224055]  [000000000055d418] kdb_getstr+0x38/0x60
+[    2.224072]  [0000000000561930] kdb_main_loop+0x4b0/0x8a0
+[    2.224091]  [0000000000564b24] kdb_stub+0x304/0x460
+[    2.224109]  [000000000055a254] kgdb_cpu_enter+0x574/0x800
+[    2.224128]  [000000000055a848] kgdb_handle_exception+0x1e8/0x220
+[    2.224148]  [0000000000442e70] kgdb_trap+0x50/0xa0
+[    2.224166]  [00000000004274d8] sys_call_table+0x7c8/0x970
+[    2.224185]  [0000000000405ec4] arch_kgdb_breakpoint+0x0/0xc
+[    2.224204]  [000000000091df9c] run_plant_and_detach_test+0x5c/0xe0
+[    2.224222]  [000000000091efe8] configure_kgdbts+0x1e8/0x5a0
+[    2.224238] irq event stamp: 460692
+[    2.224256] hardirqs last  enabled at (460691):
+[<00000000004e2470>] console_unlock+0x630/0x6c0
+[    2.224274] hardirqs last disabled at (460692):
+[<00000000004274cc>] sys_call_table+0x7bc/0x970
+[    2.224293] softirqs last  enabled at (458662):
+[<0000000000ac9674>] __do_softirq+0x494/0x500
+[    2.224312] softirqs last disabled at (458655):
+[<000000000042d014>] do_softirq_own_stack+0x34/0x60
+[    2.224329] ---[ end trace 30d9f6bedad411cc ]---
