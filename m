@@ -2,60 +2,23 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 612436C2F9
-	for <lists+sparclinux@lfdr.de>; Thu, 18 Jul 2019 00:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 044BD6C387
+	for <lists+sparclinux@lfdr.de>; Thu, 18 Jul 2019 01:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727447AbfGQWFR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 17 Jul 2019 18:05:17 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:36208 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727606AbfGQWFR (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 17 Jul 2019 18:05:17 -0400
-Received: by mail-lj1-f193.google.com with SMTP id i21so25226593ljj.3
-        for <sparclinux@vger.kernel.org>; Wed, 17 Jul 2019 15:05:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YSDBsvNUqnUp/t7kjQNVbtVYe15sAK39prvQBCJ8iQY=;
-        b=g84+xOg5RI1fWUeKUBJwojGU94tRjD8iZnr7jFeKgSFJWGDE5P+hiJZ/fByUC7X2Ud
-         Qp+qvIYxZtjYMQm2/OAIJKIyXJb/8NX7XJR0SU91SEDjU6fmhg1H4carPg11uTh9RG8E
-         J486BoqJAuMyOcptmKjQRPSZoDYh89CS+IIos=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YSDBsvNUqnUp/t7kjQNVbtVYe15sAK39prvQBCJ8iQY=;
-        b=hb19imyF4i4x+wt85A5fT6ebj6VIaFF8rIBIr/tbbdjlp9a9/gQ+Oo5JR8nUamrNFf
-         af5fIcpQNkFfnjARXCyo6Jzia574hS3JCtHd7aLamfYAMnpt3/7t7bahhIuvYugTxvoi
-         ici5QJaqkkhShm+9+6SQ0EvOxTLtpSSPGiujxaK8UqAHWl9H/L2Ge4uFXUO+FL0UhQB4
-         oHIl9a+6Zbao26TAHbXGNVWrGKHjvXDp147XlUbTsv/VaZDED4B7XhOkVTgv9U3HpFd3
-         YORkZqCKI0GDA53XfFFYH38sTWx7iN0U9yzybQi/6L6cHF4r/Btb5QoQ5PdfRTy/6Q+a
-         lVNQ==
-X-Gm-Message-State: APjAAAXn9/EAvB2CJiRr+9cOppwYajscMP/W47hwu73qd650op/iiUep
-        BgQG6J4ovIb4nfBhSOJjBcnnwfjcbaw=
-X-Google-Smtp-Source: APXvYqwwPieegpQThI8sdk9XpKzJDFBh1uD8k16bw6sZGBHLXmwIGmH/b0ZrnJzzPucfsFZTaMrXbA==
-X-Received: by 2002:a2e:9951:: with SMTP id r17mr21676817ljj.125.1563401114029;
-        Wed, 17 Jul 2019 15:05:14 -0700 (PDT)
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com. [209.85.208.177])
-        by smtp.gmail.com with ESMTPSA id b1sm4712435ljj.26.2019.07.17.15.05.13
-        for <sparclinux@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 17 Jul 2019 15:05:13 -0700 (PDT)
-Received: by mail-lj1-f177.google.com with SMTP id p17so25229102ljg.1
-        for <sparclinux@vger.kernel.org>; Wed, 17 Jul 2019 15:05:13 -0700 (PDT)
-X-Received: by 2002:a2e:9192:: with SMTP id f18mr21972538ljg.52.1563401112629;
- Wed, 17 Jul 2019 15:05:12 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190625143715.1689-1-hch@lst.de> <20190625143715.1689-10-hch@lst.de>
- <20190717215956.GA30369@altlinux.org>
-In-Reply-To: <20190717215956.GA30369@altlinux.org>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 17 Jul 2019 15:04:56 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whj_+tYSRcDsw7mDGrkmyU9tAk-a53XK271wYtDqYRzig@mail.gmail.com>
-Message-ID: <CAHk-=whj_+tYSRcDsw7mDGrkmyU9tAk-a53XK271wYtDqYRzig@mail.gmail.com>
-Subject: Re: [PATCH 09/16] sparc64: use the generic get_user_pages_fast code
-To:     "Dmitry V. Levin" <ldv@altlinux.org>
+        id S1728103AbfGQXaf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 17 Jul 2019 19:30:35 -0400
+Received: from vmicros1.altlinux.org ([194.107.17.57]:54668 "EHLO
+        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727883AbfGQXaf (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 17 Jul 2019 19:30:35 -0400
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+        by vmicros1.altlinux.org (Postfix) with ESMTP id 8897B72CCD6;
+        Thu, 18 Jul 2019 02:30:31 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+        id 6F6307CCE5C; Thu, 18 Jul 2019 02:30:31 +0300 (MSK)
+Date:   Thu, 18 Jul 2019 02:30:31 +0300
+From:   "Dmitry V. Levin" <ldv@altlinux.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Christoph Hellwig <hch@lst.de>,
         Khalid Aziz <khalid.aziz@oracle.com>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -63,27 +26,120 @@ Cc:     Christoph Hellwig <hch@lst.de>,
         Anatoly Pugachev <matorola@gmail.com>,
         sparclinux@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
         Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 09/16] sparc64: use the generic get_user_pages_fast code
+Message-ID: <20190717233031.GB30369@altlinux.org>
+References: <20190625143715.1689-1-hch@lst.de>
+ <20190625143715.1689-10-hch@lst.de>
+ <20190717215956.GA30369@altlinux.org>
+ <CAHk-=whj_+tYSRcDsw7mDGrkmyU9tAk-a53XK271wYtDqYRzig@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="eJnRUKwClWJh1Khz"
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whj_+tYSRcDsw7mDGrkmyU9tAk-a53XK271wYtDqYRzig@mail.gmail.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Jul 17, 2019 at 2:59 PM Dmitry V. Levin <ldv@altlinux.org> wrote:
->
-> So this ended up as commit 7b9afb86b6328f10dc2cad9223d7def12d60e505
-> (thanks to Anatoly for bisecting) and introduced a regression:
-> futex.test from the strace test suite now causes an Oops on sparc64
-> in futex syscall.
 
-Can you post the oops here in the same thread too? Maybe it's already
-posted somewhere else, but I can't seem to find anything likely on
-lkml at least..
+--eJnRUKwClWJh1Khz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On x86-64, it obviously just causes the (expected) EFAULT error from
-the futex call.
+On Wed, Jul 17, 2019 at 03:04:56PM -0700, Linus Torvalds wrote:
+> On Wed, Jul 17, 2019 at 2:59 PM Dmitry V. Levin <ldv@altlinux.org> wrote:
+> >
+> > So this ended up as commit 7b9afb86b6328f10dc2cad9223d7def12d60e505
+> > (thanks to Anatoly for bisecting) and introduced a regression:
+> > futex.test from the strace test suite now causes an Oops on sparc64
+> > in futex syscall.
+>=20
+> Can you post the oops here in the same thread too? Maybe it's already
+> posted somewhere else, but I can't seem to find anything likely on
+> lkml at least..
 
-Somebody with access to sparc64 probably needs to debug this, but
-having the exact oops wouldn't hurt...
+Sure, here it is:
 
-             Linus
+[  514.137217] Unable to handle kernel paging request at virtual address 00=
+060000541d0000
+[  514.137295] tsk->{mm,active_mm}->context =3D 00000000000005b2
+[  514.137343] tsk->{mm,active_mm}->pgd =3D fff80024955a2000
+[  514.137387]               \|/ ____ \|/
+                             "@'/ .. \`@"
+                             /_| \__/ |_\
+                                \__U_/
+[  514.137493] futex(1599): Oops [#1]
+[  514.137533] CPU: 26 PID: 1599 Comm: futex Not tainted 5.2.0-05721-gd3649=
+f68b433 #1096
+[  514.137595] TSTATE: 0000000011001603 TPC: 000000000051adc4 TNPC: 0000000=
+00051adc8 Y: 00000000    Not tainted
+[  514.137678] TPC: <get_futex_key+0xe4/0x6a0>
+[  514.137712] g0: 0000000000000000 g1: 0000000000e75178 g2: 000000000009a2=
+1d g3: 0000000000000000
+[  514.137769] g4: fff8002474fbc0e0 g5: fff80024aa80c000 g6: fff8002495aec0=
+00 g7: 0000000000000200
+[  514.137825] o0: 0000000000000001 o1: 0000000000000001 o2: 00000000000000=
+00 o3: fff8002495aefa28
+[  514.137882] o4: fff8000100030000 o5: fff800010002e000 sp: fff8002495aef1=
+61 ret_pc: 000000000051ada4
+[  514.137944] RPC: <get_futex_key+0xc4/0x6a0>
+[  514.137978] l0: 000000000051b144 l1: 0000000000000001 l2: 0000000000c019=
+50 l3: fff80024626051c0
+[  514.138036] l4: 0000000000c01970 l5: 0000000000cf6800 l6: 00060000541d13=
+f0 l7: 00000000014b3000
+[  514.138094] i0: 0000000000000001 i1: 000000000051af30 i2: fff8002495aefc=
+28 i3: 0000000000000001
+[  514.138152] i4: 0000000000cf69b0 i5: fff800010002e000 i6: fff8002495aef2=
+31 i7: 000000000051b3a8
+[  514.138211] I7: <futex_wait_setup+0x28/0x120>
+[  514.138245] Call Trace:
+[  514.138271]  [000000000051b3a8] futex_wait_setup+0x28/0x120
+[  514.138313]  [000000000051b550] futex_wait+0xb0/0x200
+[  514.138352]  [000000000051d734] do_futex+0xd4/0xc00
+[  514.138390]  [000000000051e384] sys_futex+0x124/0x140
+[  514.138435]  [0000000000406294] linux_sparc_syscall+0x34/0x44
+[  514.138478] Disabling lock debugging due to kernel taint
+[  514.138501] Caller[000000000051b3a8]: futex_wait_setup+0x28/0x120
+[  514.138524] Caller[000000000051b550]: futex_wait+0xb0/0x200
+[  514.138547] Caller[000000000051d734]: do_futex+0xd4/0xc00
+[  514.138568] Caller[000000000051e384]: sys_futex+0x124/0x140
+[  514.138590] Caller[0000000000406294]: linux_sparc_syscall+0x34/0x44
+[  514.138614] Caller[0000010000000e90]: 0x10000000e90
+[  514.138633] Instruction DUMP:
+[  514.138635]  0640016e=20
+[  514.138650]  b13da000=20
+[  514.138663]  ec5fa7f7=20
+[  514.138676] <c25da008>
+[  514.138689]  ae100016=20
+[  514.138702]  84086001=20
+[  514.138714]  82007fff=20
+[  514.138727]  af789401=20
+[  514.138740]  f05de018=20
+
+
+--=20
+ldv
+
+--eJnRUKwClWJh1Khz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJdL6+XAAoJEAVFT+BVnCUItv0P/RQl7zn0jCq+B4G33r61CH0f
+MM3lOaEkCdZV3KhE/13PJWKFSRP2b6rh0k95kDhUNnPdItg3b4xEwHuMwHKzyzCs
+RdDrQ5ISjKrSwGJqrAywjpEX5Wf7JnUS98muIIWgcrfA3M3HzQMgKmVIna3SstVD
+ZTXmMFjnnuGSKI5xA79VBve9xPbDDkF0cPTrRIkXwk3HzTrQi9NKwj+VyFnzvri/
+vXBb8oQ5OJymQryUnoeVxs2MmraXPotL+M/8krsZIoAuaK4IMFiFh5T7ZBVigqFv
+934gPFbRyRdErsuiJo6PMqJUay39etJBifC4sem9zw6NcP+sSMB5L8EABFkWT0j+
+VuW3foMsOIoH/+8dbYsdTsw4RHpXv6WeUwrNLXZLCWACt2M/m5wBlrBFf0NMbRW4
+LtWcIzy4IYfmmUiKrVfAUNv3Yx991ah+QTeq871+Wsy2irvJuE7c4lfH6RxCOjKT
+CrtF6oqFcOFHZRfl4JSzc2dbd/tepmNwonQeO6WXwruxRoMI2NhL350ijQJjkXOP
+qhz/qutyUOk662ZP30+j0G1iT4TGERug8SLaI11eEjTpqIMUQMtPa0ATsoIkR/+x
+S1637lihAJh2d2ik4os1nLjDNakmc6TMgS0KcDXhfo219fWAD5YrgmQD8g7fUnLp
+4bgJDOaNpCu6rzRT4WY4
+=3YbY
+-----END PGP SIGNATURE-----
+
+--eJnRUKwClWJh1Khz--
