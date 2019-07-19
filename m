@@ -2,113 +2,106 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4D7E6D8F9
-	for <lists+sparclinux@lfdr.de>; Fri, 19 Jul 2019 04:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40AFD6DFFB
+	for <lists+sparclinux@lfdr.de>; Fri, 19 Jul 2019 06:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726769AbfGSCTy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 18 Jul 2019 22:19:54 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:20468 "EHLO mx1.mailbox.org"
+        id S1728363AbfGSD64 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 18 Jul 2019 23:58:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58340 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726067AbfGSCTx (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 18 Jul 2019 22:19:53 -0400
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        id S1728348AbfGSD64 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 18 Jul 2019 23:58:56 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id A6C4F507D6;
-        Fri, 19 Jul 2019 04:19:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
-        with ESMTP id rthfEAqSrQty; Fri, 19 Jul 2019 04:19:37 +0200 (CEST)
-Date:   Fri, 19 Jul 2019 12:19:31 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     "Dmitry V. Levin" <ldv@altlinux.org>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Christian Brauner <christian@brauner.io>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v9 08/10] open: openat2(2) syscall
-Message-ID: <20190719021931.ypwvcvp3imbgjjx6@yavin>
-References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190706145737.5299-9-cyphar@cyphar.com>
- <20190719015933.GA18022@altlinux.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id B222B21851;
+        Fri, 19 Jul 2019 03:58:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563508735;
+        bh=ESrqzieqi3LyW8vnKAIeIHKfzQXB44HReBLi5IaOldc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=klUOyINqefKtlLAjLYVaILf8/gy179a2wxVZScRitAddhvWkUJvuR+gwJMqy0QX/F
+         jEj6dOe6LyVfMqXlPEzYVm+dcohzxITmtmwOQXb36TqMsYgaK1kxUL/wmO79jei8HL
+         r9C+5dQiM8TVL04uAxXFzbxKCH36HyYVijdYsJ5E=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org,
+        linux-serial@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.2 058/171] sunhv: Fix device naming inconsistency between sunhv_console and sunhv_reg
+Date:   Thu, 18 Jul 2019 23:54:49 -0400
+Message-Id: <20190719035643.14300-58-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190719035643.14300-1-sashal@kernel.org>
+References: <20190719035643.14300-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="g4nevyq6aunc32xc"
-Content-Disposition: inline
-In-Reply-To: <20190719015933.GA18022@altlinux.org>
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
---g4nevyq6aunc32xc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 07a6d63eb1b54b5fb38092780fe618dfe1d96e23 ]
 
-On 2019-07-19, Dmitry V. Levin <ldv@altlinux.org> wrote:
-> On Sun, Jul 07, 2019 at 12:57:35AM +1000, Aleksa Sarai wrote:
-> [...]
-> > +/**
-> > + * Arguments for how openat2(2) should open the target path. If @extra=
- is zero,
-> > + * then openat2(2) is identical to openat(2).
-> > + *
-> > + * @flags: O_* flags (unknown flags ignored).
->=20
-> What was the rationale for implementing this semantics?
-> Ignoring unknown flags makes potential extension of this new interface
-> problematic.  This has bitten us many times already, so ...
+In d5a2aa24, the name in struct console sunhv_console was changed from "ttyS"
+to "ttyHV" while the name in struct uart_ops sunhv_pops remained unchanged.
 
-I am mirroring the semantics of open(2) and openat(2).
+This results in the hypervisor console device to be listed as "ttyHV0" under
+/proc/consoles while the device node is still named "ttyS0":
 
-To be clear, I am in favour of doing it -- and it would definitely be
-possible to implement it with -EINVAL (you would just mask off
-~VALID_OPEN_FLAGS for the older syscalls). But Linus' response to my
-point about (the lack of) -EINVAL for unknown open(2) flags gave me the
-impression he would be against this idea (though I might be
-misunderstanding the point he was making).
+root@osaka:~# cat /proc/consoles
+ttyHV0               -W- (EC p  )    4:64
+tty0                 -WU (E     )    4:1
+root@osaka:~# readlink /sys/dev/char/4:64
+../../devices/root/f02836f0/f0285690/tty/ttyS0
+root@osaka:~#
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+This means that any userland code which tries to determine the name of the
+device file of the hypervisor console device can not rely on the information
+provided by /proc/consoles. In particular, booting current versions of debian-
+installer inside a SPARC LDOM will fail with the installer unable to determine
+the console device.
 
---g4nevyq6aunc32xc
-Content-Type: application/pgp-signature; name="signature.asc"
+After renaming the device in struct uart_ops sunhv_pops to "ttyHV" as well,
+the inconsistency is fixed and it is possible again to determine the name
+of the device file of the hypervisor console device by reading the contents
+of /proc/console:
 
------BEGIN PGP SIGNATURE-----
+root@osaka:~# cat /proc/consoles
+ttyHV0               -W- (EC p  )    4:64
+tty0                 -WU (E     )    4:1
+root@osaka:~# readlink /sys/dev/char/4:64
+../../devices/root/f02836f0/f0285690/tty/ttyHV0
+root@osaka:~#
 
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXTEorwAKCRCdlLljIbnQ
-Eop3AQDsS+JxsKMay74AdwHvqjPK3crvN47y0krPsv6vGBsWhQD/f+ChPlnwx226
-SbxKk/nCjHvnDSJga0WPUznn7tBxUQQ=
-=7H8a
------END PGP SIGNATURE-----
+With this change, debian-installer works correctly when installing inside
+a SPARC LDOM.
 
---g4nevyq6aunc32xc--
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/tty/serial/sunhv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/tty/serial/sunhv.c b/drivers/tty/serial/sunhv.c
+index 63e34d868de8..f8503f8fc44e 100644
+--- a/drivers/tty/serial/sunhv.c
++++ b/drivers/tty/serial/sunhv.c
+@@ -397,7 +397,7 @@ static const struct uart_ops sunhv_pops = {
+ static struct uart_driver sunhv_reg = {
+ 	.owner			= THIS_MODULE,
+ 	.driver_name		= "sunhv",
+-	.dev_name		= "ttyS",
++	.dev_name		= "ttyHV",
+ 	.major			= TTY_MAJOR,
+ };
+ 
+-- 
+2.20.1
+
