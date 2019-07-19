@@ -2,63 +2,114 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF3386D69A
-	for <lists+sparclinux@lfdr.de>; Thu, 18 Jul 2019 23:44:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80A776D8AA
+	for <lists+sparclinux@lfdr.de>; Fri, 19 Jul 2019 03:59:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728054AbfGRVnj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 18 Jul 2019 17:43:39 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:56126 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727780AbfGRVnj (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 18 Jul 2019 17:43:39 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id AE4B315285AD7;
-        Thu, 18 Jul 2019 14:43:38 -0700 (PDT)
-Date:   Thu, 18 Jul 2019 14:43:36 -0700 (PDT)
-Message-Id: <20190718.144336.350349509076783997.davem@davemloft.net>
-To:     torvalds@linux-foundation.org
-Cc:     ldv@altlinux.org, hch@lst.de, khalid.aziz@oracle.com,
-        akpm@linux-foundation.org, matorola@gmail.com,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 09/16] sparc64: use the generic get_user_pages_fast code
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <CAHk-=wgjmt2i37nn9v+nGC0m8-DdLBMEs=NC=TV-u+9XAzA61g@mail.gmail.com>
-References: <CAHk-=whj_+tYSRcDsw7mDGrkmyU9tAk-a53XK271wYtDqYRzig@mail.gmail.com>
-        <20190717233031.GB30369@altlinux.org>
-        <CAHk-=wgjmt2i37nn9v+nGC0m8-DdLBMEs=NC=TV-u+9XAzA61g@mail.gmail.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 18 Jul 2019 14:43:39 -0700 (PDT)
+        id S1726462AbfGSB7j (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 18 Jul 2019 21:59:39 -0400
+Received: from vmicros1.altlinux.org ([194.107.17.57]:55986 "EHLO
+        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726042AbfGSB7j (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 18 Jul 2019 21:59:39 -0400
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+        by vmicros1.altlinux.org (Postfix) with ESMTP id 492A272CA65;
+        Fri, 19 Jul 2019 04:59:34 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+        id 3B39E7CC774; Fri, 19 Jul 2019 04:59:34 +0300 (MSK)
+Date:   Fri, 19 Jul 2019 04:59:34 +0300
+From:   "Dmitry V. Levin" <ldv@altlinux.org>
+To:     Aleksa Sarai <cyphar@cyphar.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Christian Brauner <christian@brauner.io>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v9 08/10] open: openat2(2) syscall
+Message-ID: <20190719015933.GA18022@altlinux.org>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-9-cyphar@cyphar.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="huq684BweRXVnRxX"
+Content-Disposition: inline
+In-Reply-To: <20190706145737.5299-9-cyphar@cyphar.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 17 Jul 2019 17:17:16 -0700
 
-> From the oops, I assume that the problem is that get_user_pages_fast()
-> returned an invalid page, causing the bad access later in
-> get_futex_key().
+--huq684BweRXVnRxX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-That's correct.  It's the first deref of page that oops's.
+On Sun, Jul 07, 2019 at 12:57:35AM +1000, Aleksa Sarai wrote:
+[...]
+> +/**
+> + * Arguments for how openat2(2) should open the target path. If @extra i=
+s zero,
+> + * then openat2(2) is identical to openat(2).
+> + *
+> + * @flags: O_* flags (unknown flags ignored).
+
+What was the rationale for implementing this semantics?
+Ignoring unknown flags makes potential extension of this new interface
+problematic.  This has bitten us many times already, so ...
+
+> + * @mode: O_CREAT file mode (ignored otherwise).
+> + * @upgrade_mask: restrict how the O_PATH may be re-opened (ignored othe=
+rwise).
+> + * @resolve: RESOLVE_* flags (-EINVAL on unknown flags).
+
+=2E.. could you consider implementing this (-EINVAL on unknown flags) seman=
+tics
+for @flags as well, please?
 
 
-> But that's odd too, considering that get_user_pages_fast() had
-> already accessed the page (both for looking up the head, and for
-> then doing things like SetPageReferenced(page)).
+--=20
+ldv
 
-Even the huge page cases all do that dereference as well, so it is
-indeed a mystery how the pointer works inside of get_user_pages_fast()
-but becomes garbage in the caller.
+--huq684BweRXVnRxX
+Content-Type: application/pgp-signature; name="signature.asc"
 
-This page pointer sits on the stack, so maybe something stores garbage
-there meanwhile.  Maybe the issue is even compiler dependent.
+-----BEGIN PGP SIGNATURE-----
 
-I'll keep looking over the changes made here for clues.
+iQIcBAEBCAAGBQJdMSQFAAoJEAVFT+BVnCUIuaAP/3pgUoQA466F6S8jYN6F/icf
+oiQHExdeO3ruxRdNl1gi7af0RxQCiprfNIoD7KQyWSnyUyUm0Cdd7PzpEKXuumQi
+pN6ZTEO2bQeSs7AjCNpLrTgKcuOo/pZbNN7InAHKLB7k2xKKeBbdaVypgGiAEDjT
+JK+4s+8JcJoSg+d69G428QP2qpoHyIZJ5437gYv5rJbL9BRihwwvWF2OQ4TXrd6I
+YnyxPFRRZnfiN3HNbNlJjtMgt5g0AisLuahpJaDMq0NaXnBOosDm9jBAhVOX0CSB
+LUNByCygXeBKv9VuyrO4KnLXS3ORGfK38SDGqz3kFYy1quNRAGKgOXPnGXfb2xbZ
+bRCqyuxkSUOIfLKA6q9jnqO9RoUeOtLglFUT/5JpixTaoxSFN3Y6GlJFcnw+cVm+
+oWH4A/IoST68FCfbOMff976O36pakuWbsVGVsdv384OEHfWaf7c10P9EQc3fhgF3
+JoeY5ht9R1k8HWNOlCuCeHfTwSyLG3T/TROuZYtz65RdPemuuPSPERr+GzOtO9Fn
++wQmK99JlE3nhoyv5CmtqCmMQWhYZedqjbjs5wIq7tjalerg6TakNMmhzTGz5l8T
+i+3EfyMHhEtwq+2YNhdaPEmjfdBzyI3stxtEkURya0BnCgbYsP2mTIP8UbLGDqsY
+EJZiRtPRFfVoePwqT8Ux
+=zLLc
+-----END PGP SIGNATURE-----
+
+--huq684BweRXVnRxX--
