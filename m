@@ -2,110 +2,89 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02DD86ECE9
-	for <lists+sparclinux@lfdr.de>; Sat, 20 Jul 2019 02:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0E3070436
+	for <lists+sparclinux@lfdr.de>; Mon, 22 Jul 2019 17:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388706AbfGTAK2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 19 Jul 2019 20:10:28 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:35184 "EHLO mx1.mailbox.org"
+        id S1729752AbfGVPmt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 22 Jul 2019 11:42:49 -0400
+Received: from foss.arm.com ([217.140.110.172]:40236 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730015AbfGTAK2 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 19 Jul 2019 20:10:28 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id 503C9501CC;
-        Sat, 20 Jul 2019 02:10:21 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
-        with ESMTP id wYoKm814sQqS; Sat, 20 Jul 2019 02:10:12 +0200 (CEST)
-Date:   Sat, 20 Jul 2019 10:09:30 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     shuah <shuah@kernel.org>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
+        id S1729797AbfGVPms (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 22 Jul 2019 11:42:48 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0D49F1596;
+        Mon, 22 Jul 2019 08:42:48 -0700 (PDT)
+Received: from e112269-lin.arm.com (e112269-lin.cambridge.arm.com [10.1.196.133])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 41F493F694;
+        Mon, 22 Jul 2019 08:42:45 -0700 (PDT)
+From:   Steven Price <steven.price@arm.com>
+To:     linux-mm@kvack.org
+Cc:     Steven Price <steven.price@arm.com>,
         Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        James Morse <james.morse@arm.com>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        "Liang, Kan" <kan.liang@linux.intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>,
-        Christian Brauner <christian@brauner.io>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v10 8/9] kselftest: save-and-restore errno to allow for
- %m formatting
-Message-ID: <20190720000930.g3jyjupgimptuubl@yavin>
-References: <20190719164225.27083-1-cyphar@cyphar.com>
- <20190719164225.27083-9-cyphar@cyphar.com>
- <b32d95a1-8a49-65ef-4ddd-fe86a7ca01d5@kernel.org>
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: [PATCH v9 08/21] sparc: mm: Add p?d_leaf() definitions
+Date:   Mon, 22 Jul 2019 16:41:57 +0100
+Message-Id: <20190722154210.42799-9-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190722154210.42799-1-steven.price@arm.com>
+References: <20190722154210.42799-1-steven.price@arm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="636rtrosv3xeor7c"
-Content-Disposition: inline
-In-Reply-To: <b32d95a1-8a49-65ef-4ddd-fe86a7ca01d5@kernel.org>
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_leaf() functions/macros.
 
---636rtrosv3xeor7c
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+For sparc 64 bit, pmd_large() and pud_large() are already provided, so
+add macros to provide the p?d_leaf names required by the generic code.
 
-On 2019-07-19, shuah <shuah@kernel.org> wrote:
-> On 7/19/19 10:42 AM, Aleksa Sarai wrote:
-> > Previously, using "%m" in a ksft_* format string can result in strange
-> > output because the errno value wasn't saved before calling other libc
-> > functions. The solution is to simply save and restore the errno before
-> > we format the user-supplied format string.
-> >=20
-> > Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-> [...]
-> Hi Aleksa,
->=20
-> Can you send this patch separate from the patch series. I will apply
-> this as bug fix to 5.3-rc2 or rc3.
->=20
-> This isn't part of this series anyway and I would like to get this in
-> right away.
+CC: "David S. Miller" <davem@davemloft.net>
+CC: sparclinux@vger.kernel.org
+Signed-off-by: Steven Price <steven.price@arm.com>
+---
+ arch/sparc/include/asm/pgtable_64.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Done, and I'll drop it in v11 after the rest gets reviewed.
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index 1599de730532..a78b968ae3fa 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -683,6 +683,7 @@ static inline unsigned long pte_special(pte_t pte)
+ 	return pte_val(pte) & _PAGE_SPECIAL;
+ }
+ 
++#define pmd_leaf	pmd_large
+ static inline unsigned long pmd_large(pmd_t pmd)
+ {
+ 	pte_t pte = __pte(pmd_val(pmd));
+@@ -867,6 +868,7 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
+ /* only used by the stubbed out hugetlb gup code, should never be called */
+ #define pgd_page(pgd)			NULL
+ 
++#define pud_leaf	pud_large
+ static inline unsigned long pud_large(pud_t pud)
+ {
+ 	pte_t pte = __pte(pud_val(pud));
+-- 
+2.20.1
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---636rtrosv3xeor7c
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXTJbtgAKCRCdlLljIbnQ
-ErjeAQDm5ltY062NGtOMR1eaop8IvTWe5GYu7R+vym5BewUWYgD9HGmujOKl8CQ5
-rJXhxSxnaze1/BDj2gUmfSjSP3IJNwo=
-=CHUB
------END PGP SIGNATURE-----
-
---636rtrosv3xeor7c--
