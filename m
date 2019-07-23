@@ -2,89 +2,70 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0E3070436
-	for <lists+sparclinux@lfdr.de>; Mon, 22 Jul 2019 17:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56D6C7174B
+	for <lists+sparclinux@lfdr.de>; Tue, 23 Jul 2019 13:42:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729752AbfGVPmt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 22 Jul 2019 11:42:49 -0400
-Received: from foss.arm.com ([217.140.110.172]:40236 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729797AbfGVPms (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 22 Jul 2019 11:42:48 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0D49F1596;
-        Mon, 22 Jul 2019 08:42:48 -0700 (PDT)
-Received: from e112269-lin.arm.com (e112269-lin.cambridge.arm.com [10.1.196.133])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 41F493F694;
-        Mon, 22 Jul 2019 08:42:45 -0700 (PDT)
-From:   Steven Price <steven.price@arm.com>
-To:     linux-mm@kvack.org
-Cc:     Steven Price <steven.price@arm.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        James Morse <james.morse@arm.com>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Mark Rutland <Mark.Rutland@arm.com>,
-        "Liang, Kan" <kan.liang@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: [PATCH v9 08/21] sparc: mm: Add p?d_leaf() definitions
-Date:   Mon, 22 Jul 2019 16:41:57 +0100
-Message-Id: <20190722154210.42799-9-steven.price@arm.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190722154210.42799-1-steven.price@arm.com>
-References: <20190722154210.42799-1-steven.price@arm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1727628AbfGWLmZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 23 Jul 2019 07:42:25 -0400
+Received: from condef-10.nifty.com ([202.248.20.75]:24022 "EHLO
+        condef-10.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726575AbfGWLmY (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 23 Jul 2019 07:42:24 -0400
+X-Greylist: delayed 411 seconds by postgrey-1.27 at vger.kernel.org; Tue, 23 Jul 2019 07:42:23 EDT
+Received: from conuserg-12.nifty.com ([10.126.8.75])by condef-10.nifty.com with ESMTP id x6NBW9dw031788
+        for <sparclinux@vger.kernel.org>; Tue, 23 Jul 2019 20:32:09 +0900
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-12.nifty.com with ESMTP id x6NBVokV016476;
+        Tue, 23 Jul 2019 20:31:51 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com x6NBVokV016476
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1563881511;
+        bh=FMKX/ubGxre/ukuvU9QlLVNveSZcQipzq/t0YiXkFYA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jKYxqbAc7eFe7fIhbo3o231TTntCPeW5u8gqwgxY2EHCbdUfvuUlPcugvedPu3KKR
+         8SaPXZWQlEsOQqksLF+0qWqYiGz84NeGLFcraHq2UlRAA5X1L1fzBaaowUbxqooaXR
+         o7eHojSRDMjcmPSPzQI2wj4Ykz62/YpWuqdJQdNm5jQ279fzXq60qQGZeHDtqL0z9E
+         Fj+9yMx+8MuzFJ15JZAnID1IFbmFsoXu6MHbYxv0d/H61uE5DZatrK5gVtNJbDmo7F
+         HyC8tbAGREuVRHhoyvPEPRJ7s4XsWP5Gvg+VlYQm58UqODvB9IVMFAe4WYHWI27M8h
+         /P0HvZKg4Xu6A==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] sparc: remove unneeded uapi/asm/statfs.h
+Date:   Tue, 23 Jul 2019 20:31:49 +0900
+Message-Id: <20190723113149.14776-1-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.17.1
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-walk_page_range() is going to be allowed to walk page tables other than
-those of user space. For this it needs to know when it has reached a
-'leaf' entry in the page tables. This information is provided by the
-p?d_leaf() functions/macros.
+statfs.h is listed in include/uapi/asm-generic/Kbuild, so Kbuild will
+automatically generate it.
 
-For sparc 64 bit, pmd_large() and pud_large() are already provided, so
-add macros to provide the p?d_leaf names required by the generic code.
-
-CC: "David S. Miller" <davem@davemloft.net>
-CC: sparclinux@vger.kernel.org
-Signed-off-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 ---
- arch/sparc/include/asm/pgtable_64.h | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index 1599de730532..a78b968ae3fa 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -683,6 +683,7 @@ static inline unsigned long pte_special(pte_t pte)
- 	return pte_val(pte) & _PAGE_SPECIAL;
- }
- 
-+#define pmd_leaf	pmd_large
- static inline unsigned long pmd_large(pmd_t pmd)
- {
- 	pte_t pte = __pte(pmd_val(pmd));
-@@ -867,6 +868,7 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
- /* only used by the stubbed out hugetlb gup code, should never be called */
- #define pgd_page(pgd)			NULL
- 
-+#define pud_leaf	pud_large
- static inline unsigned long pud_large(pud_t pud)
- {
- 	pte_t pte = __pte(pud_val(pud));
+ arch/sparc/include/uapi/asm/statfs.h | 7 -------
+ 1 file changed, 7 deletions(-)
+ delete mode 100644 arch/sparc/include/uapi/asm/statfs.h
+
+diff --git a/arch/sparc/include/uapi/asm/statfs.h b/arch/sparc/include/uapi/asm/statfs.h
+deleted file mode 100644
+index 20c8f5bd340e..000000000000
+--- a/arch/sparc/include/uapi/asm/statfs.h
++++ /dev/null
+@@ -1,7 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef ___ASM_SPARC_STATFS_H
+-#define ___ASM_SPARC_STATFS_H
+-
+-#include <asm-generic/statfs.h>
+-
+-#endif
 -- 
-2.20.1
+2.17.1
 
