@@ -2,53 +2,46 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 877A778173
-	for <lists+sparclinux@lfdr.de>; Sun, 28 Jul 2019 22:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 849E97817C
+	for <lists+sparclinux@lfdr.de>; Sun, 28 Jul 2019 22:23:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726245AbfG1UXP (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 28 Jul 2019 16:23:15 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:44648 "EHLO
+        id S1726594AbfG1UXx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 28 Jul 2019 16:23:53 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:45541 "EHLO
         mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726129AbfG1UXP (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 28 Jul 2019 16:23:15 -0400
-Received: by mail-lj1-f196.google.com with SMTP id k18so56449988ljc.11;
-        Sun, 28 Jul 2019 13:23:13 -0700 (PDT)
+        with ESMTP id S1726129AbfG1UXw (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 28 Jul 2019 16:23:52 -0400
+Received: by mail-lj1-f196.google.com with SMTP id m23so56400472lje.12;
+        Sun, 28 Jul 2019 13:23:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=svIZnH3LFn3SCsAf3hZ7NcuCk5uSXQPw/o877w6XO80=;
-        b=eMFeppMRMFt/PfqKwzpNzERlfcQ6h72DB+BzrL7nDe/URd0PolGXPL7GsJsqo0oSn+
-         sz+gQydnhVQrz2cNHgS2qik1VK+L/rOdiFur9neMpbqu69bReubr2DswQM8AOogAr2T1
-         7Qnfe/MayCrHf0kNX0D/TTsbs7Fbb+pHhhxDoV2vSk+NNTo8FR/HydTN+uP/RlkNkK7C
-         IDjAd78vxUlcsmfE+LFhQILeexPWpY9jwCh3uS3JwfyTs282vDVNWbiGSofPRMtr71kQ
-         b1k4YooMbgTm3iNsZvUwffVXpGhoYFGowd9OPF38kUc1e0KBXVvioemkKIepzg1jk3Z8
-         Fqww==
-X-Gm-Message-State: APjAAAVMYcINoOHqR3MnhlFczLSn7nvati9HvN+WFRYoCoRxgEjWpV+Y
-        TuWN3OUfOrkEablHAIR/ZMYsIUmQwnw=
-X-Google-Smtp-Source: APXvYqwiuHhdBpv2paJX0RbGJe6B84YT/HQ+J9VmSQk0WANqERsY6PXq3IkxDXDz0lW7cj/3nr+4EA==
-X-Received: by 2002:a2e:2993:: with SMTP id p19mr54104888ljp.202.1564345393166;
-        Sun, 28 Jul 2019 13:23:13 -0700 (PDT)
+        bh=m1dkv1fL9t+ahIakB73GOcwrhvmXWbJ2pT65iz/Psl0=;
+        b=N924Cf3+3Xbl8ncBrnWEXZOGj26qk1w0p2v8WD7uD3ESAM3wnz3+lIjB5ewaJuRFXi
+         vkMoNtl5NlCpvnj7ZKnAsTAKVwnwAKnJDFsvaI3/nmvBfkFAeRHFUhfeOLiEaVwT44AZ
+         p3cKLX9Sty2hJyoCU8NmsVTdYaZ5Xlg0kB9VOYcsehBNwsyqcI8RrYK66qSwf9ZkgHTQ
+         URD/Lj0nmUxAObL45PqwNJlvnuMfhFkJd3tFlraH9QCq9TvyiCT0GFOSZOD4Gs2HZpOl
+         hru/HW1bjeJEbm/mA4pvFZbKL9X6KwcbAGL1q+oG6l95xj8tBHSNW9nsJJzhD3TIq1K4
+         6PhQ==
+X-Gm-Message-State: APjAAAV7IggEfEcvmuFPH5SP7lFl0i7y4PWZEHnm0eHPPXSDGVzpQ2/+
+        Q8mFGaJs0tgJFEWemvG85Ss=
+X-Google-Smtp-Source: APXvYqwhfdoAmC6IiLBsYN6c2rcVP4rf0o/sF/FOKJ7n1U+e3SCfMTsC8NubRRj+XXAvVAzPK/LzGA==
+X-Received: by 2002:a05:651c:1105:: with SMTP id d5mr11872101ljo.161.1564345430539;
+        Sun, 28 Jul 2019 13:23:50 -0700 (PDT)
 Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
-        by smtp.googlemail.com with ESMTPSA id z17sm12395917ljc.37.2019.07.28.13.23.12
+        by smtp.googlemail.com with ESMTPSA id z17sm12395917ljc.37.2019.07.28.13.23.49
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 28 Jul 2019 13:23:12 -0700 (PDT)
+        Sun, 28 Jul 2019 13:23:50 -0700 (PDT)
 From:   Denis Efremov <efremov@linux.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 Cc:     Denis Efremov <efremov@linux.com>,
         "David S. Miller" <davem@davemloft.net>,
-        "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Michal Simek <monstr@monstr.eu>, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/5] PCI: Convert pci_resource_to_user to a weak function
-Date:   Sun, 28 Jul 2019 23:22:09 +0300
-Message-Id: <20190728202213.15550-2-efremov@linux.com>
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 5/5] spark/PCI: Remove HAVE_ARCH_PCI_RESOURCE_TO_USER
+Date:   Sun, 28 Jul 2019 23:22:13 +0300
+Message-Id: <20190728202213.15550-6-efremov@linux.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190728202213.15550-1-efremov@linux.com>
 References: <20190728202213.15550-1-efremov@linux.com>
@@ -59,69 +52,28 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The patch turns pci_resource_to_user() to a weak function. Thus,
-architecture-specific versions will automatically override the generic
-one. This allows to remove the HAVE_ARCH_PCI_RESOURCE_TO_USER macro and
-avoid the conditional compilation for this single function.
+The function pci_resource_to_user() was turned to a weak one. Thus,
+spark-specific version will automatically override the generic one
+and the HAVE_ARCH_PCI_RESOURCE_TO_USER macro should be removed.
 
 Signed-off-by: Denis Efremov <efremov@linux.com>
 ---
- drivers/pci/pci.c   |  8 ++++++++
- include/linux/pci.h | 18 +++---------------
- 2 files changed, 11 insertions(+), 15 deletions(-)
+ arch/sparc/include/asm/pci.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 29ed5ec1ac27..f9dc7563a8b9 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5932,6 +5932,14 @@ resource_size_t __weak pcibios_default_alignment(void)
- 	return 0;
- }
- 
-+void __weak pci_resource_to_user(const struct pci_dev *dev, int bar,
-+		const struct resource *rsrc, resource_size_t *start,
-+		resource_size_t *end)
-+{
-+	*start = rsrc->start;
-+	*end = rsrc->end;
-+}
-+
- #define RESOURCE_ALIGNMENT_PARAM_SIZE COMMAND_LINE_SIZE
- static char resource_alignment_param[RESOURCE_ALIGNMENT_PARAM_SIZE] = {0};
- static DEFINE_SPINLOCK(resource_alignment_lock);
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 9e700d9f9f28..1a19d0151b0a 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1870,25 +1870,13 @@ static inline const char *pci_name(const struct pci_dev *pdev)
- 	return dev_name(&pdev->dev);
- }
- 
+diff --git a/arch/sparc/include/asm/pci.h b/arch/sparc/include/asm/pci.h
+index cfec79bb1831..4deddf430e5d 100644
+--- a/arch/sparc/include/asm/pci.h
++++ b/arch/sparc/include/asm/pci.h
+@@ -38,8 +38,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+ #define arch_can_pci_mmap_io()	1
+ #define HAVE_ARCH_PCI_GET_UNMAPPED_AREA
+ #define get_pci_unmapped_area get_fb_unmapped_area
 -
- /*
-  * Some archs don't want to expose struct resource to userland as-is
-  * in sysfs and /proc
-  */
--#ifdef HAVE_ARCH_PCI_RESOURCE_TO_USER
--void pci_resource_to_user(const struct pci_dev *dev, int bar,
--			  const struct resource *rsrc,
--			  resource_size_t *start, resource_size_t *end);
--#else
--static inline void pci_resource_to_user(const struct pci_dev *dev, int bar,
--		const struct resource *rsrc, resource_size_t *start,
--		resource_size_t *end)
--{
--	*start = rsrc->start;
--	*end = rsrc->end;
--}
--#endif /* HAVE_ARCH_PCI_RESOURCE_TO_USER */
--
-+void __weak pci_resource_to_user(const struct pci_dev *dev, int bar,
-+				 const struct resource *rsrc,
-+				 resource_size_t *start, resource_size_t *end);
+-#define HAVE_ARCH_PCI_RESOURCE_TO_USER
+ #endif /* CONFIG_SPARC64 */
  
- /*
-  * The world is not perfect and supplies us with broken PCI devices.
+ #if defined(CONFIG_SPARC64) || defined(CONFIG_LEON_PCI)
 -- 
 2.21.0
 
