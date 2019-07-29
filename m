@@ -2,37 +2,41 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD53578508
-	for <lists+sparclinux@lfdr.de>; Mon, 29 Jul 2019 08:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 539157893D
+	for <lists+sparclinux@lfdr.de>; Mon, 29 Jul 2019 12:06:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726876AbfG2Gha (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 29 Jul 2019 02:37:30 -0400
-Received: from smtprelay0051.hostedemail.com ([216.40.44.51]:49365 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725934AbfG2Gha (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 29 Jul 2019 02:37:30 -0400
-X-Greylist: delayed 366 seconds by postgrey-1.27 at vger.kernel.org; Mon, 29 Jul 2019 02:37:29 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave02.hostedemail.com (Postfix) with ESMTP id 0DBBC18019A13;
-        Mon, 29 Jul 2019 06:31:25 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id AC68383777ED;
-        Mon, 29 Jul 2019 06:31:22 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::::::::,RULES_HIT:41:355:379:599:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2693:2828:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3873:4250:4321:5007:6742:7875:7904:10004:10400:10848:11026:11232:11473:11658:11914:12043:12114:12296:12297:12438:12555:12740:12760:12895:13069:13311:13357:13439:14096:14097:14180:14181:14659:14721:21060:21080:21627:30054:30090:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:24,LUA_SUMMARY:none
-X-HE-Tag: star39_8018288ec7e4b
-X-Filterd-Recvd-Size: 3529
-Received: from XPS-9350.home (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
-        (Authenticated sender: joe@perches.com)
-        by omf05.hostedemail.com (Postfix) with ESMTPA;
-        Mon, 29 Jul 2019 06:31:20 +0000 (UTC)
-Message-ID: <b0deb4e6b12ea1f943855440a3cc99a6e47d0717.camel@perches.com>
-Subject: Re: [EXTERNAL][PATCH 1/5] PCI: Convert pci_resource_to_user to a
- weak function
-From:   Joe Perches <joe@perches.com>
-To:     Paul Burton <paul.burton@mips.com>,
-        Denis Efremov <efremov@linux.com>
+        id S1728175AbfG2KGY (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 29 Jul 2019 06:06:24 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:37001 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726358AbfG2KGX (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 29 Jul 2019 06:06:23 -0400
+Received: by mail-wr1-f67.google.com with SMTP id n9so36058650wrr.4;
+        Mon, 29 Jul 2019 03:06:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=+lJIZvSYaI3dYqcvOi7SpRuQ2vDd2GcTwOMwgzFwFeQ=;
+        b=eTMwZGsZPWdmEJjs99WUJFKBDdD82YDtw9Ag8YZpY8QnKEEiRlMzSrwyGSMLn2NdeK
+         isZxbTkdEE42zDjeBLSAyqcLn+gAMF/vzjAGiAfHB0+5iaWD9qZlV4jkiRgP9CgOBcVT
+         ng7woj3uceqRrsyXYiwGs6Fyb3QQ3Sw2eZM5CTWDWDzAuhP4oE4Ujq4CrJMz96CoVQiC
+         1ypWbzryWhwrrS9DDfLc4awqzTEaPQGt0lddDLlmr58F/gYXsyZq4Trn2MntIBoyDaam
+         zrGymBktPE8QbxDlZySASFq765698cVjLEW180nOS88JAzMp1CYWQkc4Qt+MxtWbVbUu
+         wr9w==
+X-Gm-Message-State: APjAAAXgeIjeNH+sfayEwpn8UPIxQJEFpAO79dG4ehkDNfjcZgPnMY7t
+        HrIcIyjZeQ8dIQQw4mplhXT0AET00nc=
+X-Google-Smtp-Source: APXvYqwRktv2fozVreuUhBqi1B5R21SS7JUFpkXMpWHHKx1itYi/JgJWJHXGc58FiILOo4GtbsPbvA==
+X-Received: by 2002:a5d:4e45:: with SMTP id r5mr10938244wrt.206.1564394781631;
+        Mon, 29 Jul 2019 03:06:21 -0700 (PDT)
+Received: from [10.68.32.192] (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.gmail.com with ESMTPSA id x18sm54245837wmi.12.2019.07.29.03.06.20
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 Jul 2019 03:06:21 -0700 (PDT)
+Subject: Re: [EXTERNAL][PATCH 1/5] PCI: Convert pci_resource_to_user to a weak
+ function
+To:     Paul Burton <paul.burton@mips.com>
 Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         "David S. Miller" <davem@davemloft.net>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -46,69 +50,33 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
         "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Sun, 28 Jul 2019 23:31:18 -0700
-In-Reply-To: <20190728224953.kezztdozc6k24ya3@pburton-laptop>
 References: <20190728202213.15550-1-efremov@linux.com>
-         <20190728202213.15550-2-efremov@linux.com>
-         <20190728224953.kezztdozc6k24ya3@pburton-laptop>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+ <20190728202213.15550-2-efremov@linux.com>
+ <20190728224953.kezztdozc6k24ya3@pburton-laptop>
+From:   Denis Efremov <efremov@linux.com>
+Message-ID: <cd83d298-45f6-7330-0347-96025cde8959@linux.com>
+Date:   Mon, 29 Jul 2019 13:06:19 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20190728224953.kezztdozc6k24ya3@pburton-laptop>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun, 2019-07-28 at 22:49 +0000, Paul Burton wrote:
+Hi Paul,
+
+On 29.07.2019 01:49, Paul Burton wrote:
 > Hi Denis,
-> 
-> On Sun, Jul 28, 2019 at 11:22:09PM +0300, Denis Efremov wrote:
-> > diff --git a/include/linux/pci.h b/include/linux/pci.h
-> > index 9e700d9f9f28..1a19d0151b0a 100644
-> > --- a/include/linux/pci.h
-> > +++ b/include/linux/pci.h
-> > @@ -1870,25 +1870,13 @@ static inline const char *pci_name(const struct pci_dev *pdev)
-> >  	return dev_name(&pdev->dev);
-> >  }
-> >  
-> > -
-> >  /*
-> >   * Some archs don't want to expose struct resource to userland as-is
-> >   * in sysfs and /proc
-> >   */
-> > -#ifdef HAVE_ARCH_PCI_RESOURCE_TO_USER
-> > -void pci_resource_to_user(const struct pci_dev *dev, int bar,
-> > -			  const struct resource *rsrc,
-> > -			  resource_size_t *start, resource_size_t *end);
-> > -#else
-> > -static inline void pci_resource_to_user(const struct pci_dev *dev, int bar,
-> > -		const struct resource *rsrc, resource_size_t *start,
-> > -		resource_size_t *end)
-> > -{
-> > -	*start = rsrc->start;
-> > -	*end = rsrc->end;
-> > -}
-> > -#endif /* HAVE_ARCH_PCI_RESOURCE_TO_USER */
-> > -
-> > +void __weak pci_resource_to_user(const struct pci_dev *dev, int bar,
-> > +				 const struct resource *rsrc,
-> > +				 resource_size_t *start, resource_size_t *end);
-> >  
-> >  /*
-> >   * The world is not perfect and supplies us with broken PCI devices.
 > 
 > This is wrong - using __weak on the declaration in a header will cause
 > the weak attribute to be applied to all implementations too (presuming
 > the C files containing the implementations include the header). You then
 > get whichever impleentation the linker chooses, which isn't necessarily
 > the one you wanted.
-> 
-> checkpatch.pl should produce an error about this - see the
-> WEAK_DECLARATION error introduced in commit 619a908aa334 ("checkpatch:
-> add error on use of attribute((weak)) or __weak declarations").
 
-Unfortunately, checkpatch is pretty stupid and only emits
-this on single line declarations.
-
-
+Thank you for pointing me on that. I will prepare the v2.
