@@ -2,78 +2,107 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E1978971
-	for <lists+sparclinux@lfdr.de>; Mon, 29 Jul 2019 12:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3085A7A121
+	for <lists+sparclinux@lfdr.de>; Tue, 30 Jul 2019 08:12:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728305AbfG2KOn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 29 Jul 2019 06:14:43 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:33050 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726358AbfG2KOm (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 29 Jul 2019 06:14:42 -0400
-Received: by mail-lf1-f65.google.com with SMTP id x3so41743056lfc.0;
-        Mon, 29 Jul 2019 03:14:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=yupETfqZ2IUSTjDe+bKCoxhzbaEilz49jRRnCpaPaiM=;
-        b=cRhDn/dJ6vQDUryu5X8N4NmMOZdsdiaQJJSOI/HSMQ2CX8DX+npSOXrkzcyT+yeduk
-         BX9OsM326pWxtYV9N5xneJlNZWuGBbtS9C7zTWbpfDro8iDGV2NZnRXDeNIl/HkSlsx7
-         nFUMZmAgYT88R4HnXSfB4n4thoS7iBnCLTb9W4Zmk31c65Hufury6qIeIiTdPDsmFJJX
-         YM/QOX9ocrGiShaXWfqCqAtBMZJRYP5EqrBiGTbnSilFKBbiQPOg9AgOQuEaVvSGTYfn
-         +JgzdV04AfMZiX4jburVDZ8ufLr9d4fcfghppzFi4LqfSd/13CQZlA11l40hSZz0xGy3
-         FOww==
-X-Gm-Message-State: APjAAAWjr0L52nQY77Gc+/PbX7azTCDr1dVFEGH1zxEH/vt0gBHMZOpa
-        vRuMrnfghdHDdugfyATMSs4=
-X-Google-Smtp-Source: APXvYqyzEX7/b64Ts0QNiQTVUqAu+v61liDsTlqZmJcWAS2uOGiIQr2pUT55zRUw5B/wxq4tvZCIVg==
-X-Received: by 2002:ac2:48a5:: with SMTP id u5mr52810601lfg.62.1564395279979;
-        Mon, 29 Jul 2019 03:14:39 -0700 (PDT)
-Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
-        by smtp.googlemail.com with ESMTPSA id y12sm11814834lfy.36.2019.07.29.03.14.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 Jul 2019 03:14:39 -0700 (PDT)
-From:   Denis Efremov <efremov@linux.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Denis Efremov <efremov@linux.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] sparc/PCI: Remove HAVE_ARCH_PCI_RESOURCE_TO_USER
-Date:   Mon, 29 Jul 2019 13:14:01 +0300
-Message-Id: <20190729101401.28068-6-efremov@linux.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190729101401.28068-1-efremov@linux.com>
-References: <20190729101401.28068-1-efremov@linux.com>
+        id S1726210AbfG3GM3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 30 Jul 2019 02:12:29 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:40455 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726128AbfG3GM3 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 30 Jul 2019 02:12:29 -0400
+Received: from [10.30.1.20] (lneuilly-657-1-5-103.w81-250.abo.wanadoo.fr [81.250.144.103])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 8126E240007;
+        Tue, 30 Jul 2019 06:12:20 +0000 (UTC)
+Subject: Re: [PATCH RESEND 0/8] Fix mmap base in bottom-up mmap
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org
+References: <20190620050328.8942-1-alex@ghiti.fr>
+From:   Alexandre Ghiti <alex@ghiti.fr>
+Message-ID: <175168c1-d25f-7a93-e19b-dbb6ae6289e1@ghiti.fr>
+Date:   Tue, 30 Jul 2019 08:12:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190620050328.8942-1-alex@ghiti.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: fr
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The function pci_resource_to_user() was turned to a weak one. Thus,
-sparc-specific version will automatically override the generic one
-and the HAVE_ARCH_PCI_RESOURCE_TO_USER macro should be removed.
+On 6/20/19 7:03 AM, Alexandre Ghiti wrote:
+> This series fixes the fallback of the top-down mmap: in case of
+> failure, a bottom-up scheme can be tried as a last resort between
+> the top-down mmap base and the stack, hoping for a large unused stack
+> limit.
+>
+> Lots of architectures and even mm code start this fallback
+> at TASK_UNMAPPED_BASE, which is useless since the top-down scheme
+> already failed on the whole address space: instead, simply use
+> mmap_base.
+>
+> Along the way, it allows to get rid of of mmap_legacy_base and
+> mmap_compat_legacy_base from mm_struct.
+>
+> Note that arm and mips already implement this behaviour.
+>
+> Alexandre Ghiti (8):
+>    s390: Start fallback of top-down mmap at mm->mmap_base
+>    sh: Start fallback of top-down mmap at mm->mmap_base
+>    sparc: Start fallback of top-down mmap at mm->mmap_base
+>    x86, hugetlbpage: Start fallback of top-down mmap at mm->mmap_base
+>    mm: Start fallback top-down mmap at mm->mmap_base
+>    parisc: Use mmap_base, not mmap_legacy_base, as low_limit for
+>      bottom-up mmap
+>    x86: Use mmap_*base, not mmap_*legacy_base, as low_limit for bottom-up
+>      mmap
+>    mm: Remove mmap_legacy_base and mmap_compat_legacy_code fields from
+>      mm_struct
+>
+>   arch/parisc/kernel/sys_parisc.c  |  8 +++-----
+>   arch/s390/mm/mmap.c              |  2 +-
+>   arch/sh/mm/mmap.c                |  2 +-
+>   arch/sparc/kernel/sys_sparc_64.c |  2 +-
+>   arch/sparc/mm/hugetlbpage.c      |  2 +-
+>   arch/x86/include/asm/elf.h       |  2 +-
+>   arch/x86/kernel/sys_x86_64.c     |  4 ++--
+>   arch/x86/mm/hugetlbpage.c        |  7 ++++---
+>   arch/x86/mm/mmap.c               | 20 +++++++++-----------
+>   include/linux/mm_types.h         |  2 --
+>   mm/debug.c                       |  4 ++--
+>   mm/mmap.c                        |  2 +-
+>   12 files changed, 26 insertions(+), 31 deletions(-)
+>
 
-Signed-off-by: Denis Efremov <efremov@linux.com>
----
- arch/sparc/include/asm/pci.h | 2 --
- 1 file changed, 2 deletions(-)
+Hi everyone,
 
-diff --git a/arch/sparc/include/asm/pci.h b/arch/sparc/include/asm/pci.h
-index cfec79bb1831..4deddf430e5d 100644
---- a/arch/sparc/include/asm/pci.h
-+++ b/arch/sparc/include/asm/pci.h
-@@ -38,8 +38,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- #define arch_can_pci_mmap_io()	1
- #define HAVE_ARCH_PCI_GET_UNMAPPED_AREA
- #define get_pci_unmapped_area get_fb_unmapped_area
--
--#define HAVE_ARCH_PCI_RESOURCE_TO_USER
- #endif /* CONFIG_SPARC64 */
- 
- #if defined(CONFIG_SPARC64) || defined(CONFIG_LEON_PCI)
--- 
-2.21.0
+This is just a preparatory series for the merging of x86 mmap top-down 
+functions with
+the generic ones (those should get into v5.3), if you could take some 
+time to take a look,
+that would be great :)
+
+Thanks,
+
+Alex
 
