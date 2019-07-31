@@ -2,165 +2,89 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C02027C525
-	for <lists+sparclinux@lfdr.de>; Wed, 31 Jul 2019 16:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B34D7C72D
+	for <lists+sparclinux@lfdr.de>; Wed, 31 Jul 2019 17:46:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729937AbfGaOlV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 31 Jul 2019 10:41:21 -0400
-Received: from mx2.suse.de ([195.135.220.15]:57882 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729935AbfGaOlU (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 31 Jul 2019 10:41:20 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id E6CFCB0C6;
-        Wed, 31 Jul 2019 14:41:17 +0000 (UTC)
-Date:   Wed, 31 Jul 2019 16:41:14 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     Hoan Tran OS <hoan@os.amperecomputing.com>,
-        Will Deacon <will@kernel.org>,
+        id S1729823AbfGaPqm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 31 Jul 2019 11:46:42 -0400
+Received: from foss.arm.com ([217.140.110.172]:49770 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729791AbfGaPqj (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 31 Jul 2019 11:46:39 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 267971576;
+        Wed, 31 Jul 2019 08:46:39 -0700 (PDT)
+Received: from e112269-lin.arm.com (e112269-lin.cambridge.arm.com [10.1.196.133])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 59AAA3F694;
+        Wed, 31 Jul 2019 08:46:36 -0700 (PDT)
+From:   Steven Price <steven.price@arm.com>
+To:     linux-mm@kvack.org
+Cc:     Steven Price <steven.price@arm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "x86@kernel.org" <x86@kernel.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Open Source Submission <patches@amperecomputing.com>,
-        Pavel Tatashin <pavel.tatashin@microsoft.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Borislav Petkov <bp@alien8.de>,
+        James Morse <james.morse@arm.com>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        "Liang, Kan" <kan.liang@linux.intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "willy@infradead.org" <willy@infradead.org>
-Subject: Re: microblaze HAVE_MEMBLOCK_NODE_MAP dependency (was Re: [PATCH v2
- 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA)
-Message-ID: <20190731144114.GY9330@dhcp22.suse.cz>
-References: <20190712150007.GU29483@dhcp22.suse.cz>
- <730368c5-1711-89ae-e3ef-65418b17ddc9@os.amperecomputing.com>
- <20190730081415.GN9330@dhcp22.suse.cz>
- <20190731062420.GC21422@rapoport-lnx>
- <20190731080309.GZ9330@dhcp22.suse.cz>
- <20190731111422.GA14538@rapoport-lnx>
- <20190731114016.GI9330@dhcp22.suse.cz>
- <20190731122631.GB14538@rapoport-lnx>
- <20190731130037.GN9330@dhcp22.suse.cz>
- <20190731142129.GA24998@rapoport-lnx>
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: [PATCH v10 09/22] sparc: mm: Add p?d_leaf() definitions
+Date:   Wed, 31 Jul 2019 16:45:50 +0100
+Message-Id: <20190731154603.41797-10-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190731154603.41797-1-steven.price@arm.com>
+References: <20190731154603.41797-1-steven.price@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190731142129.GA24998@rapoport-lnx>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed 31-07-19 17:21:29, Mike Rapoport wrote:
-> On Wed, Jul 31, 2019 at 03:00:37PM +0200, Michal Hocko wrote:
-> > On Wed 31-07-19 15:26:32, Mike Rapoport wrote:
-> > > On Wed, Jul 31, 2019 at 01:40:16PM +0200, Michal Hocko wrote:
-> > > > On Wed 31-07-19 14:14:22, Mike Rapoport wrote:
-> > > > > On Wed, Jul 31, 2019 at 10:03:09AM +0200, Michal Hocko wrote:
-> > > > > > On Wed 31-07-19 09:24:21, Mike Rapoport wrote:
-> > > > > > > [ sorry for a late reply too, somehow I missed this thread before ]
-> > > > > > > 
-> > > > > > > On Tue, Jul 30, 2019 at 10:14:15AM +0200, Michal Hocko wrote:
-> > > > > > > > [Sorry for a late reply]
-> > > > > > > > 
-> > > > > > > > On Mon 15-07-19 17:55:07, Hoan Tran OS wrote:
-> > > > > > > > > Hi,
-> > > > > > > > > 
-> > > > > > > > > On 7/12/19 10:00 PM, Michal Hocko wrote:
-> > > > > > > > [...]
-> > > > > > > > > > Hmm, I thought this was selectable. But I am obviously wrong here.
-> > > > > > > > > > Looking more closely, it seems that this is indeed only about
-> > > > > > > > > > __early_pfn_to_nid and as such not something that should add a config
-> > > > > > > > > > symbol. This should have been called out in the changelog though.
-> > > > > > > > > 
-> > > > > > > > > Yes, do you have any other comments about my patch?
-> > > > > > > > 
-> > > > > > > > Not really. Just make sure to explicitly state that
-> > > > > > > > CONFIG_NODES_SPAN_OTHER_NODES is only about __early_pfn_to_nid and that
-> > > > > > > > doesn't really deserve it's own config and can be pulled under NUMA.
-> > > > > > > > 
-> > > > > > > > > > Also while at it, does HAVE_MEMBLOCK_NODE_MAP fall into a similar
-> > > > > > > > > > bucket? Do we have any NUMA architecture that doesn't enable it?
-> > > > > > > > > > 
-> > > > > > > 
-> > > > > > > HAVE_MEMBLOCK_NODE_MAP makes huge difference in node/zone initialization
-> > > > > > > sequence so it's not only about a singe function.
-> > > > > > 
-> > > > > > The question is whether we want to have this a config option or enable
-> > > > > > it unconditionally for each NUMA system.
-> > > > > 
-> > > > > We can make it 'default NUMA', but we can't drop it completely because
-> > > > > microblaze uses sparse_memory_present_with_active_regions() which is
-> > > > > unavailable when HAVE_MEMBLOCK_NODE_MAP=n.
-> > > > 
-> > > > I suppose you mean that microblaze is using
-> > > > sparse_memory_present_with_active_regions even without CONFIG_NUMA,
-> > > > right?
-> > > 
-> > > Yes.
-> > > 
-> > > > I have to confess I do not understand that code. What is the deal
-> > > > with setting node id there?
-> > > 
-> > > The sparse_memory_present_with_active_regions() iterates over
-> > > memblock.memory regions and uses the node id of each region as the
-> > > parameter to memory_present(). The assumption here is that sometime before
-> > > each region was assigned a proper non-negative node id. 
-> > > 
-> > > microblaze uses device tree for memory enumeration and the current FDT code
-> > > does memblock_add() that implicitly sets nid in memblock.memory regions to -1.
-> > > 
-> > > So in order to have proper node id passed to memory_present() microblaze
-> > > has to call memblock_set_node() before it can use
-> > > sparse_memory_present_with_active_regions().
-> > 
-> > I am sorry, but I still do not follow. Who is consuming that node id
-> > information when NUMA=n. In other words why cannot we simply do
->  
-> We can, I think nobody cared to change it.
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_leaf() functions/macros.
 
-It would be great if somebody with the actual HW could try it out.
-I can throw a patch but I do not even have a cross compiler in my
-toolbox.
+For sparc 64 bit, pmd_large() and pud_large() are already provided, so
+add macros to provide the p?d_leaf names required by the generic code.
 
-> 
-> > diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-> > index a015a951c8b7..3a47e8db8d1c 100644
-> > --- a/arch/microblaze/mm/init.c
-> > +++ b/arch/microblaze/mm/init.c
-> > @@ -175,14 +175,9 @@ void __init setup_memory(void)
-> >  
-> >  		start_pfn = memblock_region_memory_base_pfn(reg);
-> >  		end_pfn = memblock_region_memory_end_pfn(reg);
-> > -		memblock_set_node(start_pfn << PAGE_SHIFT,
-> > -				  (end_pfn - start_pfn) << PAGE_SHIFT,
-> > -				  &memblock.memory, 0);
-> > +		memory_present(0, start_pfn << PAGE_SHIFT, end_pfn << PAGE_SHIFT);
-> 
-> memory_present() expects pfns, the shift is not needed.
+CC: "David S. Miller" <davem@davemloft.net>
+CC: sparclinux@vger.kernel.org
+Signed-off-by: Steven Price <steven.price@arm.com>
+---
+ arch/sparc/include/asm/pgtable_64.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Right.
-
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index 1599de730532..a78b968ae3fa 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -683,6 +683,7 @@ static inline unsigned long pte_special(pte_t pte)
+ 	return pte_val(pte) & _PAGE_SPECIAL;
+ }
+ 
++#define pmd_leaf	pmd_large
+ static inline unsigned long pmd_large(pmd_t pmd)
+ {
+ 	pte_t pte = __pte(pmd_val(pmd));
+@@ -867,6 +868,7 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
+ /* only used by the stubbed out hugetlb gup code, should never be called */
+ #define pgd_page(pgd)			NULL
+ 
++#define pud_leaf	pud_large
+ static inline unsigned long pud_large(pud_t pud)
+ {
+ 	pte_t pte = __pte(pud_val(pud));
 -- 
-Michal Hocko
-SUSE Labs
+2.20.1
+
