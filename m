@@ -2,127 +2,216 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2089A7CACC
-	for <lists+sparclinux@lfdr.de>; Wed, 31 Jul 2019 19:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F31D47E7E3
+	for <lists+sparclinux@lfdr.de>; Fri,  2 Aug 2019 04:17:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727508AbfGaRpp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 31 Jul 2019 13:45:45 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:44310 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726382AbfGaRpp (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 31 Jul 2019 13:45:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=pEAfotcFLsFotBYT9u4zeRqv3NeeQAlDety7JPTf8Pk=; b=dw+SeYbkgl15ByYdw4RBRwGpI5
-        OQRbhMYNZQy3bzAx5TIQcL6nZ4sauiIJzRse8yongu5JqPY6aoJalrxRvlk01U/pCwDOw/2pmFJaD
-        P1gRHYsrEp+s+iq8YUjI4MGLu//erIQdXrho9cOTBXZKeLz8JFQpS+d+T6SVCRqsaBTceMtiBPAL9
-        K6qZqrz0yuqnuZ3oMdNwOb05wHSS4MloOj9+DKViGd5eR1DPhulBDXdM72Qf3YxGHWdhjFCH5PT3m
-        ioWvgp3GDSoi8julWf1KoQx7EnwTzV5jyNDyqyWBQzDDbz0lPbNq/vbmvDf5oWMOc7VHyKca5WKls
-        QitLDIVA==;
-Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=[192.168.1.17])
-        by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hssfH-000639-C3; Wed, 31 Jul 2019 17:45:28 +0000
-Subject: Re: microblaze HAVE_MEMBLOCK_NODE_MAP dependency (was Re: [PATCH v2
- 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA)
-To:     Mike Rapoport <rppt@linux.ibm.com>,
-        Michal Hocko <mhocko@kernel.org>
-Cc:     Hoan Tran OS <hoan@os.amperecomputing.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "x86@kernel.org" <x86@kernel.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Open Source Submission <patches@amperecomputing.com>,
-        Pavel Tatashin <pavel.tatashin@microsoft.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "willy@infradead.org" <willy@infradead.org>,
-        Michal Simek <monstr@monstr.eu>
-References: <730368c5-1711-89ae-e3ef-65418b17ddc9@os.amperecomputing.com>
- <20190730081415.GN9330@dhcp22.suse.cz> <20190731062420.GC21422@rapoport-lnx>
- <20190731080309.GZ9330@dhcp22.suse.cz> <20190731111422.GA14538@rapoport-lnx>
- <20190731114016.GI9330@dhcp22.suse.cz> <20190731122631.GB14538@rapoport-lnx>
- <20190731130037.GN9330@dhcp22.suse.cz> <20190731142129.GA24998@rapoport-lnx>
- <20190731144114.GY9330@dhcp22.suse.cz> <20190731171510.GB24998@rapoport-lnx>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <57b08afb-d07e-a24f-4cfe-5a633227ed6b@infradead.org>
-Date:   Wed, 31 Jul 2019 10:45:24 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S2389058AbfHBCRA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 1 Aug 2019 22:17:00 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:37847 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728255AbfHBCQ7 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 1 Aug 2019 22:16:59 -0400
+Received: by mail-pg1-f194.google.com with SMTP id d1so2414548pgp.4;
+        Thu, 01 Aug 2019 19:16:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3GzlMAdD/Fj4tpT1z/PK8Fr3raamoGX6ZwkHP2yb6K8=;
+        b=pAxzsc9vmHAK9ZK89AacBmqXQvuHXeShpu27WlEkAV6xBcEz/H1GAWLFbWBo+u7caH
+         KIqDnTL+IS2r069Sqit6niTwIVD3yHwM2oL4UXxooa0ZG6T9kc1SZGdEzbmbTAJoZkzv
+         Zbj81BMMiMsLujqrLP+vNRoPoAfxuyhBIJfz/EZgUl0FsiQZK3MgWkswQuDuhoaZBO9G
+         KrSO58P9Rr9KxqN5N1BphpFtggyeHWY4ZqA08b5SYu2LL+896Hx8WIi0vBM/z3/TtXKP
+         sQF/9gkVaL/sxZPp1Zgqo9a2gtCNNW4Q0F26WcstDN/wMJyWuPSmF5s5FUO43iGXa+xl
+         t4bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3GzlMAdD/Fj4tpT1z/PK8Fr3raamoGX6ZwkHP2yb6K8=;
+        b=pxUI9uQSiPkrdaYjjCg63ri9x81eIH4tA4uNKQeuSqnlbqNn68GBhlo1oliYAZkNd+
+         f/ff4lrJJ5FSq+dMmai39K50JTR6skZNK1/SYJ6xIrqIpgkFnWhXD5JpEcImySXufeEc
+         5lpHw1QNCji0YtLFogyj9Q0GQwgqHEzmaCLzfQ916IcJeLVOXBHgnucF9EVAt2P87WgL
+         IFSg8UxticbZBM5vxmmfLzemLMpqv52ujuBqI+d1A9G1kG0XP6vAnBxZ5HOVasgRB9yz
+         +PY/9Fn4sTf2CDLEHuzFlDv+TctiwF4Ed2SZXRoCLsimOeNz1TMScSe8+f5sIAOswLTV
+         Mrbw==
+X-Gm-Message-State: APjAAAU77NZ/WZfIFO8YjVlx1yPL3pTLoRIOlIhqJbQom5/1tFn6nADk
+        sGNLf+j83301UXEmh6cqCSM=
+X-Google-Smtp-Source: APXvYqzWsTlsiBNw6waYjgVc0NeqKYlyVqx46uMvNCwkUysDnG1IH1bMSSj1oKU/Y8CdBrk8llU2wQ==
+X-Received: by 2002:a63:dd16:: with SMTP id t22mr90672497pgg.140.1564712218248;
+        Thu, 01 Aug 2019 19:16:58 -0700 (PDT)
+Received: from blueforge.nvidia.com (searspoint.nvidia.com. [216.228.112.21])
+        by smtp.gmail.com with ESMTPSA id p187sm118200292pfg.89.2019.08.01.19.16.56
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 01 Aug 2019 19:16:57 -0700 (PDT)
+From:   john.hubbard@gmail.com
+X-Google-Original-From: jhubbard@nvidia.com
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Chinner <david@fromorbit.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ira Weiny <ira.weiny@intel.com>, Jan Kara <jack@suse.cz>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        amd-gfx@lists.freedesktop.org, ceph-devel@vger.kernel.org,
+        devel@driverdev.osuosl.org, devel@lists.orangefs.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mm@kvack.org,
+        linux-nfs@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org, linux-xfs@vger.kernel.org,
+        netdev@vger.kernel.org, rds-devel@oss.oracle.com,
+        sparclinux@vger.kernel.org, x86@kernel.org,
+        xen-devel@lists.xenproject.org, John Hubbard <jhubbard@nvidia.com>
+Subject: [PATCH 00/34] put_user_pages(): miscellaneous call sites
+Date:   Thu,  1 Aug 2019 19:16:19 -0700
+Message-Id: <20190802021653.4882-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-In-Reply-To: <20190731171510.GB24998@rapoport-lnx>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 7/31/19 10:15 AM, Mike Rapoport wrote:
-> On Wed, Jul 31, 2019 at 04:41:14PM +0200, Michal Hocko wrote:
->> On Wed 31-07-19 17:21:29, Mike Rapoport wrote:
->>> On Wed, Jul 31, 2019 at 03:00:37PM +0200, Michal Hocko wrote:
->>>>
->>>> I am sorry, but I still do not follow. Who is consuming that node id
->>>> information when NUMA=n. In other words why cannot we simply do
->>>  
->>> We can, I think nobody cared to change it.
->>
->> It would be great if somebody with the actual HW could try it out.
->> I can throw a patch but I do not even have a cross compiler in my
->> toolbox.
-> 
-> Well, it compiles :)
+From: John Hubbard <jhubbard@nvidia.com>
 
-Adding Michal Simek <monstr@monstr.eu>.
+Hi,
 
-It's not clear that the MICROBLAZE maintainer is still supporting MICROBLAZE.
+These are best characterized as miscellaneous conversions: many (not all)
+call sites that don't involve biovec or iov_iter, nor mm/. It also leaves
+out a few call sites that require some more work. These are mostly pretty
+simple ones.
 
->>>> diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
->>>> index a015a951c8b7..3a47e8db8d1c 100644
->>>> --- a/arch/microblaze/mm/init.c
->>>> +++ b/arch/microblaze/mm/init.c
->>>> @@ -175,14 +175,9 @@ void __init setup_memory(void)
->>>>  
->>>>  		start_pfn = memblock_region_memory_base_pfn(reg);
->>>>  		end_pfn = memblock_region_memory_end_pfn(reg);
->>>> -		memblock_set_node(start_pfn << PAGE_SHIFT,
->>>> -				  (end_pfn - start_pfn) << PAGE_SHIFT,
->>>> -				  &memblock.memory, 0);
->>>> +		memory_present(0, start_pfn << PAGE_SHIFT, end_pfn << PAGE_SHIFT);
->>>
->>> memory_present() expects pfns, the shift is not needed.
->>
->> Right.
->>
->> -- 
->> Michal Hocko
->> SUSE Labs
+It's probably best to send all of these via Andrew's -mm tree, assuming
+that there are no significant merge conflicts with ongoing work in other
+trees (which I doubt, given that these are small changes).
 
+These patches apply to the latest linux.git. Patch #1 is also already in
+Andrew's tree, but given the broad non-linux-mm Cc list, I thought it
+would be more convenient to just include that patch here, so that people
+can use linux.git as the base--even though these are probably destined
+for linux-mm.
+
+This is part a tree-wide conversion, as described in commit fc1d8e7cca2d
+("mm: introduce put_user_page*(), placeholder versions"). That commit
+has an extensive description of the problem and the planned steps to
+solve it, but the highlites are:
+
+1) Provide put_user_page*() routines, intended to be used
+for releasing pages that were pinned via get_user_pages*().
+
+2) Convert all of the call sites for get_user_pages*(), to
+invoke put_user_page*(), instead of put_page(). This involves dozens of
+call sites, and will take some time.
+
+3) After (2) is complete, use get_user_pages*() and put_user_page*() to
+implement tracking of these pages. This tracking will be separate from
+the existing struct page refcounting.
+
+4) Use the tracking and identification of these pages, to implement
+special handling (especially in writeback paths) when the pages are
+backed by a filesystem.
+
+And a few references, also from that commit:
+
+[1] https://lwn.net/Articles/774411/ : "DMA and get_user_pages()"
+[2] https://lwn.net/Articles/753027/ : "The Trouble with get_user_pages()"
+
+
+Ira Weiny (1):
+  fs/binfmt_elf: convert put_page() to put_user_page*()
+
+John Hubbard (33):
+  mm/gup: add make_dirty arg to put_user_pages_dirty_lock()
+  net/rds: convert put_page() to put_user_page*()
+  net/ceph: convert put_page() to put_user_page*()
+  x86/kvm: convert put_page() to put_user_page*()
+  drm/etnaviv: convert release_pages() to put_user_pages()
+  drm/i915: convert put_page() to put_user_page*()
+  drm/radeon: convert put_page() to put_user_page*()
+  media/ivtv: convert put_page() to put_user_page*()
+  media/v4l2-core/mm: convert put_page() to put_user_page*()
+  genwqe: convert put_page() to put_user_page*()
+  scif: convert put_page() to put_user_page*()
+  vmci: convert put_page() to put_user_page*()
+  rapidio: convert put_page() to put_user_page*()
+  oradax: convert put_page() to put_user_page*()
+  staging/vc04_services: convert put_page() to put_user_page*()
+  drivers/tee: convert put_page() to put_user_page*()
+  vfio: convert put_page() to put_user_page*()
+  fbdev/pvr2fb: convert put_page() to put_user_page*()
+  fsl_hypervisor: convert put_page() to put_user_page*()
+  xen: convert put_page() to put_user_page*()
+  fs/exec.c: convert put_page() to put_user_page*()
+  orangefs: convert put_page() to put_user_page*()
+  uprobes: convert put_page() to put_user_page*()
+  futex: convert put_page() to put_user_page*()
+  mm/frame_vector.c: convert put_page() to put_user_page*()
+  mm/gup_benchmark.c: convert put_page() to put_user_page*()
+  mm/memory.c: convert put_page() to put_user_page*()
+  mm/madvise.c: convert put_page() to put_user_page*()
+  mm/process_vm_access.c: convert put_page() to put_user_page*()
+  crypt: convert put_page() to put_user_page*()
+  nfs: convert put_page() to put_user_page*()
+  goldfish_pipe: convert put_page() to put_user_page*()
+  kernel/events/core.c: convert put_page() to put_user_page*()
+
+ arch/x86/kvm/svm.c                            |   4 +-
+ crypto/af_alg.c                               |   7 +-
+ drivers/gpu/drm/etnaviv/etnaviv_gem.c         |   4 +-
+ drivers/gpu/drm/i915/gem/i915_gem_userptr.c   |   9 +-
+ drivers/gpu/drm/radeon/radeon_ttm.c           |   2 +-
+ drivers/infiniband/core/umem.c                |   5 +-
+ drivers/infiniband/hw/hfi1/user_pages.c       |   5 +-
+ drivers/infiniband/hw/qib/qib_user_pages.c    |   5 +-
+ drivers/infiniband/hw/usnic/usnic_uiom.c      |   5 +-
+ drivers/infiniband/sw/siw/siw_mem.c           |  10 +-
+ drivers/media/pci/ivtv/ivtv-udma.c            |  14 +--
+ drivers/media/pci/ivtv/ivtv-yuv.c             |  10 +-
+ drivers/media/v4l2-core/videobuf-dma-sg.c     |   3 +-
+ drivers/misc/genwqe/card_utils.c              |  17 +--
+ drivers/misc/mic/scif/scif_rma.c              |  17 ++-
+ drivers/misc/vmw_vmci/vmci_context.c          |   2 +-
+ drivers/misc/vmw_vmci/vmci_queue_pair.c       |  11 +-
+ drivers/platform/goldfish/goldfish_pipe.c     |   9 +-
+ drivers/rapidio/devices/rio_mport_cdev.c      |   9 +-
+ drivers/sbus/char/oradax.c                    |   2 +-
+ .../interface/vchiq_arm/vchiq_2835_arm.c      |  10 +-
+ drivers/tee/tee_shm.c                         |  10 +-
+ drivers/vfio/vfio_iommu_type1.c               |   8 +-
+ drivers/video/fbdev/pvr2fb.c                  |   3 +-
+ drivers/virt/fsl_hypervisor.c                 |   7 +-
+ drivers/xen/gntdev.c                          |   5 +-
+ drivers/xen/privcmd.c                         |   7 +-
+ fs/binfmt_elf.c                               |   2 +-
+ fs/binfmt_elf_fdpic.c                         |   2 +-
+ fs/exec.c                                     |   2 +-
+ fs/nfs/direct.c                               |   4 +-
+ fs/orangefs/orangefs-bufmap.c                 |   7 +-
+ include/linux/mm.h                            |   5 +-
+ kernel/events/core.c                          |   2 +-
+ kernel/events/uprobes.c                       |   6 +-
+ kernel/futex.c                                |  10 +-
+ mm/frame_vector.c                             |   4 +-
+ mm/gup.c                                      | 115 ++++++++----------
+ mm/gup_benchmark.c                            |   2 +-
+ mm/madvise.c                                  |   2 +-
+ mm/memory.c                                   |   2 +-
+ mm/process_vm_access.c                        |  18 +--
+ net/ceph/pagevec.c                            |   8 +-
+ net/rds/info.c                                |   5 +-
+ net/rds/message.c                             |   2 +-
+ net/rds/rdma.c                                |  15 ++-
+ virt/kvm/kvm_main.c                           |   4 +-
+ 47 files changed, 151 insertions(+), 266 deletions(-)
 
 -- 
-~Randy
+2.22.0
+
