@@ -2,563 +2,132 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB8FD8730B
-	for <lists+sparclinux@lfdr.de>; Fri,  9 Aug 2019 09:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17D5387431
+	for <lists+sparclinux@lfdr.de>; Fri,  9 Aug 2019 10:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405833AbfHIHeG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 9 Aug 2019 03:34:06 -0400
-Received: from foss.arm.com ([217.140.110.172]:42488 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405674AbfHIHeG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 9 Aug 2019 03:34:06 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C6386344;
-        Fri,  9 Aug 2019 00:34:04 -0700 (PDT)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.1.243])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 033BA3F706;
-        Fri,  9 Aug 2019 00:33:48 -0700 (PDT)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-To:     linux-mm@kvack.org
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        id S2405975AbfHIIel (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 9 Aug 2019 04:34:41 -0400
+Received: from mx2.suse.de ([195.135.220.15]:38264 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726054AbfHIIek (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 9 Aug 2019 04:34:40 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id DD89FAE49;
+        Fri,  9 Aug 2019 08:34:36 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+        id DC04B1E437E; Fri,  9 Aug 2019 10:34:35 +0200 (CEST)
+Date:   Fri, 9 Aug 2019 10:34:35 +0200
+From:   Jan Kara <jack@suse.cz>
+To:     Ira Weiny <ira.weiny@intel.com>
+Cc:     Michal Hocko <mhocko@kernel.org>, Jan Kara <jack@suse.cz>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Matthew Wilcox <willy@infradead.org>, john.hubbard@gmail.com,
         Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
+        Christoph Hellwig <hch@infradead.org>,
         Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: [RFC V2 1/1] mm/pgtable/debug: Add test validating architecture page table helpers
-Date:   Fri,  9 Aug 2019 13:03:18 +0530
-Message-Id: <1565335998-22553-2-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
-References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
+        Dave Chinner <david@fromorbit.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        amd-gfx@lists.freedesktop.org, ceph-devel@vger.kernel.org,
+        devel@driverdev.osuosl.org, devel@lists.orangefs.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mm@kvack.org,
+        linux-nfs@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org, linux-xfs@vger.kernel.org,
+        netdev@vger.kernel.org, rds-devel@oss.oracle.com,
+        sparclinux@vger.kernel.org, x86@kernel.org,
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH 00/34] put_user_pages(): miscellaneous call sites
+Message-ID: <20190809083435.GA17568@quack2.suse.cz>
+References: <20190802022005.5117-1-jhubbard@nvidia.com>
+ <20190802091244.GD6461@dhcp22.suse.cz>
+ <20190802124146.GL25064@quack2.suse.cz>
+ <20190802142443.GB5597@bombadil.infradead.org>
+ <20190802145227.GQ25064@quack2.suse.cz>
+ <076e7826-67a5-4829-aae2-2b90f302cebd@nvidia.com>
+ <20190807083726.GA14658@quack2.suse.cz>
+ <20190807084649.GQ11812@dhcp22.suse.cz>
+ <20190808023637.GA1508@iweiny-DESK2.sc.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190808023637.GA1508@iweiny-DESK2.sc.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-This adds a test module which will validate architecture page table helpers
-and accessors regarding compliance with generic MM semantics expectations.
-This will help various architectures in validating changes to the existing
-page table helpers or addition of new ones.
+On Wed 07-08-19 19:36:37, Ira Weiny wrote:
+> On Wed, Aug 07, 2019 at 10:46:49AM +0200, Michal Hocko wrote:
+> > > So I think your debug option and my suggested renaming serve a bit
+> > > different purposes (and thus both make sense). If you do the renaming, you
+> > > can just grep to see unconverted sites. Also when someone merges new GUP
+> > > user (unaware of the new rules) while you switch GUP to use pins instead of
+> > > ordinary references, you'll get compilation error in case of renaming
+> > > instead of hard to debug refcount leak without the renaming. And such
+> > > conflict is almost bound to happen given the size of GUP patch set... Also
+> > > the renaming serves against the "coding inertia" - i.e., GUP is around for
+> > > ages so people just use it without checking any documentation or comments.
+> > > After switching how GUP works, what used to be correct isn't anymore so
+> > > renaming the function serves as a warning that something has really
+> > > changed.
+> > 
+> > Fully agreed!
+> 
+> Ok Prior to this I've been basing all my work for the RDMA/FS DAX stuff in
+> Johns put_user_pages()...  (Including when I proposed failing truncate with a
+> lease in June [1])
+> 
+> However, based on the suggestions in that thread it became clear that a new
+> interface was going to need to be added to pass in the "RDMA file" information
+> to GUP to associate file pins with the correct processes...
+> 
+> I have many drawings on my white board with "a whole lot of lines" on them to
+> make sure that if a process opens a file, mmaps it, pins it with RDMA, _closes_
+> it, and ummaps it; that the resulting file pin can still be traced back to the
+> RDMA context and all the processes which may have access to it....  No matter
+> where the original context may have come from.  I believe I have accomplished
+> that.
+> 
+> Before I go on, I would like to say that the "imbalance" of get_user_pages()
+> and put_page() bothers me from a purist standpoint...  However, since this
+> discussion cropped up I went ahead and ported my work to Linus' current master
+> (5.3-rc3+) and in doing so I only had to steal a bit of Johns code...  Sorry
+> John...  :-(
+> 
+> I don't have the commit messages all cleaned up and I know there may be some
+> discussion on these new interfaces but I wanted to throw this series out there
+> because I think it may be what Jan and Michal are driving at (or at least in
+> that direction.
+> 
+> Right now only RDMA and DAX FS's are supported.  Other users of GUP will still
+> fail on a DAX file and regular files will still be at risk.[2]
+> 
+> I've pushed this work (based 5.3-rc3+ (33920f1ec5bf)) here[3]:
+> 
+> https://github.com/weiny2/linux-kernel/tree/linus-rdmafsdax-b0-v3
+> 
+> I think the most relevant patch to this conversation is:
+> 
+> https://github.com/weiny2/linux-kernel/commit/5d377653ba5cf11c3b716f904b057bee6641aaf6
+> 
+> I stole Jans suggestion for a name as the name I used while prototyping was
+> pretty bad...  So Thanks Jan...  ;-)
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Steven Price <Steven.Price@arm.com>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Sri Krishna chowdary <schowdary@nvidia.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: x86@kernel.org
-Cc: linux-kernel@vger.kernel.org
+For your function, I'd choose a name like vaddr_pin_leased_pages() so that
+association with a lease is clear from the name :) Also I'd choose the
+counterpart to be vaddr_unpin_leased_page[s](). Especially having put_page in
+the name looks confusing to me...
 
-Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- mm/Kconfig.debug       |  14 ++
- mm/Makefile            |   1 +
- mm/arch_pgtable_test.c | 400 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 415 insertions(+)
- create mode 100644 mm/arch_pgtable_test.c
+								Honza
 
-diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-index 82b6a20898bd..d3dfbe984d41 100644
---- a/mm/Kconfig.debug
-+++ b/mm/Kconfig.debug
-@@ -115,3 +115,17 @@ config DEBUG_RODATA_TEST
-     depends on STRICT_KERNEL_RWX
-     ---help---
-       This option enables a testcase for the setting rodata read-only.
-+
-+config DEBUG_ARCH_PGTABLE_TEST
-+	bool "Test arch page table helpers for semantics compliance"
-+	depends on MMU
-+	depends on DEBUG_KERNEL
-+	help
-+	  This options provides a kernel module which can be used to test
-+	  architecture page table helper functions on various platform in
-+	  verifying if they comply with expected generic MM semantics. This
-+	  will help architectures code in making sure that any changes or
-+	  new additions of these helpers will still conform to generic MM
-+	  expected semantics.
-+
-+	  If unsure, say N.
-diff --git a/mm/Makefile b/mm/Makefile
-index 338e528ad436..0e6ac3789ca8 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -84,6 +84,7 @@ obj-$(CONFIG_HWPOISON_INJECT) += hwpoison-inject.o
- obj-$(CONFIG_DEBUG_KMEMLEAK) += kmemleak.o
- obj-$(CONFIG_DEBUG_KMEMLEAK_TEST) += kmemleak-test.o
- obj-$(CONFIG_DEBUG_RODATA_TEST) += rodata_test.o
-+obj-$(CONFIG_DEBUG_ARCH_PGTABLE_TEST) += arch_pgtable_test.o
- obj-$(CONFIG_PAGE_OWNER) += page_owner.o
- obj-$(CONFIG_CLEANCACHE) += cleancache.o
- obj-$(CONFIG_MEMORY_ISOLATION) += page_isolation.o
-diff --git a/mm/arch_pgtable_test.c b/mm/arch_pgtable_test.c
-new file mode 100644
-index 000000000000..41d6fa78a620
---- /dev/null
-+++ b/mm/arch_pgtable_test.c
-@@ -0,0 +1,400 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * This kernel module validates architecture page table helpers &
-+ * accessors and helps in verifying their continued compliance with
-+ * generic MM semantics.
-+ *
-+ * Copyright (C) 2019 ARM Ltd.
-+ *
-+ * Author: Anshuman Khandual <anshuman.khandual@arm.com>
-+ */
-+#define pr_fmt(fmt) "arch_pgtable_test: %s " fmt, __func__
-+
-+#include <linux/kernel.h>
-+#include <linux/hugetlb.h>
-+#include <linux/mm.h>
-+#include <linux/mman.h>
-+#include <linux/mm_types.h>
-+#include <linux/module.h>
-+#include <linux/printk.h>
-+#include <linux/swap.h>
-+#include <linux/swapops.h>
-+#include <linux/pfn_t.h>
-+#include <linux/gfp.h>
-+#include <linux/spinlock.h>
-+#include <linux/sched/mm.h>
-+#include <asm/pgalloc.h>
-+#include <asm/pgtable.h>
-+
-+/*
-+ * Basic operations
-+ *
-+ * mkold(entry)			= An old and not a young entry
-+ * mkyoung(entry)		= A young and not an old entry
-+ * mkdirty(entry)		= A dirty and not a clean entry
-+ * mkclean(entry)		= A clean and not a dirty entry
-+ * mkwrite(entry)		= A write and not a write protected entry
-+ * wrprotect(entry)		= A write protected and not a write entry
-+ * pxx_bad(entry)		= A mapped and non-table entry
-+ * pxx_same(entry1, entry2)	= Both entries hold the exact same value
-+ */
-+#define VADDR_TEST	(PGDIR_SIZE + PUD_SIZE + PMD_SIZE + PAGE_SIZE)
-+#define VMA_TEST_FLAGS	(VM_READ|VM_WRITE|VM_EXEC)
-+#define RANDOM_NZVALUE	(0xbe)
-+
-+static bool pud_aligned;
-+
-+extern struct mm_struct *mm_alloc(void);
-+
-+static void pte_basic_tests(struct page *page, pgprot_t prot)
-+{
-+	pte_t pte = mk_pte(page, prot);
-+
-+	WARN_ON(!pte_same(pte, pte));
-+	WARN_ON(!pte_young(pte_mkyoung(pte)));
-+	WARN_ON(!pte_dirty(pte_mkdirty(pte)));
-+	WARN_ON(!pte_write(pte_mkwrite(pte)));
-+	WARN_ON(pte_young(pte_mkold(pte)));
-+	WARN_ON(pte_dirty(pte_mkclean(pte)));
-+	WARN_ON(pte_write(pte_wrprotect(pte)));
-+}
-+
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE
-+static void pmd_basic_tests(struct page *page, pgprot_t prot)
-+{
-+	pmd_t pmd = mk_pmd(page, prot);
-+
-+	WARN_ON(!pmd_same(pmd, pmd));
-+	WARN_ON(!pmd_young(pmd_mkyoung(pmd)));
-+	WARN_ON(!pmd_dirty(pmd_mkdirty(pmd)));
-+	WARN_ON(!pmd_write(pmd_mkwrite(pmd)));
-+	WARN_ON(pmd_young(pmd_mkold(pmd)));
-+	WARN_ON(pmd_dirty(pmd_mkclean(pmd)));
-+	WARN_ON(pmd_write(pmd_wrprotect(pmd)));
-+	/*
-+	 * A huge page does not point to next level page table
-+	 * entry. Hence this must qualify as pmd_bad().
-+	 */
-+	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
-+}
-+#else
-+static void pmd_basic_tests(struct page *page, pgprot_t prot) { }
-+#endif
-+
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+static void pud_basic_tests(struct page *page, pgprot_t prot)
-+{
-+	pud_t pud;
-+
-+	/*
-+	 * Memory block here must be PUD_SIZE aligned. Abort this
-+	 * test in case we could not allocate such a memory block.
-+	 */
-+	if (!pud_aligned) {
-+		pr_warn("Could not proceed with PUD tests\n");
-+		return;
-+	}
-+	pud = pfn_pud(page_to_pfn(page), prot);
-+
-+	WARN_ON(!pud_same(pud, pud));
-+	WARN_ON(!pud_young(pud_mkyoung(pud)));
-+	WARN_ON(!pud_write(pud_mkwrite(pud)));
-+	WARN_ON(pud_write(pud_wrprotect(pud)));
-+	WARN_ON(pud_young(pud_mkold(pud)));
-+
-+#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
-+	/*
-+	 * A huge page does not point to next level page table
-+	 * entry. Hence this must qualify as pud_bad().
-+	 */
-+	WARN_ON(!pud_bad(pud_mkhuge(pud)));
-+#endif
-+}
-+#else
-+static void pud_basic_tests(struct page *page, pgprot_t prot) { }
-+#endif
-+
-+static void p4d_basic_tests(struct page *page, pgprot_t prot)
-+{
-+	p4d_t p4d;
-+
-+	memset(&p4d, RANDOM_NZVALUE, sizeof(p4d_t));
-+	WARN_ON(!p4d_same(p4d, p4d));
-+}
-+
-+static void pgd_basic_tests(struct page *page, pgprot_t prot)
-+{
-+	pgd_t pgd;
-+
-+	memset(&pgd, RANDOM_NZVALUE, sizeof(pgd_t));
-+	WARN_ON(!pgd_same(pgd, pgd));
-+}
-+
-+#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
-+static void pud_clear_tests(pud_t *pudp)
-+{
-+	memset(pudp, RANDOM_NZVALUE, sizeof(pud_t));
-+	pud_clear(pudp);
-+	WARN_ON(!pud_none(READ_ONCE(*pudp)));
-+}
-+
-+static void pud_populate_tests(struct mm_struct *mm, pud_t *pudp, pmd_t *pmdp)
-+{
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as pud_bad().
-+	 */
-+	pmd_clear(pmdp);
-+	pud_clear(pudp);
-+	pud_populate(mm, pudp, pmdp);
-+	WARN_ON(pud_bad(READ_ONCE(*pudp)));
-+}
-+#else
-+static void pud_clear_tests(pud_t *pudp) { }
-+static void pud_populate_tests(struct mm_struct *mm, pud_t *pudp, pmd_t *pmdp)
-+{
-+}
-+#endif
-+
-+#if !defined(__PAGETABLE_PUD_FOLDED) && !defined(__ARCH_HAS_5LEVEL_HACK)
-+static void p4d_clear_tests(p4d_t *p4dp)
-+{
-+	memset(p4dp, RANDOM_NZVALUE, sizeof(p4d_t));
-+	p4d_clear(p4dp);
-+	WARN_ON(!p4d_none(READ_ONCE(*p4dp)));
-+}
-+
-+static void p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp, pud_t *pudp)
-+{
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as p4d_bad().
-+	 */
-+	pud_clear(pudp);
-+	p4d_clear(p4dp);
-+	p4d_populate(mm, p4dp, pudp);
-+	WARN_ON(p4d_bad(READ_ONCE(*p4dp)));
-+}
-+#else
-+static void p4d_clear_tests(p4d_t *p4dp) { }
-+static void p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp, pud_t *pudp)
-+{
-+}
-+#endif
-+
-+#ifndef __PAGETABLE_P4D_FOLDED
-+static void pgd_clear_tests(pgd_t *pgdp)
-+{
-+	memset(pgdp, RANDOM_NZVALUE, sizeof(pgd_t));
-+	pgd_clear(pgdp);
-+	WARN_ON(!pgd_none(READ_ONCE(*pgdp)));
-+}
-+
-+static void pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
-+{
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as pgd_bad().
-+	 */
-+	p4d_clear(p4dp);
-+	pgd_clear(pgdp);
-+	pgd_populate(mm, pgdp, p4dp);
-+	WARN_ON(pgd_bad(READ_ONCE(*pgdp)));
-+}
-+#else
-+static void pgd_clear_tests(pgd_t *pgdp) { }
-+static void pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
-+{
-+}
-+#endif
-+
-+static void pte_clear_tests(pte_t *ptep)
-+{
-+	memset(ptep, RANDOM_NZVALUE, sizeof(pte_t));
-+	pte_clear(NULL, 0, ptep);
-+	WARN_ON(!pte_none(READ_ONCE(*ptep)));
-+}
-+
-+static void pmd_clear_tests(pmd_t *pmdp)
-+{
-+	memset(pmdp, RANDOM_NZVALUE, sizeof(pmd_t));
-+	pmd_clear(pmdp);
-+	WARN_ON(!pmd_none(READ_ONCE(*pmdp)));
-+}
-+
-+static void pmd_populate_tests(struct mm_struct *mm, pmd_t *pmdp,
-+			       pgtable_t pgtable)
-+{
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as pmd_bad().
-+	 */
-+	pmd_clear(pmdp);
-+	pmd_populate(mm, pmdp, pgtable);
-+	WARN_ON(pmd_bad(READ_ONCE(*pmdp)));
-+}
-+
-+static bool pfn_range_valid(struct zone *z, unsigned long start_pfn,
-+			    unsigned long nr_pages)
-+{
-+	unsigned long i, end_pfn = start_pfn + nr_pages;
-+	struct page *page;
-+
-+	for (i = start_pfn; i < end_pfn; i++) {
-+		if (!pfn_valid(i))
-+			return false;
-+
-+		page = pfn_to_page(i);
-+
-+		if (page_zone(page) != z)
-+			return false;
-+
-+		if (PageReserved(page))
-+			return false;
-+
-+		if (page_count(page) > 0)
-+			return false;
-+
-+		if (PageHuge(page))
-+			return false;
-+	}
-+	return true;
-+}
-+
-+static struct page *alloc_gigantic_page(nodemask_t *nodemask,
-+					int nid, gfp_t gfp_mask, int order)
-+{
-+	struct zonelist *zonelist;
-+	struct zone *zone;
-+	struct zoneref *z;
-+	enum zone_type zonesel;
-+	unsigned long ret, pfn, flags, nr_pages;
-+
-+	nr_pages = 1UL << order;
-+	zonesel = gfp_zone(gfp_mask);
-+	zonelist = node_zonelist(nid, gfp_mask);
-+	for_each_zone_zonelist_nodemask(zone, z, zonelist, zonesel, nodemask) {
-+		spin_lock_irqsave(&zone->lock, flags);
-+		pfn = ALIGN(zone->zone_start_pfn, nr_pages);
-+		while (zone_spans_pfn(zone, pfn + nr_pages - 1)) {
-+			if (pfn_range_valid(zone, pfn, nr_pages)) {
-+				spin_unlock_irqrestore(&zone->lock, flags);
-+				ret = alloc_contig_range(pfn, pfn + nr_pages,
-+							 MIGRATE_MOVABLE,
-+							 gfp_mask);
-+				if (!ret)
-+					return pfn_to_page(pfn);
-+				spin_lock_irqsave(&zone->lock, flags);
-+			}
-+			pfn += nr_pages;
-+		}
-+		spin_unlock_irqrestore(&zone->lock, flags);
-+	}
-+	return NULL;
-+}
-+
-+static struct page *alloc_mapped_page(void)
-+{
-+	gfp_t gfp_mask = GFP_KERNEL | __GFP_ZERO;
-+	struct page *page = NULL;
-+
-+	page = alloc_gigantic_page(&node_states[N_MEMORY], first_memory_node,
-+				   gfp_mask, get_order(PUD_SIZE));
-+	if (page) {
-+		pud_aligned = true;
-+		return page;
-+	}
-+	return alloc_pages(gfp_mask, get_order(PMD_SIZE));
-+}
-+
-+static void free_mapped_page(struct page *page)
-+{
-+	if (pud_aligned) {
-+		unsigned long pfn = page_to_pfn(page);
-+
-+		free_contig_range(pfn, 1ULL << get_order(PUD_SIZE));
-+		return;
-+	}
-+	free_pages((unsigned long)page_address(page), get_order(PMD_SIZE));
-+}
-+
-+static int __init arch_pgtable_tests_init(void)
-+{
-+	struct mm_struct *mm;
-+	struct page *page;
-+	pgd_t *pgdp;
-+	p4d_t *p4dp, *saved_p4dp;
-+	pud_t *pudp, *saved_pudp;
-+	pmd_t *pmdp, *saved_pmdp;
-+	pte_t *ptep, *saved_ptep;
-+	pgprot_t prot = vm_get_page_prot(VMA_TEST_FLAGS);
-+	unsigned long vaddr = VADDR_TEST;
-+
-+	mm = mm_alloc();
-+	if (!mm) {
-+		pr_err("mm_struct allocation failed\n");
-+		return 1;
-+	}
-+
-+	page = alloc_mapped_page();
-+	if (!page) {
-+		pr_err("memory allocation failed\n");
-+		return 1;
-+	}
-+
-+	pgdp = pgd_offset(mm, vaddr);
-+	p4dp = p4d_alloc(mm, pgdp, vaddr);
-+	pudp = pud_alloc(mm, p4dp, vaddr);
-+	pmdp = pmd_alloc(mm, pudp, vaddr);
-+	ptep = pte_alloc_map(mm, pmdp, vaddr);
-+
-+	/*
-+	 * Save all the page table page addresses as the page table
-+	 * entries will be used for testing with random or garbage
-+	 * values. These saved addresses will be used for freeing
-+	 * page table pages.
-+	 */
-+	saved_p4dp = p4d_offset(pgdp, 0UL);
-+	saved_pudp = pud_offset(p4dp, 0UL);
-+	saved_pmdp = pmd_offset(pudp, 0UL);
-+	saved_ptep = pte_offset_map(pmdp, 0UL);
-+
-+	pte_basic_tests(page, prot);
-+	pmd_basic_tests(page, prot);
-+	pud_basic_tests(page, prot);
-+	p4d_basic_tests(page, prot);
-+	pgd_basic_tests(page, prot);
-+
-+	pte_clear_tests(ptep);
-+	pmd_clear_tests(pmdp);
-+	pud_clear_tests(pudp);
-+	p4d_clear_tests(p4dp);
-+	pgd_clear_tests(pgdp);
-+
-+	pmd_populate_tests(mm, pmdp, (pgtable_t) page);
-+	pud_populate_tests(mm, pudp, pmdp);
-+	p4d_populate_tests(mm, p4dp, pudp);
-+	pgd_populate_tests(mm, pgdp, p4dp);
-+
-+	p4d_free(mm, saved_p4dp);
-+	pud_free(mm, saved_pudp);
-+	pmd_free(mm, saved_pmdp);
-+	pte_free(mm, (pgtable_t) virt_to_page(saved_ptep));
-+
-+	mm_dec_nr_puds(mm);
-+	mm_dec_nr_pmds(mm);
-+	mm_dec_nr_ptes(mm);
-+	__mmdrop(mm);
-+
-+	free_mapped_page(page);
-+	return 0;
-+}
-+
-+static void __exit arch_pgtable_tests_exit(void) { }
-+
-+module_init(arch_pgtable_tests_init);
-+module_exit(arch_pgtable_tests_exit);
-+
-+MODULE_LICENSE("GPL v2");
-+MODULE_AUTHOR("Anshuman Khandual <anshuman.khandual@arm.com>");
-+MODULE_DESCRIPTION("Test archicture page table helpers");
 -- 
-2.20.1
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
