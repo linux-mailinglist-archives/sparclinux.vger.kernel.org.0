@@ -2,105 +2,116 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C51187C1F
-	for <lists+sparclinux@lfdr.de>; Fri,  9 Aug 2019 15:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD7A688399
+	for <lists+sparclinux@lfdr.de>; Fri,  9 Aug 2019 21:59:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406732AbfHINw3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 9 Aug 2019 09:52:29 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:59464 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726152AbfHINw2 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 9 Aug 2019 09:52:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=EreDrMASgymCoOwex2lDSh6PBVp8vwwZo8lBW7Dx+AU=; b=DCezGss28UrQwdHuY2bFdI4p4
-        S1IQudbzVnxD+07DxZGKpMaIkZjBN26Cdg8l2/Fs8GMFEeX1pJqh0qZAiUghQaE6El6M1XDplTDve
-        EJJcjL9sO79CkY0k30aJUEJAymr58OsH+p8EsukYG7F9sRPnn0G8pCmZVLattID9zhXymV5yWXtFQ
-        ciqngFSM0ntk8BRdLo5xQ4zieBSWsCrkihQ+/ft5+CPIVKlVlUX+N97pCSyIU0MATtJ4kwuaN/o18
-        WCkKlxmfNm5M1Hch5V2lnDpS3brZehU45KR0NW0dNC4+r+Ph0RyNwH7KE6Q/WHvIQU+odBuHV4vuK
-        lstsiJ0Mg==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
-        id 1hw5JK-0002PQ-U7; Fri, 09 Aug 2019 13:52:02 +0000
-Date:   Fri, 9 Aug 2019 06:52:02 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC V2 0/1] mm/debug: Add tests for architecture exported page
- table helpers
-Message-ID: <20190809135202.GN5482@bombadil.infradead.org>
-References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
- <20190809101632.GM5482@bombadil.infradead.org>
- <a5aab7ff-f7fd-9cc1-6e37-e4185eee65ac@arm.com>
+        id S1726671AbfHIT7f (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 9 Aug 2019 15:59:35 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:33381 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726263AbfHIT7f (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 9 Aug 2019 15:59:35 -0400
+Received: by mail-ed1-f66.google.com with SMTP id i11so32651480edq.0;
+        Fri, 09 Aug 2019 12:59:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AHqEsgDgb5JzggXVfgJe1D/a5UW3aJXppbSuLP37XBs=;
+        b=UR17JX/NbilG4ikKVy/oXcFAzOhqmweKVz+dGvxNjAxtqUl5SWhFuFYzVE+TP8BMzr
+         /3wWPC+QBgk+BfTQpJ8Kbq3+RM0V2Zagx7vEC1in0XQJHg+ZWo9WXEc/f1njls5jOOFi
+         Ma0xpWbqLMFuX3HFTu+Y3+kjmNsk2aQZrnDkKRo/Wa5oLEhhXba5gPFMIt5nPx8T5kpC
+         hlpgIYXYoWwsUey8+XKE2f9rv8IY+i8+s/1Ce60eQ+jCRjqsE4LD/h9OBMuaaZrVj8ev
+         yVay6t75Kik1BCr8A4MjxdCRAdQcAbXVXv48wR4oFL425IvfbU5JgliosnozC0h1loYA
+         FmjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AHqEsgDgb5JzggXVfgJe1D/a5UW3aJXppbSuLP37XBs=;
+        b=mA5YsM/mHwE9E++s6b+jEBn+KFKvOLhrqg723fjW72k8m5ZzrdNDUXKXdQ06o76vr8
+         qRkm/YhB7V+0a6Fe+D1SCpNmGM+6ZNBkAYSlb+iUktY+POZff+y5HgduLQq5qP6nsDrt
+         M+eZAyZsfngmc5QDOPoeq1ZWAuWXFaWpTp0fni9YTp19pCbIYLbfEVkCoJ5kRwktStFE
+         d8urR7idT2PwKaAHHq+7yUnEtKwLrmUnYM/WGB/xjVrUSqMhOatPIe9psKKQps3sJ5n0
+         FTm44SR06aT0OjmQ/Ozey8Nek6ly6qj+WCbIVBAEG051K2qgR149jP8Wp8nE56Ge8y7G
+         /jXg==
+X-Gm-Message-State: APjAAAVXBou9fpyg6z1Wp4lTTU+UUJGlSTOm+n2kDHs6JNU3qej79EIk
+        PC/KkqRH3exISp9ERZK9FIlXXBE53iW5JPmzKVw=
+X-Google-Smtp-Source: APXvYqz5a7RO0N9V2+pKGw7IFaG7VrGw1vD109CfGojs8XjLLN259Sjyaymy//2dM1gWI+9NNSyMdh4I+fVa9Rkxjzc=
+X-Received: by 2002:a17:906:318e:: with SMTP id 14mr20172779ejy.85.1565380772979;
+ Fri, 09 Aug 2019 12:59:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a5aab7ff-f7fd-9cc1-6e37-e4185eee65ac@arm.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+References: <20190625143715.1689-1-hch@lst.de> <20190625143715.1689-10-hch@lst.de>
+ <20190717215956.GA30369@altlinux.org>
+In-Reply-To: <20190717215956.GA30369@altlinux.org>
+From:   Anatoly Pugachev <matorola@gmail.com>
+Date:   Fri, 9 Aug 2019 22:59:23 +0300
+Message-ID: <CADxRZqy61-JOYSv3xtdeW_wTDqKovqDg2G+a-=LH3w=mrf2zUQ@mail.gmail.com>
+Subject: Re: [PATCH 09/16] sparc64: use the generic get_user_pages_fast code
+To:     "Dmitry V. Levin" <ldv@altlinux.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Khalid Aziz <khalid.aziz@oracle.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sparc kernel list <sparclinux@vger.kernel.org>,
+        linux-mm@kvack.org,
+        Linux Kernel list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Aug 09, 2019 at 04:05:07PM +0530, Anshuman Khandual wrote:
-> On 08/09/2019 03:46 PM, Matthew Wilcox wrote:
-> > On Fri, Aug 09, 2019 at 01:03:17PM +0530, Anshuman Khandual wrote:
-> >> Should alloc_gigantic_page() be made available as an interface for general
-> >> use in the kernel. The test module here uses very similar implementation from
-> >> HugeTLB to allocate a PUD aligned memory block. Similar for mm_alloc() which
-> >> needs to be exported through a header.
-> > 
-> > Why are you allocating memory at all instead of just using some
-> > known-to-exist PFNs like I suggested?
-> 
-> We needed PFN to be PUD aligned for pfn_pud() and PMD aligned for mk_pmd().
-> Now walking the kernel page table for a known symbol like kernel_init()
+On Thu, Jul 18, 2019 at 12:59 AM Dmitry V. Levin <ldv@altlinux.org> wrote:
+> On Tue, Jun 25, 2019 at 04:37:08PM +0200, Christoph Hellwig wrote:
+> > The sparc64 code is mostly equivalent to the generic one, minus various
+> > bugfixes and two arch overrides that this patch adds to pgtable.h.
+> >
+> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > Reviewed-by: Khalid Aziz <khalid.aziz@oracle.com>
+> > ---
+> >  arch/sparc/Kconfig                  |   1 +
+> >  arch/sparc/include/asm/pgtable_64.h |  18 ++
+> >  arch/sparc/mm/Makefile              |   2 +-
+> >  arch/sparc/mm/gup.c                 | 340 ----------------------------
+> >  4 files changed, 20 insertions(+), 341 deletions(-)
+> >  delete mode 100644 arch/sparc/mm/gup.c
+>
+> So this ended up as commit 7b9afb86b6328f10dc2cad9223d7def12d60e505
 
-I didn't say to walk the kernel page table.  I said to call virt_to_pfn()
-for a known symbol like kernel_init().
+I've tried to revert this commit on a current master branch , but i'm getting :
 
-> as you had suggested earlier we might encounter page table page entries at PMD
-> and PUD which might not be PMD or PUD aligned respectively. It seemed to me
-> that alignment requirement is applicable only for mk_pmd() and pfn_pud()
-> which create large mappings at those levels but that requirement does not
-> exist for page table pages pointing to next level. Is not that correct ? Or
-> I am missing something here ?
+linux-2.6$ git show 7b9afb86b632 > /tmp/gup.patch
+linux-2.6$ patch -p1 -R < /tmp/gup.patch
+...
+linux-2.6$ make -j && make -j modules
+...
+  CALL    scripts/atomic/check-atomics.sh
+  CALL    scripts/checksyscalls.sh
+<stdin>:1511:2: warning: #warning syscall clone3 not implemented [-Wcpp]
+  CHK     include/generated/compile.h
+  CHK     include/generated/autoksyms.h
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  AR      init/built-in.a
+  LD      vmlinux.o
+ld: mm/gup.o: in function `__get_user_pages_fast':
+gup.c:(.text+0x1bc0): multiple definition of `__get_user_pages_fast';
+arch/sparc/mm/gup.o:gup.c:(.text+0x620): first defined here
+ld: mm/gup.o: in function `get_user_pages_fast':
+gup.c:(.text+0x1be0): multiple definition of `get_user_pages_fast';
+arch/sparc/mm/gup.o:gup.c:(.text+0x740): first defined here
+make: *** [Makefile:1060: vmlinux] Error 1
 
-Just clear the bottom bits off the PFN until you get a PMD or PUD aligned
-PFN.  It's really not hard.
+Can someone help me to revert this commit? Is it even possible? Since
+it's not only futex strace calls getting killed and producing OOPS,
+even util-linux.git 'make check' hangs machine/LDOM with multiple OOPS
+in logs, while previous (before this commit) kernel passes tests ok
+(and without kernel OOPS). I've already tried to compile current
+master with gcc-6, gcc-7, gcc-8 debian versions, but all produce same
+OOPS.
 
+Thanks.
