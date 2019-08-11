@@ -2,79 +2,51 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA98588D02
-	for <lists+sparclinux@lfdr.de>; Sat, 10 Aug 2019 21:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0243689043
+	for <lists+sparclinux@lfdr.de>; Sun, 11 Aug 2019 09:59:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726057AbfHJTgj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 10 Aug 2019 15:36:39 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:43406 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725788AbfHJTgi (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 10 Aug 2019 15:36:38 -0400
-Received: by mail-ot1-f65.google.com with SMTP id e12so1203312otp.10;
-        Sat, 10 Aug 2019 12:36:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=o3yb3LBkgCj2WvJ0+Uh/BuPywJFT4H1nD+b3TdWQhSU=;
-        b=oj+5pLDdOrDIiAbaNDjQ1bkeAXV5AjT9TALASs8w5TWKZj3/dFkC2vv5yeQmG2uObR
-         nhAVrWZmWM926inhvI08Pacm8FS4B3Sk5foq7dAYZ4S7oI7qkj41d2fGbke6Ad8ALZ4r
-         UVQiWi+6+fw3QUqitteCJHBfvzaL/tCc/yTjT2LRHIP9AGgf72OnhYiQ+50XkoCWPIYF
-         oS7Of0bG49hQB4RMbZNBZkWUqfIXQQlVj7dGZnpyMZEBJ1UAUAWDXDlbflfQamJwuAni
-         saowKPupGI/V/yXVQmRSYuKfixhEyQwsJjr2eLoQgFetB5POTKwMs/cXzJYjnFmuRR7f
-         LpSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=o3yb3LBkgCj2WvJ0+Uh/BuPywJFT4H1nD+b3TdWQhSU=;
-        b=BwQqznpMTdTdApjP3bTbJ0GzutQvmj/LZZaPlnJUtGdXqJ17qQxhh6sPTWFqngC0Ik
-         +Ga81jwNzEw5YC0T1viyFerLUC0DRtUtZVCxKcwWj0E9B1z1d/b13bOo6PJF0K73l2G7
-         ndX1uShTCnptqNhNUqvgbnyUYd2swKDlbRqN3q413nw9bqpr8+ebSDTQoSOmnld8iviR
-         ZF3/9aiVgQtTRXf2fQHh7MGD+lrHr4bAKMjdnqZHhcEmHi9T+SUNgOxePem0ubwz5dUY
-         xgEFsMiNjXVNBhcgICRTIuokbellf5KyeguHev1nWjRxbX4v8kbFcvBLGgh4IseQ7ooe
-         8/PA==
-X-Gm-Message-State: APjAAAWPnaTm8PKJIKhjJAjLaQ7kYVr/YQHcWJmHwB3GVutv+n6M1pqS
-        dg2VFJbsSN+hqz+bJfpy3ScHYwqUGgjIAe98s9g=
-X-Google-Smtp-Source: APXvYqwN+kQL85VSwh3lLWhx/55k2LTWeEHB2UFHSABa5sTDQl+sissp0jrGB1GwrOcENUeIvg/JCdsMYwsmdPxjRGc=
-X-Received: by 2002:aca:c588:: with SMTP id v130mr5068345oif.165.1565465797825;
- Sat, 10 Aug 2019 12:36:37 -0700 (PDT)
+        id S1725855AbfHKH7b (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 11 Aug 2019 03:59:31 -0400
+Received: from www2300.sakura.ne.jp ([182.48.49.240]:27183 "EHLO
+        www2300.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725826AbfHKH7b (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 11 Aug 2019 03:59:31 -0400
+X-Greylist: delayed 3109 seconds by postgrey-1.27 at vger.kernel.org; Sun, 11 Aug 2019 03:59:30 EDT
+Received: from fsav305.sakura.ne.jp (fsav305.sakura.ne.jp [153.120.85.136])
+        by www2300.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id x7B77eUi024306;
+        Sun, 11 Aug 2019 16:07:40 +0900 (JST)
+        (envelope-from noreply@kyotoconnoisseur.com)
+Received: from www2300.sakura.ne.jp (182.48.49.240)
+ by fsav305.sakura.ne.jp (F-Secure/fsigk_smtp/530/fsav305.sakura.ne.jp);
+ Sun, 11 Aug 2019 16:07:40 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/530/fsav305.sakura.ne.jp)
+Received: from www.kyotoconnoisseur.com (vwc.bz [49.212.232.165])
+        (authenticated bits=0)
+        by www2300.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id x7B77dGw024299
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Sun, 11 Aug 2019 16:07:40 +0900 (JST)
+        (envelope-from noreply@kyotoconnoisseur.com)
+Date:   Sun, 11 Aug 2019 07:07:38 +0000
+To:     sparclinux@vger.kernel.org
+From:   Kyoto Connoisseur <noreply@kyotoconnoisseur.com>
+Reply-To: info@kyotoconnoisseur.com
+Subject: Kyoto Connoisseur: Contact Us
+Message-ID: <13131dda433fecd7f4ecd64c737387b3@www.kyotoconnoisseur.com>
+X-Mailer: WPMailSMTP/Mailer/smtp 1.5.2
 MIME-Version: 1.0
-References: <20190625143715.1689-1-hch@lst.de> <20190625143715.1689-10-hch@lst.de>
- <20190717215956.GA30369@altlinux.org> <CADxRZqy61-JOYSv3xtdeW_wTDqKovqDg2G+a-=LH3w=mrf2zUQ@mail.gmail.com>
- <20190810071701.GA23686@lst.de>
-In-Reply-To: <20190810071701.GA23686@lst.de>
-From:   Mikael Pettersson <mikpelinux@gmail.com>
-Date:   Sat, 10 Aug 2019 21:36:26 +0200
-Message-ID: <CAM43=SNbjVJRZs7r=GqFG0ajOs5wY4pZzr_QfVZinFRWV8ioBg@mail.gmail.com>
-Subject: Re: [PATCH 09/16] sparc64: use the generic get_user_pages_fast code
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Anatoly Pugachev <matorola@gmail.com>,
-        "Dmitry V. Levin" <ldv@altlinux.org>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sparc kernel list <sparclinux@vger.kernel.org>,
-        linux-mm@kvack.org,
-        Linux Kernel list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-For the record the futex test case OOPSes a 5.3-rc3 kernel running on
-a Sun Blade 2500 (2 x USIIIi).  This system runs a custom distro with
-a custom toolchain (gcc-8.3 based), so I doubt it's a distro problem.
+Thank you for inquiry.
 
-On Sat, Aug 10, 2019 at 9:17 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> There isn't really a way to use an arch-specific get_user_pages_fast
-> in mainline, you'd need to revert the whole series.  As a relatively
-> quick workaround you can just remove the
->
->         select HAVE_FAST_GUP if SPARC64
->
-> line from arch/sparc/Kconfig
+--------------------------------------------------------
+Name: Mauriceprige Mauriceprige
+
+E-mail: sparclinux@vger.kernel.org
+
+Comment or Message: Beautiful women for sex in your town: http://dedisliaci.tk/e9fyq?&aywvp=5D6rFPCVAni3C
+--------------------------------------------------------
+
