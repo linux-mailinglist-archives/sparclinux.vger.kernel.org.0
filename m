@@ -2,37 +2,46 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CDF88C5B8
-	for <lists+sparclinux@lfdr.de>; Wed, 14 Aug 2019 03:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3067F8CE1D
+	for <lists+sparclinux@lfdr.de>; Wed, 14 Aug 2019 10:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726373AbfHNB4E (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 13 Aug 2019 21:56:04 -0400
-Received: from [157.230.164.221] ([157.230.164.221]:56342 "EHLO
-        9389689244-jhnabhfbn.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727014AbfHNB4E (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 13 Aug 2019 21:56:04 -0400
-Received: from localhost (9389689244-jhnabhfbn [127.0.0.1])
-        by 9389689244-jhnabhfbn.localdomain (Postfix) with SMTP id 73E84A1593A;
-        Sun, 11 Aug 2019 12:41:50 +0000 (UTC)
-Received: from (HELO 2agc15) [112.110.198.214] by localhost id 0U0cRGBq2rUa; Sun, 11 Aug 2019 15:34:57 +0200
-Message-ID: <35$$96uo0ho70t55cnd0-x2dkf$9$e5@pseob62.xjwp>
-From:   "RECEIVE AND SECURE THIS MONEY FOR ME" <fta447447@gmail.com>
-Reply-To: "RECEIVE AND SECURE THIS MONEY FOR ME" <fta447447@gmail.com>
-To:     spacehog@rockweb.com
-Subject: RECEIVE AND KEEP THIS MONEY FOR ME IN YOUR BANK ACCOUNT,REPLY TO fta447447@gmail.com FOR DETAILS
-Date:   Sun, 11 Aug 19 15:34:57 GMT
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
+        id S1727258AbfHNINh convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Wed, 14 Aug 2019 04:13:37 -0400
+Received: from slot0.abamarket.ga ([178.156.202.135]:49981 "EHLO
+        slot0.abamarket.ga" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727229AbfHNINh (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 14 Aug 2019 04:13:37 -0400
+X-Greylist: delayed 708 seconds by postgrey-1.27 at vger.kernel.org; Wed, 14 Aug 2019 04:13:37 EDT
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="032_58DB_B1..39E1"
-X-Priority: 3
-X-MSMail-Priority: Normal
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: PLEASE CONFIRM PURCHASE ORDER
+To:     Recipients <mscarolynsmtih@gmail.com>
+From:   "Mr NARESH KUMAR" <mscarolynsmtih@gmail.com>
+Date:   Wed, 14 Aug 2019 15:52:06 +0800
+Reply-To: saiapex09@outlook.com
+Message-ID: <0.0.3.45F.1D55274E3266CA0.0@slot0.abamarket.ga>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Could you please confirm if your recieved our purchase order last week.
 
---032_58DB_B1..39E1--
+If no please confirm let me resend it to you.
 
+
+
+
+NARESH KUMAR
+
+Executive Purchase Saiapextrading Ltd
+
+Dubai, KSA.
+
+(T/F): +96-2667-264 777 / 778
+
+(Mo): +96 94284 02803
+
+Website - http://www.saiapexgeneraltrading.com
