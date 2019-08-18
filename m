@@ -2,85 +2,49 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B8DE91337
-	for <lists+sparclinux@lfdr.de>; Sat, 17 Aug 2019 23:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E994F91546
+	for <lists+sparclinux@lfdr.de>; Sun, 18 Aug 2019 09:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726434AbfHQV1E (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 17 Aug 2019 17:27:04 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:42437 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726397AbfHQV1E (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 17 Aug 2019 17:27:04 -0400
-Received: by mail-io1-f65.google.com with SMTP id e20so13238491iob.9
-        for <sparclinux@vger.kernel.org>; Sat, 17 Aug 2019 14:27:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google;
-        h=date:from:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=RWNnky4tg4pNafhn5H03aH8PwpXjgmBSavfJgIeX0Ak=;
-        b=hov3AcxQ6M0mcpBwyir6wMfwuFoM/2pj4MlCmv+T09knj2Mmqt8UJz4bLEelDU0dEY
-         q35RSput0GqdXzjDl39iW6e96fi6ZvYG7hVSedcruoQ/r2si3vSEQf+S3NbKo/JWKMFz
-         l1Pncvs1WA7x9utXPIZU7hNH8C4hBPXAZA2OymhT4WgZagRVCnEht474gNpFzrJa6Xjg
-         FvMhl4KIMbZ3FFtCmeGSVrAzUl96LhDRs8lD2zGj/KFGyr4hodIlFUOwRQsA6Da7S+zZ
-         ouRU8O2CZBVhaSm1B4pGrx6QOwfw1b8VOQgHVh5JaC0Jm1cxHTFnZdggwnO1D5Ig+YJ1
-         Lkvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=RWNnky4tg4pNafhn5H03aH8PwpXjgmBSavfJgIeX0Ak=;
-        b=YdrorS18dVYbuPx+myenwByyg29sFqSbxqUpSgfxHUAkusCSI15p9YVt+CZuysXRoA
-         9TnWT43o2sC+XqbPzeDm9cis5RzXsOSu26xAfWHumg4n3R5oYD2iLSnU/RmjaIqIW97j
-         tYhHXY88g5SB0O2vfcpkoucnFaxeyMBWcnnmNYjfwXnad+4s/h8jb+LTjX2EMWqHj0LU
-         oCNEzqU0Y4YSYogp4zJ3uxdbcbPwYNUW15Q2tAhCATDLe/1iJhGHjFYNvt6O1r0PsN89
-         /i/Afw0oeFvqShvxsYZpk5Y17VV1Kq6vaUkooeQL+7gnPJUS/MzwHIVRv2F7zYJXhOyY
-         OrcA==
-X-Gm-Message-State: APjAAAXodaU4XUSyp+UaujYYz1lcoBKJVAbgufp6C+BOH4fKjwT71dwH
-        kG/6P8Y6NLVvmQCdgTwHFZ2+SQ==
-X-Google-Smtp-Source: APXvYqwKE/3SM/rVpl4teujkfN9+UilDZaKhxrZT/14FwdMPovoCNf3aYcPot40i7G8y5JQK54ukCg==
-X-Received: by 2002:a6b:b9c2:: with SMTP id j185mr15509819iof.148.1566077223658;
-        Sat, 17 Aug 2019 14:27:03 -0700 (PDT)
-Received: from localhost (c-73-95-159-87.hsd1.co.comcast.net. [73.95.159.87])
-        by smtp.gmail.com with ESMTPSA id v23sm11488293ioh.58.2019.08.17.14.27.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Aug 2019 14:27:03 -0700 (PDT)
-Date:   Sat, 17 Aug 2019 14:27:02 -0700 (PDT)
-From:   Paul Walmsley <paul.walmsley@sifive.com>
-X-X-Sender: paulw@viisi.sifive.com
-To:     Christoph Hellwig <hch@lst.de>
-cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
-        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        openrisc@lists.librecores.org, linux-mtd@lists.infradead.org,
-        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, linux-riscv@lists.infradead.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 14/26] asm-generic: don't provide __ioremap
-In-Reply-To: <alpine.DEB.2.21.9999.1908171357180.4130@viisi.sifive.com>
-Message-ID: <alpine.DEB.2.21.9999.1908171426390.4130@viisi.sifive.com>
-References: <20190817073253.27819-1-hch@lst.de> <20190817073253.27819-15-hch@lst.de> <alpine.DEB.2.21.9999.1908171357180.4130@viisi.sifive.com>
-User-Agent: Alpine 2.21.9999 (DEB 301 2018-08-15)
+        id S1726115AbfHRHBl (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 18 Aug 2019 03:01:41 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:55624 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726097AbfHRHBl (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 18 Aug 2019 03:01:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=2Dbz5bVEZANvQjWNCvygQmXIwCLAbRJz/V/RyPf8jpM=; b=CUeMDMkEl9OfUOascO3eGZcwK
+        lujWSSpt7Wj2DuCI/I/mjMil6oXUO5cBxHS5dQPQferHQtvmme/x28ssFEGuPG+wBhY/pAvQdCL/Q
+        bUnyN/WvXSwMtz/gzQt/YDVXUg47SxLQbQH4bnptQ8xsdC7bHODxdvaDAdr6OzaadVjytzcopltwZ
+        2s3ps05JCd8O13qBnVz+PSDAJIqB2DJmEn/Jy2e+PMlGcdr+czTo8BMTKu+MHacO6gIh6ORWq8ofY
+        tArk+kATQdgoL7JNCs5F/qIMPRisBAfYvPM53T2iXitsKcMXhNFR2swBXHPTL1hgtEyV4CgALkqeV
+        Z0z821tlw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hzFC6-0007Da-5F; Sun, 18 Aug 2019 07:01:38 +0000
+Date:   Sun, 18 Aug 2019 00:01:37 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Meelis Roos <mroos@linux.ee>
+Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Dave Miller <davem@davemloft.net>
+Subject: Re: sparc64: hang from BUG: Bad page state, on older CPU & compiler
+Message-ID: <20190818070137.GA22731@infradead.org>
+References: <d2a51bfb-84e4-3ce7-ac48-7200b3a8d722@linux.ee>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d2a51bfb-84e4-3ce7-ac48-7200b3a8d722@linux.ee>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sat, 17 Aug 2019, Paul Walmsley wrote:
-
-> Acked-by: Paul Walmsley <paul.walmsley@sifive.com> # arch/riscv
-
-This ack is superfluous since the patch doesn't touch arch/riscv; feel 
-free to drop it
-
-
-- Paul
+I think for now we'll simply have to disable HAVE_FAST_GUP for sparc,
+until someone who really knows low-level sparc page table handling
+finds some time to audit the generic fast gup code and arch hooks.
