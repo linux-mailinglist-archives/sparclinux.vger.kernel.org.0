@@ -2,93 +2,53 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6568C9B168
-	for <lists+sparclinux@lfdr.de>; Fri, 23 Aug 2019 15:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C5599BF46
+	for <lists+sparclinux@lfdr.de>; Sat, 24 Aug 2019 20:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405751AbfHWNzn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 23 Aug 2019 09:55:43 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:41098 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405737AbfHWNzm (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 23 Aug 2019 09:55:42 -0400
-Received: by mail-pg1-f194.google.com with SMTP id x15so5833674pgg.8;
-        Fri, 23 Aug 2019 06:55:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=BUAiw1OCmJxcFhDfFwk6vJ4atOusYa0enlexPK5RdcM=;
-        b=p1kpl17yQ70OZJjj0Ex1dhmfo2/01ZSY1fOdxj+J/0LKK1tvqbyWGApNp+RopSCBU9
-         F4JDgPHlcLiS1iW8iLa6+Oz3hvJ93YLeeZOw8VI/PWR7yXZkQ2Y3BWj/9xw0zvYm8PgM
-         xCORxywfStYr2iObddDIvw4uxyyFDzJ4nH8mOJxihZGgGGvOFtqX5rLKfVLumbHnUiDf
-         cp+XG0kMNbLUq5HT5W+hUh/PxuwaBDz2hVRJ6ISjeckQ/denHk7F5JHtEBhHBSkgw5OY
-         5pVQ0XdibEupNYaM8DhPTT4HkPLbYUHv2fszhaDZIjemQ/II2oo6OpoSBdKla1hplbzS
-         Zchg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=BUAiw1OCmJxcFhDfFwk6vJ4atOusYa0enlexPK5RdcM=;
-        b=kyI8hKE6xwD1miMcxQhJ+N6et5/it34fgxP+jY87dG79FVgNdi8fLjDi8QmZ4nkgoB
-         nTlFliEP5SQru9OKHzP1546LxcoHXp4i/4N/teJS+UaIrQWg3WPH3Ha/FUWe7iVAm3v0
-         6yjysqqcNmD0HLU2M1fPUPVt9/qjZOR+K52iE5AxC8IC8OOXMIiRVWfd4GiIamKRXl6I
-         aRxY7WXrurlWubMc2/CPVtGv3kNKf6uTUmZnrY9G+Ovu+Bgdp6+7q1tiUunPwfdOlq2m
-         Bd0wESKEBDk7kKmgmAsIFO97Bo2oCy2tD+MIrL0Kmd9y3+ZdTDvvxRV49T61ScieMkM6
-         DgRg==
-X-Gm-Message-State: APjAAAWm7fM6AeWfFuDb7obirUbcPCSNWq4rH4Ahk3rv3VD6ytxpY1Za
-        6f//agm1SwXBtjp37K7cDJST23+sS8w=
-X-Google-Smtp-Source: APXvYqzeZA+QEa5Xq4+pVCPW2H7vItZxat4J0/SQ1XBxiBF3Po4TqLpUuSgHOh67wlOMVyJ/4CHLaQ==
-X-Received: by 2002:a17:90a:aa90:: with SMTP id l16mr5454982pjq.73.1566568541762;
-        Fri, 23 Aug 2019 06:55:41 -0700 (PDT)
-Received: from localhost (g75.222-224-160.ppp.wakwak.ne.jp. [222.224.160.75])
-        by smtp.gmail.com with ESMTPSA id z13sm2477619pjn.32.2019.08.23.06.55.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Aug 2019 06:55:41 -0700 (PDT)
-Date:   Fri, 23 Aug 2019 22:55:39 +0900
-From:   Stafford Horne <shorne@gmail.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/26] openrisc: map as uncached in ioremap
-Message-ID: <20190823135539.GC24874@lianli.shorne-pla.net>
-References: <20190817073253.27819-1-hch@lst.de>
- <20190817073253.27819-6-hch@lst.de>
+        id S1727619AbfHXSeo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Sat, 24 Aug 2019 14:34:44 -0400
+Received: from smtp2.osep.mendoza.gov.ar ([200.16.135.145]:56610 "HELO
+        smtp2.osep.mendoza.gov.ar" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1727483AbfHXSeo (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 24 Aug 2019 14:34:44 -0400
+X-Greylist: delayed 10696 seconds by postgrey-1.27 at vger.kernel.org; Sat, 24 Aug 2019 14:34:43 EDT
+Received: (qmail 28302 invoked from network); 24 Aug 2019 14:10:58 -0000
+Received: from unknown (HELO zimbra.servers.dg.intranet) (10.10.195.224)
+  by smtp2.osep.mendoza.gov.ar with SMTP; 24 Aug 2019 14:10:58 -0000
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.servers.dg.intranet (Postfix) with ESMTP id 60528CF7CC40;
+        Sat, 24 Aug 2019 11:10:58 -0300 (ART)
+Received: from zimbra.servers.dg.intranet ([127.0.0.1])
+        by localhost (zimbra.servers.dg.intranet [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id LfEwJQa5B3eg; Sat, 24 Aug 2019 11:10:58 -0300 (ART)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.servers.dg.intranet (Postfix) with ESMTP id B7CB3CF7CC5A;
+        Sat, 24 Aug 2019 11:10:57 -0300 (ART)
+X-Virus-Scanned: amavisd-new at osep.mendoza.gov.ar
+Received: from zimbra.servers.dg.intranet ([127.0.0.1])
+        by localhost (zimbra.servers.dg.intranet [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 6qnSj0y6soVJ; Sat, 24 Aug 2019 11:10:57 -0300 (ART)
+Received: from zimbra.servers.dg.intranet (zimbra.servers.dg.intranet [10.10.195.224])
+        by zimbra.servers.dg.intranet (Postfix) with ESMTP id 8FE3CCF7CC40;
+        Sat, 24 Aug 2019 11:10:56 -0300 (ART)
+Date:   Sat, 24 Aug 2019 11:10:56 -0300 (ART)
+From:   "Herr.Robert Jackson" <liliana.marinero@osep.mendoza.gov.ar>
+Reply-To: SKY GROUP FINANCIAL <skygroupfinancial0@gmail.com>
+Message-ID: <677918274.24998908.1566655856556.JavaMail.zimbra@osep.mendoza.gov.ar>
+Subject: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190817073253.27819-6-hch@lst.de>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [172.16.3.2]
+X-Mailer: Zimbra 8.6.0_GA_1153 (zclient/8.6.0_GA_1153)
+Thread-Topic: 
+Thread-Index: IqesvC6R/TWyIrzTGCpD3al0k/+JHA==
+To:     unlisted-recipients:; (no To-header on input)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sat, Aug 17, 2019 at 09:32:32AM +0200, Christoph Hellwig wrote:
-> Openrisc is the only architecture not mapping ioremap as uncached,
-> which has been the default since the Linux 2.6.x days.  Switch it
-> over to implement uncached semantics by default.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/openrisc/include/asm/io.h      | 20 +++-----------------
->  arch/openrisc/include/asm/pgtable.h |  2 +-
->  arch/openrisc/mm/ioremap.c          |  8 ++++----
->  3 files changed, 8 insertions(+), 22 deletions(-)
 
-Acked-by: Stafford Horne <shorne@gmail.com>
 
-Thanks,
- -Stafford 
+Wir sind zuverlässige, vertrauenswürdige Kreditgeber, leihen wir Unternehmen und Einzelpersonen zu einem niedrigen Zinssatz von 2%, Sind Sie auf der Suche nach einem Geschäftskredit, Privatkredite, Schuldenkonsolidierung, unbesicherte Kredite, Risikokapital, wenn ja Kontaktieren Sie uns jetzt für weitere Einzelheiten.
