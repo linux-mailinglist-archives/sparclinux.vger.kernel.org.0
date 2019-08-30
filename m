@@ -2,185 +2,109 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC7B2A1B37
-	for <lists+sparclinux@lfdr.de>; Thu, 29 Aug 2019 15:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 768A2A2C49
+	for <lists+sparclinux@lfdr.de>; Fri, 30 Aug 2019 03:30:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727182AbfH2NTm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 29 Aug 2019 09:19:42 -0400
-Received: from mx2.mailbox.org ([80.241.60.215]:52156 "EHLO mx2.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726283AbfH2NTl (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 29 Aug 2019 09:19:41 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id C76B2A10EE;
-        Thu, 29 Aug 2019 15:19:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
-        with ESMTP id YERUiiJJutp0; Thu, 29 Aug 2019 15:19:27 +0200 (CEST)
-Date:   Thu, 29 Aug 2019 23:19:04 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Daniel Colascione <dancol@google.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Christian Brauner <christian@brauner.io>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH RESEND v11 7/8] open: openat2(2) syscall
-Message-ID: <20190829131904.bkbalbtqt6j3gwcp@yavin>
-References: <20190820033406.29796-1-cyphar@cyphar.com>
- <20190820033406.29796-8-cyphar@cyphar.com>
- <CAKOZuesfxRBJe314rkTKXtjXdz6ki3uAUBYVbu5Q2rd3=ADphQ@mail.gmail.com>
- <20190829121527.u2uvdyeatme5cgkb@yavin>
- <899401fa-ff0a-2ce9-8826-09904efab2d2@rasmusvillemoes.dk>
+        id S1727139AbfH3BaC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 29 Aug 2019 21:30:02 -0400
+Received: from mail-yw1-f65.google.com ([209.85.161.65]:35621 "EHLO
+        mail-yw1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727530AbfH3BaB (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 29 Aug 2019 21:30:01 -0400
+Received: by mail-yw1-f65.google.com with SMTP id g19so1855644ywe.2
+        for <sparclinux@vger.kernel.org>; Thu, 29 Aug 2019 18:30:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=omnibond-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yDmQxANGbqTJGtO1OhTa4PkciZSXcUVcA6Y2VnUF5Ug=;
+        b=tRuQF9NGsWriwh9rOUGWV/XnpvxEIfrIBLDnzsNlL2DcXYptI5uYx9v9XRgXG9ikj+
+         lAdRFBmN8WWgzpxjYwMBvOBMGH9vQkyzn/bAHiywFTqTy8Rv0zmy7NK3LdyKNjjgvNdr
+         mcLlIarH9lbZWT5t7oU7MIVWXKIhgWd4FFEn+XvtJUHOlIO0rItLGA+Zt6tlzfYijXTt
+         MmEvGy0xnlwDGgt/OUq/OkC9egtS+p7sT3eJ3BcAb9vNf6OatXnbSWZ0hHXVonsgbMVH
+         pMy2zHMasv+EgzYrXDb3idQdrvXUOVYyNS1FKC2EzXUecfAda8U+O/uwCTXSTJ6SOTSm
+         T3ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yDmQxANGbqTJGtO1OhTa4PkciZSXcUVcA6Y2VnUF5Ug=;
+        b=BPlEJSwfTw3knGTelPyAUJ+59tFXdo/ZO3bcdrEBs56HcpV2xmZtMq9J90T77ZJxWf
+         +DbBWHD7M6ioIw7PDP6ZsiULbw+gioJnSNH1KZ+qLE5C5GfD9lY8G8lTlmtCKR+GeOuh
+         maO/UAzE/s5NZ9YcQU2v5XR8GY8PIAKaoQYjO1U/2E/aXr95q+XW14GSRg8VcldRciCC
+         x+ODWLfWYBbyX1eB9DRaHAwO8+oR5KGFX6cRlv26dnmWJLYLmTTTQ6OaJJAAh/aSurLj
+         BW+vdN02vm/Ypj37ZlMbuGv1tu94hZsd7aMtpKMQLpa6pN8cB2nyH1ctsfuWaaVHc0y3
+         PFCw==
+X-Gm-Message-State: APjAAAVLLZpptUySwApPoauKzN/m6SKnrvJCM+xMQZFZMXWMulnYxqq9
+        c8W6J6veOp8Pzv/A2Dpr2KiM03FZt0gwHh2+mbYrNA==
+X-Google-Smtp-Source: APXvYqyIDKOrxjb28zWL9kagM4gqNHMvZYp0EWQP/d+eBC6/dEWbXTKwXclpCyHxrYDHzsr0mwrMijbohn/hHGTlziQ=
+X-Received: by 2002:a81:3681:: with SMTP id d123mr9802172ywa.348.1567128600919;
+ Thu, 29 Aug 2019 18:30:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="itirvnprc6jjrbl3"
-Content-Disposition: inline
-In-Reply-To: <899401fa-ff0a-2ce9-8826-09904efab2d2@rasmusvillemoes.dk>
+References: <20190807013340.9706-1-jhubbard@nvidia.com> <912eb2bd-4102-05c1-5571-c261617ad30b@nvidia.com>
+In-Reply-To: <912eb2bd-4102-05c1-5571-c261617ad30b@nvidia.com>
+From:   Mike Marshall <hubcap@omnibond.com>
+Date:   Thu, 29 Aug 2019 21:29:50 -0400
+Message-ID: <CAOg9mSQKGDywcMde2DE42diUS7J8m74Hdv+xp_PJhC39EXZQuw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/39] put_user_pages(): miscellaneous call sites
+To:     John Hubbard <jhubbard@nvidia.com>
+Cc:     john.hubbard@gmail.com, Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Chinner <david@fromorbit.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ira Weiny <ira.weiny@intel.com>, Jan Kara <jack@suse.cz>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        amd-gfx@lists.freedesktop.org,
+        ceph-devel <ceph-devel@vger.kernel.org>,
+        devel@driverdev.osuosl.org, devel@lists.orangefs.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-media@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
+        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+        linux-rdma@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-xfs@vger.kernel.org, netdev@vger.kernel.org,
+        rds-devel@oss.oracle.com, sparclinux@vger.kernel.org,
+        x86@kernel.org, xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hi John...
 
---itirvnprc6jjrbl3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I added this patch series on top of Linux 5.3rc6 and ran
+xfstests with no regressions...
 
-On 2019-08-29, Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
-> On 29/08/2019 14.15, Aleksa Sarai wrote:
-> > On 2019-08-24, Daniel Colascione <dancol@google.com> wrote:
->=20
-> >> Why pad the structure when new functionality (perhaps accommodated via
-> >> a larger structure) could be signaled by passing a new flag? Adding
-> >> reserved fields to a structure with a size embedded in the ABI makes a
-> >> lot of sense --- e.g., pthread_mutex_t can't grow. But this structure
-> >> can grow, so the reservation seems needless to me.
-> >=20
-> > Quite a few folks have said that ->reserved is either unnecessary or
-> > too big. I will be changing this, though I am not clear what the best
-> > way of extending the structure is. If anyone has a strong opinion on
-> > this (or an alternative to the ones listed below), please chime in. I
-> > don't have any really strong attachment to this aspect of the API.
-> >=20
-> > There appear to be a few ways we can do it (that all have precedence
-> > with other syscalls):
-> >=20
-> >  1. Use O_* flags to indicate extensions.
-> >  2. A separate "version" field that is incremented when we change.
-> >  3. Add a size_t argument to openat2(2).
-> >  4. Reserve space (as in this patchset).
-> >=20
-> > (My personal preference would be (3), followed closely by (2).)
->=20
-> 3, definitely, and instead of having to invent a new scheme for every
-> new syscall, make that the default pattern by providing a helper
+Acked-by: Mike Marshall <hubcap@omnibond.com>
 
-Sure (though hopefully I don't need to immediately go and refactor all
-the existing size_t syscalls). I will be presenting about this patchset
-at the containers microconference at LPC (in a few weeks), so I'll hold
-of on any API-related rewrites until after that.
+-Mike
 
-> int __copy_abi_struct(void *kernel, size_t ksize, const void __user
-> *user, size_t usize)
-> {
-> 	size_t copy =3D min(ksize, usize);
->=20
-> 	if (copy_from_user(kernel, user, copy))
-> 		return -EFAULT;
->=20
-> 	if (usize > ksize) {
-> 		/* maybe a separate "return user_is_zero(user + ksize, usize -
-> ksize);" helper */
-> 		char c;
-> 		user +=3D ksize;
-> 		usize -=3D ksize;
-> 		while (usize--) {
-> 			if (get_user(c, user++))
-> 				return -EFAULT;
-> 			if (c)
-> 				return -EINVAL;
-
-This part would probably be better done with memchr_inv() and
-copy_from_user() (and probably should put an upper limit on usize), but
-I get what you mean.
-
-> 		}
-> 	} else if (ksize > usize) {
-> 		memset(kernel + usize, 0, ksize - usize);
-> 	}
-> 	return 0;
-> }
-> #define copy_abi_struct(kernel, user, usize)	\
-> 	__copy_abi_struct(kernel, sizeof(*kernel), user, usize)
+On Tue, Aug 6, 2019 at 9:50 PM John Hubbard <jhubbard@nvidia.com> wrote:
 >
-> > Both (1) and (2) have the problem that the "struct version" is inside
-> > the struct so we'd need to copy_from_user() twice. This isn't the end of
-> > the world, it just feels a bit less clean than is ideal. (3) fixes that
-> > problem, at the cost of making the API slightly more cumbersome to use
-> > directly (though again glibc could wrap that away).
->=20
-> I don't see how 3 is cumbersome to use directly. Userspace code does
-> struct openat_of_the_day args =3D {.field1 =3D x, .field3 =3D y} and pass=
-es
-> &args, sizeof(args). What does glibc need to do beyond its usual munging
-> of the userspace ABI registers to the syscall ABI registers?
-
-I'd argue that
-
-    ret =3D openat2(AT_FDCWD, "foo", &how, sizeof(how)); // (3)
-
-is slightly less pretty than
-
-    ret =3D openat2(AT_FDCWD, "foo", &how); // (1), (2), (4)
-
-But it's not really that bad. Forget I said anything.
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---itirvnprc6jjrbl3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXWfQxQAKCRCdlLljIbnQ
-EoMSAP9J0uy3xcD3flC3cANph5LKQ2g0JWnMb61ew5LWDORVogD/UGWciY+tdPiy
-YNHs2UcBt9SEH1MNpEIgf2GN6RoyaQI=
-=ne2z
------END PGP SIGNATURE-----
-
---itirvnprc6jjrbl3--
+> On 8/6/19 6:32 PM, john.hubbard@gmail.com wrote:
+> > From: John Hubbard <jhubbard@nvidia.com>
+> > ...
+> >
+> > John Hubbard (38):
+> >   mm/gup: add make_dirty arg to put_user_pages_dirty_lock()
+> ...
+> >  54 files changed, 191 insertions(+), 323 deletions(-)
+> >
+> ahem, yes, apparently this is what happens if I add a few patches while editing
+> the cover letter... :)
+>
+> The subject line should read "00/41", and the list of files affected here is
+> therefore under-reported in this cover letter. However, the patch series itself is
+> intact and ready for submission.
+>
+> thanks,
+> --
+> John Hubbard
+> NVIDIA
