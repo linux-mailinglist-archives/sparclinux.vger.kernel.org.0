@@ -2,122 +2,84 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53600A5C98
-	for <lists+sparclinux@lfdr.de>; Mon,  2 Sep 2019 21:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58A1BA6067
+	for <lists+sparclinux@lfdr.de>; Tue,  3 Sep 2019 07:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727064AbfIBTOZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 2 Sep 2019 15:14:25 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:59776 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726997AbfIBTOZ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 2 Sep 2019 15:14:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=jLmXpLU6F1RGPbvNG04Pwx+M4aB058HdSSdmCuhuLak=; b=MxjTgV8bZ/vnbyEIo7ShiEkfd
-        SP+QohNWyJGW02YHqhG1zz869tBe2uU7PuojcRw1Zs5ukgPS6rL9wdA0HnrNgFfOP28E/lK2p2osb
-        w5xYSw+vr5c8AUvIzZNUH26vmrEPk3C5GZ9p+Zpv9iiflvzZf9pXmRnHjpNECUiNoRE3C4WP08sTP
-        cl6/D2gJAdO5v9k9cHViJrzuEqxymeQtg77QbxifP30bEmMCc1zxS8wxcbyeC7UeqjoPofr3YKxDB
-        urv3c9YFiwH3K+PMmqtJmkUl3EYkyojUd1Y3w+s3b2aXA6zcCXOwUAABYW9RTNUoeMHGo55EGLEbj
-        DT5K99l4Q==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1i4rmS-0007wO-BG; Mon, 02 Sep 2019 19:14:24 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 1EC32301A76;
-        Mon,  2 Sep 2019 21:13:46 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id E09FA29B9FF21; Mon,  2 Sep 2019 21:14:21 +0200 (CEST)
-Date:   Mon, 2 Sep 2019 21:14:21 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Yunsheng Lin <linyunsheng@huawei.com>, dalias@libc.org,
-        linux-sh@vger.kernel.org, catalin.marinas@arm.com,
-        dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
-        linuxarm@huawei.com, jiaxun.yang@flygoat.com,
-        linux-kernel@vger.kernel.org, mwb@linux.vnet.ibm.com,
-        paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org,
-        chenhc@lemote.com, will@kernel.org, linux-s390@vger.kernel.org,
-        ysato@users.sourceforge.jp, mpe@ellerman.id.au, x86@kernel.org,
-        rppt@linux.ibm.com, borntraeger@de.ibm.com, dledford@redhat.com,
-        mingo@redhat.com, jeffrey.t.kirsher@intel.com,
-        benh@kernel.crashing.org, jhogan@kernel.org,
-        nfont@linux.vnet.ibm.com, mattst88@gmail.com, len.brown@intel.com,
-        gor@linux.ibm.com, anshuman.khandual@arm.com,
-        ink@jurassic.park.msu.ru, cai@lca.pw, luto@kernel.org,
-        tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
-        linux-arm-kernel@lists.infradead.org, rth@twiddle.net,
-        axboe@kernel.dk, robin.murphy@arm.com, linux-mips@vger.kernel.org,
-        ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
-        linux-alpha@vger.kernel.org, bp@alien8.de,
-        akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
-        davem@davemloft.net,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [PATCH v2 2/9] x86: numa: check the node id consistently for x86
-Message-ID: <20190902191421.GT2369@hirez.programming.kicks-ass.net>
-References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
- <1567231103-13237-3-git-send-email-linyunsheng@huawei.com>
- <20190831085539.GG2369@hirez.programming.kicks-ass.net>
- <4d89c688-49e4-a2aa-32ee-65e36edcd913@huawei.com>
- <20190831161247.GM2369@hirez.programming.kicks-ass.net>
- <ae64285f-5134-4147-7b02-34bb5d519e8c@huawei.com>
- <20190902072542.GN2369@hirez.programming.kicks-ass.net>
- <5fa2aa99-89fa-cd41-b090-36a23cfdeb73@huawei.com>
- <20190902125644.GQ2369@hirez.programming.kicks-ass.net>
- <20190902182252.GC35858@gmail.com>
+        id S1725839AbfICFCz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 3 Sep 2019 01:02:55 -0400
+Received: from mail-io1-f44.google.com ([209.85.166.44]:33916 "EHLO
+        mail-io1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725440AbfICFCz (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 3 Sep 2019 01:02:55 -0400
+Received: by mail-io1-f44.google.com with SMTP id s21so33078478ioa.1
+        for <sparclinux@vger.kernel.org>; Mon, 02 Sep 2019 22:02:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=a9WijsPBo4tTCArpK4+vB5+XtAlzX3/IQ/ocMHQ8Ws4=;
+        b=IOqgUWAiCeUJuIPfuudLoa/ccyhh8hMpflC0tyTNcuKujkKUFBuLbOcUsZjEDQtkfk
+         9rKDvbH0CqwIA1lJ0ZyZaIsdm9a3WteySkS0sJ3JlL2ejyqSe5yhIg6ESXqK8wh5Rukc
+         dinAV7iS+F/JnxR2cSCt+Sgq9hv6buSEjmcnPu7gi9P8NkcSTme/HyifWvM8rdD7Qz8q
+         H3TIGLUB7GAThbNAIi3RbZ0+ElL2b5cLwKZ34W+0Zf1yOBFNbqXzo6GfpIL07FpDrJbd
+         U6cltk2VbvOITOu/2xGXatLGZzXwe1XQJ1wiU7DmPFPpMeKqVE/N3eaXUDYg8AxINLNE
+         +D1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=a9WijsPBo4tTCArpK4+vB5+XtAlzX3/IQ/ocMHQ8Ws4=;
+        b=sYs65T8L60+AF2kyzgHTUsLcyPW48ao+lLOLWoTvuqwgzQ7wF7TMjwdTx45C9Q3euM
+         5tbUhZKE+oouEl3WT0SxtqUmmkRaxTl2WO9El1qZDR2NbYY/g06oFE9OQeIm2XFmtyKF
+         6Yl8b1KgOQNa96WNBH6wqCJ0P2U1Zxbavnp/vYlZn/sCPFEa0Q3VluE78jq0Yhccmgbe
+         wZ3Erc9Pqnk4dBK71muLYtWXjlydA605KNkl2kf2gjF0f5V8ZOrgnjcLBBBnRTPbjAZH
+         NLEe7kY555TDxUkvXBuopSIgrwK8bNeDWeFsIWc5jfvOlVcaT3bIbdgVDm3IO+49/EJ4
+         khZg==
+X-Gm-Message-State: APjAAAWMkurhRg1cYnjnuY2fr5R/P6G3ERQmLDrjX0044Q9XZaLFT5qV
+        0gN4AuE18sxlUuThWQ9sLapX/zxQ5XGEX2U7slmM2A==
+X-Google-Smtp-Source: APXvYqybh/N5WUwsLmo0h5uFgIwStLYiJhBR/y+eAVmlk1RK5FhbEE/7r0mZkOIG3O9v1V2G41KkL2HbBSb7MjbWBmI=
+X-Received: by 2002:a5d:9f50:: with SMTP id u16mr20337431iot.110.1567486974657;
+ Mon, 02 Sep 2019 22:02:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190902182252.GC35858@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+From:   Matt Turner <mattst88@gmail.com>
+Date:   Mon, 2 Sep 2019 22:02:43 -0700
+Message-ID: <CAEdQ38E695mQzoi=cJ2KbqzqHpXjkyBGGj=kLrovZLyM8FybbA@mail.gmail.com>
+Subject: [bisected] semctl/shmctl/msgctl broken on sparc64
+To:     arndb@arndb.de, sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Sep 02, 2019 at 08:22:52PM +0200, Ingo Molnar wrote:
-> 
-> * Peter Zijlstra <peterz@infradead.org> wrote:
+Hi Arnd,
 
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index f0dd8e38fee3..2caf204966a0 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -2120,8 +2120,16 @@ int device_add(struct device *dev)
-> >  		dev->kobj.parent = kobj;
-> >  
-> >  	/* use parent numa_node */
-> > -	if (parent && (dev_to_node(dev) == NUMA_NO_NODE))
-> > -		set_dev_node(dev, dev_to_node(parent));
-> > +	if (dev_to_node(dev) == NUMA_NO_NODE) {
-> > +		if (parent)
-> > +			set_dev_node(dev, dev_to_node(parent));
-> > +#ifdef CONFIG_NUMA
-> > +		else {
-> > +			pr_err("device: '%s': has no assigned NUMA node\n", dev_name(dev));
-> > +			set_dev_node(dev, 0);
-> > +		}
-> > +#endif
-> 
-> BTW., is firmware required to always provide a NUMA node on NUMA systems?
-> 
-> I.e. do we really want this warning on non-NUMA systems that don't assign 
-> NUMA nodes?
+The following commit breaks the semctl/shmctl/msgctl syscalls on
+64-bit sparc userland (but not on 32-bit sparc userland)
 
-Good point; we might have to exclude nr_node_ids==1 systems from
-warning.
+commit 275f22148e8720e84b180d9e0cdf8abfd69bac5b
+Author: Arnd Bergmann <arnd@arndb.de>
+Date:   Mon Dec 31 22:22:40 2018 +0100
 
-> Also, even on NUMA systems, is firmware required to provide a NUMA node - 
-> i.e. is it in principle invalid to offer no NUMA binding?
+    ipc: rename old-style shmctl/semctl/msgctl syscalls
 
-I think so; a device needs to be _somewhere_, right? Typically though;
-devices are on a PCI bus, and the PCI bridge itself will have a NUMA
-binding and then the above parent rule will make everything just work.
+The LTP test case semctl01 can quickly reproduce the failure, but I
+initially noticed this failure in the Perl test suite. Looks like the
+syscalls always return EINVAL now. Funny, the commit doesn't even
+touch arch/sparc :)
 
-But I don't see how you can be outside of the NUMA topology.
+arch/sparc/include/uapi/asm/unistd.h
+    Defines __32bit_syscall_numbers__ if __arch64__
+
+arch/sparc/include/asm/unistd.h
+    Includes arch/sparc/include/uapi/asm/unistd.h
+    Defines __ARCH_WANT_SYS_IPC if __32bit_syscall_numbers__
+
+ipc/syscall.c
+    Looks like it defines different paths for __ARCH_WANT_SYS_IPC vs not
+
+I get lost at this point, but I'm guessing that's where the difference
+between 32-bit and 64-bit comes from.
+
+Any ideas? I'm happy to test patches.
+
+Thanks,
+Matt
