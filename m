@@ -2,56 +2,61 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 525CEAC843
-	for <lists+sparclinux@lfdr.de>; Sat,  7 Sep 2019 19:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 418EEAC858
+	for <lists+sparclinux@lfdr.de>; Sat,  7 Sep 2019 19:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406220AbfIGRm2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 7 Sep 2019 13:42:28 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:43941 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393141AbfIGRm1 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 7 Sep 2019 13:42:27 -0400
-Received: by mail-pl1-f195.google.com with SMTP id 4so4661815pld.10
-        for <sparclinux@vger.kernel.org>; Sat, 07 Sep 2019 10:42:27 -0700 (PDT)
+        id S1730303AbfIGRp7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 7 Sep 2019 13:45:59 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:42096 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387968AbfIGRp4 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 7 Sep 2019 13:45:56 -0400
+Received: by mail-lf1-f68.google.com with SMTP id u13so7479063lfm.9
+        for <sparclinux@vger.kernel.org>; Sat, 07 Sep 2019 10:45:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=zOxFxXxkeAXBLA4hmpQx5p2K1SwU8yRrMWsF/vzne4c=;
-        b=Ahrc72PGzKNYWoLbwpqpkb4sblxxhLeem6jebRPHiC48yikyu8YdaM5Oje1cRKpGrE
-         B1aFxjVmVluxNvScD9M4WSgd+3044EW5n5U/PFuuVmQG4Hbymvgt22zE94vbhcs9R725
-         YmVhBFQvI6AY2jzBjl65iE1N91bXW5n21nVFyaplmtDp+2SiGPjY7BdJbCgTW6FOdyps
-         WzpWqeuBT7oibyk4x8aGykU8dzYGBQ3SiApw6VGFkEO8SPi7/aZ892rQXq+Pb+3b5ZeC
-         PbzZzd392k2TpO4uq92p9v5vThdZeJX5HF5wKk1rRbCSaXdBoZUNJaEVn/U3I0P9Ilwr
-         6irw==
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JJRFoANDdA7LVjR/dXOt13NCYJCwAkkvMBjFRYL2CJk=;
+        b=O0k0d7lqzfAmPEYFzDlOGgQsR12LVtrvxo5oTKj/qTWwdx05EQgXW+UipRXAFcHY7l
+         NJSN5sB8Bd0GzZnsutsLrlnHa03N+sVzppgC400AeuuF3leAik8ua94YYTL1N/jeDSEY
+         p0NLqzIjW/MddvLJPDdxPws4zfzc5nCUgJ+sc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=zOxFxXxkeAXBLA4hmpQx5p2K1SwU8yRrMWsF/vzne4c=;
-        b=CA5lumLMc+H+A45g8784D6prEegGP9bg/rCk8guNtOQhSBY37FbBc4JR9Ho8DU0Ulx
-         e/g+epLwAzLa3Rkqffj9ghYUSW6/13L8cTqXoNJCJXxBZ7jEpANjlC4J8bgxoSywC862
-         jF/PZwGdczwJ5BSdir24OqOqxzV8geAWcA5AvbwLfEBKSNHzzsI6wDZtldanIuXFwfkV
-         RXtuLDZHQr7hfXZML4GdlIwUXGZngiGqY4QubKmhhqK/avdEJPt6Oq63Els3sRYXaR7Y
-         ktvckBG6RgHKbIYhedOVtpjSpq7KSZt2YKZZA/s+W66EHw2/bpfWoNALOy4g+/uuT11P
-         v9EQ==
-X-Gm-Message-State: APjAAAWM8eFiQUl+GXnsQams0sjwD7bv8S1oJ9rDnTmj9Rp6rq1MfGUt
-        YOv1MYzvDmz94qJ69YOa1tAUjA==
-X-Google-Smtp-Source: APXvYqy9Whfn7uTg3BOXXtKo+Xb13mslF8Px0gcix7JC2yC4OfYP4K4dJzWw76A+9fC6aflAwbUnzg==
-X-Received: by 2002:a17:902:421:: with SMTP id 30mr16087280ple.105.1567878146356;
-        Sat, 07 Sep 2019 10:42:26 -0700 (PDT)
-Received: from ?IPv6:2600:100f:b121:da37:bc66:d4de:83c7:e0cd? ([2600:100f:b121:da37:bc66:d4de:83c7:e0cd])
-        by smtp.gmail.com with ESMTPSA id h11sm8785567pgv.5.2019.09.07.10.42.24
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 07 Sep 2019 10:42:25 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (1.0)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JJRFoANDdA7LVjR/dXOt13NCYJCwAkkvMBjFRYL2CJk=;
+        b=KJFXntje4sm4eRQr+36oK2bCouA1EufDdmp4ydfO31B6YzOsYa9OUI6oCEnfF03uqs
+         sWt9Evp9g0oXyecFlmSZ9AfJ7gTdPd/afGxtnES6KXi1w1ko8s6QqYv6gA+0J3s4wlhZ
+         7CI3Pf4C9ivm7vZyLcYUiCypkvD0G832Uz6b3iLyxBDm97mJfc69l9Dmhmag+ym+er/z
+         HU75btx9FG/wfGSyYY8wWvk1FnMwy80gxqqHZLoUHjZfV5dUeurOJ5UeKI//2nZ002i0
+         1TH1qmiTasOJ0wzkd4DUUvavJOjtQUkKfhcTO7NBY7WYC0+99DGn+8Gk/1WTcXqqZ3Jl
+         nImg==
+X-Gm-Message-State: APjAAAVOEJdiAwyuYBQSYZLp7SNFi9Y4fLNR9p5m6qfM+WQ1S02RORj1
+        d+fY3OnPPIMS/CiNikiBYC6gr16YMhU=
+X-Google-Smtp-Source: APXvYqwWRnyqcpQ8VN821w7sbA+ikMUeHPz3zJriGPuF7/CP7+QCicALYMjV1h2L9biLhXzkhbbQXQ==
+X-Received: by 2002:a19:2d54:: with SMTP id t20mr9941784lft.84.1567878353763;
+        Sat, 07 Sep 2019 10:45:53 -0700 (PDT)
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
+        by smtp.gmail.com with ESMTPSA id z2sm1540818ljz.49.2019.09.07.10.45.51
+        for <sparclinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 07 Sep 2019 10:45:52 -0700 (PDT)
+Received: by mail-lj1-f178.google.com with SMTP id j16so8914023ljg.6
+        for <sparclinux@vger.kernel.org>; Sat, 07 Sep 2019 10:45:51 -0700 (PDT)
+X-Received: by 2002:a2e:8645:: with SMTP id i5mr9691835ljj.165.1567878349245;
+ Sat, 07 Sep 2019 10:45:49 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190904201933.10736-1-cyphar@cyphar.com> <20190904201933.10736-12-cyphar@cyphar.com>
+ <7236f382d72130f2afbbe8940e72cc67e5c6dce0.camel@kernel.org>
+ <CAHk-=whZx97Nm-gUK0ppofj2RA2LLz2vmaDUTKSSV-+yYB9q_Q@mail.gmail.com> <C81D6D29-F6BF-48E6-A15E-3ABCB2C992E5@amacapital.net>
+In-Reply-To: <C81D6D29-F6BF-48E6-A15E-3ABCB2C992E5@amacapital.net>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat, 7 Sep 2019 10:45:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whe90Ec_RRrMRLE0=bJOHNS9YmVwcytVxmrfK3oCuZF6A@mail.gmail.com>
+Message-ID: <CAHk-=whe90Ec_RRrMRLE0=bJOHNS9YmVwcytVxmrfK3oCuZF6A@mail.gmail.com>
 Subject: Re: [PATCH v12 11/12] open: openat2(2) syscall
-From:   Andy Lutomirski <luto@amacapital.net>
-X-Mailer: iPhone Mail (16G102)
-In-Reply-To: <CAHk-=whZx97Nm-gUK0ppofj2RA2LLz2vmaDUTKSSV-+yYB9q_Q@mail.gmail.com>
-Date:   Sat, 7 Sep 2019 10:42:23 -0700
+To:     Andy Lutomirski <luto@amacapital.net>
 Cc:     Jeff Layton <jlayton@kernel.org>, Aleksa Sarai <cyphar@cyphar.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
         "J. Bruce Fields" <bfields@fieldses.org>,
@@ -92,59 +97,25 @@ Cc:     Jeff Layton <jlayton@kernel.org>, Aleksa Sarai <cyphar@cyphar.com>,
         linux-s390 <linux-s390@vger.kernel.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C81D6D29-F6BF-48E6-A15E-3ABCB2C992E5@amacapital.net>
-References: <20190904201933.10736-1-cyphar@cyphar.com> <20190904201933.10736-12-cyphar@cyphar.com> <7236f382d72130f2afbbe8940e72cc67e5c6dce0.camel@kernel.org> <CAHk-=whZx97Nm-gUK0ppofj2RA2LLz2vmaDUTKSSV-+yYB9q_Q@mail.gmail.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+On Sat, Sep 7, 2019 at 10:42 AM Andy Lutomirski <luto@amacapital.net> wrote:
+>
+> Linus, you rejected resolveat() because you wanted a *nice* API
 
+No. I rejected resoveat() because it was a completely broken garbage
+API that couldn't do even basic stuff right (like O_CREAT).
 
-> On Sep 7, 2019, at 9:58 AM, Linus Torvalds <torvalds@linux-foundation.org>=
- wrote:
->=20
->> On Sat, Sep 7, 2019 at 5:40 AM Jeff Layton <jlayton@kernel.org> wrote:
->>=20
->> After thinking about this a bit, I wonder if we might be better served
->> with a new set of OA2_* flags instead of repurposing the O_* flags?
->=20
-> I'd hate to have yet _another_ set of translation functions, and
-> another chance of people just getting it wrong either in user space or
-> the kernel.
->=20
-> So no. Let's not make another set of flags that has no sane way to
-> have type-safety to avoid more confusion.
->=20
-> The new flags that _only_ work with openat2() might be named with a
-> prefix/suffix to mark that, but I'm not sure it's a huge deal.
->=20
->           =20
+We have a ton of flag space in the new openat2() model, we might as
+well leave the old flags alone that people are (a) used to and (b) we
+have code to support _anyway_.
 
-I agree with the philosophy, but I think it doesn=E2=80=99t apply in this ca=
-se.  Here are the flags:
+Making up a new flag namespace is only going to cause us - and users -
+more work, and more confusion. For no actual advantage. It's not going
+to be "cleaner". It's just going to be worse.
 
-O_RDONLY, O_WRONLY, O_RDWR: not even a proper bitmask. The kernel already ha=
-s the FMODE_ bits to make this make sense. How about we make the openat2 per=
-mission bits consistent with the internal representation and let the O_ perm=
-ission bits remain as an awful translation.  The kernel already translates l=
-ike this, and it already sucks.
-
-O_CREAT, O_TMPFILE, O_NOCTTY, O_TRUNC: not modes on the fd at all.  These af=
-fect the meaning of open().  Heck, for openat2, NOCTTY should be this defaul=
-t.
-
-O_EXCL: hopelessly overloaded.
-
-O_APPEND, O_DIRECT, O_SYNC, O_DSYNC, O_LARGEFILE, O_NOATIME, O_PATH, O_NONBL=
-OCK: genuine mode bits
-
-O_CLOEXEC: special because it affects the fd, not the struct file.
-
-Linus, you rejected resolveat() because you wanted a *nice* API that people w=
-ould use and that might even be adopted by other OSes. Let=E2=80=99s please n=
-ot make openat2() be a giant pile of crap in the name of consistency with op=
-en().  open(), frankly, is horrible.
-
+                 Linus
