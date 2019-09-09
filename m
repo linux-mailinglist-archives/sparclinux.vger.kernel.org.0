@@ -2,91 +2,180 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C50F8AD95E
-	for <lists+sparclinux@lfdr.de>; Mon,  9 Sep 2019 14:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BB21ADBEB
+	for <lists+sparclinux@lfdr.de>; Mon,  9 Sep 2019 17:13:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727099AbfIIMuE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 9 Sep 2019 08:50:04 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:46733 "EHLO
+        id S1726171AbfIIPNt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 9 Sep 2019 11:13:49 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:43110 "EHLO
         mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726329AbfIIMuD (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 9 Sep 2019 08:50:03 -0400
-Received: by mail-ed1-f68.google.com with SMTP id i8so12779991edn.13;
-        Mon, 09 Sep 2019 05:50:02 -0700 (PDT)
+        with ESMTP id S1728063AbfIIPNt (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 9 Sep 2019 11:13:49 -0400
+Received: by mail-ed1-f68.google.com with SMTP id c19so13256825edy.10
+        for <sparclinux@vger.kernel.org>; Mon, 09 Sep 2019 08:13:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kW15KrOSvW9WpLErlquuKLeZEcnhbkdBFaJKzjm2XqU=;
-        b=dGdRH3TyQEBBns2NDy+wSx4qiZZHqhJACLMlJyoLQmYz05xthawa0+k7LN96Qw6Mz7
-         aOO0prdaRv0z16cxIqTxKOn/00JQgjzml+iKQgaqVjYrZ/sL0QuUf4StsZZbr1yV6SAR
-         q+ycLdvM6d8kyzDI7aW1XruXdUtWb+cwAqtGrsNRJkQB+ndeON2MJ54wWAARvvF+Gqqh
-         GtHc2HfxA456zL7Jy/S6575AC2SxNq7zL8i/FkSpQCoW4lT0NjwefK5+YavkP6Q4q675
-         eJ/wIlIpCNDIsBFYfwPT/6IqJxiRBuT3wCoFY09xjumX24vMdPLdTG/rbaumG0gjrOyG
-         O6og==
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=ptGQKrJwsC6QNZJxPTcIFHrTBzodlhROW8EV9Cr6mks=;
+        b=lqK7soM8Ql8EG2Ftn3h3hR+olO0M3L5hi5yR7FV9iLEmOGD4dckGUM3j+cW0/Dime1
+         tcaru2ydfakL0qOGX9NW71rS5xXhlEsWXHR5tZTvN8nAdg3jRR7H91vVYT27iUT4zLQL
+         /8sd6tx6RSZch+NQKzd2gDDMnTl6lfsTiDI17WOQGfxtCfWUReS2eIOCKDQqmHkeOOb6
+         CQ29hW9JyqW2659VgWaWS03hTBmcSoCzS6kj58DkCjvhtjcgvBnAojuQ6LW0JN5ngCCR
+         oxmuahVreVZAzOjjnErCDvkrgGlDpVGWckjhAKTQyS0XAzH5VKEiZW6qr15a3nTgG9T0
+         I28w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kW15KrOSvW9WpLErlquuKLeZEcnhbkdBFaJKzjm2XqU=;
-        b=ijWypwctLx4F9swztFoH1zFL+JD5xZJNEm5XEUbcH7gM9urDhfbSzG9Y1TgpbPI7mW
-         eUJhQgyu5cR7hSjWMb5nwf2f0wfvZqUwAZn1fw8MqOgndZ2gmFS0+II5WnQo+5EFnGEo
-         bpXsFOKjodvCj/pkAws3s1JBXP2GWaMhk54VnsrzeNENNkmeQ9lldM8egbv8j0x1J0xg
-         /pL0dlF4Y5/ZBJsgqRnlNQJJlqi2xW/HssSGI8saSXAKLc37oSpVMV6MwTAyiZdMvHg8
-         vs0S6s87A+S95Xuea0OaqEwVWKJ80ucTrkvBL4nGeAnch3sNXKhL3KpLfe95oPyrsP1Q
-         xGkA==
-X-Gm-Message-State: APjAAAUO7vCGsJ3PU1SLTv9bJ7QXMUYunkDtPojnq7by/NE15LqqpC2j
-        iU/BlHHqo7PP74udWwRJv3LPriD+YPQy976ZjSNnsmVs
-X-Google-Smtp-Source: APXvYqw2QV3V6l2FcVkKtA9g3vp/G9rJbm6Z1GMbqDE18XZgEYh5t8on335dWmsCITRDRapbz13AOQsF2ZjdsTjwOy0=
-X-Received: by 2002:a50:ad5b:: with SMTP id z27mr24028370edc.252.1568033402140;
- Mon, 09 Sep 2019 05:50:02 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ptGQKrJwsC6QNZJxPTcIFHrTBzodlhROW8EV9Cr6mks=;
+        b=UQit20PISlHb30HBkPmBn1UMFVUEE8sNB71v6Fn6IINSbi5GtIVIRz/9mxsuuAORF8
+         3hVlEeRl6RjDal7pt2DDduNSWigHkHhfH7lWk4OmQ/y39BcYfgQtkDdO8RMek/OtrPP0
+         0GbEYgTlAufOSz7PLyClTPNy4RbYSQPMGjb19Wy5nhGs+N/Nj6m5cz7+4rOqXZ9lg58b
+         JniybjVzpXtlDVVw60TzrIWpgFXH+GNQWJwb+rnakr+H4866ajXJHYT0CFt027NCBi9C
+         e1qPbgiq/LRzSJ7/oLq1PTwS4nFxI6UNnizb0l7ij9RY5tHWseuA0ZAHreJVI9XHxCxh
+         GGhg==
+X-Gm-Message-State: APjAAAVKPfnOuiiWnrQMFtUrK3sjY4SeLYo0AR+cPq4Xbslh5qSmgDHz
+        1Z+HlDMarTNACxq6KiR8psh+fQ==
+X-Google-Smtp-Source: APXvYqwJokBcl6isKFmA//BZZyEEgwoj2uNW2kTs0Tg/Y35qXurjsqN7Jks2aTze1VFcwFZl9Fv8+Q==
+X-Received: by 2002:a17:906:c304:: with SMTP id s4mr20002026ejz.71.1568042026870;
+        Mon, 09 Sep 2019 08:13:46 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id bf19sm3010529edb.23.2019.09.09.08.13.45
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 09 Sep 2019 08:13:46 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id CD9501003B5; Mon,  9 Sep 2019 18:13:44 +0300 (+03)
+Date:   Mon, 9 Sep 2019 18:13:44 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     Gerald Schaefer <gerald.schaefer@de.ibm.com>, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
+ page table helpers
+Message-ID: <20190909151344.ghfypjbgxyosjdk3@box>
+References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
+ <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
+ <20190904221618.1b624a98@thinkpad>
+ <20e3044d-2af5-b27b-7653-cec53bdec941@arm.com>
+ <20190905190629.523bdb87@thinkpad>
+ <3c609e33-afbb-ffaf-481a-6d225a06d1d0@arm.com>
+ <20190906210346.5ecbff01@thinkpad>
+ <3d5de35f-8192-1c75-50a9-03e66e3b8e5c@arm.com>
 MIME-Version: 1.0
-References: <CADxRZqxmvfE9gYoT+1oLV6-o_BbUsay_U45qmMEYL3vErTCCLA@mail.gmail.com>
- <VI1PR0802MB252826995ECEA2578C1B5C878FB70@VI1PR0802MB2528.eurprd08.prod.outlook.com>
-In-Reply-To: <VI1PR0802MB252826995ECEA2578C1B5C878FB70@VI1PR0802MB2528.eurprd08.prod.outlook.com>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Mon, 9 Sep 2019 15:49:51 +0300
-Message-ID: <CADxRZqxOwPtaqiVyXR8hBf7VcDxZq5+w3E57YjaxEc=qS31AZQ@mail.gmail.com>
-Subject: Re: [sparc64] Kernel unaligned access at TPC lzo1x_1_do_compress
-To:     Dave Rodgman <dave.rodgman@arm.com>
-Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
-        Linux Kernel list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3d5de35f-8192-1c75-50a9-03e66e3b8e5c@arm.com>
+User-Agent: NeoMutt/20180716
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Sep 9, 2019 at 1:11 PM Dave Rodgman <dave.rodgman@arm.com> wrote:
->
-> Thanks Anatoly, I'll take a look at this. Could you please let me know the exact hardware you're running on?
+On Mon, Sep 09, 2019 at 11:56:50AM +0530, Anshuman Khandual wrote:
+> 
+> 
+> On 09/07/2019 12:33 AM, Gerald Schaefer wrote:
+> > On Fri, 6 Sep 2019 11:58:59 +0530
+> > Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> > 
+> >> On 09/05/2019 10:36 PM, Gerald Schaefer wrote:
+> >>> On Thu, 5 Sep 2019 14:48:14 +0530
+> >>> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> >>>   
+> >>>>> [...]    
+> >>>>>> +
+> >>>>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
+> >>>>>> +static void pud_clear_tests(pud_t *pudp)
+> >>>>>> +{
+> >>>>>> +	memset(pudp, RANDOM_NZVALUE, sizeof(pud_t));
+> >>>>>> +	pud_clear(pudp);
+> >>>>>> +	WARN_ON(!pud_none(READ_ONCE(*pudp)));
+> >>>>>> +}    
+> >>>>>
+> >>>>> For pgd/p4d/pud_clear(), we only clear if the page table level is present
+> >>>>> and not folded. The memset() here overwrites the table type bits, so
+> >>>>> pud_clear() will not clear anything on s390 and the pud_none() check will
+> >>>>> fail.
+> >>>>> Would it be possible to OR a (larger) random value into the table, so that
+> >>>>> the lower 12 bits would be preserved?    
+> >>>>
+> >>>> So the suggestion is instead of doing memset() on entry with RANDOM_NZVALUE,
+> >>>> it should OR a large random value preserving lower 12 bits. Hmm, this should
+> >>>> still do the trick for other platforms, they just need non zero value. So on
+> >>>> s390, the lower 12 bits on the page table entry already has valid value while
+> >>>> entering this function which would make sure that pud_clear() really does
+> >>>> clear the entry ?  
+> >>>
+> >>> Yes, in theory the table entry on s390 would have the type set in the last
+> >>> 4 bits, so preserving those would be enough. If it does not conflict with
+> >>> others, I would still suggest preserving all 12 bits since those would contain
+> >>> arch-specific flags in general, just to be sure. For s390, the pte/pmd tests
+> >>> would also work with the memset, but for consistency I think the same logic
+> >>> should be used in all pxd_clear_tests.  
+> >>
+> >> Makes sense but..
+> >>
+> >> There is a small challenge with this. Modifying individual bits on a given
+> >> page table entry from generic code like this test case is bit tricky. That
+> >> is because there are not enough helpers to create entries with an absolute
+> >> value. This would have been easier if all the platforms provided functions
+> >> like __pxx() which is not the case now. Otherwise something like this should
+> >> have worked.
+> >>
+> >>
+> >> pud_t pud = READ_ONCE(*pudp);
+> >> pud = __pud(pud_val(pud) | RANDOM_VALUE (keeping lower 12 bits 0))
+> >> WRITE_ONCE(*pudp, pud);
+> >>
+> >> But __pud() will fail to build in many platforms.
+> > 
+> > Hmm, I simply used this on my system to make pud_clear_tests() work, not
+> > sure if it works on all archs:
+> > 
+> > pud_val(*pudp) |= RANDOM_NZVALUE;
+> 
+> Which compiles on arm64 but then fails on x86 because of the way pmd_val()
+> has been defined there.
 
-Dave,
+Use instead
 
-machine is a LDOM on T5-2 server.
+	*pudp = __pud(pud_val(*pudp) | RANDOM_NZVALUE);
 
-OS is debian unstable/sid linux with latest git kernel, currently :
+It *should* be more portable.
 
-$ uname -a
-Linux ttip 5.3.0-rc8-dirty #1211 SMP Mon Sep 9 10:20:40 MSK 2019
-sparc64 GNU/Linux
-
--dirty cause non-mainline (yet) fix for IPC [1] and reverted
-HAVE_GENERIC_GUP patch [2].
-
-$ gcc --version
-gcc (Debian 9.2.1-7) 9.2.1 20190905
-
-$ ld -V
-GNU ld (GNU Binutils for Debian) 2.32.51.20190821
-
-$ ldd --version
-ldd (Debian GLIBC 2.28-10) 2.28
-
-
-I could give you  account on this box to test or fix kernel if you would like.
-
-Thanks.
-
-1. https://marc.info/?l=linux-kernel&m=156769723218727
-2. https://marc.info/?l=linux-sparc&m=156026414826151
+-- 
+ Kirill A. Shutemov
