@@ -2,291 +2,181 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 686B8AD315
-	for <lists+sparclinux@lfdr.de>; Mon,  9 Sep 2019 08:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3ABCAD674
+	for <lists+sparclinux@lfdr.de>; Mon,  9 Sep 2019 12:11:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728367AbfIIG0z (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 9 Sep 2019 02:26:55 -0400
-Received: from foss.arm.com ([217.140.110.172]:45010 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727983AbfIIG0y (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 9 Sep 2019 02:26:54 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84286337;
-        Sun,  8 Sep 2019 23:26:53 -0700 (PDT)
-Received: from [10.162.43.129] (p8cg001049571a15.blr.arm.com [10.162.43.129])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5676C3F67D;
-        Sun,  8 Sep 2019 23:29:08 -0700 (PDT)
-Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
- page table helpers
-To:     Gerald Schaefer <gerald.schaefer@de.ibm.com>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
- <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
- <20190904221618.1b624a98@thinkpad>
- <20e3044d-2af5-b27b-7653-cec53bdec941@arm.com>
- <20190905190629.523bdb87@thinkpad>
- <3c609e33-afbb-ffaf-481a-6d225a06d1d0@arm.com>
- <20190906210346.5ecbff01@thinkpad>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <3d5de35f-8192-1c75-50a9-03e66e3b8e5c@arm.com>
-Date:   Mon, 9 Sep 2019 11:56:50 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1728315AbfIIKLH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 9 Sep 2019 06:11:07 -0400
+Received: from mail-eopbgr140059.outbound.protection.outlook.com ([40.107.14.59]:30434
+        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726913AbfIIKLG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 9 Sep 2019 06:11:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=84PA4Bt4ArcrM7FjZ3jHI2t99k2VS+7YLStwDVRuhxY=;
+ b=fAoa6MSv6RbrKsWL9ldRYCkVErclTIZkGqQgqEhWKXKUUTEhY35+8j4jvPuv1EMf+W9DhoR5U6qhbm7F/EFAM1dPl2IAMH1DduRPEK+KwMDlmtUw+jgjshuf1cxKdFccPgYJKOkDOzasS7AOaDcb3XMW1h0xwjR3asXD2lFbmcw=
+Received: from VI1PR0802CA0041.eurprd08.prod.outlook.com
+ (2603:10a6:800:a9::27) by VE1PR08MB5246.eurprd08.prod.outlook.com
+ (2603:10a6:803:10b::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2241.15; Mon, 9 Sep
+ 2019 10:10:58 +0000
+Received: from DB5EUR03FT041.eop-EUR03.prod.protection.outlook.com
+ (2a01:111:f400:7e0a::202) by VI1PR0802CA0041.outlook.office365.com
+ (2603:10a6:800:a9::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2241.18 via Frontend
+ Transport; Mon, 9 Sep 2019 10:10:58 +0000
+Authentication-Results: spf=temperror (sender IP is 63.35.35.123)
+ smtp.mailfrom=arm.com; vger.kernel.org; dkim=pass (signature was verified)
+ header.d=armh.onmicrosoft.com;vger.kernel.org; dmarc=temperror action=none
+ header.from=arm.com;
+Received-SPF: TempError (protection.outlook.com: error in processing during
+ lookup of arm.com: DNS Timeout)
+Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
+ DB5EUR03FT041.mail.protection.outlook.com (10.152.21.4) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2241.14 via Frontend Transport; Mon, 9 Sep 2019 10:10:57 +0000
+Received: ("Tessian outbound 24b6d28e5e38:v28"); Mon, 09 Sep 2019 10:10:57 +0000
+X-CheckRecipientChecked: true
+X-CR-MTA-CID: 28c7622b2606119e
+X-CR-MTA-TID: 64aa7808
+Received: from 3158179f340e.1 (ip-172-16-0-2.eu-west-1.compute.internal [104.47.8.52])
+        by 64aa7808-outbound-1.mta.getcheckrecipient.com id 0AB599FD-87ED-4D74-9129-B956DF9E1876.1;
+        Mon, 09 Sep 2019 10:10:51 +0000
+Received: from EUR03-AM5-obe.outbound.protection.outlook.com (mail-am5eur03lp2052.outbound.protection.outlook.com [104.47.8.52])
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 3158179f340e.1
+    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
+    Mon, 09 Sep 2019 10:10:51 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=i8i3udBqHSiGabLbyYFMgigY74+3nNrsf5urpNja8zjVHdMqQCGRjP2lxAa9AjoXePc+6solNN9E7HRcqX2QxKt/+dma2dc3R5qJKu73NQ+1W9dC70oPPipbrs+j+ph5FEgR5UQc5c2TtJfz8FLhi/zUpQgNyrNUMcsG1eQo0gwG5/RZhi1t/3JZgqG+IW+mrKXGdLLbntZ5y+bpy/mn/oyZtHz+EPTmJlhUORLgmkRRmou2ARyIVLFtiZ14uYPSABPeg6LjE4ynikizFrJga9mBgNDSL5jfPjbmttyX1I9HMKNUDYynn37ScvvK5yq5UuRiEEmi/nWFyqO+xmn3Gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Awk3C/nj1nEtBZ+oiyDQiHMUmkGn++l+3JEK1SEVvJY=;
+ b=OecTgMRYsnfR/hn5odQnJZDmBo2ZFvMgOew2IF9GXx4PrQZ7SXK4s2QeJ07t3hM45ot9s8Z2nyO2F8Vr/ON4TFVr5M1tSSu2OMvjulNOhldPj87TQw/tNXT92pwS3xbV7cyLWgJhjpdhQE93kL3qktibNHLLd/WY7mzIoS7eAbVy7xmOI9s8LW4ELp+Umaq3cKoQl/U9M+bgbXnQ0YgQspGGWV9ZmItd66oVQPyi8r3C9Nfs/N524DRlLfs+2KePho+THNMY2m0MhJk2Pn/47Ml3s4W8Rx1dPLM6K6NrZYTeNjbxJzmibuCr6d6THQ/fNM/9Ls+nBI2EllswiKD52g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Awk3C/nj1nEtBZ+oiyDQiHMUmkGn++l+3JEK1SEVvJY=;
+ b=DFzj/EzFVOtm2STlQeMQluo0V+PEUBd1o8MqO68WlRULAQKxF7/cCOFCNn2rZ0ODI4EIuVgKRRYG6q2bOmxx3KhDwa0k3m8WYFqeX/kdi2qZ+IvwO3GffIqnWZc0MuY2P0XHaqTpG91aJbqa8VgsPyqjYgIzERP1l6yr7v9TiOc=
+Received: from VI1PR0802MB2528.eurprd08.prod.outlook.com (10.172.255.7) by
+ VI1PR0802MB2463.eurprd08.prod.outlook.com (10.175.26.18) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2241.18; Mon, 9 Sep 2019 10:10:50 +0000
+Received: from VI1PR0802MB2528.eurprd08.prod.outlook.com
+ ([fe80::c111:a196:e33b:a90f]) by VI1PR0802MB2528.eurprd08.prod.outlook.com
+ ([fe80::c111:a196:e33b:a90f%7]) with mapi id 15.20.2241.018; Mon, 9 Sep 2019
+ 10:10:50 +0000
+From:   Dave Rodgman <dave.rodgman@arm.com>
+To:     Anatoly Pugachev <matorola@gmail.com>,
+        Sparc kernel list <sparclinux@vger.kernel.org>
+CC:     Linux Kernel list <linux-kernel@vger.kernel.org>
+Subject: Re: [sparc64] Kernel unaligned access at TPC lzo1x_1_do_compress
+Thread-Topic: [sparc64] Kernel unaligned access at TPC lzo1x_1_do_compress
+Thread-Index: AQHVZjRVATYRQqakFUO5bQSp6NYr4acjIRGv
+Date:   Mon, 9 Sep 2019 10:10:50 +0000
+Message-ID: <VI1PR0802MB252826995ECEA2578C1B5C878FB70@VI1PR0802MB2528.eurprd08.prod.outlook.com>
+References: <CADxRZqxmvfE9gYoT+1oLV6-o_BbUsay_U45qmMEYL3vErTCCLA@mail.gmail.com>
+In-Reply-To: <CADxRZqxmvfE9gYoT+1oLV6-o_BbUsay_U45qmMEYL3vErTCCLA@mail.gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Authentication-Results-Original: spf=none (sender IP is )
+ smtp.mailfrom=dave.rodgman@arm.com; 
+x-originating-ip: [217.140.106.53]
+x-ms-publictraffictype: Email
+X-MS-Office365-Filtering-Correlation-Id: c36d672b-a2cc-484a-50e8-08d7350e01d8
+X-MS-Office365-Filtering-HT: Tenant
+X-Microsoft-Antispam-Untrusted: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:VI1PR0802MB2463;
+X-MS-TrafficTypeDiagnostic: VI1PR0802MB2463:|VE1PR08MB5246:
+X-Microsoft-Antispam-PRVS: <VE1PR08MB5246C2E53B99C58F9A4CA8598FB70@VE1PR08MB5246.eurprd08.prod.outlook.com>
+x-checkrecipientrouted: true
+x-ms-oob-tlc-oobclassifiers: OLM:7219;OLM:7219;
+x-forefront-prvs: 01559F388D
+X-Forefront-Antispam-Report-Untrusted: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(366004)(136003)(376002)(396003)(346002)(199004)(189003)(5660300002)(33656002)(6506007)(6116002)(66066001)(478600001)(486006)(71190400001)(71200400001)(229853002)(44832011)(26005)(186003)(476003)(11346002)(446003)(256004)(52536014)(102836004)(86362001)(99286004)(2906002)(25786009)(14454004)(316002)(53546011)(76176011)(110136005)(7696005)(305945005)(14444005)(6246003)(55016002)(7736002)(9686003)(53936002)(76116006)(3846002)(66446008)(64756008)(66556008)(66476007)(74316002)(66946007)(8936002)(4326008)(81156014)(6436002)(8676002)(81166006);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR0802MB2463;H:VI1PR0802MB2528.eurprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: arm.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info-Original: XjfYD7RgvoWD1lGwVuSFgkO9NWaLDKJ0UGI3Z+YLnJ2T6VuIqie8NhC9pWPc+s6B9ysyLqQv7TO13KQcISXi2Wv945X6Ear2bHX5v/WNO5vWQqtvJBZ/ETuk0eWdhNq22GD9fao/EhHxymUD96DB7zyr47rv8MgckIN/mhzP2T7qnprFeeEZf0qQGnVirR8r5y1I1HgObzVopMD3gzatw/5qteyxvYeMe6pndOgKC6iMKLIF673Isxti3TolnTstlMSOwkjgLC4Zw3RfBAks3NddEJqlclQwgyzRxp05PC0WhExpIPL94DG7vGaP4/3UXfSZCIV00LUG2Yb09E0d6a6BPxP8sq6weEGeJeMUVv19jAZGNkwiQyVCmq2d3xI1I55UOMjq0VJ5ob4x6D+zbmZBHcKENP3QE+3JE8B1K0o=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <20190906210346.5ecbff01@thinkpad>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0802MB2463
+Original-Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=dave.rodgman@arm.com; 
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: DB5EUR03FT041.eop-EUR03.prod.protection.outlook.com
+X-Forefront-Antispam-Report: CIP:63.35.35.123;IPV:CAL;SCL:-1;CTRY:IE;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(396003)(376002)(346002)(39860400002)(136003)(2980300002)(189003)(199004)(40434004)(356004)(7696005)(9686003)(336012)(99286004)(229853002)(53546011)(6506007)(14454004)(70206006)(76176011)(26826003)(74316002)(70586007)(478600001)(63350400001)(11346002)(63370400001)(446003)(305945005)(476003)(102836004)(22756006)(81156014)(5024004)(81166006)(14444005)(126002)(186003)(486006)(26005)(8676002)(110136005)(7736002)(8936002)(8746002)(55016002)(52536014)(86362001)(66066001)(2906002)(76130400001)(23726003)(6116002)(316002)(44832011)(50466002)(25786009)(3846002)(46406003)(5660300002)(33656002)(47776003)(4326008)(450100002)(6246003)(97756001);DIR:OUT;SFP:1101;SCL:1;SRVR:VE1PR08MB5246;H:64aa7808-outbound-1.mta.getcheckrecipient.com;FPR:;SPF:TempError;LANG:en;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;MX:1;A:1;
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 9d774346-ceb5-4574-b9ca-08d7350dfdb1
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(710020)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:VE1PR08MB5246;
+X-Forefront-PRVS: 01559F388D
+X-Microsoft-Antispam-Message-Info: 3uiqY8uG/kNniHSdEZgya2NWhPeQcmCOp+jAqbKgil5GTjFRQwA84KnR7X3znOAIE7jIDkDfngVHlByMaAcbviZ0ckBo0BKy4942gBivcNwmXqgxiMOVirlipZsby+kkOBsLgYZpImz9akkjfg6Jo6ZWVSUT18bbz38U6eH7mSgrtRM3yKqGeQvWfImIhiF02dMMcX6gf3c7Mq2K0D02wkShq5bJv8Q/UeawQ02FXwTsS/ah+CfTHC2HP8Mg7Tjr5kMADRhmcHtKOjYQxz3Jn4swddvqRd+K71IE22jFi1zmjALq1nrG5vrSqiJdFQCYNbuQYLdgRBvobmzQbJEQ3BC1CW76fryVzPV5H3Nh2BA13a7pdt5m3Z95LUZuiCD6xwgheV7MhmwUgzQ7KMrVq4VqN11jWLExlo/Fq3mmex8=
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2019 10:10:57.1951
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c36d672b-a2cc-484a-50e8-08d7350e01d8
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR08MB5246
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Thanks Anatoly, I'll take a look at this. Could you please let me know the =
+exact hardware you're running on?
+
+thanks
+
+Dave
+
+________________________________________
+From: linux-kernel-owner@vger.kernel.org <linux-kernel-owner@vger.kernel.or=
+g> on behalf of Anatoly Pugachev <matorola@gmail.com>
+Sent: 08 September 2019 11:58:08
+To: Sparc kernel list
+Cc: Linux Kernel list
+Subject: [sparc64] Kernel unaligned access at TPC lzo1x_1_do_compress
+
+Hello!
+
+trying to use zram block device, shows the following:
+
+# zramctl -f -s 16g
+# cat /sys/block/zram0/comp_algorithm
+lzo [lzo-rle] lz4 lz4hc 842 zstd
+# zramctl
+NAME       ALGORITHM DISKSIZE  DATA COMPR TOTAL STREAMS MOUNTPOINT
+/dev/zram0 lzo-rle        16G 10.4M    4K  112K      32
+
+# mkfs.xfs /dev/zram0
+...
+
+[   71.095998] zram: Added device: zram0
+[   71.765591] zram0: detected capacity change from 0 to 17179869184
+[   80.058772] Kernel unaligned access at TPC[8f2534]
+lzo1x_1_do_compress+0x1b4/0x820
+[   80.073832] Kernel unaligned access at TPC[8f2534]
+lzo1x_1_do_compress+0x1b4/0x820
+[   80.073866] Kernel unaligned access at TPC[8f2534]
+lzo1x_1_do_compress+0x1b4/0x820
+[   80.074709] Kernel unaligned access at TPC[8f2534]
+lzo1x_1_do_compress+0x1b4/0x820
+[   80.074923] Kernel unaligned access at TPC[8f2534]
+lzo1x_1_do_compress+0x1b4/0x820
 
 
-On 09/07/2019 12:33 AM, Gerald Schaefer wrote:
-> On Fri, 6 Sep 2019 11:58:59 +0530
-> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> 
->> On 09/05/2019 10:36 PM, Gerald Schaefer wrote:
->>> On Thu, 5 Sep 2019 14:48:14 +0530
->>> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
->>>   
->>>>> [...]    
->>>>>> +
->>>>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
->>>>>> +static void pud_clear_tests(pud_t *pudp)
->>>>>> +{
->>>>>> +	memset(pudp, RANDOM_NZVALUE, sizeof(pud_t));
->>>>>> +	pud_clear(pudp);
->>>>>> +	WARN_ON(!pud_none(READ_ONCE(*pudp)));
->>>>>> +}    
->>>>>
->>>>> For pgd/p4d/pud_clear(), we only clear if the page table level is present
->>>>> and not folded. The memset() here overwrites the table type bits, so
->>>>> pud_clear() will not clear anything on s390 and the pud_none() check will
->>>>> fail.
->>>>> Would it be possible to OR a (larger) random value into the table, so that
->>>>> the lower 12 bits would be preserved?    
->>>>
->>>> So the suggestion is instead of doing memset() on entry with RANDOM_NZVALUE,
->>>> it should OR a large random value preserving lower 12 bits. Hmm, this should
->>>> still do the trick for other platforms, they just need non zero value. So on
->>>> s390, the lower 12 bits on the page table entry already has valid value while
->>>> entering this function which would make sure that pud_clear() really does
->>>> clear the entry ?  
->>>
->>> Yes, in theory the table entry on s390 would have the type set in the last
->>> 4 bits, so preserving those would be enough. If it does not conflict with
->>> others, I would still suggest preserving all 12 bits since those would contain
->>> arch-specific flags in general, just to be sure. For s390, the pte/pmd tests
->>> would also work with the memset, but for consistency I think the same logic
->>> should be used in all pxd_clear_tests.  
->>
->> Makes sense but..
->>
->> There is a small challenge with this. Modifying individual bits on a given
->> page table entry from generic code like this test case is bit tricky. That
->> is because there are not enough helpers to create entries with an absolute
->> value. This would have been easier if all the platforms provided functions
->> like __pxx() which is not the case now. Otherwise something like this should
->> have worked.
->>
->>
->> pud_t pud = READ_ONCE(*pudp);
->> pud = __pud(pud_val(pud) | RANDOM_VALUE (keeping lower 12 bits 0))
->> WRITE_ONCE(*pudp, pud);
->>
->> But __pud() will fail to build in many platforms.
-> 
-> Hmm, I simply used this on my system to make pud_clear_tests() work, not
-> sure if it works on all archs:
-> 
-> pud_val(*pudp) |= RANDOM_NZVALUE;
-
-Which compiles on arm64 but then fails on x86 because of the way pmd_val()
-has been defined there. on arm64 and s390 (with many others) pmd_val() is
-a macro which still got the variable that can be used as lvalue but that is
-not true for some other platforms like x86.
-
-arch/arm64/include/asm/pgtable-types.h:	#define pmd_val(x)	((x).pmd)
-arch/s390/include/asm/page.h:		#define pmd_val(x)	((x).pmd)
-arch/x86/include/asm/pgtable.h:		#define pmd_val(x)       native_pmd_val(x)
-
-static inline pmdval_t native_pmd_val(pmd_t pmd)
-{
-        return pmd.pmd;
-}
-
-Unless I am mistaken, the return value from this function can not be used as
-lvalue for future assignments.
-
-mm/arch_pgtable_test.c: In function ‘pud_clear_tests’:
-mm/arch_pgtable_test.c:156:17: error: lvalue required as left operand of assignment
-  pud_val(*pudp) |= RANDOM_ORVALUE;
-                 ^~
-AFAICS pxx_val() were never intended to be used as lvalue and using it that way
-might just happen to work on all those platforms which define them as macros.
-They meant to just provide values for an entry as being determined by the platform.
-
-In principle pxx_val() on an entry was not supposed to be modified directly from
-generic code without going through (again) platform helpers for any specific state
-change (write, old, dirty, special, huge etc). The current use case is a deviation
-for that.
-
-I originally went with memset() just to load up the entries with non-zero value so
-that we know pxx_clear() are really doing the clearing. The same is being followed
-for all pxx_same() checks.
-
-Another way for fixing the problem would be to mark them with known attributes
-like write/young/huge etc instead which for sure will create non-zero entries.
-We can do that for pxx_clear() and pxx_same() tests and drop RANDOM_NZVALUE
-completely. Does that sound good ?
-
-> 
->>
->> The other alternative will be to make sure memset() happens on all other
->> bits except the lower 12 bits which will depend on endianness. If s390
->> has a fixed endianness, we can still use either of them which will hold
->> good for others as well.
->>
->> memset(pudp, RANDOM_NZVALUE, sizeof(pud_t) - 3);
->>
->> OR
->>
->> memset(pudp + 3, RANDOM_NZVALUE, sizeof(pud_t) - 3);
->>
->>>
->>> However, there is another issue on s390 which will make this only work
->>> for pud_clear_tests(), and not for the p4d/pgd_tests. The problem is that
->>> mm_alloc() will only give you a 3-level page table initially on s390.
->>> This means that pudp == p4dp == pgdp, and so the p4d/pgd_tests will
->>> both see the pud level (of course this also affects other tests).  
->>
->> Got it.
->>
->>>
->>> Not sure yet how to fix this, i.e. how to initialize/update the page table
->>> to 5 levels. We can handle 5 level page tables, and it would be good if
->>> all levels could be tested, but using mm_alloc() to establish the page
->>> tables might not work on s390. One option could be to provide an arch-hook
->>> or weak function to allocate/initialize the mm.  
->>
->> Sure, got it. Though I plan to do add some arch specific tests or init sequence
->> like the above later on but for now the idea is to get the smallest possible set
->> of test cases which builds and runs on all platforms without requiring any arch
->> specific hooks or special casing (#ifdef) to be agreed upon broadly and accepted.
->>
->> Do you think this is absolutely necessary on s390 for the very first set of test
->> cases or we can add this later on as an improvement ?
-> 
-> It can be added later, no problem. I did not expect this to work flawlessly
-> on s390 right from the start anyway, with all our peculiarities, so don't
-> let this hinder you. I might come up with an add-on patch later.
-
-Sure.
-
-> 
-> Actually, using get_unmapped_area() as suggested by Kirill could also
-> solve this issue. We do create a new mm with 3-level page tables on s390,
-> and the dynamic upgrade to 4 or 5 levels is then triggered exactly by
-> arch_get_unmapped_area(), depending on the addr. But I currently don't
-> see how / where arch_get_unmapped_area() is set up for such a dummy mm
-> created by mm_alloc().
-
-Normally they are set during program loading but we can set it up explicitly
-for the test mm_struct if we need to but there are some other challenges.
-
-load_[aout|elf|flat|..]_binary()
-	setup_new_exec()
-		arch_pick_mmap_layout().
-
-I did some initial experiments around get_unmapped_area(). Seems bit tricky
-to get it working on a pure 'test' mm_struct. It expects a real user context
-in the form of current->mm.
-
-get_unmapped_area()
-{
-	....
-	get_area = current->mm->get_unmapped_area;
-	....
-	addr = get_area(file, addr, len, pgoff, flags); {
-		....
-		struct mm_struct *mm = current->mm;
-		....
-		if (addr) {
-			...
-			vma = find_vma_prev(mm, addr, &prev);
-		}
-		....
-		vm_unmapped_area() {
-			struct mm_struct *mm = current->mm;
-			....
-			/* Walks across mm->mm_rb.rb_node */
-		}
-	}
-	....
-}	
-
-Simple call like get_unmapped_area(NULL, 0, PAGE_SIZE, 0, 0) to get an
-address fails right away on current->mm->get_unmapped_area which does
-not have a valid value in the kernel context.
-
-There might be two methods to get around this problem
-
-1) Write a custom get_unmapped_area() imitating the real one but going
-   around the problem by taking an appropriately initialized mm_struct
-   instead of current->mm.
-
-2) Create dummy user task with dummy mm, switch 'current' context before
-   calling into get_unmapped_area() and switch back again. Dont know if
-   this is even possible.
-
-Wondering if this might deviate too much from the original goal of
-testing the page table helpers.
-
-Looking back again at the proposed test vaddr, wondering what will be the
-real problem in case it goes beyond user address range ? Will pxx_alloc()
-fail to create page table ranges at required level ? Apart from skipping
-pgtable_page_ctor/dtor for page table pages, it might not really affect
-any helpers as such.
-
-VADDR_TEST (PGDIR_SIZE + [P4D_SIZE] + PUD_SIZE + PMD_SIZE + PAGE_SIZE)
-
-OR
-
-A random page aligned address in [FIRST_USER_ADDRESS..TASK_SIZE] range ?
+all other tested compression algorithms (lzo, lz4, lz4hc, deflate,
+842) work without producing kernel TPC.
+IMPORTANT NOTICE: The contents of this email and any attachments are confid=
+ential and may also be privileged. If you are not the intended recipient, p=
+lease notify the sender immediately and do not disclose the contents to any=
+ other person, use it for any purpose, or store or copy the information in =
+any medium. Thank you.
