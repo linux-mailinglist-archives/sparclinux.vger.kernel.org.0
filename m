@@ -2,134 +2,92 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7258EAE3CC
-	for <lists+sparclinux@lfdr.de>; Tue, 10 Sep 2019 08:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF9FBAE74D
+	for <lists+sparclinux@lfdr.de>; Tue, 10 Sep 2019 11:49:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393506AbfIJGfm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 10 Sep 2019 02:35:42 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:34009 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729627AbfIJGfl (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 10 Sep 2019 02:35:41 -0400
-Received: by mail-wr1-f66.google.com with SMTP id a11so7851369wrx.1;
-        Mon, 09 Sep 2019 23:35:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=9uC8BSyBqqvpBHr+UBJrMjpTjeLS9eaSkiimfXBOGmI=;
-        b=RT2CZzYflWq0hJIviZ1qNiz7T8GR4+WUrisMZXe3m9cauTkqIyyVGGFPULrde7A02W
-         tj7FplDkEllE02owPbUYDzEtapP1C48use/4kFc7fZZmFt/DdDZTI55D8qvOaO2r24Ne
-         q4FNPrvlkjfx+lYW3lSYcZ69k2e463dcG9Y4rn+PPa/Glpr++eDfgJ8gFO5kdGQ+ZZAk
-         nXhnUxrt/DhKZTkCCWYef7FPywkEzNn0z8LUShNXRMIkZZwOG/G3kJoXGIwG7zGeC0aS
-         TI+DZ2QVgsA7VVK9EZCvbN7bPdpk9PkNXAPdUVWeWNcFfO4yiY8K5tj2pJUrGvJYeUSW
-         9/rw==
+        id S2391305AbfIJJtR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 10 Sep 2019 05:49:17 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:41827 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727265AbfIJJtR (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 10 Sep 2019 05:49:17 -0400
+Received: by mail-qt1-f193.google.com with SMTP id j10so19892965qtp.8;
+        Tue, 10 Sep 2019 02:49:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=9uC8BSyBqqvpBHr+UBJrMjpTjeLS9eaSkiimfXBOGmI=;
-        b=OGIIu7kQiC9NfKryZfiQuYrZPpsBPFxbvEH8fwEKiZuuqtgtF7jXfIN29NnGbc7fId
-         rvFMXp1KemiGvI8uDGKpmB7TKTpH09ZSH+pP6wff/kjUKi7y/gzYWD37MGi08QJKXSU5
-         qIzIK/9psV/Dmfg+9g4+w5obNvUboDNYacCXAulcDEnDDCAlCvNGVCW+/KRRgW+yYKgs
-         bJbBptmLeUkrnIBvsbU7dGCeqeZV5c2GnIcnxDregkX0MA47Sf4/LsthdFQLCntmSSpS
-         lDqB3Sg9s1mVKXpH8rGLDUn39r1sa8uWlauqHahO9JXETkbxQ2gJO9wOvf2hvpR7bsNy
-         0bJQ==
-X-Gm-Message-State: APjAAAVO1jrEEqNqZtkwzYjI7tJkcM927HxyjlUx7zJFLbv3jtpt93vv
-        vOFlChZAgfWDE3vxlNeRRCw=
-X-Google-Smtp-Source: APXvYqw8XHm4leFwnC6sWR8BjhyMsv0e/YjeclMhzrktUUdT/wG1WxzN3IHekSLZEGkf3MnHklk0qA==
-X-Received: by 2002:a5d:6b0f:: with SMTP id v15mr22340960wrw.19.1568097336267;
-        Mon, 09 Sep 2019 23:35:36 -0700 (PDT)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
-        by smtp.gmail.com with ESMTPSA id u22sm32329249wru.72.2019.09.09.23.35.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Sep 2019 23:35:35 -0700 (PDT)
-Date:   Tue, 10 Sep 2019 08:35:32 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        Jeff Layton <jlayton@kernel.org>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Christian Brauner <christian@brauner.io>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Aleksa Sarai <asarai@suse.de>,
-        Linux Containers <containers@lists.linux-foundation.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v12 11/12] open: openat2(2) syscall
-Message-ID: <20190910063532.GB1579@gmail.com>
-References: <20190904201933.10736-1-cyphar@cyphar.com>
- <20190904201933.10736-12-cyphar@cyphar.com>
- <7236f382d72130f2afbbe8940e72cc67e5c6dce0.camel@kernel.org>
- <CAHk-=whZx97Nm-gUK0ppofj2RA2LLz2vmaDUTKSSV-+yYB9q_Q@mail.gmail.com>
- <C81D6D29-F6BF-48E6-A15E-3ABCB2C992E5@amacapital.net>
- <CAHk-=whe90Ec_RRrMRLE0=bJOHNS9YmVwcytVxmrfK3oCuZF6A@mail.gmail.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=JSfsPm8OOMeroYM52zzFmiDbu7+5YUx10p0JkzA7dx8=;
+        b=JopmYea3fE/w7QNA+xqWMpc03gAJFWEUUKvn1DjtHmErGCeCsyTXzPgui+vnKE2WM5
+         KSGfybAPB5lgPMtCXRDMKbK5/yda9nSWcFDKqnMKUbbMnk7H7RGzKTiYVTKxiq18UWse
+         8stNwCMEKtLzoR7m9iNfKgS4/+oXKFM5v+SMEWoWMBvjpl4+b8ivgprvvXEw/iy/Plxb
+         iCTMKhYdyLIUCo6jFoAVvYoYN7DewMtWzvaT81D6eirmpc7pREPUFals3Ks7xSuXewhD
+         YUByY5lheeCREozeWVg4KsehMPub3eNkV4Ij+kilW1K96O7IUX6QJs+ipfw8VV6u1IXL
+         v1Ag==
+X-Gm-Message-State: APjAAAXtazMCTXTfNg7u2xW/ScG1V92C8uOlkonS9DmXvKM4xyyNWZgW
+        6cOp89pML1yjOz5XLcNK30Ir0CsH6yo5VqC/9uY=
+X-Google-Smtp-Source: APXvYqwbr3u1y02e76/2W3wSR+GwWdg6PJL3TQGf0P0/L96UbtcPJGij9lMatNR5TFbo8oM/JpY3M7Bf7OBjM81fXAY=
+X-Received: by 2002:ac8:5306:: with SMTP id t6mr27972543qtn.204.1568108956064;
+ Tue, 10 Sep 2019 02:49:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=whe90Ec_RRrMRLE0=bJOHNS9YmVwcytVxmrfK3oCuZF6A@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 10 Sep 2019 11:49:00 +0200
+Message-ID: <CAK8P3a1Q0ec50n2ueWDKHirpem+SQvsv3sYXzw9EFRqXiUqxUg@mail.gmail.com>
+Subject: [GIT PULL] ipc: fix regressions from y2038 patches
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        y2038 Mailman List <y2038@lists.linaro.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        David Miller <davem@davemloft.net>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Matt Turner <mattst88@gmail.com>,
+        Anatoly Pugachev <matorola@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guo Ren <guoren@kernel.org>, Stafford Horne <shorne@gmail.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Manfred Spraul <manfred@colorfullife.com>,
+        Waiman Long <longman@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+The following changes since commit 089cf7f6ecb266b6a4164919a2e69bd2f938374a:
 
-* Linus Torvalds <torvalds@linux-foundation.org> wrote:
+  Linux 5.3-rc7 (2019-09-02 09:57:40 -0700)
 
-> On Sat, Sep 7, 2019 at 10:42 AM Andy Lutomirski <luto@amacapital.net> wrote:
-> >
-> > Linus, you rejected resolveat() because you wanted a *nice* API
-> 
-> No. I rejected resoveat() because it was a completely broken garbage
-> API that couldn't do even basic stuff right (like O_CREAT).
-> 
-> We have a ton of flag space in the new openat2() model, we might as
-> well leave the old flags alone that people are (a) used to and (b) we
-> have code to support _anyway_.
-> 
-> Making up a new flag namespace is only going to cause us - and users -
-> more work, and more confusion. For no actual advantage. It's not going
-> to be "cleaner". It's just going to be worse.
+are available in the Git repository at:
 
-I suspect there is a "add a clean new flags namespace" analogy to the 
-classic "add a clean new standard" XKCD:
+  git://git.kernel.org/pub/scm/linux/kernel/git/arnd/asm-generic.git
+tags/ipc-fixes
 
-	https://xkcd.com/927/
+for you to fetch changes up to fb377eb80c80339b580831a3c0fcce34a4c9d1ad:
 
-Thanks,
+  ipc: fix sparc64 ipc() wrapper (2019-09-07 21:42:25 +0200)
 
-	Ingo
+----------------------------------------------------------------
+ipc: fix regressions from y2038 patches
+
+These are two regression fixes for bugs that got introduced
+during the system call rework that went into linux-5.1
+but only bisected and fixed now:
+
+- One patch affects semtimedop() on many of the less
+  common 32-bit architectures, this just needs a single-line
+  bugfix.
+
+- The other affects only sparc64 and has a slightly more
+  invasive workaround to apply the same change to sparc64
+  that was done to the generic code used everywhere else.
+
+----------------------------------------------------------------
+Arnd Bergmann (2):
+      ipc: fix semtimedop for generic 32-bit architectures
+      ipc: fix sparc64 ipc() wrapper
+
+ arch/sparc/kernel/sys_sparc_64.c  | 33 ++++++++++++++++++---------------
+ include/linux/syscalls.h          | 19 +++++++++++++++++++
+ include/uapi/asm-generic/unistd.h |  2 +-
+ ipc/util.h                        | 25 ++-----------------------
+ 4 files changed, 40 insertions(+), 39 deletions(-)
