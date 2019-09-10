@@ -2,65 +2,43 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A48AAE993
-	for <lists+sparclinux@lfdr.de>; Tue, 10 Sep 2019 13:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E564AF0C8
+	for <lists+sparclinux@lfdr.de>; Tue, 10 Sep 2019 19:59:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725935AbfIJLzG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 10 Sep 2019 07:55:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39472 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726735AbfIJLzG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 10 Sep 2019 07:55:06 -0400
-Subject: Re: [GIT PULL] ipc: fix regressions from y2038 patches
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568116506;
-        bh=iQP6fsprLGcrFxmrVEu4EOZ1enga5prOit1bUnAqVfY=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=JCfJwv6Vl91ADLeVjaf+OgDr6DzOrxBB3+to8TARj4srYw5zVFGgP7KiO0X+DZ0PH
-         b1YI+Xsau3HNbwgWXm4vONGfEjWoo2d6tBhEBfqaNI1UmWcWhexfo4b5CSoflI4rZv
-         dFdvSqjTCXbzsfqSWeMkRIm/jtIY9NUvnnTtpfvA=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAK8P3a1Q0ec50n2ueWDKHirpem+SQvsv3sYXzw9EFRqXiUqxUg@mail.gmail.com>
-References: <CAK8P3a1Q0ec50n2ueWDKHirpem+SQvsv3sYXzw9EFRqXiUqxUg@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAK8P3a1Q0ec50n2ueWDKHirpem+SQvsv3sYXzw9EFRqXiUqxUg@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/arnd/asm-generic.git
- tags/ipc-fixes
-X-PR-Tracked-Commit-Id: fb377eb80c80339b580831a3c0fcce34a4c9d1ad
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 3120b9a6a3f7487f96af7bd634ec49c87ef712ab
-Message-Id: <156811650600.2184.136295943395140110.pr-tracker-bot@kernel.org>
-Date:   Tue, 10 Sep 2019 11:55:06 +0000
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        y2038 Mailman List <y2038@lists.linaro.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        David Miller <davem@davemloft.net>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Anatoly Pugachev <matorola@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guo Ren <guoren@kernel.org>, Stafford Horne <shorne@gmail.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Manfred Spraul <manfred@colorfullife.com>,
-        Waiman Long <longman@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>
+        id S1726795AbfIJR71 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Tue, 10 Sep 2019 13:59:27 -0400
+Received: from [177.107.35.186] ([177.107.35.186]:62581 "EHLO multicop.com.br"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726524AbfIJR71 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 10 Sep 2019 13:59:27 -0400
+X-Greylist: delayed 19680 seconds by postgrey-1.27 at vger.kernel.org; Tue, 10 Sep 2019 13:59:26 EDT
+Reply-To: richardlai88996@outlook.com
+From:   "Richard" <salesopolis@multicop.com.br>
+To:     sparclinux@vger.kernel.org
+Subject: Business presentation
+Date:   10 Sep 2019 14:59:39 -0300
+Message-ID: <20190910145939.846CDA80DEC7BBA1@multicop.com.br>
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The pull request you sent on Tue, 10 Sep 2019 11:49:00 +0200:
+Hello,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/arnd/asm-generic.git tags/ipc-fixes
+My name is Richard Lai, a Client Relations officer at one of 
+Canada’s 
+foremost Cryptocurrency exchange platforms. I have a confidencial 
+cryptocurrency business I would like to discuss with you. I got 
+your 
+details from an internet forum and I believe you can handle the 
+deal.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/3120b9a6a3f7487f96af7bd634ec49c87ef712ab
+I will await your reply to furnish you with further details.
 
-Thank you!
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+Best Regards,
+Richard
