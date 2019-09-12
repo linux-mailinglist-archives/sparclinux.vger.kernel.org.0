@@ -2,199 +2,194 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22955AFAB3
-	for <lists+sparclinux@lfdr.de>; Wed, 11 Sep 2019 12:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 123BCB0896
+	for <lists+sparclinux@lfdr.de>; Thu, 12 Sep 2019 08:04:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727664AbfIKKqC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 11 Sep 2019 06:46:02 -0400
-Received: from mx2a.mailbox.org ([80.241.60.219]:20039 "EHLO mx2a.mailbox.org"
+        id S1728927AbfILGDJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 12 Sep 2019 02:03:09 -0400
+Received: from foss.arm.com ([217.140.110.172]:57714 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726657AbfIKKqB (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 11 Sep 2019 06:46:01 -0400
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id AC930A2C82;
-        Wed, 11 Sep 2019 12:37:46 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter04.heinlein-hosting.de (spamfilter04.heinlein-hosting.de [80.241.56.122]) (amavisd-new, port 10030)
-        with ESMTP id ATeziMSY9H4D; Wed, 11 Sep 2019 12:37:41 +0200 (CEST)
-Date:   Wed, 11 Sep 2019 20:37:30 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Christian Brauner <christian@brauner.io>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
+        id S1727186AbfILGDI (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 12 Sep 2019 02:03:08 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9DF3F28;
+        Wed, 11 Sep 2019 23:03:07 -0700 (PDT)
+Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com [10.162.41.127])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3B4113F71F;
+        Wed, 11 Sep 2019 23:05:23 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org
+Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
         Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org,
-        patrick.bellasi@arm.com
-Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
- helpers
-Message-ID: <20190911103730.72unmfp7lsvvafxo@yavin>
-References: <20190904201933.10736-1-cyphar@cyphar.com>
- <20190904201933.10736-2-cyphar@cyphar.com>
- <20190905073205.GY2332@hirez.programming.kicks-ass.net>
- <20190905092622.tlb6nn3uisssdfbu@yavin.dot.cyphar.com>
- <20190905094305.GJ2349@hirez.programming.kicks-ass.net>
- <20190905105749.GW2386@hirez.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="xpghzs3x7rsccuuz"
-Content-Disposition: inline
-In-Reply-To: <20190905105749.GW2386@hirez.programming.kicks-ass.net>
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V2 0/2] mm/debug: Add tests for architecture exported page table helpers
+Date:   Thu, 12 Sep 2019 11:32:51 +0530
+Message-Id: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+This series adds a test validation for architecture exported page table
+helpers. Patch in the series adds basic transformation tests at various
+levels of the page table. Before that it exports gigantic page allocation
+function from HugeTLB.
 
---xpghzs3x7rsccuuz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This test was originally suggested by Catalin during arm64 THP migration
+RFC discussion earlier. Going forward it can include more specific tests
+with respect to various generic MM functions like THP, HugeTLB etc and
+platform specific tests.
 
-On 2019-09-05, Peter Zijlstra <peterz@infradead.org> wrote:
-> On Thu, Sep 05, 2019 at 11:43:05AM +0200, Peter Zijlstra wrote:
-> > On Thu, Sep 05, 2019 at 07:26:22PM +1000, Aleksa Sarai wrote:
-> > > On 2019-09-05, Peter Zijlstra <peterz@infradead.org> wrote:
-> > > > On Thu, Sep 05, 2019 at 06:19:22AM +1000, Aleksa Sarai wrote:
-> > > > > +/**
-> > > > > + * copy_struct_to_user: copy a struct to user space
-> > > > > + * @dst:   Destination address, in user space.
-> > > > > + * @usize: Size of @dst struct.
-> > > > > + * @src:   Source address, in kernel space.
-> > > > > + * @ksize: Size of @src struct.
-> > > > > + *
-> > > > > + * Copies a struct from kernel space to user space, in a way tha=
-t guarantees
-> > > > > + * backwards-compatibility for struct syscall arguments (as long=
- as future
-> > > > > + * struct extensions are made such that all new fields are *appe=
-nded* to the
-> > > > > + * old struct, and zeroed-out new fields have the same meaning a=
-s the old
-> > > > > + * struct).
-> > > > > + *
-> > > > > + * @ksize is just sizeof(*dst), and @usize should've been passed=
- by user space.
-> > > > > + * The recommended usage is something like the following:
-> > > > > + *
-> > > > > + *   SYSCALL_DEFINE2(foobar, struct foo __user *, uarg, size_t, =
-usize)
-> > > > > + *   {
-> > > > > + *      int err;
-> > > > > + *      struct foo karg =3D {};
-> > > > > + *
-> > > > > + *      // do something with karg
-> > > > > + *
-> > > > > + *      err =3D copy_struct_to_user(uarg, usize, &karg, sizeof(k=
-arg));
-> > > > > + *      if (err)
-> > > > > + *        return err;
-> > > > > + *
-> > > > > + *      // ...
-> > > > > + *   }
-> > > > > + *
-> > > > > + * There are three cases to consider:
-> > > > > + *  * If @usize =3D=3D @ksize, then it's copied verbatim.
-> > > > > + *  * If @usize < @ksize, then kernel space is "returning" a new=
-er struct to an
-> > > > > + *    older user space. In order to avoid user space getting inc=
-omplete
-> > > > > + *    information (new fields might be important), all trailing =
-bytes in @src
-> > > > > + *    (@ksize - @usize) must be zerored
-> > > >=20
-> > > > s/zerored/zero/, right?
-> > >=20
-> > > It should've been "zeroed".
-> >=20
-> > That reads wrong to me; that way it reads like this function must take
-> > that action and zero out the 'rest'; which is just wrong.
-> >=20
-> > This function must verify those bytes are zero, not make them zero.
-> >=20
-> > > > >                                          , otherwise -EFBIG is re=
-turned.
-> > > >=20
-> > > > 'Funny' that, copy_struct_from_user() below seems to use E2BIG.
-> > >=20
-> > > This is a copy of the semantics that sched_[sg]etattr(2) uses -- E2BI=
-G for
-> > > a "too big" struct passed to the kernel, and EFBIG for a "too big"
-> > > struct passed to user-space. I would personally have preferred EMSGSI=
-ZE
-> > > instead of EFBIG, but felt using the existing error codes would be le=
-ss
-> > > confusing.
-> >=20
-> > Sadly a recent commit:
-> >=20
-> >   1251201c0d34 ("sched/core: Fix uclamp ABI bug, clean up and robustify=
- sched_read_attr() ABI logic and code")
-> >=20
-> > Made the situation even 'worse'.
->=20
-> And thinking more about things; I'm not convinced the above patch is
-> actually right.
->=20
-> Do we really want to simply truncate all the attributes of the task?
->=20
-> And should we not at least set sched_flags when there are non-default
-> clamp values applied?
->=20
-> See; that is I think the primary bug that had chrt failing; we tried to
-> publish the default clamp values as !0.
+https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
 
-I just saw this patch in -rc8 -- should I even attempt to port
-sched_getattr(2) to copy_struct_to_user()? I agree that publishing a
-default non-zero value is a mistake -- once you do that, old user space
-will either get confused or lose information.
+Testing:
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+Successfully build and boot tested on both arm64 and x86 platforms without
+any test failing. Only build tested on some other platforms.
 
---xpghzs3x7rsccuuz
-Content-Type: application/pgp-signature; name="signature.asc"
+But I would really appreciate if folks can help validate this test on other
+platforms and report back problems. All suggestions, comments and inputs
+welcome. Thank you.
 
------BEGIN PGP SIGNATURE-----
+Changes in V2:
 
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXXjOZwAKCRCdlLljIbnQ
-EgeZAP9UC+Kf1AuY3XgSz6a5avhF1Eskr6DzrSR4wx0T62dnoQD9GcCXU0oVrERB
-0xz5K9MrU1nBr6ERqmBwygo/DVsTwAk=
-=oep8
------END PGP SIGNATURE-----
+- Fixed small typo error in MODULE_DESCRIPTION()
+- Fixed m64k build problems for lvalue concerns in pmd_xxx_tests()
+- Fixed dynamic page table level folding problems on x86 as per Kirril
+- Fixed second pointers during pxx_populate_tests() per Kirill and Gerald
+- Allocate and free pte table with pte_alloc_one/pte_free per Kirill
+- Modified pxx_clear_tests() to accommodate s390 lower 12 bits situation
+- Changed RANDOM_NZVALUE value from 0xbe to 0xff
+- Changed allocation, usage, free sequence for saved_ptep
+- Renamed VMA_FLAGS as VMFLAGS
+- Implemented a new method for random vaddr generation
+- Implemented some other cleanups
+- Dropped extern reference to mm_alloc()
+- Created and exported new alloc_gigantic_page_order()
+- Dropped the custom allocator and used new alloc_gigantic_page_order()
 
---xpghzs3x7rsccuuz--
+Changes in V1:
+
+https://lore.kernel.org/linux-mm/1567497706-8649-1-git-send-email-anshuman.khandual@arm.com/
+
+- Added fallback mechanism for PMD aligned memory allocation failure
+
+Changes in RFC V2:
+
+https://lore.kernel.org/linux-mm/1565335998-22553-1-git-send-email-anshuman.khandual@arm.com/T/#u
+
+- Moved test module and it's config from lib/ to mm/
+- Renamed config TEST_ARCH_PGTABLE as DEBUG_ARCH_PGTABLE_TEST
+- Renamed file from test_arch_pgtable.c to arch_pgtable_test.c
+- Added relevant MODULE_DESCRIPTION() and MODULE_AUTHOR() details
+- Dropped loadable module config option
+- Basic tests now use memory blocks with required size and alignment
+- PUD aligned memory block gets allocated with alloc_contig_range()
+- If PUD aligned memory could not be allocated it falls back on PMD aligned
+  memory block from page allocator and pud_* tests are skipped
+- Clear and populate tests now operate on real in memory page table entries
+- Dummy mm_struct gets allocated with mm_alloc()
+- Dummy page table entries get allocated with [pud|pmd|pte]_alloc_[map]()
+- Simplified [p4d|pgd]_basic_tests(), now has random values in the entries
+
+Original RFC V1:
+
+https://lore.kernel.org/linux-mm/1564037723-26676-1-git-send-email-anshuman.khandual@arm.com/
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Steven Price <Steven.Price@arm.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Sri Krishna chowdary <schowdary@nvidia.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Kirill A. Shutemov <kirill@shutemov.name>
+Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: x86@kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (2):
+  mm/hugetlb: Make alloc_gigantic_page() available for general use
+  mm/pgtable/debug: Add test validating architecture page table helpers
+
+ arch/x86/include/asm/pgtable_64_types.h |   2 +
+ include/linux/hugetlb.h                 |   9 +
+ mm/Kconfig.debug                        |  14 +
+ mm/Makefile                             |   1 +
+ mm/arch_pgtable_test.c                  | 429 ++++++++++++++++++++++++
+ mm/hugetlb.c                            |  24 +-
+ 6 files changed, 477 insertions(+), 2 deletions(-)
+ create mode 100644 mm/arch_pgtable_test.c
+
+-- 
+2.20.1
+
