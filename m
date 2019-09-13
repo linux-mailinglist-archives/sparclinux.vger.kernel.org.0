@@ -2,140 +2,191 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0077B1B49
-	for <lists+sparclinux@lfdr.de>; Fri, 13 Sep 2019 12:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39AA3B24FA
+	for <lists+sparclinux@lfdr.de>; Fri, 13 Sep 2019 20:20:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388009AbfIMKBG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 13 Sep 2019 06:01:06 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:60145 "EHLO pegase1.c-s.fr"
+        id S2389558AbfIMSUq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 13 Sep 2019 14:20:46 -0400
+Received: from foss.arm.com ([217.140.110.172]:47808 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387427AbfIMKBG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 13 Sep 2019 06:01:06 -0400
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 46VB3f0pVyz9tyjW;
-        Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
-        reason="1024-bit key; insecure key"
-        header.d=c-s.fr header.i=@c-s.fr header.b=Sqj8nI8N; dkim-adsp=pass;
-        dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id wR-kri8FtY2Q; Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 46VB3d6fTQz9tyjG;
-        Fri, 13 Sep 2019 12:01:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
-        t=1568368861; bh=2ALza02n3A6CEg96aj5aMUr3JRGvxRxQLYEMFbFE/UU=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Sqj8nI8NzbdvtlrbtrCYNcrM/TyIHT3s84kxgzLuc1bHrWIX3+Flnk1NoUeSpiScl
-         UtPpympvmV9LviqGRUz/Z7JinvogKFhxB4Hnk01VKvvK3cYgxdyYZdocRhBX7zGS2q
-         RYCcqoehg9GVxm+zOPGaVX3kpe6owDPMAy/ACXJk=
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id F0DC88B982;
-        Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id fVVtef9u6zrS; Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
-Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 95ADA8B958;
-        Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
-Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating architecture
- page table helpers
-To:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
- <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
- <ab0ca38b-1e4f-b636-f8b4-007a15903984@c-s.fr>
- <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
-From:   Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <95ed9d92-dd43-4c45-2e52-738aed7f2fb5@c-s.fr>
-Date:   Fri, 13 Sep 2019 12:01:00 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+        id S2389336AbfIMSUq (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 13 Sep 2019 14:20:46 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 217FE28;
+        Fri, 13 Sep 2019 11:20:45 -0700 (PDT)
+Received: from e120937-lin.cambridge.arm.com (e120937-lin.cambridge.arm.com [10.1.197.50])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A48663F71F;
+        Fri, 13 Sep 2019 11:20:42 -0700 (PDT)
+From:   Cristian Marussi <cristian.marussi@arm.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-arch@vger.kernel.org, mark.rutland@arm.com,
+        peterz@infradead.org, catalin.marinas@arm.com,
+        takahiro.akashi@linaro.org, james.morse@arm.com,
+        hidehiro.kawai.ez@hitachi.com, tglx@linutronix.de, will@kernel.org,
+        dave.martin@arm.com, linux-arm-kernel@lists.infradead.org,
+        mingo@redhat.com, x86@kernel.org, dzickus@redhat.com,
+        ehabkost@redhat.com, linux@armlinux.org.uk, davem@davemloft.net,
+        sparclinux@vger.kernel.org, hch@infradead.org
+Subject: [RFC PATCH v2 00/12] Unify SMP stop generic logic to common code
+Date:   Fri, 13 Sep 2019 19:19:41 +0100
+Message-Id: <20190913181953.45748-1-cristian.marussi@arm.com>
+X-Mailer: git-send-email 2.17.1
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hi all,
+
+the logic underlying SMP stop and kexec crash procedures, beside containing
+some arch-specific bits, is mostly generic and common across all archs:
+despite this fact, such logic is now scattered across all architectures and
+on some of them is flawed, in such a way that, under some specific
+conditions, you can end up with a CPU left still running after a panic and
+possibly lost across a subsequent kexec crash reboot. [1]
+
+Beside the flaws on some archs, there is anyway lots of code duplication,
+so this patch series attempts to move into common code all the generic SMP
+stop and crash logic, fixing observed issues, and leaving only the arch
+specific bits inside properly provided arch-specific helpers.
+
+An architecture willing to rely on this SMP common logic has to define its
+own helpers and set CONFIG_ARCH_USE_COMMON_SMP_STOP=y.
+
+This series wire this up for arm64, x86, arm, sparc64.
+
+Behaviour is not changed for architectures not adopting this new common
+logic.
+
+In v2 the SMP common stop/crash code is generalized a bit more to address
+the needs of the newly ported architectures (x86, arm, sparc64).
+
+Tested as follows:
+
+- arm64:
+ 1. boot/reboot/emergency reboot
+ 2. panic on a starting CPU within a 2 CPUs system (freezing properly)
+ 3. kexec reboot after a panic like 2. (not losing any CPU on reboot)
+ 4. kexec reboot after a panic like 2. and a simultaneous reboot
+    (instrumenting code to delay the stop messages transmission
+     to have time to inject a reboot -f)
+
+- x86:
+ 1. boot/reboot/emergency reboot/emergency reboot with VMX enabled
+ 2. panic on a starting CPU within a 2 CPUs system
+ 2. panic sysrq 4-CPus
+ 3. kexec reboot after a panic
+
+- arm:
+1. boot
+
+- sparc64:
+1. build
+
+A couple more of still to be done potential enhancements have been noted
+on specific commits, and a lot more of testing remains surely to be done
+as of now, but, in the context of this RFC, any thoughts on this approach
+in general ?
+
+Thanks,
+
+Cristian
 
 
-Le 13/09/2019 à 11:02, Anshuman Khandual a écrit :
-> 
->>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
->>
->> #ifdefs have to be avoided as much as possible, see below
-> 
-> Yeah but it has been bit difficult to avoid all these $ifdef because of the
-> availability (or lack of it) for all these pgtable helpers in various config
-> combinations on all platforms.
+Changes:
+--------
 
-As far as I can see these pgtable helpers should exist everywhere at 
-least via asm-generic/ files.
-
-Can you spot a particular config which fails ?
-
-> 
->>
-
-[...]
-
->>> +#if !defined(__PAGETABLE_PUD_FOLDED) && !defined(__ARCH_HAS_5LEVEL_HACK)
->>
->> The same can be done here.
-> 
-> IIRC not only the page table helpers but there are data types (pxx_t) which
-> were not present on various configs and these wrappers help prevent build
-> failures. Any ways will try and see if this can be improved further. But
-> meanwhile if you have some suggestions, please do let me know.
-
-pgt_t and pmd_t are everywhere I guess.
-then pud_t and p4d_t have fallbacks in asm-generic files.
-
-So it shouldn't be an issue. Maybe if a couple of arches miss them, the 
-best would be to fix the arches, since that's the purpose of your 
-testsuite isn't it ?
+v1-->v2:
+- rebased on v5.3-rc8
+- moved common Kconfig bits to arch/Kconfig
+- extended SMP common stop/crash generic code to address new architectures
+  needs: custom wait/timeouts, max_retries, attempt numbers.
+- ported x86 to SMP common stop/crash code
+- ported arm to SMP common stop/crash code
+- ported sparc64 to SMP common stop code
 
 
-Christophe
+[1]
+
+[root@arch ~]# echo 1 > /sys/devices/system/cpu/cpu1/online
+[root@arch ~]# [  152.583368] ------------[ cut here ]------------
+[  152.583872] kernel BUG at arch/arm64/kernel/cpufeature.c:852!
+[  152.584693] Internal error: Oops - BUG: 0 [#1] PREEMPT SMP
+[  152.585228] Modules linked in:
+[  152.586040] CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.3.0-rc5-00001-gcabd12118c4a-dirty #2
+[  152.586218] Hardware name: Foundation-v8A (DT)
+[  152.586478] pstate: 000001c5 (nzcv dAIF -PAN -UAO)
+[  152.587260] pc : has_cpuid_feature+0x35c/0x360
+[  152.587398] lr : verify_local_elf_hwcaps+0x6c/0xf0
+[  152.587520] sp : ffff0000118bbf60
+[  152.587605] x29: ffff0000118bbf60 x28: 0000000000000000
+[  152.587784] x27: 0000000000000000 x26: 0000000000000000
+[  152.587882] x25: ffff00001167a010 x24: ffff0000112f59f8
+[  152.587992] x23: 0000000000000000 x22: 0000000000000000
+[  152.588085] x21: ffff0000112ea018 x20: ffff000010fe5518
+[  152.588180] x19: ffff000010ba3f30 x18: 0000000000000036
+[  152.588285] x17: 0000000000000000 x16: 0000000000000000
+[  152.588380] x15: 0000000000000000 x14: ffff80087a821210
+[  152.588481] x13: 0000000000000000 x12: 0000000000000000
+[  152.588599] x11: 0000000000000080 x10: 00400032b5503510
+[  152.588709] x9 : 0000000000000000 x8 : ffff000010b93204
+[  152.588810] x7 : 00000000800001d8 x6 : 0000000000000005
+[  152.588910] x5 : 0000000000000000 x4 : 0000000000000000
+[  152.589021] x3 : 0000000000000000 x2 : 0000000000008000
+[  152.589121] x1 : 0000000000180480 x0 : 0000000000180480
+[  152.589379] Call trace:
+[  152.589646]  has_cpuid_feature+0x35c/0x360
+[  152.589763]  verify_local_elf_hwcaps+0x6c/0xf0
+[  152.589858]  check_local_cpu_capabilities+0x88/0x118
+[  152.589968]  secondary_start_kernel+0xc4/0x168
+[  152.590530] Code: d53801e0 17ffff58 d5380600 17ffff56 (d4210000)
+[  152.592215] ---[ end trace 80ea98416149c87e ]---
+[  152.592734] Kernel panic - not syncing: Attempted to kill the idle task!
+[  152.593173] Kernel Offset: disabled
+[  152.593501] CPU features: 0x0004,20c02008
+[  152.593678] Memory Limit: none
+[  152.594208] ---[ end Kernel panic - not syncing: Attempted to kill the idle task! ]---
+[root@arch ~]# bash: echo: write error: Input/output error
+[root@arch ~]#
+[root@arch ~]#
+[root@arch ~]# echo HELO
+HELO
+
+
+Cristian Marussi (12):
+  smp: add generic SMP-stop support to common code
+  smp: unify crash_ and smp_send_stop() logic
+  smp: coordinate concurrent crash/smp stop calls
+  smp: address races of starting CPUs while stopping
+  arm64: smp: use generic SMP stop common code
+  arm64: smp: use SMP crash-stop common code
+  arm64: smp: add arch specific cpu parking helper
+  x86: smp: use generic SMP stop common code
+  x86: smp: use SMP crash-stop common code
+  arm: smp: use generic SMP stop common code
+  arm: smp: use SMP crash-stop common code
+  sparc64: smp: use generic SMP stop common code
+
+ arch/Kconfig                    |   7 ++
+ arch/arm/Kconfig                |   1 +
+ arch/arm/kernel/machine_kexec.c |  27 ++---
+ arch/arm/kernel/smp.c           |  18 +---
+ arch/arm64/Kconfig              |   1 +
+ arch/arm64/include/asm/smp.h    |   2 -
+ arch/arm64/kernel/smp.c         | 127 +++++++-----------------
+ arch/sparc/Kconfig              |   1 +
+ arch/sparc/kernel/smp_64.c      |  15 +--
+ arch/x86/Kconfig                |   1 +
+ arch/x86/include/asm/reboot.h   |   2 +
+ arch/x86/include/asm/smp.h      |   6 --
+ arch/x86/kernel/crash.c         |  27 +----
+ arch/x86/kernel/reboot.c        |  50 ++++++----
+ arch/x86/kernel/smp.c           |  98 ++++++++----------
+ include/linux/smp.h             | 109 ++++++++++++++++++++
+ kernel/panic.c                  |  26 -----
+ kernel/smp.c                    | 170 ++++++++++++++++++++++++++++++++
+ 18 files changed, 418 insertions(+), 270 deletions(-)
+
+-- 
+2.17.1
+
