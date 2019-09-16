@@ -2,104 +2,161 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E452FB373B
-	for <lists+sparclinux@lfdr.de>; Mon, 16 Sep 2019 11:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17729B39FD
+	for <lists+sparclinux@lfdr.de>; Mon, 16 Sep 2019 14:07:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728001AbfIPJiM (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 16 Sep 2019 05:38:12 -0400
-Received: from foss.arm.com ([217.140.110.172]:42482 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725850AbfIPJiM (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 16 Sep 2019 05:38:12 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A259D1000;
-        Mon, 16 Sep 2019 02:38:11 -0700 (PDT)
-Received: from [10.1.197.50] (e120937-lin.cambridge.arm.com [10.1.197.50])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 379A93F59C;
-        Mon, 16 Sep 2019 02:38:09 -0700 (PDT)
-Subject: Re: [RFC PATCH v2 00/12] Unify SMP stop generic logic to common code
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        mark.rutland@arm.com, peterz@infradead.org,
-        catalin.marinas@arm.com, takahiro.akashi@linaro.org,
-        james.morse@arm.com, hidehiro.kawai.ez@hitachi.com,
-        tglx@linutronix.de, will@kernel.org, dave.martin@arm.com,
-        linux-arm-kernel@lists.infradead.org, mingo@redhat.com,
-        x86@kernel.org, dzickus@redhat.com, ehabkost@redhat.com,
-        davem@davemloft.net, sparclinux@vger.kernel.org, hch@infradead.org
-References: <20190913181953.45748-1-cristian.marussi@arm.com>
- <20190913182713.GB13294@shell.armlinux.org.uk>
-From:   Cristian Marussi <cristian.marussi@arm.com>
-Message-ID: <81e7e4da-93a3-c234-6ed6-0d709289776c@arm.com>
-Date:   Mon, 16 Sep 2019 10:38:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1732374AbfIPMHh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 16 Sep 2019 08:07:37 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2225 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727795AbfIPMHh (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 16 Sep 2019 08:07:37 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 2EF0699DDD3E64D216AB;
+        Mon, 16 Sep 2019 20:07:27 +0800 (CST)
+Received: from [127.0.0.1] (10.74.191.121) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Mon, 16 Sep 2019
+ 20:07:23 +0800
+Subject: Re: [PATCH v4] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+To:     Michal Hocko <mhocko@kernel.org>
+CC:     <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
+        <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
+        <mattst88@gmail.com>, <benh@kernel.crashing.org>,
+        <paulus@samba.org>, <mpe@ellerman.id.au>,
+        <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
+        <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>,
+        <dalias@libc.org>, <davem@davemloft.net>, <ralf@linux-mips.org>,
+        <paul.burton@mips.com>, <jhogan@kernel.org>,
+        <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>,
+        <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
+        <anshuman.khandual@arm.com>, <tglx@linutronix.de>, <cai@lca.pw>,
+        <robin.murphy@arm.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <hpa@zytor.com>, <x86@kernel.org>,
+        <dave.hansen@linux.intel.com>, <luto@kernel.org>,
+        <peterz@infradead.org>, <len.brown@intel.com>, <axboe@kernel.dk>,
+        <dledford@redhat.com>, <jeffrey.t.kirsher@intel.com>,
+        <linux-alpha@vger.kernel.org>, <naveen.n.rao@linux.vnet.ibm.com>,
+        <mwb@linux.vnet.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
+        <sparclinux@vger.kernel.org>, <tbogendoerfer@suse.de>,
+        <linux-mips@vger.kernel.org>, <rafael@kernel.org>,
+        <gregkh@linuxfoundation.org>
+References: <1568535656-158979-1-git-send-email-linyunsheng@huawei.com>
+ <20190916084328.GC10231@dhcp22.suse.cz>
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+Message-ID: <8df06e27-ad21-bf14-dbd6-cc8f5a274ec2@huawei.com>
+Date:   Mon, 16 Sep 2019 20:07:22 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
 MIME-Version: 1.0
-In-Reply-To: <20190913182713.GB13294@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20190916084328.GC10231@dhcp22.suse.cz>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.74.191.121]
+X-CFilter-Loop: Reflected
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 13/09/2019 19:27, Russell King - ARM Linux admin wrote:
-> On Fri, Sep 13, 2019 at 07:19:41PM +0100, Cristian Marussi wrote:
->> Tested as follows:
+On 2019/9/16 16:43, Michal Hocko wrote:
+> On Sun 15-09-19 16:20:56, Yunsheng Lin wrote:
+>> When passing the return value of dev_to_node() to cpumask_of_node()
+>> without checking if the device's node id is NUMA_NO_NODE, there is
+>> global-out-of-bounds detected by KASAN.
 >>
->> - arm:
->> 1. boot
+>> >From the discussion [1], NUMA_NO_NODE really means no node affinity,
+>> which also means all cpus should be usable. So the cpumask_of_node()
+>> should always return all cpus online when user passes the node id as
+>> NUMA_NO_NODE, just like similar semantic that page allocator handles
+>> NUMA_NO_NODE.
+>>
+>> But we cannot really copy the page allocator logic. Simply because the
+>> page allocator doesn't enforce the near node affinity. It just picks it
+>> up as a preferred node but then it is free to fallback to any other numa
+>> node. This is not the case here and node_to_cpumask_map will only restrict
+>> to the particular node's cpus which would have really non deterministic
+>> behavior depending on where the code is executed. So in fact we really
+>> want to return cpu_online_mask for NUMA_NO_NODE.
+>>
+>> Some arches were already NUMA_NO_NODE aware, so only change them to return
+>> cpu_online_mask and use NUMA_NO_NODE instead of "-1".
+>>
+>> Also there is a debugging version of node_to_cpumask_map() for x86 and
+>> arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
+>> patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
+>> And "fix" a sign "bug" since it is for debugging and should catch all the
+>> error cases.
+>>
+>> [1] https://lore.kernel.org/patchwork/patch/1125789/
+>> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+>> Suggested-by: Michal Hocko <mhocko@kernel.org>
 > 
-> So this basically means the code paths you're touching are untested on
-> ARM... given that, and the variety of systems we have out there, why
-> should the patches touching ARM be taken?
+> The change makes sense to me. I wish this particular thing wasn't
+> duplicated so heavily - maybe we can unify all of them and use a common
+> code? In a separate patch most likely...
 > 
+> I would also not change cpu_all_mask -> cpu_online_mask in this patch.
+> That is worth a patch on its own with some explanation. I haven't
+> checked but I would suspect that alpha simply doesn't support cpu
+> hotplug so the two things are the same. But this needs some explanation.
 
-Yes, but sincerely it's an RFC, so I was not expecting any change to be picked up
-by anyone at this stage: the expectation was to have some feedback on the general
-approach used in the common code side of the series (patches 01-02-03-04):
+In commit 44c36aed43b5 ("alpha: cpumask_of_node() should handle -1 as a node")
+and commit d797396f3387 ("MIPS: cpumask_of_node() should handle -1 as a node")
+mention below:
+"pcibus_to_node can return -1 if we cannot determine which node a pci bus
+is on. If passed -1, cpumask_of_node will negatively index the lookup array
+and pull in random data"
 
-is it worth ? is it over-engineered ? is it badly coded ? is it complete crap ?
+From the cpu hotplug process: take_cpu_down() -> __cpu_disable().
+alpha does not define the __cpu_disable() function, so it seems alpha does not
+support HOTPLUG_CPU.
 
-In fact in the cover letter I stated:
-
-> A couple more of still to be done potential enhancements have been noted
-> on specific commits, and a lot more of testing remains surely to be done
-> as of now, but, in the context of this RFC, any thoughts on this approach
-> in general ?
-
-I didn't want to port and test a lot of architectures before having some basic
-feedback: in fact I did port more than one arch just to verify if they could
-easily all fit into the new common code logic/layout I introduced, and, also,
-to show that it could be generally useful to more than on arch. (as asked in V1)
-
-As you noticed, though, I did certainly test as of now a lot more on some of them:
-
-- arm64: because is where the initial bug was observed, so I had to verify if all
-  of the above at least also fixed something at the end
-
-- x86: because the original x86 SMP stop code differs more than other archs and so
-  it was a good challenge to see if it could fit inside the new common SMP code logic
-  (and in fact I had to extend the common framework to fit also x86 SMP stop needs)
-
-Moreover within this series structure it is not mandatory for all archs to switch to the
-new common logic: if not deemed important they can simply stick to their old code, while
-other archs can switch to it.
-
-So testing and porting to further archs is certainly work in progress at this time,
-but in this RFC stage, I could be wrong, but I considered the arch-patches in this series more
-as an example to showcase the usefulness (or not) of the series related to the common code
-changes: I did not extensively tested all archs to the their full extent, so more fixes
-could come in V3 (if ever) together with more testing and archs.
-
-> Given that you're an ARM Ltd employee, I'm sure you can find 32-bit
-> systems to test - or have ARM Ltd got rid of everything that isn't
-> 64-bit? ;)
 > 
+> Other than that the patch looks good to me. Feel free to add
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> 
+> [...]
+>> diff --git a/arch/alpha/include/asm/topology.h b/arch/alpha/include/asm/topology.h
+>> index 5a77a40..836c9e2 100644
+>> --- a/arch/alpha/include/asm/topology.h
+>> +++ b/arch/alpha/include/asm/topology.h
+>> @@ -31,7 +31,7 @@ static const struct cpumask *cpumask_of_node(int node)
+>>  	int cpu;
+>>  
+>>  	if (node == NUMA_NO_NODE)
+>> -		return cpu_all_mask;
+>> +		return cpu_online_mask;
+>>  
+>>  	cpumask_clear(&node_to_cpumask_map[node]);
+>>  
+> [...]
+> 
+>> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+>> index e6dad60..c676ffb 100644
+>> --- a/arch/x86/mm/numa.c
+>> +++ b/arch/x86/mm/numa.c
+>> @@ -861,9 +861,12 @@ void numa_remove_cpu(int cpu)
+>>   */
+>>  const struct cpumask *cpumask_of_node(int node)
+>>  {
+>> -	if (node >= nr_node_ids) {
+>> +	if (node == NUMA_NO_NODE)
+>> +		return cpu_online_mask;
+>> +
+>> +	if ((unsigned int)node >= nr_node_ids) {
+>>  		printk(KERN_WARNING
+>> -			"cpumask_of_node(%d): node > nr_node_ids(%u)\n",
+>> +			"cpumask_of_node(%d): node >= nr_node_ids(%u)\n",
+>>  			node, nr_node_ids);
+>>  		dump_stack();
+>>  		return cpu_none_mask;
+> 
+> Why do we need this?
 
-well...worst case there's always Amazon anyway ... :D
+As the commit log says, the above cpumask_of_node() is for debugging,
+it should catch other "node < 0" cases except NUMA_NO_NODE.
 
-Cheers
+Thanks for reviewing.
 
-Cristian
