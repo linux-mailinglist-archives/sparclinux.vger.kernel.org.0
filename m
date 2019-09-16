@@ -2,93 +2,554 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76518B3ACE
-	for <lists+sparclinux@lfdr.de>; Mon, 16 Sep 2019 14:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD4CDB3B11
+	for <lists+sparclinux@lfdr.de>; Mon, 16 Sep 2019 15:14:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732883AbfIPMzK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 16 Sep 2019 08:55:10 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:53924 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732709AbfIPMzK (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 16 Sep 2019 08:55:10 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 2CEFAD60FEE03B91BC25;
-        Mon, 16 Sep 2019 20:55:06 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Mon, 16 Sep 2019
- 20:55:02 +0800
-Subject: Re: [PATCH v4] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To:     Michal Hocko <mhocko@kernel.org>
-CC:     <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
-        <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
-        <mattst88@gmail.com>, <benh@kernel.crashing.org>,
-        <paulus@samba.org>, <mpe@ellerman.id.au>,
-        <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
-        <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>,
-        <dalias@libc.org>, <davem@davemloft.net>, <ralf@linux-mips.org>,
-        <paul.burton@mips.com>, <jhogan@kernel.org>,
-        <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>,
-        <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
-        <anshuman.khandual@arm.com>, <tglx@linutronix.de>, <cai@lca.pw>,
-        <robin.murphy@arm.com>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <hpa@zytor.com>, <x86@kernel.org>,
-        <dave.hansen@linux.intel.com>, <luto@kernel.org>,
-        <peterz@infradead.org>, <len.brown@intel.com>, <axboe@kernel.dk>,
-        <dledford@redhat.com>, <jeffrey.t.kirsher@intel.com>,
-        <linux-alpha@vger.kernel.org>, <naveen.n.rao@linux.vnet.ibm.com>,
-        <mwb@linux.vnet.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-        <sparclinux@vger.kernel.org>, <tbogendoerfer@suse.de>,
-        <linux-mips@vger.kernel.org>, <rafael@kernel.org>,
-        <gregkh@linuxfoundation.org>
-References: <1568535656-158979-1-git-send-email-linyunsheng@huawei.com>
- <20190916084328.GC10231@dhcp22.suse.cz>
- <8df06e27-ad21-bf14-dbd6-cc8f5a274ec2@huawei.com>
- <20190916122359.GG10231@dhcp22.suse.cz>
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <c3a90839-703e-718a-a489-9905e52bbc46@huawei.com>
-Date:   Mon, 16 Sep 2019 20:55:01 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+        id S1732956AbfIPNOv (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 16 Sep 2019 09:14:51 -0400
+Received: from correo.registraduria.gov.co ([201.232.123.13]:6840 "EHLO
+        registraduria.gov.co" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727742AbfIPNOv (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 16 Sep 2019 09:14:51 -0400
+X-Greylist: delayed 901 seconds by postgrey-1.27 at vger.kernel.org; Mon, 16 Sep 2019 09:14:50 EDT
+DKIM-Signature: v=1; a=rsa-sha256; d=registraduria.gov.co; s=registraduria.gov.co; c=relaxed/simple;
+        q=dns/txt; i=@registraduria.gov.co; t=1568638632; x=1571230632;
+        h=From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=KvFaQjy6O7n1myS076/dDSqoTFY5YkAG9QOAmI7oOqE=;
+        b=BqgtUcCxcOoqoUlJKopVIxMPRlXyvuJmyVEeClYOG7GJmq++0JNwOazopUvLS52D
+        seCEMamIz14LX2fgQqVm04+5OPx/FUyqfQXY7hF1sZgQmJbUbA4BBCNh8p2uycOk
+        bbMvYoR3JIRjC0EzvAWNrXUdh/phYorFgqreGNjIUsQ=;
+X-AuditID: c0a8e818-52fff7000001bab9-53-5d7f86a8cbee
+Received: from RNEC-MSG-00.registraduria.gov.co (Unknown_Domain [172.20.60.177])
+        by registraduria.gov.co (Symantec Messaging Gateway) with SMTP id 64.37.47801.8A68F7D5; Mon, 16 Sep 2019 07:57:12 -0500 (-05)
+Received: from RNEC-MSG-00.registraduria.gov.co (172.20.60.177) by
+ RNEC-MSG-00.registraduria.gov.co (172.20.60.177) with Microsoft SMTP Server
+ (TLS) id 15.0.1395.4; Mon, 16 Sep 2019 07:58:31 -0500
+Received: from RNEC-MSG-00.registraduria.gov.co ([fe80::2c92:7fcd:a2d3:3ac5])
+ by RNEC-MSG-00.registraduria.gov.co ([fe80::2c92:7fcd:a2d3:3ac5%20]) with
+ mapi id 15.00.1395.000; Mon, 16 Sep 2019 07:58:31 -0500
+From:   Registraduria Municipal Caramanta - Antioquia 
+        <CaramantaAntioquia@registraduria.gov.co>
+To:     "NO-REPLY@MICROSOFT.NET" <NO-REPLY@MICROSOFT.NET>
+Subject: =?iso-8859-1?Q?Se_non_verifichi_il_tuo_account_entro_le_prossime_24_ore,_?=
+ =?iso-8859-1?Q?il_tuo_account_verr=E0_sospeso.?=
+Thread-Topic: =?iso-8859-1?Q?Se_non_verifichi_il_tuo_account_entro_le_prossime_24_ore,_?=
+ =?iso-8859-1?Q?il_tuo_account_verr=E0_sospeso.?=
+Thread-Index: AQHVbIxGwrV5varixU6kFz/B17jUgg==
+Date:   Mon, 16 Sep 2019 12:58:30 +0000
+Message-ID: <1568667559759.4076@registraduria.gov.co>
+Accept-Language: es-ES, en-US
+Content-Language: es-ES
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [192.168.5.43]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <20190916122359.GG10231@dhcp22.suse.cz>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+X-Brightmail-Tracker: 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
+        EF0HAAA=
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 2019/9/16 20:23, Michal Hocko wrote:
-> On Mon 16-09-19 20:07:22, Yunsheng Lin wrote:
-> [...]
->>>> @@ -861,9 +861,12 @@ void numa_remove_cpu(int cpu)
->>>>   */
->>>>  const struct cpumask *cpumask_of_node(int node)
->>>>  {
->>>> -	if (node >= nr_node_ids) {
->>>> +	if (node == NUMA_NO_NODE)
->>>> +		return cpu_online_mask;
->>>> +
->>>> +	if ((unsigned int)node >= nr_node_ids) {
->>>>  		printk(KERN_WARNING
->>>> -			"cpumask_of_node(%d): node > nr_node_ids(%u)\n",
->>>> +			"cpumask_of_node(%d): node >= nr_node_ids(%u)\n",
->>>>  			node, nr_node_ids);
->>>>  		dump_stack();
->>>>  		return cpu_none_mask;
->>>
->>> Why do we need this?
->>
->> As the commit log says, the above cpumask_of_node() is for debugging,
->> it should catch other "node < 0" cases except NUMA_NO_NODE.
-> 
-> OK, I would just make it a separate patch.
 
-Ok, thanks.
 
-> 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Aggiorna il tuo account
+
+Il nostro record indica che il tuo account non =E8 stato aggiornato, il che=
+ potrebbe comportare la chiusura del tuo account. Se non aggiorni il tuo ac=
+count, non sarai pi=F9 in grado di inviare e ricevere e-mail e ti verr=E0 n=
+egato l'accesso a molte delle nostre ultime conversazioni, contatti e alleg=
+ati migliorati.
+
+Prenditi un minuto per aggiornare il tuo account per un'esperienza di maili=
+ng pi=F9 rapida e completa.
+
+Fai cl<http://hfnfgewf.000webhostapp.com/>ic qui per aggiornare il tuo <htt=
+p://jhgewads.000webhostapp.com/> account?
+
+Nota: il mancato aggiornamento della propria casella di posta comporter=E0 =
+la cancellazione permanente del proprio account.
+
+Grazie molto,
+Il team di sicurezza
+
+Copyright =A9 2019 Webmail .Inc. Tutti i diritti riservati.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?
+
+
+
+Confidencialidad: La informaci=F3n contenida en este mensaje de e-mail y su=
+s anexos, es confidencial y est=E1 reservada para el destinatario =FAnicame=
+nte. Si usted no es el destinatario o un empleado o agente responsable de e=
+nviar este mensaje al destinatario final, se le notifica que no est=E1 auto=
+rizado para revisar, retransmitir, imprimir, copiar, usar o distribuir este=
+ e-mail o sus anexos. Si usted ha recibido este e-mail por error, por favor=
+ comun=EDquelo inmediatamente v=EDa e-mail al remitente y tenga la amabilid=
+ad de borrarlo de su computadora o cualquier otro banco de datos. Muchas gr=
+acias.
+
+Confidentiality Notice: The information contained in this email message, in=
+cluding any attachment, is confidential and is intended only for the person=
+ or entity to which it is addressed. If you are neither the intended recipi=
+ent nor the employee or agent responsible for delivering this message to th=
+e intended recipient, you are hereby notified that you may not review, retr=
+ansmit, convert to hard copy, copy, use or distribute this email message or=
+ any attachments to it. If you have received this email in error, please co=
+ntact the sender immediately and delete this message from any computer or o=
+ther data bank. Thank you.
