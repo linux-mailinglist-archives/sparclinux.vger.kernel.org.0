@@ -2,75 +2,121 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57E92B8D94
-	for <lists+sparclinux@lfdr.de>; Fri, 20 Sep 2019 11:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE1F2B8E7A
+	for <lists+sparclinux@lfdr.de>; Fri, 20 Sep 2019 12:28:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408460AbfITJZM (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 20 Sep 2019 05:25:12 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:43039 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2408445AbfITJZM (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 20 Sep 2019 05:25:12 -0400
-Received: by mail-vs1-f68.google.com with SMTP id b1so4209425vsr.10
-        for <sparclinux@vger.kernel.org>; Fri, 20 Sep 2019 02:25:12 -0700 (PDT)
+        id S2393464AbfITK2L (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 20 Sep 2019 06:28:11 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:33392 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2393456AbfITK2K (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 20 Sep 2019 06:28:10 -0400
+Received: by mail-ed1-f66.google.com with SMTP id c4so5945613edl.0;
+        Fri, 20 Sep 2019 03:28:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=tc9aX7Tjv2WQn2C3iuDLjEgw+Yk8v3ESykmpOr0ooVc=;
-        b=NBQobMImWFU2Gj6XoleJOAZNrSP2rlNgCbJFCJF8qDPPJl9meCDvInaOmeXgEdsTd6
-         ZWRk/Wr58opRSNwNOTdI5Q+Nd1oNUXT0kL7CsasMAB9f141NPaaGWzLp/EWB3B6DGovc
-         0ICD3r6WQcxFpOARbNjODlZS9XmS8ZJNabIafCohxuM/DlLAlznReoPIIaO4cqewXrgt
-         9NWIcnnPMxnmXa+juLomdLjet0IpB873J5RzrzULs4NqfFmECrbUFFD1YWl9kN45dRSO
-         eQMME5VDJPmbZgiI78HIdlipWukfpRg16Qx3wVi9a97y7vmqNTcgmiW484SKYu3bmLvJ
-         KUCw==
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=1xe6a2/0gVc3Xq1ZtS/ISAo8XWj2OhYSkGlgwGDDGFE=;
+        b=pNY8p/u+GbxDTGOHVCOISF3kkioYS3CUw/I4pjLC2irZliKRTpOqqe/aFdbNiGte2X
+         ROGBWYy/1CQTtFQgW+MJ9SrYtQjec/x0tVU6na7GxiaCKjwfQsKMpyO4zZzeau1+Db1A
+         SpWnRiK6srczHnVAetC5UbWIpgHILAJjNzFMDYvdkAxf1r2bTVz48x0XNr2jmNu8HVaj
+         zj1tZgW2+zwBkV/DhNDsTrE8MZo6TyB1YFcf6pOES9eE+Ckr5MKbHF+QJU7sazDORpYT
+         TFHi7isk+VO2lj+QZtWj3Lg21Pm9ihMrKeFJoEcbrMnvQKKIfgbHc8GSA26upnczMD18
+         lKJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=tc9aX7Tjv2WQn2C3iuDLjEgw+Yk8v3ESykmpOr0ooVc=;
-        b=C2rJ2o+XLW6VJjxfInzOEmCL6qVB5PW/Ryf6Nnd3QH21TKeH0xAWPRrdzH2h96q9Xo
-         iQGJJnYjHwSO2OhPbIQNzFQadt4LB/ff6op6Lx3NXWsn1PTY7Yu6nXAgl4eOMvrG5fDZ
-         4GqEr14MH5EWxcpiBNwlc4sWjO9+EE/kWH04gQVsissV3/OlnbtGL4/nx4+EiSRNF7FG
-         k1x9462gklGE8KAoWAn5ocFlYq/IGI1SlhDpGO1+H0ZYePptar7ZRDZogeQjOqnG+mmg
-         BAs6ceSSuwTGOQUZjLfEG4UwuVNDXr0sUs8knzG5BFd2z0wcB/cwH8tfA3vd95NyOjal
-         VMPg==
-X-Gm-Message-State: APjAAAUDebeiAIi2vKAd6lPZneMfe+Anxnz7Xrcpx3kGnxHhK7wa6GxM
-        GEUX19mMYRaRxqd9j17EDdfYvYK3JVDAud68zBo=
-X-Google-Smtp-Source: APXvYqy15+1JovK/SarMEPzK6A17lzjQ/YRCnd0Ie5hWoduWxj5f6krGHWZWBoRT4HIhtA7DFwEvoHocdQHh1yXY7Qk=
-X-Received: by 2002:a67:4306:: with SMTP id q6mr2061685vsa.36.1568971511803;
- Fri, 20 Sep 2019 02:25:11 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=1xe6a2/0gVc3Xq1ZtS/ISAo8XWj2OhYSkGlgwGDDGFE=;
+        b=svKa3CeoxRTmhcmnjEOpg9OXOVfVsqIcq3uSwiBCQuLPblq16nXhAulcn7RoYKoWss
+         aLRLaO0JyBo8crksp9oNJ0ugwSOiAsy6/1McuSfpu8cIu1uC6EjM/qISwRnT40oX89SQ
+         f7eRvuZGtD8I9nBkbabK7wXp8D1NcOLIlx7zZl7xkFB9p4brQiYYzcC0BhTW1XKgKmf5
+         vdKmNE/y7lD+BzJzp7L8MLgMSTTGNxD4lehaUu/44mpK8kA/8eBYKMjwjqamb3uTFaVD
+         uBSaU05jRLURo5qdqUMKV0EWGjPNH7Jl5nXS0RGfILLNuY5N5eCe+dvuXYBaZFr+h5Ag
+         qTmA==
+X-Gm-Message-State: APjAAAUlB+k/YQ/OEjso4ZoflhGczzFJOdct9GnBZRMSVNY5xUZQcQlH
+        5rCApWtcpGogznn5FRmzTZsJq26LMzbuovY/bHZvJ2oW
+X-Google-Smtp-Source: APXvYqzlgPv4JSSlSf1+BofyowDIzFDwFG3zB5iIlMvP/1bWPpneUY31JajU98BSHnq4SSh9zgxPw41zme+g4GLKtcw=
+X-Received: by 2002:a17:906:a84d:: with SMTP id dx13mr18844955ejb.230.1568975288528;
+ Fri, 20 Sep 2019 03:28:08 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ab0:1841:0:0:0:0:0 with HTTP; Fri, 20 Sep 2019 02:25:11
- -0700 (PDT)
-Reply-To: mr_abayo@outlook.com
-From:   UNITED BANK FOR AFRICA <mrabayouba@gmail.com>
-Date:   Fri, 20 Sep 2019 10:25:11 +0100
-Message-ID: <CAP1o4vkoTd+D+CtBg6JSfh+kohmi_h5NUpdTfqNGnde9nR-ybw@mail.gmail.com>
-Subject: Attention: Fund Beneficiary
-To:     undisclosed-recipients:;
+From:   Anatoly Pugachev <matorola@gmail.com>
+Date:   Fri, 20 Sep 2019 13:27:57 +0300
+Message-ID: <CADxRZqz_TF7jyGtbg9cVSnCGh2VzfCoRGBdCU_yE_v1cveq1Pg@mail.gmail.com>
+Subject: [sparc64] pktcdvd: setup of pktcdvd device failed
+To:     linux-block@vger.kernel.org
+Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
+        Linux Kernel list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Attention:Fund Beneficiary
+Hello!
+
+Getting the following call trace on boot on sparc64 ldom/machine with
+current git kernel:
+
+...
+[   13.352975] aes_sparc64: Using sparc64 aes opcodes optimized AES
+implementation
+[   13.428002] ------------[ cut here ]------------
+[   13.428081] WARNING: CPU: 21 PID: 586 at
+drivers/block/pktcdvd.c:2597 pkt_setup_dev+0x2e4/0x5a0 [pktcdvd]
+[   13.428147] Attempt to register a non-SCSI queue
+[   13.428184] Modules linked in: pktcdvd libdes cdrom aes_sparc64
+n2_rng md5_sparc64 sha512_sparc64 rng_core sha256_sparc64 flash
+sha1_sparc64 ip_tables x_tables ipv6 crc_ccitt nf_defrag_ipv6 autofs4
+ext4 crc16 mbcache jbd2 raid10 raid456 async_raid6_recov async_memcpy
+async_pq async_xor xor async_tx raid6_pq raid1 raid0 multipath linear
+md_mod crc32c_sparc64
+[   13.428452] CPU: 21 PID: 586 Comm: pktsetup Not tainted
+5.3.0-10169-g574cc4539762 #1234
+[   13.428507] Call Trace:
+[   13.428542]  [00000000004635c0] __warn+0xc0/0x100
+[   13.428582]  [0000000000463634] warn_slowpath_fmt+0x34/0x60
+[   13.428626]  [000000001045b244] pkt_setup_dev+0x2e4/0x5a0 [pktcdvd]
+[   13.428674]  [000000001045ccf4] pkt_ctl_ioctl+0x94/0x220 [pktcdvd]
+[   13.428724]  [00000000006b95c8] do_vfs_ioctl+0x628/0x6e0
+[   13.428764]  [00000000006b96c8] ksys_ioctl+0x48/0x80
+[   13.428803]  [00000000006b9714] sys_ioctl+0x14/0x40
+[   13.428847]  [0000000000406294] linux_sparc_syscall+0x34/0x44
+[   13.428890] irq event stamp: 4181
+[   13.428924] hardirqs last  enabled at (4189): [<00000000004e0a74>]
+console_unlock+0x634/0x6c0
+[   13.428984] hardirqs last disabled at (4196): [<00000000004e0540>]
+console_unlock+0x100/0x6c0
+[   13.429048] softirqs last  enabled at (3978): [<0000000000b2e2d8>]
+__do_softirq+0x498/0x520
+[   13.429110] softirqs last disabled at (3967): [<000000000042cfb4>]
+do_softirq_own_stack+0x34/0x60
+[   13.429172] ---[ end trace 2220ca468f32967d ]---
+[   13.430018] pktcdvd: setup of pktcdvd device failed
+[   13.455589] des_sparc64: Using sparc64 des opcodes optimized DES
+implementation
+[   13.515334] camellia_sparc64: Using sparc64 camellia opcodes
+optimized CAMELLIA implementation
+[   13.522856] pktcdvd: setup of pktcdvd device failed
+[   13.529327] pktcdvd: setup of pktcdvd device failed
+[   13.532932] pktcdvd: setup of pktcdvd device failed
+[   13.536165] pktcdvd: setup of pktcdvd device failed
+[   13.539372] pktcdvd: setup of pktcdvd device failed
+[   13.542834] pktcdvd: setup of pktcdvd device failed
+[   13.546536] pktcdvd: setup of pktcdvd device failed
+[   15.431071] XFS (dm-0): Mounting V5 Filesystem
+...
 
 
-This is to inform you that your payment file was directed to us by
-WORLD BANK OFFICE UNITED STATES OF AMERICA SIGNED JIM YONG KIM WORLD
-BANK GROUP PRESIDENT to immediately carry out the transfer of your
-$10.5M to you
+Full boot log at [1] and kernel config [2].
 
-However sequel to this directive we are ready to proceed on the
-transfer but you have to comply and follows all our instruction for
-the smooth success of your fund
+4.12.0 kernel have different message on boot for pktcdvd module
+(something with circular locking)...
 
-Kindly send us copy of your identification  your Mobile contact phone number
-Your your occupation
-Note there are rules and procedures
+4.14.0 kernel have OOPS, boot log at [3]
 
-yours Sincerely
-MR ABAYO .W
-TELEX DIRECTOR
-UNITED BANK FOR AFRICA
+starting from 4.16.0 and up to current git kernel messages are/almost
+the same ...
+
+1. https://github.com/mator/sparc64-dmesg/blob/master/dmesg-5.3.0-10169-g574cc4539762
+2. https://github.com/mator/sparc64-dmesg/blob/master/config-5.3.0-10169-g574cc4539762.gz
+3. https://github.com/mator/sparc64-dmesg/blob/master/dmesg-4.14.0
