@@ -2,47 +2,45 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA693BA211
-	for <lists+sparclinux@lfdr.de>; Sun, 22 Sep 2019 13:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5039BA216
+	for <lists+sparclinux@lfdr.de>; Sun, 22 Sep 2019 13:47:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728583AbfIVLnr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 22 Sep 2019 07:43:47 -0400
-Received: from condef-09.nifty.com ([202.248.20.74]:24709 "EHLO
-        condef-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728182AbfIVLnq (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 22 Sep 2019 07:43:46 -0400
-Received: from conssluserg-06.nifty.com ([10.126.8.85])by condef-09.nifty.com with ESMTP id x8MBcCJp029556
-        for <sparclinux@vger.kernel.org>; Sun, 22 Sep 2019 20:38:12 +0900
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170]) (authenticated)
-        by conssluserg-06.nifty.com with ESMTP id x8MBboIs029333;
-        Sun, 22 Sep 2019 20:37:51 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com x8MBboIs029333
+        id S1728654AbfIVLrc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 22 Sep 2019 07:47:32 -0400
+Received: from conssluserg-02.nifty.com ([210.131.2.81]:41473 "EHLO
+        conssluserg-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728615AbfIVLrb (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 22 Sep 2019 07:47:31 -0400
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id x8MBlGws008977;
+        Sun, 22 Sep 2019 20:47:17 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com x8MBlGws008977
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1569152272;
-        bh=heJJ1E8z2OF+Bkbzuz+fJP7qaqLA0Jz+ZEzalzA6OcE=;
+        s=dec2015msa; t=1569152837;
+        bh=c33RUhQDyA7qTPf1bNP6RgmMg8enhc22BBtjuXN8Qeg=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=tRRnmevt2F2XzfDrVOi5Y/GJM0/k+5ug+MnMoZImRYJoK0Rn59/AEx/o9p0IAcf2G
-         pnY9bFICleDDjIn9I5mpp0fJhvFBeO3ZGDhixF6EaPaP3fjRUhple5TV7u0LOjsxbo
-         X9suFK0ZpKjnmT5UnVeGvaizea26ZhjipsXIadPIajrRthLdPsVH6FDuyZtgLpK8KF
-         MHtOAUzn7x13X53FrRxgXxnX1Bpfqea6Eyzb6PEGxqd0I5VTaMUvu7KLmzRaKEdNrT
-         NfjO4wr37jK4M3V9fMRtZtMCBiMzqv8doBJXKZEdpmClGmOfNZXU/DvFYiEGvfRIkg
-         +9xGWE7qbdt7A==
-X-Nifty-SrcIP: [209.85.221.170]
-Received: by mail-vk1-f170.google.com with SMTP id u192so2414197vkb.12;
-        Sun, 22 Sep 2019 04:37:51 -0700 (PDT)
-X-Gm-Message-State: APjAAAVMgE0vvBv2mAvL6byYk+hGXyDVosAfVq4zgwXuT2CgvH5XA35v
-        QjY+623+BfTNqav6GZKPN1fwGIAMYHGu91SROc8=
-X-Google-Smtp-Source: APXvYqwD23dWYlUIqoO3aLWtzUrmlYXMVvJwshiDgLvssIJEIHp/4vGBgsOwx2HqI6Es8ATi/Ea8eMZxtKfhOcLPJ+k=
-X-Received: by 2002:ac5:cc63:: with SMTP id w3mr7428561vkm.34.1569152270351;
- Sun, 22 Sep 2019 04:37:50 -0700 (PDT)
+        b=bfJjSrkclHoGzcbaD65NOPYFaDw5jh9vNa4Hucc3Hpzfib0y/P0VLQOibgbQrm6EC
+         jWnsMnNwMesC6yNBk4H2Kr4KvSS9tMUJSj7DK6gj4HQebK++FFEClOT1ZGrYpczFoZ
+         9VUlkB7m3VKPo4BupkudSNn7clrzYZ1jD4gGaiUgWtbgN7YymNfy2VCP7M6YL4AONV
+         GoBTmZSshVgyFTT5TrqkxXL+8DBiJkPg+Z5DvrdXdTD5SkFr+6u8xYaPcjb0Dt6Bbs
+         Eq3zuExieFSxRzkOcU2Gpa+DwU5syp/hw8JzQVSkZTwTTaC4sR8ce2lYTVhuDtXmbW
+         hb0EejQMK87Bw==
+X-Nifty-SrcIP: [209.85.217.53]
+Received: by mail-vs1-f53.google.com with SMTP id b123so7628804vsb.5;
+        Sun, 22 Sep 2019 04:47:17 -0700 (PDT)
+X-Gm-Message-State: APjAAAVzCEC6lhbTEzkfcNj/bLiPca3L79pRnZoUOuwEQumhbXz6Pm6q
+        JA5sDVIunlq3M1mZSigGsgryDggZSTYwOWebz10=
+X-Google-Smtp-Source: APXvYqw3dTewpaEao15w5tFbkbFX9jEXfG6viAF/I1+GLCE2J9qMR25B6KWYv82e0fVVJFwHDftJ2qo+S/ilfzP/i0s=
+X-Received: by 2002:a67:ec09:: with SMTP id d9mr7546079vso.215.1569152836113;
+ Sun, 22 Sep 2019 04:47:16 -0700 (PDT)
 MIME-Version: 1.0
 References: <CADxRZqwizJ2HXdiU7aSH9t=ecBEHnxdVVsQ4wUpTYRpCgdXf=w@mail.gmail.com>
  <CADxRZqzx=8jNQuvi8WN=7U_G5a0f+v_GODHH8q3QJVYmg=n1LA@mail.gmail.com>
 In-Reply-To: <CADxRZqzx=8jNQuvi8WN=7U_G5a0f+v_GODHH8q3QJVYmg=n1LA@mail.gmail.com>
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Sun, 22 Sep 2019 20:37:14 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAR3szhzH89ujCPq5Xz8rm0xvSjJdx0TebsaU8yiroXXVg@mail.gmail.com>
-Message-ID: <CAK7LNAR3szhzH89ujCPq5Xz8rm0xvSjJdx0TebsaU8yiroXXVg@mail.gmail.com>
+Date:   Sun, 22 Sep 2019 20:46:40 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASgNh04dAn6Fe4A2Dfhu55Vtk=jeNqC6_HNQHbyNMkoZA@mail.gmail.com>
+Message-ID: <CAK7LNASgNh04dAn6Fe4A2Dfhu55Vtk=jeNqC6_HNQHbyNMkoZA@mail.gmail.com>
 Subject: Re: latest git kernel (v5.3-11506-gf7c3bf8fa7e5) does not compile
 To:     Anatoly Pugachev <matorola@gmail.com>
 Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
@@ -52,8 +50,6 @@ Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
-
-Hi Anatoly,
 
 On Sun, Sep 22, 2019 at 5:33 PM Anatoly Pugachev <matorola@gmail.com> wrote:
 >
@@ -81,22 +77,6 @@ On Sun, Sep 22, 2019 at 5:33 PM Anatoly Pugachev <matorola@gmail.com> wrote:
 > > make: *** [Makefile:1667: arch/sparc] Error
 > >
 > > but I was able to compile successfully v5.3-10169-g574cc4539762
-
-
-Thanks for the report, and apology for the breakage.
-
-Please check this patch.
-https://lore.kernel.org/patchwork/patch/1130469/
-
-I hope it will fix the build error.
-
-Thanks.
-
-
-
-
-
-
 > >
 > > Not sure my bisect log is right, but here it is:
 > >
@@ -211,6 +191,15 @@ Thanks.
 > PS: unable to compile kernel makes its bisection impossible =(
 
 
+I have no idea about this error because this
+seems unrelated to commit 54b8ae66ae1a3454a7645d159a482c31cd89ab33
+
+From the error message "Cannot allocate memory",
+maybe, your machine was in the memory shortage.
+
+(If you have the steps to reproduce it, please share it.)
+
+Thanks.
 
 -- 
 Best Regards
