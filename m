@@ -2,258 +2,137 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75406BB687
-	for <lists+sparclinux@lfdr.de>; Mon, 23 Sep 2019 16:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C843BB7AF
+	for <lists+sparclinux@lfdr.de>; Mon, 23 Sep 2019 17:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407484AbfIWOUS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 23 Sep 2019 10:20:18 -0400
-Received: from foss.arm.com ([217.140.110.172]:43176 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2407008AbfIWOUR (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 23 Sep 2019 10:20:17 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E9C161000;
-        Mon, 23 Sep 2019 07:20:16 -0700 (PDT)
-Received: from [10.1.197.50] (e120937-lin.cambridge.arm.com [10.1.197.50])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8091C3F59C;
-        Mon, 23 Sep 2019 07:20:14 -0700 (PDT)
-Subject: Re: [RFC PATCH v2 01/12] smp: add generic SMP-stop support to common
- code
-From:   Cristian Marussi <cristian.marussi@arm.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-arch@vger.kernel.org, mark.rutland@arm.com,
-        peterz@infradead.org, catalin.marinas@arm.com,
-        takahiro.akashi@linaro.org, james.morse@arm.com,
-        hidehiro.kawai.ez@hitachi.com, tglx@linutronix.de, will@kernel.org,
-        dave.martin@arm.com, linux-arm-kernel@lists.infradead.org,
-        mingo@redhat.com, x86@kernel.org, dzickus@redhat.com,
-        ehabkost@redhat.com, linux@armlinux.org.uk, davem@davemloft.net,
-        sparclinux@vger.kernel.org, hch@infradead.org
-References: <20190913181953.45748-1-cristian.marussi@arm.com>
- <20190913181953.45748-2-cristian.marussi@arm.com>
-Message-ID: <1d7e90b7-71d8-3c12-9c1b-7049a1d7e32f@arm.com>
-Date:   Mon, 23 Sep 2019 15:20:12 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727133AbfIWPRR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 23 Sep 2019 11:17:17 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:43144 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725851AbfIWPRQ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 23 Sep 2019 11:17:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=BQxmWDdzGIFE7S88Yi92UG2auB0mbgTz3kRl3Taa3FI=; b=t8VS6tSnmrlzM+Dk9CyzGPLMt
+        N8isqB9JLD9XPobqT8fc3dfzorxqXbSBbiePOLH9slgkt7c8/x6l847kAc6lrKnV82aAO5bDorIMu
+        YjjxsscQB6tQ50zT9SFofb+NFESL297iEmmU8/JL29dFjRYomSrEu+QShhTIPw86PoSsMyCz+N/PP
+        LCH1puLwbn+9Vw8dPbpuqmsdVuBEbsqqLtzmB4pFdqhwkPpTebf2j/lYsEMVsp/CuFdG7Po9RBYan
+        uhdIMZv8znk6MUH0UjYoAWnErPz6C7zS3yuGzEh25kpJXJFr0fXRrE7G8EnTUy9x8JgpkFEGhRUbf
+        J3QKktDWQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+        id 1iCQ3h-0004cS-VH; Mon, 23 Sep 2019 15:15:26 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A8633303DFD;
+        Mon, 23 Sep 2019 17:14:34 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id D4E7C20C3E176; Mon, 23 Sep 2019 17:15:19 +0200 (CEST)
+Date:   Mon, 23 Sep 2019 17:15:19 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Yunsheng Lin <linyunsheng@huawei.com>
+Cc:     catalin.marinas@arm.com, will@kernel.org, mingo@redhat.com,
+        bp@alien8.de, rth@twiddle.net, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, benh@kernel.crashing.org, paulus@samba.org,
+        mpe@ellerman.id.au, heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
+        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
+        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
+        robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, hpa@zytor.com, x86@kernel.org,
+        dave.hansen@linux.intel.com, luto@kernel.org, len.brown@intel.com,
+        axboe@kernel.dk, dledford@redhat.com, jeffrey.t.kirsher@intel.com,
+        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
+        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
+        linux-mips@vger.kernel.org, rafael@kernel.org, mhocko@kernel.org,
+        gregkh@linuxfoundation.org
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20190923151519.GE2369@hirez.programming.kicks-ass.net>
+References: <1568724534-146242-1-git-send-email-linyunsheng@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <20190913181953.45748-2-cristian.marussi@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1568724534-146242-1-git-send-email-linyunsheng@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 13/09/2019 19:19, Cristian Marussi wrote:
-> There was a lot of code duplication across architectures regarding the
-> SMP stop procedures' logic; moreover some of this duplicated code logic
-> happened to be similarly faulty across a few architectures: while fixing
-> such logic, move such generic logic as much as possible inside common
-> code.
+On Tue, Sep 17, 2019 at 08:48:54PM +0800, Yunsheng Lin wrote:
+> When passing the return value of dev_to_node() to cpumask_of_node()
+> without checking if the device's node id is NUMA_NO_NODE, there is
+> global-out-of-bounds detected by KASAN.
 > 
-> Collect all the common logic related to SMP stop operations into the
-> common SMP code; any architecture willing to use such centralized logic
-> can select CONFIG_ARCH_USE_COMMON_STOP=y and provide the related
-> arch-specific helpers: in such a scenario, those architectures will
-> transparently start using the common code provided by smp_send_stop()
-> common function.
+> From the discussion [1], NUMA_NO_NODE really means no node affinity,
+> which also means all cpus should be usable. So the cpumask_of_node()
+> should always return all cpus online when user passes the node id as
+> NUMA_NO_NODE, just like similar semantic that page allocator handles
+> NUMA_NO_NODE.
 > 
-> On the other side, Architectures not willing to use common code SMP stop
-> logic will simply leave CONFIG_ARCH_USE_COMMON_STOP undefined and carry
-> on executing their local arch-specific smp_send_stop() as before.
+> But we cannot really copy the page allocator logic. Simply because the
+> page allocator doesn't enforce the near node affinity. It just picks it
+> up as a preferred node but then it is free to fallback to any other numa
+> node. This is not the case here and node_to_cpumask_map will only restrict
+> to the particular node's cpus which would have really non deterministic
+> behavior depending on where the code is executed. So in fact we really
+> want to return cpu_online_mask for NUMA_NO_NODE.
 > 
-> Suggested-by: Dave Martin <Dave.Martin@arm.com>
-> Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-> ---
-> v1 --> v2
-> - moved related Kconfig to common code inside arch/Kconfig
-> - introduced additional CONFIG_USE_COMMON_STOP selected by
->   CONFIG_ARCH_USE_COMMON_STOP
-> - introduced helpers to let architectures optionally alter
->   the default common code behaviour while waiting for CPUs:
->   change timeout or wait for ever. (will be needed by x86)
-> ---
->  arch/Kconfig        |  7 +++++
->  include/linux/smp.h | 55 +++++++++++++++++++++++++++++++++++++
->  kernel/smp.c        | 67 +++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 129 insertions(+)
+> Also there is a debugging version of node_to_cpumask_map() for x86 and
+> arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
+> patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
 > 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index a7b57dd42c26..89766e6c0ac8 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -166,6 +166,13 @@ config ARCH_USE_BUILTIN_BSWAP
->  	 instructions should set this. And it shouldn't hurt to set it
->  	 on architectures that don't have such instructions.
->  
-> +config ARCH_USE_COMMON_SMP_STOP
-> +       def_bool n
-> +
-> +config USE_COMMON_SMP_STOP
-> +       depends on SMP && ARCH_USE_COMMON_SMP_STOP
-> +       def_bool y
-> +
->  config KRETPROBES
->  	def_bool y
->  	depends on KPROBES && HAVE_KRETPROBES
-> diff --git a/include/linux/smp.h b/include/linux/smp.h
-> index 6fc856c9eda5..381a14bfcd96 100644
-> --- a/include/linux/smp.h
-> +++ b/include/linux/smp.h
-> @@ -77,6 +77,61 @@ int smp_call_function_single_async(int cpu, call_single_data_t *csd);
+> [1] https://lore.kernel.org/patchwork/patch/1125789/
+
+That is bloody unusable, don't do that. Use:
+
+  https://lkml.kernel.org/r/$MSGID
+
+if anything. Then I can find it in my local mbox without having to
+resort to touching a mouse and shitty browser software.
+
+(also patchwork is absolute crap for reading email threads)
+
+Anyway, I found it -- I think, I refused to click the link. I replied
+there.
+
+> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+> Suggested-by: Michal Hocko <mhocko@kernel.org>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+
+
+
+> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> index 4123100e..9859acb 100644
+> --- a/arch/x86/mm/numa.c
+> +++ b/arch/x86/mm/numa.c
+> @@ -861,6 +861,9 @@ void numa_remove_cpu(int cpu)
 >   */
->  extern void smp_send_stop(void);
->  
-> +#ifdef CONFIG_USE_COMMON_SMP_STOP
-> +static atomic_t wait_forever;
-> +static atomic_t wait_timeout = ATOMIC_INIT(USEC_PER_SEC);
-> +
-> +/*
-> + * An Architecture can optionally decide to use this helper to change the
-> + * waiting behaviour of common STOP logic, forcing to wait forever for
-> + * all CPUs to be stopped.
-> + */
-> +static inline void smp_stop_set_wait_forever(int wait)
-> +{
-> +	atomic_set(&wait_forever, wait);
-> +	/* ensure wait atomic-op is visible */
-> +	smp_mb__after_atomic();
-> +}
-> +
+>  const struct cpumask *cpumask_of_node(int node)
+>  {
+> +	if (node == NUMA_NO_NODE)
+> +		return cpu_online_mask;
 
-These new helpers I added in V2 to let x86 configure wait/timeout SMP common stop behavior
-are in fact deadly broken as of now since based on underlying static header-globals.
-I'll fix in V3.
+This mandates the caller holds cpus_read_lock() or something, I'm pretty
+sure that if I put:
 
-Cheers
+	lockdep_assert_cpus_held();
 
-Cristian
+here, it comes apart real quick. Without holding the cpu hotplug lock,
+the online mask is gibberish.
 
+> +
+>  	if ((unsigned)node >= nr_node_ids) {
+>  		printk(KERN_WARNING
+>  			"cpumask_of_node(%d): (unsigned)node >= nr_node_ids(%u)\n",
 
-> +/*
-> + * An Architecture can optionally decide to use this helper to change the
-> + * waiting timeout of common STOP logic. A ZERO timeout means no timeout
-> + * at all as long as wait_forever was not previously set.
-> + *
-> + * Note that wait_forever and timeout must remain individually selectable:
-> + * so you can temporarily request wait_forever while keeping the same timeout
-> + * settings.
-> + */
-> +static inline void smp_stop_set_wait_timeout_us(unsigned long timeout)
-> +{
-> +	atomic_set(&wait_timeout, timeout);
-> +	/* ensure timeout atomic-op is visible */
-> +	smp_mb__after_atomic();
-> +}
-> +
-> +/* Retrieve the current wait settings. */
-> +static inline bool smp_stop_get_wait_timeout_us(unsigned long *timeout)
-> +{
-> +	if (timeout)
-> +		*timeout = atomic_read(&wait_timeout);
-> +	return atomic_read(&wait_forever);
-> +}
-> +
-> +/*
-> + * Any Architecture willing to use STOP common logic implementation
-> + * MUST at least provide the arch_smp_stop_call() helper which is in
-> + * charge of its own arch-specific CPU-stop mechanism.
-> + */
-> +extern void arch_smp_stop_call(cpumask_t *cpus);
-> +
-> +/*
-> + * An Architecture CAN also provide the arch_smp_cpus_stop_complete()
-> + * dedicated helper, to perform any final arch-specific operation on
-> + * the local CPU once the other CPUs have been successfully stopped.
-> + */
-> +void arch_smp_cpus_stop_complete(void);
-> +#endif
-> +
->  /*
->   * sends a 'reschedule' event to another CPU:
->   */
-> diff --git a/kernel/smp.c b/kernel/smp.c
-> index 7dbcb402c2fc..72f99bf13fd0 100644
-> --- a/kernel/smp.c
-> +++ b/kernel/smp.c
-> @@ -20,6 +20,7 @@
->  #include <linux/sched.h>
->  #include <linux/sched/idle.h>
->  #include <linux/hypervisor.h>
-> +#include <linux/delay.h>
->  
->  #include "smpboot.h"
->  
-> @@ -817,3 +818,69 @@ int smp_call_on_cpu(unsigned int cpu, int (*func)(void *), void *par, bool phys)
->  	return sscs.ret;
->  }
->  EXPORT_SYMBOL_GPL(smp_call_on_cpu);
-> +
-> +#ifdef CONFIG_USE_COMMON_SMP_STOP
-> +void __weak arch_smp_cpus_stop_complete(void) { }
-> +
-> +static inline bool any_other_cpus_online(cpumask_t *mask,
-> +					 unsigned int this_cpu_id)
-> +{
-> +	cpumask_copy(mask, cpu_online_mask);
-> +	cpumask_clear_cpu(this_cpu_id, mask);
-> +
-> +	return !cpumask_empty(mask);
-> +}
-> +
-> +/*
-> + * This centralizes the common logic to:
-> + *
-> + *  - evaluate which CPUs are online and needs to be notified for stop,
-> + *    while considering properly the status of the calling CPU
-> + *
-> + *  - call the arch-specific helpers to request the effective stop
-> + *
-> + *  - wait for the stop operation to be completed across all involved CPUs
-> + *    monitoring the cpu_online_mask
-> + */
-> +void smp_send_stop(void)
-> +{
-> +	unsigned int this_cpu_id;
-> +	cpumask_t mask;
-> +
-> +	this_cpu_id = smp_processor_id();
-> +	if (any_other_cpus_online(&mask, this_cpu_id)) {
-> +		bool wait;
-> +		unsigned long timeout;
-> +		unsigned int this_cpu_online = cpu_online(this_cpu_id);
-> +
-> +		if (system_state <= SYSTEM_RUNNING)
-> +			pr_crit("stopping secondary CPUs\n");
-> +		arch_smp_stop_call(&mask);
-> +
-> +		/*
-> +		 * Defaults to wait up to one second for other CPUs to stop;
-> +		 * architectures can modify the default timeout or request
-> +		 * to wait forever.
-> +		 *
-> +		 * Here we rely simply on cpu_online_mask to sync with
-> +		 * arch-specific stop code without bloating the code with an
-> +		 * additional atomic_t ad-hoc counter.
-> +		 *
-> +		 * As a consequence we'll need proper explicit memory barriers
-> +		 * in case the other CPUs running the arch-specific stop-code
-> +		 * would need to commit to memory some data (like saved_regs).
-> +		 */
-> +		wait = smp_stop_get_wait_timeout_us(&timeout);
-> +		while (num_online_cpus() > this_cpu_online &&
-> +		       (wait || timeout--))
-> +			udelay(1);
-> +		/* ensure any stopping-CPUs memory access is made visible */
-> +		smp_rmb();
-> +		if (num_online_cpus() > this_cpu_online)
-> +			pr_warn("failed to stop secondary CPUs %*pbl\n",
-> +				cpumask_pr_args(cpu_online_mask));
-> +	}
-> +	/* Perform final (possibly arch-specific) work on this CPU */
-> +	arch_smp_cpus_stop_complete();
-> +}
-> +#endif
-> 
-
+I still think this makes absolutely no sense what so ever.
