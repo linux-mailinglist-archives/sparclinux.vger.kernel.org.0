@@ -2,124 +2,85 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16985BD6C5
-	for <lists+sparclinux@lfdr.de>; Wed, 25 Sep 2019 05:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B824BD7FD
+	for <lists+sparclinux@lfdr.de>; Wed, 25 Sep 2019 07:57:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2411578AbfIYDgS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 24 Sep 2019 23:36:18 -0400
-Received: from foss.arm.com ([217.140.110.172]:40906 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404947AbfIYDgS (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 24 Sep 2019 23:36:18 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 06DD8337;
-        Tue, 24 Sep 2019 20:36:17 -0700 (PDT)
-Received: from [10.162.41.120] (p8cg001049571a15.blr.arm.com [10.162.41.120])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DB6CB3F694;
-        Tue, 24 Sep 2019 20:36:05 -0700 (PDT)
-Subject: Re: [PATCH V3 0/2] mm/debug: Add tests for architecture exported page
- table helpers
-To:     Mike Rapoport <rppt@linux.ibm.com>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1568961203-18660-1-git-send-email-anshuman.khandual@arm.com>
- <20190924115101.p6y7vpbtgmj5qjku@box> <20190924123146.GC5202@linux.ibm.com>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <a5acc1cc-d046-e1d8-f39b-e3e785588d5e@arm.com>
-Date:   Wed, 25 Sep 2019 09:06:23 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1730367AbfIYF5H (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 25 Sep 2019 01:57:07 -0400
+Received: from condef-10.nifty.com ([202.248.20.75]:31847 "EHLO
+        condef-10.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729231AbfIYF5H (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 25 Sep 2019 01:57:07 -0400
+Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-10.nifty.com with ESMTP id x8P5pnGv019334
+        for <sparclinux@vger.kernel.org>; Wed, 25 Sep 2019 14:51:49 +0900
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id x8P5pigA015756;
+        Wed, 25 Sep 2019 14:51:45 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x8P5pigA015756
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1569390705;
+        bh=DZd0prVsm5iXFJeF/5wUAhscNazal1cY2qNS6eLIwHE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=1BIgxrPubN3fH2k9tHL33FE8pDukVug8D+UBixq6bujgh/3ttFqCOMBggZ3tPdIin
+         J9F0J2Gvx1wYOi3rwdpxQAekIzxu41wGl6Xbsw06bqu0X2PqzMOrWnigDHPt8o6IeA
+         bOw77zLpcn9GGnxHKGsTmfQ7vkY8ZxNyF2WD2zOOUCjKjTbbEfkL53JZCE5ZUOVy+M
+         Cr/Kx6YgpgJZIvWCGq1UEp58x2u7wJtE45zKtIZjnizLNiH5r4QIFNGHiwug7HQ4TK
+         +Lbo+hZkvaVQx84KH0lPZZXNMxZob9FPOIFv/7wyokYc9V7MsbA8AZQs7P2Gkc+WWo
+         Kf2me0bF+QKOg==
+X-Nifty-SrcIP: [209.85.217.42]
+Received: by mail-vs1-f42.google.com with SMTP id v10so2995661vsc.7;
+        Tue, 24 Sep 2019 22:51:45 -0700 (PDT)
+X-Gm-Message-State: APjAAAWYLSFfRyn69Dzq2a98Qlk/X4i70PdWOCNKnJIY0FsFbqTxxTRG
+        4xhD2W6fRXq3FmfQgFa8okWBRnGo30wXi4JlAbc=
+X-Google-Smtp-Source: APXvYqyJukBpMN0q4q5ZmP6lYw2kfEPwLuOa13kelNZQNAX+KRRTQcCQrXDpb2xl6oP68fvkoZuCrZbEAOmCM4LHns0=
+X-Received: by 2002:a67:1e87:: with SMTP id e129mr3884818vse.179.1569390704125;
+ Tue, 24 Sep 2019 22:51:44 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190924123146.GC5202@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CADxRZqwizJ2HXdiU7aSH9t=ecBEHnxdVVsQ4wUpTYRpCgdXf=w@mail.gmail.com>
+ <CADxRZqzx=8jNQuvi8WN=7U_G5a0f+v_GODHH8q3QJVYmg=n1LA@mail.gmail.com>
+ <CAK7LNAR3szhzH89ujCPq5Xz8rm0xvSjJdx0TebsaU8yiroXXVg@mail.gmail.com> <CADxRZqy-muFfpfCj6ZMPboSMEKXukTDg0oUZc6udvNreoJ6pgA@mail.gmail.com>
+In-Reply-To: <CADxRZqy-muFfpfCj6ZMPboSMEKXukTDg0oUZc6udvNreoJ6pgA@mail.gmail.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Wed, 25 Sep 2019 14:51:08 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQd4_jWstNUkXSTayoa6+VHgdoN7Y4EhWakAsigmt1Smw@mail.gmail.com>
+Message-ID: <CAK7LNAQd4_jWstNUkXSTayoa6+VHgdoN7Y4EhWakAsigmt1Smw@mail.gmail.com>
+Subject: Re: latest git kernel (v5.3-11506-gf7c3bf8fa7e5) does not compile
+To:     Anatoly Pugachev <matorola@gmail.com>
+Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
+        Linux Kernel list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hi Anatoly,
 
 
-On 09/24/2019 06:01 PM, Mike Rapoport wrote:
-> On Tue, Sep 24, 2019 at 02:51:01PM +0300, Kirill A. Shutemov wrote:
->> On Fri, Sep 20, 2019 at 12:03:21PM +0530, Anshuman Khandual wrote:
->>> This series adds a test validation for architecture exported page table
->>> helpers. Patch in the series adds basic transformation tests at various
->>> levels of the page table. Before that it exports gigantic page allocation
->>> function from HugeTLB.
->>>
->>> This test was originally suggested by Catalin during arm64 THP migration
->>> RFC discussion earlier. Going forward it can include more specific tests
->>> with respect to various generic MM functions like THP, HugeTLB etc and
->>> platform specific tests.
->>>
->>> https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
->>>
->>> Testing:
->>>
->>> Successfully build and boot tested on both arm64 and x86 platforms without
->>> any test failing. Only build tested on some other platforms. Build failed
->>> on some platforms (known) in pud_clear_tests() as there were no available
->>> __pgd() definitions.
->>>
->>> - ARM32
->>> - IA64
->>
->> Hm. Grep shows __pgd() definitions for both of them. Is it for specific
->> config?
->  
-> For ARM32 it's defined only for 3-lelel page tables, i.e with LPAE on.
-> For IA64 it's defined for !STRICT_MM_TYPECHECKS which is even not a config
-> option, but a define in arch/ia64/include/asm/page.h
+On Sun, Sep 22, 2019 at 9:14 PM Anatoly Pugachev <matorola@gmail.com> wrote:
 
-Right. So now where we go from here ! We will need help from platform folks to
-fix this unless its trivial. I did propose this on last thread (v2), wondering if
-it will be a better idea to restrict DEBUG_ARCH_PGTABLE_TEST among architectures
-which have fixed all pending issues whether build or run time. Though enabling all
-platforms where the test builds at the least might make more sense, we might have
-to just exclude arm32 and ia64 for now. Then run time problems can be fixed later
-platform by platform. Any thoughts ?
+> > Thanks for the report, and apology for the breakage.
+> >
+> > Please check this patch.
+> > https://lore.kernel.org/patchwork/patch/1130469/
+> >
+> > I hope it will fix the build error.
+>
+>
+> It does. Thanks Masahiro!
 
-BTW the test is known to run successfully on arm64, x86, ppc32 platforms. Gerald
-has been trying to get it working on s390. in the meantime., if there are other
-volunteers to test this on ppc64, sparc, riscv, mips, m68k etc platforms, it will
-be really helpful.
+Thanks for testing!
 
-- Anshuman
+Could you please give your Tested-by in the reply to my patch?
+
+With Tested-by from the reporter,
+I think the maintainer will be able to pick up the patch
+more confidently.
+
+Thanks.
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
