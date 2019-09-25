@@ -2,105 +2,91 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C590ABDB72
-	for <lists+sparclinux@lfdr.de>; Wed, 25 Sep 2019 11:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6A96BDC51
+	for <lists+sparclinux@lfdr.de>; Wed, 25 Sep 2019 12:42:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730205AbfIYJvd (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 25 Sep 2019 05:51:33 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:33226 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726363AbfIYJvd (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 25 Sep 2019 05:51:33 -0400
-Received: by mail-wr1-f68.google.com with SMTP id b9so5933306wrs.0;
-        Wed, 25 Sep 2019 02:51:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=i70lXkpmjKx3wjz7ASYvHbouIU1eq8KGYClq6A9hzqA=;
-        b=VJpyOQX9mBx/yw78cH6FqBy+6LRyXgCG3MK91gQnPCUB8Yak73HP2NkINBFtox3J9q
-         5Vm9/ywVnLtaZEBuqfMds0KbBvujnj+O01CqopMP3pEkKMMAdSfHys9A+Ajci2vJ2U8x
-         xDao0xLvnnqvlj/MmOY/viBotHTcG2jSV1zc5a6c0FmDRM3FSvDhEMIkHQmXnWAHR3wr
-         MvWegmT0v6TFFC+hBmo6ywGB2RfCKFsZDND1fepfuTR8vow3Tr6TJlj9BQmzcGunM2h/
-         Vf37sj4fzNT5JVSVa+0/SpTzskgJ4XXGjB3hLkVkJajP9jQgpyzdGJc066iXQvbi8xhD
-         svXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=i70lXkpmjKx3wjz7ASYvHbouIU1eq8KGYClq6A9hzqA=;
-        b=rp6GprkmofMgGgvXGvHgmlJKBTrl5CMnDmKnDba2QyExYSTYCaSwtmTXqqK3HyfRvw
-         /Le+U6/fSMBtFo5oR6+Gb0xP7DTz/pf7IGb5on997Fd2sI7gNaiehCmLnIa7c6S9raVS
-         0+VqBgQSx3z5GjByTf07TS7eklyNmaXf/DaGZTZ/TkVzOmxxcMk7z6NHC6+4cz0WctSg
-         ovko7rDFhbmifVtBAvxUVa2q0andZ1vJ91UXq2b/jTbMaMn2rXFFWA2kLSaoSasvRFKF
-         rPQZXoGmZ5Vf508Ojus4E//e3LGu2fZE3fd4F+Ue+OHfQ6tX/DY8r00XEivTcrkakc2r
-         wjVA==
-X-Gm-Message-State: APjAAAWmzfCVyMQwdIEjpDhyir9usRf7eNHj0+MWCY04Sd5k4PjUPtAN
-        ADQ5RSNs24/Crk9v06httT6SF0fBMcz/bCMJ+1Q=
-X-Google-Smtp-Source: APXvYqxkeStWm0YPf4CxszEWXS2elUqqB/yKezVaRzDg8A0S0QgreaLilGVynCBZd10sZdZCmpm0BOjZHWLN3g7lAXw=
-X-Received: by 2002:a5d:4350:: with SMTP id u16mr8605104wrr.289.1569405090725;
- Wed, 25 Sep 2019 02:51:30 -0700 (PDT)
+        id S2390277AbfIYKmY (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 25 Sep 2019 06:42:24 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:55154 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729957AbfIYKmY (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 25 Sep 2019 06:42:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=d7lghTIMPEPTT0CmEI9IOIRCSN8Pqv1AzwjK/NZgMoc=; b=EF9is3qV7hJK9YrtuWAbhlEIm
+        DekndHpzjsrksaaag1LJSMVUoulE98cUz7oizjkbOfOXxEmssM7sGMqqKccb2Dba+cSDW9rBnNwfe
+        2UpDQDMtb09y+0tgEukWpBexY5AK+DVEeGNn9roPrVJ+aLpuBWgb7c7Q1ff0Cf7+J+jpQGwlQgoG7
+        LtHjxpt4IS2Sb3+pY6/sz1aWfh7ZSHQFImzu/QxoYJuRsvPm2CLfLPy+L9RhB1Zeyxbl+PwFimp7F
+        o+UMfznbeitQbiVxycephR2BVA4bOf9qtG4KwZIKNzuWzPnFAOwpu1g5eDG27DRdg+96Q6lOtcSxn
+        3uCczntOA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+        id 1iD4j4-0002gI-9T; Wed, 25 Sep 2019 10:40:50 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E6913305E1F;
+        Wed, 25 Sep 2019 12:39:54 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id DB4A620292D27; Wed, 25 Sep 2019 12:40:40 +0200 (CEST)
+Date:   Wed, 25 Sep 2019 12:40:40 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Michal Hocko <mhocko@kernel.org>
+Cc:     Yunsheng Lin <linyunsheng@huawei.com>, catalin.marinas@arm.com,
+        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
+        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
+        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
+        robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, hpa@zytor.com, x86@kernel.org,
+        dave.hansen@linux.intel.com, luto@kernel.org, len.brown@intel.com,
+        axboe@kernel.dk, dledford@redhat.com, jeffrey.t.kirsher@intel.com,
+        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
+        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
+        linux-mips@vger.kernel.org, rafael@kernel.org,
+        gregkh@linuxfoundation.org
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20190925104040.GD4553@hirez.programming.kicks-ass.net>
+References: <20190924074751.GB23050@dhcp22.suse.cz>
+ <20190924091714.GJ2369@hirez.programming.kicks-ass.net>
+ <20190924105622.GH23050@dhcp22.suse.cz>
+ <20190924112349.GJ2332@hirez.programming.kicks-ass.net>
+ <20190924115401.GM23050@dhcp22.suse.cz>
+ <20190924120943.GP2349@hirez.programming.kicks-ass.net>
+ <20190924122500.GP23050@dhcp22.suse.cz>
+ <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
+ <20190924125936.GR2349@hirez.programming.kicks-ass.net>
+ <20190924131939.GS23050@dhcp22.suse.cz>
 MIME-Version: 1.0
-References: <CADxRZqwizJ2HXdiU7aSH9t=ecBEHnxdVVsQ4wUpTYRpCgdXf=w@mail.gmail.com>
- <CADxRZqzx=8jNQuvi8WN=7U_G5a0f+v_GODHH8q3QJVYmg=n1LA@mail.gmail.com> <CAK7LNAR3szhzH89ujCPq5Xz8rm0xvSjJdx0TebsaU8yiroXXVg@mail.gmail.com>
-In-Reply-To: <CAK7LNAR3szhzH89ujCPq5Xz8rm0xvSjJdx0TebsaU8yiroXXVg@mail.gmail.com>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Wed, 25 Sep 2019 12:51:19 +0300
-Message-ID: <CADxRZqxobQN2mxprSQN3jbE7KpYGOMm50+CmtyCpqEbgcVgPFQ@mail.gmail.com>
-Subject: Re: latest git kernel (v5.3-11506-gf7c3bf8fa7e5) does not compile
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
-        Linux Kernel list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190924131939.GS23050@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun, Sep 22, 2019 at 2:38 PM Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
-> On Sun, Sep 22, 2019 at 5:33 PM Anatoly Pugachev <matorola@gmail.com> wrote:
-> > On Sun, Sep 22, 2019 at 11:13 AM Anatoly Pugachev <matorola@gmail.com> wrote:
-> > >
-> > > Hello!
-> > >
-> > > Latest git kernel does not compile for me:
-> > >
-> > > ~/linux-2.6$ git desc
-> > > v5.3-11506-gf7c3bf8fa7e5
-> > >
-> > > ~/linux-2.6$ make
-> > >   CALL    scripts/checksyscalls.sh
-> > > <stdin>:1511:2: warning: #warning syscall clone3 not implemented [-Wcpp]
-> > >   CALL    scripts/atomic/check-atomics.sh
-> > >   CHK     include/generated/compile.h
-> > >   CC      arch/sparc/vdso/vdso32/vclock_gettime.o
-> > > unrecognized e_machine 18 arch/sparc/vdso/vdso32/vclock_gettime.o
-> > > arch/sparc/vdso/vdso32/vclock_gettime.o: failed
-> > > make[2]: *** [scripts/Makefile.build:266:
-> > > arch/sparc/vdso/vdso32/vclock_gettime.o] Error 1
-> > > make[2]: *** Deleting file 'arch/sparc/vdso/vdso32/vclock_gettime.o'
-> > > make[1]: *** [scripts/Makefile.build:509: arch/sparc/vdso] Error 2
-> > > make: *** [Makefile:1667: arch/sparc] Error
-> > >
-> > > but I was able to compile successfully v5.3-10169-g574cc4539762
->
->
-> Thanks for the report, and apology for the breakage.
->
-> Please check this patch.
-> https://lore.kernel.org/patchwork/patch/1130469/
->
-> I hope it will fix the build error.
+On Tue, Sep 24, 2019 at 03:19:39PM +0200, Michal Hocko wrote:
 
-Masahiro,
+> > The below would get rid of the PMU and workqueue warnings with no
+> > side-effects (the device isn't used for anything except sysfs).
+> 
+> Hardcoding to 0 is simply wrong, if the node0 is cpuless for example...
 
-fixes kernel compilation for me, thanks!
+It doesn't matter.... that 0 is _never_ used. These are fake devices,
+and all we care about is getting rid of that error.
 
-David,
-
-can we please push it to current git kernel , so later bisect sessions
-does not need yet another patch... Thanks.
-
-Tested-by: Anatoly Pugachev <matorola@gmail.com>
+If it makes you feel better we can make it -2 and have dev_to_node()
+WARN if it ever sees one.
