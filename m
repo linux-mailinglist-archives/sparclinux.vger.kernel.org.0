@@ -2,63 +2,92 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DBBFCBEB62
-	for <lists+sparclinux@lfdr.de>; Thu, 26 Sep 2019 06:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82E57BEE0D
+	for <lists+sparclinux@lfdr.de>; Thu, 26 Sep 2019 11:07:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727235AbfIZEk7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 26 Sep 2019 00:40:59 -0400
-Received: from premium39-2.web-hosting.com ([198.187.29.185]:37967 "EHLO
-        premium39-2.web-hosting.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725844AbfIZEk6 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 26 Sep 2019 00:40:58 -0400
-X-Greylist: delayed 3878 seconds by postgrey-1.27 at vger.kernel.org; Thu, 26 Sep 2019 00:40:58 EDT
+        id S1730098AbfIZJHp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 26 Sep 2019 05:07:45 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:33194 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729018AbfIZJHp (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 26 Sep 2019 05:07:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=3cpakistan.com; s=default; h=Sender:Content-Transfer-Encoding:Content-Type:
-        Mime-Version:To:Subject:Message-Id:From:Date:Reply-To:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=6wKdG/UP2VIpsNbEFJiVKhlyUgwyhLWMr5xtIoBUTCg=; b=nhhwwDkwSwRe68KbN0BNkaBLoy
-        nHlTleHJ5xFWXtwadFV3pAQ3UtFTgZPFoUUF/k3m5ZN5z0smrQcmgrKULXTdW3lYEYdMwfEC7rHgz
-        raaa+OUpXEyt1YbwKeFcngnArGg/alY1PyroClzbHff80+7Uop82tDQR11rVO2mPnMx6/ezoZlIo9
-        Hx8Th9qcBlvRgAqGo5LlNOR9nnCuRObxmpE5sBf2FIMMh+YI6yyon6xwNvZ9ZVy0I6Edayw790CLG
-        Li5PUygwpRkbjXeKjM+9yA/eHrg/N6gNUbM1F0CGly1gsJgmHUC0INjSOXT+zkKVzJBq9yfqCj9nW
-        LqUpE6gg==;
-Received: from vcpabwnb by premium39.web-hosting.com with local (Exim 4.92)
-        (envelope-from <support@3cpakistan.com>)
-        id 1iDKZo-002xG4-9I
-        for sparclinux@vger.kernel.org; Wed, 25 Sep 2019 23:36:20 -0400
-Date:   Thu, 26 Sep 2019 03:36:20 GMT
-From:   "Support@3c Communications" <support@3cpakistan.com>
-Message-Id: <1569468980.OkPgdz0JLMOBZIHx@premium39.web-hosting.com>
-Subject: Hi
-To:     sparclinux@vger.kernel.org
-X-Autorespond: 3C Pakistan "Top 5 AU Casual Dating Sites 2019"
-X-Loop: sparclinux@vger.kernel.org
-X-Precedence: auto_reply
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - premium39.web-hosting.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [1466 32007] / [47 12]
-X-AntiAbuse: Sender Address Domain - 3cpakistan.com
-X-Get-Message-Sender-Via: premium39.web-hosting.com: authenticated_id: vcpabwnb/from_h
-X-Authenticated-Sender: premium39.web-hosting.com: support@3cpakistan.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-From-Rewrite: unmodified, already matched
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=T6V6sHrSOqc/+UxTCdyudq0YVOaWNkuCBPZFUY0n27I=; b=BgHKnk2vgdUwt+yhXHlGCcsjP
+        WK1sr0QG/j8kkdNDc8VLtgKtd0D2pUEqo+NBXzQKHsyc4AvbsI1zGCPuoE4cG9A7zIyMc6/MzRInU
+        uVsmsR1b746rjHsQ2cwRIdmOxlkyD4sHP61LexMMYLPN86L8vm+2YbELkbJZr01XMxmz53SP969jp
+        Aq2q8+MqqX3ZQepkJUFdBzKYB+wV986kA1457En35eQQdUwiiTZCobuDkWHkS1QGKY3o8q5yGiKl9
+        rCpvAat06QhNHwdZQhvMB976R4uqvhgCSiw4BqgCNNmDQjCCB+WD6HjfeQFtFCeXvlLkZNk97ZA/R
+        6ALfUnX/Q==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+        id 1iDPiv-00039o-SN; Thu, 26 Sep 2019 09:06:06 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D8A0F302A71;
+        Thu, 26 Sep 2019 11:05:12 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 2F69720138CC0; Thu, 26 Sep 2019 11:05:59 +0200 (CEST)
+Date:   Thu, 26 Sep 2019 11:05:59 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Michal Hocko <mhocko@kernel.org>
+Cc:     Yunsheng Lin <linyunsheng@huawei.com>, catalin.marinas@arm.com,
+        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
+        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
+        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
+        robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, hpa@zytor.com, x86@kernel.org,
+        dave.hansen@linux.intel.com, luto@kernel.org, len.brown@intel.com,
+        axboe@kernel.dk, dledford@redhat.com, jeffrey.t.kirsher@intel.com,
+        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
+        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
+        linux-mips@vger.kernel.org, rafael@kernel.org,
+        gregkh@linuxfoundation.org
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20190926090559.GA4581@hirez.programming.kicks-ass.net>
+References: <20190924115401.GM23050@dhcp22.suse.cz>
+ <20190924120943.GP2349@hirez.programming.kicks-ass.net>
+ <20190924122500.GP23050@dhcp22.suse.cz>
+ <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
+ <20190924125936.GR2349@hirez.programming.kicks-ass.net>
+ <20190924131939.GS23050@dhcp22.suse.cz>
+ <20190925104040.GD4553@hirez.programming.kicks-ass.net>
+ <20190925132544.GL23050@dhcp22.suse.cz>
+ <20190925163154.GF4553@hirez.programming.kicks-ass.net>
+ <20190925214526.GA4643@worktop.programming.kicks-ass.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190925214526.GA4643@worktop.programming.kicks-ass.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Thank you for reaching out to us. =0D
-We will get back to you as soon as possible.=0D
-Regards,=0D
-Support@ =0D
-3C Pakistan.=0D
+On Wed, Sep 25, 2019 at 11:45:26PM +0200, Peter Zijlstra wrote:
+> [    7.149889] [Firmware Bug]: device: 'pci0000:7f': no node assigned on NUMA capable HW
+> [    7.882888] [Firmware Bug]: device: 'pci0000:ff': no node assigned on NUMA capable HW
 
+Going by the limited number of intel numa boxes I have, it looks like:
+
+  socket = (~busid) >> (8-n)
+
+where 'n' is the number of bits required to encode the largest socket
+id, ie 1 for 2-socket and 2 for 4 socket.
+
+For 8 socket systems we start using pci domains, and things get more
+'interesting' :/
