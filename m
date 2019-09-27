@@ -2,95 +2,122 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C667FBF298
-	for <lists+sparclinux@lfdr.de>; Thu, 26 Sep 2019 14:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 474D6C08ED
+	for <lists+sparclinux@lfdr.de>; Fri, 27 Sep 2019 17:51:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726001AbfIZMMD (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 26 Sep 2019 08:12:03 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:35780 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725815AbfIZMMC (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 26 Sep 2019 08:12:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=QmSB+iJQpid0KK6OgKLqID3ggufRi3prpqIsy8HQWNc=; b=KVBm0ALWj1UZADG6S1S003WTm
-        6Y/Z2mNgsSiMdagtvJlukp3nGNsy545VNOD+MXDGI+CgrWveZsq3kwIiK+W1LpQFSlw2FO8gUGdVM
-        W2VBJT0Xlb+/aHD/PsZOmPJdK4xvYogq73w0VV+DZOF+NK+Pw3EhlTl3L/B56oc0gDiH5L7IOTOmh
-        9SS8hCDwrkF/LGwTT8i48Krgh9Vh7dcBpmex2wkYQ8Bfn7Fuyfe20YRVwniKWyJcj4Nza9/eRfeAA
-        s7HghavBEgLci7cWRly+tTQOqfAmcSTvyTWhdg9bVpOtanHW5Wossu0KBHPpav8mRaq/Jr31Cr0YE
-        u4u0ZZw0Q==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
-        id 1iDSb7-00059a-Ne; Thu, 26 Sep 2019 12:10:14 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 77211305BD3;
-        Thu, 26 Sep 2019 14:09:21 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id C40552013B759; Thu, 26 Sep 2019 14:10:07 +0200 (CEST)
-Date:   Thu, 26 Sep 2019 14:10:07 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Michal Hocko <mhocko@kernel.org>
-Cc:     Yunsheng Lin <linyunsheng@huawei.com>, catalin.marinas@arm.com,
-        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
-        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
-        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
-        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
-        robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, hpa@zytor.com, x86@kernel.org,
-        dave.hansen@linux.intel.com, luto@kernel.org, len.brown@intel.com,
-        axboe@kernel.dk, dledford@redhat.com, jeffrey.t.kirsher@intel.com,
-        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
-        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
-        linux-mips@vger.kernel.org, rafael@kernel.org,
-        gregkh@linuxfoundation.org
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-Message-ID: <20190926121007.GB4581@hirez.programming.kicks-ass.net>
-References: <20190924120943.GP2349@hirez.programming.kicks-ass.net>
- <20190924122500.GP23050@dhcp22.suse.cz>
- <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
- <20190924125936.GR2349@hirez.programming.kicks-ass.net>
- <20190924131939.GS23050@dhcp22.suse.cz>
- <20190925104040.GD4553@hirez.programming.kicks-ass.net>
- <20190925132544.GL23050@dhcp22.suse.cz>
- <20190925163154.GF4553@hirez.programming.kicks-ass.net>
- <20190925214526.GA4643@worktop.programming.kicks-ass.net>
- <20190926090559.GA4581@hirez.programming.kicks-ass.net>
+        id S1727334AbfI0Pvr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 27 Sep 2019 11:51:47 -0400
+Received: from condef-08.nifty.com ([202.248.20.73]:22255 "EHLO
+        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727289AbfI0Pvr (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 27 Sep 2019 11:51:47 -0400
+Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-08.nifty.com with ESMTP id x8RFlIqx009937
+        for <sparclinux@vger.kernel.org>; Sat, 28 Sep 2019 00:47:18 +0900
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id x8RFl8pg012289;
+        Sat, 28 Sep 2019 00:47:09 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x8RFl8pg012289
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1569599229;
+        bh=0YR/Az+CB16U9fbkYCW2HvtbjzSrTM2QIFsD0wKaTiE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=HDfInl7cA/BLT0w+VA5sVcBeh+46do44mxSArJG/7nJkjBY1talPjvSivr+gNbFw0
+         h+zLJcAhELvueUsTwSmgtBWA6AALKq0P7uojTw9dasyC0SKTMs0RO90zcRRyOMxUxW
+         Ltyt4fG2MVw/BdcQ/bKsX6Avc+lie8ulJewGaxQWhVAZWtZDrcvwwRXOBAFFEU9w9N
+         5cE2tzB5q2Vksqi389idAC744BuF+sJLqMYHTkgz+6uA9cPA/t9vIO+h15u/jzeccX
+         jJL9sFnMsK24iuSnwtWAcABJi4A5QKgMkIIPptEkkysmfke30P/pz21d/Y1udrWyl1
+         MRjGijVjzEyIA==
+X-Nifty-SrcIP: [209.85.222.41]
+Received: by mail-ua1-f41.google.com with SMTP id b14so2079858uap.6;
+        Fri, 27 Sep 2019 08:47:09 -0700 (PDT)
+X-Gm-Message-State: APjAAAVNzheGWsnp7F2vT4F97567LH7KJMAitxzq0+FQPwC3E4GvoW+Y
+        h8ZX9XB15Lo9wpIwwF7cj31hZRoNfBA0nCRWnQw=
+X-Google-Smtp-Source: APXvYqwHMmMTACsPXv679DAxPCpVLapQs+iMVrZo9luuGhd1H/3f77vuQJP4S9/AVoVuGyx+pL3IL6Y+11QqrIaNJWc=
+X-Received: by 2002:ab0:6355:: with SMTP id f21mr3136372uap.40.1569599227984;
+ Fri, 27 Sep 2019 08:47:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190926090559.GA4581@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190922113436.10396-1-yamada.masahiro@socionext.com>
+In-Reply-To: <20190922113436.10396-1-yamada.masahiro@socionext.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Sat, 28 Sep 2019 00:46:32 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARXA4MnDyYHLphYEqMfEbh=cMk0i=pzDRbEODTeM+cJ4Q@mail.gmail.com>
+Message-ID: <CAK7LNARXA4MnDyYHLphYEqMfEbh=cMk0i=pzDRbEODTeM+cJ4Q@mail.gmail.com>
+Subject: Re: [PATCH] sparc: vdso: fix build error of vdso32
+To:     "David S . Miller" <davem@davemloft.net>,
+        sparclinux <sparclinux@vger.kernel.org>
+Cc:     Anatoly Pugachev <matorola@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "ndesaulniers@google.com" <ndesaulniers@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Sep 26, 2019 at 11:05:59AM +0200, Peter Zijlstra wrote:
-> On Wed, Sep 25, 2019 at 11:45:26PM +0200, Peter Zijlstra wrote:
-> > [    7.149889] [Firmware Bug]: device: 'pci0000:7f': no node assigned on NUMA capable HW
-> > [    7.882888] [Firmware Bug]: device: 'pci0000:ff': no node assigned on NUMA capable HW
-> 
-> Going by the limited number of intel numa boxes I have, it looks like:
-> 
->   socket = (~busid) >> (8-n)
+On Sun, Sep 22, 2019 at 8:36 PM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
+>
+> Since commit 54b8ae66ae1a ("kbuild: change *FLAGS_<basetarget>.o to
+> take the path relative to $(obj)"), sparc allmodconfig fails to build
+> as follows:
+>
+>   CC      arch/sparc/vdso/vdso32/vclock_gettime.o
+> unrecognized e_machine 18 arch/sparc/vdso/vdso32/vclock_gettime.o
+> arch/sparc/vdso/vdso32/vclock_gettime.o: failed
+>
+> The cause of the breakage is that -pg flag not being dropped.
+>
+> The vdso32 files are located in the vdso32/ subdirectory, but I missed
+> to update the Makefile.
+>
+> Fixes: 54b8ae66ae1a ("kbuild: change *FLAGS_<basetarget>.o to take the path relative to $(obj)")
+> Reported-by: Anatoly Pugachev <matorola@gmail.com>
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
+>
 
-Bah, I got my notes mixed up, it should be: busid >> (8-n)
 
-> where 'n' is the number of bits required to encode the largest socket
-> id, ie 1 for 2-socket and 2 for 4 socket.
-> 
-> For 8 socket systems we start using pci domains, and things get more
-> 'interesting' :/
+I am copy-pasting Tested-by from the reporter:
+
+Tested-by: Anatoly Pugachev <matorola@gmail.com>
+
+It was given here:
+
+https://lkml.org/lkml/2019/9/25/197
+
+
+
+
+>  arch/sparc/vdso/Makefile | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/sparc/vdso/Makefile b/arch/sparc/vdso/Makefile
+> index 324a23947585..399bc22b1cf8 100644
+> --- a/arch/sparc/vdso/Makefile
+> +++ b/arch/sparc/vdso/Makefile
+> @@ -67,12 +67,14 @@ $(vobjs): KBUILD_CFLAGS := $(filter-out $(GCC_PLUGINS_CFLAGS) $(SPARC_REG_CFLAGS
+>  #
+>  CFLAGS_REMOVE_vdso-note.o = -pg
+>  CFLAGS_REMOVE_vclock_gettime.o = -pg
+> +CFLAGS_REMOVE_vdso32/vdso-note.o = -pg
+> +CFLAGS_REMOVE_vdso32/vclock_gettime.o = -pg
+>
+>  $(obj)/%.so: OBJCOPYFLAGS := -S
+>  $(obj)/%.so: $(obj)/%.so.dbg FORCE
+>         $(call if_changed,objcopy)
+>
+> -CPPFLAGS_vdso32.lds = $(CPPFLAGS_vdso.lds)
+> +CPPFLAGS_vdso32/vdso32.lds = $(CPPFLAGS_vdso.lds)
+>  VDSO_LDFLAGS_vdso32.lds = -m elf32_sparc -soname linux-gate.so.1
+>
+>  #This makes sure the $(obj) subdirectory exists even though vdso32/
+> --
+> 2.17.1
+>
+
+
+-- 
+Best Regards
+Masahiro Yamada
