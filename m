@@ -2,87 +2,238 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A4A2C2BD1
-	for <lists+sparclinux@lfdr.de>; Tue,  1 Oct 2019 04:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89BD5C2CD1
+	for <lists+sparclinux@lfdr.de>; Tue,  1 Oct 2019 07:07:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726590AbfJACPS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 30 Sep 2019 22:15:18 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:47730 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726504AbfJACPS (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 30 Sep 2019 22:15:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:MIME-Version:Date:Message-ID:Subject:From:Cc:To:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=Usp4uBqvNgfqCFNnVosTwQoRaLzYYVIoD5DJHdedcP0=; b=aBAWywPYKDi+ddDOA2rBxF+45
-        eRgRUaL82n2a2OL46tbJ6RB5undqCD5jc2wXofljduL7zUHkD2ZYB17u2EtmM29xQVJjJ5FeQe2Ol
-        uyPIzk/nwx8ZrfsZgZ/Nyaelrz3s0A6+jFa5NGvMrMcmLR0z5B5b12PnU4K99aAjBZu0XvrlrkMCW
-        7JkCIS7izMtATy5WT40IYQ6lIwTsXeA/UAw6fjEIEWvYiLnqqhp0RMWrKMYBaRaNQqCmdgJWlWVXz
-        8Upik72uGF8RHhJfnGNcj0o2HrVkAIoFuxsHGRuzA9uxh3ueIyJ2ihX2mtv/GNntoXQKfumwfeI7j
-        QRIUL8rvA==;
-Received: from [2601:1c0:6280:3f0::9a1f]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
-        id 1iF7h4-0007eq-3m; Tue, 01 Oct 2019 02:15:14 +0000
-To:     LKML <linux-kernel@vger.kernel.org>, sparclinux@vger.kernel.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        David Miller <davem@davemloft.net>,
-        kbuild test robot <lkp@intel.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH] tty: n_hdlc: fix build on SPARC
-Message-ID: <675e7bd9-955b-3ff3-1101-a973b58b5b75@infradead.org>
-Date:   Mon, 30 Sep 2019 19:15:12 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1729042AbfJAFHH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 1 Oct 2019 01:07:07 -0400
+Received: from mga17.intel.com ([192.55.52.151]:16783 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725535AbfJAFHG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 1 Oct 2019 01:07:06 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Sep 2019 22:07:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,569,1559545200"; 
+   d="scan'208";a="190474561"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 30 Sep 2019 22:06:56 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1iFANE-000IpB-8f; Tue, 01 Oct 2019 13:06:56 +0800
+Date:   Tue, 1 Oct 2019 13:06:23 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Aleksa Sarai <cyphar@cyphar.com>
+Cc:     kbuild-all@01.org, Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Alexei Starovoitov <ast@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+        Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        David Drysdale <drysdale@google.com>,
+        Christian Brauner <christian@brauner.io>,
+        libc-alpha@sourceware.org, linux-parisc@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-api@vger.kernel.org,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org
+Subject: Re: [PATCH v13 7/9] open: openat2(2) syscall
+Message-ID: <201910011326.iTYOtJYo%lkp@intel.com>
+References: <20190930183316.10190-8-cyphar@cyphar.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190930183316.10190-8-cyphar@cyphar.com>
+X-Patchwork-Hint: ignore
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+Hi Aleksa,
 
-Fix tty driver build on SPARC by not using __exitdata.
-It appears that SPARC does not support section .exit.data.
+Thank you for the patch! Perhaps something to improve:
 
-Fixes these build errors:
+[auto build test WARNING on linus/master]
+[cannot apply to v5.4-rc1 next-20191001]
+[if your patch is applied to the wrong git tree, please drop us a note to help
+improve the system. BTW, we also suggest to use '--base' option to specify the
+base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 
-`.exit.data' referenced in section `.exit.text' of drivers/tty/n_hdlc.o: defined in discarded section `.exit.data' of drivers/tty/n_hdlc.o
-`.exit.data' referenced in section `.exit.text' of drivers/tty/n_hdlc.o: defined in discarded section `.exit.data' of drivers/tty/n_hdlc.o
-`.exit.data' referenced in section `.exit.text' of drivers/tty/n_hdlc.o: defined in discarded section `.exit.data' of drivers/tty/n_hdlc.o
-`.exit.data' referenced in section `.exit.text' of drivers/tty/n_hdlc.o: defined in discarded section `.exit.data' of drivers/tty/n_hdlc.o
+url:    https://github.com/0day-ci/linux/commits/Aleksa-Sarai/namei-openat2-2-path-resolution-restrictions/20191001-025628
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.1-rc1-37-gd466a02-dirty
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
 
+If you fix the issue, kindly add following tag
 Reported-by: kbuild test robot <lkp@intel.com>
-Fixes: 063246641d4a ("format-security: move static strings to const")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>
+
+
+sparse warnings: (new ones prefixed by >>)
+
+   fs/open.c:757:13: sparse: sparse: restricted fmode_t degrades to integer
+   fs/open.c:983:18: sparse: sparse: restricted fmode_t degrades to integer
+>> fs/open.c:1011:36: sparse: sparse: invalid assignment: |=
+>> fs/open.c:1011:36: sparse:    left side has type int
+>> fs/open.c:1011:36: sparse:    right side has type restricted fmode_t
+   fs/open.c:1013:36: sparse: sparse: invalid assignment: |=
+   fs/open.c:1013:36: sparse:    left side has type int
+   fs/open.c:1013:36: sparse:    right side has type restricted fmode_t
+>> fs/open.c:1029:24: sparse: sparse: incorrect type in assignment (different base types) @@    expected restricted fmode_t [usertype] opath_mask @@    got pe] opath_mask @@
+>> fs/open.c:1029:24: sparse:    expected restricted fmode_t [usertype] opath_mask
+>> fs/open.c:1029:24: sparse:    got int opath_mask
+>> fs/open.c:1011:36: sparse: sparse: invalid assignment: |=
+>> fs/open.c:1011:36: sparse:    left side has type int
+>> fs/open.c:1011:36: sparse:    right side has type restricted fmode_t
+   fs/open.c:1013:36: sparse: sparse: invalid assignment: |=
+   fs/open.c:1013:36: sparse:    left side has type int
+   fs/open.c:1013:36: sparse:    right side has type restricted fmode_t
+>> fs/open.c:1029:24: sparse: sparse: incorrect type in assignment (different base types) @@    expected restricted fmode_t [usertype] opath_mask @@    got pe] opath_mask @@
+>> fs/open.c:1029:24: sparse:    expected restricted fmode_t [usertype] opath_mask
+>> fs/open.c:1029:24: sparse:    got int opath_mask
+>> fs/open.c:1011:36: sparse: sparse: invalid assignment: |=
+>> fs/open.c:1011:36: sparse:    left side has type int
+>> fs/open.c:1011:36: sparse:    right side has type restricted fmode_t
+   fs/open.c:1013:36: sparse: sparse: invalid assignment: |=
+   fs/open.c:1013:36: sparse:    left side has type int
+   fs/open.c:1013:36: sparse:    right side has type restricted fmode_t
+>> fs/open.c:1029:24: sparse: sparse: incorrect type in assignment (different base types) @@    expected restricted fmode_t [usertype] opath_mask @@    got pe] opath_mask @@
+>> fs/open.c:1029:24: sparse:    expected restricted fmode_t [usertype] opath_mask
+>> fs/open.c:1029:24: sparse:    got int opath_mask
+   fs/open.c:1173:15: sparse: sparse: undefined identifier 'copy_struct_from_user'
+
+vim +1011 fs/open.c
+
+   957	
+   958	static inline int build_open_flags(const struct open_how *how,
+   959					   struct open_flags *op)
+   960	{
+   961		int flags = how->flags;
+   962		int lookup_flags = 0;
+   963		int opath_mask = 0;
+   964		int acc_mode = ACC_MODE(flags);
+   965	
+   966		/*
+   967		 * Older syscalls still clear these bits before calling
+   968		 * build_open_flags(), but openat2(2) checks all its arguments.
+   969		 */
+   970		if (flags & ~VALID_OPEN_FLAGS)
+   971			return -EINVAL;
+   972		if (how->resolve & ~VALID_RESOLVE_FLAGS)
+   973			return -EINVAL;
+   974		if (!(how->flags & (O_PATH | O_CREAT | __O_TMPFILE)) && how->mode != 0)
+   975			return -EINVAL;
+   976	
+   977		if (flags & (O_CREAT | __O_TMPFILE))
+   978			op->mode = (how->mode & S_IALLUGO) | S_IFREG;
+   979		else
+   980			op->mode = 0;
+   981	
+   982		/* Must never be set by userspace */
+ > 983		flags &= ~FMODE_NONOTIFY & ~O_CLOEXEC;
+   984	
+   985		/*
+   986		 * O_SYNC is implemented as __O_SYNC|O_DSYNC.  As many places only
+   987		 * check for O_DSYNC if the need any syncing at all we enforce it's
+   988		 * always set instead of having to deal with possibly weird behaviour
+   989		 * for malicious applications setting only __O_SYNC.
+   990		 */
+   991		if (flags & __O_SYNC)
+   992			flags |= O_DSYNC;
+   993	
+   994		if (flags & __O_TMPFILE) {
+   995			if ((flags & O_TMPFILE_MASK) != O_TMPFILE)
+   996				return -EINVAL;
+   997			if (!(acc_mode & MAY_WRITE))
+   998				return -EINVAL;
+   999		} else if (flags & O_PATH) {
+  1000			/*
+  1001			 * If we have O_PATH in the open flag. Then we
+  1002			 * cannot have anything other than the below set of flags
+  1003			 */
+  1004			flags &= O_DIRECTORY | O_NOFOLLOW | O_PATH;
+  1005			acc_mode = 0;
+  1006	
+  1007			/* Allow userspace to restrict the re-opening of O_PATH fds. */
+  1008			if (how->upgrade_mask & ~VALID_UPGRADE_FLAGS)
+  1009				return -EINVAL;
+  1010			if (!(how->upgrade_mask & UPGRADE_NOREAD))
+> 1011				opath_mask |= FMODE_PATH_READ;
+  1012			if (!(how->upgrade_mask & UPGRADE_NOWRITE))
+  1013				opath_mask |= FMODE_PATH_WRITE;
+  1014		}
+  1015	
+  1016		op->open_flag = flags;
+  1017	
+  1018		/* O_TRUNC implies we need access checks for write permissions */
+  1019		if (flags & O_TRUNC)
+  1020			acc_mode |= MAY_WRITE;
+  1021	
+  1022		/* Allow the LSM permission hook to distinguish append
+  1023		   access from general write access. */
+  1024		if (flags & O_APPEND)
+  1025			acc_mode |= MAY_APPEND;
+  1026	
+  1027		op->acc_mode = acc_mode;
+  1028		op->intent = flags & O_PATH ? 0 : LOOKUP_OPEN;
+> 1029		op->opath_mask = opath_mask;
+  1030	
+  1031		if (flags & O_CREAT) {
+  1032			op->intent |= LOOKUP_CREATE;
+  1033			if (flags & O_EXCL)
+  1034				op->intent |= LOOKUP_EXCL;
+  1035		}
+  1036	
+  1037		if (flags & O_DIRECTORY)
+  1038			lookup_flags |= LOOKUP_DIRECTORY;
+  1039		if (!(flags & O_NOFOLLOW))
+  1040			lookup_flags |= LOOKUP_FOLLOW;
+  1041		if (flags & O_EMPTYPATH)
+  1042			lookup_flags |= LOOKUP_EMPTY;
+  1043	
+  1044		if (how->resolve & RESOLVE_NO_XDEV)
+  1045			lookup_flags |= LOOKUP_NO_XDEV;
+  1046		if (how->resolve & RESOLVE_NO_MAGICLINKS)
+  1047			lookup_flags |= LOOKUP_NO_MAGICLINKS;
+  1048		if (how->resolve & RESOLVE_NO_SYMLINKS)
+  1049			lookup_flags |= LOOKUP_NO_SYMLINKS;
+  1050		if (how->resolve & RESOLVE_BENEATH)
+  1051			lookup_flags |= LOOKUP_BENEATH;
+  1052		if (how->resolve & RESOLVE_IN_ROOT)
+  1053			lookup_flags |= LOOKUP_IN_ROOT;
+  1054	
+  1055		op->lookup_flags = lookup_flags;
+  1056		return 0;
+  1057	}
+  1058	
+
 ---
- drivers/tty/n_hdlc.c |    5 +++++
- 1 file changed, 5 insertions(+)
-
---- mmotm-2019-0925-1810.orig/drivers/tty/n_hdlc.c
-+++ mmotm-2019-0925-1810/drivers/tty/n_hdlc.c
-@@ -968,6 +968,11 @@ static int __init n_hdlc_init(void)
- 	
- }	/* end of init_module() */
- 
-+#ifdef CONFIG_SPARC
-+#undef __exitdata
-+#define __exitdata
-+#endif
-+
- static const char hdlc_unregister_ok[] __exitdata =
- 	KERN_INFO "N_HDLC: line discipline unregistered\n";
- static const char hdlc_unregister_fail[] __exitdata =
-
-
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
