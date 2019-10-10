@@ -2,166 +2,168 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14CE9D2554
-	for <lists+sparclinux@lfdr.de>; Thu, 10 Oct 2019 11:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6BEED2F3E
+	for <lists+sparclinux@lfdr.de>; Thu, 10 Oct 2019 19:08:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389591AbfJJI5o (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 10 Oct 2019 04:57:44 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:57860 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389496AbfJJI5m (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 10 Oct 2019 04:57:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=rb2GpQEK1mzik7VDpp+Q0B0w/sBe3+HggdUz3hckVXc=; b=GheWtHyuaOnqUCnRP+8IuZIby
-        4L30bGsje9ocd5iUH8NVIyCuSMdmhnrmZrWz4CqW+5c5ARUagEFX1CvM76na3juS0ZJgeA2iYqwk/
-        vwGspjDN5aU24+JGaDMCixz3MgBW377tOmmXo2TWuT0UuPWw0cRhImx8n6XpmynMtaPKIAN3DBxTa
-        0KYATEHfwUVLJhVPmXdgaiKw32BBuEEZNOhzsRv1MWaogEY/OvQauPZeduJb2hzhIlP3nOAsoN5Rl
-        /qvf5mbxvb8slIP6EE8OU3wON/t6u1zPMDLdVuSRCezXRpuRyx1ogUaXW7AVDphTfQVYCd6ZMVuiy
-        IrIgGZokA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
-        id 1iIUFD-0000dI-8N; Thu, 10 Oct 2019 08:56:23 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B86223074EB;
-        Thu, 10 Oct 2019 10:55:24 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id DBA9E202F4F50; Thu, 10 Oct 2019 10:56:16 +0200 (CEST)
-Date:   Thu, 10 Oct 2019 10:56:16 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Yunsheng Lin <linyunsheng@huawei.com>,
-        Michal Hocko <mhocko@kernel.org>, catalin.marinas@arm.com,
-        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
-        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
-        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
-        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        hpa@zytor.com, x86@kernel.org, dave.hansen@linux.intel.com,
-        luto@kernel.org, len.brown@intel.com, axboe@kernel.dk,
-        dledford@redhat.com, jeffrey.t.kirsher@intel.com,
-        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
-        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
-        linux-mips@vger.kernel.org, rafael@kernel.org,
-        gregkh@linuxfoundation.org
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-Message-ID: <20191010085616.GQ2311@hirez.programming.kicks-ass.net>
-References: <20190924115401.GM23050@dhcp22.suse.cz>
- <20190924120943.GP2349@hirez.programming.kicks-ass.net>
- <20190924122500.GP23050@dhcp22.suse.cz>
- <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
- <20190924125936.GR2349@hirez.programming.kicks-ass.net>
- <20190924131939.GS23050@dhcp22.suse.cz>
- <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
- <20190925104108.GE4553@hirez.programming.kicks-ass.net>
- <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
- <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
+        id S1726157AbfJJRH5 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 10 Oct 2019 13:07:57 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:38843 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726007AbfJJRH5 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 10 Oct 2019 13:07:57 -0400
+Received: by mail-lj1-f195.google.com with SMTP id b20so6990482ljj.5
+        for <sparclinux@vger.kernel.org>; Thu, 10 Oct 2019 10:07:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bqvz+afB1Rg3ieCrlwoBKML7ipcOdiXJ/q/XXxTUovI=;
+        b=Xol/3a0t0AtCulvKJeuAKS1uo5PWCjeyeDeHYLSA1FXKSnOkgSTF276gwVNHa4nPiN
+         l58RJ3zV8SDjz5HcQUbk/k9PwAg2ytkBSxmhuzf7L/EFmiieyqeQcJuKFBVQbWUjfXE1
+         U4t1RhqK0BT10C1Atodrl5m0eWGZPM7fTB2Dk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bqvz+afB1Rg3ieCrlwoBKML7ipcOdiXJ/q/XXxTUovI=;
+        b=h2Kkz1TGpEXTjuAVkE6dducezi8/tszBfw6PSYC5ZQb0hlc0NuZRQ5GUKjGKiHMuoz
+         yJZzj3LULTQhrXIuisl0hQmd7viHMU9pD4Vc3X04C/S8hgkqPCn3NeN5SgyYEOL2/hn8
+         /yUAcqZiMKCiHeWslYpeIdN3NyZYCR4J+u1rhExKqrRJcHLOLMB92kQF+GB6uww1Tqa8
+         hJLoqkawQaOvZQNqWMVcMK5AStk7hGxUjuUryii2CTPkPGpe5a/hxKfuUmFAZEg3KYKU
+         80b/GttV+CSYZwOYx9I/pi6icFiUl0OKYvAmdfFAgqa28ZNMmRIoge9XNM1oPhHTea4B
+         UfQQ==
+X-Gm-Message-State: APjAAAXntpfB/I4Aq+NQW5sgzstxm5ZaIo4esRQbgILMXy+ulZkSprAN
+        mi8efgxOjPT6QH68um1vsK0DZkHiSIs=
+X-Google-Smtp-Source: APXvYqzjIDhBZF/wLrlA5Ug/wldZPU4x/fc/WOIXpBtUh/PcWU/BG1X1Kk+aA1Ids0szLMTQUAMhFA==
+X-Received: by 2002:a2e:a0ca:: with SMTP id f10mr6717836ljm.84.1570727274411;
+        Thu, 10 Oct 2019 10:07:54 -0700 (PDT)
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com. [209.85.167.50])
+        by smtp.gmail.com with ESMTPSA id t22sm1444042lfg.91.2019.10.10.10.07.51
+        for <sparclinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Oct 2019 10:07:53 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id t8so4923583lfc.13
+        for <sparclinux@vger.kernel.org>; Thu, 10 Oct 2019 10:07:51 -0700 (PDT)
+X-Received: by 2002:a19:f709:: with SMTP id z9mr6611392lfe.170.1570727268603;
+ Thu, 10 Oct 2019 10:07:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191010054140.8483-1-cyphar@cyphar.com> <20191010054140.8483-3-cyphar@cyphar.com>
+In-Reply-To: <20191010054140.8483-3-cyphar@cyphar.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 10 Oct 2019 10:07:32 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wh8L50f31vW8BwRUXhLiq3eoCQ3tg8ER4Yp2dzuU1w5rQ@mail.gmail.com>
+Message-ID: <CAHk-=wh8L50f31vW8BwRUXhLiq3eoCQ3tg8ER4Yp2dzuU1w5rQ@mail.gmail.com>
+Subject: Re: [PATCH v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path resolution
+To:     Aleksa Sarai <cyphar@cyphar.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Christian Brauner <christian@brauner.io>,
+        Aleksa Sarai <asarai@suse.de>,
+        Linux Containers <containers@lists.linux-foundation.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        GNU C Library <libc-alpha@sourceware.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Oct 09, 2019 at 01:25:14PM +0100, Robin Murphy wrote:
-> On 2019-10-08 9:38 am, Yunsheng Lin wrote:
-> > On 2019/9/25 18:41, Peter Zijlstra wrote:
-> > > On Wed, Sep 25, 2019 at 05:14:20PM +0800, Yunsheng Lin wrote:
-> > > >  From the discussion above, It seems making the node_to_cpumask_map()
-> > > > NUMA_NO_NODE aware is the most feasible way to move forwad.
-> > > 
-> > > That's still wrong.
-> > 
-> > Hi, Peter
-> > 
-> > It seems this has trapped in the dead circle.
-> > 
-> >  From my understanding, NUMA_NO_NODE which means not node numa preference
-> > is the state to describe the node of virtual device or the physical device
-> > that has equal distance to all cpu.
+On Wed, Oct 9, 2019 at 10:42 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
+>
+> --- a/fs/namei.c
+> +++ b/fs/namei.c
+> @@ -2277,6 +2277,11 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
+>
+>         nd->m_seq = read_seqbegin(&mount_lock);
+>
+> +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-to-dirfd. */
+> +       if (flags & LOOKUP_IN_ROOT)
+> +               while (*s == '/')
+> +                       s++;
+> +
+>         /* Figure out the starting path and root (if needed). */
+>         if (*s == '/') {
+>                 error = nd_jump_root(nd);
 
-So I _really_ don't believe in the equidistant physical device. Physics
-just doesn't allow that. Or rather, you can, but then it'll be so slow
-it doesn't matter.
+Hmm. Wouldn't this make more sense all inside the if (*s =- '/') test?
+That way if would be where we check for "should we start at the root",
+which seems to make more sense conceptually.
 
-The only possible option is equidistant to a _small_ number of nodes,
-and if that is a reality, then we should look at that. So far however
-it's purely been a hypothetical device.
+That test for '/' currently has a "} else if (..)", but that's
+pointless since it ends with a "return" anyway. So the "else" logic is
+just noise.
 
-> > We can be stricter if the device does have a nearer node, but we can not
-> > deny that a device does not have a node numa preference or node affinity,
-> > which also means the control or data buffer can be allocated at the node where
-> > the process is running.
-> > 
-> > As you has proposed, making it -2 and have dev_to_node() warn if the device does
-> > have a nearer node and not set by the fw is a way to be stricter.
+And if you get rid of the unnecessary else, moving the LOOKUP_IN_ROOT
+inside the if-statement works fine.
 
-Because it is 100% guaranteed (we have proof) that BIOS is shit and
-doesn't set node affinity for devices that really should have it.
+So this could be something like
 
-So we're trading a hypothetical shared device vs not reporting actual
-BIOS bugs. That's no contest.
+    --- a/fs/namei.c
+    +++ b/fs/namei.c
+    @@ -2194,11 +2196,19 @@ static const char *path_init(struct
+nameidata *nd, unsigned flags)
 
-Worse, we have virtual devices that have clear node affinity without it
-set.
+        nd->m_seq = read_seqbegin(&mount_lock);
+        if (*s == '/') {
+    -           set_root(nd);
+    -           if (likely(!nd_jump_root(nd)))
+    -                   return s;
+    -           return ERR_PTR(-ECHILD);
+    -   } else if (nd->dfd == AT_FDCWD) {
+    +           /* LOOKUP_IN_ROOT treats absolute paths as being
+relative-to-dirfd. */
+    +           if (!(flags & LOOKUP_IN_ROOT)) {
+    +                   set_root(nd);
+    +                   if (likely(!nd_jump_root(nd)))
+    +                           return s;
+    +                   return ERR_PTR(-ECHILD);
+    +           }
+    +
+    +           /* Skip initial '/' for LOOKUP_IN_ROOT */
+    +           do { s++; } while (*s == '/');
+    +   }
+    +
+    +   if (nd->dfd == AT_FDCWD) {
+                if (flags & LOOKUP_RCU) {
+                        struct fs_struct *fs = current->fs;
+                        unsigned seq;
 
-So we're growing shit, allowing bugs, and what do we get in return? Warm
-fuzzies is not it.
+instead. The patch ends up slightly bigger (due to the re-indentation)
+but now it handles all the "start at root" in the same place. Doesn't
+that make sense?
 
-> > Any better suggestion to move this forward?
-> 
-> FWIW (since this is in my inbox), it sounds like the fundamental issue is
-> that NUMA_NO_NODE is conflated for at least two different purposes, so
-> trying to sort that out would be a good first step. AFAICS we have genuine
-> "don't care" cases like alloc_pages_node(), where if the producer says it
-> doesn't matter then the consumer is free to make its own judgement on what
-> to do, and fundamentally different "we expect this thing to have an affinity
-> but it doesn't, so we can't say what's appropriate" cases which could really
-> do with some separate indicator like "NUMA_INVALID_NODE".
-
-It can possible be a 3 state:
-
- - UNKNON; overridden by parent/bus/etc..
-   ERROR when still UNKNOWN on register.
-
- - INVALID; ERROR on devm usage.
-   for virtual devices / pure sysfs nodes
-
- - NO_NODE; may only be set on virtual devices (we can check against PCI
-   bus etc..) when there really is no better option.
-
-But I only want to see the NO_NODE crap at the end, after all other
-possible avenues have been done.
-
-> The tricky part is then bestowed on the producers to decide whether they can
-> downgrade "invalid" to "don't care". You can technically build 'a device'
-> whose internal logic is distributed between nodes and thus appears to have
-> equal affinity - interrupt controllers, for example, may have per-CPU or
-> per-node interfaces that end up looking like that - so although it's
-> unlikely it's not outright nonsensical.
-
-I'm thinking we should/do create per cpu/node devices for such
-distributed stuff. For instance, we create per-cpu clockevent devices
-(where appropriate).
-
-> Similarly a 'device' that's actually emulated behind a firmware call
-> interface may well effectively have no real affinity.
-
-Emulated devices are typically slow as heck and should be avoided if at
-all possible. I don't see NUMA affinity being important for them.
+             Linus
