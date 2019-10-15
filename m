@@ -2,119 +2,103 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C13D75A3
-	for <lists+sparclinux@lfdr.de>; Tue, 15 Oct 2019 13:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF97D7679
+	for <lists+sparclinux@lfdr.de>; Tue, 15 Oct 2019 14:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729690AbfJOLyz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 15 Oct 2019 07:54:55 -0400
-Received: from mx2.cyber.ee ([193.40.6.72]:54972 "EHLO mx2.cyber.ee"
+        id S1729167AbfJOM04 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 15 Oct 2019 08:26:56 -0400
+Received: from foss.arm.com ([217.140.110.172]:37692 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725790AbfJOLyz (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 15 Oct 2019 07:54:55 -0400
-X-Greylist: delayed 362 seconds by postgrey-1.27 at vger.kernel.org; Tue, 15 Oct 2019 07:54:53 EDT
-Subject: Re: sparc64: hang from BUG: Bad page state, on older CPU & compiler
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Christoph Hellwig <hch@infradead.org>
-Cc:     David Miller <davem@davemloft.net>, sparclinux@vger.kernel.org
-References: <d2a51bfb-84e4-3ce7-ac48-7200b3a8d722@linux.ee>
- <20190818070137.GA22731@infradead.org>
- <20190818.123943.1491620523133670968.davem@davemloft.net>
- <20190819051055.GA32118@infradead.org>
- <CAHk-=wiCJf2beZwW6E37mnovd860m15Ety+ucgDNK1aPAZme_A@mail.gmail.com>
-From:   Meelis Roos <mroos@linux.ee>
-Message-ID: <25cbdd65-484e-7e50-ee8c-dc8745ece5fe@linux.ee>
-Date:   Tue, 15 Oct 2019 14:47:20 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726441AbfJOM04 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 15 Oct 2019 08:26:56 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0AB1D337;
+        Tue, 15 Oct 2019 05:26:55 -0700 (PDT)
+Received: from [10.162.42.142] (p8cg001049571a15.blr.arm.com [10.162.42.142])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 182753F68E;
+        Tue, 15 Oct 2019 05:26:41 -0700 (PDT)
+Subject: Re: [PATCH V6 2/2] mm/debug: Add tests validating architecture page
+ table helpers
+To:     Michal Hocko <mhocko@kernel.org>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+References: <1571131302-32290-1-git-send-email-anshuman.khandual@arm.com>
+ <1571131302-32290-3-git-send-email-anshuman.khandual@arm.com>
+ <20191015114611.GC317@dhcp22.suse.cz>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <cb441eab-6cde-5537-6f94-f183f119c92e@arm.com>
+Date:   Tue, 15 Oct 2019 17:57:08 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <CAHk-=wiCJf2beZwW6E37mnovd860m15Ety+ucgDNK1aPAZme_A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: et-EE
+In-Reply-To: <20191015114611.GC317@dhcp22.suse.cz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-19.08.19 08:58 Linus Torvalds wrote:
-> On Sun, Aug 18, 2019 at 10:10 PM Christoph Hellwig <hch@infradead.org> wrote:
->>
->> On Sun, Aug 18, 2019 at 12:39:43PM -0700, David Miller wrote:
->>> From: Christoph Hellwig <hch@infradead.org>
->>> Date: Sun, 18 Aug 2019 00:01:37 -0700
->>>
->>>> I think for now we'll simply have to disable HAVE_FAST_GUP for sparc,
->>>> until someone who really knows low-level sparc page table handling
->>>> finds some time to audit the generic fast gup code and arch hooks.
->>>
->>> It's a regression, we don't disable features in those circumstances
->>> usually right?
->>
->> Well, it isn't exactly a feature we lost, but an optimization that makes
->> operations go faster vs not allowing them.  Them other option would be
->> to revert the whole stack of patches, which is the groundwork for
->> fixing the get_user_pages vs truncate and co races, so I'm not very
->> eager to do that for sparc64.
->>
->> But in the end Linus will have to decide.
-> 
-> It does sound like we should just disable HAVE_FAST_GUP for sparc. And
-> yes, it's "only" an optimization, disabling it shouldn't bvreak
-> anything. get_user_pages_fast() will fall back on the regular
-> get_user_pages() logic if there is not fast-GUP.
 
-So yes, will we do this to get rid of that regression?
 
-> (In fact, even if there *is* fast-GUP, the whole design of fast-GUP is
-> to fail for any "hard" case, so that fallback is fundamental).
+On 10/15/2019 05:16 PM, Michal Hocko wrote:
+> On Tue 15-10-19 14:51:42, Anshuman Khandual wrote:
+>> This adds tests which will validate architecture page table helpers and
+>> other accessors in their compliance with expected generic MM semantics.
+>> This will help various architectures in validating changes to existing
+>> page table helpers or addition of new ones.
+>>
+>> Test page table and memory pages creating it's entries at various level are
+>> all allocated from system memory with required size and alignments. But if
+>> memory pages with required size and alignment could not be allocated, then
+>> all depending individual tests are just skipped afterwards. This test gets
+>> called right after init_mm_internals() required for alloc_contig_range() to
+>> work correctly.
+>>
+>> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+>> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+>> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+>> arm64. Going forward, other architectures too can enable this after fixing
+>> build or runtime problems (if any) with their page table helpers.
 > 
-> If it was something more generic I'd argue for reverting, but it does
-> seem to be very sparc-specific, and there just aren't enough sparc
-> users to argue for the optimization being critical.
-> 
-> I still can't see what might be wrong in the generic code. It's quite
-> different from the previous sparc64 code, but just about all the
-> differences are about how it supports a lot more cases (devmap,
-> 5-level page tables, the crazy powepc "hugepd" thing etc), but all of
-> those differences should just compile away on sparc64.
-> 
-> There are other small differences. For example, the old sparc64
-> gup_huge_pud() code did this:
-> 
->          if (!(pud_val(pud) & _PAGE_VALID))
->                  return 0;
-> 
->          if (write && !pud_write(pud))
->                  return 0;
-> 
-> and the generic gup_huge_pud() code instead does
-> 
->          if (!pud_access_permitted(orig, flags & FOLL_WRITE))
->                  return 0;
-> 
-> which does the same thing, but expresses it differently (because sparc
-> doesn't have its own specific one):
-> 
->    #define pud_access_permitted(pud, write) \
->            (pud_present(pud) && (!(write) || pud_write(pud)))
-> 
-> and "pud_present()" for sparc64 is actually defined as
-> 
->    #define pud_present(pud)            (pud_val(pud) != 0U)
-> 
-> (notice the difference between checking _PAGE_VALID and checking all bits.
-> 
-> Can there be pud values that are non-zero but also not valid? Maybe.
-> If so, you'd get different results here.
-> 
-> So both versions look sane, but they aren't identical, and there might
-> be some sparc64 oddity that just triggers here.
-> 
-> The code apparently works for David for his compiler and hardware
-> configuration. So it's not *entirely* broken even on sparc64. But yes,
-> without somebody with the resources to understand why some specific
-> sparc64 situations don't work, I think we just need to disable
-> FAST_GUP on sparc64.
-> 
->                 Linus
-> 
+> A highlevel description of tests and what they are testing for would be
+> really appreciated. Who wants to run these tests and why/when? What kind
+> of bugs would get detected? In short why do we really need/want this
+> code in the tree?
+
+Sure, will do.
