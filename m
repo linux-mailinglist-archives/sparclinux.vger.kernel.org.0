@@ -2,762 +2,298 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9348D7210
-	for <lists+sparclinux@lfdr.de>; Tue, 15 Oct 2019 11:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8301D7375
+	for <lists+sparclinux@lfdr.de>; Tue, 15 Oct 2019 12:40:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729711AbfJOJV5 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 15 Oct 2019 05:21:57 -0400
-Received: from foss.arm.com ([217.140.110.172]:33250 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725946AbfJOJV4 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 15 Oct 2019 05:21:56 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 463581000;
-        Tue, 15 Oct 2019 02:21:55 -0700 (PDT)
-Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com [10.162.42.142])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1054F3F718;
-        Tue, 15 Oct 2019 02:21:43 -0700 (PDT)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-To:     linux-mm@kvack.org
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+        id S1730909AbfJOKkf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 15 Oct 2019 06:40:35 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3762 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730857AbfJOKke (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 15 Oct 2019 06:40:34 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id F33D75FC1EDD4D735964;
+        Tue, 15 Oct 2019 18:40:30 +0800 (CST)
+Received: from [127.0.0.1] (10.74.191.121) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Tue, 15 Oct 2019
+ 18:40:29 +0800
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+To:     Greg KH <gregkh@linuxfoundation.org>
+CC:     Peter Zijlstra <peterz@infradead.org>,
         Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V6 2/2] mm/debug: Add tests validating architecture page table helpers
-Date:   Tue, 15 Oct 2019 14:51:42 +0530
-Message-Id: <1571131302-32290-3-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1571131302-32290-1-git-send-email-anshuman.khandual@arm.com>
-References: <1571131302-32290-1-git-send-email-anshuman.khandual@arm.com>
+        Robin Murphy <robin.murphy@arm.com>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+        <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
+        <mattst88@gmail.com>, <benh@kernel.crashing.org>,
+        <paulus@samba.org>, <mpe@ellerman.id.au>,
+        <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
+        <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>,
+        <dalias@libc.org>, <davem@davemloft.net>, <ralf@linux-mips.org>,
+        <paul.burton@mips.com>, <jhogan@kernel.org>,
+        <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>,
+        <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
+        <anshuman.khandual@arm.com>, <tglx@linutronix.de>, <cai@lca.pw>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <hpa@zytor.com>, <x86@kernel.org>,
+        <dave.hansen@linux.intel.com>, <luto@kernel.org>,
+        <len.brown@intel.com>, <axboe@kernel.dk>, <dledford@redhat.com>,
+        <jeffrey.t.kirsher@intel.com>, <linux-alpha@vger.kernel.org>,
+        <naveen.n.rao@linux.vnet.ibm.com>, <mwb@linux.vnet.ibm.com>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <tbogendoerfer@suse.de>, <linux-mips@vger.kernel.org>,
+        <rafael@kernel.org>, <bhelgaas@google.com>,
+        <linux-pci@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, <lenb@kernel.org>,
+        <linux-acpi@vger.kernel.org>
+References: <a5f0fc80-8e88-b781-77ce-1213e5d62125@huawei.com>
+ <20191010073212.GB18412@dhcp22.suse.cz>
+ <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
+ <20191011111539.GX2311@hirez.programming.kicks-ass.net>
+ <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
+ <20191012074014.GA2037204@kroah.com>
+ <1e1ec851-b5e7-8f35-a627-4c12ca9c2d3c@huawei.com>
+ <20191012104001.GA2052933@kroah.com> <20191012104742.GA2053473@kroah.com>
+ <82000bc8-6912-205b-0251-25b9cc430973@huawei.com>
+ <20191014092509.GA3050088@kroah.com>
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+Message-ID: <34450edf-2249-ee7a-fc83-f4a923f75989@huawei.com>
+Date:   Tue, 15 Oct 2019 18:40:29 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
+MIME-Version: 1.0
+In-Reply-To: <20191014092509.GA3050088@kroah.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.74.191.121]
+X-CFilter-Loop: Reflected
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-This adds tests which will validate architecture page table helpers and
-other accessors in their compliance with expected generic MM semantics.
-This will help various architectures in validating changes to existing
-page table helpers or addition of new ones.
+On 2019/10/14 17:25, Greg KH wrote:
+> On Mon, Oct 14, 2019 at 04:00:46PM +0800, Yunsheng Lin wrote:
+>> On 2019/10/12 18:47, Greg KH wrote:
+>>> On Sat, Oct 12, 2019 at 12:40:01PM +0200, Greg KH wrote:
+>>>> On Sat, Oct 12, 2019 at 05:47:56PM +0800, Yunsheng Lin wrote:
+>>>>> On 2019/10/12 15:40, Greg KH wrote:
+>>>>>> On Sat, Oct 12, 2019 at 02:17:26PM +0800, Yunsheng Lin wrote:
+>>>>>>> add pci and acpi maintainer
+>>>>>>> cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
+>>>>>>>
+>>>>>>> On 2019/10/11 19:15, Peter Zijlstra wrote:
+>>>>>>>> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
+>>>>>>>>> But I failed to see why the above is related to making node_to_cpumask_map()
+>>>>>>>>> NUMA_NO_NODE aware?
+>>>>>>>>
+>>>>>>>> Your initial bug is for hns3, which is a PCI device, which really _MUST_
+>>>>>>>> have a node assigned.
+>>>>>>>>
+>>>>>>>> It not having one, is a straight up bug. We must not silently accept
+>>>>>>>> NO_NODE there, ever.
+>>>>>>>>
+>>>>>>>
+>>>>>>> I suppose you mean reporting a lack of affinity when the node of a pcie
+>>>>>>> device is not set by "not silently accept NO_NODE".
+>>>>>>
+>>>>>> If the firmware of a pci device does not provide the node information,
+>>>>>> then yes, warn about that.
+>>>>>>
+>>>>>>> As Greg has asked about in [1]:
+>>>>>>> what is a user to do when the user sees the kernel reporting that?
+>>>>>>>
+>>>>>>> We may tell user to contact their vendor for info or updates about
+>>>>>>> that when they do not know about their system well enough, but their
+>>>>>>> vendor may get away with this by quoting ACPI spec as the spec
+>>>>>>> considering this optional. Should the user believe this is indeed a
+>>>>>>> fw bug or a misreport from the kernel?
+>>>>>>
+>>>>>> Say it is a firmware bug, if it is a firmware bug, that's simple.
+>>>>>>
+>>>>>>> If this kind of reporting is common pratice and will not cause any
+>>>>>>> misunderstanding, then maybe we can report that.
+>>>>>>
+>>>>>> Yes, please do so, that's the only way those boxes are ever going to get
+>>>>>> fixed.  And go add the test to the "firmware testing" tool that is based
+>>>>>> on Linux that Intel has somewhere, to give vendors a chance to fix this
+>>>>>> before they ship hardware.
+>>>>>>
+>>>>>> This shouldn't be a big deal, we warn of other hardware bugs all the
+>>>>>> time.
+>>>>>
+>>>>> Ok, thanks for clarifying.
+>>>>>
+>>>>> Will send a patch to catch the case when a pcie device without numa node
+>>>>> being set and warn about it.
+>>>>>
+>>>>> Maybe use dev->bus to verify if it is a pci device?
+>>>>
+>>>> No, do that in the pci bus core code itself, when creating the devices
+>>>> as that is when you know, or do not know, the numa node, right?
+>>>>
+>>>> This can't be in the driver core only, as each bus type will have a
+>>>> different way of determining what the node the device is on.  For some
+>>>> reason, I thought the PCI core code already does this, right?
+>>>
+>>> Yes, pci_irq_get_node(), which NO ONE CALLS!  I should go delete that
+>>> thing...
+>>>
+>>> Anyway, it looks like the pci core code does call set_dev_node() based
+>>> on the PCI bridge, so if that is set up properly, all should be fine.
+>>>
+>>> If not, well, you have buggy firmware and you need to warn about that at
+>>> the time you are creating the bridge.  Look at the call to
+>>> pcibus_to_node() in pci_register_host_bridge().
+>>
+>> Thanks for pointing out the specific function.
+>> Maybe we do not need to warn about the case when the device has a parent,
+>> because we must have warned about the parent if the device has a parent
+>> and the parent also has a node of NO_NODE, so do not need to warn the child
+>> device anymore? like blew:
+>>
+>> @@ -932,6 +932,10 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
+>>         list_add_tail(&bus->node, &pci_root_buses);
+>>         up_write(&pci_bus_sem);
+>>
+>> +       if (nr_node_ids > 1 && !parent &&
+> 
+> Why do you need to check this?  If you have a parent, it's your node
+> should be set, if not, that's an error, right?
 
-Test page table and memory pages creating it's entries at various level are
-all allocated from system memory with required size and alignments. But if
-memory pages with required size and alignment could not be allocated, then
-all depending individual tests are just skipped afterwards. This test gets
-called right after init_mm_internals() required for alloc_contig_range() to
-work correctly.
+If the device has parent and the parent device also has a node of
+NUMA_NO_NODE, then maybe we have warned about the parent device, so
+we do not have to warn about the child device?
 
-This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-arm64. Going forward, other architectures too can enable this after fixing
-build or runtime problems (if any) with their page table helpers.
+In pci_register_host_bridge():
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Steven Price <Steven.Price@arm.com>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Sri Krishna chowdary <schowdary@nvidia.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Kirill A. Shutemov <kirill@shutemov.name>
-Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: x86@kernel.org
-Cc: linux-kernel@vger.kernel.org
+	if (!parent)
+		set_dev_node(bus->bridge, pcibus_to_node(bus));
 
-Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>		#PPC32
-Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- .../debug/debug-vm-pgtable/arch-support.txt   |  34 ++
- arch/arm64/Kconfig                            |   1 +
- arch/x86/Kconfig                              |   1 +
- arch/x86/include/asm/pgtable_64.h             |   6 +
- include/asm-generic/pgtable.h                 |   6 +
- init/main.c                                   |   1 +
- lib/Kconfig.debug                             |  21 +
- mm/Makefile                                   |   1 +
- mm/debug_vm_pgtable.c                         | 450 ++++++++++++++++++
- 9 files changed, 521 insertions(+)
- create mode 100644 Documentation/features/debug/debug-vm-pgtable/arch-support.txt
- create mode 100644 mm/debug_vm_pgtable.c
+The above only set the node of the bridge device to the node of bus if
+the bridge device does not have a parent.
 
-diff --git a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-new file mode 100644
-index 000000000000..d6b8185dcf1e
---- /dev/null
-+++ b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-@@ -0,0 +1,34 @@
-+#
-+# Feature name:          debug-vm-pgtable
-+#         Kconfig:       ARCH_HAS_DEBUG_VM_PGTABLE
-+#         description:   arch supports pgtable tests for semantics compliance
-+#
-+    -----------------------
-+    |         arch |status|
-+    -----------------------
-+    |       alpha: | TODO |
-+    |         arc: | TODO |
-+    |         arm: | TODO |
-+    |       arm64: |  ok  |
-+    |         c6x: | TODO |
-+    |        csky: | TODO |
-+    |       h8300: | TODO |
-+    |     hexagon: | TODO |
-+    |        ia64: | TODO |
-+    |        m68k: | TODO |
-+    |  microblaze: | TODO |
-+    |        mips: | TODO |
-+    |       nds32: | TODO |
-+    |       nios2: | TODO |
-+    |    openrisc: | TODO |
-+    |      parisc: | TODO |
-+    |     powerpc: | TODO |
-+    |       riscv: | TODO |
-+    |        s390: | TODO |
-+    |          sh: | TODO |
-+    |       sparc: | TODO |
-+    |          um: | TODO |
-+    |   unicore32: | TODO |
-+    |         x86: |  ok  |
-+    |      xtensa: | TODO |
-+    -----------------------
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 950a56b71ff0..8a3b3eaa49e9 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -11,6 +11,7 @@ config ARM64
- 	select ACPI_PPTT if ACPI
- 	select ARCH_CLOCKSOURCE_DATA
- 	select ARCH_HAS_DEBUG_VIRTUAL
-+	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_DMA_COHERENT_TO_PFN
- 	select ARCH_HAS_DMA_PREP_COHERENT
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index abe822d52167..13c9bd950256 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -61,6 +61,7 @@ config X86
- 	select ARCH_CLOCKSOURCE_INIT
- 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
- 	select ARCH_HAS_DEBUG_VIRTUAL
-+	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_FAST_MULTIPLIER
-diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-index 0b6c4042942a..fb0e76d254b3 100644
---- a/arch/x86/include/asm/pgtable_64.h
-+++ b/arch/x86/include/asm/pgtable_64.h
-@@ -53,6 +53,12 @@ static inline void sync_initial_page_table(void) { }
- 
- struct mm_struct;
- 
-+#define mm_p4d_folded mm_p4d_folded
-+static inline bool mm_p4d_folded(struct mm_struct *mm)
-+{
-+	return !pgtable_l5_enabled();
-+}
-+
- void set_pte_vaddr_p4d(p4d_t *p4d_page, unsigned long vaddr, pte_t new_pte);
- void set_pte_vaddr_pud(pud_t *pud_page, unsigned long vaddr, pte_t new_pte);
- 
-diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
-index 818691846c90..7f97b7a4a9e2 100644
---- a/include/asm-generic/pgtable.h
-+++ b/include/asm-generic/pgtable.h
-@@ -1157,6 +1157,12 @@ static inline bool arch_has_pfn_modify_check(void)
- # define PAGE_KERNEL_EXEC PAGE_KERNEL
- #endif
- 
-+#ifdef CONFIG_DEBUG_VM_PGTABLE
-+extern void debug_vm_pgtable(void);
-+#else
-+static inline void debug_vm_pgtable(void) { }
-+#endif
-+
- #endif /* !__ASSEMBLY__ */
- 
- #ifndef io_remap_pfn_range
-diff --git a/init/main.c b/init/main.c
-index 91f6ebb30ef0..676d8020dd29 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -1177,6 +1177,7 @@ static noinline void __init kernel_init_freeable(void)
- 	workqueue_init();
- 
- 	init_mm_internals();
-+	debug_vm_pgtable();
- 
- 	do_pre_smp_initcalls();
- 	lockup_detector_init();
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index cb1fc48e61e3..b9b8fe1e2180 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -698,6 +698,27 @@ config DEBUG_VM_PGFLAGS
- 
- 	  If unsure, say N.
- 
-+config ARCH_HAS_DEBUG_VM_PGTABLE
-+	bool
-+	help
-+	  An architecture should select this when it can successfully
-+	  build and run DEBUG_VM_PGTABLE.
-+
-+config DEBUG_VM_PGTABLE
-+	bool "Debug arch page table for semantics compliance"
-+	depends on MMU
-+	depends on DEBUG_VM
-+	depends on ARCH_HAS_DEBUG_VM_PGTABLE
-+	help
-+	  This option provides a debug method which can be used to test
-+	  architecture page table helper functions on various platforms in
-+	  verifying if they comply with expected generic MM semantics. This
-+	  will help architecture code in making sure that any changes or
-+	  new additions of these helpers still conform to expected
-+	  semantics of the generic MM.
-+
-+	  If unsure, say N.
-+
- config ARCH_HAS_DEBUG_VIRTUAL
- 	bool
- 
-diff --git a/mm/Makefile b/mm/Makefile
-index d996846697ef..2f085b971d34 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -86,6 +86,7 @@ obj-$(CONFIG_HWPOISON_INJECT) += hwpoison-inject.o
- obj-$(CONFIG_DEBUG_KMEMLEAK) += kmemleak.o
- obj-$(CONFIG_DEBUG_KMEMLEAK_TEST) += kmemleak-test.o
- obj-$(CONFIG_DEBUG_RODATA_TEST) += rodata_test.o
-+obj-$(CONFIG_DEBUG_VM_PGTABLE) += debug_vm_pgtable.o
- obj-$(CONFIG_PAGE_OWNER) += page_owner.o
- obj-$(CONFIG_CLEANCACHE) += cleancache.o
- obj-$(CONFIG_MEMORY_ISOLATION) += page_isolation.o
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-new file mode 100644
-index 000000000000..24da76d8b343
---- /dev/null
-+++ b/mm/debug_vm_pgtable.c
-@@ -0,0 +1,450 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * This kernel module validates architecture page table helpers &
-+ * accessors and helps in verifying their continued compliance with
-+ * generic MM semantics.
-+ *
-+ * Copyright (C) 2019 ARM Ltd.
-+ *
-+ * Author: Anshuman Khandual <anshuman.khandual@arm.com>
-+ */
-+#define pr_fmt(fmt) "arch_pgtable_test: %s " fmt, __func__
-+
-+#include <linux/gfp.h>
-+#include <linux/highmem.h>
-+#include <linux/hugetlb.h>
-+#include <linux/kernel.h>
-+#include <linux/kconfig.h>
-+#include <linux/mm.h>
-+#include <linux/mman.h>
-+#include <linux/mm_types.h>
-+#include <linux/module.h>
-+#include <linux/pfn_t.h>
-+#include <linux/printk.h>
-+#include <linux/random.h>
-+#include <linux/spinlock.h>
-+#include <linux/swap.h>
-+#include <linux/swapops.h>
-+#include <linux/sched/mm.h>
-+#include <asm/pgalloc.h>
-+#include <asm/pgtable.h>
-+
-+/*
-+ * Basic operations
-+ *
-+ * mkold(entry)			= An old and not a young entry
-+ * mkyoung(entry)		= A young and not an old entry
-+ * mkdirty(entry)		= A dirty and not a clean entry
-+ * mkclean(entry)		= A clean and not a dirty entry
-+ * mkwrite(entry)		= A write and not a write protected entry
-+ * wrprotect(entry)		= A write protected and not a write entry
-+ * pxx_bad(entry)		= A mapped and non-table entry
-+ * pxx_same(entry1, entry2)	= Both entries hold the exact same value
-+ */
-+#define VMFLAGS	(VM_READ|VM_WRITE|VM_EXEC)
-+
-+/*
-+ * On s390 platform, the lower 12 bits are used to identify given page table
-+ * entry type and for other arch specific requirements. But these bits might
-+ * affect the ability to clear entries with pxx_clear(). So while loading up
-+ * the entries skip all lower 12 bits in order to accommodate s390 platform.
-+ * It does not have affect any other platform.
-+ */
-+#define RANDOM_ORVALUE	(0xfffffffffffff000UL)
-+#define RANDOM_NZVALUE	(0xff)
-+
-+static bool pud_aligned __initdata;
-+static bool pmd_aligned __initdata;
-+
-+static void __init pte_basic_tests(struct page *page, pgprot_t prot)
-+{
-+	pte_t pte = mk_pte(page, prot);
-+
-+	WARN_ON(!pte_same(pte, pte));
-+	WARN_ON(!pte_young(pte_mkyoung(pte)));
-+	WARN_ON(!pte_dirty(pte_mkdirty(pte)));
-+	WARN_ON(!pte_write(pte_mkwrite(pte)));
-+	WARN_ON(pte_young(pte_mkold(pte)));
-+	WARN_ON(pte_dirty(pte_mkclean(pte)));
-+	WARN_ON(pte_write(pte_wrprotect(pte)));
-+}
-+
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE
-+static void __init pmd_basic_tests(struct page *page, pgprot_t prot)
-+{
-+	pmd_t pmd;
-+
-+	/*
-+	 * Memory block here must be PMD_SIZE aligned. Abort this
-+	 * test in case we could not allocate such a memory block.
-+	 */
-+	if (!pmd_aligned) {
-+		pr_warn("Could not proceed with PMD tests\n");
-+		return;
-+	}
-+
-+	pmd = mk_pmd(page, prot);
-+	WARN_ON(!pmd_same(pmd, pmd));
-+	WARN_ON(!pmd_young(pmd_mkyoung(pmd)));
-+	WARN_ON(!pmd_dirty(pmd_mkdirty(pmd)));
-+	WARN_ON(!pmd_write(pmd_mkwrite(pmd)));
-+	WARN_ON(pmd_young(pmd_mkold(pmd)));
-+	WARN_ON(pmd_dirty(pmd_mkclean(pmd)));
-+	WARN_ON(pmd_write(pmd_wrprotect(pmd)));
-+	/*
-+	 * A huge page does not point to next level page table
-+	 * entry. Hence this must qualify as pmd_bad().
-+	 */
-+	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
-+}
-+#else
-+static void __init pmd_basic_tests(struct page *page, pgprot_t prot) { }
-+#endif
-+
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+static void __init pud_basic_tests(struct page *page, pgprot_t prot)
-+{
-+	pud_t pud;
-+
-+	/*
-+	 * Memory block here must be PUD_SIZE aligned. Abort this
-+	 * test in case we could not allocate such a memory block.
-+	 */
-+	if (!pud_aligned) {
-+		pr_warn("Could not proceed with PUD tests\n");
-+		return;
-+	}
-+
-+	pud = pfn_pud(page_to_pfn(page), prot);
-+	WARN_ON(!pud_same(pud, pud));
-+	WARN_ON(!pud_young(pud_mkyoung(pud)));
-+	WARN_ON(!pud_write(pud_mkwrite(pud)));
-+	WARN_ON(pud_write(pud_wrprotect(pud)));
-+	WARN_ON(pud_young(pud_mkold(pud)));
-+
-+	if (mm_pmd_folded(mm) || __is_defined(ARCH_HAS_4LEVEL_HACK))
-+		return;
-+
-+	/*
-+	 * A huge page does not point to next level page table
-+	 * entry. Hence this must qualify as pud_bad().
-+	 */
-+	WARN_ON(!pud_bad(pud_mkhuge(pud)));
-+}
-+#else
-+static void __init pud_basic_tests(struct page *page, pgprot_t prot) { }
-+#endif
-+
-+static void __init p4d_basic_tests(struct page *page, pgprot_t prot)
-+{
-+	p4d_t p4d;
-+
-+	memset(&p4d, RANDOM_NZVALUE, sizeof(p4d_t));
-+	WARN_ON(!p4d_same(p4d, p4d));
-+}
-+
-+static void __init pgd_basic_tests(struct page *page, pgprot_t prot)
-+{
-+	pgd_t pgd;
-+
-+	memset(&pgd, RANDOM_NZVALUE, sizeof(pgd_t));
-+	WARN_ON(!pgd_same(pgd, pgd));
-+}
-+
-+#ifndef __ARCH_HAS_4LEVEL_HACK
-+static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp)
-+{
-+	pud_t pud = READ_ONCE(*pudp);
-+
-+	if (mm_pmd_folded(mm))
-+		return;
-+
-+	pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
-+	WRITE_ONCE(*pudp, pud);
-+	pud_clear(pudp);
-+	pud = READ_ONCE(*pudp);
-+	WARN_ON(!pud_none(pud));
-+}
-+
-+static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
-+				      pmd_t *pmdp)
-+{
-+	pud_t pud;
-+
-+	if (mm_pmd_folded(mm))
-+		return;
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as pud_bad().
-+	 */
-+	pmd_clear(pmdp);
-+	pud_clear(pudp);
-+	pud_populate(mm, pudp, pmdp);
-+	pud = READ_ONCE(*pudp);
-+	WARN_ON(pud_bad(pud));
-+}
-+#else
-+static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp) { }
-+static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
-+				      pmd_t *pmdp)
-+{
-+}
-+#endif
-+
-+#ifndef __ARCH_HAS_5LEVEL_HACK
-+static void __init p4d_clear_tests(struct mm_struct *mm, p4d_t *p4dp)
-+{
-+	p4d_t p4d = READ_ONCE(*p4dp);
-+
-+	if (mm_pud_folded(mm))
-+		return;
-+
-+	p4d = __p4d(p4d_val(p4d) | RANDOM_ORVALUE);
-+	WRITE_ONCE(*p4dp, p4d);
-+	p4d_clear(p4dp);
-+	p4d = READ_ONCE(*p4dp);
-+	WARN_ON(!p4d_none(p4d));
-+}
-+
-+static void __init p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp,
-+				      pud_t *pudp)
-+{
-+	p4d_t p4d;
-+
-+	if (mm_pud_folded(mm))
-+		return;
-+
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as p4d_bad().
-+	 */
-+	pud_clear(pudp);
-+	p4d_clear(p4dp);
-+	p4d_populate(mm, p4dp, pudp);
-+	p4d = READ_ONCE(*p4dp);
-+	WARN_ON(p4d_bad(p4d));
-+}
-+
-+static void __init pgd_clear_tests(struct mm_struct *mm, pgd_t *pgdp)
-+{
-+	pgd_t pgd = READ_ONCE(*pgdp);
-+
-+	if (mm_p4d_folded(mm))
-+		return;
-+
-+	pgd = __pgd(pgd_val(pgd) | RANDOM_ORVALUE);
-+	WRITE_ONCE(*pgdp, pgd);
-+	pgd_clear(pgdp);
-+	pgd = READ_ONCE(*pgdp);
-+	WARN_ON(!pgd_none(pgd));
-+}
-+
-+static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
-+				      p4d_t *p4dp)
-+{
-+	pgd_t pgd;
-+
-+	if (mm_p4d_folded(mm))
-+		return;
-+
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as pgd_bad().
-+	 */
-+	p4d_clear(p4dp);
-+	pgd_clear(pgdp);
-+	pgd_populate(mm, pgdp, p4dp);
-+	pgd = READ_ONCE(*pgdp);
-+	WARN_ON(pgd_bad(pgd));
-+}
-+#else
-+static void __init p4d_clear_tests(struct mm_struct *mm, p4d_t *p4dp) { }
-+static void __init pgd_clear_tests(struct mm_struct *mm, pgd_t *pgdp) { }
-+static void __init p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp,
-+				      pud_t *pudp)
-+{
-+}
-+static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
-+				      p4d_t *p4dp)
-+{
-+}
-+#endif
-+
-+static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep)
-+{
-+	pte_t pte = READ_ONCE(*ptep);
-+
-+	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
-+	WRITE_ONCE(*ptep, pte);
-+	pte_clear(mm, 0, ptep);
-+	pte = READ_ONCE(*ptep);
-+	WARN_ON(!pte_none(pte));
-+}
-+
-+static void __init pmd_clear_tests(struct mm_struct *mm, pmd_t *pmdp)
-+{
-+	pmd_t pmd = READ_ONCE(*pmdp);
-+
-+	pmd = __pmd(pmd_val(pmd) | RANDOM_ORVALUE);
-+	WRITE_ONCE(*pmdp, pmd);
-+	pmd_clear(pmdp);
-+	pmd = READ_ONCE(*pmdp);
-+	WARN_ON(!pmd_none(pmd));
-+}
-+
-+static void __init pmd_populate_tests(struct mm_struct *mm, pmd_t *pmdp,
-+				      pgtable_t pgtable)
-+{
-+	pmd_t pmd;
-+
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as pmd_bad().
-+	 */
-+	pmd_clear(pmdp);
-+	pmd_populate(mm, pmdp, pgtable);
-+	pmd = READ_ONCE(*pmdp);
-+	WARN_ON(pmd_bad(pmd));
-+}
-+
-+#ifdef CONFIG_CONTIG_ALLOC
-+static struct page * __init alloc_pud_page(gfp_t gfp_mask)
-+{
-+	return alloc_gigantic_page_order(get_order(PUD_SIZE), gfp_mask,
-+				first_memory_node, &node_states[N_MEMORY]);
-+}
-+#else
-+static struct page * __init alloc_pud_page(gfp_t pfp_mask)
-+{
-+	return NULL;
-+}
-+#endif
-+
-+static struct page * __init alloc_mapped_page(void)
-+{
-+	struct page *page;
-+	gfp_t gfp_mask = GFP_KERNEL | __GFP_ZERO;
-+
-+	page = alloc_pud_page(gfp_mask);
-+	if (page) {
-+		pud_aligned = true;
-+		pmd_aligned = true;
-+		return page;
-+	}
-+
-+	page = alloc_pages(gfp_mask, get_order(PMD_SIZE));
-+	if (page) {
-+		pmd_aligned = true;
-+		return page;
-+	}
-+	return alloc_page(gfp_mask);
-+}
-+
-+static void __init free_mapped_page(struct page *page)
-+{
-+	if (pud_aligned) {
-+		unsigned long pfn = page_to_pfn(page);
-+
-+		free_contig_range(pfn, 1ULL << get_order(PUD_SIZE));
-+		return;
-+	}
-+
-+	if (pmd_aligned) {
-+		int order = get_order(PMD_SIZE);
-+
-+		free_pages((unsigned long)page_address(page), order);
-+		return;
-+	}
-+	free_page((unsigned long)page_address(page));
-+}
-+
-+static unsigned long __init get_random_vaddr(void)
-+{
-+	unsigned long random_vaddr, random_pages, total_user_pages;
-+
-+	total_user_pages = (TASK_SIZE - FIRST_USER_ADDRESS) / PAGE_SIZE;
-+
-+	random_pages = get_random_long() % total_user_pages;
-+	random_vaddr = FIRST_USER_ADDRESS + random_pages * PAGE_SIZE;
-+
-+	WARN_ON(random_vaddr > TASK_SIZE);
-+	WARN_ON(random_vaddr < FIRST_USER_ADDRESS);
-+	return random_vaddr;
-+}
-+
-+void __init debug_vm_pgtable(void)
-+{
-+	struct mm_struct *mm;
-+	struct page *page;
-+	pgd_t *pgdp;
-+	p4d_t *p4dp, *saved_p4dp;
-+	pud_t *pudp, *saved_pudp;
-+	pmd_t *pmdp, *saved_pmdp, pmd;
-+	pte_t *ptep;
-+	pgtable_t saved_ptep;
-+	pgprot_t prot;
-+	unsigned long vaddr;
-+
-+	prot = vm_get_page_prot(VMFLAGS);
-+	vaddr = get_random_vaddr();
-+	mm = mm_alloc();
-+	if (!mm) {
-+		pr_err("mm_struct allocation failed\n");
-+		return;
-+	}
-+
-+	page = alloc_mapped_page();
-+	if (!page) {
-+		pr_err("memory allocation failed\n");
-+		return;
-+	}
-+
-+	pgdp = pgd_offset(mm, vaddr);
-+	p4dp = p4d_alloc(mm, pgdp, vaddr);
-+	pudp = pud_alloc(mm, p4dp, vaddr);
-+	pmdp = pmd_alloc(mm, pudp, vaddr);
-+	ptep = pte_alloc_map(mm, pmdp, vaddr);
-+
-+	/*
-+	 * Save all the page table page addresses as the page table
-+	 * entries will be used for testing with random or garbage
-+	 * values. These saved addresses will be used for freeing
-+	 * page table pages.
-+	 */
-+	pmd = READ_ONCE(*pmdp);
-+	saved_p4dp = p4d_offset(pgdp, 0UL);
-+	saved_pudp = pud_offset(p4dp, 0UL);
-+	saved_pmdp = pmd_offset(pudp, 0UL);
-+	saved_ptep = pmd_pgtable(pmd);
-+
-+	pte_basic_tests(page, prot);
-+	pmd_basic_tests(page, prot);
-+	pud_basic_tests(page, prot);
-+	p4d_basic_tests(page, prot);
-+	pgd_basic_tests(page, prot);
-+
-+	pte_clear_tests(mm, ptep);
-+	pmd_clear_tests(mm, pmdp);
-+	pud_clear_tests(mm, pudp);
-+	p4d_clear_tests(mm, p4dp);
-+	pgd_clear_tests(mm, pgdp);
-+
-+	pte_unmap(ptep);
-+
-+	pmd_populate_tests(mm, pmdp, saved_ptep);
-+	pud_populate_tests(mm, pudp, saved_pmdp);
-+	p4d_populate_tests(mm, p4dp, saved_pudp);
-+	pgd_populate_tests(mm, pgdp, saved_p4dp);
-+
-+	p4d_free(mm, saved_p4dp);
-+	pud_free(mm, saved_pudp);
-+	pmd_free(mm, saved_pmdp);
-+	pte_free(mm, saved_ptep);
-+
-+	mm_dec_nr_puds(mm);
-+	mm_dec_nr_pmds(mm);
-+	mm_dec_nr_ptes(mm);
-+	__mmdrop(mm);
-+
-+	free_mapped_page(page);
-+}
--- 
-2.20.1
+	bus->dev.parent = bus->bridge;
+
+	dev_set_name(&bus->dev, "%04x:%02x", pci_domain_nr(bus), bus->number);
+	name = dev_name(&bus->dev);
+
+	err = device_register(&bus->dev);
+
+The above then set the bus device's parent to bridge device, and then
+call device_register(), which will set the bus device's node according to
+bridge device' node.
+
+> 
+>> +           dev_to_node(bus->bridge) == NUMA_NO_NODE)
+>> +               dev_err(bus->bridge, FW_BUG "No node assigned on NUMA capable HW. Please contact your vendor for updates.\n");
+>> +
+>>         return 0;
+> 
+> Who set that bus->bridge node to NUMA_NO_NODE?
+
+It seems x86 and arm64 may have different implemention of
+pcibus_to_node():
+
+For arm64:
+int pcibus_to_node(struct pci_bus *bus)
+{
+	return dev_to_node(&bus->dev);
+}
+
+And the node of bus is set in:
+int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
+{
+	if (!acpi_disabled) {
+		struct pci_config_window *cfg = bridge->bus->sysdata;
+		struct acpi_device *adev = to_acpi_device(cfg->parent);
+		struct device *bus_dev = &bridge->bus->dev;
+
+		ACPI_COMPANION_SET(&bridge->dev, adev);
+		set_dev_node(bus_dev, acpi_get_node(acpi_device_handle(adev)));
+	}
+
+	return 0;
+}
+
+acpi_get_node() may return NUMA_NO_NODE in pcibios_root_bridge_prepare(),
+which will set the node of bus_dev to NUMA_NO_NODE
+
+
+x86:
+static inline int __pcibus_to_node(const struct pci_bus *bus)
+{
+	const struct pci_sysdata *sd = bus->sysdata;
+
+	return sd->node;
+}
+
+And the node of bus is set in pci_acpi_scan_root(), which uses
+pci_acpi_root_get_node() get the node of a bus. And it also may return
+NUMA_NO_NODE.
+
+
+> If that is set, the firmware is broken, as you say, but you need to tell
+> the user what firmware is broken.
+
+Maybe mentioning the BIOS in log?
+dev_err(bus->bridge, FW_BUG "No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.\n");
+
+
+> 
+> Try something like this out and see what happens on your machine that
+> had things "broken".  What does it say?
+
+Does not have a older bios right now.
+But always returning NUMA_NO_NODE by below patch:
+
+--- a/drivers/acpi/numa.c
++++ b/drivers/acpi/numa.c
+@@ -484,6 +484,7 @@ int acpi_get_node(acpi_handle handle)
+
+        pxm = acpi_get_pxm(handle);
+
+-       return acpi_map_pxm_to_node(pxm);
++       return -1;
++       //return acpi_map_pxm_to_node(pxm);
+
+it gives the blow warning in my machine:
+
+[   16.126136]  pci0000:00: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   17.733831]  pci0000:7b: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   18.020924]  pci0000:7a: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   18.552832]  pci0000:78: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   19.514948]  pci0000:7c: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   20.652990]  pci0000:74: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   22.573200]  pci0000:80: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   23.225355]  pci0000:bb: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   23.514040]  pci0000:ba: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   24.050107]  pci0000:b8: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   25.017491]  pci0000:bc: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+[   25.557974]  pci0000:b4: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
+
+> 
+>> Also, we do not need to warn about that in pci_device_add(), Right?
+>> Because we must have warned about the pci host bridge of the pci device.
+> 
+> That should be true, yes.
+> 
+>> I may be wrong about above because I am not so familiar with the pci.
+>>
+>>>
+>>> And yes, you need to do this all on a per-bus-type basis, as has been
+>>> pointed out.  It's up to the bus to create the device and set this up
+>>> properly.
+>>
+>> Thanks.
+>> Will do that on per-bus-type basis.
+> 
+> Good luck, I don't really think that most, if any, of this is needed,
+> but hey, it's nice to clean it up where it can be :)
+> 
+> greg k-h
+> 
+> .
+> 
 
