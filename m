@@ -2,56 +2,46 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A1DFD8121
-	for <lists+sparclinux@lfdr.de>; Tue, 15 Oct 2019 22:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92668D8873
+	for <lists+sparclinux@lfdr.de>; Wed, 16 Oct 2019 08:06:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387943AbfJOUeQ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 15 Oct 2019 16:34:16 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:39658 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387777AbfJOUeP (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 15 Oct 2019 16:34:15 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0F56515099D86;
-        Tue, 15 Oct 2019 13:34:15 -0700 (PDT)
-Date:   Tue, 15 Oct 2019 13:34:14 -0700 (PDT)
-Message-Id: <20191015.133414.946929614650400310.davem@davemloft.net>
-To:     bigeasy@linutronix.de
-Cc:     linux-kernel@vger.kernel.org, tglx@linutronix.de,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH 19/34] sparc: Use CONFIG_PREEMPTION
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191015191821.11479-20-bigeasy@linutronix.de>
-References: <20191015191821.11479-1-bigeasy@linutronix.de>
-        <20191015191821.11479-20-bigeasy@linutronix.de>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        id S1727249AbfJPGF7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 16 Oct 2019 02:05:59 -0400
+Received: from mx2.cyber.ee ([193.40.6.72]:56619 "EHLO mx2.cyber.ee"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726421AbfJPGF7 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 16 Oct 2019 02:05:59 -0400
+Subject: Re: sparc64: hang from BUG: Bad page state, on older CPU & compiler
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        David Miller <davem@davemloft.net>, sparclinux@vger.kernel.org
+References: <d2a51bfb-84e4-3ce7-ac48-7200b3a8d722@linux.ee>
+ <20190818070137.GA22731@infradead.org>
+ <20190818.123943.1491620523133670968.davem@davemloft.net>
+ <20190819051055.GA32118@infradead.org>
+ <CAHk-=wiCJf2beZwW6E37mnovd860m15Ety+ucgDNK1aPAZme_A@mail.gmail.com>
+ <25cbdd65-484e-7e50-ee8c-dc8745ece5fe@linux.ee>
+ <CAHk-=wiW0xwg4ETaMovbmDug7Cf-gUrxH7FX7EnucktJF_Sj=g@mail.gmail.com>
+From:   Meelis Roos <mroos@linux.ee>
+Message-ID: <d936b304-4808-6a6b-9641-fe8e30345fe2@linux.ee>
+Date:   Wed, 16 Oct 2019 09:04:31 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <CAHk-=wiW0xwg4ETaMovbmDug7Cf-gUrxH7FX7EnucktJF_Sj=g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: et-EE
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 15 Oct 2019 13:34:15 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Date: Tue, 15 Oct 2019 21:18:06 +0200
+> Ok, I'll just remove that HAVE_FAST_GUP - I was expecting it to come
+> through David, but I was also really hoping we'd have a guess as to
+> why it happens on some hardware and configurations but not others.
 
-> From: Thomas Gleixner <tglx@linutronix.de>
-> 
-> CONFIG_PREEMPTION is selected by CONFIG_PREEMPT and by CONFIG_PREEMPT_RT.
-> Both PREEMPT and PREEMPT_RT require the same functionality which today
-> depends on CONFIG_PREEMPT.
-> 
-> Switch the trap code over to use CONFIG_PREEMPTION.
-> 
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: sparclinux@vger.kernel.org
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> [bigeasy: +Kconfig]
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+It works, thank you - the mutex hang regression in util-linux test suite no longer triggers and we can move forward with sparc64 kernels in debian-ports and also re-check any other regressions found meanwhile. I will recheck my sparc64's and report any surviving regressions if any.
 
-Acked-by: David S. Miller <davem@davemloft.net>
+-- 
+Meelis Roos <mroos@linux.ee>
