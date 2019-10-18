@@ -2,128 +2,89 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 836A5DBFDF
-	for <lists+sparclinux@lfdr.de>; Fri, 18 Oct 2019 10:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F7B7DC267
+	for <lists+sparclinux@lfdr.de>; Fri, 18 Oct 2019 12:15:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2632792AbfJRI1z (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 18 Oct 2019 04:27:55 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:40715 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392728AbfJRI1z (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 18 Oct 2019 04:27:55 -0400
-Received: by mail-ed1-f65.google.com with SMTP id v38so3910362edm.7;
-        Fri, 18 Oct 2019 01:27:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zDSqcOkP2VMM+VEiT/vRGRAsfqP4fI01tx/F/lL/3zY=;
-        b=GNarsndyF0j+Y7MyOM682hGvUhawyi9GWj/5AnmRiAn3Cis7AAXKrGt44hmJno6jyE
-         rEE7+ZNavYBrLHUyCeRxc4ebtm3auILatI/UlpEGifoEo1tVHDRgAbP4Qm/UHz9oRZg2
-         oHZ5EMgUYGJ3AXZkI2AmM5WtakVk3zt4QzzPnm7xzfwaV3KkEU7w0Vtnp+vl6Sgi990a
-         h4hwmc0EMhSf9PW05wHsNa4cEEO0ytiN9eiOm3tqvFxNK5tlPZpXily1AS36skhCxerG
-         52Q6Wf7fdxrKNQDPx0rze6tkQzyVL48xYAftqISJEUJ1DZ3Td+EpvPYNJCkdf1xTl4UL
-         AGMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zDSqcOkP2VMM+VEiT/vRGRAsfqP4fI01tx/F/lL/3zY=;
-        b=UjKhlxL2T4cyCnVjnzQmnAAa81pzj5Z25HCgACzfp2EFlunGj61SUher+xiN6y81Nm
-         RB4s4P0a8k4gBfAfeqrm0jfB9f4MwiOTWfMdzSIPipisJEssCbQA8onJhpj8jValGJXp
-         gO31+EYnw5ALJxNRpsTGxi4xysoy7qO5m9Zc+N2j+8e6aq1cmTsPnErbHEQojjIf1RWb
-         QlBvO6lMQSMUCuIGdbzS98h5F3qoLaT2YYG/YF/9AgC9qAW9S2Iuv2J5qhczbhz7kyvR
-         8/qzjVfy/b82S3PVfwnT8A/1KsBtezDkdN0n6hi+8hRilX/CN0dDI/bocwpWV/LSxRQC
-         8Ohw==
-X-Gm-Message-State: APjAAAX/WOC/tuyuMcjT/UXYV1hIIqnQgN4GMNrvngbIF/qT6jWXjg+6
-        24ITGVAh30JRUjymr+LFeKhR7+Bibdl5yEG8/l3ZPite
-X-Google-Smtp-Source: APXvYqzM8bpfqOg09DXLhEx8bCSMXiB5z3QiM35Q+iXMFoXOZQNth9n4ShsTqJ6X31CfKoWCmgf32N3Qz0DCGqV0kyo=
-X-Received: by 2002:a05:6402:7ca:: with SMTP id u10mr8320134edy.20.1571387273291;
- Fri, 18 Oct 2019 01:27:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190922113436.10396-1-yamada.masahiro@socionext.com> <CAK7LNARXA4MnDyYHLphYEqMfEbh=cMk0i=pzDRbEODTeM+cJ4Q@mail.gmail.com>
-In-Reply-To: <CAK7LNARXA4MnDyYHLphYEqMfEbh=cMk0i=pzDRbEODTeM+cJ4Q@mail.gmail.com>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Fri, 18 Oct 2019 11:27:42 +0300
-Message-ID: <CADxRZqy-3x4ZMSdGoxc1F2uE3x33kugD_wXdmUwBMy1s6Hqz0Q@mail.gmail.com>
-Subject: Re: [PATCH] sparc: vdso: fix build error of vdso32
-To:     sparclinux <sparclinux@vger.kernel.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S2389715AbfJRKO6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 18 Oct 2019 06:14:58 -0400
+Received: from [217.140.110.172] ([217.140.110.172]:32824 "EHLO foss.arm.com"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S2442459AbfJRKNu (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 18 Oct 2019 06:13:50 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B33664F;
+        Fri, 18 Oct 2019 03:13:28 -0700 (PDT)
+Received: from e112269-lin.cambridge.arm.com (e112269-lin.cambridge.arm.com [10.1.194.43])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C04C93F6C4;
+        Fri, 18 Oct 2019 03:13:25 -0700 (PDT)
+From:   Steven Price <steven.price@arm.com>
+To:     linux-mm@kvack.org
+Cc:     Steven Price <steven.price@arm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        James Morse <james.morse@arm.com>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "ndesaulniers@google.com" <ndesaulniers@google.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>
-Content-Type: text/plain; charset="UTF-8"
+        Will Deacon <will@kernel.org>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        "Liang, Kan" <kan.liang@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: [PATCH v12 09/22] sparc: mm: Add p?d_leaf() definitions
+Date:   Fri, 18 Oct 2019 11:12:35 +0100
+Message-Id: <20191018101248.33727-10-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191018101248.33727-1-steven.price@arm.com>
+References: <20191018101248.33727-1-steven.price@arm.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Sep 27, 2019 at 6:47 PM Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
->
-> On Sun, Sep 22, 2019 at 8:36 PM Masahiro Yamada
-> <yamada.masahiro@socionext.com> wrote:
-> >
-> > Since commit 54b8ae66ae1a ("kbuild: change *FLAGS_<basetarget>.o to
-> > take the path relative to $(obj)"), sparc allmodconfig fails to build
-> > as follows:
-> >
-> >   CC      arch/sparc/vdso/vdso32/vclock_gettime.o
-> > unrecognized e_machine 18 arch/sparc/vdso/vdso32/vclock_gettime.o
-> > arch/sparc/vdso/vdso32/vclock_gettime.o: failed
-> >
-> > The cause of the breakage is that -pg flag not being dropped.
-> >
-> > The vdso32 files are located in the vdso32/ subdirectory, but I missed
-> > to update the Makefile.
-> >
-> > Fixes: 54b8ae66ae1a ("kbuild: change *FLAGS_<basetarget>.o to take the path relative to $(obj)")
-> > Reported-by: Anatoly Pugachev <matorola@gmail.com>
-> > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> > ---
-> >
->
->
-> I am copy-pasting Tested-by from the reporter:
->
-> Tested-by: Anatoly Pugachev <matorola@gmail.com>
->
-> It was given here:
->
-> https://lkml.org/lkml/2019/9/25/197
->
->
->
->
-> >  arch/sparc/vdso/Makefile | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/sparc/vdso/Makefile b/arch/sparc/vdso/Makefile
-> > index 324a23947585..399bc22b1cf8 100644
-> > --- a/arch/sparc/vdso/Makefile
-> > +++ b/arch/sparc/vdso/Makefile
-> > @@ -67,12 +67,14 @@ $(vobjs): KBUILD_CFLAGS := $(filter-out $(GCC_PLUGINS_CFLAGS) $(SPARC_REG_CFLAGS
-> >  #
-> >  CFLAGS_REMOVE_vdso-note.o = -pg
-> >  CFLAGS_REMOVE_vclock_gettime.o = -pg
-> > +CFLAGS_REMOVE_vdso32/vdso-note.o = -pg
-> > +CFLAGS_REMOVE_vdso32/vclock_gettime.o = -pg
-> >
-> >  $(obj)/%.so: OBJCOPYFLAGS := -S
-> >  $(obj)/%.so: $(obj)/%.so.dbg FORCE
-> >         $(call if_changed,objcopy)
-> >
-> > -CPPFLAGS_vdso32.lds = $(CPPFLAGS_vdso.lds)
-> > +CPPFLAGS_vdso32/vdso32.lds = $(CPPFLAGS_vdso.lds)
-> >  VDSO_LDFLAGS_vdso32.lds = -m elf32_sparc -soname linux-gate.so.1
-> >
-> >  #This makes sure the $(obj) subdirectory exists even though vdso32/
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_leaf() functions/macros.
 
+For sparc 64 bit, pmd_large() and pud_large() are already provided, so
+add macros to provide the p?d_leaf names required by the generic code.
 
-Hello!
+CC: "David S. Miller" <davem@davemloft.net>
+CC: sparclinux@vger.kernel.org
+Signed-off-by: Steven Price <steven.price@arm.com>
+---
+ arch/sparc/include/asm/pgtable_64.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Can someone please pull/apply this to master ?!
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index 6ae8016ef4ec..43206652eaf5 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -683,6 +683,7 @@ static inline unsigned long pte_special(pte_t pte)
+ 	return pte_val(pte) & _PAGE_SPECIAL;
+ }
+ 
++#define pmd_leaf	pmd_large
+ static inline unsigned long pmd_large(pmd_t pmd)
+ {
+ 	pte_t pte = __pte(pmd_val(pmd));
+@@ -867,6 +868,7 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
+ /* only used by the stubbed out hugetlb gup code, should never be called */
+ #define pgd_page(pgd)			NULL
+ 
++#define pud_leaf	pud_large
+ static inline unsigned long pud_large(pud_t pud)
+ {
+ 	pte_t pte = __pte(pud_val(pud));
+-- 
+2.20.1
 
-Thanks!
