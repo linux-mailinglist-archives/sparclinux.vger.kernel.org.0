@@ -2,139 +2,60 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 432A7E3655
-	for <lists+sparclinux@lfdr.de>; Thu, 24 Oct 2019 17:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0164AE38A9
+	for <lists+sparclinux@lfdr.de>; Thu, 24 Oct 2019 18:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503024AbfJXPSJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 24 Oct 2019 11:18:09 -0400
-Received: from mail-il1-f193.google.com ([209.85.166.193]:37025 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2503022AbfJXPSJ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 24 Oct 2019 11:18:09 -0400
-Received: by mail-il1-f193.google.com with SMTP id v2so2303049ilq.4
-        for <sparclinux@vger.kernel.org>; Thu, 24 Oct 2019 08:18:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google;
-        h=date:from:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=Ounxj9cfL6O+QVspuA41qPrL+dtHlnd6zlmABTsVbws=;
-        b=biNiyBsUq1oC7u5yogZy8N29MX7ATTQIXUIPIqqI6g2N8EA9QhwEC0gQemO8Cy5L6a
-         UCFg3RDAYG9lnvohF8+tXuDf+IXq7fLq3dVHXnLyE5vPEUz/DrCR7X3R288BYePyqXg3
-         oYLT/wTPksWncWN9bXdK0yZ0nbFI3oEoJl84Ht2i67n/365THu308Y+OSHFJ18vXXUqR
-         ENefMt09zBo4nBburoq/NmiNK2bRI59OT7KW1kTA/yDrLysLajr6fUNNc1LVC2TMXMzE
-         JIj7P2KKqLbrHsjaQFkGpARY6E99HHxeUwRHMbgsRgF/uSl1vSWl2lvW9K349Ga0HXcy
-         1zXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=Ounxj9cfL6O+QVspuA41qPrL+dtHlnd6zlmABTsVbws=;
-        b=gpSXQH21zTtbBijVbtKkHXxuInY+xccWEpWmgxLvwJJHRba+g0oMj+TALQOk/Rzsz/
-         24TaHi6fPQMVroJHEDd4Om26V0yrEUPJ76WugrLagWtVUOa/epU52SBhly17r90Lp9jH
-         ub3dGySKxaNSdDAzCV1mGUPcgxdoaCAfIju8cPN8ble4hEx7ZMhZ2rLIf5lq/JL8zmyP
-         9gWxVPimAyUq9ot/3Rm+42PoQYqaYDWItqP3xeXPqPjWXRb+VReJaHG2RFixohsII2cJ
-         o5SHlLJBejfaeGVGlUvmLV6dlRP6jouJncTRc+ZUjs4N5C1uCAbgiarLFKdpwzNWtMcy
-         dBDg==
-X-Gm-Message-State: APjAAAW6SXue13lGj4jtH1ftpbWK3pHo0vOCzWxZtw+nQ7sodOXQPgvQ
-        3YPr9NstGsV3xxtV2rUsIjPBQw==
-X-Google-Smtp-Source: APXvYqxQ1LtEDnMpoN971luqOI7TbH4CJsi6LuiXRaB4c6bbMVkSBP/cjpjqc6MBqdQnstOla4Sq8g==
-X-Received: by 2002:a92:8fc6:: with SMTP id r67mr43423606ilk.5.1571930288560;
-        Thu, 24 Oct 2019 08:18:08 -0700 (PDT)
-Received: from localhost ([64.62.168.194])
-        by smtp.gmail.com with ESMTPSA id y5sm7755183ilm.63.2019.10.24.08.18.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2019 08:18:07 -0700 (PDT)
-Date:   Thu, 24 Oct 2019 08:17:59 -0700 (PDT)
-From:   Paul Walmsley <paul.walmsley@sifive.com>
-X-X-Sender: paulw@viisi.sifive.com
-To:     Michal Simek <michal.simek@xilinx.com>
-cc:     linux-kernel@vger.kernel.org, monstr@monstr.eu, git@xilinx.com,
-        palmer@sifive.com, hch@infradead.org, longman@redhat.com,
-        helgaas@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jackie Liu <liuyun01@kylinos.cn>,
-        Wesley Terpstra <wesley@sifive.com>,
-        Firoz Khan <firoz.khan@linaro.org>, sparclinux@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
-        James Hogan <jhogan@kernel.org>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-snps-arc@lists.infradead.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Biggers <ebiggers@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-mips@vger.kernel.org,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/2] asm-generic: Make msi.h a mandatory include/asm
- header
-In-Reply-To: <a021f232968cfffe3f2d838da47214c6bbdeeedb.1571911976.git.michal.simek@xilinx.com>
-Message-ID: <alpine.DEB.2.21.9999.1910240810420.20010@viisi.sifive.com>
-References: <cover.1571911976.git.michal.simek@xilinx.com> <a021f232968cfffe3f2d838da47214c6bbdeeedb.1571911976.git.michal.simek@xilinx.com>
-User-Agent: Alpine 2.21.9999 (DEB 301 2018-08-15)
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-165076562-1571930279=:20010"
+        id S2439919AbfJXQq2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 24 Oct 2019 12:46:28 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:49000 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439916AbfJXQq1 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 24 Oct 2019 12:46:27 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 31E891477CBB0;
+        Thu, 24 Oct 2019 09:46:26 -0700 (PDT)
+Date:   Thu, 24 Oct 2019 09:46:23 -0700 (PDT)
+Message-Id: <20191024.094623.2182520936177775102.davem@davemloft.net>
+To:     steven.price@arm.com
+Cc:     linux-mm@kvack.org, luto@kernel.org, ard.biesheuvel@linaro.org,
+        arnd@arndb.de, bp@alien8.de, catalin.marinas@arm.com,
+        dave.hansen@linux.intel.com, mingo@redhat.com, james.morse@arm.com,
+        jglisse@redhat.com, peterz@infradead.org, tglx@linutronix.de,
+        will@kernel.org, x86@kernel.org, hpa@zytor.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark.Rutland@arm.com, kan.liang@linux.intel.com,
+        akpm@linux-foundation.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v13 09/22] sparc: mm: Add p?d_leaf() definitions
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20191024093716.49420-10-steven.price@arm.com>
+References: <20191024093716.49420-1-steven.price@arm.com>
+        <20191024093716.49420-10-steven.price@arm.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 24 Oct 2019 09:46:26 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Steven Price <steven.price@arm.com>
+Date: Thu, 24 Oct 2019 10:37:03 +0100
 
---8323329-165076562-1571930279=:20010
-Content-Type: text/plain; charset=ISO-8859-2
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+> walk_page_range() is going to be allowed to walk page tables other than
+> those of user space. For this it needs to know when it has reached a
+> 'leaf' entry in the page tables. This information is provided by the
+> p?d_leaf() functions/macros.
+> 
+> For sparc 64 bit, pmd_large() and pud_large() are already provided, so
+> add macros to provide the p?d_leaf names required by the generic code.
+> 
+> CC: "David S. Miller" <davem@davemloft.net>
+> CC: sparclinux@vger.kernel.org
+> Signed-off-by: Steven Price <steven.price@arm.com>
 
-On Thu, 24 Oct 2019, Michal Simek wrote:
-
-> msi.h is generic for all architectures expect of x86 which has own versio=
-n.
-> Enabling MSI by including msi.h to architecture Kbuild is just additional
-> step which doesn't need to be done.
-> The patch was created based on request to enable MSI for Microblaze.
->=20
-> Suggested-by: Christoph Hellwig <hch@infradead.org>
-> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
-> ---
->=20
-> https://lore.kernel.org/linux-riscv/20191008154604.GA7903@infradead.org/
-
-[ ... ]
-
-> diff --git a/arch/riscv/include/asm/Kbuild b/arch/riscv/include/asm/Kbuil=
-d
-> index 16970f246860..1efaeddf1e4b 100644
-> --- a/arch/riscv/include/asm/Kbuild
-> +++ b/arch/riscv/include/asm/Kbuild
-> @@ -22,7 +22,6 @@ generic-y +=3D kvm_para.h
->  generic-y +=3D local.h
->  generic-y +=3D local64.h
->  generic-y +=3D mm-arch-hooks.h
-> -generic-y +=3D msi.h
->  generic-y +=3D percpu.h
->  generic-y +=3D preempt.h
->  generic-y +=3D sections.h
-
-Acked-by: Paul Walmsley <paul.walmsley@sifive.com> # arch/riscv
-Tested-by: Paul Walmsley <paul.walmsley@sifive.com> # build only, rv32/rv64
-
-Thanks Micha=B3,
-
-
-- Paul
---8323329-165076562-1571930279=:20010--
+Acked-by: David S. Miller <davem@davemloft.net>
