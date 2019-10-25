@@ -2,129 +2,167 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46E83E45A5
-	for <lists+sparclinux@lfdr.de>; Fri, 25 Oct 2019 10:24:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1E08E4646
+	for <lists+sparclinux@lfdr.de>; Fri, 25 Oct 2019 10:53:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437935AbfJYIYu (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 25 Oct 2019 04:24:50 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:45366 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437927AbfJYIYu (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 25 Oct 2019 04:24:50 -0400
-Received: by mail-wr1-f66.google.com with SMTP id q13so1221305wrs.12
-        for <sparclinux@vger.kernel.org>; Fri, 25 Oct 2019 01:24:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=monstr-eu.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=QJej2zrE0QBqg+iZe6C/nm9jF4Wofv1H//Qo71L/Lag=;
-        b=Kf2QBuVDRfq6+w0N7DCDZImKcWFxzkw3pvVhiEdnzg1XkUgGeTTSWLT/AXDil240QQ
-         hoyIRS/bK4lqFnlz87IYHANGs4Xws7dB93EvJssGohry3bsXOshEno6Dqk4BPaPnfpRY
-         MW1z665u1spkHgC4bGahdMT464TLw+1YH8Z8lmyJ1nskaMZZ46OQsKn2jmmBRxe0Ncvr
-         RfQX4whxGZGnyVjXC+tZgkm3LVXnhyuhXcBmsUKSK8o7DckMmoVIGMkNC1lf4WASjicO
-         /1VKnZn2qgrQn2r3sA6XsMoV6YvwKEEDchmOtm6V2itNyqrXRr+3KxQQLEV90vCR7S6U
-         0kew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=QJej2zrE0QBqg+iZe6C/nm9jF4Wofv1H//Qo71L/Lag=;
-        b=Bjr5bSSugppStT16D/j1sBoda8rt0J4PqFazX1qudvyZmmxEeLqixdnNOd1deAcqzT
-         jchGyHsJT4itm6VIzHZEd1EYsVsIHc9HWofZvGVTHp6eObZiBwSZ85IrpVDXchphuuaT
-         bYtWPlx3banooItNnUYGRIWKT0C6YzTYT/cNGZmmnwZut/rG6YoszUPH12lNf+Mp8lJL
-         kbsb+nFTEP1r7BfG0qW736A6yizd0+W6kejeSHL5fxN75nTvPngUesQ4GZwdirYRtfx6
-         /kDIjkcu/UPtAiyI0S3bl4Qbc7IXWZ+Mqtoq179q4KeMvtUDFX3FSIpfHZDDsf2bWOyZ
-         ly/g==
-X-Gm-Message-State: APjAAAXuGygursYNEQjPdPsPxemqkqauAX8zmMvkK7r7ajswF4vuxORS
-        GMwDkwflffeM1E0vB77j6G/zzc1zuyk0GQ3L
-X-Google-Smtp-Source: APXvYqyVbVYhcUVjlWsHAWMsNSTmIYOz09PiXSzKL+kucF3259sySENSkNokb9u6ffLnyHFkS8YN/A==
-X-Received: by 2002:a5d:4aca:: with SMTP id y10mr1692223wrs.292.1571991887824;
-        Fri, 25 Oct 2019 01:24:47 -0700 (PDT)
-Received: from [66.102.1.109] ([149.199.62.131])
-        by smtp.gmail.com with ESMTPSA id b5sm1290058wmj.18.2019.10.25.01.24.36
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 25 Oct 2019 01:24:47 -0700 (PDT)
-Subject: Re: [PATCH 06/12] microblaze: use pgtable-nopmd instead of
- 4level-fixup
-To:     Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Arnd Bergmann <arnd@arndb.de>,
+        id S2437741AbfJYIxA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 25 Oct 2019 04:53:00 -0400
+Received: from pegase1.c-s.fr ([93.17.236.30]:34737 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2437618AbfJYIw7 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 25 Oct 2019 04:52:59 -0400
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 46zyYg6BYkz9vC0w;
+        Fri, 25 Oct 2019 10:52:55 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+        reason="1024-bit key; insecure key"
+        header.d=c-s.fr header.i=@c-s.fr header.b=JXqe5sri; dkim-adsp=pass;
+        dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id 6HbhFbyFhM8v; Fri, 25 Oct 2019 10:52:55 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 46zyYg4vJdz9vC0r;
+        Fri, 25 Oct 2019 10:52:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+        t=1571993575; bh=4oDjhDK0FsO59rFVGt7Y5o7o8C55+19qgM1BU+899t4=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=JXqe5sriXNQaQXKes3qqbdy43NSrBpwRBpfMpDtkffnR5YWutoOVXs9BVvi7rzrMY
+         QG68soKwprXrLgOAJa7ilqd/FXQFpMspM1kp2DJjaecMsPUGWDU22R2zojRhkImahW
+         aYJ8xO9qWW+5AHxKxjlrTglXwCmCdHn/aPTlV1cw=
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id B9A698B868;
+        Fri, 25 Oct 2019 10:52:56 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id Z1aZY1cuISIS; Fri, 25 Oct 2019 10:52:56 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 7BC128B895;
+        Fri, 25 Oct 2019 10:52:54 +0200 (CEST)
+Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table
+ helpers
+To:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        Qian Cai <cai@lca.pw>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greentime Hu <green.hu@gmail.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Mark Salter <msalter@redhat.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Russell King <linux@armlinux.org.uk>,
-        Sam Creasey <sammy@sammy.net>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Vineet Gupta <Vineet.Gupta1@synopsys.com>,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
-        sparclinux@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
-References: <1571822941-29776-1-git-send-email-rppt@kernel.org>
- <1571822941-29776-7-git-send-email-rppt@kernel.org>
-From:   Michal Simek <monstr@monstr.eu>
-Message-ID: <aa7df5a1-5022-bc82-8816-74c956e2fd90@monstr.eu>
-Date:   Fri, 25 Oct 2019 10:24:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+References: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
+ <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
+ <3cfec421-4006-4159-ca32-313ff5196ff9@c-s.fr>
+ <763d58b4-f532-0bba-bf2b-71433ac514fb@arm.com>
+From:   Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <d811622e-0d35-3bc6-9568-36abc1bee355@c-s.fr>
+Date:   Fri, 25 Oct 2019 10:52:54 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <1571822941-29776-7-git-send-email-rppt@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <763d58b4-f532-0bba-bf2b-71433ac514fb@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Mike,
 
-On 23. 10. 19 11:28, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
+
+Le 25/10/2019 à 10:24, Anshuman Khandual a écrit :
 > 
-> microblaze has only two-level page tables and can use pgtable-nopmd and
-> folding of the upper layers.
 > 
-> Replace usage of include/asm-generic/4level-fixup.h and explicit definition
-> of __PAGETABLE_PMD_FOLDED in microblaze with
-> include/asm-generic/pgtable-nopmd.h and adjust page table manipulation
-> macros and functions accordingly.
+> On 10/25/2019 12:41 PM, Christophe Leroy wrote:
+>>
+>>
+>> Le 25/10/2019 à 07:52, Qian Cai a écrit :
+>>>
+>>>
+>>>> On Oct 24, 2019, at 11:45 PM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
+>>>>
+>>>> Nothing specific. But just tested this with x86 defconfig with relevant configs
+>>>> which are required for this test. Not sure if it involved W=1.
+>>>
+>>> No, it will not. It needs to run like,
+>>>
+>>> make W=1 -j 64 2>/tmp/warns
+>>>
+>>
+>> Are we talking about this peace of code ?
+>>
+>> +static unsigned long __init get_random_vaddr(void)
+>> +{
+>> +    unsigned long random_vaddr, random_pages, total_user_pages;
+>> +
+>> +    total_user_pages = (TASK_SIZE - FIRST_USER_ADDRESS) / PAGE_SIZE;
+>> +
+>> +    random_pages = get_random_long() % total_user_pages;
+>> +    random_vaddr = FIRST_USER_ADDRESS + random_pages * PAGE_SIZE;
+>> +
+>> +    WARN_ON((random_vaddr > TASK_SIZE) ||
+>> +        (random_vaddr < FIRST_USER_ADDRESS));
+>> +    return random_vaddr;
+>> +}
+>> +
+>>
+>> ramdom_vaddr is unsigned,
+>> random_pages is unsigned and lower than total_user_pages
+>>
+>> So the max value random_vaddr can get is FIRST_USER_ADDRESS + ((TASK_SIZE - FIRST_USER_ADDRESS - 1) / PAGE_SIZE) * PAGE_SIZE = TASK_SIZE - 1
+>> And the min value random_vaddr can get is FIRST_USER_ADDRESS (that's when random_pages = 0)
 > 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  arch/microblaze/include/asm/page.h    |  3 ---
->  arch/microblaze/include/asm/pgalloc.h | 16 ----------------
->  arch/microblaze/include/asm/pgtable.h | 32 ++------------------------------
->  arch/microblaze/kernel/signal.c       | 10 +++++++---
->  arch/microblaze/mm/init.c             |  7 +++++--
->  arch/microblaze/mm/pgtable.c          | 13 +++++++++++--
->  6 files changed, 25 insertions(+), 56 deletions(-)
+> That's right.
+> 
+>>
+>> So the WARN_ON() is just unneeded, isn't it ?
+> 
+> It is just a sanity check on possible vaddr values before it's corresponding
+> page table mappings could be created. If it's worth to drop this in favor of
+> avoiding these unwanted warning messages on x86, will go ahead with it as it
+> is not super important.
+> 
 
-I have take a look at this and when this is applied on the top of
-5.4-rc2 there is not a problem.
-But as was reported by 0-day there is compilation issue on the top of
-mmotm/master tree and I am able to replicate it.
-It means there are other changes in Andrew's tree which are causing it.
+But you are checking what ? That the compiler does calculation correctly 
+or what ?
+As mentionned just above, based on the calculation done, what you are 
+testing cannot happen, so I'm having a hard time understanding what kind 
+of sanity check it can be.
 
-Thanks,
-Michal
+Can you give an exemple of a situation which could trigger the warning ?
 
--- 
-Michal Simek, Ing. (M.Eng), OpenPGP -> KeyID: FE3D1F91
-w: www.monstr.eu p: +42-0-721842854
-Maintainer of Linux kernel - Xilinx Microblaze
-Maintainer of Linux kernel - Xilinx Zynq ARM and ZynqMP ARM64 SoCs
-U-Boot custodian - Xilinx Microblaze/Zynq/ZynqMP/Versal SoCs
-
+Christophe
