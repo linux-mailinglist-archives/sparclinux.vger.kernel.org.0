@@ -2,106 +2,100 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA601E555C
-	for <lists+sparclinux@lfdr.de>; Fri, 25 Oct 2019 22:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E7D3E5AD5
+	for <lists+sparclinux@lfdr.de>; Sat, 26 Oct 2019 15:18:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727811AbfJYUpF (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 25 Oct 2019 16:45:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51990 "EHLO mail.kernel.org"
+        id S1727766AbfJZNSS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 26 Oct 2019 09:18:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39954 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726008AbfJYUpF (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 25 Oct 2019 16:45:05 -0400
-Received: from localhost (unknown [69.71.4.100])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727757AbfJZNSQ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sat, 26 Oct 2019 09:18:16 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EDF862084C;
-        Fri, 25 Oct 2019 20:45:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BECD721E6F;
+        Sat, 26 Oct 2019 13:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572036304;
-        bh=NJ+WKmfKRhR8+SGv+N61qy5UYgwj40QkXtak7NdAe0E=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=hAO/+ldMyc2wFvU1rB2jr0qbCqMxryeZV9hwR22nNQXYS8Yoc7HbfACHC2As3i6Vc
-         mkFJYj1DrtmY9EnT1zuXju84hh/PR6Qga5KZ/9gScxEENzgefDYJE/RDM8zXrzUvMC
-         M/ey0st6s4jumET4Gmw9cUl3goRr2Rat24VbPRnk=
-Date:   Fri, 25 Oct 2019 15:45:02 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Michal Simek <michal.simek@xilinx.com>
-Cc:     linux-kernel@vger.kernel.org, monstr@monstr.eu, git@xilinx.com,
-        palmer@sifive.com, hch@infradead.org, longman@redhat.com,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jackie Liu <liuyun01@kylinos.cn>,
-        Wesley Terpstra <wesley@sifive.com>,
-        Firoz Khan <firoz.khan@linaro.org>, sparclinux@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
-        James Hogan <jhogan@kernel.org>,
-        Vineet Gupta <vgupta@synopsys.com>, linux-pci@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-snps-arc@lists.infradead.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Biggers <ebiggers@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-mips@vger.kernel.org,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 0/2] Enabling MSI for Microblaze
-Message-ID: <20191025204502.GA170580@google.com>
+        s=default; t=1572095895;
+        bh=Da2+BDVNfV3cOEI+tV/Lq5ouvPU5Dta7w1CoeLfooqw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=SXKOwjtgV7m3nBjnqmfJ2Gj46RhpBpsbzI9NF0ZlNKZZStGVlQc6eqYRHfjB68kqA
+         iuvUr+OpxX4g2BztYk6G7IpWB55DTkwX/jnrIDPRYOcYofyCwACkJ8f7PSg0nFCbNH
+         49MsK/zqi0rCt6Q6qYPmBfZyl+e1F44BQ1P1RYas=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Dmitry V Levin <ldv@altlinux.org>,
+        Anatoly Pugachev <matorola@gmail.com>,
+        Meelis Roos <mroos@linux.ee>,
+        Christoph Hellwig <hch@infradead.org>,
+        David Miller <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.3 77/99] sparc64: disable fast-GUP due to unexplained oopses
+Date:   Sat, 26 Oct 2019 09:15:38 -0400
+Message-Id: <20191026131600.2507-77-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191026131600.2507-1-sashal@kernel.org>
+References: <20191026131600.2507-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1571983829.git.michal.simek@xilinx.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Oct 25, 2019 at 08:10:36AM +0200, Michal Simek wrote:
-> Hi,
-> 
-> these two patches come from discussion with Christoph, Bjorn, Palmer and
-> Waiman. The first patch was suggestion by Christoph here
-> https://lore.kernel.org/linux-riscv/20191008154604.GA7903@infradead.org/
-> The second part was discussed
-> https://lore.kernel.org/linux-pci/mhng-5d9bcb53-225e-441f-86cc-b335624b3e7c@palmer-si-x1e/
-> and
-> https://lore.kernel.org/linux-pci/20191017181937.7004-1-palmer@sifive.com/
-> 
-> Thanks,
-> Michal
-> 
-> Changes in v2:
-> - Fix typo in commit message s/expect/except/ - Reported-by: Masahiro
-> 
-> Michal Simek (1):
->   asm-generic: Make msi.h a mandatory include/asm header
-> 
-> Palmer Dabbelt (1):
->   pci: Default to PCI_MSI_IRQ_DOMAIN
-> 
->  arch/arc/include/asm/Kbuild     | 1 -
->  arch/arm/include/asm/Kbuild     | 1 -
->  arch/arm64/include/asm/Kbuild   | 1 -
->  arch/mips/include/asm/Kbuild    | 1 -
->  arch/powerpc/include/asm/Kbuild | 1 -
->  arch/riscv/include/asm/Kbuild   | 1 -
->  arch/sparc/include/asm/Kbuild   | 1 -
->  drivers/pci/Kconfig             | 2 +-
->  include/asm-generic/Kbuild      | 1 +
->  9 files changed, 2 insertions(+), 8 deletions(-)
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-I applied these to pci/msi for v5.5, thanks!
+[ Upstream commit 8e0d0ad206f08506c893326ca7c9c3d9cc042cef ]
+
+HAVE_FAST_GUP enables the lockless quick page table walker for simple
+cases, and is a nice optimization for some random loads that can then
+use get_user_pages_fast() rather than the more careful page walker.
+
+However, for some unexplained reason, it seems to be subtly broken on
+sparc64.  The breakage is only with some compiler versions and some
+hardware, and nobody seems to have figured out what triggers it,
+although there's a simple reprodicer for the problem when it does
+trigger.
+
+The problem was introduced with the conversion to the generic GUP code
+in commit 7b9afb86b632 ("sparc64: use the generic get_user_pages_fast
+code"), but nothing looks obviously wrong in that conversion.  It may be
+a compiler bug that just hits us with the code reorganization.  Or it
+may be something very specific to sparc64.
+
+This disables HAVE_FAST_GUP entirely.  That makes things like futexes a
+bit slower, but at least they work.  If we can figure out the trigger,
+that would be lovely, but it's been three months already..
+
+Link: https://lore.kernel.org/lkml/20190717215956.GA30369@altlinux.org/
+Fixes: 7b9afb86b632 ("sparc64: use the generic get_user_pages_fast code")
+Reported-by: Dmitry V Levin <ldv@altlinux.org>
+Reported-by: Anatoly Pugachev <matorola@gmail.com>
+Requested-by: Meelis Roos <mroos@linux.ee>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Cc: David Miller <davem@davemloft.net>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/sparc/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index 7926a2e11bdc2..6a31f240840d4 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -28,7 +28,6 @@ config SPARC
+ 	select RTC_DRV_M48T59
+ 	select RTC_SYSTOHC
+ 	select HAVE_ARCH_JUMP_LABEL if SPARC64
+-	select HAVE_FAST_GUP if SPARC64
+ 	select GENERIC_IRQ_SHOW
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select GENERIC_PCI_IOMAP
+-- 
+2.20.1
+
