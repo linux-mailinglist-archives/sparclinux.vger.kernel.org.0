@@ -2,89 +2,75 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17687EC447
-	for <lists+sparclinux@lfdr.de>; Fri,  1 Nov 2019 15:10:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35505EC6D3
+	for <lists+sparclinux@lfdr.de>; Fri,  1 Nov 2019 17:31:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728327AbfKAOKX (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 1 Nov 2019 10:10:23 -0400
-Received: from foss.arm.com ([217.140.110.172]:36110 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728310AbfKAOKV (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 1 Nov 2019 10:10:21 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C800D68D;
-        Fri,  1 Nov 2019 07:10:20 -0700 (PDT)
-Received: from e112269-lin.cambridge.arm.com (e112269-lin.cambridge.arm.com [10.1.194.43])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 071013F718;
-        Fri,  1 Nov 2019 07:10:17 -0700 (PDT)
-From:   Steven Price <steven.price@arm.com>
-To:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc:     Steven Price <steven.price@arm.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        James Morse <james.morse@arm.com>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Mark Rutland <Mark.Rutland@arm.com>,
-        "Liang, Kan" <kan.liang@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: [PATCH v15 09/23] sparc: mm: Add p?d_leaf() definitions
-Date:   Fri,  1 Nov 2019 14:09:28 +0000
-Message-Id: <20191101140942.51554-10-steven.price@arm.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191101140942.51554-1-steven.price@arm.com>
-References: <20191101140942.51554-1-steven.price@arm.com>
+        id S1727488AbfKAQb4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 1 Nov 2019 12:31:56 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:41063 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726701AbfKAQb4 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 1 Nov 2019 12:31:56 -0400
+Received: by mail-ed1-f68.google.com with SMTP id a21so7965021edj.8
+        for <sparclinux@vger.kernel.org>; Fri, 01 Nov 2019 09:31:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=latS+LOZUfL1yiiuFRKw1aKCiSm5Bt/9vWdEAhPRwuM=;
+        b=Vtm06otHcfqBa8I+RYtREOoOLSTWzJJkfiSOyd0lYD4KwMdAzb26GSRDUbScMZAp19
+         mzKgIwsjTqkgB898JuY+F/6KGMRwGhWTyIN62NM6/Dqkv2yP0tAiVaFJKjfsGmkTbXxh
+         nE4d0of0Gx3do7AW0KpYXg+RdGSAc+PKk80MijoLeZWkJDhWNDKlI7WLpG9ENjH0I62Z
+         d4KJSFZXjwYH4wmoCFlVAsi6+yYNKE55+4Q5+BA5u51dbOj96TMQOtMr2hqj9s6ZctLp
+         jVKrx6vduFa17+ZgxOysRIRW76TFDlD2LrZpGKGVvLM5fV24vOcufufsN1SvjMDTDgOH
+         Q7LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=latS+LOZUfL1yiiuFRKw1aKCiSm5Bt/9vWdEAhPRwuM=;
+        b=kIzLYNLNpOLJAWrYdQxxtB/z8Qnt09sKvfCv5VwoGtjPSFUbVGRSipxNM2jyhpyS1y
+         1+CLjUntI/KRyxCWEYURSBVNsQ9U73BLrKmtoMIo09f9CyjCirm0Cqu+ChPwHnGJ9cfM
+         owjvkrTHE7pUM/RC4yGS/lFbt4hyUtlZg1kQXmic9tkJfsLTHcfY3LtbBvkgNx3smcKS
+         ppJgbzUucRxK2Lf+r/rQozY2N3azSThQ2z3Wz9pmtYRbEu8TR384jY9275Bi1cMUlgg5
+         fjjR5XfJNU13SkYFL0jx0rQVxB1AIclsL8W8xPV4s9M8+rjk6oAFlaC0W0WijAd6fk8r
+         bBwA==
+X-Gm-Message-State: APjAAAWdFfwd2w76BNo+mM12EkCnKnDkdLi0eUs6dczTovvEdR4FOzZ1
+        /3FYRm86rJtm2I+VN+yx+Jl+H2zyw4x+E4gYcvA=
+X-Google-Smtp-Source: APXvYqysKEm2340eIUKFW3hr65CDaCcdqqt5o+6Mjb5J4FQJMudiZ7bCRNTMrtTgbcoXhbTOvCAmDD3a9nQwDVks1pI=
+X-Received: by 2002:aa7:cdd1:: with SMTP id h17mr11628318edw.108.1572625914622;
+ Fri, 01 Nov 2019 09:31:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6402:1118:0:0:0:0 with HTTP; Fri, 1 Nov 2019 09:31:54
+ -0700 (PDT)
+Reply-To: moneygram.1820@outlook.fr
+From:   "Mary Coster, I.M.F director-Benin" <eco.bank1204@gmail.com>
+Date:   Fri, 1 Nov 2019 17:31:54 +0100
+Message-ID: <CAOE+jAD05YKO2i4LREhTV7a5PgdJc6gWC3HvYUF1qg6D9kSt+Q@mail.gmail.com>
+Subject: Contact Money Gram international service-Benin to receive your
+ payment funds US$2.500,000 Million
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-walk_page_range() is going to be allowed to walk page tables other than
-those of user space. For this it needs to know when it has reached a
-'leaf' entry in the page tables. This information is provided by the
-p?d_leaf() functions/macros.
-
-For sparc 64 bit, pmd_large() and pud_large() are already provided, so
-add macros to provide the p?d_leaf names required by the generic code.
-
-CC: "David S. Miller" <davem@davemloft.net>
-CC: sparclinux@vger.kernel.org
-Acked-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/sparc/include/asm/pgtable_64.h | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index 6ae8016ef4ec..43206652eaf5 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -683,6 +683,7 @@ static inline unsigned long pte_special(pte_t pte)
- 	return pte_val(pte) & _PAGE_SPECIAL;
- }
- 
-+#define pmd_leaf	pmd_large
- static inline unsigned long pmd_large(pmd_t pmd)
- {
- 	pte_t pte = __pte(pmd_val(pmd));
-@@ -867,6 +868,7 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
- /* only used by the stubbed out hugetlb gup code, should never be called */
- #define pgd_page(pgd)			NULL
- 
-+#define pud_leaf	pud_large
- static inline unsigned long pud_large(pud_t pud)
- {
- 	pte_t pte = __pte(pud_val(pud));
--- 
-2.20.1
-
+Attn Dear,Funds Beneficiary.
+Contact Money Gram international service-Benin to receive your payment
+funds US$2.500,000 Million approved this morning through the UN
+payment settlement organization.
+Contact Person, Mr. John Dave.
+Official Director.Money Gram-Benin
+Email: moneygram.1820@outlook.fr
+Telephone +229 62619517
+Once you get intouch with Mr. John Dave, Money Gram Director, send to
+him your address including your phone numbers. He will be sending the
+transfer to you  $5000.00 USD daily until you received your complete
+payment $2.5m
+from the office.
+Note,I have paid the whole service fees for you but only small money
+you been required to send to this office is $23.00 only via Money Gram
+transfer.
+God bless
+Mary Coster, I.M.F director-Benin
+m.coster@aol.com
