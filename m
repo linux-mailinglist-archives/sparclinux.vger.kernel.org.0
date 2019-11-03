@@ -2,68 +2,54 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 118ACECDAD
-	for <lists+sparclinux@lfdr.de>; Sat,  2 Nov 2019 08:45:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B652ED2A7
+	for <lists+sparclinux@lfdr.de>; Sun,  3 Nov 2019 10:13:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726044AbfKBHpb (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 2 Nov 2019 03:45:31 -0400
-Received: from mail-il1-f194.google.com ([209.85.166.194]:33341 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726014AbfKBHpb (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 2 Nov 2019 03:45:31 -0400
-Received: by mail-il1-f194.google.com with SMTP id m5so1435261ilq.0
-        for <sparclinux@vger.kernel.org>; Sat, 02 Nov 2019 00:45:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=MIsOl7KcQnwF2I/Q0fkFq5aKcfeHUQce3PjmwKzvWHo=;
-        b=RDtlm+PC6uL4jaLY0myTvua144USODpAASmFQIuX/H2+ynAa0/lwU+i5Rq/Dtw70z+
-         xn0mNCmGUopl3aePFVYFcKylARvsN6vpr16fam+pzVsm1iDaRLoq59IHzlD9dGer9Ekr
-         qfCK0DTVivnl+XVH3CopvnIuI202ioFkChQfg8FSagmHbd6tqTKVEILIli/243akUyKG
-         MaONH5Ww5g+Vw8CW9uyVDwnWMN7BpWhMQnS/g3+m+dg2eRyFwJTwCVdkSaPUD80jB3RL
-         icnqvdaCgPJddug33gXPlerUDKQ/+iopX81AANQ6CLxbzPHpKTCIvGrsyOH3OOPslnFq
-         iksA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=MIsOl7KcQnwF2I/Q0fkFq5aKcfeHUQce3PjmwKzvWHo=;
-        b=Pa46vrybjeOloh1Q9rZ1SZz4d0HjSuPN1NcBttQc+Wk9phS8SrmgUfyiTjbKsRnjwM
-         jsgWdBK9u3dLHmGM/RgmkrBquoepidqMwwP5xCaekbVr4v5gKnC4mJDAmrI9R3RwGRxf
-         Y/tr6sWWwvi1+3BpgdYGaANKOYo7JJKan09xCUjmiX+lVta/WjvWDgR8ibXEtvAp0sq7
-         SS2FIolTpzYU5VTc6HQLep9CqvW1ponomrkOb3d9UZV0hVHLv4JZ4tnVdii61eDz+kdy
-         diULLEeRNQo6VNQS3MxkkQgtLnjjkTSArGOOOjCnWgicqgtKY/NfQlSy0K4ejj7WjpGJ
-         1gXg==
-X-Gm-Message-State: APjAAAUEokNV6DUe9wqTMd5YDsWfQMo7Sz+Gr0BuWdfdCHCdUzs3YfqZ
-        vyyHXOzRV6f/cBuO25eKHX9G8xdXaj/3rYfDlCA=
-X-Google-Smtp-Source: APXvYqyg5AvoLJcnI+RyvQshrsh38oxpTXCRryqTNanC8XZtaoZZSD2i3cvClFJ4SK4zJ1Ml0nZYzXohJR/+5LmzILA=
-X-Received: by 2002:a92:35c1:: with SMTP id c62mr18068123ilf.47.1572680730089;
- Sat, 02 Nov 2019 00:45:30 -0700 (PDT)
+        id S1727488AbfKCJNk (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 3 Nov 2019 04:13:40 -0500
+Received: from hn.kd.ny.adsl ([42.231.162.229]:1408 "HELO zoosbook.com"
+        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with SMTP
+        id S1727444AbfKCJNk (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 3 Nov 2019 04:13:40 -0500
+Received: from qrx.quickslick.com [70.180.198.4] by mail.webhostings4u.com with SMTP; Sat, 02 Nov 2019 22:59:51 -1000
+Received: from relay37.vosimerkam.net ([Sat, 02 Nov 2019 22:53:46 -1000])
+        by mmx09.tilkbans.com with ESMTP; Sat, 02 Nov 2019 22:53:46 -1000
+Received: from unknown (HELO group21.345mail.com) (Sat, 02 Nov 2019 22:34:42 -1000)
+        by smtp.mixedthings.net with QMQP; Sat, 02 Nov 2019 22:34:42 -1000
+Received: from [201.24.233.244] by external.newsubdomain.com with ESMTP; Sat, 02 Nov 2019 22:25:58 -1000
+Received: from unknown (201.5.97.238)
+        by asx121.turbo-inline.com with QMQP; Sat, 02 Nov 2019 22:23:25 -1000
+Message-ID: <9008B16B.F38E68CE@zoosbook.com>
+Date:   Sat, 02 Nov 2019 21:55:01 -1000
+From:   "zoosbook.com" <admin@zoosbook.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.19) Gecko/20081209 Thunderbird/2.0.0.19
 MIME-Version: 1.0
-Received: by 2002:a6b:4102:0:0:0:0:0 with HTTP; Sat, 2 Nov 2019 00:45:29 -0700 (PDT)
-From:   Angelica Sepulveda <angelspt1070@gmail.com>
-Date:   Sat, 2 Nov 2019 00:45:29 -0700
-X-Google-Sender-Auth: jb6Mf0CTzpF3eVDUTsiI2T9s-DE
-Message-ID: <CALkxDbL2R+-Twce5LGesRMu2pK6nVaCBS7G7u2qBxK-53yvK_A@mail.gmail.com>
-Subject: Charity Project
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+To:     <sparclinux@vger.kernel.org>
+Subject: FREE Bestiality Social Network
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello Dear,
-Greetings,
-Peace be unto you, I belief that you can help in setting up a charity
-foundation for the benefit of mankind, I wish to establish a charity
-foundation to help the poor, widows ,orphans and less privileged
-people in your country under your care, Can you help to build this
-project in your country? I'm willing to donate the sum of (four
-million, five hundred thousand US dollars) $4.500.000.00.All I want
-from you is sincerity to handle this project. to give them hope and
-support and to make them  feel the same like others. Together We can
-make the world a better place when we help one another. I'll be
-waiting to read from you today and know your opinion in doing this
-project. Remain Blessed.
-Mrs. Angelica Sepulveda
+Hello, 
+
+Bestiality Social Networking Platform. With pictures, videos and friend
+about bestiality and zoophilia porn. 
+Here you can meet and talk with people that love zoo sex.
+
+Register for a free account with us today
+https://www.zoosbook.com/register
+
+Let your animalic thoughts get alive.
+
+After you`ll get a feeling of the things inside, please give us a nice
+review here
+https://www.scamadviser.com/check-website/zoosbook.com
+
+
+See you inside
+
+
