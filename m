@@ -2,55 +2,50 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DB20EE13B
-	for <lists+sparclinux@lfdr.de>; Mon,  4 Nov 2019 14:31:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D253DEF28A
+	for <lists+sparclinux@lfdr.de>; Tue,  5 Nov 2019 02:26:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727499AbfKDNbV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 4 Nov 2019 08:31:21 -0500
-Received: from hn.kd.ny.adsl ([42.231.162.229]:2247 "HELO zoosbook.com"
-        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with SMTP
-        id S1727663AbfKDNbV (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 4 Nov 2019 08:31:21 -0500
-Received: from rsmail.alkoholic.net ([145.164.42.227]) by asx121.turbo-inline.com with SMTP; Mon, 04 Nov 2019 03:26:37 -1000
-Received: from unknown (HELO external.newsubdomain.com) (Mon, 04 Nov 2019 03:24:33 -1000)
-        by mmx09.tilkbans.com with LOCAL; Mon, 04 Nov 2019 03:24:33 -1000
-Received: from unknown (51.171.125.221)
-        by qrx.quickslick.com with LOCAL; Mon, 04 Nov 2019 03:24:31 -1000
-Received: from unknown (133.155.239.165)
-        by relay-x.misswldrs.com with LOCAL; Mon, 04 Nov 2019 03:18:34 -1000
-Message-ID: <4958E302.BA58675A@zoosbook.com>
-Date:   Mon, 04 Nov 2019 02:49:29 -1000
-Reply-To: "zoosbook.com" <admin@zoosbook.com>
-From:   "zoosbook.com" <admin@zoosbook.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; fr-CA; rv:1.9.1.7) Gecko/20100111 Thunderbird/3.0.1
-X-Accept-Language: en-us
+        id S1729801AbfKEB0X (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 4 Nov 2019 20:26:23 -0500
+Received: from verein.lst.de ([213.95.11.211]:42414 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728761AbfKEB0X (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 4 Nov 2019 20:26:23 -0500
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 33FE268BE1; Tue,  5 Nov 2019 02:26:18 +0100 (CET)
+Date:   Tue, 5 Nov 2019 02:26:17 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Guo Ren <guoren@kernel.org>
+Cc:     Christoph Hellwig <hch@lst.de>, Arnd Bergmann <arnd@arndb.de>,
+        Michal Simek <monstr@monstr.eu>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 20/21] csky: remove ioremap_cache
+Message-ID: <20191105012617.GA31847@lst.de>
+References: <20191017174554.29840-1-hch@lst.de> <20191017174554.29840-21-hch@lst.de> <CAJF2gTQ_VeBfi1uaafgtp+uA2skq-w2px12ig=5QD1O9J+PgbA@mail.gmail.com>
 MIME-Version: 1.0
-To:     <sparclinux@vger.kernel.org>
-Subject: FREE Bestiality Social Network
-Content-Type: text/plain;
-        charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJF2gTQ_VeBfi1uaafgtp+uA2skq-w2px12ig=5QD1O9J+PgbA@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello, 
+On Mon, Oct 21, 2019 at 03:58:28PM +0800, Guo Ren wrote:
+> Acked-by: Guo Ren <guoren@kernel.org>
 
-Bestiality Social Networking Platform. With pictures, videos and friend
-about bestiality and zoophilia porn. 
-Here you can meet and talk with people that love zoo sex.
-
-Register for a free account with us today
-https://www.zoosbook.com/register
-
-Let your animalic thoughts get alive.
-
-After you`ll get a feeling of the things inside, please give us a nice
-review here
-https://www.scamadviser.com/check-website/zoosbook.com
-
-
-See you inside
-
-
+Can you also take a look at the next patch and give me a review?
