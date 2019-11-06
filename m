@@ -2,69 +2,42 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39119F0D27
-	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2019 04:41:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1E23F0E84
+	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2019 06:49:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726608AbfKFDlZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 5 Nov 2019 22:41:25 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:42846 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726368AbfKFDlZ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 5 Nov 2019 22:41:25 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 5BE8E151226D2;
-        Tue,  5 Nov 2019 19:33:30 -0800 (PST)
-Date:   Tue, 05 Nov 2019 19:33:27 -0800 (PST)
-Message-Id: <20191105.193327.1393649190609263166.davem@davemloft.net>
-To:     dima@arista.com
-Cc:     linux-kernel@vger.kernel.org, 0x7f454c46@gmail.com,
-        akpm@linux-foundation.org, gregkh@linuxfoundation.org,
-        mingo@kernel.org, jslaby@suse.com, pmladek@suse.com,
-        sergey.senozhatsky@gmail.com, rostedt@goodmis.org,
-        penguin-kernel@I-love.SAKURA.ne.jp, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 34/50] sparc: Add show_stack_loglvl()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191106030542.868541-35-dima@arista.com>
-References: <20191106030542.868541-1-dima@arista.com>
-        <20191106030542.868541-35-dima@arista.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        id S1725813AbfKFFtU (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 6 Nov 2019 00:49:20 -0500
+Received: from [211.53.128.215] ([211.53.128.215]:21611 "EHLO MAIL.isd.co.kr"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725812AbfKFFtU (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 6 Nov 2019 00:49:20 -0500
+Received: from 192.168.1.3 (217.217.179.17) by MAIL.isd.co.kr (10.10.10.22)
+ with Microsoft SMTP Server id 14.3.123.3; Wed, 6 Nov 2019 14:49:12 +0900
+Date:   Wed, 6 Nov 2019 06:49:09 +0100
+From:   Peter Wong <choimj@isd.co.kr>
+Reply-To: Peter Wong <peterwongpwhk@gmail.com>
+To:     <sparclinux@vger.kernel.org>
+Message-ID: <26478942.63039.1573019352323.JavaMail.cash@211.53.128.215>
+Subject: Investment opportunity
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 05 Nov 2019 19:33:30 -0800 (PST)
+X-Originating-IP: [217.217.179.17]
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Dmitry Safonov <dima@arista.com>
-Date: Wed,  6 Nov 2019 03:05:25 +0000
+Greetings,
 
-> Currently, the log-level of show_stack() depends on a platform
-> realization. It creates situations where the headers are printed with
-> lower log level or higher than the stacktrace (depending on
-> a platform or user).
-> 
-> Furthermore, it forces the logic decision from user to an architecture
-> side. In result, some users as sysrq/kdb/etc are doing tricks with
-> temporary rising console_loglevel while printing their messages.
-> And in result it not only may print unwanted messages from other CPUs,
-> but also omit printing at all in the unlucky case where the printk()
-> was deferred.
-> 
-> Introducing log-level parameter and KERN_UNSUPPRESSED [1] seems
-> an easier approach than introducing more printk buffers.
-> Also, it will consolidate printings with headers.
-> 
-> Introduce show_stack_loglvl(), that eventually will substitute
-> show_stack().
-> 
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: sparclinux@vger.kernel.org
-> [1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/T/#u
-> Signed-off-by: Dmitry Safonov <dima@arista.com>
+Find the attached mail very confidential. reply for more details
 
-Acked-by: David S. Miller <davem@davemloft.net>
+Thanks.
+Peter Wong
+
+
+
+
+----------------------------------------------------
+This email was sent by the shareware version of Postman Professional.
+
