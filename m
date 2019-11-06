@@ -2,105 +2,150 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF331F1AB0
-	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2019 17:02:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4983F1CE9
+	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2019 18:56:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728572AbfKFQCN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 6 Nov 2019 11:02:13 -0500
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:39306 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727074AbfKFQCN (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 6 Nov 2019 11:02:13 -0500
-Received: by mail-pf1-f196.google.com with SMTP id x28so16027903pfo.6
-        for <sparclinux@vger.kernel.org>; Wed, 06 Nov 2019 08:02:12 -0800 (PST)
+        id S1732447AbfKFR4g (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 6 Nov 2019 12:56:36 -0500
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:36230 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732445AbfKFR4g (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 6 Nov 2019 12:56:36 -0500
+Received: by mail-pg1-f193.google.com with SMTP id k13so6333099pgh.3
+        for <sparclinux@vger.kernel.org>; Wed, 06 Nov 2019 09:56:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arista.com; s=googlenew;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=WP6brivH9UJZbax2EaHo6KZDTan65jr7aTNdyCpmUdg=;
-        b=lAaIfPXwP6bzV7BqADV+PIyQjPp4XeFFxY3CqaLwJlb25CRVvrI1IlEzB4TFq+OpSe
-         S8RcWEudBQD4AkJcBBbzgVP0CGE7BfqH8sfO3NOWhJCm0eQmiCorBE0/46DHj4rmL6BT
-         R3gEfoAPPOLwcp+rhdH01A5cW2aqPf0BG33wpZYMlz+z3T8nO7/oJDOBowcE45DHmo6d
-         ZLkOCedUv8hcvLHBfcGtyGLbS3IYou/fMI+gNSiUImnkJMMwvnXSoPxiZZdZHjQeUzzz
-         zGNBwwwCpAGi3GCa0JJKPnsd/kxD8viNJNEajWAJ6VHFFqzg+omC0+VrWnITGqcoizHi
-         +IRA==
+        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+        h=date:subject:in-reply-to:cc:from:to:message-id;
+        bh=xZW1gMrCUoJqpGWBEYHWFfV09K+K/0uVmzI4MIoxGS8=;
+        b=PGZwZeqhjPGqmbBUrw44Auucb8k6dPtlYxXbuNpTAeEMGmKlsnFWXhrKzSARRD1P5Z
+         ofkafacEFrUvuMMQ8srHmApZNGXOM2FXgWNtdGS1rg8UPKc85d79tzD5/t3BF7GMjDtX
+         WoCFpoFoR/nlY6sa8P7ME55iO2h9Yfcb7ZSd7Zw+om2XJAjYyCK0yIJtNHDyXsnWFiZL
+         JcRZR97cwQ2ZvZRsXx81CQhAqwyUUPUY90oJrysCQQ7l1b0iCyPludGEBBLbIE1elh0S
+         JIqszC7OB8xZ2n5/8rEoDBU7MzMibg41EDmgXW2rJwIAtaViAg8zHwFVYITgL2sVpvu1
+         UzBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=WP6brivH9UJZbax2EaHo6KZDTan65jr7aTNdyCpmUdg=;
-        b=QX+QPjPdmTM6KiShe7m9J7xBjGfVGbrS6Ujtl25HjqS3GsXqg6yvjlUrDoXt/6Fjey
-         4cOXj750kqNFFY9BPZuM3YdmcP/wDV6oE5qlZBI/mMF38e2rrDj+QWVjvy0l+A8JeDBz
-         cDd+UELtecJNL9eGVN0HzpJQnUVPEUPJSm9WB/UmkO++UYRnDI3iUzjNxhVv7IvU5/Ui
-         5pCDc7WOdaxNNoWHxO9MI8e393w5vDi8MqW+s9uJoXTIH0U01Jl4Ugf4GDru+dR8UyVr
-         JQugah8nnPQ5ajrgquG+Lh3/99TsqkXXKXWJGYrEM5U+cgtzEsyX9Qp+AU5QYTig+1p1
-         MC0A==
-X-Gm-Message-State: APjAAAUovx+40ZZf99Wm5sG5URt1WBrj4xKKpyIoMVpoZ3WbHhiMQYNG
-        I+sN4v9lOIA1MwC9Jkkl77901Ryd/Ho=
-X-Google-Smtp-Source: APXvYqwgi+f6hLzBO0f8hreRraheVRkdSgLPYnouRwSWaXLfWdFMrwsHFakjGnWrLSVvrBHqso+2GA==
-X-Received: by 2002:a62:6d41:: with SMTP id i62mr4363482pfc.38.1573056132252;
-        Wed, 06 Nov 2019 08:02:12 -0800 (PST)
-Received: from [10.83.36.153] ([217.173.96.166])
-        by smtp.gmail.com with ESMTPSA id j24sm23080179pff.71.2019.11.06.08.02.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Nov 2019 08:02:11 -0800 (PST)
-Subject: Re: [PATCH 34/50] sparc: Add show_stack_loglvl()
-To:     David Miller <davem@davemloft.net>
-Cc:     linux-kernel@vger.kernel.org, 0x7f454c46@gmail.com,
-        akpm@linux-foundation.org, gregkh@linuxfoundation.org,
-        mingo@kernel.org, jslaby@suse.com, pmladek@suse.com,
-        sergey.senozhatsky@gmail.com, rostedt@goodmis.org,
-        penguin-kernel@I-love.SAKURA.ne.jp, sparclinux@vger.kernel.org
-References: <20191106030542.868541-1-dima@arista.com>
- <20191106030542.868541-35-dima@arista.com>
- <20191105.193327.1393649190609263166.davem@davemloft.net>
-From:   Dmitry Safonov <dima@arista.com>
-Message-ID: <40f70e6b-c3c6-34ee-45c9-573331851534@arista.com>
-Date:   Wed, 6 Nov 2019 16:02:06 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
-MIME-Version: 1.0
-In-Reply-To: <20191105.193327.1393649190609263166.davem@davemloft.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id;
+        bh=xZW1gMrCUoJqpGWBEYHWFfV09K+K/0uVmzI4MIoxGS8=;
+        b=c+oLKWhNPPqkHOZnNJBvox5LerUzW8erIJi08TCrWeBez8qA2j3Mqi/XywS23LeSQT
+         9kbgEgsgAcN09d5JfYTmm2E0cuOE/ANUj8Bb0tc3HiAuaVooY4fv2oW6U6dLzLO0icWl
+         9pNA4ByeJhDq3AJjP0SkBohbCEUo5HWWxsKI5Zf4hnpkg3NApx5mlcOROdX/vF0hEX02
+         TePjyp5Ks3MhBKP8tSrQEJbIXBRkXm6AkG5RDq5XjVUll5d54kIJHZbaB7Xw/C13KQG2
+         Zw388/R+aKjcCTbDMes3FETntSfgofYU8RP2Fv2O5rsjKBsrvkL26PykV79GAb5CMpry
+         3/xg==
+X-Gm-Message-State: APjAAAXDYVltnvZcFsk+DQgW5YWDLjGodjqF/sfst8QtzJN0r3cgbAMX
+        v98OFrWJozfp3x1Z7hYiyWTykw==
+X-Google-Smtp-Source: APXvYqyZI0/opOONYHdOR3l6SH/z69P+ajsTKg8L6ObdzcVPlsahU45e+bD0ChxR/pgAJsTDNgZ9EA==
+X-Received: by 2002:a17:90a:340c:: with SMTP id o12mr5529604pjb.18.1573062994968;
+        Wed, 06 Nov 2019 09:56:34 -0800 (PST)
+Received: from localhost ([12.206.222.5])
+        by smtp.gmail.com with ESMTPSA id z11sm32745913pfg.117.2019.11.06.09.56.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2019 09:56:34 -0800 (PST)
+Date:   Wed, 06 Nov 2019 09:56:34 -0800 (PST)
+X-Google-Original-Date: Wed, 06 Nov 2019 09:56:23 PST (-0800)
+Subject:     Re: [PATCH 10/21] asm-generic: ioremap_uc should behave the same with and without MMU
+In-Reply-To: <20191029064834.23438-11-hch@lst.de>
+CC:     Arnd Bergmann <arnd@arndb.de>, guoren@kernel.org, monstr@monstr.eu,
+        green.hu@gmail.com, deanbo422@gmail.com, gxt@pku.edu.cn,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     Christoph Hellwig <hch@lst.de>
+Message-ID: <mhng-3f709a8a-a8c3-4612-b4de-847d13b4af0a@palmer-si-x1c4>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 11/6/19 3:33 AM, David Miller wrote:
-> From: Dmitry Safonov <dima@arista.com>
-> Date: Wed,  6 Nov 2019 03:05:25 +0000
-> 
->> Currently, the log-level of show_stack() depends on a platform
->> realization. It creates situations where the headers are printed with
->> lower log level or higher than the stacktrace (depending on
->> a platform or user).
->>
->> Furthermore, it forces the logic decision from user to an architecture
->> side. In result, some users as sysrq/kdb/etc are doing tricks with
->> temporary rising console_loglevel while printing their messages.
->> And in result it not only may print unwanted messages from other CPUs,
->> but also omit printing at all in the unlucky case where the printk()
->> was deferred.
->>
->> Introducing log-level parameter and KERN_UNSUPPRESSED [1] seems
->> an easier approach than introducing more printk buffers.
->> Also, it will consolidate printings with headers.
->>
->> Introduce show_stack_loglvl(), that eventually will substitute
->> show_stack().
->>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: sparclinux@vger.kernel.org
->> [1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/T/#u
->> Signed-off-by: Dmitry Safonov <dima@arista.com>
-> 
-> Acked-by: David S. Miller <davem@davemloft.net>
+On Mon, 28 Oct 2019 23:48:23 PDT (-0700), Christoph Hellwig wrote:
+> Whatever reason there is for the existence of ioremap_uc, and the fact
+> that it returns NULL by default on architectures with an MMU applies
+> equally to nommu architectures, so don't provide different defaults.
+>
+> In practice the difference is meaningless as the only portable driver
+> that uses ioremap_uc is atyfb which probably doesn't show up on nommu
+> devices.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  include/asm-generic/io.h | 36 ++++++++++++++++--------------------
+>  1 file changed, 16 insertions(+), 20 deletions(-)
+>
+> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+> index d02806513670..a98ed6325727 100644
+> --- a/include/asm-generic/io.h
+> +++ b/include/asm-generic/io.h
+> @@ -935,18 +935,7 @@ static inline void *phys_to_virt(unsigned long address)
+>   * defined your own ioremap_*() variant you must then declare your own
+>   * ioremap_*() variant as defined to itself to avoid the default NULL return.
+>   */
+> -
+> -#ifdef CONFIG_MMU
+> -
+> -#ifndef ioremap_uc
+> -#define ioremap_uc ioremap_uc
+> -static inline void __iomem *ioremap_uc(phys_addr_t offset, size_t size)
+> -{
+> -	return NULL;
+> -}
+> -#endif
+> -
+> -#else /* !CONFIG_MMU */
+> +#ifndef CONFIG_MMU
+>
+>  /*
+>   * Change "struct page" to physical address.
+> @@ -980,14 +969,6 @@ static inline void __iomem *ioremap_nocache(phys_addr_t offset, size_t size)
+>  }
+>  #endif
+>
+> -#ifndef ioremap_uc
+> -#define ioremap_uc ioremap_uc
+> -static inline void __iomem *ioremap_uc(phys_addr_t offset, size_t size)
+> -{
+> -	return ioremap_nocache(offset, size);
+> -}
+> -#endif
+> -
+>  #ifndef ioremap_wc
+>  #define ioremap_wc ioremap_wc
+>  static inline void __iomem *ioremap_wc(phys_addr_t offset, size_t size)
+> @@ -1004,6 +985,21 @@ static inline void __iomem *ioremap_wt(phys_addr_t offset, size_t size)
+>  }
+>  #endif
+>
+> +/*
+> + * ioremap_uc is special in that we do require an explicit architecture
+> + * implementation.  In general you do now want to use this function in a
 
-Thanks for the review and time, David!
+Presumably that's supposed to be "do not want to use"?
 
--- 
-          Dmitry
+> + * driver and use plain ioremap, which is uncached by default.  Similarly
+> + * architectures should not implement it unless they have a very good
+> + * reason.
+> + */
+> +#ifndef ioremap_uc
+> +#define ioremap_uc ioremap_uc
+> +static inline void __iomem *ioremap_uc(phys_addr_t offset, size_t size)
+> +{
+> +	return NULL;
+> +}
+> +#endif
+> +
+>  #ifdef CONFIG_HAS_IOPORT_MAP
+>  #ifndef CONFIG_GENERIC_IOMAP
+>  #ifndef ioport_map
+
+With the fix:
+
+Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>
