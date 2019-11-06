@@ -2,138 +2,105 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0DF6F1069
-	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2019 08:34:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF331F1AB0
+	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2019 17:02:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731214AbfKFHeR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 6 Nov 2019 02:34:17 -0500
-Received: from foss.arm.com ([217.140.110.172]:35138 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729896AbfKFHeQ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 6 Nov 2019 02:34:16 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1EE3430E;
-        Tue,  5 Nov 2019 23:34:13 -0800 (PST)
-Received: from [192.168.225.149] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F42D3F71A;
-        Tue,  5 Nov 2019 23:36:40 -0800 (PST)
-Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
- helpers
-To:     Christophe Leroy <christophe.leroy@c-s.fr>, linux-mm@kvack.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
- <3229d68d-0b9d-0719-3370-c6e1df0ea032@arm.com>
- <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <0e0c2ce9-636d-1153-2451-baf7317ed45f@arm.com>
-Date:   Wed, 6 Nov 2019 13:04:20 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1728572AbfKFQCN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 6 Nov 2019 11:02:13 -0500
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:39306 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727074AbfKFQCN (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 6 Nov 2019 11:02:13 -0500
+Received: by mail-pf1-f196.google.com with SMTP id x28so16027903pfo.6
+        for <sparclinux@vger.kernel.org>; Wed, 06 Nov 2019 08:02:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=arista.com; s=googlenew;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=WP6brivH9UJZbax2EaHo6KZDTan65jr7aTNdyCpmUdg=;
+        b=lAaIfPXwP6bzV7BqADV+PIyQjPp4XeFFxY3CqaLwJlb25CRVvrI1IlEzB4TFq+OpSe
+         S8RcWEudBQD4AkJcBBbzgVP0CGE7BfqH8sfO3NOWhJCm0eQmiCorBE0/46DHj4rmL6BT
+         R3gEfoAPPOLwcp+rhdH01A5cW2aqPf0BG33wpZYMlz+z3T8nO7/oJDOBowcE45DHmo6d
+         ZLkOCedUv8hcvLHBfcGtyGLbS3IYou/fMI+gNSiUImnkJMMwvnXSoPxiZZdZHjQeUzzz
+         zGNBwwwCpAGi3GCa0JJKPnsd/kxD8viNJNEajWAJ6VHFFqzg+omC0+VrWnITGqcoizHi
+         +IRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=WP6brivH9UJZbax2EaHo6KZDTan65jr7aTNdyCpmUdg=;
+        b=QX+QPjPdmTM6KiShe7m9J7xBjGfVGbrS6Ujtl25HjqS3GsXqg6yvjlUrDoXt/6Fjey
+         4cOXj750kqNFFY9BPZuM3YdmcP/wDV6oE5qlZBI/mMF38e2rrDj+QWVjvy0l+A8JeDBz
+         cDd+UELtecJNL9eGVN0HzpJQnUVPEUPJSm9WB/UmkO++UYRnDI3iUzjNxhVv7IvU5/Ui
+         5pCDc7WOdaxNNoWHxO9MI8e393w5vDi8MqW+s9uJoXTIH0U01Jl4Ugf4GDru+dR8UyVr
+         JQugah8nnPQ5ajrgquG+Lh3/99TsqkXXKXWJGYrEM5U+cgtzEsyX9Qp+AU5QYTig+1p1
+         MC0A==
+X-Gm-Message-State: APjAAAUovx+40ZZf99Wm5sG5URt1WBrj4xKKpyIoMVpoZ3WbHhiMQYNG
+        I+sN4v9lOIA1MwC9Jkkl77901Ryd/Ho=
+X-Google-Smtp-Source: APXvYqwgi+f6hLzBO0f8hreRraheVRkdSgLPYnouRwSWaXLfWdFMrwsHFakjGnWrLSVvrBHqso+2GA==
+X-Received: by 2002:a62:6d41:: with SMTP id i62mr4363482pfc.38.1573056132252;
+        Wed, 06 Nov 2019 08:02:12 -0800 (PST)
+Received: from [10.83.36.153] ([217.173.96.166])
+        by smtp.gmail.com with ESMTPSA id j24sm23080179pff.71.2019.11.06.08.02.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Nov 2019 08:02:11 -0800 (PST)
+Subject: Re: [PATCH 34/50] sparc: Add show_stack_loglvl()
+To:     David Miller <davem@davemloft.net>
+Cc:     linux-kernel@vger.kernel.org, 0x7f454c46@gmail.com,
+        akpm@linux-foundation.org, gregkh@linuxfoundation.org,
+        mingo@kernel.org, jslaby@suse.com, pmladek@suse.com,
+        sergey.senozhatsky@gmail.com, rostedt@goodmis.org,
+        penguin-kernel@I-love.SAKURA.ne.jp, sparclinux@vger.kernel.org
+References: <20191106030542.868541-1-dima@arista.com>
+ <20191106030542.868541-35-dima@arista.com>
+ <20191105.193327.1393649190609263166.davem@davemloft.net>
+From:   Dmitry Safonov <dima@arista.com>
+Message-ID: <40f70e6b-c3c6-34ee-45c9-573331851534@arista.com>
+Date:   Wed, 6 Nov 2019 16:02:06 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
+In-Reply-To: <20191105.193327.1393649190609263166.davem@davemloft.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+On 11/6/19 3:33 AM, David Miller wrote:
+> From: Dmitry Safonov <dima@arista.com>
+> Date: Wed,  6 Nov 2019 03:05:25 +0000
+> 
+>> Currently, the log-level of show_stack() depends on a platform
+>> realization. It creates situations where the headers are printed with
+>> lower log level or higher than the stacktrace (depending on
+>> a platform or user).
+>>
+>> Furthermore, it forces the logic decision from user to an architecture
+>> side. In result, some users as sysrq/kdb/etc are doing tricks with
+>> temporary rising console_loglevel while printing their messages.
+>> And in result it not only may print unwanted messages from other CPUs,
+>> but also omit printing at all in the unlucky case where the printk()
+>> was deferred.
+>>
+>> Introducing log-level parameter and KERN_UNSUPPRESSED [1] seems
+>> an easier approach than introducing more printk buffers.
+>> Also, it will consolidate printings with headers.
+>>
+>> Introduce show_stack_loglvl(), that eventually will substitute
+>> show_stack().
+>>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: sparclinux@vger.kernel.org
+>> [1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/T/#u
+>> Signed-off-by: Dmitry Safonov <dima@arista.com>
+> 
+> Acked-by: David S. Miller <davem@davemloft.net>
 
+Thanks for the review and time, David!
 
-On 11/06/2019 12:11 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 06/11/2019 à 04:22, Anshuman Khandual a écrit :
->>
->>
->> On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
->>> +    -----------------------
->>> +    |         arch |status|
->>> +    -----------------------
->>> +    |       alpha: | TODO |
->>> +    |         arc: | TODO |
->>> +    |         arm: | TODO |
->>> +    |       arm64: |  ok  |
->>> +    |         c6x: | TODO |
->>> +    |        csky: | TODO |
->>> +    |       h8300: | TODO |
->>> +    |     hexagon: | TODO |
->>> +    |        ia64: | TODO |
->>> +    |        m68k: | TODO |
->>> +    |  microblaze: | TODO |
->>> +    |        mips: | TODO |
->>> +    |       nds32: | TODO |
->>> +    |       nios2: | TODO |
->>> +    |    openrisc: | TODO |
->>> +    |      parisc: | TODO |
->>> +    |     powerpc: | TODO |
->>> +    |       ppc32: |  ok  |
-> 
-> Note that ppc32 is a part of powerpc, not a standalone arch.
-
-Right, I understand. But we are yet to hear about how this test
-came about on powerpc server platforms. Will update 'powerpc'
-arch listing above once we get some confirmation. May be once
-this works on all relevant powerpc platforms, we can just merge
-'powerpc' and 'ppc32' entries here as just 'powerpc'.
-
-> 
-> Maybe something like the following would be more correct:
-> |  powerpc/32: |  ok  |
-> |  powerpc/64: | TODO |
-> 
-> Christophe
-> 
->>> +    |       riscv: | TODO |
->>> +    |        s390: | TODO |
->>> +    |          sh: | TODO |
->>> +    |       sparc: | TODO |
->>> +    |          um: | TODO |
->>> +    |   unicore32: | TODO |
->>> +    |         x86: |  ok  |
->>> +    |      xtensa: | TODO |
->>> +    -----------------------
->>
->> While here, are there some volunteers to test this on any of the
->> 'yet to be tested and supported' platforms ?
->>
->> - Anshuman
->>
-> 
+-- 
+          Dmitry
