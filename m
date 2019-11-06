@@ -2,65 +2,54 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6C30F1D86
-	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2019 19:29:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D73F1F54
+	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2019 20:54:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732490AbfKFS3C (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 6 Nov 2019 13:29:02 -0500
-Received: from verein.lst.de ([213.95.11.211]:52707 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727276AbfKFS3C (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 6 Nov 2019 13:29:02 -0500
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id B095A68AFE; Wed,  6 Nov 2019 19:28:57 +0100 (CET)
-Date:   Wed, 6 Nov 2019 19:28:57 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Guo Ren <guoren@kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-riscv@lists.infradead.org,
-        Vincent Chen <deanbo422@gmail.com>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Openrisc <openrisc@lists.librecores.org>,
-        Greentime Hu <green.hu@gmail.com>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-mips@vger.kernel.org, alpha <linux-alpha@vger.kernel.org>,
-        nios2-dev@lists.rocketboards.org
-Subject: Re: [PATCH 11/21] asm-generic: don't provide ioremap for CONFIG_MMU
-Message-ID: <20191106182857.GA21062@lst.de>
-References: <20191029064834.23438-12-hch@lst.de> <mhng-33ea9141-2440-4a2d-8133-62094486fc48@palmer-si-x1c4> <CAMuHMdVuDp_8UDeWv8tdPAH5JS84=-yfwZjOk-YQcoYKM9za+w@mail.gmail.com>
+        id S1726934AbfKFTyB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 6 Nov 2019 14:54:01 -0500
+Received: from hn.kd.ny.adsl ([42.231.162.229]:3682 "HELO zoosbook.com"
+        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with SMTP
+        id S1726713AbfKFTyB (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 6 Nov 2019 14:54:01 -0500
+Received: from [4.110.207.54] by smtp18.yenddx.com with ASMTP; Wed, 06 Nov 2019 21:50:28 +0200
+Received: from [108.210.18.9] by smtp.endend.nl with LOCAL; Wed, 06 Nov 2019 21:37:57 +0200
+Received: from unknown (94.210.195.84)
+        by smtp.mixedthings.net with ESMTP; Wed, 06 Nov 2019 21:25:44 +0200
+Received: from [181.98.18.6] by rly04.hottestmile.com with SMTP; Wed, 06 Nov 2019 21:17:50 +0200
+Received: from unknown (HELO relay37.vosimerkam.net) (Wed, 06 Nov 2019 21:01:04 +0200)
+        by snmp.otwaloow.com with QMQP; Wed, 06 Nov 2019 21:01:04 +0200
+Message-ID: <0D7C5902.0FC9DE08@zoosbook.com>
+Date:   Wed, 06 Nov 2019 20:42:34 +0200
+Reply-To: "zoosbook.com" <admin@zoosbook.com>
+From:   "zoosbook.com" <admin@zoosbook.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.8) Gecko/20100408 Thunderbird/3.0.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVuDp_8UDeWv8tdPAH5JS84=-yfwZjOk-YQcoYKM9za+w@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+To:     <sparclinux@vger.kernel.org>
+Subject: FREE Bestiality Social Network
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Nov 06, 2019 at 07:16:38PM +0100, Geert Uytterhoeven wrote:
-> > shouldn't they all just be that first one?  In other words, wouldn't it be
-> > better to always provide the generic ioremap prototype and unify the ports
-> > instead?
-> 
-> Agreed. But I'd go for the second one.
+Hello, 
 
-Eventually we should unify it and only have a single prototype.
-But we have lots of implementations including inline functions, so
-this will take a few more steps.
+Bestiality Social Networking Platform. With pictures, videos and friend
+about bestiality and zoophilia porn. 
+Here you can meet and talk with people that love zoo sex.
+
+Register for a free account with us today
+https://www.zoosbook.com/register
+
+Let your animalic thoughts get alive.
+
+After you`ll get a feeling of the things inside, please give us a nice
+review here
+https://www.scamadviser.com/check-website/zoosbook.com
+
+
+See you inside
+
+
