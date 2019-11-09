@@ -2,184 +2,107 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA998F595A
-	for <lists+sparclinux@lfdr.de>; Fri,  8 Nov 2019 22:15:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B47B5F5F84
+	for <lists+sparclinux@lfdr.de>; Sat,  9 Nov 2019 15:26:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732023AbfKHVM2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 8 Nov 2019 16:12:28 -0500
-Received: from mout.kundenserver.de ([212.227.17.13]:38659 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731181AbfKHVM1 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 8 Nov 2019 16:12:27 -0500
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.145]) with ESMTPA (Nemesis) id
- 1MuUrM-1hcjO90hCk-00rZpx; Fri, 08 Nov 2019 22:12:15 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     y2038@lists.linaro.org, Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org
-Subject: [PATCH 09/23] y2038: stat: avoid 'time_t' in 'struct stat'
-Date:   Fri,  8 Nov 2019 22:07:29 +0100
-Message-Id: <20191108210824.1534248-9-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
-In-Reply-To: <20191108210236.1296047-1-arnd@arndb.de>
-References: <20191108210236.1296047-1-arnd@arndb.de>
+        id S1726462AbfKIO0m (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 9 Nov 2019 09:26:42 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:36338 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726282AbfKIO0m (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 9 Nov 2019 09:26:42 -0500
+Received: by mail-ot1-f66.google.com with SMTP id f10so7714142oto.3;
+        Sat, 09 Nov 2019 06:26:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Fkse6mn+BlbyKaVzVIbzg4CVFkjF596d7A0VyrrgtRU=;
+        b=nFyS+o87e/FWAnmqpwZbiiJKxtutgLkNwjvAongX5FrQROqYIVKJZi6ZoDP2MpigxA
+         RMsRWqhc3CrR6z+KJXTLgmSc3XMo8R1lQ/+0kllXkbccPZ2cov+u0vHO6Vbfn+V603nl
+         NNvlAOrhucViLbbjytXef50v6YCiNofD8byUwYKM5YCs7Jrq2yL+FBIJiLVK9PqlOnM3
+         44EEsGJLBmgkvZ5T6N/VD39CFIXfmqPb/ZpZeJ5abEEDBlILhf2xuH1G89h+JbRSJqck
+         7wp/NGYXT5SvoUB09whkYX4aPMoG6OEEpyeMlIe1xjC/UfUk1gu9z7Xkfp5o4F7qd/dt
+         NVHA==
+X-Gm-Message-State: APjAAAVaU0w9iSJnEC4kFcFRbqDvMr6K5T9fxaWyUWbbVh6JX9JfTHmQ
+        Tq5/QEJ8wPeUNOsQqpTAkV4khR4AuLn9a90bHr8=
+X-Google-Smtp-Source: APXvYqwpjgCj+NHQWmmo7wlASzZaObwnisMuzQQ68HgJW5L0F4ZE2XkJ/WLy2vxRTaOAABifbqXLM9wt0RfHZ30Isk4=
+X-Received: by 2002:a9d:422:: with SMTP id 31mr13203157otc.107.1573309600743;
+ Sat, 09 Nov 2019 06:26:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:hQI2PKcMsbaE8ATmNf2BhWXqyHFlTZauM/SrY3t0jiAIGW3xOTB
- hBBN0IXOSct8hlnQ6w0xvFFKPx4AzXlvbQt+HI21ZvqdieWlTPMP53mXMixyGqPmqpLX2DY
- 18kt9E8OgSmLQXE29GwEdOk7+TRAL6MlF7MNEprN+IqVwZmx25e2l/aFzmEtBVdILamjFUy
- Huk0oJvJ7dYi4x9qJROYw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:K2C61v4B7ck=:smMLVvXqVSSEvnAoP3AxsT
- OuKZb07AaMqYhICWFPMqlbsAapbNDFK4bOzD/3oRJwzr7UJm1i6wF9XvZSkcRdmlPv/KX0Jgu
- yUvg6oGveX/ZLlgNXufjr35smf+6i4THT3VNVU7PWkK5mBgzxteOrbgzGYGMXVk14gqD9wjVY
- Jxa+QtngWpzu6yKHFZp10FgRvCqS0sF1gopRhTHA3/Ulu/bHkRjS40+U/BRGvBZcKFODyqNIu
- +RF9Fjpc+bY7sIqlKpYISoze8N+wEdBNI6GKALttvycVWdXZaqqsrFvBPRn4chaAmh3Cin9DD
- RFAW16O6wAMluc5+dvvPJ8clH/mYnZkfmffzCO+BITb8sEwxe5fvEfH2qPJV80Ll6NyK97F07
- ksemAwS1FEtmrqxA0DOgJGdF1soJ7/tnMHTLt2BIgmZNbRGlRWxu12h+D9EOUrkqD/BSBSkFW
- OBUi6Kz/2kMsLiEVTskzYiBN5n3mtyWwQobf00gKtMITgu03G8SbcXsr0Y86FRRgFr+H5mSRd
- CjaBhfs876ftE8uUYNwvI+7tUgfoK+FjGAJZKOCARN79dIE6wSLV55b/hJ6/Eas64A/v56kHS
- TbCz731akDnJRGLqLGCgD/XHfaDrA7u2NpAnbPrddHwjpY99pomh/6+wUNKnUMZ+OnnFQJ+B5
- E8VJWnuQ3b+TDEJBGDDCKm4LANvO+4Tw8XAxKyWBfnQtDSs/FNGqLlL63ZlfEdlrYetPrrjTW
- onYjBFAoYV7bHtvkZLX8eanC/RADpovly16lRZpwutbetKA6NqvtFbseTgxWEAbmLyWB5q/ap
- 1VlEUAyc/EQF/xFTgy6ejeKrMwbFlvGg2j/NlimY8/yEUyY0xA+cgukXFuQ47MtjhJg/ufCdt
- /STLYGmt0wiwvRWxE7ZQ==
+References: <1572938135-31886-1-git-send-email-rppt@kernel.org>
+ <1572938135-31886-6-git-send-email-rppt@kernel.org> <20191108113917.a9c6ebb8373cc95fd684b734@linux-foundation.org>
+In-Reply-To: <20191108113917.a9c6ebb8373cc95fd684b734@linux-foundation.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Sat, 9 Nov 2019 15:26:29 +0100
+Message-ID: <CAMuHMdXdoFSVno4WT=F6Q1UwEaZ6AQJmhNUqPpYHJm6uh165iw@mail.gmail.com>
+Subject: Re: [PATCH v4 05/13] m68k: mm: use pgtable-nopXd instead of 4level-fixup
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Mike Rapoport <rppt@kernel.org>, Linux MM <linux-mm@kvack.org>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greentime Hu <green.hu@gmail.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mark Salter <msalter@redhat.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Michal Simek <monstr@monstr.eu>, Peter Rosin <peda@axentia.se>,
+        Richard Weinberger <richard@nod.at>,
+        Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Sam Creasey <sammy@sammy.net>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-c6x-dev@linux-c6x.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Linux/m68k" <linux-m68k@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-um@lists.infradead.org,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The time_t definition may differ between user space and kernel space,
-so replace time_t with an unambiguous 'long' for the mips and sparc.
+Hi Andrew,
 
-The same structures also contain 'off_t', which has the same problem,
-so replace that as well on those two architectures and powerpc.
+On Fri, Nov 8, 2019 at 8:39 PM Andrew Morton <akpm@linux-foundation.org> wrote:
+> On Tue,  5 Nov 2019 09:15:27 +0200 Mike Rapoport <rppt@kernel.org> wrote:
+> > m68k has two or three levels of page tables and can use appropriate
+> > pgtable-nopXd and folding of the upper layers.
+> >
+> > Replace usage of include/asm-generic/4level-fixup.h and explicit
+> > definitions of __PAGETABLE_PxD_FOLDED in m68k with
+> > include/asm-generic/pgtable-nopmd.h for two-level configurations and with
+> > include/asm-generic/pgtable-nopud.h for three-lelve configurations and
+> > adjust page table manipulation macros and functions accordingly.
+>
+> This one was messed up by linux-next changes in arch/m68k/mm/kmap.c.
+> Can you please take a look?
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/mips/include/uapi/asm/stat.h    | 16 ++++++++--------
- arch/powerpc/include/uapi/asm/stat.h |  2 +-
- arch/sparc/include/uapi/asm/stat.h   | 24 ++++++++++++------------
- 3 files changed, 21 insertions(+), 21 deletions(-)
+You mean due to the rename and move of __iounmap() to __free_io_area()
+in commit aa3a1664285d0bec ("m68k: rename __iounmap and mark it static")?
 
-diff --git a/arch/mips/include/uapi/asm/stat.h b/arch/mips/include/uapi/asm/stat.h
-index 95416f366d7f..3d2a3b71845c 100644
---- a/arch/mips/include/uapi/asm/stat.h
-+++ b/arch/mips/include/uapi/asm/stat.h
-@@ -26,17 +26,17 @@ struct stat {
- 	gid_t		st_gid;
- 	unsigned	st_rdev;
- 	long		st_pad2[2];
--	off_t		st_size;
-+	long		st_size;
- 	long		st_pad3;
- 	/*
- 	 * Actually this should be timestruc_t st_atime, st_mtime and st_ctime
- 	 * but we don't have it under Linux.
- 	 */
--	time_t		st_atime;
-+	long		st_atime;
- 	long		st_atime_nsec;
--	time_t		st_mtime;
-+	long		st_mtime;
- 	long		st_mtime_nsec;
--	time_t		st_ctime;
-+	long		st_ctime;
- 	long		st_ctime_nsec;
- 	long		st_blksize;
- 	long		st_blocks;
-@@ -70,13 +70,13 @@ struct stat64 {
- 	 * Actually this should be timestruc_t st_atime, st_mtime and st_ctime
- 	 * but we don't have it under Linux.
- 	 */
--	time_t		st_atime;
-+	long		st_atime;
- 	unsigned long	st_atime_nsec;	/* Reserved for st_atime expansion  */
- 
--	time_t		st_mtime;
-+	long		st_mtime;
- 	unsigned long	st_mtime_nsec;	/* Reserved for st_mtime expansion  */
- 
--	time_t		st_ctime;
-+	long		st_ctime;
- 	unsigned long	st_ctime_nsec;	/* Reserved for st_ctime expansion  */
- 
- 	unsigned long	st_blksize;
-@@ -105,7 +105,7 @@ struct stat {
- 	unsigned int		st_rdev;
- 	unsigned int		st_pad1[3]; /* Reserved for st_rdev expansion */
- 
--	off_t			st_size;
-+	long			st_size;
- 
- 	/*
- 	 * Actually this should be timestruc_t st_atime, st_mtime and st_ctime
-diff --git a/arch/powerpc/include/uapi/asm/stat.h b/arch/powerpc/include/uapi/asm/stat.h
-index afd25f2ff4e8..7871055e5e32 100644
---- a/arch/powerpc/include/uapi/asm/stat.h
-+++ b/arch/powerpc/include/uapi/asm/stat.h
-@@ -40,7 +40,7 @@ struct stat {
- 	uid_t		st_uid;
- 	gid_t		st_gid;
- 	unsigned long	st_rdev;
--	off_t		st_size;
-+	long		st_size;
- 	unsigned long	st_blksize;
- 	unsigned long	st_blocks;
- 	unsigned long	st_atime;
-diff --git a/arch/sparc/include/uapi/asm/stat.h b/arch/sparc/include/uapi/asm/stat.h
-index b6ec4eb217f7..732c41720e24 100644
---- a/arch/sparc/include/uapi/asm/stat.h
-+++ b/arch/sparc/include/uapi/asm/stat.h
-@@ -14,12 +14,12 @@ struct stat {
- 	uid_t   st_uid;
- 	gid_t   st_gid;
- 	unsigned int st_rdev;
--	off_t   st_size;
--	time_t  st_atime;
--	time_t  st_mtime;
--	time_t  st_ctime;
--	off_t   st_blksize;
--	off_t   st_blocks;
-+	long    st_size;
-+	long    st_atime;
-+	long    st_mtime;
-+	long    st_ctime;
-+	long    st_blksize;
-+	long    st_blocks;
- 	unsigned long  __unused4[2];
- };
- 
-@@ -57,15 +57,15 @@ struct stat {
- 	unsigned short	st_uid;
- 	unsigned short	st_gid;
- 	unsigned short	st_rdev;
--	off_t		st_size;
--	time_t		st_atime;
-+	long		st_size;
-+	long		st_atime;
- 	unsigned long	st_atime_nsec;
--	time_t		st_mtime;
-+	long		st_mtime;
- 	unsigned long	st_mtime_nsec;
--	time_t		st_ctime;
-+	long		st_ctime;
- 	unsigned long	st_ctime_nsec;
--	off_t		st_blksize;
--	off_t		st_blocks;
-+	long		st_blksize;
-+	long		st_blocks;
- 	unsigned long	__unused4[2];
- };
- 
--- 
-2.20.0
+Commit 42d6c83d6180f800 ("m68k: mm: use pgtable-nopXd instead of
+4level-fixup") in next-20191108 looks good to me.
 
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
