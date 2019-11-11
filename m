@@ -2,122 +2,124 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D87D2F7677
-	for <lists+sparclinux@lfdr.de>; Mon, 11 Nov 2019 15:35:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1557FF7AC8
+	for <lists+sparclinux@lfdr.de>; Mon, 11 Nov 2019 19:28:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726845AbfKKOfX (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 11 Nov 2019 09:35:23 -0500
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:37298 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726811AbfKKOfW (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 11 Nov 2019 09:35:22 -0500
-Received: by mail-pl1-f194.google.com with SMTP id g8so3689116plt.4;
-        Mon, 11 Nov 2019 06:35:22 -0800 (PST)
+        id S1726924AbfKKS2d (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 11 Nov 2019 13:28:33 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:33424 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726896AbfKKS2c (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 11 Nov 2019 13:28:32 -0500
+Received: by mail-pg1-f195.google.com with SMTP id h27so9976571pgn.0;
+        Mon, 11 Nov 2019 10:28:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=wVpzF31OGbAVdKg6jPR/iV3MMv02WhIXAFIA8zdlv9M=;
-        b=Aa95pT1k4LnfW47XFYnSD+qrMbsU6diTyfv0sq1/xAq0NiufdDCN5KMEyRzylrWnt/
-         wBomtU2KNTMlQeItRmfm2c9zY+2Ma9IAUw2SMGwHKDllvU1jZEqZvjCpI8Q6LOayc4zf
-         iOs8iwqDSFlIEN0A/YxNrEfKYF6aFTnf/h9//luqtwI9y9j8gNG4mpsiIw4VonNtdMCL
-         HVUlNjWJNBxmE6P826XEnFic7kOZiM4MEdbDNhqHmYmmZ9P47QMAP73O5KGIFjNRXnEZ
-         rTlzs7hFB/grF1z5NudzaIrQlcV6GRQjZCNIGFe9qvbZGpwzgReGwQIV73gJysfi9CPs
-         eQaw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=RbCZSYiVTU101K0AA6gbWFKQ+nZynWbnU7jW8rMxKYg=;
+        b=SRNx4uCNBMhfemthmSO/MfE8FdhBpN2WtxKpWHR9+pqp+iX2ymL7ktoZu6I63kKGtM
+         b9YxNLLyJlJvhzmqbSOHokptSjB1VBLhEL0KFXsXy++WUMRAgYCqQvU87TA6IegVgLiF
+         BARAnkjtYz0DVbvnyZmnUpCg4P7C9b6+YM3TFM90qgUo8J7tMjAUTKyKBWTUQG97KBep
+         62UbBPEKCS+PeF12cC8XgESL+cFtEAjDGfdCogeNEfYgKDme2P6gfkHnJJ6nBHeMDFBq
+         qg0ax6E9lbMLh2RVEYaaS1vC1XkKmBCJm2jheviAQZqlyFAY/NoaqL+DdPWykBh9k+pi
+         XLMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=wVpzF31OGbAVdKg6jPR/iV3MMv02WhIXAFIA8zdlv9M=;
-        b=OZ9qnE+x4WLeazZeTLinUQfM4bstadtwqQjGKvh5zLbe/5xYbk5ALux2r/k1lGLvZA
-         iBlMiF41BED/TIUI3eNTF3yaBiUod9CWoxNgZFQE6ZBpRNlO6gB/JNX6ryR9WlTnrFTi
-         nO6TtQOw/ex3cYIX2P0HFDzKS6JIxATAm7qctanWPHB+Hk7yfCK9b4LY1SvmThps4FRY
-         dZcLY4A5qKCbruFsv//u8bh/cnaxWBBjBS2SCbLk8t2llEW7Hw7+9m4NwN9ujNhnD4fS
-         60jJiBhVYqrhZyNU1xYgpo3OehGW+IPw86KSCSX5K27+OeSDVwpt1WOCGKDpFOgzY6RH
-         4urg==
-X-Gm-Message-State: APjAAAU0MRZgNouOrsS/yHVAdpRnBDuUQKp9rPBEK4wLhWTV6XH7PQr1
-        ACr0m1Ay+Wa8rgMkMHJMLM4=
-X-Google-Smtp-Source: APXvYqxX94RrUM14gzC+9zpvyiWgF/HEMGlO5jBbTg8TD45NGboL5i1MLrTd9itrFpNBDQ/xQxt7Vg==
-X-Received: by 2002:a17:902:7d96:: with SMTP id a22mr24926854plm.318.1573482922072;
-        Mon, 11 Nov 2019 06:35:22 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c64sm8095993pfb.177.2019.11.11.06.35.20
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 11 Nov 2019 06:35:21 -0800 (PST)
-Subject: Re: [PATCH] sparc: vdso: Fix build failure seen due to kbuild changes
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        David Miller <davem@davemloft.net>
-Cc:     sparclinux <sparclinux@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Marc Zyngier <maz@kernel.org>
-References: <20191111011106.18427-1-linux@roeck-us.net>
- <20191110.173203.1243596361382467520.davem@davemloft.net>
- <CAK7LNAQTCyEVKkJQfoTpd5USk5tibmcro6EeoonjXKm-OAFJ_g@mail.gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <591a9e5e-1347-8883-c080-38940fffd535@roeck-us.net>
-Date:   Mon, 11 Nov 2019 06:35:19 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=RbCZSYiVTU101K0AA6gbWFKQ+nZynWbnU7jW8rMxKYg=;
+        b=GqU8kuRCEpESXDnBXQvzJPd7mNrjIPhFTm9/k/dhG/vp/AI6bCrHq/mvERvw0uO+KZ
+         zk857lgWA0EElNi8EuRHM3ltoACEyc/mTn92MJZlRnT3ZSJmlmMblUjdzaqWt9kIynWn
+         OYid7SofSa5ylgRsWfolpU+FXo6h3nSFRKNNwPZJAS99Z1sSI/YG6/emoLpeNreGzJPc
+         uA80l4dhE93WSD1T0y2kSMGngnJRDrrP3RGbq+VzRvlc20i6ACQLr1+8EeUS7vA8HMKg
+         /oMDioWJSJdugcw9xlCDiz7p511sVh8zb00eFoE+iywro/0qiNBn0ukLtT1SBpVjuJhP
+         f20w==
+X-Gm-Message-State: APjAAAV3fplQo4hFWDVK7qWeRVt8Zm54BZqGTYAYj0F7O43rEpFave2y
+        NaylUnuY/zrqfS4aRUStEY0=
+X-Google-Smtp-Source: APXvYqyw47XTWwwm7rzrpkFmKJBvHWRie8OeGw9ToQTp9sFTkPYKJ5qr6Rgqa39mRw2qfrFCSfDloA==
+X-Received: by 2002:a63:134a:: with SMTP id 10mr30128602pgt.441.1573496910944;
+        Mon, 11 Nov 2019 10:28:30 -0800 (PST)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id 12sm144320pjm.11.2019.11.11.10.28.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Nov 2019 10:28:30 -0800 (PST)
+Date:   Mon, 11 Nov 2019 10:28:28 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     y2038@lists.linaro.org, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>, stable@vger.kernel.org,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-input@vger.kernel.org
+Subject: Re: [PATCH 8/8] Input: input_event: fix struct padding on sparc64
+Message-ID: <20191111182828.GC57214@dtor-ws>
+References: <20191108203435.112759-1-arnd@arndb.de>
+ <20191108203435.112759-9-arnd@arndb.de>
 MIME-Version: 1.0
-In-Reply-To: <CAK7LNAQTCyEVKkJQfoTpd5USk5tibmcro6EeoonjXKm-OAFJ_g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191108203435.112759-9-arnd@arndb.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 11/10/19 5:47 PM, Masahiro Yamada wrote:
-> On Mon, Nov 11, 2019 at 10:32 AM David Miller <davem@davemloft.net> wrote:
->>
->> From: Guenter Roeck <linux@roeck-us.net>
->> Date: Sun, 10 Nov 2019 17:11:06 -0800
->>
->>> sparc64:allmodconfig fails to build with the following error.
->>>
->>> unrecognized e_machine 18 arch/sparc/vdso/vdso32/vclock_gettime.o
->>> arch/sparc/vdso/vdso32/vclock_gettime.o: failed
->>> make[2]: *** [arch/sparc/vdso/vdso32/vclock_gettime.o] Error 1
->>> make[2]: *** Deleting file 'arch/sparc/vdso/vdso32/vclock_gettime.o'
->>> make[2]: *** Waiting for unfinished jobs....
->>>
->>> The problem bisects to commit a3de7a72c517 ("kbuild: change
->>> *FLAGS_<basetarget>.o to take the path relative to $(obj)").
->>> Duplicate the x86 specific defines from this commit to the sparc
->>> vdso Makefile to fix the problem.
->>>
->>> Fixes: a3de7a72c517 ("kbuild: change *FLAGS_<basetarget>.o to take the path relative to $(obj)")
->>> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
->>> Cc: Marc Zyngier <maz@kernel.org>
->>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->>
->> Acked-by: David S. Miller <davem@davemloft.net>
-> 
-> 
-> Yeah, I had submitted a fix a long time before.
-> 
-> https://lore.kernel.org/patchwork/patch/1130469/
-> 
-> I do not know why it was not picked up.
-> 
+Hi Arnd,
 
-Why don't you just push it upstream yourself ?
+On Fri, Nov 08, 2019 at 09:34:31PM +0100, Arnd Bergmann wrote:
+> Going through all uses of timeval, I noticed that we screwed up
+> input_event in the previous attempts to fix it:
+> 
+> The time fields now match between kernel and user space, but
+> all following fields are in the wrong place.
+> 
+> Add the required padding that is implied by the glibc timeval
+> definition to fix the layout, and add explicit initialization
+> to avoid leaking kernel stack data.
+> 
+> Cc: sparclinux@vger.kernel.org
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: stable@vger.kernel.org
+> Fixes: 141e5dcaa735 ("Input: input_event - fix the CONFIG_SPARC64 mixup")
+> Fixes: 2e746942ebac ("Input: input_event - provide override for sparc64")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/input/evdev.c       | 3 +++
+>  drivers/input/misc/uinput.c | 3 +++
+>  include/uapi/linux/input.h  | 1 +
+>  3 files changed, 7 insertions(+)
+> 
+> diff --git a/drivers/input/evdev.c b/drivers/input/evdev.c
+> index d7dd6fcf2db0..24a90793caf0 100644
+> --- a/drivers/input/evdev.c
+> +++ b/drivers/input/evdev.c
+> @@ -228,6 +228,9 @@ static void __pass_event(struct evdev_client *client,
+>  						event->input_event_sec;
+>  		client->buffer[client->tail].input_event_usec =
+>  						event->input_event_usec;
+> +#ifdef CONFIG_SPARC64
+> +		client->buffer[client->tail].__pad = 0;
+> +#endif
+>  		client->buffer[client->tail].type = EV_SYN;
+>  		client->buffer[client->tail].code = SYN_DROPPED;
+>  		client->buffer[client->tail].value = 0;
 
-> 
-> It is OK whether any patch is picked up
-> as long as the build error is fixed.
-> 
-Same here.
+I do not like ifdefs here, do you think we could write:
 
-> 
-> (I think  CFLAGS_REMOVE_vdso32/vdso-note.o
-> should be added too, though)
-> 
-Hard to decide for someone not involved in vdso development.
-It wasn't added for x86, and it compiles without, so I rather
-left it alone.
+		client->buffer[client->tail] = (struct input_event) {
+			.input_event_sec = event->input_event_sec,
+			.input_event_usec = event->input_event_usec,
+			.type = EV_SYN,
+			.code = SYN_DROPPED,
+		};
 
-Guenter
+to ensure all padded fields are initialized? This is not hot path as we
+do not expect queue to overfill too often.
+
+Thanks.
+
+-- 
+Dmitry
