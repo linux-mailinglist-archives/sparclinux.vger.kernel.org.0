@@ -2,100 +2,86 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1550EF6C77
-	for <lists+sparclinux@lfdr.de>; Mon, 11 Nov 2019 02:48:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1499F6FC7
+	for <lists+sparclinux@lfdr.de>; Mon, 11 Nov 2019 09:41:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbfKKBsN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 10 Nov 2019 20:48:13 -0500
-Received: from conssluserg-01.nifty.com ([210.131.2.80]:36331 "EHLO
-        conssluserg-01.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726754AbfKKBsN (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 10 Nov 2019 20:48:13 -0500
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180]) (authenticated)
-        by conssluserg-01.nifty.com with ESMTP id xAB1lfOI017499;
-        Mon, 11 Nov 2019 10:47:42 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com xAB1lfOI017499
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1573436862;
-        bh=WbMgIOtYDdMgY2/d3IuvIcnvLizbq0pCW8eDAZ+z/V4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=diTngbxIfddXhY00gmelzpcj+vztYcwyI8La863aBk04hqAdnHUmKZNWSLd7fYLPF
-         PC1sxcYmHccYh9v68zFZacKRCM6Hy8vkXgg3Uq4sBY1JufQI/ChM2em2ayBHCv4TpX
-         EgkJFHmhi68bAUDT1x0A8sRqNtC3VGyIPpPNcGZjW8wazzo8WsYbqzq1djFHwesPic
-         IBgqDyUEV4gAaZrWCutpqFXNFm6iIM7uxQcFrpNfo4cSB+DEbs2SSmX+VCu48b3BQj
-         OOU67AdKryxv7+MHXFVztSb3XL2OcPnTPLvydhFArDPGAqVO+TCldMUsbtahK+HEN0
-         L9u9w1eEQR+gQ==
-X-Nifty-SrcIP: [209.85.221.180]
-Received: by mail-vk1-f180.google.com with SMTP id d10so2794969vke.3;
-        Sun, 10 Nov 2019 17:47:41 -0800 (PST)
-X-Gm-Message-State: APjAAAXWY8hHrZK2IA6wAB+myJGjDQeds1+PLKrXx6WT4kp0Jwqq7jsa
-        tZpepWzKZXSKwdhn7swhXnDHAq78b1Yu8wc4xIw=
-X-Google-Smtp-Source: APXvYqyNZWKa5fyzyyuiSEGDG6IQcCG/C1v7f4SYYRL4ByziZJnFAm6NzQx4ISGqHeD5S7yw6LvTW012Xq0/B7cITWU=
-X-Received: by 2002:a1f:6a43:: with SMTP id f64mr16835572vkc.96.1573436860882;
- Sun, 10 Nov 2019 17:47:40 -0800 (PST)
+        id S1726843AbfKKIlH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 11 Nov 2019 03:41:07 -0500
+Received: from mail-wm1-f42.google.com ([209.85.128.42]:50865 "EHLO
+        mail-wm1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726824AbfKKIlH (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 11 Nov 2019 03:41:07 -0500
+Received: by mail-wm1-f42.google.com with SMTP id l17so11521031wmh.0
+        for <sparclinux@vger.kernel.org>; Mon, 11 Nov 2019 00:41:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=fHZyE8Y/b8/GHffAqrPVxeIUbjpAPExpWpCVapn1zRs=;
+        b=GGcUwzWMI30zR3zzL3Dd51RVCN7QhF9Gywr088MgsZeIMaVjBt+6rFT/fPdKegOdFA
+         xnmqWYvAo6PaUKE4zx5x38NJU+YHygWTsvPAL169sJbdpY8iWQJmaxt6wtPn9pEMtraj
+         JjLK34uYME6RrMLi6zvFUbIH3GYk7pMSb+qJxrRlIox+GN6vUq98YbUZH9VzKNuBUNep
+         w0qLcEvfADIx1995pAKdVIAE3v6Rz6TZ0NlVas/gWYwe/W55hMd/vzJrcftSNSyTCxO8
+         9IJtdT/F+7UB3KL2zfuDZb/VSWM7+RN5vWVRfm6ocjdXQW6Cs4jKYUQZi/i1/30GMea5
+         phpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=fHZyE8Y/b8/GHffAqrPVxeIUbjpAPExpWpCVapn1zRs=;
+        b=Nm3w9NxXMLwoBQKAOIKDT+gxI9XSSY1z9D3jI5fjhiqycqWbamchL03+XPxuumW5eE
+         CL0OYrvK53vhXTFmCvWx+Nx0EPWAk/2nPT/zuFxL7QLlDSKmifCpp2A+26BncuZQn0iQ
+         d6JR/+JQmoUHQgNfJvxePYZOWGPf6Q2JXH+dY9/oTRIDqn8SckSFxpy/PoJAGiiS3ybp
+         jN1X0Z77hbapcSdt/yVQDZjouG2nyvXInChnntfXDV70g5BeyMJVu0F9uwaGxhpoOsm/
+         PQ/CEJnr3o/9lXh3VcmU94Zr2V8ZrDm9lTu0TGDoXA9bSQctMQNSMTv53bO3KjSg3/IA
+         u4fQ==
+X-Gm-Message-State: APjAAAU7WimmEFCYjZ8bucnmPVaA0eZbbkB5XTAu9peH57Np3Z5cWmua
+        pReJArbamXHfrDh9WvRgtn1rQ7VHDZA=
+X-Google-Smtp-Source: APXvYqyYxXpSsfbYQwWrLdnLfBzUFE5L6oQoC05Z3sgSlHmWv96hgSucSAPFAT1/nVg0u6XrrV3kNg==
+X-Received: by 2002:a1c:f317:: with SMTP id q23mr18617215wmq.97.1573461664231;
+        Mon, 11 Nov 2019 00:41:04 -0800 (PST)
+Received: from dell ([95.147.198.88])
+        by smtp.gmail.com with ESMTPSA id l4sm13422936wme.4.2019.11.11.00.41.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Nov 2019 00:41:03 -0800 (PST)
+Date:   Mon, 11 Nov 2019 08:40:56 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Tuowen Zhao <ztuowen@gmail.com>
+Cc:     sparclinux@vger.kernel.org,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
+        acelan.kao@canonical.com, mcgrof@kernel.org
+Subject: Re: Fwd: [PATCH v5 1/4] sparc64: implement ioremap_uc
+Message-ID: <20191111084056.GH18902@dell>
+References: <20191016210629.1005086-2-ztuowen@gmail.com>
+ <5c5b9dec7ea401fffa13446af2a528cbaf6e1046.camel@gmail.com>
 MIME-Version: 1.0
-References: <20191111011106.18427-1-linux@roeck-us.net> <20191110.173203.1243596361382467520.davem@davemloft.net>
-In-Reply-To: <20191110.173203.1243596361382467520.davem@davemloft.net>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Mon, 11 Nov 2019 10:47:05 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQTCyEVKkJQfoTpd5USk5tibmcro6EeoonjXKm-OAFJ_g@mail.gmail.com>
-Message-ID: <CAK7LNAQTCyEVKkJQfoTpd5USk5tibmcro6EeoonjXKm-OAFJ_g@mail.gmail.com>
-Subject: Re: [PATCH] sparc: vdso: Fix build failure seen due to kbuild changes
-To:     David Miller <davem@davemloft.net>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     sparclinux <sparclinux@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5c5b9dec7ea401fffa13446af2a528cbaf6e1046.camel@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Nov 11, 2019 at 10:32 AM David Miller <davem@davemloft.net> wrote:
->
-> From: Guenter Roeck <linux@roeck-us.net>
-> Date: Sun, 10 Nov 2019 17:11:06 -0800
->
-> > sparc64:allmodconfig fails to build with the following error.
-> >
-> > unrecognized e_machine 18 arch/sparc/vdso/vdso32/vclock_gettime.o
-> > arch/sparc/vdso/vdso32/vclock_gettime.o: failed
-> > make[2]: *** [arch/sparc/vdso/vdso32/vclock_gettime.o] Error 1
-> > make[2]: *** Deleting file 'arch/sparc/vdso/vdso32/vclock_gettime.o'
-> > make[2]: *** Waiting for unfinished jobs....
-> >
-> > The problem bisects to commit a3de7a72c517 ("kbuild: change
-> > *FLAGS_<basetarget>.o to take the path relative to $(obj)").
-> > Duplicate the x86 specific defines from this commit to the sparc
-> > vdso Makefile to fix the problem.
-> >
-> > Fixes: a3de7a72c517 ("kbuild: change *FLAGS_<basetarget>.o to take the path relative to $(obj)")
-> > Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> > Cc: Marc Zyngier <maz@kernel.org>
-> > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->
-> Acked-by: David S. Miller <davem@davemloft.net>
+On Mon, 28 Oct 2019, Tuowen Zhao wrote:
 
+> Adding sparc list. Sorry, first time missed the list.
+> 
+> Looking for some reviews.
+> 
+> Patch set: Fix MTRR bug for intel-lpss-pci
+> https://lkml.org/lkml/2019/10/16/1230
 
-Yeah, I had submitted a fix a long time before.
-
-https://lore.kernel.org/patchwork/patch/1130469/
-
-I do not know why it was not picked up.
-
-
-It is OK whether any patch is picked up
-as long as the build error is fixed.
-
-
-(I think  CFLAGS_REMOVE_vdso32/vdso-note.o
-should be added too, though)
-
-
-
+Applied, thanks.
 
 -- 
-Best Regards
-Masahiro Yamada
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
