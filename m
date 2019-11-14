@@ -2,178 +2,93 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A693FC7B5
-	for <lists+sparclinux@lfdr.de>; Thu, 14 Nov 2019 14:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9B0BFC98A
+	for <lists+sparclinux@lfdr.de>; Thu, 14 Nov 2019 16:09:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727511AbfKNNdm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 14 Nov 2019 08:33:42 -0500
-Received: from mout-p-201.mailbox.org ([80.241.56.171]:21264 "EHLO
-        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726473AbfKNNdl (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 14 Nov 2019 08:33:41 -0500
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 47DMrH5rJDzQl9x;
-        Thu, 14 Nov 2019 14:33:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id Wtrcg9lX2PUE; Thu, 14 Nov 2019 14:33:30 +0100 (CET)
-Date:   Fri, 15 Nov 2019 00:33:00 +1100
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        David Drysdale <drysdale@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Christian Brauner <christian@brauner.io>,
-        Aleksa Sarai <asarai@suse.de>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, libc-alpha@sourceware.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v15 3/9] namei: LOOKUP_NO_XDEV: block mountpoint crossing
-Message-ID: <20191114133300.soxnzmufwbt2ddid@yavin.dot.cyphar.com>
-References: <20191105090553.6350-1-cyphar@cyphar.com>
- <20191105090553.6350-4-cyphar@cyphar.com>
- <20191113013630.GZ26530@ZenIV.linux.org.uk>
- <20191114044945.ldedzjrb4s7i7irr@yavin.dot.cyphar.com>
- <20191114054348.GH26530@ZenIV.linux.org.uk>
+        id S1726661AbfKNPJx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 14 Nov 2019 10:09:53 -0500
+Received: from conssluserg-02.nifty.com ([210.131.2.81]:40702 "EHLO
+        conssluserg-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726339AbfKNPJw (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 14 Nov 2019 10:09:52 -0500
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id xAEF9W9o025244;
+        Fri, 15 Nov 2019 00:09:33 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com xAEF9W9o025244
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1573744173;
+        bh=qT+oeFIy/euq0pjgKwdV5q+AmMmXgB5IsDUm3nbRMug=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=pF/DGxdKF/kgm6vFSo1CHhtEqThJ5MNkv65P+tsPx1MUaA6zLRxEBfhn7EUyY0hcu
+         gQwOZRtWB5zx/nE5y3Kk+QRD+0QyPVtqLygvMj+kBXYGXarkXQEKkNtGbSOKgm/L0U
+         6mINbu0Tgb3RGQqfhzJ+FAZnJhyPIUi6D8+7ksyC38oXIolSbnPPY1xSa2PM0w0uGl
+         yCzKotAPea5zVM/88o5t3AKHRlerOE3sOmO51b0IInIArm20mQQfgGYk35l5p556jH
+         DWIlp7aJ+OaYYjlUWdn27zOxY3h8l0toqERkm7J0F1JyaSmTbdmXQGv0vxAiFMaxQs
+         jpUMfjbJhT1YQ==
+X-Nifty-SrcIP: [209.85.222.53]
+Received: by mail-ua1-f53.google.com with SMTP id i13so1960109uaq.7;
+        Thu, 14 Nov 2019 07:09:32 -0800 (PST)
+X-Gm-Message-State: APjAAAWBku/hg7p370pFdJ6l0eUhyB/uFJaRQTazBo1ic/TjJ92jLFQD
+        LNbJJsOPPwxDKuwQP2K5OXPJcIRzGZbC7FWg/xw=
+X-Google-Smtp-Source: APXvYqxP6fimCUjd9UUjSmw3gNS/GNK41A1+OJKsdwGXeZ9QlASqiVEwdOwyGiSacAGc3X2E5Gf9FatJh03k0eQJhAA=
+X-Received: by 2002:a9f:262d:: with SMTP id 42mr5173143uag.109.1573744171503;
+ Thu, 14 Nov 2019 07:09:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zoh3k636biknnjmo"
-Content-Disposition: inline
-In-Reply-To: <20191114054348.GH26530@ZenIV.linux.org.uk>
+References: <20190922113436.10396-1-yamada.masahiro@socionext.com>
+ <201911131558.6B0778229@keescook> <20191113.162157.111707512627631395.davem@davemloft.net>
+In-Reply-To: <20191113.162157.111707512627631395.davem@davemloft.net>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Fri, 15 Nov 2019 00:08:55 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQtmy8p2GJooX_8dgp3ipC0Kp6x4e1tfiOay3_0qLhhvg@mail.gmail.com>
+Message-ID: <CAK7LNAQtmy8p2GJooX_8dgp3ipC0Kp6x4e1tfiOay3_0qLhhvg@mail.gmail.com>
+Subject: Re: [PATCH] sparc: vdso: fix build error of vdso32
+To:     David Miller <davem@davemloft.net>
+Cc:     Kees Cook <keescook@chromium.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Anatoly Pugachev <matorola@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+On Thu, Nov 14, 2019 at 9:22 AM David Miller <davem@davemloft.net> wrote:
+>
+> From: Kees Cook <keescook@chromium.org>
+> Date: Wed, 13 Nov 2019 15:59:27 -0800
+>
+> > On Sun, Sep 22, 2019 at 08:34:36PM +0900, Masahiro Yamada wrote:
+> >> Since commit 54b8ae66ae1a ("kbuild: change *FLAGS_<basetarget>.o to
+> >> take the path relative to $(obj)"), sparc allmodconfig fails to build
+> >> as follows:
+> >>
+> >>   CC      arch/sparc/vdso/vdso32/vclock_gettime.o
+> >> unrecognized e_machine 18 arch/sparc/vdso/vdso32/vclock_gettime.o
+> >> arch/sparc/vdso/vdso32/vclock_gettime.o: failed
+> >>
+> >> The cause of the breakage is that -pg flag not being dropped.
+> >>
+> >> The vdso32 files are located in the vdso32/ subdirectory, but I missed
+> >> to update the Makefile.
+> >>
+> >> Fixes: 54b8ae66ae1a ("kbuild: change *FLAGS_<basetarget>.o to take the path relative to $(obj)")
+> >> Reported-by: Anatoly Pugachev <matorola@gmail.com>
+> >> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> >
+> > I've tripped over this as well. Since no one has picked this up, can you
+> > take it via your tree Masahiro?
+>
+> Yes, please do.  Sorry, I haven't had a lot of time for Sparc work lately.
+>
+> Acked-by: David S. Miller <davem@davemloft.net>
 
---zoh3k636biknnjmo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On 2019-11-14, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Thu, Nov 14, 2019 at 03:49:45PM +1100, Aleksa Sarai wrote:
-> > On 2019-11-13, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > > On Tue, Nov 05, 2019 at 08:05:47PM +1100, Aleksa Sarai wrote:
-> > >=20
-> > > > @@ -862,6 +870,8 @@ static int nd_jump_root(struct nameidata *nd)
-> > > >  void nd_jump_link(struct path *path)
-> > > >  {
-> > > >  	struct nameidata *nd =3D current->nameidata;
-> > > > +
-> > > > +	nd->last_magiclink.same_mnt =3D (nd->path.mnt =3D=3D path->mnt);
-> > > >  	path_put(&nd->path);
-> > > > =20
-> > > >  	nd->path =3D *path;
-> > > > @@ -1082,6 +1092,10 @@ const char *get_link(struct nameidata *nd)
-> > > >  		if (nd->flags & LOOKUP_MAGICLINK_JUMPED) {
-> > > >  			if (unlikely(nd->flags & LOOKUP_NO_MAGICLINKS))
-> > > >  				return ERR_PTR(-ELOOP);
-> > > > +			if (unlikely(nd->flags & LOOKUP_NO_XDEV)) {
-> > > > +				if (!nd->last_magiclink.same_mnt)
-> > > > +					return ERR_PTR(-EXDEV);
-> > > > +			}
-> > > >  		}
-> > >=20
-> > > Ugh...  Wouldn't it be better to take that logics (some equivalent th=
-ereof)
-> > > into nd_jump_link()?  Or just have nd_jump_link() return an error...
-> >=20
-> > This could be done, but the reason for stashing it away in
-> > last_magiclink is because of the future magic-link re-opening patches
-> > which can't be implemented like that without putting the open_flags
-> > inside nameidata (which was decided to be too ugly a while ago).
-> >=20
-> > My point being that I could implement it this way for this series, but
-> > I'd have to implement something like last_magiclink when I end up
-> > re-posting the magic-link stuff in a few weeks.
-> >=20
-> > Looking at all the nd_jump_link() users, the other option is to just
-> > disallow magic-link crossings entirely for LOOKUP_NO_XDEV. The only
-> > thing allowing them permits is to resolve file descriptors that are
-> > pointing to the same procfs mount -- and it's unclear to me how useful
-> > that really is (apparmorfs and nsfs will always give -EXDEV because
-> > aafs_mnt and nsfs_mnt are internal kernel vfsmounts).
->=20
-> I would rather keep the entire if (nd->flags & LOOKUP_MAGICLINK_JUMPED)
-> out of the get_link().  If you want to generate some error if
-> nd_jump_link() has been called, just do it right there.  The fewer
-> pieces of state need to be carried around, the better...
+Applied to linux-kbuild.
 
-Sure, I can make nd_jump_link() give -ELOOP and drop the current need
-for LOOKUP_MAGICLINK_JUMPED -- if necessary we can re-add it for the
-magic-link reopening patches.
-
-> And as for opening them...  Why would you need full open_flags in there?
-> Details, please...
-
-I was referring to [1] which has been dropped from this series. I
-misspoke -- you don't need the full open_flags, you just need acc_mode
-in nameidata -- but from memory you (understandably) weren't in favour
-of that either because it further muddled the open semantics with namei.
-
-So the solution I went with was to stash away the i_mode of the
-magiclink in nd->last_magiclink.mode (though to avoid a race which Jann
-found, you actually need to recalculate it when you call nd_jump_link()
-but that's a different topic) and then check it in trailing_magiclink().
-
-However, I've since figured out that we need to restrict things like
-bind-mounts and truncate() because they can be used to get around the
-restrictions. I dropped that patch from this series so that I could work
-on implementing the restrictions for the other relevant VFS syscalls
-separately from openat2 (upgrade_mask will be re-added to open_how with
-those patches).
-
-My point was that AFAICS we will either have to have nd->acc_mode (or
-something similar) or have nd->last_magiclink in order to implement the
-magic-link reopening hardening.
-
-[1]: https://lore.kernel.org/lkml/20190930183316.10190-2-cyphar@cyphar.com/
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---zoh3k636biknnjmo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXc1XiQAKCRCdlLljIbnQ
-EgEVAQDde9bpKjJAbLEIt4D/9cw3B8CHqEBeW8SnIT4PqQNQUQD/TtE4FY5p3N1d
-gPZFRde/N3ihwtWscDvPXctFNxykJAQ=
-=TSKH
------END PGP SIGNATURE-----
-
---zoh3k636biknnjmo--
+-- 
+Best Regards
+Masahiro Yamada
