@@ -2,37 +2,37 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 540ABFF312
-	for <lists+sparclinux@lfdr.de>; Sat, 16 Nov 2019 17:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6E10FF15B
+	for <lists+sparclinux@lfdr.de>; Sat, 16 Nov 2019 17:11:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728516AbfKPQXR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 16 Nov 2019 11:23:17 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46840 "EHLO mail.kernel.org"
+        id S1729967AbfKPQLf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 16 Nov 2019 11:11:35 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55766 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728541AbfKPPnA (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sat, 16 Nov 2019 10:43:00 -0500
+        id S1727817AbfKPPsh (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sat, 16 Nov 2019 10:48:37 -0500
 Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1E43A20740;
-        Sat, 16 Nov 2019 15:43:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3F203207FA;
+        Sat, 16 Nov 2019 15:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573918980;
+        s=default; t=1573919316;
         bh=G198HjGEWxt/kMMfYKLq7qrRGUBrAdqtBeP+Wdaj69s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oXNhpDwgx3UL4wDz2980pDVItD/GYB6h4PBDkb35bGLIQNQneDVyO8lnxsxIwhhyB
-         rqBwQb1u5BafU+BNCL+oz0g34fG/umJVUYCHKG8jNK76bLEmsJN6j2qrMy4EDy+1KV
-         eYqCOvMy052R7WrbupgI2GYGaJ4Qw4GOVmrdm664=
+        b=ZJRc5Rayqs2OSboV3JKZ1GkaWLKEraomrsmwqkhiH7MhKk6XAwXn51cRxSo7014OE
+         bLZ1kmTfsIFxEUJZEYh6IT8DC6j/GlQSvAG4aADqBmsYdlna0C71/bK2McF6b3GbHe
+         WxzFPQ6KL/Wh86yOXp6bQF1ctgdyp9kIjLKwbEzo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 089/237] sparc: Fix parport build warnings.
-Date:   Sat, 16 Nov 2019 10:38:44 -0500
-Message-Id: <20191116154113.7417-89-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 058/150] sparc: Fix parport build warnings.
+Date:   Sat, 16 Nov 2019 10:45:56 -0500
+Message-Id: <20191116154729.9573-58-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191116154113.7417-1-sashal@kernel.org>
-References: <20191116154113.7417-1-sashal@kernel.org>
+In-Reply-To: <20191116154729.9573-1-sashal@kernel.org>
+References: <20191116154729.9573-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
