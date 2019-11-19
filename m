@@ -2,23 +2,24 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ECF21024E9
-	for <lists+sparclinux@lfdr.de>; Tue, 19 Nov 2019 13:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B2601025CC
+	for <lists+sparclinux@lfdr.de>; Tue, 19 Nov 2019 15:02:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725798AbfKSMyW (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 19 Nov 2019 07:54:22 -0500
-Received: from mx2.cyber.ee ([193.40.6.72]:35863 "EHLO mx2.cyber.ee"
+        id S1726369AbfKSOCW (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 19 Nov 2019 09:02:22 -0500
+Received: from mx2.cyber.ee ([193.40.6.72]:35919 "EHLO mx2.cyber.ee"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725280AbfKSMyW (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 19 Nov 2019 07:54:22 -0500
-Subject: Re: 5.4-rc8 OOPS from path_openat->link_path_walk->inode_permission,
- on sparc64
+        id S1725280AbfKSOCW (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 19 Nov 2019 09:02:22 -0500
+Subject: Re: 5.4-rc8 OOPS from bpf now (was:
+ path_openat->link_path_walk->inode_permission), on sparc64
 From:   Meelis Roos <mroos@linux.ee>
 To:     LKML <linux-kernel@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        netdev@vger.kernel.org
 References: <cf84521e-7b7e-570e-9850-1a5573e62786@linux.ee>
-Message-ID: <704d8c1e-f9c1-4f40-cc5f-bf8218e8a87e@linux.ee>
-Date:   Tue, 19 Nov 2019 14:54:10 +0200
+Message-ID: <268b0af7-4d4d-ad9d-3036-554321920188@linux.ee>
+Date:   Tue, 19 Nov 2019 16:02:14 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
@@ -31,13 +32,66 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+
+
+18.11.19 11:48 Meelis Roos wrote:
 > Just tried 5.3 and 5.4-rc8 on my revived Sun Netra 240 (Ultrasparc III).
 > gcc-8 was used to compile 5.3, then as a test, packages were upgraded so
 > gcc-9 was used to compile the 5.4-rc8 kernel in question. Did not see any problems with 5.3.
 
-And here is the kernel config that I forgot to include.
+I changed the kernel config in semi-random ways and retried. This results in a different crash, in BPF.
+This is similar to a yet-unreported problem that I am trying to debug on Ultra 45 with 5.4-git.
 
-Filesystem was ext4 if that is of any importance.
+[  289.681763] Unable to handle kernel NULL pointer dereference
+[  289.756209] tsk->{mm,active_mm}->context = 0000000000000001
+[  289.829489] tsk->{mm,active_mm}->pgd = fff000133c938000
+[  289.898199]               \|/ ____ \|/
+[  289.898199]               "@'/ .. \`@"
+[  289.898199]               /_| \__/ |_\
+[  289.898199]                  \__U_/
+[  290.091496] systemd(1): Oops [#1]
+[  290.134955] CPU: 1 PID: 1 Comm: systemd Not tainted 5.4.0-rc8 #13
+[  290.215017] TSTATE: 0000004411001602 TPC: 00000000005064f0 TNPC: 00000000005064f4 Y: 00a2b0df    Not tainted
+[  290.344282] TPC: <do_check+0x670/0x3460>
+[  290.395827] g0: 0000000000000000 g1: 0000000000000000 g2: 0000000000000000 g3: 00000000000012a8
+[  290.510202] g4: fff000133c0ab760 g5: fff000133ee92000 g6: fff000133c100000 g7: 0000000100074000
+[  290.624576] o0: fff000133df6a270 o1: 0000000000000001 o2: 0000000000000002 o3: 0000000000000208
+[  290.738949] o4: fff000133df6a270 o5: 0000000000000000 sp: fff000133c103151 ret_pc: 0000000000508410
+[  290.857903] RPC: <do_check+0x2590/0x3460>
+[  290.910508] l0: 0000000000000000 l1: fff000132e02c200 l2: 0000000000000001 l3: 0000000000a9e000
+[  291.024895] l4: fff000133c04ab60 l5: 0000000000a9e0a0 l6: fff000133d602000 l7: fff000133c04ab60
+[  291.139262] i0: 0000000000000000 i1: 0000000000000000 i2: 0000000000000008 i3: 0000000000000000
+[  291.253637] i4: 0000000100070038 i5: 0000000000000001 i6: fff000133c1032c1 i7: 0000000000509a4c
+[  291.368011] I7: <bpf_check+0x76c/0x27e0>
+[  291.419471] Call Trace:
+[  291.451498]  [0000000000509a4c] bpf_check+0x76c/0x27e0
+[  291.518989]  [00000000004f9a88] bpf_prog_load+0x4c8/0x7a0
+[  291.589898]  [00000000004f9e34] __do_sys_bpf+0xd4/0x1c80
+[  291.659666]  [0000000000406254] linux_sparc_syscall+0x34/0x44
+[  291.735145] Disabling lock debugging due to kernel taint
+[  291.804914] Caller[0000000000509a4c]: bpf_check+0x76c/0x27e0
+[  291.879257] Caller[00000000004f9a88]: bpf_prog_load+0x4c8/0x7a0
+[  291.957033] Caller[00000000004f9e34]: __do_sys_bpf+0xd4/0x1c80
+[  292.033664] Caller[0000000000406254]: linux_sparc_syscall+0x34/0x44
+[  292.116012] Caller[fff00001006959fc]: 0xfff00001006959fc
+[  292.185778] Instruction DUMP:
+[  292.185780]  c02fa7a2
+[  292.224664]  c25da008
+[  292.255545]  c2586020
+[  292.286426] <c2086025>
+[  292.317304]  80a06000
+[  292.348187]  32400144
+[  292.379067]  d445a004
+[  292.409950]  f60fa7af
+[  292.440828]  93326000
+[  292.471710]
+[  292.541667] printk: systemd: 15 output lines suppressed due to ratelimiting
+[  292.634153] Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000009
+[  292.734887] Press Stop-A (L1-A) from sun keyboard or send break
+[  292.734887] twice on console to return to the boot prom
+[  292.881266] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000009 ]---
+
+Kernel config now (CONFIG_JUMP_LABEL seems the most outstanding change?)
 
 #
 # Automatically generated file; DO NOT EDIT.
@@ -345,8 +399,7 @@ CONFIG_BBC_I2C=y
 CONFIG_CRASH_CORE=y
 CONFIG_HAVE_OPROFILE=y
 # CONFIG_KPROBES is not set
-CONFIG_JUMP_LABEL=y
-# CONFIG_STATIC_KEYS_SELFTEST is not set
+# CONFIG_JUMP_LABEL is not set
 CONFIG_HAVE_KPROBES=y
 CONFIG_HAVE_KRETPROBES=y
 CONFIG_HAVE_NMI=y
@@ -432,7 +485,7 @@ CONFIG_BLK_PM=y
 #
 # IO Schedulers
 #
-# CONFIG_MQ_IOSCHED_DEADLINE is not set
+CONFIG_MQ_IOSCHED_DEADLINE=y
 # CONFIG_MQ_IOSCHED_KYBER is not set
 # CONFIG_IOSCHED_BFQ is not set
 # end of IO Schedulers
@@ -2428,7 +2481,7 @@ CONFIG_NLS_UTF8=m
 # CONFIG_KEYS is not set
 # CONFIG_SECURITY_DMESG_RESTRICT is not set
 # CONFIG_SECURITY is not set
-CONFIG_SECURITYFS=y
+# CONFIG_SECURITYFS is not set
 CONFIG_HAVE_HARDENED_USERCOPY_ALLOCATOR=y
 CONFIG_HARDENED_USERCOPY=y
 CONFIG_HARDENED_USERCOPY_FALLBACK=y
@@ -2552,8 +2605,7 @@ CONFIG_CRYPTO_SHA256=y
 #
 # Ciphers
 #
-CONFIG_CRYPTO_LIB_AES=y
-CONFIG_CRYPTO_AES=y
+# CONFIG_CRYPTO_AES is not set
 # CONFIG_CRYPTO_AES_TI is not set
 # CONFIG_CRYPTO_AES_SPARC64 is not set
 # CONFIG_CRYPTO_ANUBIS is not set
@@ -2799,6 +2851,7 @@ CONFIG_UBSAN_ALIGNMENT=y
 CONFIG_TRACE_IRQFLAGS_SUPPORT=y
 # CONFIG_DEBUG_DCFLUSH is not set
 # end of Kernel hacking
+
 
 
 -- 
