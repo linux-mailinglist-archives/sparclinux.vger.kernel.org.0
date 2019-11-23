@@ -2,139 +2,66 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4008C105465
-	for <lists+sparclinux@lfdr.de>; Thu, 21 Nov 2019 15:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3FB2107ED5
+	for <lists+sparclinux@lfdr.de>; Sat, 23 Nov 2019 15:25:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726858AbfKUO2Y (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 21 Nov 2019 09:28:24 -0500
-Received: from mout.kundenserver.de ([212.227.126.130]:35207 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726396AbfKUO2X (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 21 Nov 2019 09:28:23 -0500
-Received: from mail-qt1-f175.google.com ([209.85.160.175]) by
- mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MhlbM-1hu2qb31Zg-00doDm; Thu, 21 Nov 2019 15:28:21 +0100
-Received: by mail-qt1-f175.google.com with SMTP id o11so3828152qtr.11;
-        Thu, 21 Nov 2019 06:28:21 -0800 (PST)
-X-Gm-Message-State: APjAAAVpE/RjHL+ncTjs8J92/qo5V8Y4lkqGlbPq37p3OVWARlA3KohO
-        XoqskO+3h16FUtM80skNMPwfCV718CVABjY2b8E=
-X-Google-Smtp-Source: APXvYqxB3fiYXtrETUp5EiMiQ9fb0AeisI+RwKyT7xggRKZinaPFWQOgz7hTMTjBH+1fCN1q48qajjrjZ95bUArYxrA=
-X-Received: by 2002:ac8:18eb:: with SMTP id o40mr2519477qtk.304.1574346500017;
- Thu, 21 Nov 2019 06:28:20 -0800 (PST)
+        id S1726704AbfKWOZo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 23 Nov 2019 09:25:44 -0500
+Received: from server.lionleather100.site ([68.66.241.200]:51912 "EHLO
+        server.lionleather100.site" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726524AbfKWOZo (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Sat, 23 Nov 2019 09:25:44 -0500
+X-Greylist: delayed 552 seconds by postgrey-1.27 at vger.kernel.org; Sat, 23 Nov 2019 09:25:43 EST
+Received: from 39.52.219.190 (unknown [39.52.221.210])
+        by server.lionleather100.site (Postfix) with ESMTPSA id EF70C15AB6B7
+        for <sparclinux@vger.kernel.org>; Sat, 23 Nov 2019 09:14:57 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lionleather100.site;
+        s=default; t=1574518498;
+        bh=+7JXRIBigxC5+w6HaZ1xnDAkDhHPDHNihJwlPrB5K18=; h=From:To:Subject;
+        b=hACaLvaBifKtTNhHlGdJeVSjykbd3Fc216v58vCV068fU9iW7bfvDeVNfcaBiR2oK
+         MOQWU2zWMKCcUBK9fMMTOHoREmWKAh7UYXXuJGyZl2Y8RbcXvHMw0Df7if0PBE6Ap3
+         ltCr3nAJPZmR3X9m2D1bnzrweEIeBLwwrV9l8dME=
+Authentication-Results: server.lionleather100.site;
+        spf=pass (sender IP is 39.52.221.210) smtp.mailfrom=hassan@lionleather100.site smtp.helo=39.52.219.190
+Received-SPF: pass (server.lionleather100.site: connection is authenticated)
 MIME-Version: 1.0
-References: <20191108210236.1296047-1-arnd@arndb.de> <20191108210824.1534248-8-arnd@arndb.de>
- <dd1a30609f05e800550097080c1d1b27065f91ff.camel@codethink.co.uk>
-In-Reply-To: <dd1a30609f05e800550097080c1d1b27065f91ff.camel@codethink.co.uk>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 21 Nov 2019 15:28:03 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a0VORzqLLTFpt9VYn_SONsve+-q0fTrZrPbLMpX9T6SBQ@mail.gmail.com>
-Message-ID: <CAK8P3a0VORzqLLTFpt9VYn_SONsve+-q0fTrZrPbLMpX9T6SBQ@mail.gmail.com>
-Subject: Re: [Y2038] [PATCH 08/23] y2038: ipc: remove __kernel_time_t
- reference from headers
-To:     Ben Hutchings <ben.hutchings@codethink.co.uk>
-Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-mips@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:LnPyaKtdAcRIfsrfVOvLgTpY2NYcJVXxz9V2TfTsyIVjaxXXWXo
- J0B/STj89T5mtEIVTc0DQpBVMrYNCU0NcRKyMbhUocUGEvCLRsv+tXSavgQ9f1ideIJ9QR/
- Y5hh36oQ5DHX7KGoy+fvIxvqyEiOiRDO5LBnW77E+fjNVlQJvkzhlyATiPB5C1vEiZb5+oS
- z+IMcyRaYAXzuuyPNj62w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:8A/19T5M7NU=:IiGojC9BupST0/of+E3q2T
- awxsjk77FWMnOwQ4nks8TRVJzj8MaemtAxeTd5LZ6AU026M7mvm1hvPPHZ4QB1SOCc3AYUgwj
- JPVxeNksokjiewTxADZhlkQvmoHlH8s8IySCW9mTS2t5RD8o/IIkeCztir/MtztaDyYhZGCEF
- rJutdeF8yCwCOVEmI7Ryya6bzcLeLgOMSoT5Xc8Tr9ih6rF+jVFaOUAXQMQ6sS/CqZm07Z50W
- 7mFRhVnGeKtcmbTcT0NTLP401mk/Y8oiEAIVOQBfgMLuw2i+hxNpBaSfN4BVM41IYS3h0x3HD
- uGGmN8Xg4IinXM7DMSUMDAzn6EMtVtq/QLtMgQqKk3tDFwE1zBuRSd44KbYWGHF3Q5aMOUzd8
- 9Sz0SWtwZrbXJw+mhMw8rLqVMwp4yN0nU2VyHFcMDvtMFQ3BNUPTwIen5wbxdh2wWV5N7roDc
- doz4p7AZTAPDJskv5JNv1EKjjCl6xvoqQ7wnIp+Al8cIJxYnH6J4UDx5XPfdsrRS4pa+71lbm
- EWW0/i/p7///JQKDcKCh7ZZ4LPUrE/h1kYwBQP1MHg5hYP9OpFlu0k36Uv+f4AIeXpq+0CrfQ
- /bVHc+NPvKLBmPdC+v6whkNTSXKYLqce/eejLUwRvJjXDpqKQ00siEcCr21Vy62/XMUgoTMP0
- ruAJ3GS2Boof4iy+ow6k+pyZug2crvFBwPmgP5Um5R8Hg5YP1dPhXvfbkPFqPAfvGwOvoplet
- J2AWy7clG4cWvOnoOy52qSRXi9wlksgco1NEKVg+ITDnHMNlDT01gV4H6HNCGkOncaZ02mV1f
- WoJKk4TZPuzgJh5AqeiuSTyXXyIiy919eAAca+VxYDVUHKVsaVa633SN22EcLEV1YskVIIOMm
- T2iRBlyk5NdX4Xcg6V7A==
+From:   "Lion Leather" <hassan@lionleather100.site>
+Reply-To: lionleather101@gmail.com
+To:     sparclinux@vger.kernel.org
+Subject: Juggling Ball manufacturer
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Smart_Send_2_0_138
+Date:   Sat, 23 Nov 2019 19:14:52 +0500
+Message-ID: <6596352868568567410251@DESKTOP-NVQ8BB8>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Nov 20, 2019 at 11:49 PM Ben Hutchings
-<ben.hutchings@codethink.co.uk> wrote:
->
-> On Fri, 2019-11-08 at 22:07 +0100, Arnd Bergmann wrote:
-> [...]
-> > --- a/arch/x86/include/uapi/asm/sembuf.h
-> > +++ b/arch/x86/include/uapi/asm/sembuf.h
-> > @@ -21,9 +21,9 @@ struct semid64_ds {
-> >       unsigned long   sem_ctime;      /* last change time */
-> >       unsigned long   sem_ctime_high;
-> >  #else
-> > -     __kernel_time_t sem_otime;      /* last semop time */
-> > +     long            sem_otime;      /* last semop time */
-> >       __kernel_ulong_t __unused1;
-> > -     __kernel_time_t sem_ctime;      /* last change time */
-> > +     long            sem_ctime;      /* last change time */
-> >       __kernel_ulong_t __unused2;
-> >  #endif
-> >       __kernel_ulong_t sem_nsems;     /* no. of semaphores in array */
-> [...]
->
-> We need to use __kernel_long_t here to do the right thing on x32.
+Hello,
 
-Good catch, thanks for the review!
+We are Juggling ball supplier, Vendor of many Juggling Brands. Whether you =
+are interested in=3F
+=20
+Here you can find catalog of our juggling ball in Google drive link given b=
+elow.
 
-I applied the patch below now on top.
+https://drive.google.com/open=3Fid=3D0B5meiXXKee54Y1RYaU9OczRlUjQ
 
-       Arnd
+Price list is available on request.
 
-commit c7ebd8a1c1825c3197732ea692cf3dde34a644f5 (HEAD)
-Author: Arnd Bergmann <arnd@arndb.de>
-Date:   Thu Nov 21 15:25:04 2019 +0100
+For quick communication you also can whatsaap   0092-3006122353
 
-    y2038: ipc: fix x32 ABI breakage
+PS: If you are already our customer then please ignore this email. Thanks!
 
-    The correct type on x32 is 64-bit wide, same as for the other struct
-    members around it, so use  __kernel_long_t in place of the original
-    __kernel_time_t here, corresponding to the rest of the structure.
+With Best Regards
+Hassan=20
 
-    Fixes: caf5e32d4ea7 ("y2038: ipc: remove __kernel_time_t reference
-from headers")
-    Reported-by: Ben Hutchings <ben.hutchings@codethink.co.uk>
-    Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
 
-diff --git a/arch/x86/include/uapi/asm/sembuf.h
-b/arch/x86/include/uapi/asm/sembuf.h
-index 7c1b156695ba..20cab43c4b15 100644
---- a/arch/x86/include/uapi/asm/sembuf.h
-+++ b/arch/x86/include/uapi/asm/sembuf.h
-@@ -21,9 +21,9 @@ struct semid64_ds {
-        unsigned long   sem_ctime;      /* last change time */
-        unsigned long   sem_ctime_high;
- #else
--       long            sem_otime;      /* last semop time */
-+       __kernel_long_t sem_otime;      /* last semop time */
-        __kernel_ulong_t __unused1;
--       long            sem_ctime;      /* last change time */
-+       __kenrel_long_t sem_ctime;      /* last change time */
-        __kernel_ulong_t __unused2;
- #endif
-        __kernel_ulong_t sem_nsems;     /* no. of semaphores in array */
+Lion Leather
+Sialkot Pakistan
+Mob: 0092-3006122353=20
+Whats Ap: 00923006122353  Viber: 00923006122353  =20
