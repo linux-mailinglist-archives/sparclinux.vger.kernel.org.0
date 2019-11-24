@@ -2,400 +2,104 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BD9610828A
-	for <lists+sparclinux@lfdr.de>; Sun, 24 Nov 2019 09:57:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2205F1082BE
+	for <lists+sparclinux@lfdr.de>; Sun, 24 Nov 2019 10:44:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725948AbfKXI52 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 24 Nov 2019 03:57:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46648 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725937AbfKXI52 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 24 Nov 2019 03:57:28 -0500
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 62E6320706;
-        Sun, 24 Nov 2019 08:57:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574585846;
-        bh=cMkCvQAGz3bA5X1biLYMWcwJA3SH3fllDC7ywe5VyFc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=q6VzoeuYrYqyHpqrjmQ57nAWIZYFr26I9nf0e8Snt29o35sBPckCUoXLcNaPipoRc
-         MYJxMomkRsl7Squ5CYTr0PIm5gry8Y+X5LxfSWVYpEgp45DWjXU4WSnpTF3zuCNr5/
-         FE+oHVoaOMXqUT9gAKAyxlptuIT6w90pt9gibU1g=
-From:   Mike Rapoport <rppt@kernel.org>
-To:     "David S. Miller" <davem@davemloft.net>
+        id S1726779AbfKXJol (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 24 Nov 2019 04:44:41 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:57897 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726673AbfKXJol (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 24 Nov 2019 04:44:41 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.85)
+          with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id <1iYoRZ-0037pS-Gv>; Sun, 24 Nov 2019 10:44:37 +0100
+Received: from x590ca641.dyn.telefonica.de ([89.12.166.65] helo=[192.168.1.8])
+          by inpost2.zedat.fu-berlin.de (Exim 4.85)
+          with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id <1iYoRZ-003utk-AI>; Sun, 24 Nov 2019 10:44:37 +0100
+Subject: Re: [PATCH] sparc64: add support for folded p4d page tables
+To:     Mike Rapoport <rppt@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
 Cc:     sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCH] sparc64: add support for folded p4d page tables
-Date:   Sun, 24 Nov 2019 10:57:20 +0200
-Message-Id: <20191124085720.6201-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.24.0
+        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
+References: <20191124085720.6201-1-rppt@kernel.org>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <e91984fa-3544-8b7e-d577-54125b075fbe@physik.fu-berlin.de>
+Date:   Sun, 24 Nov 2019 10:44:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191124085720.6201-1-rppt@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: 89.12.166.65
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+Hi!
 
-Implement primitives necessary for the 4th level folding, add walks of p4d
-level where appropriate and replace 5leve-fixup.h with pgtable-nop4d.h.
+On 11/24/19 9:57 AM, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> Implement primitives necessary for the 4th level folding, add walks of p4d
+> level where appropriate and replace 5leve-fixup.h with pgtable-nop4d.h.                                      ^^^^^ typo?
 
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
----
- arch/sparc/include/asm/pgalloc_64.h |  6 +++---
- arch/sparc/include/asm/pgtable_64.h | 24 ++++++++++-----------
- arch/sparc/kernel/signal32.c        |  6 +++++-
- arch/sparc/kernel/smp_64.c          | 13 +++++++++++-
- arch/sparc/mm/fault_64.c            |  6 +++++-
- arch/sparc/mm/hugetlbpage.c         | 28 +++++++++++++++---------
- arch/sparc/mm/init_64.c             | 33 +++++++++++++++++++++++++----
- 7 files changed, 84 insertions(+), 32 deletions(-)
+Adrian
 
-diff --git a/arch/sparc/include/asm/pgalloc_64.h b/arch/sparc/include/asm/pgalloc_64.h
-index 9d3e5cc95bbb..264e76ceccf6 100644
---- a/arch/sparc/include/asm/pgalloc_64.h
-+++ b/arch/sparc/include/asm/pgalloc_64.h
-@@ -16,12 +16,12 @@
- 
- extern struct kmem_cache *pgtable_cache;
- 
--static inline void __pgd_populate(pgd_t *pgd, pud_t *pud)
-+static inline void __p4d_populate(p4d_t *p4d, pud_t *pud)
- {
--	pgd_set(pgd, pud);
-+	p4d_set(p4d, pud);
- }
- 
--#define pgd_populate(MM, PGD, PUD)	__pgd_populate(PGD, PUD)
-+#define p4d_populate(MM, P4D, PUD)	__p4d_populate(P4D, PUD)
- 
- static inline pgd_t *pgd_alloc(struct mm_struct *mm)
- {
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index 6ae8016ef4ec..34ff3b43afbb 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -13,7 +13,7 @@
-  * the SpitFire page tables.
-  */
- 
--#include <asm-generic/5level-fixup.h>
-+#include <asm-generic/pgtable-nop4d.h>
- #include <linux/compiler.h>
- #include <linux/const.h>
- #include <asm/types.h>
-@@ -810,9 +810,9 @@ static inline int pmd_present(pmd_t pmd)
- 
- #define pud_bad(pud)			(pud_val(pud) & ~PAGE_MASK)
- 
--#define pgd_none(pgd)			(!pgd_val(pgd))
-+#define p4d_none(p4d)			(!p4d_val(p4d))
- 
--#define pgd_bad(pgd)			(pgd_val(pgd) & ~PAGE_MASK)
-+#define p4d_bad(p4d)			(p4d_val(p4d) & ~PAGE_MASK)
- 
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- void set_pmd_at(struct mm_struct *mm, unsigned long addr,
-@@ -859,13 +859,13 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
- #define pmd_clear(pmdp)			(pmd_val(*(pmdp)) = 0UL)
- #define pud_present(pud)		(pud_val(pud) != 0U)
- #define pud_clear(pudp)			(pud_val(*(pudp)) = 0UL)
--#define pgd_page_vaddr(pgd)		\
--	((unsigned long) __va(pgd_val(pgd)))
--#define pgd_present(pgd)		(pgd_val(pgd) != 0U)
--#define pgd_clear(pgdp)			(pgd_val(*(pgdp)) = 0UL)
-+#define p4d_page_vaddr(p4d)		\
-+	((unsigned long) __va(p4d_val(p4d)))
-+#define p4d_present(p4d)		(p4d_val(p4d) != 0U)
-+#define p4d_clear(p4dp)			(p4d_val(*(p4dp)) = 0UL)
- 
- /* only used by the stubbed out hugetlb gup code, should never be called */
--#define pgd_page(pgd)			NULL
-+#define p4d_page(p4d)			NULL
- 
- static inline unsigned long pud_large(pud_t pud)
- {
-@@ -884,8 +884,8 @@ static inline unsigned long pud_pfn(pud_t pud)
- /* Same in both SUN4V and SUN4U.  */
- #define pte_none(pte) 			(!pte_val(pte))
- 
--#define pgd_set(pgdp, pudp)	\
--	(pgd_val(*(pgdp)) = (__pa((unsigned long) (pudp))))
-+#define p4d_set(p4dp, pudp)	\
-+	(p4d_val(*(p4dp)) = (__pa((unsigned long) (pudp))))
- 
- /* to find an entry in a page-table-directory. */
- #define pgd_index(address)	(((address) >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1))
-@@ -896,8 +896,8 @@ static inline unsigned long pud_pfn(pud_t pud)
- 
- /* Find an entry in the third-level page table.. */
- #define pud_index(address)	(((address) >> PUD_SHIFT) & (PTRS_PER_PUD - 1))
--#define pud_offset(pgdp, address)	\
--	((pud_t *) pgd_page_vaddr(*(pgdp)) + pud_index(address))
-+#define pud_offset(p4dp, address)	\
-+	((pud_t *) p4d_page_vaddr(*(p4dp)) + pud_index(address))
- 
- /* Find an entry in the second-level page table.. */
- #define pmd_offset(pudp, address)	\
-diff --git a/arch/sparc/kernel/signal32.c b/arch/sparc/kernel/signal32.c
-index a237810aa9f4..2a734ecd0a40 100644
---- a/arch/sparc/kernel/signal32.c
-+++ b/arch/sparc/kernel/signal32.c
-@@ -299,6 +299,7 @@ static void flush_signal_insns(unsigned long address)
- 	unsigned long pstate, paddr;
- 	pte_t *ptep, pte;
- 	pgd_t *pgdp;
-+	p4d_t *p4dp;
- 	pud_t *pudp;
- 	pmd_t *pmdp;
- 
-@@ -318,7 +319,10 @@ static void flush_signal_insns(unsigned long address)
- 	pgdp = pgd_offset(current->mm, address);
- 	if (pgd_none(*pgdp))
- 		goto out_irqs_on;
--	pudp = pud_offset(pgdp, address);
-+	p4dp = p4d_offset(pgdp, address);
-+	if (p4d_none(*p4dp))
-+		goto out_irqs_on;
-+	pudp = pud_offset(p4dp, address);
- 	if (pud_none(*pudp))
- 		goto out_irqs_on;
- 	pmdp = pmd_offset(pudp, address);
-diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
-index a8275fea4b70..eb9455798338 100644
---- a/arch/sparc/kernel/smp_64.c
-+++ b/arch/sparc/kernel/smp_64.c
-@@ -1621,6 +1621,7 @@ static int __init pcpu_cpu_distance(unsigned int from, unsigned int to)
- static void __init pcpu_populate_pte(unsigned long addr)
- {
- 	pgd_t *pgd = pgd_offset_k(addr);
-+	p4d_t *p4d;
- 	pud_t *pud;
- 	pmd_t *pmd;
- 
-@@ -1633,7 +1634,17 @@ static void __init pcpu_populate_pte(unsigned long addr)
- 		pgd_populate(&init_mm, pgd, new);
- 	}
- 
--	pud = pud_offset(pgd, addr);
-+	p4d = p4d_offset(pgd, addr);
-+	if (p4d_none(*p4d)) {
-+		pud_t *new;
-+
-+		new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
-+		if (!new)
-+			goto err_alloc;
-+		p4d_populate(&init_mm, p4d, new);
-+	}
-+
-+	pud = pud_offset(p4d, addr);
- 	if (pud_none(*pud)) {
- 		pmd_t *new;
- 
-diff --git a/arch/sparc/mm/fault_64.c b/arch/sparc/mm/fault_64.c
-index 2371fb6b97e4..8b7ddbd14b65 100644
---- a/arch/sparc/mm/fault_64.c
-+++ b/arch/sparc/mm/fault_64.c
-@@ -80,6 +80,7 @@ static void __kprobes bad_kernel_pc(struct pt_regs *regs, unsigned long vaddr)
- static unsigned int get_user_insn(unsigned long tpc)
- {
- 	pgd_t *pgdp = pgd_offset(current->mm, tpc);
-+	p4d_t *p4dp;
- 	pud_t *pudp;
- 	pmd_t *pmdp;
- 	pte_t *ptep, pte;
-@@ -88,7 +89,10 @@ static unsigned int get_user_insn(unsigned long tpc)
- 
- 	if (pgd_none(*pgdp) || unlikely(pgd_bad(*pgdp)))
- 		goto out;
--	pudp = pud_offset(pgdp, tpc);
-+	p4dp = p4d_offset(pgdp, tpc);
-+	if (p4d_none(*p4dp) || unlikely(p4d_bad(*p4dp)))
-+		goto out;
-+	pudp = pud_offset(p4dp, tpc);
- 	if (pud_none(*pudp) || unlikely(pud_bad(*pudp)))
- 		goto out;
- 
-diff --git a/arch/sparc/mm/hugetlbpage.c b/arch/sparc/mm/hugetlbpage.c
-index f78793a06bbd..7b9fa861b67c 100644
---- a/arch/sparc/mm/hugetlbpage.c
-+++ b/arch/sparc/mm/hugetlbpage.c
-@@ -277,11 +277,13 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
- 			unsigned long addr, unsigned long sz)
- {
- 	pgd_t *pgd;
-+	p4d_t *p4d;
- 	pud_t *pud;
- 	pmd_t *pmd;
- 
- 	pgd = pgd_offset(mm, addr);
--	pud = pud_alloc(mm, pgd, addr);
-+	p4d = p4d_offset(pgd, addr);
-+	pud = pud_alloc(mm, p4d, addr);
- 	if (!pud)
- 		return NULL;
- 	if (sz >= PUD_SIZE)
-@@ -298,13 +300,17 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
- 		       unsigned long addr, unsigned long sz)
- {
- 	pgd_t *pgd;
-+	p4d_t *p4d;
- 	pud_t *pud;
- 	pmd_t *pmd;
- 
- 	pgd = pgd_offset(mm, addr);
- 	if (pgd_none(*pgd))
- 		return NULL;
--	pud = pud_offset(pgd, addr);
-+	p4d = p4d_offset(pgd, addr);
-+	if (p4d_none(*p4d))
-+		return NULL;
-+	pud = pud_offset(p4d, addr);
- 	if (pud_none(*pud))
- 		return NULL;
- 	if (is_hugetlb_pud(*pud))
-@@ -449,7 +455,7 @@ static void hugetlb_free_pmd_range(struct mmu_gather *tlb, pud_t *pud,
- 	mm_dec_nr_pmds(tlb->mm);
- }
- 
--static void hugetlb_free_pud_range(struct mmu_gather *tlb, pgd_t *pgd,
-+static void hugetlb_free_pud_range(struct mmu_gather *tlb, p4d_t *p4d,
- 				   unsigned long addr, unsigned long end,
- 				   unsigned long floor, unsigned long ceiling)
- {
-@@ -458,7 +464,7 @@ static void hugetlb_free_pud_range(struct mmu_gather *tlb, pgd_t *pgd,
- 	unsigned long start;
- 
- 	start = addr;
--	pud = pud_offset(pgd, addr);
-+	pud = pud_offset(p4d, addr);
- 	do {
- 		next = pud_addr_end(addr, end);
- 		if (pud_none_or_clear_bad(pud))
-@@ -481,8 +487,8 @@ static void hugetlb_free_pud_range(struct mmu_gather *tlb, pgd_t *pgd,
- 	if (end - 1 > ceiling - 1)
- 		return;
- 
--	pud = pud_offset(pgd, start);
--	pgd_clear(pgd);
-+	pud = pud_offset(p4d, start);
-+	p4d_clear(p4d);
- 	pud_free_tlb(tlb, pud, start);
- 	mm_dec_nr_puds(tlb->mm);
- }
-@@ -492,6 +498,7 @@ void hugetlb_free_pgd_range(struct mmu_gather *tlb,
- 			    unsigned long floor, unsigned long ceiling)
- {
- 	pgd_t *pgd;
-+	p4d_t *p4d;
- 	unsigned long next;
- 
- 	addr &= PMD_MASK;
-@@ -511,10 +518,11 @@ void hugetlb_free_pgd_range(struct mmu_gather *tlb,
- 		return;
- 
- 	pgd = pgd_offset(tlb->mm, addr);
-+	p4d = p4d_offset(pgd, addr);
- 	do {
--		next = pgd_addr_end(addr, end);
--		if (pgd_none_or_clear_bad(pgd))
-+		next = p4d_addr_end(addr, end);
-+		if (p4d_none_or_clear_bad(p4d))
- 			continue;
--		hugetlb_free_pud_range(tlb, pgd, addr, next, floor, ceiling);
--	} while (pgd++, addr = next, addr != end);
-+		hugetlb_free_pud_range(tlb, p4d, addr, next, floor, ceiling);
-+	} while (p4d++, addr = next, addr != end);
- }
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index e6d91819da92..1cf0d666dea3 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -530,7 +530,8 @@ void __kprobes flush_icache_range(unsigned long start, unsigned long end)
- 				paddr = kaddr & mask;
- 			else {
- 				pgd_t *pgdp = pgd_offset_k(kaddr);
--				pud_t *pudp = pud_offset(pgdp, kaddr);
-+				p4d_t *p4dp = p4d_offset(pgdp, kaddr);
-+				pud_t *pudp = pud_offset(p4dp, kaddr);
- 				pmd_t *pmdp = pmd_offset(pudp, kaddr);
- 				pte_t *ptep = pte_offset_kernel(pmdp, kaddr);
- 
-@@ -1653,6 +1654,7 @@ static unsigned long max_phys_bits = 40;
- bool kern_addr_valid(unsigned long addr)
- {
- 	pgd_t *pgd;
-+	p4d_t *p4d;
- 	pud_t *pud;
- 	pmd_t *pmd;
- 	pte_t *pte;
-@@ -1674,7 +1676,11 @@ bool kern_addr_valid(unsigned long addr)
- 	if (pgd_none(*pgd))
- 		return 0;
- 
--	pud = pud_offset(pgd, addr);
-+	p4d = p4d_offset(pgd, addr);
-+	if (p4d_none(*p4d))
-+		return 0;
-+
-+	pud = pud_offset(p4d, addr);
- 	if (pud_none(*pud))
- 		return 0;
- 
-@@ -1800,6 +1806,7 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
- 	while (vstart < vend) {
- 		unsigned long this_end, paddr = __pa(vstart);
- 		pgd_t *pgd = pgd_offset_k(vstart);
-+		p4d_t *p4d;
- 		pud_t *pud;
- 		pmd_t *pmd;
- 		pte_t *pte;
-@@ -1814,7 +1821,20 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
- 			alloc_bytes += PAGE_SIZE;
- 			pgd_populate(&init_mm, pgd, new);
- 		}
--		pud = pud_offset(pgd, vstart);
-+
-+		p4d = p4d_offset(pgd, vstart);
-+		if (p4d_none(*p4d)) {
-+			pud_t *new;
-+
-+			new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE,
-+						  PAGE_SIZE);
-+			if (!new)
-+				goto err_alloc;
-+			alloc_bytes += PAGE_SIZE;
-+			p4d_populate(&init_mm, p4d, new);
-+		}
-+
-+		pud = pud_offset(p4d, vstart);
- 		if (pud_none(*pud)) {
- 			pmd_t *new;
- 
-@@ -2612,13 +2632,18 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
- 	for (; vstart < vend; vstart += PMD_SIZE) {
- 		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
- 		unsigned long pte;
-+		p4d_t *p4d;
- 		pud_t *pud;
- 		pmd_t *pmd;
- 
- 		if (!pgd)
- 			return -ENOMEM;
- 
--		pud = vmemmap_pud_populate(pgd, vstart, node);
-+		p4d = vmemmap_p4d_populate(pgd, vstart, node);
-+		if (!p4d)
-+			return -ENOMEM;
-+
-+		pud = vmemmap_pud_populate(p4d, vstart, node);
- 		if (!pud)
- 			return -ENOMEM;
- 
 -- 
-2.24.0
-
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
