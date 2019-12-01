@@ -2,113 +2,89 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA7BE108CED
-	for <lists+sparclinux@lfdr.de>; Mon, 25 Nov 2019 12:28:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDF2110E318
+	for <lists+sparclinux@lfdr.de>; Sun,  1 Dec 2019 19:28:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727774AbfKYL2R (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 25 Nov 2019 06:28:17 -0500
-Received: from foss.arm.com ([217.140.110.172]:49026 "EHLO foss.arm.com"
+        id S1727275AbfLAS2N (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 1 Dec 2019 13:28:13 -0500
+Received: from mtax.cdmx.gob.mx ([187.141.35.197]:12185 "EHLO mtax.cdmx.gob.mx"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727743AbfKYL2Q (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 25 Nov 2019 06:28:16 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5E2D3113E;
-        Mon, 25 Nov 2019 03:28:16 -0800 (PST)
-Received: from e107158-lin.cambridge.arm.com (e107158-lin.cambridge.arm.com [10.1.195.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 27BC23F52E;
-        Mon, 25 Nov 2019 03:28:15 -0800 (PST)
-From:   Qais Yousef <qais.yousef@arm.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Qais Yousef <qais.yousef@arm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 07/14] sparc: Replace cpu_up/down with device_online/offline
-Date:   Mon, 25 Nov 2019 11:27:47 +0000
-Message-Id: <20191125112754.25223-8-qais.yousef@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191125112754.25223-1-qais.yousef@arm.com>
-References: <20191125112754.25223-1-qais.yousef@arm.com>
+        id S1727169AbfLAS2M (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 1 Dec 2019 13:28:12 -0500
+X-Greylist: delayed 7054 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Dec 2019 13:28:11 EST
+X-NAI-Header: Modified by McAfee Email Gateway (4500)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
+        t=1575217638; h=DKIM-Filter:X-Virus-Scanned:
+         Content-Type:MIME-Version:Content-Transfer-Encoding:
+         Content-Description:Subject:To:From:Date:Message-Id:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
+         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
+         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=M
+        8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs4
+        8=; b=AJgw5zKuRSxDA4RR1SzCQDXDmYbq3lEbkez0ze6zMlwW
+        X/wMCEBYaGleZ2pGWnVrtYngr6fsmOhMyisacQslDYI3cnrVYt
+        ImDAeXGclPOllZniR8yKozbADkJ0zZghibjY0PJPmMUTT1yGgv
+        D+BMIip2w0gajErzyPpigp0X8+k=
+Received: from cdmx.gob.mx (correo.cdmx.gob.mx [10.250.108.150]) by mtax.cdmx.gob.mx with smtp
+        (TLS: TLSv1/SSLv3,256bits,ECDHE-RSA-AES256-GCM-SHA384)
+         id 217f_6404_70aeedb4_67f9_4254_84e1_45d95604647e;
+        Sun, 01 Dec 2019 10:27:17 -0600
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id 9C7F51E2F1B;
+        Sun,  1 Dec 2019 10:18:50 -0600 (CST)
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id M8xflX4YPAZf; Sun,  1 Dec 2019 10:18:50 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id B7DE51E2E33;
+        Sun,  1 Dec 2019 10:14:17 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx B7DE51E2E33
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
+        s=72359050-3965-11E6-920A-0192F7A2F08E; t=1575216857;
+        bh=M8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs48=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Message-Id;
+        b=pZKm0kBMfssiAPOl2vuwSOc8Vx2IjcSbCx1A7EwxZ5vI0H4iGZ+j/5lrUbxcWINpl
+         U1Z3b7gj7WtHwzLTG5dWIzXIEiZmMtguVV8DoB9jk2jBCK505XcQAJGWseydyBq9UK
+         eH1tgY3iJ4Fy9p/Qrl+zdSw5QveHJy9grRi8D7Hw=
+X-Virus-Scanned: amavisd-new at cdmx.gob.mx
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id s22pwdcNZkoF; Sun,  1 Dec 2019 10:14:17 -0600 (CST)
+Received: from [192.168.0.104] (unknown [188.125.168.160])
+        by cdmx.gob.mx (Postfix) with ESMTPSA id 04F6B1E2599;
+        Sun,  1 Dec 2019 10:05:21 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Congratulations
+To:     Recipients <aac-styfe@cdmx.gob.mx>
+From:   "Bishop Johnr" <aac-styfe@cdmx.gob.mx>
+Date:   Sun, 01 Dec 2019 17:05:14 +0100
+Message-Id: <20191201160522.04F6B1E2599@cdmx.gob.mx>
+X-AnalysisOut: [v=2.2 cv=euev9shX c=1 sm=1 tr=0 p=6K-Ig8iNAUou4E5wYCEA:9 p]
+X-AnalysisOut: [=zRI05YRXt28A:10 a=T6zFoIZ12MK39YzkfxrL7A==:117 a=9152RP8M]
+X-AnalysisOut: [6GQqDhC/mI/QXQ==:17 a=8nJEP1OIZ-IA:10 a=pxVhFHJ0LMsA:10 a=]
+X-AnalysisOut: [pGLkceISAAAA:8 a=wPNLvfGTeEIA:10 a=M8O0W8wq6qAA:10 a=Ygvjr]
+X-AnalysisOut: [iKHvHXA2FhpO6d-:22]
+X-SAAS-TrackingID: 3e9e3ed5.0.105195785.00-2379.176839663.s12p02m004.mxlogic.net
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 3
+X-NAI-Spam-Score: -5000
+X-NAI-Spam-Rules: 1 Rules triggered
+        WHITELISTED=-5000
+X-NAI-Spam-Version: 2.3.0.9418 : core <6686> : inlines <7165> : streams
+ <1840193> : uri <2949750>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The core device API performs extra housekeeping bits that are missing
-from directly calling cpu_up/down.
+Money was donated to you by Mr and Mrs Allen and Violet Large, just contact=
+ them with this email for more information =
 
-See commit a6717c01ddc2 ("powerpc/rtas: use device model APIs and
-serialization during LPM") for an example description of what might go
-wrong.
 
-This also prepares to make cpu_up/down a private interface for anything
-but the cpu subsystem.
-
-Acked-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Qais Yousef <qais.yousef@arm.com>
-CC: "David S. Miller" <davem@davemloft.net>
-CC: Thomas Gleixner <tglx@linutronix.de>
-CC: Bjorn Helgaas <bhelgaas@google.com>
-CC: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Sakari Ailus <sakari.ailus@linux.intel.com>
-CC: sparclinux@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
----
- arch/sparc/kernel/ds.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/arch/sparc/kernel/ds.c b/arch/sparc/kernel/ds.c
-index bbf59b3b4af8..39350e5dbaf1 100644
---- a/arch/sparc/kernel/ds.c
-+++ b/arch/sparc/kernel/ds.c
-@@ -550,12 +550,13 @@ static int dr_cpu_configure(struct ds_info *dp, struct ds_cap_state *cp,
- 	mdesc_populate_present_mask(mask);
- 	mdesc_fill_in_cpu_data(mask);
- 
-+	lock_device_hotplug();
- 	for_each_cpu(cpu, mask) {
- 		int err;
- 
- 		printk(KERN_INFO "ds-%llu: Starting cpu %d...\n",
- 		       dp->id, cpu);
--		err = cpu_up(cpu);
-+		err = device_online(get_cpu_device(cpu));
- 		if (err) {
- 			__u32 res = DR_CPU_RES_FAILURE;
- 			__u32 stat = DR_CPU_STAT_UNCONFIGURED;
-@@ -574,6 +575,7 @@ static int dr_cpu_configure(struct ds_info *dp, struct ds_cap_state *cp,
- 			dr_cpu_mark(resp, cpu, ncpus, res, stat);
- 		}
- 	}
-+	unlock_device_hotplug();
- 
- 	spin_lock_irqsave(&ds_lock, flags);
- 	__ds_send(dp->lp, resp, resp_len);
-@@ -606,17 +608,19 @@ static int dr_cpu_unconfigure(struct ds_info *dp,
- 			     resp_len, ncpus, mask,
- 			     DR_CPU_STAT_UNCONFIGURED);
- 
-+	lock_device_hotplug();
- 	for_each_cpu(cpu, mask) {
- 		int err;
- 
- 		printk(KERN_INFO "ds-%llu: Shutting down cpu %d...\n",
- 		       dp->id, cpu);
--		err = cpu_down(cpu);
-+		err = device_offline(get_cpu_device(cpu));
- 		if (err)
- 			dr_cpu_mark(resp, cpu, ncpus,
- 				    DR_CPU_RES_FAILURE,
- 				    DR_CPU_STAT_CONFIGURED);
- 	}
-+	unlock_device_hotplug();
- 
- 	spin_lock_irqsave(&ds_lock, flags);
- 	__ds_send(dp->lp, resp, resp_len);
--- 
-2.17.1
-
+EMail: allenandvioletlargeaward@gmail.com
