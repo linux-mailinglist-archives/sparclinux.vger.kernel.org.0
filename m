@@ -2,46 +2,59 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0854211A509
-	for <lists+sparclinux@lfdr.de>; Wed, 11 Dec 2019 08:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC63B11A58A
+	for <lists+sparclinux@lfdr.de>; Wed, 11 Dec 2019 09:04:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725973AbfLKH0A (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 11 Dec 2019 02:26:00 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:52988 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725800AbfLKH0A (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 11 Dec 2019 02:26:00 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:1c3::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7CDAC14EC291F;
-        Tue, 10 Dec 2019 23:25:59 -0800 (PST)
-Date:   Tue, 10 Dec 2019 23:25:56 -0800 (PST)
-Message-Id: <20191210.232556.198185739663319799.davem@davemloft.net>
-To:     rppt@kernel.org
-Cc:     sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, rppt@linux.ibm.com
+        id S1727851AbfLKIEh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 11 Dec 2019 03:04:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57762 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727829AbfLKIEg (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 11 Dec 2019 03:04:36 -0500
+Received: from [10.228.163.158] (unknown [2.55.135.47])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D38B2173E;
+        Wed, 11 Dec 2019 08:04:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576051476;
+        bh=B1Z2ZdmadE/uwSr7tP3e+eWCAuxvdqiIy995PRO7DnQ=;
+        h=Date:In-Reply-To:References:Subject:To:CC:From:From;
+        b=sdVbIBaYyIIc8OK1sQiHd65Y9ChIPY3/OpofxyRTEaxO/bPYp8FqUdiVrguQFQFC3
+         kMRQ6zy6hAkcv/CJWicRC5ceOpDPU40tYN+3gohr0toChexW0teHTP/NhAegW7Vzb2
+         seiDATUX+pMqRUC4qD7OxXY32t/dTiZ2Hyn/GAMg=
+Date:   Wed, 11 Dec 2019 10:04:29 +0200
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20191210.232556.198185739663319799.davem@davemloft.net>
+References: <20191124085720.6201-1-rppt@kernel.org> <20191211062649.GA28255@rapoport-lnx> <20191210.232556.198185739663319799.davem@davemloft.net>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Subject: Re: [PATCH] sparc64: add support for folded p4d page tables
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191211062649.GA28255@rapoport-lnx>
-References: <20191124085720.6201-1-rppt@kernel.org>
-        <20191211062649.GA28255@rapoport-lnx>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 10 Dec 2019 23:25:59 -0800 (PST)
+To:     David Miller <davem@davemloft.net>
+CC:     sparclinux@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, rppt@linux.ibm.com
+From:   Mike Rapoport <rppt@kernel.org>
+Message-ID: <4C87F045-7902-415E-BE54-9F527CE3B5E6@kernel.org>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Mike Rapoport <rppt@kernel.org>
-Date: Wed, 11 Dec 2019 08:26:51 +0200
+On December 11, 2019 9:25:56 AM GMT+02:00, David Miller <davem@davemloft=2E=
+net> wrote:
+>From: Mike Rapoport <rppt@kernel=2Eorg>
+>Date: Wed, 11 Dec 2019 08:26:51 +0200
+>
+>> Any updates on this?
+>
+>I thought I gave my ack, sorry:
+>
+>Acked-by: David S=2E Miller <davem@davemloft=2Enet>
 
-> Any updates on this?
+Can you please take it via sparc tree?
 
-I thought I gave my ack, sorry:
-
-Acked-by: David S. Miller <davem@davemloft.net>
+--=20
+Sincerely yours,
+Mike
