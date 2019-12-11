@@ -2,108 +2,409 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 121301162AA
-	for <lists+sparclinux@lfdr.de>; Sun,  8 Dec 2019 16:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5A9A11A479
+	for <lists+sparclinux@lfdr.de>; Wed, 11 Dec 2019 07:27:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726708AbfLHO7g (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 8 Dec 2019 09:59:36 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36850 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726682AbfLHO6v (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 8 Dec 2019 09:58:51 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1idy17-0000Sn-5T; Sun, 08 Dec 2019 15:58:37 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id C89831C2884;
-        Sun,  8 Dec 2019 15:58:31 +0100 (CET)
-Date:   Sun, 08 Dec 2019 14:58:31 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/rt, sparc: Use CONFIG_PREEMPTION
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        sparclinux@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191015191821.11479-20-bigeasy@linutronix.de>
-References: <20191015191821.11479-20-bigeasy@linutronix.de>
+        id S1727954AbfLKG06 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 11 Dec 2019 01:26:58 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52406 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727904AbfLKG05 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 11 Dec 2019 01:26:57 -0500
+Received: from rapoport-lnx (unknown [87.71.31.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D33672464B;
+        Wed, 11 Dec 2019 06:26:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576045616;
+        bh=Z3p7SOes0f0XlsJuAjiQohmhz0lprVflLVXU5+Bcx/Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rPjLJq7vFmc2Ch74MQ/O40pEBDxKLVcN0RvmiHNgg/Utnwje+HDJUflSMJVu3t7/W
+         QyzgdEANus7DnnmceoeFXHfuyrm8E7uoC1kECRGDsmJ2ZFCY/PAMR0joprL2zucmqH
+         q5kpxybnY0pCd67KQDsKwS/nDOE+ol0f7RKtteq8=
+Date:   Wed, 11 Dec 2019 08:26:51 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "David S. Miller" <davem@davemloft.net>
+Cc:     sparclinux@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH] sparc64: add support for folded p4d page tables
+Message-ID: <20191211062649.GA28255@rapoport-lnx>
+References: <20191124085720.6201-1-rppt@kernel.org>
 MIME-Version: 1.0
-Message-ID: <157581711171.21853.11624347815991134047.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191124085720.6201-1-rppt@kernel.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+Any updates on this?
 
-Commit-ID:     85a683d0a6895026b535bf40643687c626e376f3
-Gitweb:        https://git.kernel.org/tip/85a683d0a6895026b535bf40643687c626e376f3
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 15 Oct 2019 21:18:06 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 08 Dec 2019 14:37:35 +01:00
+On Sun, Nov 24, 2019 at 10:57:20AM +0200, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> Implement primitives necessary for the 4th level folding, add walks of p4d
+> level where appropriate and replace 5leve-fixup.h with pgtable-nop4d.h.
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  arch/sparc/include/asm/pgalloc_64.h |  6 +++---
+>  arch/sparc/include/asm/pgtable_64.h | 24 ++++++++++-----------
+>  arch/sparc/kernel/signal32.c        |  6 +++++-
+>  arch/sparc/kernel/smp_64.c          | 13 +++++++++++-
+>  arch/sparc/mm/fault_64.c            |  6 +++++-
+>  arch/sparc/mm/hugetlbpage.c         | 28 +++++++++++++++---------
+>  arch/sparc/mm/init_64.c             | 33 +++++++++++++++++++++++++----
+>  7 files changed, 84 insertions(+), 32 deletions(-)
+> 
+> diff --git a/arch/sparc/include/asm/pgalloc_64.h b/arch/sparc/include/asm/pgalloc_64.h
+> index 9d3e5cc95bbb..264e76ceccf6 100644
+> --- a/arch/sparc/include/asm/pgalloc_64.h
+> +++ b/arch/sparc/include/asm/pgalloc_64.h
+> @@ -16,12 +16,12 @@
+>  
+>  extern struct kmem_cache *pgtable_cache;
+>  
+> -static inline void __pgd_populate(pgd_t *pgd, pud_t *pud)
+> +static inline void __p4d_populate(p4d_t *p4d, pud_t *pud)
+>  {
+> -	pgd_set(pgd, pud);
+> +	p4d_set(p4d, pud);
+>  }
+>  
+> -#define pgd_populate(MM, PGD, PUD)	__pgd_populate(PGD, PUD)
+> +#define p4d_populate(MM, P4D, PUD)	__p4d_populate(P4D, PUD)
+>  
+>  static inline pgd_t *pgd_alloc(struct mm_struct *mm)
+>  {
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index 6ae8016ef4ec..34ff3b43afbb 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -13,7 +13,7 @@
+>   * the SpitFire page tables.
+>   */
+>  
+> -#include <asm-generic/5level-fixup.h>
+> +#include <asm-generic/pgtable-nop4d.h>
+>  #include <linux/compiler.h>
+>  #include <linux/const.h>
+>  #include <asm/types.h>
+> @@ -810,9 +810,9 @@ static inline int pmd_present(pmd_t pmd)
+>  
+>  #define pud_bad(pud)			(pud_val(pud) & ~PAGE_MASK)
+>  
+> -#define pgd_none(pgd)			(!pgd_val(pgd))
+> +#define p4d_none(p4d)			(!p4d_val(p4d))
+>  
+> -#define pgd_bad(pgd)			(pgd_val(pgd) & ~PAGE_MASK)
+> +#define p4d_bad(p4d)			(p4d_val(p4d) & ~PAGE_MASK)
+>  
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  void set_pmd_at(struct mm_struct *mm, unsigned long addr,
+> @@ -859,13 +859,13 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
+>  #define pmd_clear(pmdp)			(pmd_val(*(pmdp)) = 0UL)
+>  #define pud_present(pud)		(pud_val(pud) != 0U)
+>  #define pud_clear(pudp)			(pud_val(*(pudp)) = 0UL)
+> -#define pgd_page_vaddr(pgd)		\
+> -	((unsigned long) __va(pgd_val(pgd)))
+> -#define pgd_present(pgd)		(pgd_val(pgd) != 0U)
+> -#define pgd_clear(pgdp)			(pgd_val(*(pgdp)) = 0UL)
+> +#define p4d_page_vaddr(p4d)		\
+> +	((unsigned long) __va(p4d_val(p4d)))
+> +#define p4d_present(p4d)		(p4d_val(p4d) != 0U)
+> +#define p4d_clear(p4dp)			(p4d_val(*(p4dp)) = 0UL)
+>  
+>  /* only used by the stubbed out hugetlb gup code, should never be called */
+> -#define pgd_page(pgd)			NULL
+> +#define p4d_page(p4d)			NULL
+>  
+>  static inline unsigned long pud_large(pud_t pud)
+>  {
+> @@ -884,8 +884,8 @@ static inline unsigned long pud_pfn(pud_t pud)
+>  /* Same in both SUN4V and SUN4U.  */
+>  #define pte_none(pte) 			(!pte_val(pte))
+>  
+> -#define pgd_set(pgdp, pudp)	\
+> -	(pgd_val(*(pgdp)) = (__pa((unsigned long) (pudp))))
+> +#define p4d_set(p4dp, pudp)	\
+> +	(p4d_val(*(p4dp)) = (__pa((unsigned long) (pudp))))
+>  
+>  /* to find an entry in a page-table-directory. */
+>  #define pgd_index(address)	(((address) >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1))
+> @@ -896,8 +896,8 @@ static inline unsigned long pud_pfn(pud_t pud)
+>  
+>  /* Find an entry in the third-level page table.. */
+>  #define pud_index(address)	(((address) >> PUD_SHIFT) & (PTRS_PER_PUD - 1))
+> -#define pud_offset(pgdp, address)	\
+> -	((pud_t *) pgd_page_vaddr(*(pgdp)) + pud_index(address))
+> +#define pud_offset(p4dp, address)	\
+> +	((pud_t *) p4d_page_vaddr(*(p4dp)) + pud_index(address))
+>  
+>  /* Find an entry in the second-level page table.. */
+>  #define pmd_offset(pudp, address)	\
+> diff --git a/arch/sparc/kernel/signal32.c b/arch/sparc/kernel/signal32.c
+> index a237810aa9f4..2a734ecd0a40 100644
+> --- a/arch/sparc/kernel/signal32.c
+> +++ b/arch/sparc/kernel/signal32.c
+> @@ -299,6 +299,7 @@ static void flush_signal_insns(unsigned long address)
+>  	unsigned long pstate, paddr;
+>  	pte_t *ptep, pte;
+>  	pgd_t *pgdp;
+> +	p4d_t *p4dp;
+>  	pud_t *pudp;
+>  	pmd_t *pmdp;
+>  
+> @@ -318,7 +319,10 @@ static void flush_signal_insns(unsigned long address)
+>  	pgdp = pgd_offset(current->mm, address);
+>  	if (pgd_none(*pgdp))
+>  		goto out_irqs_on;
+> -	pudp = pud_offset(pgdp, address);
+> +	p4dp = p4d_offset(pgdp, address);
+> +	if (p4d_none(*p4dp))
+> +		goto out_irqs_on;
+> +	pudp = pud_offset(p4dp, address);
+>  	if (pud_none(*pudp))
+>  		goto out_irqs_on;
+>  	pmdp = pmd_offset(pudp, address);
+> diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
+> index a8275fea4b70..eb9455798338 100644
+> --- a/arch/sparc/kernel/smp_64.c
+> +++ b/arch/sparc/kernel/smp_64.c
+> @@ -1621,6 +1621,7 @@ static int __init pcpu_cpu_distance(unsigned int from, unsigned int to)
+>  static void __init pcpu_populate_pte(unsigned long addr)
+>  {
+>  	pgd_t *pgd = pgd_offset_k(addr);
+> +	p4d_t *p4d;
+>  	pud_t *pud;
+>  	pmd_t *pmd;
+>  
+> @@ -1633,7 +1634,17 @@ static void __init pcpu_populate_pte(unsigned long addr)
+>  		pgd_populate(&init_mm, pgd, new);
+>  	}
+>  
+> -	pud = pud_offset(pgd, addr);
+> +	p4d = p4d_offset(pgd, addr);
+> +	if (p4d_none(*p4d)) {
+> +		pud_t *new;
+> +
+> +		new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+> +		if (!new)
+> +			goto err_alloc;
+> +		p4d_populate(&init_mm, p4d, new);
+> +	}
+> +
+> +	pud = pud_offset(p4d, addr);
+>  	if (pud_none(*pud)) {
+>  		pmd_t *new;
+>  
+> diff --git a/arch/sparc/mm/fault_64.c b/arch/sparc/mm/fault_64.c
+> index 2371fb6b97e4..8b7ddbd14b65 100644
+> --- a/arch/sparc/mm/fault_64.c
+> +++ b/arch/sparc/mm/fault_64.c
+> @@ -80,6 +80,7 @@ static void __kprobes bad_kernel_pc(struct pt_regs *regs, unsigned long vaddr)
+>  static unsigned int get_user_insn(unsigned long tpc)
+>  {
+>  	pgd_t *pgdp = pgd_offset(current->mm, tpc);
+> +	p4d_t *p4dp;
+>  	pud_t *pudp;
+>  	pmd_t *pmdp;
+>  	pte_t *ptep, pte;
+> @@ -88,7 +89,10 @@ static unsigned int get_user_insn(unsigned long tpc)
+>  
+>  	if (pgd_none(*pgdp) || unlikely(pgd_bad(*pgdp)))
+>  		goto out;
+> -	pudp = pud_offset(pgdp, tpc);
+> +	p4dp = p4d_offset(pgdp, tpc);
+> +	if (p4d_none(*p4dp) || unlikely(p4d_bad(*p4dp)))
+> +		goto out;
+> +	pudp = pud_offset(p4dp, tpc);
+>  	if (pud_none(*pudp) || unlikely(pud_bad(*pudp)))
+>  		goto out;
+>  
+> diff --git a/arch/sparc/mm/hugetlbpage.c b/arch/sparc/mm/hugetlbpage.c
+> index f78793a06bbd..7b9fa861b67c 100644
+> --- a/arch/sparc/mm/hugetlbpage.c
+> +++ b/arch/sparc/mm/hugetlbpage.c
+> @@ -277,11 +277,13 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
+>  			unsigned long addr, unsigned long sz)
+>  {
+>  	pgd_t *pgd;
+> +	p4d_t *p4d;
+>  	pud_t *pud;
+>  	pmd_t *pmd;
+>  
+>  	pgd = pgd_offset(mm, addr);
+> -	pud = pud_alloc(mm, pgd, addr);
+> +	p4d = p4d_offset(pgd, addr);
+> +	pud = pud_alloc(mm, p4d, addr);
+>  	if (!pud)
+>  		return NULL;
+>  	if (sz >= PUD_SIZE)
+> @@ -298,13 +300,17 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+>  		       unsigned long addr, unsigned long sz)
+>  {
+>  	pgd_t *pgd;
+> +	p4d_t *p4d;
+>  	pud_t *pud;
+>  	pmd_t *pmd;
+>  
+>  	pgd = pgd_offset(mm, addr);
+>  	if (pgd_none(*pgd))
+>  		return NULL;
+> -	pud = pud_offset(pgd, addr);
+> +	p4d = p4d_offset(pgd, addr);
+> +	if (p4d_none(*p4d))
+> +		return NULL;
+> +	pud = pud_offset(p4d, addr);
+>  	if (pud_none(*pud))
+>  		return NULL;
+>  	if (is_hugetlb_pud(*pud))
+> @@ -449,7 +455,7 @@ static void hugetlb_free_pmd_range(struct mmu_gather *tlb, pud_t *pud,
+>  	mm_dec_nr_pmds(tlb->mm);
+>  }
+>  
+> -static void hugetlb_free_pud_range(struct mmu_gather *tlb, pgd_t *pgd,
+> +static void hugetlb_free_pud_range(struct mmu_gather *tlb, p4d_t *p4d,
+>  				   unsigned long addr, unsigned long end,
+>  				   unsigned long floor, unsigned long ceiling)
+>  {
+> @@ -458,7 +464,7 @@ static void hugetlb_free_pud_range(struct mmu_gather *tlb, pgd_t *pgd,
+>  	unsigned long start;
+>  
+>  	start = addr;
+> -	pud = pud_offset(pgd, addr);
+> +	pud = pud_offset(p4d, addr);
+>  	do {
+>  		next = pud_addr_end(addr, end);
+>  		if (pud_none_or_clear_bad(pud))
+> @@ -481,8 +487,8 @@ static void hugetlb_free_pud_range(struct mmu_gather *tlb, pgd_t *pgd,
+>  	if (end - 1 > ceiling - 1)
+>  		return;
+>  
+> -	pud = pud_offset(pgd, start);
+> -	pgd_clear(pgd);
+> +	pud = pud_offset(p4d, start);
+> +	p4d_clear(p4d);
+>  	pud_free_tlb(tlb, pud, start);
+>  	mm_dec_nr_puds(tlb->mm);
+>  }
+> @@ -492,6 +498,7 @@ void hugetlb_free_pgd_range(struct mmu_gather *tlb,
+>  			    unsigned long floor, unsigned long ceiling)
+>  {
+>  	pgd_t *pgd;
+> +	p4d_t *p4d;
+>  	unsigned long next;
+>  
+>  	addr &= PMD_MASK;
+> @@ -511,10 +518,11 @@ void hugetlb_free_pgd_range(struct mmu_gather *tlb,
+>  		return;
+>  
+>  	pgd = pgd_offset(tlb->mm, addr);
+> +	p4d = p4d_offset(pgd, addr);
+>  	do {
+> -		next = pgd_addr_end(addr, end);
+> -		if (pgd_none_or_clear_bad(pgd))
+> +		next = p4d_addr_end(addr, end);
+> +		if (p4d_none_or_clear_bad(p4d))
+>  			continue;
+> -		hugetlb_free_pud_range(tlb, pgd, addr, next, floor, ceiling);
+> -	} while (pgd++, addr = next, addr != end);
+> +		hugetlb_free_pud_range(tlb, p4d, addr, next, floor, ceiling);
+> +	} while (p4d++, addr = next, addr != end);
+>  }
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index e6d91819da92..1cf0d666dea3 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -530,7 +530,8 @@ void __kprobes flush_icache_range(unsigned long start, unsigned long end)
+>  				paddr = kaddr & mask;
+>  			else {
+>  				pgd_t *pgdp = pgd_offset_k(kaddr);
+> -				pud_t *pudp = pud_offset(pgdp, kaddr);
+> +				p4d_t *p4dp = p4d_offset(pgdp, kaddr);
+> +				pud_t *pudp = pud_offset(p4dp, kaddr);
+>  				pmd_t *pmdp = pmd_offset(pudp, kaddr);
+>  				pte_t *ptep = pte_offset_kernel(pmdp, kaddr);
+>  
+> @@ -1653,6 +1654,7 @@ static unsigned long max_phys_bits = 40;
+>  bool kern_addr_valid(unsigned long addr)
+>  {
+>  	pgd_t *pgd;
+> +	p4d_t *p4d;
+>  	pud_t *pud;
+>  	pmd_t *pmd;
+>  	pte_t *pte;
+> @@ -1674,7 +1676,11 @@ bool kern_addr_valid(unsigned long addr)
+>  	if (pgd_none(*pgd))
+>  		return 0;
+>  
+> -	pud = pud_offset(pgd, addr);
+> +	p4d = p4d_offset(pgd, addr);
+> +	if (p4d_none(*p4d))
+> +		return 0;
+> +
+> +	pud = pud_offset(p4d, addr);
+>  	if (pud_none(*pud))
+>  		return 0;
+>  
+> @@ -1800,6 +1806,7 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
+>  	while (vstart < vend) {
+>  		unsigned long this_end, paddr = __pa(vstart);
+>  		pgd_t *pgd = pgd_offset_k(vstart);
+> +		p4d_t *p4d;
+>  		pud_t *pud;
+>  		pmd_t *pmd;
+>  		pte_t *pte;
+> @@ -1814,7 +1821,20 @@ static unsigned long __ref kernel_map_range(unsigned long pstart,
+>  			alloc_bytes += PAGE_SIZE;
+>  			pgd_populate(&init_mm, pgd, new);
+>  		}
+> -		pud = pud_offset(pgd, vstart);
+> +
+> +		p4d = p4d_offset(pgd, vstart);
+> +		if (p4d_none(*p4d)) {
+> +			pud_t *new;
+> +
+> +			new = memblock_alloc_from(PAGE_SIZE, PAGE_SIZE,
+> +						  PAGE_SIZE);
+> +			if (!new)
+> +				goto err_alloc;
+> +			alloc_bytes += PAGE_SIZE;
+> +			p4d_populate(&init_mm, p4d, new);
+> +		}
+> +
+> +		pud = pud_offset(p4d, vstart);
+>  		if (pud_none(*pud)) {
+>  			pmd_t *new;
+>  
+> @@ -2612,13 +2632,18 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+>  	for (; vstart < vend; vstart += PMD_SIZE) {
+>  		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+>  		unsigned long pte;
+> +		p4d_t *p4d;
+>  		pud_t *pud;
+>  		pmd_t *pmd;
+>  
+>  		if (!pgd)
+>  			return -ENOMEM;
+>  
+> -		pud = vmemmap_pud_populate(pgd, vstart, node);
+> +		p4d = vmemmap_p4d_populate(pgd, vstart, node);
+> +		if (!p4d)
+> +			return -ENOMEM;
+> +
+> +		pud = vmemmap_pud_populate(p4d, vstart, node);
+>  		if (!pud)
+>  			return -ENOMEM;
+>  
+> -- 
+> 2.24.0
+> 
 
-sched/rt, sparc: Use CONFIG_PREEMPTION
-
-CONFIG_PREEMPTION is selected by CONFIG_PREEMPT and by CONFIG_PREEMPT_RT.
-Both PREEMPT and PREEMPT_RT require the same functionality which today
-depends on CONFIG_PREEMPT.
-
-Switch the trap code over to use CONFIG_PREEMPTION.
-
-[bigeasy: +Kconfig]
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: David S. Miller <davem@davemloft.net>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: sparclinux@vger.kernel.org
-Link: https://lore.kernel.org/r/20191015191821.11479-20-bigeasy@linutronix.de
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- arch/sparc/Kconfig           | 2 +-
- arch/sparc/kernel/rtrap_64.S | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index eb24cb1..e8c3ea0 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -277,7 +277,7 @@ config US3_MC
- config GENERIC_LOCKBREAK
- 	bool
- 	default y
--	depends on SPARC64 && SMP && PREEMPT
-+	depends on SPARC64 && SMP && PREEMPTION
- 
- config NUMA
- 	bool "NUMA support"
-diff --git a/arch/sparc/kernel/rtrap_64.S b/arch/sparc/kernel/rtrap_64.S
-index 29aa34f..c5fd4b4 100644
---- a/arch/sparc/kernel/rtrap_64.S
-+++ b/arch/sparc/kernel/rtrap_64.S
-@@ -310,7 +310,7 @@ kern_rtt_restore:
- 		retry
- 
- to_kernel:
--#ifdef CONFIG_PREEMPT
-+#ifdef CONFIG_PREEMPTION
- 		ldsw			[%g6 + TI_PRE_COUNT], %l5
- 		brnz			%l5, kern_fpucheck
- 		 ldx			[%g6 + TI_FLAGS], %l5
+-- 
+Sincerely yours,
+Mike.
