@@ -2,48 +2,48 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECE3411DAB3
-	for <lists+sparclinux@lfdr.de>; Fri, 13 Dec 2019 01:09:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F18011DACF
+	for <lists+sparclinux@lfdr.de>; Fri, 13 Dec 2019 01:10:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731849AbfLMAJg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 12 Dec 2019 19:09:36 -0500
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:36659 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731860AbfLMAJf (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 12 Dec 2019 19:09:35 -0500
-Received: by mail-pl1-f196.google.com with SMTP id d15so395489pll.3
-        for <sparclinux@vger.kernel.org>; Thu, 12 Dec 2019 16:09:34 -0800 (PST)
+        id S1731558AbfLMAJk (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 12 Dec 2019 19:09:40 -0500
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:33048 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731868AbfLMAJi (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 12 Dec 2019 19:09:38 -0500
+Received: by mail-pj1-f67.google.com with SMTP id r67so356722pjb.0
+        for <sparclinux@vger.kernel.org>; Thu, 12 Dec 2019 16:09:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=arista.com; s=googlenew;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Q0+CfWIFGihQH67XHnawEzkvoyIVNkVRX2gLwjLz17c=;
-        b=QPdsdxdz+7fnUfg+ryQJ1hukm13ge1RG6WbJ4GuPFOVdGsIsI1VN0s6f6KdEfYRMYM
-         GNsSAjDvcKr2NEhMXVawk//rUq/pplZk+LZZDBs/jGnhdDyULBt5b8FosBm5+x4ogCzH
-         5kYnXBnf6YJqa7AA3KLjmT8xi8TwjHEXKFqMdX4jLDtXWE8qoCo99VLwPEeULQUF8ilD
-         dgyaSKn1tk90cqOeFUeCXHeVtlUx6dulDnFA7L6XWQZtRjcXiv2NnSg2UIjnXhMAEMG+
-         Fe0ROQCiyuUd0IKlJTHJDdBlRUEeBP91pgYw4pSAg2FEQrQk8Rre09skWWa/GfWHUSMm
-         Ylcg==
+        bh=tRWGiJTgH8ojKPgouCjHwlEMcuQFXWpAzPDdrUxEpKQ=;
+        b=FVQ6yX+kvRCHL6zKDUuiBB1rf+YvkRSWFt5vXirWLuXqYqBXjk9mjSdMrZwfGlZLGq
+         POOC8a4uStNYh6tMonPqVWrJKWIQu6ooxZM3MQjlSrnp2DpB7XTz1dJSYtt7wlhV0p4C
+         mdFGes9xCtuCsWzeg6yE3Z3wjEJ+BFUtADcjhl/TehOfjK/r0RVJ6qxO7cwcdnf5lACx
+         mDD2sq/RdojXuL0TBrD6GNdPbtmar66iemj2l/jdXXEVV1Uv3LMt3NHzie7GFU02aw8m
+         GnV+CsXFRGUQcj1aMmDqAFtddqcU/I27uJG7gilqV48RYol5+kk4Laex2pZ5092HRxTd
+         9d8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Q0+CfWIFGihQH67XHnawEzkvoyIVNkVRX2gLwjLz17c=;
-        b=tw7eMZLz5Y8AIE8AvYzxCG3l9dCya3ww5Xz5FhgB+Tl9SHjegiQ4IBvBKdjI6VQ3QX
-         iAf+P4Iit/S2BY1xktwqaKB18NUjAE7FutZuDi0qxN9H15+u8WntLwEd6o4HpOBpOl3c
-         1GZltDf61zmqjsSUV9abyW6S0TwM9XS+QpnssTVuAuhTHgev47l183BIBTUvJ/l0dVe1
-         LCgh76f6q/sYQQqgf0lyDTJYHFD1gvn2TMNr58lEF2Zc4qwvuYC0p3h1wFpmNJOy777b
-         jjRutfJcjwzQ+CGx/39SKviBUl4Mk0aNxrbI822qUNauImllbBqdj58S0tHJ2aaD6OFm
-         aM9Q==
-X-Gm-Message-State: APjAAAXe67Pd4ucI0ys57L+djspdcahmnvh0m3xIRLtbLc9V+UjysLWx
-        w9v7gXzPbD3+7n2WogvclsLxVw==
-X-Google-Smtp-Source: APXvYqzIuS7M4yHWD10vEbVE/hOa5on4D8SJXWBXNr+6FGA9VhmKJitIku5Vb/N4Xg24L/HYsXy9Eg==
-X-Received: by 2002:a17:90a:2223:: with SMTP id c32mr13650677pje.15.1576195774307;
-        Thu, 12 Dec 2019 16:09:34 -0800 (PST)
+        bh=tRWGiJTgH8ojKPgouCjHwlEMcuQFXWpAzPDdrUxEpKQ=;
+        b=Ut3gTNug8tLAz1hyn0saYVE/SAuXI015RSnA8m9nR6I/nlr7v7KYvVElQNWU/LOk9N
+         JnfBhDsqjWi8m3yfPW9+lt1VP3MffP1l3GFzOZCye6Oy/MN/7KYri0TBXRAGrxJrdZAM
+         XVD9jJNKACEs4DMLpaCxZE1fFwH1oWyw6r19AHxgk0H6TbVBZEC0OyEna2bDfg7HoWm5
+         tsae/Iyd76EyS5uyJU5ghJrfwSzBj0mapMVSnKi/ZKchDrZ5i0dJXnuzpTfXr0nKuvvf
+         CZlsAF+AZwaDXHqBkE1wOYfkxvCVtu8lHB0GgFPveVQR9bEQLXxmfUc0b4cz63ZcEfKk
+         Lvaw==
+X-Gm-Message-State: APjAAAW4OvSMDnpHn+tfdmCZvzcDSo8HoEMtZll+ZbaHrUXotHdto8Rk
+        NNfgyiErMX8MeVYX+anMy7fuEA==
+X-Google-Smtp-Source: APXvYqyeabE7rfY9K9RLj7vZAopmNplzFjzuLaZ8dvksqSyNsq801CAohBkkytIuAMMulL7af1Qpzg==
+X-Received: by 2002:a17:90a:21ee:: with SMTP id q101mr13227836pjc.94.1576195777319;
+        Thu, 12 Dec 2019 16:09:37 -0800 (PST)
 Received: from Mindolluin.ire.aristanetworks.com ([217.173.96.166])
-        by smtp.gmail.com with ESMTPSA id j38sm8317647pgj.27.2019.12.12.16.09.31
+        by smtp.gmail.com with ESMTPSA id j38sm8317647pgj.27.2019.12.12.16.09.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2019 16:09:33 -0800 (PST)
+        Thu, 12 Dec 2019 16:09:36 -0800 (PST)
 From:   Dmitry Safonov <dima@arista.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
@@ -53,9 +53,9 @@ Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
         Vasiliy Khoruzhick <vasilykh@arista.com>,
         linux-serial@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: [PATCH 47/58] tty/serial: Migrate sunsu to use has_sysrq
-Date:   Fri, 13 Dec 2019 00:06:46 +0000
-Message-Id: <20191213000657.931618-48-dima@arista.com>
+Subject: [PATCH 48/58] tty/serial: Migrate sunzilog to use has_sysrq
+Date:   Fri, 13 Dec 2019 00:06:47 +0000
+Message-Id: <20191213000657.931618-49-dima@arista.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191213000657.931618-1-dima@arista.com>
 References: <20191213000657.931618-1-dima@arista.com>
@@ -79,32 +79,40 @@ Cc: "David S. Miller" <davem@davemloft.net>
 Cc: sparclinux@vger.kernel.org
 Signed-off-by: Dmitry Safonov <dima@arista.com>
 ---
- drivers/tty/serial/sunsu.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/tty/serial/sunzilog.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/serial/sunsu.c b/drivers/tty/serial/sunsu.c
-index 4db6aaa330b2..8ce9a7a256e5 100644
---- a/drivers/tty/serial/sunsu.c
-+++ b/drivers/tty/serial/sunsu.c
-@@ -44,10 +44,6 @@
+diff --git a/drivers/tty/serial/sunzilog.c b/drivers/tty/serial/sunzilog.c
+index bc7af8b08a72..103ab8c556e7 100644
+--- a/drivers/tty/serial/sunzilog.c
++++ b/drivers/tty/serial/sunzilog.c
+@@ -40,10 +40,6 @@
  #include <asm/prom.h>
  #include <asm/setup.h>
  
--#if defined(CONFIG_SERIAL_SUNSU_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ)
+-#if defined(CONFIG_SERIAL_SUNZILOG_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ)
 -#define SUPPORT_SYSRQ
 -#endif
 -
  #include <linux/serial_core.h>
  #include <linux/sunserialcore.h>
  
-@@ -1475,6 +1471,7 @@ static int su_probe(struct platform_device *op)
- 
- 	up->port.type = PORT_UNKNOWN;
- 	up->port.uartclk = (SU_BASE_BAUD * 16);
-+	up->port.has_sysrq = IS_ENABLED(CONFIG_SERIAL_SUNSU_CONSOLE);
- 
- 	err = 0;
- 	if (up->su_type == SU_PORT_KBD || up->su_type == SU_PORT_MS) {
+@@ -1444,6 +1440,7 @@ static int zs_probe(struct platform_device *op)
+ 	up[0].port.line = (inst * 2) + 0;
+ 	up[0].port.dev = &op->dev;
+ 	up[0].flags |= SUNZILOG_FLAG_IS_CHANNEL_A;
++	up[0].port.has_sysrq = IS_ENABLED(CONFIG_SERIAL_SUNZILOG_CONSOLE);
+ 	if (keyboard_mouse)
+ 		up[0].flags |= SUNZILOG_FLAG_CONS_KEYB;
+ 	sunzilog_init_hw(&up[0]);
+@@ -1461,6 +1458,7 @@ static int zs_probe(struct platform_device *op)
+ 	up[1].port.line = (inst * 2) + 1;
+ 	up[1].port.dev = &op->dev;
+ 	up[1].flags |= 0;
++	up[1].port.has_sysrq = IS_ENABLED(CONFIG_SERIAL_SUNZILOG_CONSOLE);
+ 	if (keyboard_mouse)
+ 		up[1].flags |= SUNZILOG_FLAG_CONS_MOUSE;
+ 	sunzilog_init_hw(&up[1]);
 -- 
 2.24.0
 
