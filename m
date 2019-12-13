@@ -2,48 +2,48 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B00C11DAB1
+	by mail.lfdr.de (Postfix) with ESMTP id ECE3411DAB3
 	for <lists+sparclinux@lfdr.de>; Fri, 13 Dec 2019 01:09:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731568AbfLMAJd (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 12 Dec 2019 19:09:33 -0500
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:34107 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731847AbfLMAJb (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 12 Dec 2019 19:09:31 -0500
-Received: by mail-pj1-f68.google.com with SMTP id j11so355410pjs.1
-        for <sparclinux@vger.kernel.org>; Thu, 12 Dec 2019 16:09:31 -0800 (PST)
+        id S1731849AbfLMAJg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 12 Dec 2019 19:09:36 -0500
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:36659 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731860AbfLMAJf (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 12 Dec 2019 19:09:35 -0500
+Received: by mail-pl1-f196.google.com with SMTP id d15so395489pll.3
+        for <sparclinux@vger.kernel.org>; Thu, 12 Dec 2019 16:09:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=arista.com; s=googlenew;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=MM87Orb9mjoqPJJZ7fE6T1iLGpS8nu1v2BHGmFgBN28=;
-        b=V4YsKDvxBQsNKupfvhOfCfEI8IiASsLkz5MHqSGEz3X2YFcI6e6Q7YFTivbVaKyxOO
-         XMKPJx6pdyCvZYSG2GNcdyOxiR9eoLqkHkJNI3Ko9C0D0iuYjYr4jRPHHvJThVCongTR
-         FYE3RB/6pIHEW3Q4HoVKAQ7N3fI1wvf24nA7XA3bqEnCOjqNrVb7JvZotCOTn2VZOy5U
-         yKKU2bVfaIEX6Acw/4tNwRBp4mVbT5J4xyGMlZIo7T5GpnsNohkbV/BaIoPnLekeHUj6
-         HVmEfHegNn4PzAof1YbxnGeIHHzCC/ikG11wkFr2KRcu06CTsw/QVxQrfolNi9Vqfhky
-         J7KA==
+        bh=Q0+CfWIFGihQH67XHnawEzkvoyIVNkVRX2gLwjLz17c=;
+        b=QPdsdxdz+7fnUfg+ryQJ1hukm13ge1RG6WbJ4GuPFOVdGsIsI1VN0s6f6KdEfYRMYM
+         GNsSAjDvcKr2NEhMXVawk//rUq/pplZk+LZZDBs/jGnhdDyULBt5b8FosBm5+x4ogCzH
+         5kYnXBnf6YJqa7AA3KLjmT8xi8TwjHEXKFqMdX4jLDtXWE8qoCo99VLwPEeULQUF8ilD
+         dgyaSKn1tk90cqOeFUeCXHeVtlUx6dulDnFA7L6XWQZtRjcXiv2NnSg2UIjnXhMAEMG+
+         Fe0ROQCiyuUd0IKlJTHJDdBlRUEeBP91pgYw4pSAg2FEQrQk8Rre09skWWa/GfWHUSMm
+         Ylcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=MM87Orb9mjoqPJJZ7fE6T1iLGpS8nu1v2BHGmFgBN28=;
-        b=ReYZy73MC+XfH6+h2yH9xbb7QjVYxdzNBHYd/xG4zINLyqLgz0ZTjmnC/SMfHW5LjI
-         id1chyA3kksmkHg/nIb+oST4clpDdcn56mqlsoE+OHP/vPIOkvyPb0G4cfb2UOwzDnPX
-         Os202kB9L21WqUczr/t5yRdN96CrZQ3XS65R7TXKcKArzOT5jj85+oXyMinN5hKM888E
-         HslzukUKE+R0MqO98MUpD2CJXoj0JSGsRz06f1m2vFLcCNOdIrcurA9p7m5BN+o/h7xk
-         wn0uJ3clrtvDcXHbb8cxPlgZcWqeGrA0ld5ASnvDRMjE9Fm+Qfla2M740hB/hIIA+fD5
-         RkOw==
-X-Gm-Message-State: APjAAAXJybotVcD926biTGbMO71HFZRGE8nuaE6CsqAA15kuCxmUSDz/
-        f1jKqhQa59LBg5zNFc7sncFScQ==
-X-Google-Smtp-Source: APXvYqw9osG5+ClV6+xwyklwL7TpqMWpbcYwH/Gy/NWXNMzoUezcaMFROo7bqxHl7IZQepVB1w8N9g==
-X-Received: by 2002:a17:902:ba8e:: with SMTP id k14mr12924092pls.335.1576195770978;
-        Thu, 12 Dec 2019 16:09:30 -0800 (PST)
+        bh=Q0+CfWIFGihQH67XHnawEzkvoyIVNkVRX2gLwjLz17c=;
+        b=tw7eMZLz5Y8AIE8AvYzxCG3l9dCya3ww5Xz5FhgB+Tl9SHjegiQ4IBvBKdjI6VQ3QX
+         iAf+P4Iit/S2BY1xktwqaKB18NUjAE7FutZuDi0qxN9H15+u8WntLwEd6o4HpOBpOl3c
+         1GZltDf61zmqjsSUV9abyW6S0TwM9XS+QpnssTVuAuhTHgev47l183BIBTUvJ/l0dVe1
+         LCgh76f6q/sYQQqgf0lyDTJYHFD1gvn2TMNr58lEF2Zc4qwvuYC0p3h1wFpmNJOy777b
+         jjRutfJcjwzQ+CGx/39SKviBUl4Mk0aNxrbI822qUNauImllbBqdj58S0tHJ2aaD6OFm
+         aM9Q==
+X-Gm-Message-State: APjAAAXe67Pd4ucI0ys57L+djspdcahmnvh0m3xIRLtbLc9V+UjysLWx
+        w9v7gXzPbD3+7n2WogvclsLxVw==
+X-Google-Smtp-Source: APXvYqzIuS7M4yHWD10vEbVE/hOa5on4D8SJXWBXNr+6FGA9VhmKJitIku5Vb/N4Xg24L/HYsXy9Eg==
+X-Received: by 2002:a17:90a:2223:: with SMTP id c32mr13650677pje.15.1576195774307;
+        Thu, 12 Dec 2019 16:09:34 -0800 (PST)
 Received: from Mindolluin.ire.aristanetworks.com ([217.173.96.166])
-        by smtp.gmail.com with ESMTPSA id j38sm8317647pgj.27.2019.12.12.16.09.28
+        by smtp.gmail.com with ESMTPSA id j38sm8317647pgj.27.2019.12.12.16.09.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2019 16:09:30 -0800 (PST)
+        Thu, 12 Dec 2019 16:09:33 -0800 (PST)
 From:   Dmitry Safonov <dima@arista.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
@@ -53,9 +53,9 @@ Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
         Vasiliy Khoruzhick <vasilykh@arista.com>,
         linux-serial@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: [PATCH 46/58] tty/serial: Migrate sunsab to use has_sysrq
-Date:   Fri, 13 Dec 2019 00:06:45 +0000
-Message-Id: <20191213000657.931618-47-dima@arista.com>
+Subject: [PATCH 47/58] tty/serial: Migrate sunsu to use has_sysrq
+Date:   Fri, 13 Dec 2019 00:06:46 +0000
+Message-Id: <20191213000657.931618-48-dima@arista.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191213000657.931618-1-dima@arista.com>
 References: <20191213000657.931618-1-dima@arista.com>
@@ -79,32 +79,32 @@ Cc: "David S. Miller" <davem@davemloft.net>
 Cc: sparclinux@vger.kernel.org
 Signed-off-by: Dmitry Safonov <dima@arista.com>
 ---
- drivers/tty/serial/sunsab.c | 5 +----
+ drivers/tty/serial/sunsu.c | 5 +----
  1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/tty/serial/sunsab.c b/drivers/tty/serial/sunsab.c
-index 72131b5e132e..1eb703c980e0 100644
---- a/drivers/tty/serial/sunsab.c
-+++ b/drivers/tty/serial/sunsab.c
-@@ -40,10 +40,6 @@
+diff --git a/drivers/tty/serial/sunsu.c b/drivers/tty/serial/sunsu.c
+index 4db6aaa330b2..8ce9a7a256e5 100644
+--- a/drivers/tty/serial/sunsu.c
++++ b/drivers/tty/serial/sunsu.c
+@@ -44,10 +44,6 @@
  #include <asm/prom.h>
  #include <asm/setup.h>
  
--#if defined(CONFIG_SERIAL_SUNSAB_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ)
+-#if defined(CONFIG_SERIAL_SUNSU_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ)
 -#define SUPPORT_SYSRQ
 -#endif
 -
  #include <linux/serial_core.h>
  #include <linux/sunserialcore.h>
  
-@@ -985,6 +981,7 @@ static int sunsab_init_one(struct uart_sunsab_port *up,
+@@ -1475,6 +1471,7 @@ static int su_probe(struct platform_device *op)
  
- 	up->port.fifosize = SAB82532_XMIT_FIFO_SIZE;
- 	up->port.iotype = UPIO_MEM;
-+	up->port.has_sysrq = IS_ENABLED(CONFIG_SERIAL_SUNSAB_CONSOLE);
+ 	up->port.type = PORT_UNKNOWN;
+ 	up->port.uartclk = (SU_BASE_BAUD * 16);
++	up->port.has_sysrq = IS_ENABLED(CONFIG_SERIAL_SUNSU_CONSOLE);
  
- 	writeb(SAB82532_IPC_IC_ACT_LOW, &up->regs->w.ipc);
- 
+ 	err = 0;
+ 	if (up->su_type == SU_PORT_KBD || up->su_type == SU_PORT_MS) {
 -- 
 2.24.0
 
