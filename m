@@ -2,124 +2,80 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38D5C11EF93
-	for <lists+sparclinux@lfdr.de>; Sat, 14 Dec 2019 02:38:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2849411F24C
+	for <lists+sparclinux@lfdr.de>; Sat, 14 Dec 2019 15:44:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726208AbfLNBiF (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 13 Dec 2019 20:38:05 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:34210 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726170AbfLNBiF (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 13 Dec 2019 20:38:05 -0500
-Received: by mail-lj1-f196.google.com with SMTP id m6so704820ljc.1;
-        Fri, 13 Dec 2019 17:38:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=o/RAkFi6F4plFq+4FJ5FybixLxDkxXsHOnC0hMslJ0I=;
-        b=GJ7XLlPchLiZoHNy58cony05pWue++ZdwsgetvvcxZLRhiuBZxltwBEowy/Z6R6oUk
-         1uPpttPfg+mDoHbssJ/9j6X3uGcgTcAeUFk+WlFJ3SG8xEoknTey/BFICdKgbw1/0gmS
-         aGsATQVDIo48ta0KJA8U9Ro9qVtXsY3tiLzL7/fVNZP7z2xe7B0dHGiXMNbrkjI06wGR
-         Hmhk/sYYBzvVPO7jg3ogSvE3JTbGON3KqrkT/+hzq/QmdhGPd4ob9/t8T50HTXfTtdbo
-         fkSsFAZHqlIwEeM1QHarDRPVvE7aX16QdBkIpnk1hvRGinAybHiumTemjT8yAse/DWgY
-         7d0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=o/RAkFi6F4plFq+4FJ5FybixLxDkxXsHOnC0hMslJ0I=;
-        b=XE8f84YRRlvQl0Ch+dbZWZVywxhJXBTKdcRpL+mrOOkcgsnCBcj1l9lcJJvIH3iLyW
-         B5JwnO92J883P3FbPqfS7VNncK6vydBri0Nhd46mlnKt1JAezUFg62dLIPv2+IWykWks
-         ESnYanUNd9ZZO2pvnwd0yFFNxa7k6WSHAzFYiBIvs0PNv9koMdAhtry08kwlBXjImof7
-         vPg29SpmZYs071lNC9vwW3/3FxMCcwK6RMLqnvxu5QjgRZyAwYxyLgT0/8rG3LvjgG4N
-         pYzLRAdfwMnFFJSY4RHoFJ0uDXKqrJAyTv26ZMj6S4YejQfDCjOSYyygG9FJsuPmEmxq
-         m0bQ==
-X-Gm-Message-State: APjAAAVH5svuJCHAX+2JIuondij503C2RKK8nfTes3RCA4+hyjN9aQCj
-        UqWAe0WgtM9vuKMlEODok0M73cY6ovpUVG8L6mwp9z5J
-X-Google-Smtp-Source: APXvYqwlPU13OUpguQIogzSIDZIM2JTdtVFfIdDJGtvg2VzMkk3HwNCTfZcE/eVyPnQ0uDjVJXc4Q0YpwqZTy3EmyAc=
-X-Received: by 2002:a2e:2c0a:: with SMTP id s10mr11099051ljs.193.1576287482570;
- Fri, 13 Dec 2019 17:38:02 -0800 (PST)
+        id S1725900AbfLNOol (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 14 Dec 2019 09:44:41 -0500
+Received: from mout.kundenserver.de ([212.227.126.187]:33733 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725872AbfLNOol (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 14 Dec 2019 09:44:41 -0500
+Received: from mail-qt1-f178.google.com ([209.85.160.178]) by
+ mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MLRgp-1iPISi3R3r-00IWSQ; Sat, 14 Dec 2019 15:44:40 +0100
+Received: by mail-qt1-f178.google.com with SMTP id e12so1303927qto.2;
+        Sat, 14 Dec 2019 06:44:39 -0800 (PST)
+X-Gm-Message-State: APjAAAVPsgQHhdhqTY+tobWbByMAOqF1Gyr4idkvD9hOVlPfvoSNNBeV
+        WU/2+eCAHuBxSUcbf+0WqXirrob7AsIS/j8odKc=
+X-Google-Smtp-Source: APXvYqzGh5bFPG98ALm1rwS+1oBWlB0rdxMwfuMdc0Z+WDAdOTm5wzrRksxa1T6t4KX6ZZtoY3ya4gCQPdB2/t83nQQ=
+X-Received: by 2002:ac8:3a27:: with SMTP id w36mr16755745qte.204.1576334678661;
+ Sat, 14 Dec 2019 06:44:38 -0800 (PST)
 MIME-Version: 1.0
 References: <20191213204936.3643476-1-arnd@arndb.de> <20191213205417.3871055-15-arnd@arndb.de>
-In-Reply-To: <20191213205417.3871055-15-arnd@arndb.de>
-From:   Julian Calaby <julian.calaby@gmail.com>
-Date:   Sat, 14 Dec 2019 12:37:51 +1100
-Message-ID: <CAGRGNgVCkyterFgOFL-WtHr4=tSnyr2TsYs5BQk+7FdtHjv4ow@mail.gmail.com>
-Subject: Re: [PATCH v2 24/24] y2038: sparc: remove use of struct timex
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     y2038@lists.linaro.org, LKML <linux-kernel@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        John Stultz <john.stultz@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+ <CAGRGNgVCkyterFgOFL-WtHr4=tSnyr2TsYs5BQk+7FdtHjv4ow@mail.gmail.com>
+In-Reply-To: <CAGRGNgVCkyterFgOFL-WtHr4=tSnyr2TsYs5BQk+7FdtHjv4ow@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Sat, 14 Dec 2019 15:44:22 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1Tuv766qK0RX+ZkNiqDqiOOHPeawFXT0V-Zsj5ZKAAQg@mail.gmail.com>
+Message-ID: <CAK8P3a1Tuv766qK0RX+ZkNiqDqiOOHPeawFXT0V-Zsj5ZKAAQg@mail.gmail.com>
+Subject: Re: [Y2038] [PATCH v2 24/24] y2038: sparc: remove use of struct timex
+To:     Julian Calaby <julian.calaby@gmail.com>
+Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Stephen Boyd <sboyd@kernel.org>,
+        John Stultz <john.stultz@linaro.org>,
         Deepa Dinamani <deepa.kernel@gmail.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        sparclinux <sparclinux@vger.kernel.org>
+        sparclinux <sparclinux@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Eric W. Biederman" <ebiederm@xmission.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:476WpjpbtZIZ4Qe480wQKSas3sZ10yCunJfDY4jCNnoTNI+ikUb
+ 9uOtr4EUHeaBdfBm7oXZk8q83a8qeNcVI39F1aGWYP1ogCqe7DU4QkJdZZQ23T3ZoYBkheM
+ 6chfglxG9GQ0SnXjpo5um76fVGHoHtM83Wv7fPPGbo2TB0heKoj+4DofNDx6cTf+4bkQLer
+ a9QSTPLhGGg/noSAprycQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3tsXHoCWadY=:r4R6+yIaJ/tkW2GZg4umBz
+ oXu1bttiPp2BlXHf5pQAH7rJyQxm3V4aEhQazpLphkAVVlz3ugOO2pARB+8AONoOEcWqr876p
+ SyEJQjVq6skp+g6YTPkCY5d8ZzsouSY/BnZTOto3Ub+04R8upmYL5zdg86kPopLpH3iWNN+Zz
+ lc3y1aVcmwSuAf7AC7rO12RYOCyE/6X27nIeFNSNK+XEo8l6+VVQ/5oYv1DlVGt/O6GvmAsU7
+ fbIUsUtJIq1HOpvBUZxsv5vkR9XkrTetv9pwpo3qHvkVWvprqLtq1/d5JzGvuzwGZk9N3TG9e
+ NbilQjzffC5Y0ZG7Wl7m5Yf2ZW4vrxAeKmeBoPdqjqN9hJSRNerDIY3MjfDfiuZgD/4DqZuax
+ tQELsBWy6VSjcI9rsMeXQEqEcsVI1Em4FxfH2tLOLQZtsm752VBLYjrtD1fyMbXd8+s0k1Nmx
+ Ty8g+KsPEYR4XExtZl4n8LcZysk3dqUzOo6AloKyrY+hr3pwNlUHpMjrDNxqAUt+/OaTlnKaO
+ hrQ0IBU4bs3/iMsVB4eZZO7ENrxg09Ned3B29uFr2zpMmBMV680Q7riQ3wl3ujm/uCzLRFTj+
+ +niboY8YipMgzO1qyAajUIaK39D9V9f7buvQ/RbLvo6fBy+LwQP/V7RYTWFCoOy4lI/gc81wn
+ Waxc2RHuJX/CS/728x3hL9U11oBQ7xYmbwA2rR22umZo+iKacu84jgYvCuWdJXJz3dD1uP9I0
+ Vquarupo7reM0NtXyqmHwyQ3E9YPowxyJLSgPdgYW+YMSjq68/gBCGKtRt27wzw5EHgdQnhzu
+ XGqmpr18/yE9wZibcnoz+mM3vAxvYCKT+cGr4w/pQMSa/mmCu76W/JhzYO+i4PKZu2YxdyiaI
+ PKerVjkz5voU4fXdpgwg==
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Arnd,
+On Sat, Dec 14, 2019 at 2:38 AM Julian Calaby <julian.calaby@gmail.com> wrote:
+> On Sat, Dec 14, 2019 at 7:59 AM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> Am I mis-reading the patch, or is "kt" not defined?
 
-On Sat, Dec 14, 2019 at 7:59 AM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> 'struct timex' is one of the last users of 'struct timeval' and is
-> only referenced in one place in the kernel any more, to convert the
-> user space timex into the kernel-internal version on sparc64, with a
-> different tv_usec member type.
->
-> As a preparation for hiding the time_t definition and everything
-> using that in the kernel, change the implementation once more
-> to only convert the timeval member, and then enclose the
-> struct definition in an #ifdef.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/sparc/kernel/sys_sparc_64.c | 29 +++++++++++++++--------------
->  include/uapi/linux/timex.h       |  2 ++
->  2 files changed, 17 insertions(+), 14 deletions(-)
->
-> diff --git a/arch/sparc/kernel/sys_sparc_64.c b/arch/sparc/kernel/sys_sparc_64.c
-> index 9f41a6f5a032..1c85b0af4dfd 100644
-> --- a/arch/sparc/kernel/sys_sparc_64.c
-> +++ b/arch/sparc/kernel/sys_sparc_64.c
-> @@ -548,34 +548,35 @@ SYSCALL_DEFINE2(getdomainname, char __user *, name, int, len)
->         return err;
->  }
->
-> -SYSCALL_DEFINE1(sparc_adjtimex, struct timex __user *, txc_p)
-> +SYSCALL_DEFINE1(sparc_adjtimex, struct __kernel_timex __user *, txc_p)
->  {
-> -       struct timex txc;               /* Local copy of parameter */
-> -       struct __kernel_timex *kt = (void *)&txc;
-> +       struct __kernel_timex txc;
-> +       __kernel_old_timeval *tv = (void *)&txc->time;
->         int ret;
->
->         /* Copy the user data space into the kernel copy
->          * structure. But bear in mind that the structures
->          * may change
->          */
-> -       if (copy_from_user(&txc, txc_p, sizeof(struct timex)))
-> +       if (copy_from_user(&txc, txc_p, sizeof(txc)))
->                 return -EFAULT;
->
->         /*
->          * override for sparc64 specific timeval type: tv_usec
->          * is 32 bit wide instead of 64-bit in __kernel_timex
->          */
-> -       kt->time.tv_usec = txc.time.tv_usec;
-> +       kt->time.tv_usec = tv->tv_usec;
+You are right, and there are other problems in this patch that I should have
+found in a trivial compile-test. Please disregard this patch, it should not have
+been part of this set before I had gotten around to at least some testing.
 
-Am I mis-reading the patch, or is "kt" not defined?
+When I collected stuff from my backlog, I only made sure that this one had
+no dependencies on other work, but failed to realize that sparc64 was not
+part of my build test matrix and that the 0day bot had not seen it either.
 
-Thanks,
-
--- 
-Julian Calaby
-
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
+       Arnd
