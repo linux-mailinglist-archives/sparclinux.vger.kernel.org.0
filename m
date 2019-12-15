@@ -2,80 +2,76 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2849411F24C
-	for <lists+sparclinux@lfdr.de>; Sat, 14 Dec 2019 15:44:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80DF011F570
+	for <lists+sparclinux@lfdr.de>; Sun, 15 Dec 2019 04:43:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725900AbfLNOol (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 14 Dec 2019 09:44:41 -0500
-Received: from mout.kundenserver.de ([212.227.126.187]:33733 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725872AbfLNOol (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 14 Dec 2019 09:44:41 -0500
-Received: from mail-qt1-f178.google.com ([209.85.160.178]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MLRgp-1iPISi3R3r-00IWSQ; Sat, 14 Dec 2019 15:44:40 +0100
-Received: by mail-qt1-f178.google.com with SMTP id e12so1303927qto.2;
-        Sat, 14 Dec 2019 06:44:39 -0800 (PST)
-X-Gm-Message-State: APjAAAVPsgQHhdhqTY+tobWbByMAOqF1Gyr4idkvD9hOVlPfvoSNNBeV
-        WU/2+eCAHuBxSUcbf+0WqXirrob7AsIS/j8odKc=
-X-Google-Smtp-Source: APXvYqzGh5bFPG98ALm1rwS+1oBWlB0rdxMwfuMdc0Z+WDAdOTm5wzrRksxa1T6t4KX6ZZtoY3ya4gCQPdB2/t83nQQ=
-X-Received: by 2002:ac8:3a27:: with SMTP id w36mr16755745qte.204.1576334678661;
- Sat, 14 Dec 2019 06:44:38 -0800 (PST)
+        id S1726049AbfLODn4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 14 Dec 2019 22:43:56 -0500
+Received: from mail.baskent.edu.tr ([193.140.164.51]:57958 "EHLO
+        mail.baskent.edu.tr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726019AbfLODn4 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 14 Dec 2019 22:43:56 -0500
+Received: from mail.baskent.edu.tr (mail.baskent.edu.tr [193.140.164.51])
+        by mail.baskent.edu.tr (Postfix) with ESMTPA id 0C4BF1AF588;
+        Sun, 15 Dec 2019 06:22:20 +0300 (+03)
 MIME-Version: 1.0
-References: <20191213204936.3643476-1-arnd@arndb.de> <20191213205417.3871055-15-arnd@arndb.de>
- <CAGRGNgVCkyterFgOFL-WtHr4=tSnyr2TsYs5BQk+7FdtHjv4ow@mail.gmail.com>
-In-Reply-To: <CAGRGNgVCkyterFgOFL-WtHr4=tSnyr2TsYs5BQk+7FdtHjv4ow@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Sat, 14 Dec 2019 15:44:22 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1Tuv766qK0RX+ZkNiqDqiOOHPeawFXT0V-Zsj5ZKAAQg@mail.gmail.com>
-Message-ID: <CAK8P3a1Tuv766qK0RX+ZkNiqDqiOOHPeawFXT0V-Zsj5ZKAAQg@mail.gmail.com>
-Subject: Re: [Y2038] [PATCH v2 24/24] y2038: sparc: remove use of struct timex
-To:     Julian Calaby <julian.calaby@gmail.com>
-Cc:     y2038 Mailman List <y2038@lists.linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric W. Biederman" <ebiederm@xmission.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:476WpjpbtZIZ4Qe480wQKSas3sZ10yCunJfDY4jCNnoTNI+ikUb
- 9uOtr4EUHeaBdfBm7oXZk8q83a8qeNcVI39F1aGWYP1ogCqe7DU4QkJdZZQ23T3ZoYBkheM
- 6chfglxG9GQ0SnXjpo5um76fVGHoHtM83Wv7fPPGbo2TB0heKoj+4DofNDx6cTf+4bkQLer
- a9QSTPLhGGg/noSAprycQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:3tsXHoCWadY=:r4R6+yIaJ/tkW2GZg4umBz
- oXu1bttiPp2BlXHf5pQAH7rJyQxm3V4aEhQazpLphkAVVlz3ugOO2pARB+8AONoOEcWqr876p
- SyEJQjVq6skp+g6YTPkCY5d8ZzsouSY/BnZTOto3Ub+04R8upmYL5zdg86kPopLpH3iWNN+Zz
- lc3y1aVcmwSuAf7AC7rO12RYOCyE/6X27nIeFNSNK+XEo8l6+VVQ/5oYv1DlVGt/O6GvmAsU7
- fbIUsUtJIq1HOpvBUZxsv5vkR9XkrTetv9pwpo3qHvkVWvprqLtq1/d5JzGvuzwGZk9N3TG9e
- NbilQjzffC5Y0ZG7Wl7m5Yf2ZW4vrxAeKmeBoPdqjqN9hJSRNerDIY3MjfDfiuZgD/4DqZuax
- tQELsBWy6VSjcI9rsMeXQEqEcsVI1Em4FxfH2tLOLQZtsm752VBLYjrtD1fyMbXd8+s0k1Nmx
- Ty8g+KsPEYR4XExtZl4n8LcZysk3dqUzOo6AloKyrY+hr3pwNlUHpMjrDNxqAUt+/OaTlnKaO
- hrQ0IBU4bs3/iMsVB4eZZO7ENrxg09Ned3B29uFr2zpMmBMV680Q7riQ3wl3ujm/uCzLRFTj+
- +niboY8YipMgzO1qyAajUIaK39D9V9f7buvQ/RbLvo6fBy+LwQP/V7RYTWFCoOy4lI/gc81wn
- Waxc2RHuJX/CS/728x3hL9U11oBQ7xYmbwA2rR22umZo+iKacu84jgYvCuWdJXJz3dD1uP9I0
- Vquarupo7reM0NtXyqmHwyQ3E9YPowxyJLSgPdgYW+YMSjq68/gBCGKtRt27wzw5EHgdQnhzu
- XGqmpr18/yE9wZibcnoz+mM3vAxvYCKT+cGr4w/pQMSa/mmCu76W/JhzYO+i4PKZu2YxdyiaI
- PKerVjkz5voU4fXdpgwg==
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Sat, 14 Dec 2019 21:22:20 -0600
+From:   Mr Pressley Anton <info@anton.co.za>
+To:     undisclosed-recipients:;
+Subject: Love Greetings
+Reply-To: infoantonnp@gmail.com
+Mail-Reply-To: infoantonnp@gmail.com
+Message-ID: <8cad546a266e399a3a8869a8b9044744@mail.baskent.edu.tr>
+X-Sender: info@anton.co.za
+User-Agent: Roundcube Webmail/1.0.12
+X-mailyeni-MailScanner-Information: Please contact the ISP for more information
+X-mailyeni-MailScanner-ID: 0C4BF1AF588.AA0DC
+X-mailyeni-MailScanner: Found to be clean
+X-mailyeni-MailScanner-SpamCheck: not spam, SpamAssassin (cached,
+        score=2.178, required 6, ALL_TRUSTED -1.00, AWL 0.48, BAYES_40 -0.00,
+        MILLION_HUNDRED 2.70)
+X-mailyeni-MailScanner-SpamScore: ss
+X-mailyeni-MailScanner-From: info@anton.co.za
+X-Spam-Status: No
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sat, Dec 14, 2019 at 2:38 AM Julian Calaby <julian.calaby@gmail.com> wrote:
-> On Sat, Dec 14, 2019 at 7:59 AM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> Am I mis-reading the patch, or is "kt" not defined?
 
-You are right, and there are other problems in this patch that I should have
-found in a trivial compile-test. Please disregard this patch, it should not have
-been part of this set before I had gotten around to at least some testing.
 
-When I collected stuff from my backlog, I only made sure that this one had
-no dependencies on other work, but failed to realize that sparc64 was not
-part of my build test matrix and that the 0day bot had not seen it either.
+-- 
+Love Greetings
 
-       Arnd
+I will introduce myself as Mr. Pressley Anton. a South African citizen 
+living in East London. A director of accounting who oversees the bank's 
+financial network
+
+I ask for your approval to introduce you to our bank as a business 
+partner. Ms. Surti Dahlia, a German / Dutch businesswoman and widow from 
+the Netherlands, who died in a MH370 Malaysia aircraft
+
+So we can say that their fund was worth eight million five hundred 
+thousand pounds
+
+
+
+We can legally move this amount if you are interested.
+Many thanks
+
+Greetings,
+Mr. Pressley Anton.
+E-post :infoantonnp@gmail.com
+Telephone : +27678841926
+(Director) Department International System.
+Accounting,
+Monitoring the financial network
+
+-- 
+This message has been scanned for viruses and
+dangerous content by MailScanner, and is
+believed to be clean.
+
