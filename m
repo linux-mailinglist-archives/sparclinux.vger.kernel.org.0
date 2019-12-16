@@ -2,106 +2,173 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E96611FDB6
-	for <lists+sparclinux@lfdr.de>; Mon, 16 Dec 2019 05:56:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52AA21208E4
+	for <lists+sparclinux@lfdr.de>; Mon, 16 Dec 2019 15:50:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726772AbfLPE4x (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 15 Dec 2019 23:56:53 -0500
-Received: from foss.arm.com ([217.140.110.172]:39820 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726437AbfLPE4w (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 15 Dec 2019 23:56:52 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 67E561007;
-        Sun, 15 Dec 2019 20:56:51 -0800 (PST)
-Received: from [10.163.1.75] (unknown [10.163.1.75])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 158D03F718;
-        Sun, 15 Dec 2019 20:56:09 -0800 (PST)
-Subject: Re: [PATCH V11] mm/debug: Add tests validating architecture page
- table helpers
-To:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>
-Cc:     Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1728160AbfLPOts (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 16 Dec 2019 09:49:48 -0500
+Received: from mout.kundenserver.de ([217.72.192.75]:38319 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728014AbfLPOts (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 16 Dec 2019 09:49:48 -0500
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1Mofst-1hwGO02HIf-00p79V; Mon, 16 Dec 2019 15:49:13 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     "David S. Miller" <davem@davemloft.net>
+Cc:     Julian Calaby <julian.calaby@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        John Stultz <john.stultz@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1575364731-18131-1-git-send-email-anshuman.khandual@arm.com>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <d433f5a8-20a5-2862-8228-9ca72633b530@arm.com>
-Date:   Mon, 16 Dec 2019 10:27:10 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        Stephen Boyd <sboyd@kernel.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] y2038: sparc: remove use of struct timex
+Date:   Mon, 16 Dec 2019 15:48:53 +0100
+Message-Id: <20191216144907.1931511-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
-In-Reply-To: <1575364731-18131-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:SD9rTavFUocz6lTgBzyWJKCDwZMGx6GQHqRzwZ5WgDi5LT4Zg47
+ 60bHxonI53Bup8EujS4+6F+AMH/CfRjJySvogLwX86fOQ7WmIUSun0AYvtDdbHi0DCOuoHc
+ HQQtPAOoXE/b+7Nx/Fanu1Vkc3/zSWXyitoA3+dGpn3owdwtAOIrT9udBSwqYgwXJf0Vf55
+ Yki730p6PxSbIOZ/qRdXA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:A28Gjab46IU=:TUSBcmj2VLOO7RKETeVmBR
+ 1tcCM3ko/hKnpa6Tdwxb21L+ZGs3s6yjR7fFX0/GwWMlqQh7pi3n1KHeKAxh6zJooB/3fa/5o
+ 5BK9DD27o/1RJNfemhrKN1El8pk4PRC6G2juiuVHAjTViFMINEQaGa9Z6VTBVX+hyGVdJzQUf
+ tK94d6+tIJgj6l0oVWL7TS1CtIwrTpGPQc75e2IrJesrvX2rapbVleWe1Dz05xW/1TDPkZcsD
+ w7fPFX7winY5wLDW+E1zi6f3/5PlDDcVI28Bmb1Jh+AmGOE12lLqIU+DpDtSiWhfDCNnluwh5
+ pS4ROP79ZFWzR2Zg70YenCovyCw8lvKIyHZzacr3i5cyct592BX5Ghlu5HWIu04O16wbgkt+D
+ o5dm8O+MzRAv+urpEoAFLca1oofWvS670IyDbnV8hhhJVjlSgfmX91W15B9+s1uyec+dbR7C+
+ knrvxqLhupx1Ls8rLg0LI/KzklBWl0uekrqlr84SzmxaDLeDROP1IrzGuFwfdJvppAF298IT5
+ 1eH7toqXnK+9G9VCPENuC527adM8xmxhXoHbaeIQr3NdzW6ceg/QiUciJ8A/3Cp3+4UO82Vpq
+ maxK/nq25gOOHCcldjRgb+sEOpbXgUIr8cbcKlt4Cnes7V+gUzRqzpjb35678QmHna3ovhiFO
+ 4h0BCnH6gnugAhB+b8AwKzVzuCbybVFBQcP1ezetkovXJ/8nsZohGVinUEdW0UomZNXTw/bJm
+ jSbY8FatMuxuMyqjlgZ81SdQwvaHAREzmw8LKAAoPNY2RZVUNmAOe4C5oLtvfX/lU/Utgwskc
+ pB6mW8Hp8kmtekDFW1yiIeatoDsoP6j1q21uaIiM2qSJayLZX5qklURkysxFDplncRgEdSRyQ
+ HV1TuGVr9Nu7s3cZHeWQ==
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+'struct timex' is one of the last users of 'struct timeval' and is
+only referenced in one place in the kernel any more, to convert the
+user space timex into the kernel-internal version on sparc64, with a
+different tv_usec member type.
 
+As a preparation for hiding the time_t definition and everything
+using that in the kernel, change the implementation once more
+to only convert the timeval member, and then enclose the
+struct definition in an #ifdef.
 
-On 12/03/2019 02:48 PM, Anshuman Khandual wrote:
-> This adds tests which will validate architecture page table helpers and
-> other accessors in their compliance with expected generic MM semantics.
-> This will help various architectures in validating changes to existing
-> page table helpers or addition of new ones.
-> 
-> This test covers basic page table entry transformations including but not
-> limited to old, young, dirty, clean, write, write protect etc at various
-> level along with populating intermediate entries with next page table page
-> and validating them.
-> 
-> Test page table pages are allocated from system memory with required size
-> and alignments. The mapped pfns at page table levels are derived from a
-> real pfn representing a valid kernel text symbol. This test gets called
-> right after page_alloc_init_late().
-> 
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
-> 
-> Folks interested in making sure that a given platform's page table helpers
-> conform to expected generic MM semantics should enable the above config
-> which will just trigger this test during boot. Any non conformity here will
-> be reported as an warning which would need to be fixed. This test will help
-> catch any changes to the agreed upon semantics expected from generic MM and
-> enable platforms to accommodate it thereafter.
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+v2: send a version that it at least build tested this time
 
-Any updates on this ?
+If this looks ok to you, please queue it in the sparc git for v5.6
+
+ arch/sparc/kernel/sys_sparc_64.c | 33 ++++++++++++++++----------------
+ include/uapi/linux/timex.h       |  2 ++
+ 2 files changed, 19 insertions(+), 16 deletions(-)
+
+diff --git a/arch/sparc/kernel/sys_sparc_64.c b/arch/sparc/kernel/sys_sparc_64.c
+index 9f41a6f5a032..34917617f258 100644
+--- a/arch/sparc/kernel/sys_sparc_64.c
++++ b/arch/sparc/kernel/sys_sparc_64.c
+@@ -548,34 +548,35 @@ SYSCALL_DEFINE2(getdomainname, char __user *, name, int, len)
+ 	return err;
+ }
+ 
+-SYSCALL_DEFINE1(sparc_adjtimex, struct timex __user *, txc_p)
++SYSCALL_DEFINE1(sparc_adjtimex, struct __kernel_timex __user *, txc_p)
+ {
+-	struct timex txc;		/* Local copy of parameter */
+-	struct __kernel_timex *kt = (void *)&txc;
++	struct __kernel_timex txc;
++	struct __kernel_old_timeval *tv = (void *)&txc_p->time;
+ 	int ret;
+ 
+ 	/* Copy the user data space into the kernel copy
+ 	 * structure. But bear in mind that the structures
+ 	 * may change
+ 	 */
+-	if (copy_from_user(&txc, txc_p, sizeof(struct timex)))
++	if (copy_from_user(&txc, txc_p, sizeof(txc)))
+ 		return -EFAULT;
+ 
+ 	/*
+ 	 * override for sparc64 specific timeval type: tv_usec
+ 	 * is 32 bit wide instead of 64-bit in __kernel_timex
+ 	 */
+-	kt->time.tv_usec = txc.time.tv_usec;
+-	ret = do_adjtimex(kt);
+-	txc.time.tv_usec = kt->time.tv_usec;
++	txc.time.tv_usec = tv->tv_usec;
++	ret = do_adjtimex(&txc);
++	tv->tv_usec = txc.time.tv_usec;
+ 
+-	return copy_to_user(txc_p, &txc, sizeof(struct timex)) ? -EFAULT : ret;
++	return copy_to_user(txc_p, &txc, sizeof(txc)) ? -EFAULT : ret;
+ }
+ 
+-SYSCALL_DEFINE2(sparc_clock_adjtime, const clockid_t, which_clock,struct timex __user *, txc_p)
++SYSCALL_DEFINE2(sparc_clock_adjtime, const clockid_t, which_clock,
++		struct __kernel_timex __user *, txc_p)
+ {
+-	struct timex txc;		/* Local copy of parameter */
+-	struct __kernel_timex *kt = (void *)&txc;
++	struct __kernel_timex txc;
++	struct __kernel_old_timeval *tv = (void *)&txc_p->time;
+ 	int ret;
+ 
+ 	if (!IS_ENABLED(CONFIG_POSIX_TIMERS)) {
+@@ -590,18 +591,18 @@ SYSCALL_DEFINE2(sparc_clock_adjtime, const clockid_t, which_clock,struct timex _
+ 	 * structure. But bear in mind that the structures
+ 	 * may change
+ 	 */
+-	if (copy_from_user(&txc, txc_p, sizeof(struct timex)))
++	if (copy_from_user(&txc, txc_p, sizeof(txc)))
+ 		return -EFAULT;
+ 
+ 	/*
+ 	 * override for sparc64 specific timeval type: tv_usec
+ 	 * is 32 bit wide instead of 64-bit in __kernel_timex
+ 	 */
+-	kt->time.tv_usec = txc.time.tv_usec;
+-	ret = do_clock_adjtime(which_clock, kt);
+-	txc.time.tv_usec = kt->time.tv_usec;
++	txc.time.tv_usec = tv->tv_usec;
++	ret = do_clock_adjtime(which_clock, &txc);
++	tv->tv_usec = txc.time.tv_usec;
+ 
+-	return copy_to_user(txc_p, &txc, sizeof(struct timex)) ? -EFAULT : ret;
++	return copy_to_user(txc_p, &txc, sizeof(txc)) ? -EFAULT : ret;
+ }
+ 
+ SYSCALL_DEFINE5(utrap_install, utrap_entry_t, type,
+diff --git a/include/uapi/linux/timex.h b/include/uapi/linux/timex.h
+index 9f517f9010bb..bd627c368d09 100644
+--- a/include/uapi/linux/timex.h
++++ b/include/uapi/linux/timex.h
+@@ -57,6 +57,7 @@
+ 
+ #define NTP_API		4	/* NTP API version */
+ 
++#ifndef __KERNEL__
+ /*
+  * syscall interface - used (mainly by NTP daemon)
+  * to discipline kernel clock oscillator
+@@ -91,6 +92,7 @@ struct timex {
+ 	int  :32; int  :32; int  :32; int  :32;
+ 	int  :32; int  :32; int  :32;
+ };
++#endif
+ 
+ struct __kernel_timex_timeval {
+ 	__kernel_time64_t       tv_sec;
+-- 
+2.20.0
+
