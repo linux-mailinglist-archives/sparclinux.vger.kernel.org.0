@@ -2,173 +2,163 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52AA21208E4
-	for <lists+sparclinux@lfdr.de>; Mon, 16 Dec 2019 15:50:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01F671224D7
+	for <lists+sparclinux@lfdr.de>; Tue, 17 Dec 2019 07:40:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728160AbfLPOts (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 16 Dec 2019 09:49:48 -0500
-Received: from mout.kundenserver.de ([217.72.192.75]:38319 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728014AbfLPOts (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 16 Dec 2019 09:49:48 -0500
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
- 1Mofst-1hwGO02HIf-00p79V; Mon, 16 Dec 2019 15:49:13 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     Julian Calaby <julian.calaby@gmail.com>,
+        id S1727047AbfLQGkd (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 17 Dec 2019 01:40:33 -0500
+Received: from mout-p-101.mailbox.org ([80.241.56.151]:53806 "EHLO
+        mout-p-101.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726875AbfLQGkc (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 17 Dec 2019 01:40:32 -0500
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 47cT6M2DP7zKmbN;
+        Tue, 17 Dec 2019 07:40:27 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de [80.241.56.125]) (amavisd-new, port 10030)
+        with ESMTP id AVgNK5XsT0lw; Tue, 17 Dec 2019 07:40:19 +0100 (CET)
+Date:   Tue, 17 Dec 2019 17:39:50 +1100
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Florian Weimer <fweimer@redhat.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
         Arnd Bergmann <arnd@arndb.de>,
-        John Stultz <john.stultz@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] y2038: sparc: remove use of struct timex
-Date:   Mon, 16 Dec 2019 15:48:53 +0100
-Message-Id: <20191216144907.1931511-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-ia64@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-api@vger.kernel.org,
+        Jiri Olsa <jolsa@redhat.com>, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        David Drysdale <drysdale@google.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+        dev@opencontainers.org, Andy Lutomirski <luto@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        libc-alpha@sourceware.org, linux-parisc@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, netdev@vger.kernel.org,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        bpf@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org
+Subject: Re: [PATCH v18 11/13] open: introduce openat2(2) syscall
+Message-ID: <20191217063950.5oqwwqz5p3bu7t2x@yavin.dot.cyphar.com>
+References: <20191206141338.23338-1-cyphar@cyphar.com>
+ <20191206141338.23338-12-cyphar@cyphar.com>
+ <20191216192158.B9F19832924A@oldenburg2.str.redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:SD9rTavFUocz6lTgBzyWJKCDwZMGx6GQHqRzwZ5WgDi5LT4Zg47
- 60bHxonI53Bup8EujS4+6F+AMH/CfRjJySvogLwX86fOQ7WmIUSun0AYvtDdbHi0DCOuoHc
- HQQtPAOoXE/b+7Nx/Fanu1Vkc3/zSWXyitoA3+dGpn3owdwtAOIrT9udBSwqYgwXJf0Vf55
- Yki730p6PxSbIOZ/qRdXA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:A28Gjab46IU=:TUSBcmj2VLOO7RKETeVmBR
- 1tcCM3ko/hKnpa6Tdwxb21L+ZGs3s6yjR7fFX0/GwWMlqQh7pi3n1KHeKAxh6zJooB/3fa/5o
- 5BK9DD27o/1RJNfemhrKN1El8pk4PRC6G2juiuVHAjTViFMINEQaGa9Z6VTBVX+hyGVdJzQUf
- tK94d6+tIJgj6l0oVWL7TS1CtIwrTpGPQc75e2IrJesrvX2rapbVleWe1Dz05xW/1TDPkZcsD
- w7fPFX7winY5wLDW+E1zi6f3/5PlDDcVI28Bmb1Jh+AmGOE12lLqIU+DpDtSiWhfDCNnluwh5
- pS4ROP79ZFWzR2Zg70YenCovyCw8lvKIyHZzacr3i5cyct592BX5Ghlu5HWIu04O16wbgkt+D
- o5dm8O+MzRAv+urpEoAFLca1oofWvS670IyDbnV8hhhJVjlSgfmX91W15B9+s1uyec+dbR7C+
- knrvxqLhupx1Ls8rLg0LI/KzklBWl0uekrqlr84SzmxaDLeDROP1IrzGuFwfdJvppAF298IT5
- 1eH7toqXnK+9G9VCPENuC527adM8xmxhXoHbaeIQr3NdzW6ceg/QiUciJ8A/3Cp3+4UO82Vpq
- maxK/nq25gOOHCcldjRgb+sEOpbXgUIr8cbcKlt4Cnes7V+gUzRqzpjb35678QmHna3ovhiFO
- 4h0BCnH6gnugAhB+b8AwKzVzuCbybVFBQcP1ezetkovXJ/8nsZohGVinUEdW0UomZNXTw/bJm
- jSbY8FatMuxuMyqjlgZ81SdQwvaHAREzmw8LKAAoPNY2RZVUNmAOe4C5oLtvfX/lU/Utgwskc
- pB6mW8Hp8kmtekDFW1yiIeatoDsoP6j1q21uaIiM2qSJayLZX5qklURkysxFDplncRgEdSRyQ
- HV1TuGVr9Nu7s3cZHeWQ==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="vzwczu2ztdefrrfu"
+Content-Disposition: inline
+In-Reply-To: <20191216192158.B9F19832924A@oldenburg2.str.redhat.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-'struct timex' is one of the last users of 'struct timeval' and is
-only referenced in one place in the kernel any more, to convert the
-user space timex into the kernel-internal version on sparc64, with a
-different tv_usec member type.
 
-As a preparation for hiding the time_t definition and everything
-using that in the kernel, change the implementation once more
-to only convert the timeval member, and then enclose the
-struct definition in an #ifdef.
+--vzwczu2ztdefrrfu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-v2: send a version that it at least build tested this time
+On 2019-12-16, Florian Weimer <fweimer@redhat.com> wrote:
+> > diff --git a/include/uapi/linux/fcntl.h b/include/uapi/linux/fcntl.h
+> > index 1d338357df8a..58c3a0e543c6 100644
+> > --- a/include/uapi/linux/fcntl.h
+> > +++ b/include/uapi/linux/fcntl.h
+> > @@ -93,5 +93,40 @@
+> > =20
+> >  #define AT_RECURSIVE		0x8000	/* Apply to the entire subtree */
+> > =20
+> > +/*
+> > + * Arguments for how openat2(2) should open the target path. If @resol=
+ve is
+> > + * zero, then openat2(2) operates very similarly to openat(2).
+> > + *
+> > + * However, unlike openat(2), unknown bits in @flags result in -EINVAL=
+ rather
+> > + * than being silently ignored. @mode must be zero unless one of {O_CR=
+EAT,
+> > + * O_TMPFILE} are set.
+> > + *
+> > + * @flags: O_* flags.
+> > + * @mode: O_CREAT/O_TMPFILE file mode.
+> > + * @resolve: RESOLVE_* flags.
+> > + */
+> > +struct open_how {
+> > +	__aligned_u64 flags;
+> > +	__u16 mode;
+> > +	__u16 __padding[3]; /* must be zeroed */
+> > +	__aligned_u64 resolve;
+> > +};
+> > +
+> > +#define OPEN_HOW_SIZE_VER0	24 /* sizeof first published struct */
+> > +#define OPEN_HOW_SIZE_LATEST	OPEN_HOW_SIZE_VER0
+> > +
+> > +/* how->resolve flags for openat2(2). */
+> > +#define RESOLVE_NO_XDEV		0x01 /* Block mount-point crossings
+> > +					(includes bind-mounts). */
+> > +#define RESOLVE_NO_MAGICLINKS	0x02 /* Block traversal through procfs-s=
+tyle
+> > +					"magic-links". */
+> > +#define RESOLVE_NO_SYMLINKS	0x04 /* Block traversal through all symlin=
+ks
+> > +					(implies OEXT_NO_MAGICLINKS) */
+> > +#define RESOLVE_BENEATH		0x08 /* Block "lexical" trickery like
+> > +					"..", symlinks, and absolute
+> > +					paths which escape the dirfd. */
+> > +#define RESOLVE_IN_ROOT		0x10 /* Make all jumps to "/" and ".."
+> > +					be scoped inside the dirfd
+> > +					(similar to chroot(2)). */
+> > =20
+> >  #endif /* _UAPI_LINUX_FCNTL_H */
+>=20
+> Would it be possible to move these to a new UAPI header?
+>=20
+> In glibc, we currently do not #include <linux/fcntl.h>.  We need some of
+> the AT_* constants in POSIX mode, and the header is not necessarily
+> namespace-clean.  If there was a separate header for openat2 support, we
+> could use that easily, and we would only have to maintain the baseline
+> definitions (which never change).
 
-If this looks ok to you, please queue it in the sparc git for v5.6
+Sure, (assuming nobody objects) I can move it to "linux/openat2.h".
 
- arch/sparc/kernel/sys_sparc_64.c | 33 ++++++++++++++++----------------
- include/uapi/linux/timex.h       |  2 ++
- 2 files changed, 19 insertions(+), 16 deletions(-)
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
 
-diff --git a/arch/sparc/kernel/sys_sparc_64.c b/arch/sparc/kernel/sys_sparc_64.c
-index 9f41a6f5a032..34917617f258 100644
---- a/arch/sparc/kernel/sys_sparc_64.c
-+++ b/arch/sparc/kernel/sys_sparc_64.c
-@@ -548,34 +548,35 @@ SYSCALL_DEFINE2(getdomainname, char __user *, name, int, len)
- 	return err;
- }
- 
--SYSCALL_DEFINE1(sparc_adjtimex, struct timex __user *, txc_p)
-+SYSCALL_DEFINE1(sparc_adjtimex, struct __kernel_timex __user *, txc_p)
- {
--	struct timex txc;		/* Local copy of parameter */
--	struct __kernel_timex *kt = (void *)&txc;
-+	struct __kernel_timex txc;
-+	struct __kernel_old_timeval *tv = (void *)&txc_p->time;
- 	int ret;
- 
- 	/* Copy the user data space into the kernel copy
- 	 * structure. But bear in mind that the structures
- 	 * may change
- 	 */
--	if (copy_from_user(&txc, txc_p, sizeof(struct timex)))
-+	if (copy_from_user(&txc, txc_p, sizeof(txc)))
- 		return -EFAULT;
- 
- 	/*
- 	 * override for sparc64 specific timeval type: tv_usec
- 	 * is 32 bit wide instead of 64-bit in __kernel_timex
- 	 */
--	kt->time.tv_usec = txc.time.tv_usec;
--	ret = do_adjtimex(kt);
--	txc.time.tv_usec = kt->time.tv_usec;
-+	txc.time.tv_usec = tv->tv_usec;
-+	ret = do_adjtimex(&txc);
-+	tv->tv_usec = txc.time.tv_usec;
- 
--	return copy_to_user(txc_p, &txc, sizeof(struct timex)) ? -EFAULT : ret;
-+	return copy_to_user(txc_p, &txc, sizeof(txc)) ? -EFAULT : ret;
- }
- 
--SYSCALL_DEFINE2(sparc_clock_adjtime, const clockid_t, which_clock,struct timex __user *, txc_p)
-+SYSCALL_DEFINE2(sparc_clock_adjtime, const clockid_t, which_clock,
-+		struct __kernel_timex __user *, txc_p)
- {
--	struct timex txc;		/* Local copy of parameter */
--	struct __kernel_timex *kt = (void *)&txc;
-+	struct __kernel_timex txc;
-+	struct __kernel_old_timeval *tv = (void *)&txc_p->time;
- 	int ret;
- 
- 	if (!IS_ENABLED(CONFIG_POSIX_TIMERS)) {
-@@ -590,18 +591,18 @@ SYSCALL_DEFINE2(sparc_clock_adjtime, const clockid_t, which_clock,struct timex _
- 	 * structure. But bear in mind that the structures
- 	 * may change
- 	 */
--	if (copy_from_user(&txc, txc_p, sizeof(struct timex)))
-+	if (copy_from_user(&txc, txc_p, sizeof(txc)))
- 		return -EFAULT;
- 
- 	/*
- 	 * override for sparc64 specific timeval type: tv_usec
- 	 * is 32 bit wide instead of 64-bit in __kernel_timex
- 	 */
--	kt->time.tv_usec = txc.time.tv_usec;
--	ret = do_clock_adjtime(which_clock, kt);
--	txc.time.tv_usec = kt->time.tv_usec;
-+	txc.time.tv_usec = tv->tv_usec;
-+	ret = do_clock_adjtime(which_clock, &txc);
-+	tv->tv_usec = txc.time.tv_usec;
- 
--	return copy_to_user(txc_p, &txc, sizeof(struct timex)) ? -EFAULT : ret;
-+	return copy_to_user(txc_p, &txc, sizeof(txc)) ? -EFAULT : ret;
- }
- 
- SYSCALL_DEFINE5(utrap_install, utrap_entry_t, type,
-diff --git a/include/uapi/linux/timex.h b/include/uapi/linux/timex.h
-index 9f517f9010bb..bd627c368d09 100644
---- a/include/uapi/linux/timex.h
-+++ b/include/uapi/linux/timex.h
-@@ -57,6 +57,7 @@
- 
- #define NTP_API		4	/* NTP API version */
- 
-+#ifndef __KERNEL__
- /*
-  * syscall interface - used (mainly by NTP daemon)
-  * to discipline kernel clock oscillator
-@@ -91,6 +92,7 @@ struct timex {
- 	int  :32; int  :32; int  :32; int  :32;
- 	int  :32; int  :32; int  :32;
- };
-+#endif
- 
- struct __kernel_timex_timeval {
- 	__kernel_time64_t       tv_sec;
--- 
-2.20.0
+--vzwczu2ztdefrrfu
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXfh4MQAKCRCdlLljIbnQ
+EvJ/AP9e+RbEhnKlfXeue8RftgpgyUu8To5+ZOcmuoKfUFVefgEAmch0tDU0glq6
+a0g2iw25N8tzxhAIzQpE/p2HRuzcPgo=
+=p/bo
+-----END PGP SIGNATURE-----
+
+--vzwczu2ztdefrrfu--
