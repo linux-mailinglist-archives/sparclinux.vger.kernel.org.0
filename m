@@ -2,94 +2,89 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89389124B4D
-	for <lists+sparclinux@lfdr.de>; Wed, 18 Dec 2019 16:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B2F124D3E
+	for <lists+sparclinux@lfdr.de>; Wed, 18 Dec 2019 17:25:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726922AbfLRPPJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 18 Dec 2019 10:15:09 -0500
-Received: from mail-yb1-f193.google.com ([209.85.219.193]:36514 "EHLO
-        mail-yb1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726723AbfLRPPJ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 18 Dec 2019 10:15:09 -0500
-Received: by mail-yb1-f193.google.com with SMTP id i72so873423ybg.3
-        for <sparclinux@vger.kernel.org>; Wed, 18 Dec 2019 07:15:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=U28/YuRgu2782Y5+bng7KtcgIdvFoL/n1bJAN4CdUBN3/j+fQ2Fu6/DVXl/pYn+fsk
-         GJQkHbvnAwc5RtJgSWngXGVleDetV0VrVS6tyqnKaZvqeBMPsMD8TICUGKYtMzsGgeJs
-         PaiKp6Dz2QfICeYEG+wpJKUGAM9cO6XfFYC78w3FUy13jVn3Jq8szoXYBtotU02DILzi
-         80V7GBmwflmW4pBdb+5SHhQPdfayZKqFhPwFU5oaoeFE+Tl//RnRe/kALggWsXTEBLtA
-         GJw8bXt15/LssmIgFOkewk8tYcI7Zwjj91IzUpw2JDzgsJ4IvO0+E59tVFADuripDeVb
-         Xetg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=edmD6KsOOREEXKzPBPEcFGcYkw5hZvVUmlf7ejaa0j7vCNmQlJvQzzwaPvdqrM3Udq
-         fiz5sw06n9AtZg7FYw1imPOub4k+2arPOJxFWrLZ2GB3ZdF7EdHl2Ob6hVoSzAJ1lez8
-         P8g6IVxZ7XPzqg3CT7dOkvtpG0nccPE1gs8ir3V/6xNF4SjNrxkcEuH5LlicpIN0aGiP
-         9ce0aHUz6nXbXmlZxwLoRUIhoJnGdW9bzmmqZG5e3n8jofO4xnF76BMmRrKFQvZ+Q6gh
-         4644aVt8QpQMX45DK0vjgUVzMewHz3rsAyI1MpCKPef555GQIvsoJuTOehAoB8EvPVlQ
-         SfHA==
-X-Gm-Message-State: APjAAAULnyHL60dLk/VlL4RI1Q4qe0tRi0/Nixnpb/Anq7rU6/5KLrA5
-        psD3btpY0bgW2XDhTLn433bB9Yz3XjSDnImI3w==
-X-Google-Smtp-Source: APXvYqzLQBzExecVszI9HDgJhJHi0zKzghbnRggqC2tATW2ZaW546BYhFwcjdcgOQ4AcVHAOk4sp+CGJvyHnW+9F2RM=
-X-Received: by 2002:a25:bb51:: with SMTP id b17mr2221319ybk.198.1576682108599;
- Wed, 18 Dec 2019 07:15:08 -0800 (PST)
+        id S1727772AbfLRQYy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 18 Dec 2019 11:24:54 -0500
+Received: from foss.arm.com ([217.140.110.172]:52144 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727762AbfLRQYw (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 18 Dec 2019 11:24:52 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B254A143B;
+        Wed, 18 Dec 2019 08:24:51 -0800 (PST)
+Received: from e112269-lin.arm.com (e112269-lin.cambridge.arm.com [10.1.196.56])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ECC1C3F719;
+        Wed, 18 Dec 2019 08:24:48 -0800 (PST)
+From:   Steven Price <steven.price@arm.com>
+To:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc:     Steven Price <steven.price@arm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        James Morse <james.morse@arm.com>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        "Liang, Kan" <kan.liang@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: [PATCH v17 09/23] sparc: mm: Add p?d_leaf() definitions
+Date:   Wed, 18 Dec 2019 16:23:48 +0000
+Message-Id: <20191218162402.45610-10-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191218162402.45610-1-steven.price@arm.com>
+References: <20191218162402.45610-1-steven.price@arm.com>
 MIME-Version: 1.0
-Received: by 2002:a81:47c6:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:15:08
- -0800 (PST)
-Reply-To: dhl.expresscourier102156@outlook.fr
-From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
-Date:   Wed, 18 Dec 2019 16:15:08 +0100
-Message-ID: <CABHzvrkh7qXxcMWgT4TZMSutLxtTQ_dMSQWBv4BEHD_b-cy+RA@mail.gmail.com>
-Subject: =?UTF-8?Q?Urgent_delivery_Notification_of_your_ATM_MASTER_CARD?=
-        =?UTF-8?Q?_Amount=2C=2415=2E800=E2=80=99000=E2=80=9900=2C?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Attn Dear.
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_leaf() functions/macros.
 
-Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
-ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
-=9900, as
-approved this morning, Date, 18/12/2019. Through the Intruction from
-INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
+For sparc 64 bit, pmd_large() and pud_large() are already provided, so
+add macros to provide the p?d_leaf names required by the generic code.
 
-REGISTRATION NO :EG58945
-PARCEL NUMBER: 140479
-Delivery Schuleded now,
-Finally all we required from you is your ATM Card Proccessing Delivery
-fees $19.00 only which you must send to this DHL service to enable us
-dispatch the parcel to your destination today.
+CC: "David S. Miller" <davem@davemloft.net>
+CC: sparclinux@vger.kernel.org
+Acked-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Steven Price <steven.price@arm.com>
+---
+ arch/sparc/include/asm/pgtable_64.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Here is our receiving payment details.
-You are advised to send it Via Money Gram Service.
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index 6ae8016ef4ec..43206652eaf5 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -683,6 +683,7 @@ static inline unsigned long pte_special(pte_t pte)
+ 	return pte_val(pte) & _PAGE_SPECIAL;
+ }
+ 
++#define pmd_leaf	pmd_large
+ static inline unsigned long pmd_large(pmd_t pmd)
+ {
+ 	pte_t pte = __pte(pmd_val(pmd));
+@@ -867,6 +868,7 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
+ /* only used by the stubbed out hugetlb gup code, should never be called */
+ #define pgd_page(pgd)			NULL
+ 
++#define pud_leaf	pud_large
+ static inline unsigned long pud_large(pud_t pud)
+ {
+ 	pte_t pte = __pte(pud_val(pud));
+-- 
+2.20.1
 
-Receiver's Name--------Alan Ude
-Country-------Benin Republic.
-City/ Address--------Cotonou
-Test Question--------In God
-Answer-------We Trust
-Amount------------$US19.00 only
-Mtcn-------------
-Sender's Name-------
-
-Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
-Is Due for delivery to your address today upon confirmation of
-required fee from you asap.
-
-Call us on this phone number for any inquiry. +229 62819378
-Awaiting your urgent response.
-
-MS. MARYANNA B. THOMASON, Shipment director, DHL Express
-Courier Company-Benin
