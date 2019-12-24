@@ -2,50 +2,50 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD11E129EED
+	by mail.lfdr.de (Postfix) with ESMTP id 6076D129EEC
 	for <lists+sparclinux@lfdr.de>; Tue, 24 Dec 2019 09:17:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726065AbfLXIRx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        id S1726084AbfLXIRx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
         Tue, 24 Dec 2019 03:17:53 -0500
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:35328 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726076AbfLXIRx (ORCPT
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:38670 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726065AbfLXIRx (ORCPT
         <rfc822;sparclinux@vger.kernel.org>); Tue, 24 Dec 2019 03:17:53 -0500
-Received: by mail-qk1-f194.google.com with SMTP id z76so15887434qka.2
-        for <sparclinux@vger.kernel.org>; Tue, 24 Dec 2019 00:17:53 -0800 (PST)
+Received: by mail-qk1-f195.google.com with SMTP id k6so15533733qki.5
+        for <sparclinux@vger.kernel.org>; Tue, 24 Dec 2019 00:17:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:reply-to:from:date:message-id:subject:to;
         bh=CCpLOhySAH+LgA9yvIZTnK70QwwFfwHg0l05ys6Nhh4=;
-        b=ngrX+Dg21w469OHpAMewcjol+rPOomEkVydOmpI2XLMp6Mo69KlwKedaD8WUXn/3wP
-         TV41to4pE2PgUSo/ls6ZJ57FK2r2q+y9LEdrDwYViCmsyDja3YRhxgPcI4Lbo5CIekGk
-         UHtI9niPdtE5HnK+M6RodhLjyOjAiA8RykYqqUlTZtguL+h6nrcYX9HaChy7qeGnPjKL
-         Sha2Lq6lynL5R2RvuDAtHINq2hzHLwUBSWPRKvf7pVCaMFuM4K4eVJxnDGbzdvy/w5bs
-         qwZmzBAkXR3aim4Za8Geq4RBtXCQuSf0F4mar5zISyjju2cRHgWYj8aRazmsrWWCuNnB
-         73Wg==
+        b=K52/8X8auUcWw6r/8x/KOiYgrh3vepHgmrDEzt3pyQLo4f/GPER2Yy8oo+Sb6KJ1Fp
+         VZVGacNuAYIUH5nn/f1hIl2YIDK4mAf5HgyqlwsvCUd0EFNPbkQkX8OrKqLbKjmcpr52
+         onuwZpCHUwRdXelG5dnnxxzVMDbektHIvd676OCV8CBJBjrPy9sihtU71/9XInycmZ3s
+         ju8w40H3vcd04UAhmRHIUyt2hPvcYS+ql3BcCSeAp2m9Cp+L0rjlXZFvPYRQE8p9waM+
+         KcSK8cynGBmltDNgltkF9FLUYyzIoUFPypE5iILXDiVK3Z9zXd0TKR/WTpvODlqOvZoX
+         LunA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
         bh=CCpLOhySAH+LgA9yvIZTnK70QwwFfwHg0l05ys6Nhh4=;
-        b=KbBJGQ27sgO8lLa9NylIIAjgHj83KZQHnPEiep6NYcmMu/9hYDJIGupASZei2fMDHr
-         SOuWEJgBsUnD38Zst+SUPrU7+cyvoRquCYJjGkVzlM9EkFQOqjuD15gaqefUATxBmSuW
-         L+QuZ8f/wkVUK1CjjV8nlr0ObBJXARh5nXWcd4/MVo34EyL2nSvYBTxL7oMQPMo9NoHb
-         DwAbgYnJz2qdE7PGCZaCS6gPPnv5MPw2YPzWyDJPFZ6fYvQHvdP4fXchxEVMeV/OLo/+
-         esPqLwLvh5c2hZ0WK4fuJvIidYq5L1vlPLO0QOlx0VTFy+OkL2fvwCKo4T2FvzT/zomK
-         XwYA==
-X-Gm-Message-State: APjAAAWbvgWaJ9/jACH1cxr3MeySTp2EMU0dlReoguCwU1YXSL7nU7mu
-        WPwexTZwipOxUpf4I2QMC/kmdnz5GBk1NDi2sLg=
-X-Google-Smtp-Source: APXvYqwwdWsJneqdnA7mOSlvPZfvWUGNs/yVIM6ssSNMUoYwSOTKpMp2g2MObnMEE6VXCptY3Lw8lSPr/xCzmTNK4NU=
-X-Received: by 2002:a37:5f43:: with SMTP id t64mr29738273qkb.68.1577175472616;
+        b=E0+gs82s9Wb8YlPCKThuLfj2CxaAjTC4Dc3h/Q9jOTwuVYIFENwYg94dFAuIgykYM5
+         92/TubQ/EMSel2GBh+Hgu0wPe72oBTG5lgfjV/Lr8dh1q2iWCmlKVQF8bBem3js3B2kX
+         9cTqZ28tGFj6ku4WvZopCQJepCrNl9iELFLSmtl10pkHwEsgg8xUwpKpH2DV+Bh11D3T
+         gssjelgfrHSquXzY9+/2ZPATwRCZMIelZc+pJJVaq3WjXNyJtZx9C/Jb2826HCoFX2Av
+         Ru9tl8rxTodvcTNf4tviMQfuOxtz7SFVq3MLzI3nfepjmSgdRE93odZqyB6x0hOHRw15
+         NPlg==
+X-Gm-Message-State: APjAAAXN7LKLJhHbYjiiuLRUn/uUdeEaciE1DCelp6hv2rcFEb1Btgzq
+        93UEKVoGgybq0f5Nv2XQYfAYgTy1bPNEN4x0oOM=
+X-Google-Smtp-Source: APXvYqwgs1mHCH5JR2Iv6FfFB7l93Vs6fY096PCjK8mTkdSGmr0hqDbUcmHXEfMlIxHysve3q4KDNhnYC6HllUqXUJI=
+X-Received: by 2002:a37:ad17:: with SMTP id f23mr29594466qkm.24.1577175472598;
  Tue, 24 Dec 2019 00:17:52 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a0c:e3c5:0:0:0:0:0 with HTTP; Tue, 24 Dec 2019 00:17:51
+Received: by 2002:a0c:e3c5:0:0:0:0:0 with HTTP; Tue, 24 Dec 2019 00:17:52
  -0800 (PST)
 Reply-To: bellomouse3@gmail.com
 From:   "Mr.bello Mouse" <musamahmood82@gmail.com>
-Date:   Tue, 24 Dec 2019 08:17:51 +0000
-Message-ID: <CAEKUKd-2wCZY+xMGB=_0ziSkeP=W5DfYeadkozU+n_YgP4Mg4g@mail.gmail.com>
+Date:   Tue, 24 Dec 2019 08:17:52 +0000
+Message-ID: <CAEKUKd9v9zC0hVRoiFaQ120sc9qJx86LGvVuE=MXRE_bSYeo6Q@mail.gmail.com>
 Subject: Dear Friend,
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
