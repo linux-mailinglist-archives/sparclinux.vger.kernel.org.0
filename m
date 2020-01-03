@@ -2,71 +2,101 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64C7A12F798
-	for <lists+sparclinux@lfdr.de>; Fri,  3 Jan 2020 12:42:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A16D12FD82
+	for <lists+sparclinux@lfdr.de>; Fri,  3 Jan 2020 21:17:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727571AbgACLl7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 3 Jan 2020 06:41:59 -0500
-Received: from sonic301-30.consmr.mail.bf2.yahoo.com ([74.6.129.229]:45431
-        "EHLO sonic301-30.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727560AbgACLl7 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 3 Jan 2020 06:41:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1578051718; bh=MJdpASvZnpj3gXKZxrNskiGAl+hYYwdjGUMDZ9fMpsI=; h=Date:From:Reply-To:Subject:References:From:Subject; b=tKwJY7NGkFGmVKaRNsAHvUpDRq6YrpCWNdyu+lxKUE3JNbf22EbOx/7IDxXM9ve1PQDSlT6YhikdaxRv5aPJgtDxZ/UCAazzYqpJfK3cbcTR8R0Q55AUd34kdZy+of1GSYbYvJX863YHGZRHqVzpU61v+a974BmjfQVNYXzik9aN73HE+t7Ss711s4/S9OIVizhQJ4dpfL9QlpqHda4bkbyF84HhqT+1DBgxpdEHYC32F+qwN85UAgbNSMLkqPy5mUxMmVfM+mZ9Ul6udI25X5RqpSQquv9iqYANi6kZZCud3qi/GwTH4Qjzt0sJzPu2pHggsSTYNZ4gpanLDUtBfA==
-X-YMail-OSG: PIJJKLkVM1mx.QqL1Z2QJedCGJ4c8eypvNfxM.TsoI1SsFp0pRsqOBxz9DXfb11
- YQedZUqqgFPHbhrNbcy4eQPCPrEKYZ1SLRt52Qono9u858regMj2k6.1i0oeAHBxwS8GoqQhlqL4
- rR2he5aQUUChUAXbgebQ4VTjsrydUG1HkdDjvUHUmeCIBsXuv7aiwjWdnKtttJxjKOqhmIiiAemr
- ykqq5VCV6rgESM1pM1UUZSfftMavMvaFWFUQL.Jk.VNHuuzRvW2XlSbmcCv2NAE7L1qWxKsSZyIP
- rdqMGEqb6qe2BBhoGxEqxRvHsFV3jmxt08ivkL7DUHL1YmGUy7Z_AZqqzRnjlnnaMfH.3zH_uaMY
- VFhl_bdFDyLeGfuEk1DRQyvzEUapBHc7i8cNllhhwk2Td2V.XvczFE7wI3rYfTNy1j5pDbzrsFd3
- hqpEWAy3Ub7kiWsbzbVFh_XYw3OWAX40VerWOQN6z9Nr1ckXbdGPR8sQNTu4jzTS_8GjbHgLWNtB
- mZdjA7lmDHZ8Sc9WhjRALCrdFwdzbNOYyePkMlgBQxAeWSUCapftY..tznS6XZednYF.CwSqQzzL
- CSibbE4idWoaOrdEOSgaL7uxbITuC.JeLaamDlApbhIM3GB2wsdUFZoSZupjvmFzcFJgF9xbulkX
- EXo92MIoiT3qaf2TZNk6qP3MTY89sWHBLk507zRB8I9kE3KbaOpQfBJfMH4p1mlNGp0V4IA8d9pH
- n1hSfWPdK7ueG0WQw6sokvmlTSaKIP58ZE07mbEK4IYsJGDFD7hSRD2yxAGayKmLXeue8lG8JJrE
- d60HbiK1X7LjpFNWlFOO9aE.Jgpsu5yY29Wulg6chLvbOd6l1gw1ucpZJ_twILWVNzL3uUOn9wQP
- jeSCti5IRgbvjZcKw._31b_pgMGGfJulkCL5q5CI53WxVBn4ti0uAghkD43yZr9omySgTgOf8Rj9
- 7ab8QDNknxZ7goqjgP6zfbxVXf6lOeJGtONEOmXOhMwFwvLYe7JOdT6DhGrvYvd78YwUwCqkGG41
- aZm9cdUcaA23MlkWX8NUtqQbWhVfHrpCFhWDL3Ow3j40wQ8UydEhVOGgmM2LhZbbaxaUwtfbPDGU
- 3qTZuHzfgCiHYvw7Pw3BWTLgvEYfVf0VSklivk7ZYqU_YWV_t.4wZGDMo_y2JSTDCPn6.yuBCEHt
- ColeBsO1tKuYu4u9N9tLEGgyFmhxGu3hLSioWeD8dM14H5Duhqy1TYQ8Cwrh0n.ok42w_l5j5Tf7
- D7ujESRdEBQsvE_xD6vgXpiK5IGLQFsKcaS1sUpjOhk9qA4edhgJ4ZcDVm7aiws2sHAYsEL7PBYT
- dWR6sVLmdvns4IMVCAsmDrgRUR5gwqwsDEG0mDhk-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.bf2.yahoo.com with HTTP; Fri, 3 Jan 2020 11:41:58 +0000
-Date:   Fri, 3 Jan 2020 11:39:57 +0000 (UTC)
-From:   Brian Gilvary <1brian.gilvary@gmail.com>
-Reply-To: gilvarybrian@aol.com
-Message-ID: <156407729.4076756.1578051597568@mail.yahoo.com>
-Subject: Happy New Year For Our Mutual Benefits
+        id S1726181AbgACURd (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 3 Jan 2020 15:17:33 -0500
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:44230 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726050AbgACURd (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 3 Jan 2020 15:17:33 -0500
+Received: by mail-qt1-f193.google.com with SMTP id t3so37685775qtr.11
+        for <sparclinux@vger.kernel.org>; Fri, 03 Jan 2020 12:17:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
+        b=kvG2j10dc/x149Lvd2PqajucugKxGtByrF79F+MpDwmOZLqww+45fvxHskJsN8Ii6b
+         KldrZCwSEN5Q2dsGx1fDhOLYmPcWSn7WdeVH/1jQP+5FwtyhLB0k5YaD1zzC8deBZf37
+         HhQV4jBWlYFvokASjEitvzFal9+YgqQnyjJDGPOJYC1QIakAl3HmLWk2vXnOM+aQRseZ
+         OgeKMgQjCiMgIlIpiulhdra/0Mu9O5ssQZ3e4geEPgfnjbXdDBgbsiJeoUd2/UiBLwHR
+         CbxFOuaK2FechXh0mib3DZTvmckiLZI/5Qndhro1eajCgpN/vCxGKhM9q583eP9f6cpr
+         Himg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
+        b=FnS8WP7NU6fqlkN9cW8s3qqvZRHftyglko2SyYq2jBNrhGdhW+eLp3g6YesEYhSFhg
+         72+XLSgFJAN6iSGuw09rpN1I58k1F4vVwJz/RyHkbDNwlnKRVypArcU9tBezOE3+gjBr
+         fcIT0lDI3u74w1oofqJ1ovR4Gfdzoyyiem80pE8frxyh+pTNL3HSyc9vvGa5+HDbnv1y
+         Jhszkb1W7eDTP5ICT8ploJ3mrgUUBkq2c4sXEYG+5EYIbnXx+aX+gihJbygzvyAeAtFu
+         ie8DLo/Kep6nSfCrDitcgncRxTrABZVJfl9Qc2xK0twbt92eJKy0QQb3em+80A+Xm3Xg
+         ChKw==
+X-Gm-Message-State: APjAAAVOeroehu7AnBLtP4lUg0V6W0aBpnbmZcBS8Xzdp1oI48yUsj7p
+        hPDbFtc02px17z5vY6FLuMawNSFoTnrp+sRZk4OPt1c=
+X-Google-Smtp-Source: APXvYqxIVqrrjy9/EAUgetN1hmwzHTE39KCpRcnhtP87+W6XTssHaZMmJaB06OG8VkYgI3fWFgd0cqeP/5P8qpoVDMQ=
+X-Received: by 2002:a02:a898:: with SMTP id l24mr60341090jam.107.1578082248327;
+ Fri, 03 Jan 2020 12:10:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <156407729.4076756.1578051597568.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.14873 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0
-To:     unlisted-recipients:; (no To-header on input)
+Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Fri, 3 Jan 2020 12:10:48 -0800 (PST)
+Reply-To: mikebenz550@aol.com
+From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
+Date:   Fri, 3 Jan 2020 21:10:48 +0100
+Message-ID: <CABHzvrks3U6DC+=nSMq63OcUygjbdB1kXZQEpZCeroZN=t_tSQ@mail.gmail.com>
+Subject: contact my Diplomatic Agent, His name is Mike Benz o receive your
+ prepaid (ATM) Debit card of US$12,500.000.00
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi
+Dear Friend
 
-As the Chief Financial Officer, British Petroleum Company plc (BP), I am in=
- a position to facilitate immediate transfer of =C2=A3 48,000,000.00 (Forty=
- Eight Million British Pounds Sterling), to any of your nominated Bank Acco=
-unt.
+i hope all is well with you,if so, glory be to God almighty. I'm very
+happy to inform you, about my success in getting payment funds under
+the cooperation of a new partner from United States of
+America.Presently I am in uk for investment projects with my own share
+of the total sum. I didn't forget your past efforts. IMF finally
+approved your compensation payment funds this morning by prepaid (ATM)
+Debit card of US$12,500.000.00Million Dollars, Since you not received
+this payment yet, I was not certified
+but it is not your fault and not my fault, I hold nothing against
+you.than bank official whom has been detaining the transfer in the
+bank, trying to claim your funds by themselves.
 
-Source of Funds: An over-invoiced payment from a past project executed in m=
-y department. I cannot successfully achieve this transaction without presen=
-ting you as foreign contractor who will provide the bank account to receive=
- the funds. Every documentation for the claim of the funds will be legally =
-processed and documented, so I will need your full co-operation for our mut=
-ual benefits.
+Therefore, in appreciation of your effort I have raised an
+International prepaid (ATM) Debit card of US$12,500.000.00 in your
+favor as compensation to you.
 
-We will discuss details if you are interested to work with me to secure thi=
-s funds, as I said for our mutual benefits. I will be looking forward to yo=
-ur prompt response.
+Now, i want you to contact my Diplomatic Agent, His name is Mike Benz
+on His  e-mail Address (mikebenz550@aol.com
 
-Best regards
-Brian Gilvary
-Chief financial officer
-BP, Plc.
+ask Him to send the Prepaid (ATM) Debit card to you. Bear in mind that
+the money is in Prepaid (ATM) Debit card, not cash, so you need to
+send to him,
+your full name
+address  where the prepaid (ATM) Debit card will be delivered to you,
+including your cell phone number. Finally, I left explicit
+instructions with him, on how to send the (ATM CARD) to you.
+
+The Prepaid (ATM) Debit card, will be send to you through my
+Diplomatic Agent Mr. Mike Benz immediately you contact him. So contact
+my Diplomatic Agent Mr. Mike Benz immediately you receive this letter.
+Below is his contact information:
+
+NAME : MIKE BENZ
+EMAIL ADDRESS: mikebenz550@aol.com
+Text Him, (256) 284-4886
+
+Request for Delivery of the Prepaid (ATM) Debit card  to you today.
+Note, please I have paid for the whole service fees for you, so the
+only money you will send to my Diplomatic Agent Mr. Mike Benz is
+$50.00 for your prepaid (ATM) Debit card DELIVERY FEE to your address
+ok.
+Let me know once you receive this Card at your address.
+Best regards,
+Rev.Dr, George Adadar
