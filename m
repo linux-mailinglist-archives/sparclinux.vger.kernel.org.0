@@ -2,101 +2,93 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A16D12FD82
-	for <lists+sparclinux@lfdr.de>; Fri,  3 Jan 2020 21:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D6E513035B
+	for <lists+sparclinux@lfdr.de>; Sat,  4 Jan 2020 16:46:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726181AbgACURd (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 3 Jan 2020 15:17:33 -0500
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:44230 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726050AbgACURd (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 3 Jan 2020 15:17:33 -0500
-Received: by mail-qt1-f193.google.com with SMTP id t3so37685775qtr.11
-        for <sparclinux@vger.kernel.org>; Fri, 03 Jan 2020 12:17:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
-        b=kvG2j10dc/x149Lvd2PqajucugKxGtByrF79F+MpDwmOZLqww+45fvxHskJsN8Ii6b
-         KldrZCwSEN5Q2dsGx1fDhOLYmPcWSn7WdeVH/1jQP+5FwtyhLB0k5YaD1zzC8deBZf37
-         HhQV4jBWlYFvokASjEitvzFal9+YgqQnyjJDGPOJYC1QIakAl3HmLWk2vXnOM+aQRseZ
-         OgeKMgQjCiMgIlIpiulhdra/0Mu9O5ssQZ3e4geEPgfnjbXdDBgbsiJeoUd2/UiBLwHR
-         CbxFOuaK2FechXh0mib3DZTvmckiLZI/5Qndhro1eajCgpN/vCxGKhM9q583eP9f6cpr
-         Himg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
-        b=FnS8WP7NU6fqlkN9cW8s3qqvZRHftyglko2SyYq2jBNrhGdhW+eLp3g6YesEYhSFhg
-         72+XLSgFJAN6iSGuw09rpN1I58k1F4vVwJz/RyHkbDNwlnKRVypArcU9tBezOE3+gjBr
-         fcIT0lDI3u74w1oofqJ1ovR4Gfdzoyyiem80pE8frxyh+pTNL3HSyc9vvGa5+HDbnv1y
-         Jhszkb1W7eDTP5ICT8ploJ3mrgUUBkq2c4sXEYG+5EYIbnXx+aX+gihJbygzvyAeAtFu
-         ie8DLo/Kep6nSfCrDitcgncRxTrABZVJfl9Qc2xK0twbt92eJKy0QQb3em+80A+Xm3Xg
-         ChKw==
-X-Gm-Message-State: APjAAAVOeroehu7AnBLtP4lUg0V6W0aBpnbmZcBS8Xzdp1oI48yUsj7p
-        hPDbFtc02px17z5vY6FLuMawNSFoTnrp+sRZk4OPt1c=
-X-Google-Smtp-Source: APXvYqxIVqrrjy9/EAUgetN1hmwzHTE39KCpRcnhtP87+W6XTssHaZMmJaB06OG8VkYgI3fWFgd0cqeP/5P8qpoVDMQ=
-X-Received: by 2002:a02:a898:: with SMTP id l24mr60341090jam.107.1578082248327;
- Fri, 03 Jan 2020 12:10:48 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Fri, 3 Jan 2020 12:10:48 -0800 (PST)
-Reply-To: mikebenz550@aol.com
-From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
-Date:   Fri, 3 Jan 2020 21:10:48 +0100
-Message-ID: <CABHzvrks3U6DC+=nSMq63OcUygjbdB1kXZQEpZCeroZN=t_tSQ@mail.gmail.com>
-Subject: contact my Diplomatic Agent, His name is Mike Benz o receive your
- prepaid (ATM) Debit card of US$12,500.000.00
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S1726061AbgADPqK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 4 Jan 2020 10:46:10 -0500
+Received: from condef-07.nifty.com ([202.248.20.72]:49700 "EHLO
+        condef-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725943AbgADPqK (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 4 Jan 2020 10:46:10 -0500
+X-Greylist: delayed 409 seconds by postgrey-1.27 at vger.kernel.org; Sat, 04 Jan 2020 10:46:09 EST
+Received: from conuserg-09.nifty.com ([10.126.8.72])by condef-07.nifty.com with ESMTP id 004Fbh2V019879
+        for <sparclinux@vger.kernel.org>; Sun, 5 Jan 2020 00:37:44 +0900
+Received: from grover.flets-west.jp (softbank126093102113.bbtec.net [126.93.102.113]) (authenticated)
+        by conuserg-09.nifty.com with ESMTP id 004Faw61022777;
+        Sun, 5 Jan 2020 00:36:59 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com 004Faw61022777
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1578152219;
+        bh=tV/KSjNMmwmjEzyTu+uQ7dm3w/eBbGsBUx5SRxF+k+8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oubbIxWAEu95j2GDVXf1eMJHA0m5QzAW7Smau+6TPjB1EKpBkVMvEXoKpgfogGjem
+         rcprW5oVfaPtcSDLvvhzxiQk+0Mfk5LNmrar4fEqkNknrkzWhQX2sDeDX2d8pKJwqB
+         yv/VwEGN46tJU2bUFCcCPd8JMiwOPw+ssIF+65bT1Gh04uJxw0zNJXWXnfUgJy8HFL
+         b4g4i5EyoyaA9eSbEm5eORG80lqcfY/nYfln2buxqVaAUmk6bnOB4kRbTvf+Kc9xSs
+         kaElh4r5d32wNq6VP+aOa+f7LPBkaNu86VZAxIKKtjUiw1ZMEyM1m4a9kz/0JpicZ3
+         AxNqEFZN8cMSw==
+X-Nifty-SrcIP: [126.93.102.113]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Ben Colline <bcollins@debian.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] modpost: assume STT_SPARC_REGISTER is defined
+Date:   Sun,  5 Jan 2020 00:36:51 +0900
+Message-Id: <20200104153651.2258-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dear Friend
+Commit 8d5290149ee1 ("[SPARC]: Deal with glibc changing macro names in
+modpost.c") was more than 14 years ago. STT_SPARC_REGISTER is hopefully
+defined in elf.h of recent C libraries.
 
-i hope all is well with you,if so, glory be to God almighty. I'm very
-happy to inform you, about my success in getting payment funds under
-the cooperation of a new partner from United States of
-America.Presently I am in uk for investment projects with my own share
-of the total sum. I didn't forget your past efforts. IMF finally
-approved your compensation payment funds this morning by prepaid (ATM)
-Debit card of US$12,500.000.00Million Dollars, Since you not received
-this payment yet, I was not certified
-but it is not your fault and not my fault, I hold nothing against
-you.than bank official whom has been detaining the transfer in the
-bank, trying to claim your funds by themselves.
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-Therefore, in appreciation of your effort I have raised an
-International prepaid (ATM) Debit card of US$12,500.000.00 in your
-favor as compensation to you.
+ scripts/mod/modpost.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-Now, i want you to contact my Diplomatic Agent, His name is Mike Benz
-on His  e-mail Address (mikebenz550@aol.com
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 6e892c93d104..7edfdb2f4497 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -12,6 +12,7 @@
+  */
+ 
+ #define _GNU_SOURCE
++#include <elf.h>
+ #include <stdio.h>
+ #include <ctype.h>
+ #include <string.h>
+@@ -729,12 +730,6 @@ static void handle_symbol(struct module *mod, struct elf_info *info,
+ 			break;
+ 		if (ignore_undef_symbol(info, symname))
+ 			break;
+-/* cope with newer glibc (2.3.4 or higher) STT_ definition in elf.h */
+-#if defined(STT_REGISTER) || defined(STT_SPARC_REGISTER)
+-/* add compatibility with older glibc */
+-#ifndef STT_SPARC_REGISTER
+-#define STT_SPARC_REGISTER STT_REGISTER
+-#endif
+ 		if (info->hdr->e_machine == EM_SPARC ||
+ 		    info->hdr->e_machine == EM_SPARCV9) {
+ 			/* Ignore register directives. */
+@@ -747,7 +742,6 @@ static void handle_symbol(struct module *mod, struct elf_info *info,
+ 				symname = munged;
+ 			}
+ 		}
+-#endif
+ 
+ 		mod->unres = alloc_symbol(symname,
+ 					  ELF_ST_BIND(sym->st_info) == STB_WEAK,
+-- 
+2.17.1
 
-ask Him to send the Prepaid (ATM) Debit card to you. Bear in mind that
-the money is in Prepaid (ATM) Debit card, not cash, so you need to
-send to him,
-your full name
-address  where the prepaid (ATM) Debit card will be delivered to you,
-including your cell phone number. Finally, I left explicit
-instructions with him, on how to send the (ATM CARD) to you.
-
-The Prepaid (ATM) Debit card, will be send to you through my
-Diplomatic Agent Mr. Mike Benz immediately you contact him. So contact
-my Diplomatic Agent Mr. Mike Benz immediately you receive this letter.
-Below is his contact information:
-
-NAME : MIKE BENZ
-EMAIL ADDRESS: mikebenz550@aol.com
-Text Him, (256) 284-4886
-
-Request for Delivery of the Prepaid (ATM) Debit card  to you today.
-Note, please I have paid for the whole service fees for you, so the
-only money you will send to my Diplomatic Agent Mr. Mike Benz is
-$50.00 for your prepaid (ATM) Debit card DELIVERY FEE to your address
-ok.
-Let me know once you receive this Card at your address.
-Best regards,
-Rev.Dr, George Adadar
