@@ -2,35 +2,47 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B12C132143
-	for <lists+sparclinux@lfdr.de>; Tue,  7 Jan 2020 09:21:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBF42132D8F
+	for <lists+sparclinux@lfdr.de>; Tue,  7 Jan 2020 18:51:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727167AbgAGIVQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Tue, 7 Jan 2020 03:21:16 -0500
-Received: from terminus.zytor.com ([198.137.202.136]:44923 "EHLO
-        mail.zytor.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726485AbgAGIVQ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 7 Jan 2020 03:21:16 -0500
-Received: from [IPv6:2601:646:8600:3281:c17a:5ef:6afe:4c48] ([IPv6:2601:646:8600:3281:c17a:5ef:6afe:4c48])
-        (authenticated bits=0)
-        by mail.zytor.com (8.15.2/8.15.2) with ESMTPSA id 0078K3ZN3264752
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
-        Tue, 7 Jan 2020 00:20:03 -0800
-Authentication-Results: mail.zytor.com; dkim=permerror (bad message/signature format)
-From:   "H. Peter Anvin" <hpa@zytor.com>
-Message-Id: <202001070820.0078K3ZN3264752@mail.zytor.com>
-Date:   Tue, 07 Jan 2020 00:19:53 -0800
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAK8P3a17GshP1KmCpvCkWGDGJLC_JrGUFQZTLbfe5+sSwTjyxw@mail.gmail.com>
-References: <20200102145552.1853992-1-arnd@arndb.de> <20200102145552.1853992-3-arnd@arndb.de> <87woa410nx.fsf@mpe.ellerman.id.au> <CAK8P3a17GshP1KmCpvCkWGDGJLC_JrGUFQZTLbfe5+sSwTjyxw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Subject: Re: [PATCH v3 02/22] compat: provide compat_ptr() on all architectures
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>
-CC:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        id S1728488AbgAGRvg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 7 Jan 2020 12:51:36 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:5232 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728292AbgAGRvg (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 7 Jan 2020 12:51:36 -0500
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 007HeMDS137169
+        for <sparclinux@vger.kernel.org>; Tue, 7 Jan 2020 12:51:35 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2xctgptea6-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <sparclinux@vger.kernel.org>; Tue, 07 Jan 2020 12:51:35 -0500
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <sparclinux@vger.kernel.org> from <heiko.carstens@de.ibm.com>;
+        Tue, 7 Jan 2020 17:51:33 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 7 Jan 2020 17:51:24 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 007HpN7f58654844
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 7 Jan 2020 17:51:23 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 485AFA405C;
+        Tue,  7 Jan 2020 17:51:23 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4789EA4062;
+        Tue,  7 Jan 2020 17:51:22 +0000 (GMT)
+Received: from osiris (unknown [9.145.85.21])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Tue,  7 Jan 2020 17:51:22 +0000 (GMT)
+Date:   Tue, 7 Jan 2020 18:51:20 +0100
+From:   Heiko Carstens <heiko.carstens@de.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
@@ -41,47 +53,66 @@ CC:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
         Helge Deller <deller@gmx.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Robert Richter <rric@kernel.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>,
         Christian Borntraeger <borntraeger@de.ibm.com>,
         "David S. Miller" <davem@davemloft.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev@zytor.com
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        oprofile-list@lists.sf.net, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH v3 02/22] compat: provide compat_ptr() on all
+ architectures
+References: <20200102145552.1853992-1-arnd@arndb.de>
+ <20200102145552.1853992-3-arnd@arndb.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200102145552.1853992-3-arnd@arndb.de>
+X-TM-AS-GCONF: 00
+x-cbid: 20010717-0016-0000-0000-000002DB3EDC
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20010717-0017-0000-0000-0000333DB70D
+Message-Id: <20200107175120.GC4684@osiris>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-01-07_06:2020-01-07,2020-01-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 impostorscore=0
+ mlxlogscore=403 lowpriorityscore=0 suspectscore=1 mlxscore=0 adultscore=0
+ clxscore=1011 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001070140
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-<linuxppc-dev@lists.ozlabs.org>,oprofile-list@lists.sf.net,linux-s390 <linux-s390@vger.kernel.org>,sparclinux <sparclinux@vger.kernel.org>
-From: hpa@zytor.com
-Message-ID: <41625F06-D755-4C82-86DF-A9415FEEE13D@zytor.com>
+On Thu, Jan 02, 2020 at 03:55:20PM +0100, Arnd Bergmann wrote:
+> In order to avoid needless #ifdef CONFIG_COMPAT checks,
+> move the compat_ptr() definition to linux/compat.h
+> where it can be seen by any file regardless of the
+> architecture.
+> 
+> Only s390 needs a special definition, this can use the
+> self-#define trick we have elsewhere.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/arm64/include/asm/compat.h   | 17 -----------------
+>  arch/mips/include/asm/compat.h    | 18 ------------------
+>  arch/parisc/include/asm/compat.h  | 17 -----------------
+>  arch/powerpc/include/asm/compat.h | 17 -----------------
+>  arch/powerpc/oprofile/backtrace.c |  2 +-
+>  arch/s390/include/asm/compat.h    |  6 +-----
+>  arch/sparc/include/asm/compat.h   | 17 -----------------
+>  arch/x86/include/asm/compat.h     | 17 -----------------
+>  include/linux/compat.h            | 18 ++++++++++++++++++
+>  9 files changed, 20 insertions(+), 109 deletions(-)
 
-On January 7, 2020 12:08:31 AM PST, Arnd Bergmann <arnd@arndb.de> wrote:
->On Tue, Jan 7, 2020 at 3:05 AM Michael Ellerman <mpe@ellerman.id.au>
->wrote:
->> Arnd Bergmann <arnd@arndb.de> writes:
->> > +
->> > +static inline compat_uptr_t ptr_to_compat(void __user *uptr)
->> > +{
->> > +     return (u32)(unsigned long)uptr;
->> > +}
->>
->> Is there a reason we cast to u32 directly instead of using
->compat_uptr_t?
->
->Probably Al found this to be more explicit at the time when he
->introduced
->it on all the architectures in 2005. I just moved it here and kept the
->definition.
->
->       Arnd
+For s390:
 
-Did compat_uptr_t exist back then?
--- 
-Sent from my Android device with K-9 Mail. Please excuse my brevity.
+Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
+
