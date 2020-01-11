@@ -2,59 +2,76 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C00C13464F
-	for <lists+sparclinux@lfdr.de>; Wed,  8 Jan 2020 16:34:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72BA0137C2B
+	for <lists+sparclinux@lfdr.de>; Sat, 11 Jan 2020 08:34:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727370AbgAHPek (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 8 Jan 2020 10:34:40 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:50432 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727260AbgAHPej (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 8 Jan 2020 10:34:39 -0500
-Received: from p5b06da22.dip0.t-ipconnect.de ([91.6.218.34] helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1ipDLt-0001th-CA; Wed, 08 Jan 2020 16:34:33 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-        id CC2F51060B2; Wed,  8 Jan 2020 16:34:32 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Julian Calaby <julian.calaby@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] y2038: sparc: remove use of struct timex
-In-Reply-To: <20191216144907.1931511-1-arnd@arndb.de>
-References: <20191216144907.1931511-1-arnd@arndb.de>
-Date:   Wed, 08 Jan 2020 16:34:32 +0100
-Message-ID: <871rsaezcn.fsf@nanos.tec.linutronix.de>
+        id S1728528AbgAKHeH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 11 Jan 2020 02:34:07 -0500
+Received: from condef-04.nifty.com ([202.248.20.69]:48082 "EHLO
+        condef-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728519AbgAKHeH (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 11 Jan 2020 02:34:07 -0500
+Received: from conssluserg-05.nifty.com ([10.126.8.84])by condef-04.nifty.com with ESMTP id 00B7QsEG013877
+        for <sparclinux@vger.kernel.org>; Sat, 11 Jan 2020 16:26:54 +0900
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50]) (authenticated)
+        by conssluserg-05.nifty.com with ESMTP id 00B7Qkqn019522;
+        Sat, 11 Jan 2020 16:26:46 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 00B7Qkqn019522
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1578727606;
+        bh=Oez0PWkvJzbirGu9XUv5GpDknxpE3iT4wQ/WGTnEZGk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=OU9VyRCAg63hXHlPj7fZjZnHsl+P3BkEMahAtPeWhzL/R1IZjBlQ3QagqhAqCUise
+         fWCzryK8QNRlChSpBKzL4Nk5LfV4rw4+opIGEQzjBcC8umw4Lvtt8Hb7gKz4CTlsc6
+         CH4LtfhzkL96GlvoAq1UCkLGHPfbomOAc1ot1qAtna8iJFBTzIMuvhyNSxWFd14xTw
+         WmgckwYMpRzwIOcsZrNTpI8ztFSh5N6id6Yet/YUrkKh7wendZVsL6QegPA9ivjk8G
+         1emxX8rvyi7xqCCLT9lgRy2uBz0G6VROMn/UsS1G/Q3o+FxX5W5X2FvIpw9bM4VmSm
+         yWLUWJ73+GmFA==
+X-Nifty-SrcIP: [209.85.217.50]
+Received: by mail-vs1-f50.google.com with SMTP id n27so2772127vsa.0;
+        Fri, 10 Jan 2020 23:26:46 -0800 (PST)
+X-Gm-Message-State: APjAAAWJ5Q36dKZEV6EETNc7Efe6JYEgNKZLiMEOIQSr4TIDO1dqy9Mf
+        K7QocBnfX2oAKqi+AMQGSjh8MUevkf1t0AIMP+g=
+X-Google-Smtp-Source: APXvYqySGvEmaVJEV6CA9jXihO26Mjnu9i7UKdrtysB9lRCJ4u643fD/6pElVAeDnNEu2QzhOVz4inVeQ+YeDU8+D9Y=
+X-Received: by 2002:a05:6102:3102:: with SMTP id e2mr1343996vsh.179.1578727605332;
+ Fri, 10 Jan 2020 23:26:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <20200104153651.2258-1-masahiroy@kernel.org> <20200106.133336.719905028750983361.davem@redhat.com>
+In-Reply-To: <20200106.133336.719905028750983361.davem@redhat.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Sat, 11 Jan 2020 16:26:09 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASGJvim3Mfp3LqLd2kKR-HLM0vwwx81fSAQtWZHuqYsFw@mail.gmail.com>
+Message-ID: <CAK7LNASGJvim3Mfp3LqLd2kKR-HLM0vwwx81fSAQtWZHuqYsFw@mail.gmail.com>
+Subject: Re: [PATCH] modpost: assume STT_SPARC_REGISTER is defined
+To:     David Miller <davem@redhat.com>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, bcollins@debian.org,
+        Michal Marek <michal.lkml@markovi.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Arnd Bergmann <arnd@arndb.de> writes:
-
-> 'struct timex' is one of the last users of 'struct timeval' and is
-> only referenced in one place in the kernel any more, to convert the
-> user space timex into the kernel-internal version on sparc64, with a
-> different tv_usec member type.
+On Tue, Jan 7, 2020 at 6:33 AM David Miller <davem@redhat.com> wrote:
 >
-> As a preparation for hiding the time_t definition and everything
-> using that in the kernel, change the implementation once more
-> to only convert the timeval member, and then enclose the
-> struct definition in an #ifdef.
+> From: Masahiro Yamada <masahiroy@kernel.org>
+> Date: Sun,  5 Jan 2020 00:36:51 +0900
 >
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > Commit 8d5290149ee1 ("[SPARC]: Deal with glibc changing macro names in
+> > modpost.c") was more than 14 years ago. STT_SPARC_REGISTER is hopefully
+> > defined in elf.h of recent C libraries.
+> >
+> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+>
+> Acked-by: David S. Miller <davem@davemloft.net>
+>
 
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Applied to linux-kbuild.
+
+
+-- 
+Best Regards
+Masahiro Yamada
