@@ -2,77 +2,72 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A0F1386FF
-	for <lists+sparclinux@lfdr.de>; Sun, 12 Jan 2020 17:11:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2071138B96
+	for <lists+sparclinux@lfdr.de>; Mon, 13 Jan 2020 07:04:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733067AbgALQLm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 12 Jan 2020 11:11:42 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:48492 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733064AbgALQLm (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 12 Jan 2020 11:11:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=1+A5yMx/hadKl2P1tm/QfUD0t0TCrjMPGCQ0JxklxbA=; b=owWI3AU82rKPTDPSZXEWTdn45
-        04sl03a2ZMcTByAhW4aV9m02yEexy+wHcEpjuNMFXzCZDEUJied3xK3tqdtX6wQFunl0byBTaw3Hz
-        odbdFb1auhHpyFLzbGa63JST0wrGRB4SRD1qnFaXDa6yC7+P/W7Prz2gYAAL8zUsLLMszMzu/uiDk
-        4qmG2xXqwbk0uZA7d/8va9Z/Ba0l/kjS0HvbEOU4Wd///cOfYvn1BAVsR3LfiwCQd3QcDasUqoQyd
-        O4ZGeUqJb/SYlzYeg52EnSLCpM98D+I9asNH3YV2A5s0SSsAEwV0fnoroKXzk369YgwaHbI6omxNO
-        IdSX4E2sw==;
-Received: from [2601:1c0:6280:3f0::ed68]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iqfpx-0000d8-T9; Sun, 12 Jan 2020 16:11:37 +0000
-Subject: Re: [PATCH] tty: n_hdlc: fix build on SPARC
-To:     David Miller <davem@davemloft.net>
-Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
-        akpm@linux-foundation.org, gregkh@linuxfoundation.org,
-        keescook@chromium.org, lkp@intel.com
-References: <675e7bd9-955b-3ff3-1101-a973b58b5b75@infradead.org>
- <20200112.000504.1994757840298424991.davem@davemloft.net>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <19f684bb-42ad-6c79-f6b8-102f6e036570@infradead.org>
-Date:   Sun, 12 Jan 2020 08:11:35 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1729099AbgAMGEn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 13 Jan 2020 01:04:43 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:35406 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725909AbgAMGEn (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 13 Jan 2020 01:04:43 -0500
+Received: by mail-oi1-f196.google.com with SMTP id k4so7250827oik.2
+        for <sparclinux@vger.kernel.org>; Sun, 12 Jan 2020 22:04:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=n/jAINEr/51/EWMAvdlfd0aQr3WFu/H/4pNXwzZ0qsS3EEC6iGFWz8J/36AZ0YOAQ/
+         FHIy4BTCM098b37oQ9cBLMNd3nncRYNfJe0i3zC4Hvvrtnh8+NCxK2PxH2tzSJuW++9D
+         Tc48NcKxsZ9HzzxE2lWSWT7JfUAK07rIAqJBQfUSFteFJbCXkNiG0H15kItIDP2ULTDm
+         2/lOXmqy7jdi6frAbnWvMrIWiEki/aBfUCyiiUjgYE719eHB8xXozbFL/DODSOuY5wtc
+         6VIWmNnukuvc3+j9fQ5gQjYH/2gGfhBIMviuZIwP6FKgsnXcyi7E61ycA+TUdKxMZ89S
+         y0eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=qFsSaizwzwjEoty7ZjxamwGy5B+LdoWM+4IJDmFVkKjeRlvmcXbfVpf05lAi+8OyLd
+         moPXZsZtILp5wzqidRzBlutgPkpSyjE3tVPjQUq4xgdHPGqu+/taMb0DOtiydaabzjSj
+         Z8vYfAZ2lqG29QvAnRliETPb36PNs9/B3p5UBkccw0gYMf/VdtC0VbKbXfqkNfhxEDkm
+         nGeZmCuA59Xl9mmfx85ocaroj39jqxIp5vO+rw+RWE7ASq5x2K+aYmJ/o9MYs2HPlYVE
+         JaubvDnE8Zz4ZOg2rUbV2LWr4Z3dLyu/iDFqv/r7ZYrAtjHMOS1dE1MR6Hn41TrHm5Ca
+         Ru4A==
+X-Gm-Message-State: APjAAAWrOTyHqnAvOB9eK8tlsSQgu1LEr/y3zsX1mixzFAk+xlCikZpw
+        sy9hHN6NsmzP3+oQ+t9Ceu6ZVYmOv8PLEdHkA+Y=
+X-Google-Smtp-Source: APXvYqzk9dCopWjNHW03GuviTQb/5We304YhWYKy2MTfGGxxKPuEoAlqIPtlNBi5thBm+6jtj4KvhbO3/5HlFPOTmck=
+X-Received: by 2002:a05:6808:aac:: with SMTP id r12mr11726956oij.59.1578895482307;
+ Sun, 12 Jan 2020 22:04:42 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200112.000504.1994757840298424991.davem@davemloft.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a9d:6f93:0:0:0:0:0 with HTTP; Sun, 12 Jan 2020 22:04:41
+ -0800 (PST)
+Reply-To: rickschaech@gmail.com
+From:   Rick Schaech <msjulianaalfred@gmail.com>
+Date:   Mon, 13 Jan 2020 02:04:41 -0400
+Message-ID: <CADBcy2JVwN49aa-JrbqhxFXCdGh+k0Up2NKBGgE0Q4BrF-iY0A@mail.gmail.com>
+Subject: I wait for your swift response,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 1/12/20 12:05 AM, David Miller wrote:
-> From: Randy Dunlap <rdunlap@infradead.org>
-> Date: Mon, 30 Sep 2019 19:15:12 -0700
-> 
->> From: Randy Dunlap <rdunlap@infradead.org>
->>
->> Fix tty driver build on SPARC by not using __exitdata.
->> It appears that SPARC does not support section .exit.data.
->>
->> Fixes these build errors:
->>
->> `.exit.data' referenced in section `.exit.text' of drivers/tty/n_hdlc.o: defined in discarded section `.exit.data' of drivers/tty/n_hdlc.o
->> `.exit.data' referenced in section `.exit.text' of drivers/tty/n_hdlc.o: defined in discarded section `.exit.data' of drivers/tty/n_hdlc.o
->> `.exit.data' referenced in section `.exit.text' of drivers/tty/n_hdlc.o: defined in discarded section `.exit.data' of drivers/tty/n_hdlc.o
->> `.exit.data' referenced in section `.exit.text' of drivers/tty/n_hdlc.o: defined in discarded section `.exit.data' of drivers/tty/n_hdlc.o
->>
->> Reported-by: kbuild test robot <lkp@intel.com>
->> Fixes: 063246641d4a ("format-security: move static strings to const")
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> 
-> I'll add an .exit.data to arch/sparc/kernel/vmlinux.lds.S to fix this.
-> 
+Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
+know we have not meet each other before but sometimes in life God have
+a reason of bringing two people from two different countries together
+as business partners or life partners.
 
-Thanks.
+My dear friend, I have the sum of 15.7 Million USD i wish to put in
+your name due to the death of my late client who died several years
+ago as his next of kin column still remain blank. Though the internet
+medium is highly abuse these days but am assuring you that this
+transaction is legitimate and I am contacting you that we may have a
+deal, note for your cooperation and collaboration 40% of the sum will
+be for you while the other 60% will be for me as well. I wait for your
+swift response for more details. please forward your response to my
+personal E-mail: rickschaech@gmail.com
 
--- 
-~Randy
-
+Yours sincerely,
+Rick Schaech.
