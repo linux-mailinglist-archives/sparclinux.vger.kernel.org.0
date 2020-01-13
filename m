@@ -2,88 +2,60 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9235B139578
-	for <lists+sparclinux@lfdr.de>; Mon, 13 Jan 2020 17:08:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7100D13967F
+	for <lists+sparclinux@lfdr.de>; Mon, 13 Jan 2020 17:40:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728734AbgAMQIK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 13 Jan 2020 11:08:10 -0500
-Received: from bin-mail-out-06.binero.net ([195.74.38.229]:15848 "EHLO
-        bin-mail-out-06.binero.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726567AbgAMQIK (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 13 Jan 2020 11:08:10 -0500
-X-Greylist: delayed 363 seconds by postgrey-1.27 at vger.kernel.org; Mon, 13 Jan 2020 11:08:10 EST
-X-Halon-ID: 0805e7d7-361e-11ea-b6d8-005056917f90
-Authorized-sender: andreas@gaisler.com
-Received: from andreas.got.gaisler.com (h-98-128-223-123.na.cust.bahnhof.se [98.128.223.123])
-        by bin-vsp-out-02.atm.binero.net (Halon) with ESMTPA
-        id 0805e7d7-361e-11ea-b6d8-005056917f90;
-        Mon, 13 Jan 2020 17:02:02 +0100 (CET)
-From:   Andreas Larsson <andreas@gaisler.com>
-To:     David Miller <davem@davemloft.net>, sparclinux@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH] sparc32,leon: Stop adding vendor and device id to prom ambapp path components
-Date:   Mon, 13 Jan 2020 17:01:47 +0100
-Message-Id: <20200113160147.9254-1-andreas@gaisler.com>
-X-Mailer: git-send-email 2.17.1
+        id S1728904AbgAMQkg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 13 Jan 2020 11:40:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42038 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728877AbgAMQkg (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 13 Jan 2020 11:40:36 -0500
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A6A1C21569;
+        Mon, 13 Jan 2020 16:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578933635;
+        bh=sCmFCwYbsvnNPm2PkRZEhJA1442m+QaJCHhH5zkDbgM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aJR9K9bFdFK7SVbODxkwPKvqlChV/1xoJ/6AECR8oQ/b9Ga67JCoa2iqvC7O6ZkjW
+         PjIz4V4LSComMuz2EKx/7aDA0KTg0oKFTGG6EyftvOZMW4d2Xl2VGEDVI1U+gd7197
+         1qodocFPpKwz//GfBSb6NyziIq0TLQlWIVj0dBJc=
+Date:   Mon, 13 Jan 2020 16:40:29 +0000
+From:   Will Deacon <will@kernel.org>
+To:     Cristian Marussi <cristian.marussi@arm.com>
+Cc:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        mark.rutland@arm.com, peterz@infradead.org,
+        catalin.marinas@arm.com, takahiro.akashi@linaro.org,
+        james.morse@arm.com, hidehiro.kawai.ez@hitachi.com,
+        tglx@linutronix.de, linux-arm-kernel@lists.infradead.org,
+        mingo@redhat.com, x86@kernel.org, dzickus@redhat.com,
+        ehabkost@redhat.com, linux@armlinux.org.uk, davem@davemloft.net,
+        sparclinux@vger.kernel.org, hch@infradead.org
+Subject: Re: [RFC PATCH v3 00/12] Unify SMP stop generic logic to common code
+Message-ID: <20200113164029.GE4458@willie-the-truck>
+References: <20191219121905.26905-1-cristian.marussi@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191219121905.26905-1-cristian.marussi@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-These extra fields before the @ are not handled in of_node_name_eq,
-making commit b3e46d1a0590500335f0b95e669ad6d84b12b03a break node name
-comparisons for ambapp path components, thereby making LEON systems
-unable to boot.
+On Thu, Dec 19, 2019 at 12:18:53PM +0000, Cristian Marussi wrote:
+> the logic underlying SMP stop and kexec crash procedures, beside containing
+> some arch-specific bits, is mostly generic and common across all archs:
+> despite this fact, such logic is now scattered across all architectures and
+> on some of them is flawed, in such a way that, under some specific
+> conditions, you can end up with a CPU left still running after a panic and
+> possibly lost across a subsequent kexec crash reboot. [1]
 
-As there is no need for the tacked on vendor and device ID fields in the
-path component, resolve this situation by removing them.
+Is this still the case even after 20bb759a66be ("panic: ensure preemption is
+disabled during panic()")?
 
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
----
- arch/sparc/kernel/prom_32.c | 18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
-
-diff --git a/arch/sparc/kernel/prom_32.c b/arch/sparc/kernel/prom_32.c
-index ec244d1022ce..da8902295c8c 100644
---- a/arch/sparc/kernel/prom_32.c
-+++ b/arch/sparc/kernel/prom_32.c
-@@ -132,12 +132,13 @@ static void __init ebus_path_component(struct device_node *dp, char *tmp_buf)
- 		regs->which_io, regs->phys_addr);
- }
- 
--/* "name:vendor:device@irq,addrlo" */
-+/* "name@irq,addrlo" */
- static void __init ambapp_path_component(struct device_node *dp, char *tmp_buf)
- {
- 	const char *name = of_get_property(dp, "name", NULL);
- 	struct amba_prom_registers *regs;
--	unsigned int *intr, *device, *vendor, reg0;
-+	unsigned int *intr;
-+	unsigned int reg0;
- 	struct property *prop;
- 	int interrupt = 0;
- 
-@@ -159,18 +160,7 @@ static void __init ambapp_path_component(struct device_node *dp, char *tmp_buf)
- 	else
- 		intr = prop->value;
- 
--	prop = of_find_property(dp, "vendor", NULL);
--	if (!prop)
--		return;
--	vendor = prop->value;
--	prop = of_find_property(dp, "device", NULL);
--	if (!prop)
--		return;
--	device = prop->value;
--
--	sprintf(tmp_buf, "%s:%d:%d@%x,%x",
--		name, *vendor, *device,
--		*intr, reg0);
-+	sprintf(tmp_buf, "%s@%x,%x", name, *intr, reg0);
- }
- 
- static void __init __build_path_component(struct device_node *dp, char *tmp_buf)
--- 
-2.17.1
-
+Will
