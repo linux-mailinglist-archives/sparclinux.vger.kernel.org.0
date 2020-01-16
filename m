@@ -2,83 +2,116 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EEBE13C8CE
-	for <lists+sparclinux@lfdr.de>; Wed, 15 Jan 2020 17:08:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCAF413D122
+	for <lists+sparclinux@lfdr.de>; Thu, 16 Jan 2020 01:31:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729066AbgAOQHy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 15 Jan 2020 11:07:54 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:34809 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728949AbgAOQHy (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Jan 2020 11:07:54 -0500
-Received: by mail-qt1-f196.google.com with SMTP id 5so16218002qtz.1;
-        Wed, 15 Jan 2020 08:07:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=46QQbf/7xY0XXnmz2tYswXMRkkq1sq4i40/0AAKflts=;
-        b=iKcqODa4BncMFy9yf967yQiQ4e1hypZ35Kspvsn9615Df5ihLYfC+Tdhv9HbRxsNG6
-         UL02ocGc692NeBS4c+vI6oDQOOgFSBACcaQK2fOITK8N9reH8U7US4ReD2OfPwUVMkty
-         RI8VFOvYzEz/PTfIlewdardpsm7e62n4vID1mAGOgCLQTUoCYxUkr1FPhb6Jg5fF2o+U
-         zwPu8Nalp/DvyF0Azf1r8rCr5SYyClR2v42p0mpWgHtTH0QSQNP7k715rTcjgEBORGKV
-         Se7uJF6XTZyf72aH46Bfh3IYUWJNecqKpADz5RqxlMjrlRZA/+AwXUlkzI90/bVgydRD
-         Gejg==
-X-Gm-Message-State: APjAAAV4Zk51tATIwafKZxff9NMp0bdmoA/A1cvHGZ8aFZmxSvJ3qcxp
-        b9V3WUOfahDzYnMpZckaFKj0YTAc
-X-Google-Smtp-Source: APXvYqwzN9XlXgiCJOHOzppCDgjC104jsqTEEFdkqciOeSGlAPVe68Kr5Xf4J+iBvOBnPUweFUNeng==
-X-Received: by 2002:aed:3fce:: with SMTP id w14mr4477223qth.0.1579104472892;
-        Wed, 15 Jan 2020 08:07:52 -0800 (PST)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id a14sm8606047qko.92.2020.01.15.08.07.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2020 08:07:52 -0800 (PST)
-Date:   Wed, 15 Jan 2020 11:07:50 -0500
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        "David S . Miller" <davem@davemloft.net>
-Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: [PATCH RESEND] sparc/console: kill off obsolete declarations
-Message-ID: <20200115160749.GA3951901@rani.riverdale.lan>
+        id S1729319AbgAPAbG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 15 Jan 2020 19:31:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:49671 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729110AbgAPAbG (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Jan 2020 19:31:06 -0500
+Received: from p5b06da22.dip0.t-ipconnect.de ([91.6.218.34] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1irt3S-0004QP-Qv; Thu, 16 Jan 2020 01:30:35 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id B7BBB10121C; Thu, 16 Jan 2020 01:30:33 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Hsin-Yi Wang <hsinyi@chromium.org>
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Jiri Kosina <jkosina@suse.cz>,
+        Pavankumar Kondeti <pkondeti@codeaurora.org>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Aaro Koskinen <aaro.koskinen@nokia.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Will Deacon <will@kernel.org>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        James Morse <james.morse@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v5] reboot: support offline CPUs before reboot
+In-Reply-To: <20200115063410.131692-1-hsinyi@chromium.org>
+References: <20200115063410.131692-1-hsinyi@chromium.org>
+Date:   Thu, 16 Jan 2020 01:30:33 +0100
+Message-ID: <8736cgxmxi.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-commit 09d3f3f0e02c ("sparc: Kill PROM console driver.") missed removing
-the declarations of the deleted prom_con structure and prom_con_init
-function from console.h. Kill them off now.
+Hsin-Yi Wang <hsinyi@chromium.org> writes:
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
----
- include/linux/console.h | 2 --
- 1 file changed, 2 deletions(-)
+> Currently system reboots uses architecture specific codes (smp_send_stop)
+> to offline non reboot CPUs. Most architecture's implementation is looping
+> through all non reboot online CPUs and call ipi function to each of them. Some
+> architecture like arm64, arm, and x86... would set offline masks to cpu without
+> really offline them. This causes some race condition and kernel warning comes
+> out sometimes when system reboots.
 
-diff --git a/include/linux/console.h b/include/linux/console.h
-index d09951d5a94e..f33016b3a401 100644
---- a/include/linux/console.h
-+++ b/include/linux/console.h
-@@ -101,7 +101,6 @@ extern const struct consw *conswitchp;
- extern const struct consw dummy_con;	/* dummy console buffer */
- extern const struct consw vga_con;	/* VGA text console */
- extern const struct consw newport_con;	/* SGI Newport console  */
--extern const struct consw prom_con;	/* SPARC PROM console */
- 
- int con_is_bound(const struct consw *csw);
- int do_unregister_con_driver(const struct consw *csw);
-@@ -201,7 +200,6 @@ extern void suspend_console(void);
- extern void resume_console(void);
- 
- int mda_console_init(void);
--void prom_con_init(void);
- 
- void vcs_make_sysfs(int index);
- void vcs_remove_sysfs(int index);
--- 
-2.24.1
+'some race condition and kernel warning' is pretty useless information.
+Please describe exactly which kind of issues are caused by the current
+mechanism. Especially the race conditions are the interesting part (the
+warnings are just a consequence).
 
+> This patch adds a config ARCH_OFFLINE_CPUS_ON_REBOOT, which would
+> offline cpus in
+
+Please read Documentation/process/submitting-patches.rst and search for
+'This patch'.
+
+> migrate_to_reboot_cpu(). If non reboot cpus are all offlined here, the loop for
+> checking online cpus would be an empty loop.
+
+This does not make any sense. The issues which you are trying to solve
+are going to be still there when CONFIG_HOTPLUG_CPU is disabled.
+
+> If architecture don't enable this config, or some cpus somehow fails
+> to offline, it would fallback to ipi function.
+
+This is really a half baken solution which keeps the various pointlessly
+different pseudo reboot/kexec offlining implementations around. So with
+this we have yet more code which only works depending on kernel
+configuration and has the issue of potentially not being able to offline
+a CPU. IOW this is going to fail completely in cases where a system is
+in a state which prevents regular hotplug.
+
+The existing pseudo-offline functions have timeouts and eventually a
+fallback, e.g. the NMI fallback on x86. With this proposed regular
+offline solution this will just get stuck w/o a chance to force
+recovery.
+
+While I like the idea and surely agree that the ideal solution is to
+properly shutdown the CPUs on reboot, we need to take a step back and
+look at the minimum requirements for a regular shutdown/reboot and at
+the same time have a look at the requirements for emergency shutdown and
+kexec/kcrash. Having proper information about the race conditions and
+warnings you mentioned would be a good starting point.
+
+> Opt in this config for architectures that support CONFIG_HOTPLUG_CPU.
+
+This is not opt-in. You force that on all architectures which support
+CONFIG_HOTPLUG_CPU. The way we do this normally is to provide the
+infrastructure first and then have separate patches (one per
+architecture) enabling this, which allows the architecture maintainers
+to decide individually.
+
+Thanks,
+
+        tglx
