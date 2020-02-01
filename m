@@ -2,81 +2,103 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3442614F7AF
-	for <lists+sparclinux@lfdr.de>; Sat,  1 Feb 2020 12:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B281014FAA4
+	for <lists+sparclinux@lfdr.de>; Sat,  1 Feb 2020 22:21:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726466AbgBAL5y (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 1 Feb 2020 06:57:54 -0500
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:44882 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726385AbgBAL5y (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 1 Feb 2020 06:57:54 -0500
-Received: by mail-ed1-f65.google.com with SMTP id g19so10758911eds.11;
-        Sat, 01 Feb 2020 03:57:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WbacjhfsD5YFjIEKkCcLFgmkGeANXDT3zXT/nYNyCn0=;
-        b=tUDiVCN+DVkc2IT547sSeddAj7ldL/49uq3vXnRO7UuhHhh8iHH2VdUtHBfHj7j6XQ
-         uV6qwLZSVwLUYz5TQ5biKPLrI6LlygfqE3QB4qVlWYqL2c/8TFsd8bdwAXzNAs8tJZgE
-         taPv270bnjEamkXZUWw0dkhvJjGylmWVrvFd7JMoh4nqQJG6cfvHEkz9T2iofXnog7++
-         k5ijCKkwec9G86ZA8XbQPmIZ+7MCS6fOlm8xnMv7ADOOijzoOluYZETEssli1Lh1BZIZ
-         BY0TGVfdHm6r7zm4eG4DvMtBq77SBuaYybW1GsJzoJcLgURs4xhkYQjaIEb/+CPYP7oS
-         Df3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WbacjhfsD5YFjIEKkCcLFgmkGeANXDT3zXT/nYNyCn0=;
-        b=RuI1HQvPKTHdE3tSN77sh+AwE+jaYL6NdDGAycUTlC2BniWwe2P3UnjJj69nshZZcj
-         JOk9VJMnHuKfWtfh1rb7FBU1tQpL9OwXoSAons24OIW8Q0dNwYiMC5szUF2WQ96Co/We
-         /NtFzkouk8bJx6uAoOOLFbLr5bCUn24g6+6Tgxq4rvG1buNDEexoxPk8LJu8MYp/I26V
-         rffrkej2bAzN/xx8ep8Q+rK2yf2NBhPntN0LHmbeLmd6ar1tKSKwwd0VwM6c3DGYV8dW
-         1hgZL+zBZj3JrahirE2E5ZzqoGjcJ5oSd5/mg/CqvJUUt3YBbjGrHx461C4GmP/i2y0f
-         i9qQ==
-X-Gm-Message-State: APjAAAV25nJIKNSZOkSKHj9+ZiAAbMcuWLsj3GISIdFILLYdGlwBP9tJ
-        DUtJwECnISs4ipYx6dBCNdwkCkLjz81HLX2300Dyxw==
-X-Google-Smtp-Source: APXvYqyUlyW7gRONIC3ZuZEd8f0vMdZtHy1xZsofDI679YT3x/8Gh1T+VXqHs+uN6aeQyOpxDDkyqe/+QSH5hySJ4wI=
-X-Received: by 2002:a50:8326:: with SMTP id 35mr4461006edh.235.1580558270847;
- Sat, 01 Feb 2020 03:57:50 -0800 (PST)
+        id S1726536AbgBAVVw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 1 Feb 2020 16:21:52 -0500
+Received: from mout.kundenserver.de ([212.227.126.135]:34455 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726530AbgBAVVw (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 1 Feb 2020 16:21:52 -0500
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue009 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MowT0-1jLUOR1pKY-00qRXX; Sat, 01 Feb 2020 22:21:25 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     "David S. Miller" <davem@davemloft.net>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Anatoly Pugachev <matorola@gmail.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] sparc64: fix adjtimex regression
+Date:   Sat,  1 Feb 2020 22:20:52 +0100
+Message-Id: <20200201212104.575657-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-References: <CADxRZqy3LNu=DW2Mn8G6E-Ewrg2Q4gDXbxFqJXyfcDom4YW_oQ@mail.gmail.com>
- <CAK8P3a0eqbczcNJhNf9hXPBhUoscZD51d9PSs=vwH564u=7XSQ@mail.gmail.com>
-In-Reply-To: <CAK8P3a0eqbczcNJhNf9hXPBhUoscZD51d9PSs=vwH564u=7XSQ@mail.gmail.com>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Sat, 1 Feb 2020 14:57:41 +0300
-Message-ID: <CADxRZqwBPJVa9EBeP2++bojgiJ-K1s+3LCm_Y2_KT4wDcUGZeg@mail.gmail.com>
-Subject: Re: [sparc64] stall on CPU with current git master
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
-        Linux Kernel list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:1z5EEIgi4fNbqNsC+tS74bBl1HaQAlYsC7CubqANcDMZKS1sc2O
+ 2R0UOKIblbYVdpS6ebVQd8sWEApsSDODuELOKRAHDf2pPEP5FmShtdQMsdp3tYqW9TTQuzg
+ LDAMyzcFQ7hvyshJe9AyW8gpH13A5ZhKFhNO6LozDHaepfd3g5kuy4kapcW7CQ/sw+7JKb3
+ qyQiiV5n7Gp6vn7IKnwoQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+G5agGtRXfY=:Eb+1bivj0+gIWZC6TSy3B7
+ P80jNTgkmlDQu3jbJahpeLjH14d6ii2xuD2hmv1ipr/C41ASHh99vkih/s5HuxaSpooUG+58u
+ Bq521S4VVZXNmudql2Eonu6Ajgue0VgcjFO6ppVGkFK6Z8MhI2DcBlstzxN36Hd2zxsUdoQVW
+ W9vFesmTwmMuvt2+vuDD7ge30o7nOeC9ULNCYRL0sPR8BLhP9LkYZUNQs/jVZgVtNCYKXNVDT
+ SsdkO+uLTA+LXuWcA+sgoqAdpBba2cjhaUBx1xYx4r2uv0AwtRPTzvNEL98MwC/HrsWGC4GTZ
+ mCsY0IhyVEQNuVmoHO3L5TSOyt2JYfrShlyxrdthx/sTxzXG9mvARXYDN7QYVNi3sIUkHO4nz
+ nPkf0JsBISwo9sBrdRMBSpRAXqmECEHoHAfLtPwZ6O5nnecMFyx7tCjHABm9V/zm0P7eHy16B
+ +mV0ZlonC0nBavfBFmtT6wKRU8GOOIUtXYI2ZvW8EXlzB0vYtdc5YajV4pMf+TnG+RyxuwdD8
+ NrYRXjxklP59SyX7hFote+FW65yx3FRczYmk/3YHHVHRqlfsF+k5DUvaAoH+EPeB+cqrkHKLd
+ Pp9r8acCwQNNg9h4WIiSE5/PSff+LnprEayIO8fkXxsjs7KMixYjkNIrusCQaFL41ElLG/X6w
+ xka6V86A1ce8TFpfSVZEn9w6DgtrgTuSOgkiGFrqONkdoH7q6gEW5t6tYHLNDWrOpabFzQTEC
+ 4OH2cKUC+y5L7ppToPHHd5nRzN1t/4i2tvfzyPtPY+ZwA26/ftjveoS/5AOqhGZUB3gJzF7oU
+ hsAcR2fF28pIbnDLrRjAQzwaXHpwrINNPLHFaNX1V1TjZrRKXQ=
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Jan 31, 2020 at 7:40 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> On Fri, Jan 31, 2020 at 4:07 PM Anatoly Pugachev <matorola@gmail.com> wrote:
-> >
-> > $ git desc 251ec1c159e4874fbede0c3c586e317e177c0c9b
-> > v5.5-rc1-19-g251ec1c159e4
-> >
-> > kernel 5.5.0-rc1-00018-g4f9fbd893fe8 - works perfectly (i.e. does not
-> > hang or produce "stall on CPU" )
-> >
-> > current master with the patch reverted -
-> > 5.5.0-07763-gccaaaf6fe5a5-dirty - works perfectly
-> >
-> > current master 5.5.0-07763-gccaaaf6fe5a5 - stalls, hangs
-> >
-> >
-> > Can someone look what is wrong with it and/or probably revert it ?!
-> > Thanks.
->
-> Thanks for the report, I think I found the problem! Can you try this patch?
+Anatoly Pugachev reported one of the y2038 patches to introduce
+a fatal bug from a stupid typo:
 
-Arnd,
+[   96.384129] watchdog: BUG: soft lockup - CPU#8 stuck for 22s!
+...
+[   96.385624]  [0000000000652ca4] handle_mm_fault+0x84/0x320
+[   96.385668]  [0000000000b6f2bc] do_sparc64_fault+0x43c/0x820
+[   96.385720]  [0000000000407754] sparc64_realfault_common+0x10/0x20
+[   96.385769]  [000000000042fa28] __do_sys_sparc_clock_adjtime+0x28/0x80
+[   96.385819]  [00000000004307f0] sys_sparc_clock_adjtime+0x10/0x20
+[   96.385866]  [0000000000406294] linux_sparc_syscall+0x34/0x44
 
-this patch fixed issue for me. Thanks.
+Fix the code to dereference the correct pointer again.
+
+Reported-by: Anatoly Pugachev <matorola@gmail.com>
+Tested-by: Anatoly Pugachev <matorola@gmail.com>
+Fixes: 251ec1c159e4 ("y2038: sparc: remove use of struct timex")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+The bug was introduced through my y2038 branch and is now in
+mainline, but not in v5.5. Who should pick up the fix to
+get it into v5.6-rc1?
+---
+ arch/sparc/kernel/sys_sparc_64.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/sparc/kernel/sys_sparc_64.c b/arch/sparc/kernel/sys_sparc_64.c
+index 34917617f258..6b92fadb6ec7 100644
+--- a/arch/sparc/kernel/sys_sparc_64.c
++++ b/arch/sparc/kernel/sys_sparc_64.c
+@@ -551,7 +551,7 @@ SYSCALL_DEFINE2(getdomainname, char __user *, name, int, len)
+ SYSCALL_DEFINE1(sparc_adjtimex, struct __kernel_timex __user *, txc_p)
+ {
+ 	struct __kernel_timex txc;
+-	struct __kernel_old_timeval *tv = (void *)&txc_p->time;
++	struct __kernel_old_timeval *tv = (void *)&txc.time;
+ 	int ret;
+ 
+ 	/* Copy the user data space into the kernel copy
+@@ -576,7 +576,7 @@ SYSCALL_DEFINE2(sparc_clock_adjtime, const clockid_t, which_clock,
+ 		struct __kernel_timex __user *, txc_p)
+ {
+ 	struct __kernel_timex txc;
+-	struct __kernel_old_timeval *tv = (void *)&txc_p->time;
++	struct __kernel_old_timeval *tv = (void *)&txc.time;
+ 	int ret;
+ 
+ 	if (!IS_ENABLED(CONFIG_POSIX_TIMERS)) {
+-- 
+2.25.0
+
