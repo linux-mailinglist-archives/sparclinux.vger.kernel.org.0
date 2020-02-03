@@ -2,53 +2,129 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEB8314FF12
-	for <lists+sparclinux@lfdr.de>; Sun,  2 Feb 2020 21:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5543150971
+	for <lists+sparclinux@lfdr.de>; Mon,  3 Feb 2020 16:14:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726989AbgBBUUO (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 2 Feb 2020 15:20:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57236 "EHLO mail.kernel.org"
+        id S1728930AbgBCPO2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 3 Feb 2020 10:14:28 -0500
+Received: from pegase1.c-s.fr ([93.17.236.30]:44923 "EHLO pegase1.c-s.fr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726967AbgBBUUO (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 2 Feb 2020 15:20:14 -0500
-Subject: Re: [GIT] Sparc
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580674813;
-        bh=po/EkdwtNa+zreBFmqFHz+DcSumbOUa5aNZxL6LpnfY=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=XJ8AT6FbR3zNbm8ek6+P5DJWnZySOOVLCuvsghQJ8YdzA/QYqykmXv77/Ji4jexGU
-         Vq4o9gtq1MCD2CVmWuoU33YUU1XDN1qmyPphkF3RO65zM59UAX7dEAwKFfd5n/GNKV
-         RSN1+0pQbkC1cXpu0nFNJCQeTapJ5KUEcY+h7dDc=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20200202.115757.1806399388803712136.davem@davemloft.net>
-References: <20200202.115757.1806399388803712136.davem@davemloft.net>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20200202.115757.1806399388803712136.davem@davemloft.net>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git
- refs/heads/master
-X-PR-Tracked-Commit-Id: 11648b8339f840d4b1f4c54a1abec8025d9e077d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 46d6b7becb1d5a8e697db786590c19e4067a975a
-Message-Id: <158067481377.26837.15865712190713168229.pr-tracker-bot@kernel.org>
-Date:   Sun, 02 Feb 2020 20:20:13 +0000
-To:     David Miller <davem@davemloft.net>
-Cc:     torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+        id S1728918AbgBCPO2 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 3 Feb 2020 10:14:28 -0500
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 48BBF846fMz9v3ls;
+        Mon,  3 Feb 2020 16:14:20 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+        reason="1024-bit key; insecure key"
+        header.d=c-s.fr header.i=@c-s.fr header.b=OGtzFIa+; dkim-adsp=pass;
+        dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id 5VszB6UW2Yif; Mon,  3 Feb 2020 16:14:20 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 48BBF82h8pz9v3lm;
+        Mon,  3 Feb 2020 16:14:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+        t=1580742860; bh=i4hAG7YwdO6LNDmYZ4wBEtikutj9N76WG5xl/PwnPrw=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=OGtzFIa+5ZhSxgd/BuHky5Jny2LDfnoF42zPtabwjmhorMsQSP8od+tqTvY9oMk3O
+         ug6+KKaiRNlh/wtS69Y4UVsFdUJC1Vu36ZVhY++cHIlyr4PBVDhCfDbWqmvxtfLxhX
+         pBTvZSaYZbiw2B0JwaU6kwU/pCLUp2ai2uhwAOdA=
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 7DE228B7B0;
+        Mon,  3 Feb 2020 16:14:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id unrhNEULKrXy; Mon,  3 Feb 2020 16:14:25 +0100 (CET)
+Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 12E638B7AC;
+        Mon,  3 Feb 2020 16:14:25 +0100 (CET)
+Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
+ table helpers
+To:     Qian Cai <cai@lca.pw>
+Cc:     Anshuman Khandual <Anshuman.Khandual@arm.com>, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        kasan-dev <kasan-dev@googlegroups.com>
+References: <473d8198-3ac4-af3b-e2ec-c0698a3565d3@c-s.fr>
+ <2C4ADFAE-7BB4-42B7-8F54-F036EA7A4316@lca.pw>
+From:   Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <8e94a073-4045-89aa-6a3b-24847ad7c858@c-s.fr>
+Date:   Mon, 3 Feb 2020 16:14:24 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
+MIME-Version: 1.0
+In-Reply-To: <2C4ADFAE-7BB4-42B7-8F54-F036EA7A4316@lca.pw>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The pull request you sent on Sun, 02 Feb 2020 11:57:57 +0100 (CET):
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git refs/heads/master
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/46d6b7becb1d5a8e697db786590c19e4067a975a
+Le 02/02/2020 à 12:26, Qian Cai a écrit :
+> 
+> 
+>> On Jan 30, 2020, at 9:13 AM, Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+>>
+>> config DEBUG_VM_PGTABLE
+>>     bool "Debug arch page table for semantics compliance" if ARCH_HAS_DEBUG_VM_PGTABLE || EXPERT
+>>     depends on MMU
+>>     default 'n' if !ARCH_HAS_DEBUG_VM_PGTABLE
+>>     default 'y' if DEBUG_VM
+> 
+> Does it really necessary to potentially force all bots to run this? Syzbot, kernel test robot etc? Does it ever pay off for all their machine times there?
+> 
 
-Thank you!
+Machine time ?
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+On a 32 bits powerpc running at 132 MHz, the tests takes less than 10ms. 
+Is it worth taking the risk of not detecting faults by not selecting it 
+by default ?
+
+[    5.656916] debug_vm_pgtable: debug_vm_pgtable: Validating 
+architecture page table helpers
+[    5.665661] debug_vm_pgtable: debug_vm_pgtable: Validated 
+architecture page table helpers
+
+Christophe
