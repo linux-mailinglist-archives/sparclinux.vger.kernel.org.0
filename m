@@ -2,49 +2,49 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C72815459F
+	by mail.lfdr.de (Postfix) with ESMTP id 26AE115459E
 	for <lists+sparclinux@lfdr.de>; Thu,  6 Feb 2020 14:59:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbgBFN7p (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        id S1727861AbgBFN7p (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
         Thu, 6 Feb 2020 08:59:45 -0500
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:34614 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727773AbgBFN7p (ORCPT
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:35904 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726765AbgBFN7p (ORCPT
         <rfc822;sparclinux@vger.kernel.org>); Thu, 6 Feb 2020 08:59:45 -0500
-Received: by mail-qt1-f195.google.com with SMTP id h12so4535335qtu.1
+Received: by mail-qk1-f196.google.com with SMTP id w25so5598963qki.3
         for <sparclinux@vger.kernel.org>; Thu, 06 Feb 2020 05:59:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:reply-to:from:date:message-id:subject:to;
         bh=ksZ9yvJQLEPos9sVNg0k5UIVDrjEW5mJFI3LUcUgjiE=;
-        b=GLf3vJ8Dt8y0F0hcZ3cqPnjCeiCWL/zoiWzO+WkpwRQsaYjtj56djoXrwy9BNFGxk2
-         F8SxAdow8wz8FEWswKWKW6o3F8ULWqaizRCpO1IYJje7oJz1c3XExe/Twkxz1cFcLL1P
-         GHFhGVLpbtSnLDgm/juETIbmhpa+omoNp95GP51uDbVlfCJRPLFLPiSbgUSYr18ik7ac
-         0ljOfgcEMPH/p98Mv2XZAUPiJsz1+ywcmjtW3Vcf9mKlTggYI7+AyVWXvtDfo1dvrQ6F
-         vfWZZ5/InEe81KB+HA5a4xj9YAGlG5J2UWz44r7Wo3dFItGS1IbWv2XWYcjUk8iXZNj8
-         QzjA==
+        b=gXY0Bm1O9kpi6amI35vIE36d+N9JYY8RzPO082bATQNn8he2RrHjUqTrXqFQUWVhjI
+         BUv3BYSt7G+SKdb27DHMVH81cz9GaCPMm+n3uZySuFbph0ODhKgsV77E8+nzMM7Nkubl
+         X3s4A93TMG2Kcx/vJUMGr+gKBAyqIxikwYUcHssyjEdGSyh73Dv7kmUXr5U2LKLYUoqN
+         2YtH9KFJ9dZnVnYtzsG6N91AhbfBPUyN6hD6nWIj5a5lXp1NGWkKt+FPhum2p/LeV73a
+         XX4KTGsHZQnbSY0/X+L7/Wo5SK5DntwVoBXi4WrU+3JFZ/qMoot5YpRwkRIL8rOPn1nL
+         UT/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
         bh=ksZ9yvJQLEPos9sVNg0k5UIVDrjEW5mJFI3LUcUgjiE=;
-        b=oQItfb6UM5kLme4AV06w69gB52Tm3EYV522Qx75vMNHbyuUDCkFTFeTPmDFoluLwqc
-         T5s8WDbclxy/pl2wM1OE8JGTccMB+iuQhQIWIMbL3HKB8kk5SFCctUcmCDwuRY6Qmup0
-         cE5pZheEtlKE+oQm+XSkjJ/oeQdJtxt2rxRZJyM4gEbY8z0N77YmTjHmIuZ3+PKHhtIA
-         O1/+1GpIxoC54cQzjIkaaLPeL479OUHdYV5Gt1Gg4n4a7ezrPD1JM6rAlkmc1qeEWY6s
-         8iShYrN1BYmA/cMr3IA0DBb4sS+a89FTpmrh4TGvzu/CFO8ZnCmuatyaVLIx59rQASpZ
-         xVRQ==
-X-Gm-Message-State: APjAAAWiJFyXPc1+PEz95jC+j5eTtcUcJqgzNAi+VVDYAz22RGhUTwyK
-        gqEeM95T0C8Vtfd999GKFYwbtLSOXOx4egEgOqs=
-X-Google-Smtp-Source: APXvYqxbkIvSxgqMPNGTCkaHsR2t1cU04E8uUuAw2/pGENgwxESMNjASzFpCi70CVLTXQc7j0FD0hdFBDAw6jFYyvWA=
-X-Received: by 2002:ac8:6046:: with SMTP id k6mr2713787qtm.357.1580997584385;
+        b=Vz6JL4pqIz3ASO81gV6YPHfxY5L5NixOcrDPCraIFHmqX5okR6bFIM3b8l/9gBuFoc
+         KLqAEAoLokTvb5GR4zs8owzlKe7jg7/Z2XRY7fTSfG1YEZkBddOLkw1jWJdtQSEu4ux8
+         x9WkU2jp2nSL84MORVOMaavKybvWHFJ6nEORK9JaZKFt2eX+FMY6fgUn0nQQbEXglLJo
+         LPq29lCSL2djMyO4TgX/gZuZS5wtL3TtS5+Di3aAEo7mIFxFU+T8/02L3AuW4SrKYHEk
+         ZKBKTYrtJTYleb/IgYN/rrVYyAHJ7LuhkgSh/DFUl8FaHuDWvAzAJhVwKiS2yxEhZVmg
+         6mbQ==
+X-Gm-Message-State: APjAAAVX78bYnAIP0GXnXNaaw/Kxr4pwKcw2xPBAQBlsSA/tiC0pqYd4
+        rCrD5tjqP9z077Th8ouretx4fAQ8l4UslOt3plk=
+X-Google-Smtp-Source: APXvYqyo7Y2u6PQdQB4PTMIC6u1Wvpjj5ZExuS3F64tiD8/GYB/359cHgqnFGcUfUPwridRpA/p/J+cuGzp0TZ1BrRs=
+X-Received: by 2002:a05:620a:13e3:: with SMTP id h3mr2536863qkl.319.1580997584357;
  Thu, 06 Feb 2020 05:59:44 -0800 (PST)
 MIME-Version: 1.0
 Received: by 2002:ac8:670e:0:0:0:0:0 with HTTP; Thu, 6 Feb 2020 05:59:43 -0800 (PST)
 Reply-To: jpmorganchasebanknyusa@gmail.com
 From:   "MS. MARYANNA B. THOMASON" <westernunion.benin982@gmail.com>
 Date:   Thu, 6 Feb 2020 14:59:43 +0100
-Message-ID: <CAP=nHBLnyQ8YD8dHP0cLs+EK6fuSFUqk-3NhD=d8qJ9KG9SNtw@mail.gmail.com>
+Message-ID: <CAP=nHB+6ixcXLQ=7gVmNqXxsjh3AGmE0+S+nF+JMO=6CGn600Q@mail.gmail.com>
 Subject: Contact Federal Reserve Bank New York to receive your inheritance
  contract payment (US$12.8M)
 To:     undisclosed-recipients:;
