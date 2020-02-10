@@ -2,50 +2,49 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4264615603A
-	for <lists+sparclinux@lfdr.de>; Fri,  7 Feb 2020 21:55:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4874E157172
+	for <lists+sparclinux@lfdr.de>; Mon, 10 Feb 2020 10:11:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727492AbgBGUzd (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 7 Feb 2020 15:55:33 -0500
-Received: from mail-io1-f68.google.com ([209.85.166.68]:40889 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727309AbgBGUzd (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 7 Feb 2020 15:55:33 -0500
-Received: by mail-io1-f68.google.com with SMTP id x1so991536iop.7
-        for <sparclinux@vger.kernel.org>; Fri, 07 Feb 2020 12:55:33 -0800 (PST)
+        id S1726118AbgBJJL2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 10 Feb 2020 04:11:28 -0500
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:35149 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725468AbgBJJL2 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 10 Feb 2020 04:11:28 -0500
+Received: by mail-lf1-f68.google.com with SMTP id z18so3639207lfe.2
+        for <sparclinux@vger.kernel.org>; Mon, 10 Feb 2020 01:11:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=pVMVnlC+JZxSO11GOQNbc56SMjMRUqK1DmW/MbvGSWMM3+jartGIjj/AiSElQuh5wC
-         tSrEHs4NNuG01Sulhj+fQpnXFUpfDhWq/C4m6r6Q2VIePPX/8TRTKqviX5oH2GVcW31d
-         aPQ6UNi4LFxX+0gmzjKKLKgWDUKasXMZG67+3306v6zmNfCdhSs0edNnkQTMAD+fBbZy
-         rtB91aUSSbwldsFi2QmSh9irO6mvfWEO5L1xpmrorvUkB8zKWQYRinB0/BskgaYS4Dnu
-         Xiz08L6pjN5kbAizxQAu68hSQYghF71OtdcjVBUnAY0X5YSnfZAEbIXBI15SznRWOqNG
-         YKEA==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=xEWaoU/BRK4xxZgCJlmyWd6NDTfYAgrGM75yamvaGmM=;
+        b=AAsovdMttBcJ447O3/wuET/SZ/PMgGfff7R7oyU+agF90bmSSrde4ZMoqqPxt37eEq
+         iYtwui3Ws80Mo1MkAaUSDHpd0lpbAs3zbz/mTX3WyEPcUxlqzrBf/3nxZ57gzYrsgyss
+         ZXwLXM/gYnFU+vo0XuQ3ZgpDOnqID7BU2yAcQgWSqOvm7utHhKwNCxb0ZDGbmCTBB2n+
+         qPa1828R19vmsnGqZu25DVlz6UQH61+BxwXC7SK7OD9US4O22tD51CMTRNKlkeCWoHKb
+         DnM9Rj4ZoATxzkMiXrBvBklditM0E0jK/E0YQqjovQOIdRYg+nYn1t+/xa8EwRrhKLAI
+         M2oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=QdbqB8WoA92srr54Ua659oZAwdhXyTcIzPUjpbmHN2RlTtBGlD2kj3LzVoT7Fy9shJ
-         Ol52FxJKR2ItP84GIyVYvvEnS5JU/4Hvte/hLShUKXDgWnDH6C09o7fTtZNrLa71nR2O
-         8/GEYjLMu/5/o9PsL4Ob84YgFpadQhGNz6oMJZo13MotJ77oun5LGl43VmbXIEYLjGB4
-         jvUxQsrGUN7Zx0nVONN1soWBEm55ru3tQz/E1xLDqZ+RHIM+a+gXM7Ph6lgqk8aDa5Hv
-         rO1NSPlAqhuRqOWMcjDTROyyT1YXOIeK1at9foL0eD5J/qbyXZzF4Nwl4IW4bQ1ldSBp
-         FVgQ==
-X-Gm-Message-State: APjAAAXz7UUBNrq1HrcV3hhKwleiWlI9nkb1wBPjn2RNRJs7XgVIJ52m
-        NLn8/bQ2Xbstw48zZAcLh50Wh2K2o1mYnW+LSM0=
-X-Google-Smtp-Source: APXvYqw5+Oh5egJvjm4VRQXvadL+XMWtl7oQgQbiCoPnzKUgg1DJzGZ4spenVapIF79nWwwmXTEpkrSWfOInvrfjEEw=
-X-Received: by 2002:a6b:b206:: with SMTP id b6mr277360iof.299.1581108932984;
- Fri, 07 Feb 2020 12:55:32 -0800 (PST)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=xEWaoU/BRK4xxZgCJlmyWd6NDTfYAgrGM75yamvaGmM=;
+        b=Aruw6+B0L+2T31FdI0sFYXsvLUFWX4+Iw3bbNwo8PzrKFh/JCNDlQgLVbwk3FdDtyO
+         vX5axSCnTPXpBxaFT7mp/P+956d/MaKH1HZKrRmjlItHbOphDTcmFhu5Q/zl59pLXsKW
+         zEp0W6k1CV9/aR7Iesnwk/kgI/c6XrExv5amwRhA/B368Zj0LSRXZI1evTFmEf/BVcq5
+         7rSahBIg+gKFvcm2igO8/XCb6lIgyQtp3bPBRF2xiTKv/5IN2gMtM8P57buC0VtRgttp
+         pcM+ZGX8em23h2u+Is+eurVXMXagtg+L/gBNqDX4jaXIyCJV6EEPtDpmLbynfkVLi52W
+         KLOQ==
+X-Gm-Message-State: APjAAAVFwA2M3wqxfuLheOMLWrXnXHKj7vTsHfH/7jyOOFk6iOa72b3i
+        i6vL0WSa0Iv2SIC30/7CktepHhuj5qTBOjFFG8g=
+X-Google-Smtp-Source: APXvYqx5hV5vpnfX9FtBian+OCeYB5M4C4Y0ZZ8g56+9mPV9d6ndNNHYJI9W88ZVmHFeP/hVdMnXQ8fWz92/dtp+yHI=
+X-Received: by 2002:a19:c3c2:: with SMTP id t185mr263480lff.56.1581325887214;
+ Mon, 10 Feb 2020 01:11:27 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a92:8f4b:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:55:32 -0800 (PST)
-Reply-To: auch197722@gmail.com
-From:   "Mr. Theophilus Odadudu" <siramsarmull@gmail.com>
-Date:   Fri, 7 Feb 2020 15:55:32 -0500
-Message-ID: <CAB==Gxwk2CRC4WaiQjLdV1Md7s6+cLHB5LkH03aYiRWKKWz3Ug@mail.gmail.com>
-Subject: LETTER OF INQUIRY
+Received: by 2002:a2e:3211:0:0:0:0:0 with HTTP; Mon, 10 Feb 2020 01:11:26
+ -0800 (PST)
+From:   santos martins <mj659619@gmail.com>
+Date:   Mon, 10 Feb 2020 09:11:26 +0000
+Message-ID: <CADNW3pkG8rD_zgFiTnnRqLcse_BopDw0j43xo3fb4-yEV4Cn-A@mail.gmail.com>
+Subject: HELLO ;
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
@@ -53,20 +52,16 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Good Day,
+Hello,
 
-I work as a clerk in a Bank here in Nigeria, I have a very
-confidential Business Proposition for you. There is a said amount of
-money floating in the bank unclaimed, belonging to the bank Foreign
-customer who die with his family in the Ethiopian Airline crash of
-March 11, 2019.
+I am Barrister James Morrison,writing you in respect of my deceased
+client who died in 2006 along with his entire family. He shares the
+same last name with you.
 
-I seek your good collaboration to move the fund for our benefit. we
-have agreed that 40% be yours once you help claim.
+I have been trying to locate any member of his family to assist in
+repatriating the fund (USD5.5 Million) he deposited in a bank here.I
+would like you to contact me so that i can give you the details
+concerning the claim.I am looking forward to hear from you soon..
 
-Do get back to with 1) Your Full Name: (2) Residential Address: (3)
-Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
-funds.
-
-Regards
-Theophilus Odadudu
+Best Regards,
+Barrister James Morrison
