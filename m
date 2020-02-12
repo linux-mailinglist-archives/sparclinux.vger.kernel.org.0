@@ -2,325 +2,186 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D08E157EF3
-	for <lists+sparclinux@lfdr.de>; Mon, 10 Feb 2020 16:37:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75CFE15A46B
+	for <lists+sparclinux@lfdr.de>; Wed, 12 Feb 2020 10:16:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727755AbgBJPha (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 10 Feb 2020 10:37:30 -0500
-Received: from foss.arm.com ([217.140.110.172]:35344 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726816AbgBJPha (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 10 Feb 2020 10:37:30 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F75B1FB;
-        Mon, 10 Feb 2020 07:37:28 -0800 (PST)
-Received: from E121110.arm.com (C02TF0J2HF1T.cambridge.arm.com [10.1.26.172])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1A4B13F68E;
-        Mon, 10 Feb 2020 07:37:18 -0800 (PST)
-Date:   Mon, 10 Feb 2020 15:37:16 +0000
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, Mark Rutland <mark.rutland@arm.com>,
-        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        James Hogan <jhogan@kernel.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-s390@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Matthew Wilcox <willy@infradead.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ingo Molnar <mingo@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
- table helpers
-Message-ID: <20200210153716.GB9283@E121110.arm.com>
-References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
+        id S1728639AbgBLJQh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 12 Feb 2020 04:16:37 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:36218 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728530AbgBLJQh (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 12 Feb 2020 04:16:37 -0500
+Received: by mail-wr1-f66.google.com with SMTP id z3so1276043wru.3
+        for <sparclinux@vger.kernel.org>; Wed, 12 Feb 2020 01:16:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=monstr-eu.20150623.gappssmtp.com; s=20150623;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Uk+gFfcB3b6FjGRTP1nlFspmuyGmgWlIC086s4vck+w=;
+        b=tx63Leo7FrRp0l54LTIEM0mJaUSmFSJs8Jtan6w3TdwyKCuw0Eu7b2I9GrPzaP8mjr
+         XjDvfMlhRKTbK/pdenWOIi2NtyBIR/rlcogzVZTLoqIly3RaBeNH3ROBYO4InWV35ScG
+         R1EixNT+YyHv7e19HkIfVYZgEpqErrhzxhTcgUR8V2cXKWQTYuS21lrCOcbTmRPuT5uy
+         I3KNIQovuRRaTeyytRIGb04+jn/BEfv9MdaQPyXAx8RZVVsiVINu0g67BeESTKqIkxlT
+         sM+jQ3MQZkAw6e5tAkX7AuFgwDJyeZcbcqYJeb0Kl/frjkzNH9bv24q+C50KvozngigY
+         pfeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=Uk+gFfcB3b6FjGRTP1nlFspmuyGmgWlIC086s4vck+w=;
+        b=PAFDO6MHfhlnfatohyphGKcDlguJ68NdIEilL2KFncJUlQd4ocgM6l/wZf7bvvyxiO
+         6oOUq+JIgs3Q4oiTJMdq1zbz6WvesAg7Yvyx/ZZ9eUDg2IgsGsLos1WPHIokDuWJ3WR9
+         i04QmSBqwiC7aii3nmPXhZjWFZ2yBLxeq/OT6gm99siakrXzZN4bd6U6UsglUKCoUnoI
+         kUjMNJXWqBeoyRsnwxmhOqQyLe3Ei/fx0f4mTOlScwt/yusehbiLFbjYHXY3I1ZJB1PW
+         RJwefWv3vZBhjYiPC8SxkBk7TED0HEwVNzJzeTolH8OkIXv3kU4nG1GWc1GxvYzivwoD
+         PwBg==
+X-Gm-Message-State: APjAAAUs3tB8BfLYg1YbaxAsvOVthO7pLbe2zCOg7mv2KkbdgfRUgCz4
+        zqjh2pt0g/jWqjfWmkrDgCj79g==
+X-Google-Smtp-Source: APXvYqzdt6o6j4qqNJoPYtoq55Sx9ZpUuHqgwT8USJjl8gjw+SUMB3okJ1S6XFjAX10CeKKJ9aqCWg==
+X-Received: by 2002:a5d:68cf:: with SMTP id p15mr13657787wrw.31.1581498995201;
+        Wed, 12 Feb 2020 01:16:35 -0800 (PST)
+Received: from localhost (nat-35.starnet.cz. [178.255.168.35])
+        by smtp.gmail.com with ESMTPSA id l17sm8579262wro.77.2020.02.12.01.16.34
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 12 Feb 2020 01:16:34 -0800 (PST)
+From:   Michal Simek <michal.simek@xilinx.com>
+To:     linux-kernel@vger.kernel.org, monstr@monstr.eu,
+        michal.simek@xilinx.com, git@xilinx.com, arnd@arndb.de,
+        akpm@linux-foundation.org
+Cc:     Stefan Asserhall <stefan.asserhall@xilinx.com>,
+        Chris Zankel <chris@zankel.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Helge Deller <deller@gmx.de>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Rich Felker <dalias@libc.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Tony Luck <tony.luck@intel.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        sparclinux@vger.kernel.org
+Subject: [PATCH v2] asm-generic: Fix unistd_32.h generation format
+Date:   Wed, 12 Feb 2020 10:16:33 +0100
+Message-Id: <dcdd615f77dacf8a98e18950b66fb5a675277f38.1581498987.git.michal.simek@xilinx.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Jan 28, 2020 at 06:57:53AM +0530, Anshuman Khandual wrote:
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
+Generated files are also checked by sparse that's why add newline
+to remove sparse (C=1) warning.
 
-It may be worth posting the next version to linux-arch to reach out to
-other arch maintainers.
+The issue was found on Microblaze and reported like this:
+./arch/microblaze/include/generated/uapi/asm/unistd_32.h:438:45:
+warning: no newline at end of file
 
-Also I've seen that you posted a v13 but it hasn't reached
-linux-arm-kernel (likely held in moderation because of the large amount
-of addresses cc'ed) and I don't normally follow LKML. I'm not cc'ed to
-this patch either (which is fine as long as you post to a list that I
-read).
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Reviewed-by: Stefan Asserhall <stefan.asserhall@xilinx.com>
+---
 
-Since I started the reply on v12 about a week ago, I'll follow up here.
-When you post a v14, please trim the people on cc only to those strictly
-necessary (e.g. arch maintainers, linux-mm, linux-arch and lkml).
+Changes in v2:
+- Update also others archs not just microblaze - Arnd
+- Align subject and description to match multiarch chagne
 
-> diff --git a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-> new file mode 100644
-> index 000000000000..f3f8111edbe3
-> --- /dev/null
-> +++ b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-> @@ -0,0 +1,35 @@
-> +#
-> +# Feature name:          debug-vm-pgtable
-> +#         Kconfig:       ARCH_HAS_DEBUG_VM_PGTABLE
-> +#         description:   arch supports pgtable tests for semantics compliance
-> +#
-> +    -----------------------
-> +    |         arch |status|
-> +    -----------------------
-> +    |       alpha: | TODO |
-> +    |         arc: |  ok  |
-> +    |         arm: | TODO |
+ arch/alpha/kernel/syscalls/syscallhdr.sh      | 1 +
+ arch/ia64/kernel/syscalls/syscallhdr.sh       | 1 +
+ arch/m68k/kernel/syscalls/syscallhdr.sh       | 1 +
+ arch/microblaze/kernel/syscalls/syscallhdr.sh | 1 +
+ arch/parisc/kernel/syscalls/syscallhdr.sh     | 1 +
+ arch/sh/kernel/syscalls/syscallhdr.sh         | 1 +
+ arch/sparc/kernel/syscalls/syscallhdr.sh      | 1 +
+ arch/xtensa/kernel/syscalls/syscallhdr.sh     | 1 +
+ 8 files changed, 8 insertions(+)
 
-I'm sure you can find some arm32 hardware around (or a VM) to give this
-a try ;).
-
-> diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-> index 0b6c4042942a..fb0e76d254b3 100644
-> --- a/arch/x86/include/asm/pgtable_64.h
-> +++ b/arch/x86/include/asm/pgtable_64.h
-[...]
-> @@ -1197,6 +1197,7 @@ static noinline void __init kernel_init_freeable(void)
->  	sched_init_smp();
->  
->  	page_alloc_init_late();
-> +	debug_vm_pgtable();
->  	/* Initialize page ext after all struct pages are initialized. */
->  	page_ext_init();
-
-I guess you could even make debug_vm_pgtable() an early_initcall(). I
-don't have a strong opinion either way.
-
-> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> new file mode 100644
-> index 000000000000..0f37f32d15f1
-> --- /dev/null
-> +++ b/mm/debug_vm_pgtable.c
-> @@ -0,0 +1,388 @@
-[...]
-> +/*
-> + * Basic operations
-> + *
-> + * mkold(entry)			= An old and not a young entry
-> + * mkyoung(entry)		= A young and not an old entry
-> + * mkdirty(entry)		= A dirty and not a clean entry
-> + * mkclean(entry)		= A clean and not a dirty entry
-> + * mkwrite(entry)		= A write and not a write protected entry
-> + * wrprotect(entry)		= A write protected and not a write entry
-> + * pxx_bad(entry)		= A mapped and non-table entry
-> + * pxx_same(entry1, entry2)	= Both entries hold the exact same value
-> + */
-> +#define VMFLAGS	(VM_READ|VM_WRITE|VM_EXEC)
-> +
-> +/*
-> + * On s390 platform, the lower 12 bits are used to identify given page table
-> + * entry type and for other arch specific requirements. But these bits might
-> + * affect the ability to clear entries with pxx_clear(). So while loading up
-> + * the entries skip all lower 12 bits in order to accommodate s390 platform.
-> + * It does not have affect any other platform.
-> + */
-> +#define RANDOM_ORVALUE	(0xfffffffffffff000UL)
-
-I'd suggest you generate this mask with something like
-GENMASK(BITS_PER_LONG, PAGE_SHIFT).
-
-> +#define RANDOM_NZVALUE	(0xff)
-> +
-> +static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
-> +{
-> +	pte_t pte = pfn_pte(pfn, prot);
-> +
-> +	WARN_ON(!pte_same(pte, pte));
-> +	WARN_ON(!pte_young(pte_mkyoung(pte)));
-> +	WARN_ON(!pte_dirty(pte_mkdirty(pte)));
-> +	WARN_ON(!pte_write(pte_mkwrite(pte)));
-> +	WARN_ON(pte_young(pte_mkold(pte)));
-> +	WARN_ON(pte_dirty(pte_mkclean(pte)));
-> +	WARN_ON(pte_write(pte_wrprotect(pte)));
-
-Given that you start with rwx permissions set,
-some of these ops would not have any effect. For example, on arm64 at
-least, mkwrite clears a bit already cleared here. You could try with
-multiple rwx combinations values (e.g. all set and all cleared) or maybe
-something like below:
-
-	WARN_ON(!pte_write(pte_mkwrite(pte_wrprotect(pte))));
-
-You could also try something like this:
-
-	WARN_ON(!pte_same(pte_wrprotect(pte), pte_wrprotect(pte_mkwrite(pte))));
-
-though the above approach may not work for arm64 ptep_set_wrprotect() on
-a dirty pte (if you extend these tests later).
-
-> +}
-> +
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
-> +{
-> +	pmd_t pmd = pfn_pmd(pfn, prot);
-> +
-> +	WARN_ON(!pmd_same(pmd, pmd));
-> +	WARN_ON(!pmd_young(pmd_mkyoung(pmd)));
-> +	WARN_ON(!pmd_dirty(pmd_mkdirty(pmd)));
-> +	WARN_ON(!pmd_write(pmd_mkwrite(pmd)));
-> +	WARN_ON(pmd_young(pmd_mkold(pmd)));
-> +	WARN_ON(pmd_dirty(pmd_mkclean(pmd)));
-> +	WARN_ON(pmd_write(pmd_wrprotect(pmd)));
-> +	/*
-> +	 * A huge page does not point to next level page table
-> +	 * entry. Hence this must qualify as pmd_bad().
-> +	 */
-> +	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
-> +}
-> +
-> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-> +static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
-> +{
-> +	pud_t pud = pfn_pud(pfn, prot);
-> +
-> +	WARN_ON(!pud_same(pud, pud));
-> +	WARN_ON(!pud_young(pud_mkyoung(pud)));
-> +	WARN_ON(!pud_write(pud_mkwrite(pud)));
-> +	WARN_ON(pud_write(pud_wrprotect(pud)));
-> +	WARN_ON(pud_young(pud_mkold(pud)));
-> +
-> +	if (mm_pmd_folded(mm) || __is_defined(ARCH_HAS_4LEVEL_HACK))
-> +		return;
-> +
-> +	/*
-> +	 * A huge page does not point to next level page table
-> +	 * entry. Hence this must qualify as pud_bad().
-> +	 */
-> +	WARN_ON(!pud_bad(pud_mkhuge(pud)));
-> +}
-> +#else
-> +static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
-> +#endif
-> +#else
-> +static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
-> +static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
-> +#endif
-> +
-> +static void __init p4d_basic_tests(unsigned long pfn, pgprot_t prot)
-> +{
-> +	p4d_t p4d;
-> +
-> +	memset(&p4d, RANDOM_NZVALUE, sizeof(p4d_t));
-> +	WARN_ON(!p4d_same(p4d, p4d));
-> +}
-> +
-> +static void __init pgd_basic_tests(unsigned long pfn, pgprot_t prot)
-> +{
-> +	pgd_t pgd;
-> +
-> +	memset(&pgd, RANDOM_NZVALUE, sizeof(pgd_t));
-> +	WARN_ON(!pgd_same(pgd, pgd));
-> +}
-> +
-> +#ifndef __ARCH_HAS_4LEVEL_HACK
-
-This macro doesn't exist in the kernel anymore (it's a 5LEVEL now). But
-can you not use the __PAGETABLE_PUD_FOLDED instead?
-
-> +static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp)
-> +{
-> +	pud_t pud = READ_ONCE(*pudp);
-> +
-> +	if (mm_pmd_folded(mm))
-> +		return;
-> +
-> +	pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
-> +	WRITE_ONCE(*pudp, pud);
-> +	pud_clear(pudp);
-> +	pud = READ_ONCE(*pudp);
-> +	WARN_ON(!pud_none(pud));
-> +}
-> +
-> +static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
-> +				      pmd_t *pmdp)
-> +{
-> +	pud_t pud;
-> +
-> +	if (mm_pmd_folded(mm))
-> +		return;
-> +	/*
-> +	 * This entry points to next level page table page.
-> +	 * Hence this must not qualify as pud_bad().
-> +	 */
-> +	pmd_clear(pmdp);
-> +	pud_clear(pudp);
-> +	pud_populate(mm, pudp, pmdp);
-> +	pud = READ_ONCE(*pudp);
-> +	WARN_ON(pud_bad(pud));
-> +}
-> +#else
-> +static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp) { }
-> +static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
-> +				      pmd_t *pmdp)
-> +{
-> +}
-> +#endif
-> +
-> +#ifndef __ARCH_HAS_5LEVEL_HACK
-
-Could you use __PAGETABLE_P4D_FOLDED instead?
-
-> +static void __init p4d_clear_tests(struct mm_struct *mm, p4d_t *p4dp)
-> +{
-> +	p4d_t p4d = READ_ONCE(*p4dp);
-> +
-> +	if (mm_pud_folded(mm))
-> +		return;
-> +
-> +	p4d = __p4d(p4d_val(p4d) | RANDOM_ORVALUE);
-> +	WRITE_ONCE(*p4dp, p4d);
-> +	p4d_clear(p4dp);
-> +	p4d = READ_ONCE(*p4dp);
-> +	WARN_ON(!p4d_none(p4d));
-> +}
-
-Otherwise the patch looks fine. As per the comment on v13, make sure you
-don't break the build on any architecture, so this could either be an
-opt-in or patch those architectures before this patch is applied.
-
-Thanks.
-
+diff --git a/arch/alpha/kernel/syscalls/syscallhdr.sh b/arch/alpha/kernel/syscalls/syscallhdr.sh
+index e5b99bd2e5e7..524c69fbcab7 100644
+--- a/arch/alpha/kernel/syscalls/syscallhdr.sh
++++ b/arch/alpha/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/ia64/kernel/syscalls/syscallhdr.sh b/arch/ia64/kernel/syscalls/syscallhdr.sh
+index 0c2d2c748565..8e462a9be54a 100644
+--- a/arch/ia64/kernel/syscalls/syscallhdr.sh
++++ b/arch/ia64/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/m68k/kernel/syscalls/syscallhdr.sh b/arch/m68k/kernel/syscalls/syscallhdr.sh
+index 6f357d68ef44..8ac15be01ac2 100644
+--- a/arch/m68k/kernel/syscalls/syscallhdr.sh
++++ b/arch/m68k/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */\n" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/microblaze/kernel/syscalls/syscallhdr.sh b/arch/microblaze/kernel/syscalls/syscallhdr.sh
+index 2e9062a926a3..4f4238433644 100644
+--- a/arch/microblaze/kernel/syscalls/syscallhdr.sh
++++ b/arch/microblaze/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/parisc/kernel/syscalls/syscallhdr.sh b/arch/parisc/kernel/syscalls/syscallhdr.sh
+index 50242b747d7c..77eb95416eae 100644
+--- a/arch/parisc/kernel/syscalls/syscallhdr.sh
++++ b/arch/parisc/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/sh/kernel/syscalls/syscallhdr.sh b/arch/sh/kernel/syscalls/syscallhdr.sh
+index 1de0334e577f..7c45d405547c 100644
+--- a/arch/sh/kernel/syscalls/syscallhdr.sh
++++ b/arch/sh/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/sparc/kernel/syscalls/syscallhdr.sh b/arch/sparc/kernel/syscalls/syscallhdr.sh
+index 626b5740a9f1..76e4d1a1f8bf 100644
+--- a/arch/sparc/kernel/syscalls/syscallhdr.sh
++++ b/arch/sparc/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
+diff --git a/arch/xtensa/kernel/syscalls/syscallhdr.sh b/arch/xtensa/kernel/syscalls/syscallhdr.sh
+index d37db641ca31..c946c6b2a506 100644
+--- a/arch/xtensa/kernel/syscalls/syscallhdr.sh
++++ b/arch/xtensa/kernel/syscalls/syscallhdr.sh
+@@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
+ 	printf "#endif\n"
+ 	printf "\n"
+ 	printf "#endif /* %s */" "${fileguard}"
++	printf "\n"
+ ) > "$out"
 -- 
-Catalin
+2.25.0
+
