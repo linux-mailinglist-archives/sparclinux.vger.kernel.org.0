@@ -2,37 +2,37 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4FAE15EAA2
-	for <lists+sparclinux@lfdr.de>; Fri, 14 Feb 2020 18:15:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C46C015EEE3
+	for <lists+sparclinux@lfdr.de>; Fri, 14 Feb 2020 18:44:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391937AbgBNRPG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 14 Feb 2020 12:15:06 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39830 "EHLO mail.kernel.org"
+        id S2389561AbgBNQDK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 14 Feb 2020 11:03:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50010 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389097AbgBNQMW (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:12:22 -0500
+        id S2389560AbgBNQDJ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:03:09 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DAD35246B1;
-        Fri, 14 Feb 2020 16:12:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E171F2082F;
+        Fri, 14 Feb 2020 16:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581696742;
+        s=default; t=1581696188;
         bh=2CYUFLmW3i6C3O1A7jOCWSZXO8Q6293Ys7QB2+bTlbo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y/uL77/+wG6wBoluIg+inUda5xWySehw09qGGaJ4oZXREL+ZHCJUu+PgYts6SoDWX
-         v6K4VxfZO9RIPCfx9yE7/skwAMFJWNLiUnT81iSumqnOa2y1RHdutgtvhftJ/MyXLZ
-         lDM2xYuoqkK6wNqgWeeyeFrV/Y27T4vcVjnr73qI=
+        b=kyOeTUU5fu3+XRFccygbp5FsqipGJncv/UxIy7DtS43L0i9gtWkkx7nY2CzgSG/YW
+         +03w83CX1UTNKG+KtXHt8m0KtQyNd4kirAMVcO4GZYPtGWtuJIN2HThWXZtfp5GTuy
+         jEe/orTHkp/TlTlw8Vn20UpOj8zpY5AHR5pcNq9A=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 026/252] sparc: Add .exit.data section.
-Date:   Fri, 14 Feb 2020 11:08:01 -0500
-Message-Id: <20200214161147.15842-26-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 057/459] sparc: Add .exit.data section.
+Date:   Fri, 14 Feb 2020 10:55:07 -0500
+Message-Id: <20200214160149.11681-57-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214161147.15842-1-sashal@kernel.org>
-References: <20200214161147.15842-1-sashal@kernel.org>
+In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
+References: <20200214160149.11681-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
