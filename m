@@ -2,37 +2,37 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68B6F15E7ED
-	for <lists+sparclinux@lfdr.de>; Fri, 14 Feb 2020 17:57:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5A7615E5D4
+	for <lists+sparclinux@lfdr.de>; Fri, 14 Feb 2020 17:44:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394231AbgBNQ5D (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 14 Feb 2020 11:57:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49478 "EHLO mail.kernel.org"
+        id S2393198AbgBNQoC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 14 Feb 2020 11:44:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56644 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404555AbgBNQRt (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:17:49 -0500
+        id S2393081AbgBNQVq (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:21:46 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8A5F224694;
-        Fri, 14 Feb 2020 16:17:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BA665246BB;
+        Fri, 14 Feb 2020 16:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697069;
-        bh=F+r6f7D9VWB0JUgqPSAS30JtMBZ1mLZZa7QocF23OE0=;
+        s=default; t=1581697306;
+        bh=bUl18KgYsD1pERCGM7Tr1bxlg61pSdWjL5hSVsWT+90=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fLkdE8uAzODuanH7BC+a0F85zpluJ0HL7awHCHgKKtuZKVrpwd4/B3VwT0WzWbFL2
-         a6j2m+CacIw1iVSGYC0jmqtPoARp8pTSXWGu7+D4dc1n09esVB+Ly0DJG0aZUxCbEr
-         fKdvqKu5JD1v1Av5NNELwUeOsoCBdhNb1hcPml6c=
+        b=02vcwAtnAuMSd8xFb4cCqsINh94vGz8pK+gYNDXDR/Byfm6U0NvyS+N+rhY1NaqlT
+         eY2Xakvmc1ok5zVKc02wQgGr3vrvkjuZ2o+56QhNBAFNTMDgfKeQNamvK1FgNBR2Pc
+         fIc3dXvJFEJ1+yEWZkTZP1Gc1+CvpOe4tgWSMqbU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 025/186] sparc: Add .exit.data section.
-Date:   Fri, 14 Feb 2020 11:14:34 -0500
-Message-Id: <20200214161715.18113-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 018/141] sparc: Add .exit.data section.
+Date:   Fri, 14 Feb 2020 11:19:18 -0500
+Message-Id: <20200214162122.19794-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214161715.18113-1-sashal@kernel.org>
-References: <20200214161715.18113-1-sashal@kernel.org>
+In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
+References: <20200214162122.19794-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -57,10 +57,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/arch/sparc/kernel/vmlinux.lds.S b/arch/sparc/kernel/vmlinux.lds.S
-index 5a2344574f39b..4323dc4ae4c7a 100644
+index 572db686f8458..385d6d04564d5 100644
 --- a/arch/sparc/kernel/vmlinux.lds.S
 +++ b/arch/sparc/kernel/vmlinux.lds.S
-@@ -167,12 +167,14 @@ SECTIONS
+@@ -151,12 +151,14 @@ SECTIONS
  	}
  	PERCPU_SECTION(SMP_CACHE_BYTES)
  
