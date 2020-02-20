@@ -2,62 +2,114 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61B09164BF0
-	for <lists+sparclinux@lfdr.de>; Wed, 19 Feb 2020 18:31:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5EFC165852
+	for <lists+sparclinux@lfdr.de>; Thu, 20 Feb 2020 08:17:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726518AbgBSRbs convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Wed, 19 Feb 2020 12:31:48 -0500
-Received: from scm.imp.edu.mx ([132.247.16.103]:41521 "EHLO scm.imp.edu.mx"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726551AbgBSRbs (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 19 Feb 2020 12:31:48 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 9CD0618AF64;
-        Wed, 19 Feb 2020 09:46:41 -0600 (CST)
-X-Virus-Scanned: by SpamTitan at imp.edu.mx
-Received: from scm.imp.edu.mx (localhost [127.0.0.1])
-        by scm.imp.edu.mx (Postfix) with ESMTP id EB46418E7B8;
-        Wed, 19 Feb 2020 06:34:41 -0600 (CST)
-Authentication-Results: scm.imp.edu.mx; none
-Received: from imp.edu.mx (unknown [10.249.93.105])
-        by scm.imp.edu.mx (Postfix) with ESMTP id B071B1916B7;
-        Wed, 19 Feb 2020 06:08:18 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by imp.edu.mx (Postfix) with ESMTP id 1CB7E1806252DD;
-        Wed, 19 Feb 2020 06:08:17 -0600 (CST)
-Received: from imp.edu.mx ([127.0.0.1])
-        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id pw9XQP72G-uI; Wed, 19 Feb 2020 06:08:17 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by imp.edu.mx (Postfix) with ESMTP id F1CC91802E6242;
-        Wed, 19 Feb 2020 06:08:16 -0600 (CST)
-X-Virus-Scanned: amavisd-new at imp.edu.mx
-Received: from imp.edu.mx ([127.0.0.1])
-        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id LBeOIukb9IPb; Wed, 19 Feb 2020 06:08:16 -0600 (CST)
-Received: from [45.147.4.119] (unknown [45.147.4.119])
-        by imp.edu.mx (Postfix) with ESMTPSA id C9B391806252DD;
-        Wed, 19 Feb 2020 06:08:15 -0600 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: 19-02-2020
-To:     Recipients <mucios@imp.edu.mx>
-From:   "urs portmann" <mucios@imp.edu.mx>
-Date:   Wed, 19 Feb 2020 23:08:14 +1100
-Reply-To: onube@qq.com
-Message-Id: <20200219120815.C9B391806252DD@imp.edu.mx>
+        id S1726541AbgBTHR4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 20 Feb 2020 02:17:56 -0500
+Received: from condef-05.nifty.com ([202.248.20.70]:47573 "EHLO
+        condef-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726379AbgBTHR4 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 20 Feb 2020 02:17:56 -0500
+Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-05.nifty.com with ESMTP id 01K7E2Gm026094
+        for <sparclinux@vger.kernel.org>; Thu, 20 Feb 2020 16:14:02 +0900
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-08.nifty.com with ESMTP id 01K7Bl6d011059;
+        Thu, 20 Feb 2020 16:11:48 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 01K7Bl6d011059
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1582182709;
+        bh=RGjdzwfQtcxcoKdnoWUCQmUyQN1VFbdpPZmhgB3NQTg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=AWHBX0UdXgGdhv2cpgdj49Y1GSquysKyrkVwyMwJbateXpitUPdtm1oyYUf0n5cPe
+         zutHkgNQJ2DO/MNHEuFQOVml5GdlGqb291UoCA2/SP0G9xhvUEXPuqcK2QopZ+KVsi
+         DAAzVmHYxXU/uhr4gaxXcUvB+LOUOmqFSWsuSaY2hTBMDw7E4T8B4IOje6fYgFbHD4
+         3pyg00EK0d9WBtL6pPADmrbyn4XQkxTYqaWPTM5xusKG4sgf15N2fbGbV8xoOc8/ta
+         i2FS1sneF/UM/Kb9t0JE9o37m3Zl/ixLhkNU8o2zAruo62J6F8RmYehjA8EW4sEwZT
+         nv+juHiW9uAmA==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        clang-built-linux@googlegroups.com,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        sparclinux@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] vdso: remove meaningless undefining CONFIG_OPTIMIZE_INLINING
+Date:   Thu, 20 Feb 2020 16:11:39 +0900
+Message-Id: <20200220071140.14080-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Guten Morgen,
-                                          19-02-2020
-Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen gehört. Haben Sie unsere letzte E-Mail über Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
+The code, #undef CONFIG_OPTIMIZE_INLINING, is not working as expected.
 
-Wir warten darauf, von Ihnen zu hören, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterstützt.
+It is because <linux/compiler_types.h> is parsed before vclock_gettime.c
+since 28128c61e08e ("kconfig.h: Include compiler types to avoid missed
+struct attributes").
 
-Mfg
-urs portmann
+Since then, <linux/compiler_types.h> is included really early by
+using the '-include' option. So, you cannot negate the decision of
+<linux/compiler_types.h> in this way.
+
+You can confirm it by checking the pre-processed code, like this:
+
+  $ make arch/x86/entry/vdso/vdso32/vclock_gettime.i
+
+There is no difference with/without CONFIG_CC_OPTIMIZE_FOR_SIZE.
+
+It it about two years since 28128c61e08e. Nobody has reported a
+problem (or, nobody has even noticed the fact that this code is not
+working).
+
+It is ugly and unreliable to attempt to undefine a CONFIG option from
+C files, and anyway the inlining heuristic is up to the compiler.
+
+Just remove the broken code.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ arch/sparc/vdso/vdso32/vclock_gettime.c     | 4 ----
+ arch/x86/entry/vdso/vdso32/vclock_gettime.c | 4 ----
+ 2 files changed, 8 deletions(-)
+
+diff --git a/arch/sparc/vdso/vdso32/vclock_gettime.c b/arch/sparc/vdso/vdso32/vclock_gettime.c
+index 026abb3b826c..d7f99e6745ea 100644
+--- a/arch/sparc/vdso/vdso32/vclock_gettime.c
++++ b/arch/sparc/vdso/vdso32/vclock_gettime.c
+@@ -4,10 +4,6 @@
+ 
+ #define	BUILD_VDSO32
+ 
+-#ifndef	CONFIG_CC_OPTIMIZE_FOR_SIZE
+-#undef	CONFIG_OPTIMIZE_INLINING
+-#endif
+-
+ #ifdef	CONFIG_SPARC64
+ 
+ /*
+diff --git a/arch/x86/entry/vdso/vdso32/vclock_gettime.c b/arch/x86/entry/vdso/vdso32/vclock_gettime.c
+index 9242b28418d5..3c26488db94d 100644
+--- a/arch/x86/entry/vdso/vdso32/vclock_gettime.c
++++ b/arch/x86/entry/vdso/vdso32/vclock_gettime.c
+@@ -1,10 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #define BUILD_VDSO32
+ 
+-#ifndef CONFIG_CC_OPTIMIZE_FOR_SIZE
+-#undef CONFIG_OPTIMIZE_INLINING
+-#endif
+-
+ #ifdef CONFIG_X86_64
+ 
+ /*
+-- 
+2.17.1
+
