@@ -2,155 +2,77 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 258B0165850
-	for <lists+sparclinux@lfdr.de>; Thu, 20 Feb 2020 08:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CCF165A1D
+	for <lists+sparclinux@lfdr.de>; Thu, 20 Feb 2020 10:26:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726466AbgBTHQY (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 20 Feb 2020 02:16:24 -0500
-Received: from condef-10.nifty.com ([202.248.20.75]:60158 "EHLO
-        condef-10.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726379AbgBTHQY (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 20 Feb 2020 02:16:24 -0500
-Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-10.nifty.com with ESMTP id 01K7Dpis020719
-        for <sparclinux@vger.kernel.org>; Thu, 20 Feb 2020 16:13:51 +0900
-Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
-        by conuserg-08.nifty.com with ESMTP id 01K7Bl6e011059;
-        Thu, 20 Feb 2020 16:11:49 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 01K7Bl6e011059
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1582182710;
-        bh=+g7cH/hWwvcSufuWOvuSo00awgwQs7zryYYrPdVzF2c=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XHidawMYwRIsKTcmfjP8nOvaa/oCcqep+hb2pJYYzwkCDIEp3cz8qNtnOlWEPHm6b
-         EWq6MdZyqcn5pNEOn94SnX0hEOlDd4i394y15Zcua7OxtEDfQtLaibMiHJx2IkWF1K
-         Kyush1yLBNH6MKAi9cwAUtXXN4MeaUp+N+GALgMt67SCvQAWSTe8UvfXipIpCh8cnT
-         n7n0r1FEeggqLQJsmtChYF5BROrQdaUJXbfGuK6tK+kQfZbCCHcjSoUp7dcEwAXPdR
-         tkdX/j2kqS5veyaAYkSSEMCcsgfUi/oWGC5H5fs/1AcSFndEvfrqKt08xRWF4oGyDb
-         QpHNFTxBiszuA==
-X-Nifty-SrcIP: [153.142.97.92]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        clang-built-linux@googlegroups.com,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        sparclinux@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] compiler: Remove CONFIG_OPTIMIZE_INLINING entirely
-Date:   Thu, 20 Feb 2020 16:11:40 +0900
-Message-Id: <20200220071140.14080-2-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200220071140.14080-1-masahiroy@kernel.org>
-References: <20200220071140.14080-1-masahiroy@kernel.org>
+        id S1726759AbgBTJ0T (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 20 Feb 2020 04:26:19 -0500
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:41648 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726637AbgBTJ0T (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 20 Feb 2020 04:26:19 -0500
+Received: by mail-lf1-f68.google.com with SMTP id m30so2496614lfp.8;
+        Thu, 20 Feb 2020 01:26:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jWL4OlWg/ImsZ63WRta4BWWVgqBXfj6sTueyX2l3ehw=;
+        b=FRjY7eWoShhLInLVqivCbDZmz3Tzaed2/S4StccntngX7sjwsp+gpyCqhLFxFaOSOO
+         ujSEGd9NgGayusZyXzghE2ftdkD7kZQPajX4sB6sxR0ajJxcJW9AEjSEtBg/7Z8J+y+U
+         Q7cRJRA1L7NdgmBMdEXVSJtfRJzdjNu5o7NBFaOzUuEActSwDZHIlikxvHOmN2PlnWhe
+         ADvc9wsv1SIHgb3pfcSx9Cr8Q3de6uKcYR5H8hDTCx3mfYdEGU6Obf9NIKJ990Ucw3zC
+         wcU+sCbS73CcMQx8hAkJ5U0bNWT7lqIX6Gm6vjDS2XtFk07wa2ZmDzhQNUSNMjZlnMjV
+         92YA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jWL4OlWg/ImsZ63WRta4BWWVgqBXfj6sTueyX2l3ehw=;
+        b=s6SHG9KShoeA60Y/HkS7NIQ5bM8w0pGNN/AZdya2zaUSya3NmnXHoJAsSsa1AqiZfe
+         6hpElPRlNuup5ptFQUJC/DNpcxRb1wItMLjlA0JeHR1KHUxgaYajRbRQn+Myz0U/YCkB
+         68J0RHMJtTwcffIb8CkawWOVEAtE/ExauZ6W/NBZxkCG/xiXOU+8l2omy1CVr9phhz+V
+         xM3M83/LSOmg50wa8RjBXazgvaiIXCt6UAb9xRQ+6aJAHoagKfJT8Xq7BBXWGD9r0HKj
+         /PCroNAU3ZOQgIKLUwtqWsMbSH2KOHuY41ogJavmoZMtWsa7t78IX+QK6Mgpbf6lhr4C
+         jKSg==
+X-Gm-Message-State: APjAAAXGyZbO0MvCUQ/0U17rTurZcEPAt1cF4LKMVsS8ULIhUTop5Plp
+        wsI7c/J/wXnGZGuXIWV93S9NYBzAaoQfC05Ps83LKQ==
+X-Google-Smtp-Source: APXvYqy0eAlphZlkrP7jg0My9wepzrhcr9QemESkO8toScsiMUqiVlVjsI/0k8VPy9q2ShDz5AEXeGmqrYrpWAGcG6k=
+X-Received: by 2002:ac2:4199:: with SMTP id z25mr16242179lfh.26.1582190775281;
+ Thu, 20 Feb 2020 01:26:15 -0800 (PST)
+MIME-Version: 1.0
+References: <20200220071140.14080-1-masahiroy@kernel.org> <20200220071140.14080-2-masahiroy@kernel.org>
+In-Reply-To: <20200220071140.14080-2-masahiroy@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 20 Feb 2020 10:26:04 +0100
+Message-ID: <CANiq72nWs3c2MWGTsG=zvDQ21B_=_Yaw3AhRhHDBAr2xFJwF_g@mail.gmail.com>
+Subject: Re: [PATCH 2/2] compiler: Remove CONFIG_OPTIMIZE_INLINING entirely
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        sparclinux@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Commit ac7c3e4ff401 ("compiler: enable CONFIG_OPTIMIZE_INLINING
-forcibly") made this always-on option. We released v5.4 and v5.5
-including that commit.
+On Thu, Feb 20, 2020 at 8:12 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> Commit ac7c3e4ff401 ("compiler: enable CONFIG_OPTIMIZE_INLINING
+> forcibly") made this always-on option. We released v5.4 and v5.5
+> including that commit.
+>
+> Remove the CONFIG option and clean up the code now.
 
-Remove the CONFIG option and clean up the code now.
+Yes, please!
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+Reviewed-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 
- arch/x86/configs/i386_defconfig   |  1 -
- arch/x86/configs/x86_64_defconfig |  1 -
- include/linux/compiler_types.h    | 11 +----------
- kernel/configs/tiny.config        |  1 -
- lib/Kconfig.debug                 | 12 ------------
- 5 files changed, 1 insertion(+), 25 deletions(-)
-
-diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
-index 59ce9ed58430..d961d831c266 100644
---- a/arch/x86/configs/i386_defconfig
-+++ b/arch/x86/configs/i386_defconfig
-@@ -288,7 +288,6 @@ CONFIG_EARLY_PRINTK_DBGP=y
- CONFIG_DEBUG_STACKOVERFLOW=y
- # CONFIG_DEBUG_RODATA_TEST is not set
- CONFIG_DEBUG_BOOT_PARAMS=y
--CONFIG_OPTIMIZE_INLINING=y
- CONFIG_SECURITY=y
- CONFIG_SECURITY_NETWORK=y
- CONFIG_SECURITY_SELINUX=y
-diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
-index 0b9654c7a05c..4826254c6140 100644
---- a/arch/x86/configs/x86_64_defconfig
-+++ b/arch/x86/configs/x86_64_defconfig
-@@ -285,7 +285,6 @@ CONFIG_EARLY_PRINTK_DBGP=y
- CONFIG_DEBUG_STACKOVERFLOW=y
- # CONFIG_DEBUG_RODATA_TEST is not set
- CONFIG_DEBUG_BOOT_PARAMS=y
--CONFIG_OPTIMIZE_INLINING=y
- CONFIG_UNWINDER_ORC=y
- CONFIG_SECURITY=y
- CONFIG_SECURITY_NETWORK=y
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 72393a8c1a6c..e970f97a7fcb 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -129,22 +129,13 @@ struct ftrace_likely_data {
- #define __compiler_offsetof(a, b)	__builtin_offsetof(a, b)
- 
- /*
-- * Force always-inline if the user requests it so via the .config.
-  * Prefer gnu_inline, so that extern inline functions do not emit an
-  * externally visible function. This makes extern inline behave as per gnu89
-  * semantics rather than c99. This prevents multiple symbol definition errors
-  * of extern inline functions at link time.
-  * A lot of inline functions can cause havoc with function tracing.
-- * Do not use __always_inline here, since currently it expands to inline again
-- * (which would break users of __always_inline).
-  */
--#if !defined(CONFIG_OPTIMIZE_INLINING)
--#define inline inline __attribute__((__always_inline__)) __gnu_inline \
--	__inline_maybe_unused notrace
--#else
--#define inline inline                                    __gnu_inline \
--	__inline_maybe_unused notrace
--#endif
-+#define inline inline __gnu_inline __inline_maybe_unused notrace
- 
- /*
-  * gcc provides both __inline__ and __inline as alternate spellings of
-diff --git a/kernel/configs/tiny.config b/kernel/configs/tiny.config
-index 7fa0c4ae6394..8a44b93da0f3 100644
---- a/kernel/configs/tiny.config
-+++ b/kernel/configs/tiny.config
-@@ -6,7 +6,6 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_KERNEL_XZ=y
- # CONFIG_KERNEL_LZO is not set
- # CONFIG_KERNEL_LZ4 is not set
--CONFIG_OPTIMIZE_INLINING=y
- # CONFIG_SLAB is not set
- # CONFIG_SLUB is not set
- CONFIG_SLOB=y
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 69def4a9df00..5abde39c3c69 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -305,18 +305,6 @@ config HEADERS_INSTALL
- 	  user-space program samples. It is also needed by some features such
- 	  as uapi header sanity checks.
- 
--config OPTIMIZE_INLINING
--	def_bool y
--	help
--	  This option determines if the kernel forces gcc to inline the functions
--	  developers have marked 'inline'. Doing so takes away freedom from gcc to
--	  do what it thinks is best, which is desirable for the gcc 3.x series of
--	  compilers. The gcc 4.x series have a rewritten inlining algorithm and
--	  enabling this option will generate a smaller kernel there. Hopefully
--	  this algorithm is so good that allowing gcc 4.x and above to make the
--	  decision will become the default in the future. Until then this option
--	  is there to test gcc for this.
--
- config DEBUG_SECTION_MISMATCH
- 	bool "Enable full Section mismatch analysis"
- 	help
--- 
-2.17.1
-
+Cheers,
+Miguel
