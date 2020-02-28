@@ -2,93 +2,208 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F3031699BC
-	for <lists+sparclinux@lfdr.de>; Sun, 23 Feb 2020 20:30:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B79A9172F8A
+	for <lists+sparclinux@lfdr.de>; Fri, 28 Feb 2020 04:47:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727339AbgBWTab (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 23 Feb 2020 14:30:31 -0500
-Received: from foss.arm.com ([217.140.110.172]:51422 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727267AbgBWTaI (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 23 Feb 2020 14:30:08 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C4526106F;
-        Sun, 23 Feb 2020 11:30:07 -0800 (PST)
-Received: from e107158-lin.cambridge.arm.com (e107158-lin.cambridge.arm.com [10.1.195.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6D44E3F6CF;
-        Sun, 23 Feb 2020 11:30:06 -0800 (PST)
-From:   Qais Yousef <qais.yousef@arm.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     "Paul E . McKenney" <paulmck@kernel.org>,
-        Qais Yousef <qais.yousef@arm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 09/15] sparc: Replace cpu_up/down with add/remove_cpu
-Date:   Sun, 23 Feb 2020 19:29:36 +0000
-Message-Id: <20200223192942.18420-10-qais.yousef@arm.com>
+        id S1730736AbgB1DrP (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 27 Feb 2020 22:47:15 -0500
+Received: from conuserg-09.nifty.com ([210.131.2.76]:58005 "EHLO
+        conuserg-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730586AbgB1DrP (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 27 Feb 2020 22:47:15 -0500
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-09.nifty.com with ESMTP id 01S3kkDJ013497;
+        Fri, 28 Feb 2020 12:46:47 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com 01S3kkDJ013497
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1582861607;
+        bh=QmWDb7FM9dTCeFtKMuH7JSWUHmQOyND5t3pNwswG2V0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=y0o2A9jVU7w7EJMUUGHZLXnlDhMXqIy74Q1ZtBe7vOgOGODR07kk5N2VrMeDCTirG
+         7KlvvlF3OEKhTwMYl9/1rJLgzs49GkzSFXLA7CcXHp/ha5SmdgG/293NPGLOYX4hlV
+         K+ptcJiflacHZMZCm4hXzMf/1dI1+vr43lal0D9VYVXIUznoHQlXxvqNwtbF33/gRA
+         saihntV5enSdq8A0wrhV2E0w95JeIpSKmt6TSxzcbkuxGzqIV5wp23nnzTEiVH2/ID
+         8xGzToFkVbcnFBoQ4n8HOBu0NG1KzOD9zZ60rLyzeSq6hU002UgjVZn1ItFkWmnTAA
+         kT9e6rFGZmLTg==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-um@lists.infradead.org, sparclinux@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH] kbuild: use KBUILD_DEFCONFIG as the fallback for DEFCONFIG_LIST
+Date:   Fri, 28 Feb 2020 12:46:40 +0900
+Message-Id: <20200228034640.25247-1-masahiroy@kernel.org>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200223192942.18420-1-qais.yousef@arm.com>
-References: <20200223192942.18420-1-qais.yousef@arm.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The core device API performs extra housekeeping bits that are missing
-from directly calling cpu_up/down.
+Most of the Kconfig commands (except defconfig and all*config) read
+the .config file as a base set of CONFIG options.
 
-See commit a6717c01ddc2 ("powerpc/rtas: use device model APIs and
-serialization during LPM") for an example description of what might go
-wrong.
+When it does not exist, the files in DEFCONFIG_LIST are searched in
+this order and loaded if found.
 
-This also prepares to make cpu_up/down a private interface for anything
-but the cpu subsystem.
+I do not see much sense in the last two lines in DEFCONFIG_LIST.
 
-Acked-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Qais Yousef <qais.yousef@arm.com>
-CC: "David S. Miller" <davem@davemloft.net>
-CC: Thomas Gleixner <tglx@linutronix.de>
-CC: Bjorn Helgaas <bhelgaas@google.com>
-CC: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Sakari Ailus <sakari.ailus@linux.intel.com>
-CC: sparclinux@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
+[1] ARCH_DEFCONFIG
+
+The entry for DEFCONFIG_LIST is guarded by 'depends on !UML'. So, the
+ARCH_DEFCONFIG definition in arch/x86/um/Kconfig is meaningless.
+
+arch/{sh,sparc,x86}/Kconfig define ARCH_DEFCONFIG depending on 32 or
+64 bit variant symbols. This is a little bit strange; ARCH_DEFCONFIG
+should be a fixed string because the base config file is loaded before
+the symbol evaluation stage.
+
+Using KBUILD_DEFCONFIG makes more sense because it is fixed before
+Kconfig is invoked. Fortunately, arch/{sh,sparc,x86}/Makefile define it
+in the same way, and it works as expected. Hence, replace ARCH_DEFCONFIG
+with "arch/$(SRCARCH)/configs/$(KBUILD_DEFCONFIG)".
+
+[2] arch/$(ARCH)/defconfig
+
+This file path is no longer valid. The defconfig files are always located
+in the arch configs/ directories.
+
+  $ find arch -name defconfig | sort
+  arch/alpha/configs/defconfig
+  arch/arm64/configs/defconfig
+  arch/csky/configs/defconfig
+  arch/nds32/configs/defconfig
+  arch/riscv/configs/defconfig
+  arch/s390/configs/defconfig
+  arch/unicore32/configs/defconfig
+
+The path arch/*/configs/defconfig is already covered by
+"arch/$(SRCARCH)/configs/$(KBUILD_DEFCONFIG)". So, this file path is
+not necessary.
+
+I moved the default KBUILD_DEFCONFIG to the top Makefile. Otherwise,
+the 7 architectures listed above would end up with endless loop of
+syncconfig.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
-David, this now uses add/remove_cpu() which you should be CCed on. I wasn't
-sure if I can keep your Ack or remove it in this case. Please let me know if
-you need more clarification.
+ Makefile                 | 3 +++
+ arch/sh/Kconfig          | 5 -----
+ arch/sparc/Kconfig       | 5 -----
+ arch/x86/Kconfig         | 5 -----
+ arch/x86/um/Kconfig      | 5 -----
+ init/Kconfig             | 3 +--
+ scripts/kconfig/Makefile | 4 ----
+ 7 files changed, 4 insertions(+), 26 deletions(-)
 
- arch/sparc/kernel/ds.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/sparc/kernel/ds.c b/arch/sparc/kernel/ds.c
-index bbf59b3b4af8..75232cbd58bf 100644
---- a/arch/sparc/kernel/ds.c
-+++ b/arch/sparc/kernel/ds.c
-@@ -555,7 +555,7 @@ static int dr_cpu_configure(struct ds_info *dp, struct ds_cap_state *cp,
+diff --git a/Makefile b/Makefile
+index 81d130ad9534..17cc09304561 100644
+--- a/Makefile
++++ b/Makefile
+@@ -388,6 +388,9 @@ endif
+ KCONFIG_CONFIG	?= .config
+ export KCONFIG_CONFIG
  
- 		printk(KERN_INFO "ds-%llu: Starting cpu %d...\n",
- 		       dp->id, cpu);
--		err = cpu_up(cpu);
-+		err = add_cpu(cpu);
- 		if (err) {
- 			__u32 res = DR_CPU_RES_FAILURE;
- 			__u32 stat = DR_CPU_STAT_UNCONFIGURED;
-@@ -611,7 +611,7 @@ static int dr_cpu_unconfigure(struct ds_info *dp,
++# Default file for 'make defconfig'. This may be overridden by arch-Makefile.
++export KBUILD_DEFCONFIG := defconfig
++
+ # SHELL used by kbuild
+ CONFIG_SHELL := sh
  
- 		printk(KERN_INFO "ds-%llu: Shutting down cpu %d...\n",
- 		       dp->id, cpu);
--		err = cpu_down(cpu);
-+		err = remove_cpu(cpu);
- 		if (err)
- 			dr_cpu_mark(resp, cpu, ncpus,
- 				    DR_CPU_RES_FAILURE,
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index 9ece111b0254..b4f0e37b83eb 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -87,11 +87,6 @@ config SUPERH64
+ 	select HAVE_EXIT_THREAD
+ 	select KALLSYMS
+ 
+-config ARCH_DEFCONFIG
+-	string
+-	default "arch/sh/configs/shx3_defconfig" if SUPERH32
+-	default "arch/sh/configs/cayman_defconfig" if SUPERH64
+-
+ config GENERIC_BUG
+ 	def_bool y
+ 	depends on BUG && SUPERH32
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index c1dd6dd642f4..0de15380d1fc 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -95,11 +95,6 @@ config SPARC64
+ 	select PCI_DOMAINS if PCI
+ 	select ARCH_HAS_GIGANTIC_PAGE
+ 
+-config ARCH_DEFCONFIG
+-	string
+-	default "arch/sparc/configs/sparc32_defconfig" if SPARC32
+-	default "arch/sparc/configs/sparc64_defconfig" if SPARC64
+-
+ config ARCH_PROC_KCORE_TEXT
+ 	def_bool y
+ 
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index beea77046f9b..98935f4387f9 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -240,11 +240,6 @@ config OUTPUT_FORMAT
+ 	default "elf32-i386" if X86_32
+ 	default "elf64-x86-64" if X86_64
+ 
+-config ARCH_DEFCONFIG
+-	string
+-	default "arch/x86/configs/i386_defconfig" if X86_32
+-	default "arch/x86/configs/x86_64_defconfig" if X86_64
+-
+ config LOCKDEP_SUPPORT
+ 	def_bool y
+ 
+diff --git a/arch/x86/um/Kconfig b/arch/x86/um/Kconfig
+index a8985e1f7432..95d26a69088b 100644
+--- a/arch/x86/um/Kconfig
++++ b/arch/x86/um/Kconfig
+@@ -27,11 +27,6 @@ config X86_64
+ 	def_bool 64BIT
+ 	select MODULES_USE_ELF_RELA
+ 
+-config ARCH_DEFCONFIG
+-	string
+-	default "arch/um/configs/i386_defconfig" if X86_32
+-	default "arch/um/configs/x86_64_defconfig" if X86_64
+-
+ config 3_LEVEL_PGTABLES
+ 	bool "Three-level pagetables" if !64BIT
+ 	default 64BIT
+diff --git a/init/Kconfig b/init/Kconfig
+index 20a6ac33761c..240c1ed15c69 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -6,8 +6,7 @@ config DEFCONFIG_LIST
+ 	default "/lib/modules/$(shell,uname -r)/.config"
+ 	default "/etc/kernel-config"
+ 	default "/boot/config-$(shell,uname -r)"
+-	default ARCH_DEFCONFIG
+-	default "arch/$(ARCH)/defconfig"
++	default "arch/$(SRCARCH)/configs/$(KBUILD_DEFCONFIG)"
+ 
+ config CC_IS_GCC
+ 	def_bool $(success,$(CC) --version | head -n 1 | grep -q gcc)
+diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
+index 5887ceb6229e..c9d0a4a8efb3 100644
+--- a/scripts/kconfig/Makefile
++++ b/scripts/kconfig/Makefile
+@@ -12,10 +12,6 @@ else
+ Kconfig := Kconfig
+ endif
+ 
+-ifndef KBUILD_DEFCONFIG
+-KBUILD_DEFCONFIG := defconfig
+-endif
+-
+ ifeq ($(quiet),silent_)
+ silent := -s
+ endif
 -- 
 2.17.1
 
