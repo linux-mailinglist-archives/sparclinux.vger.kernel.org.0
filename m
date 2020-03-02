@@ -2,63 +2,39 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE688175408
-	for <lists+sparclinux@lfdr.de>; Mon,  2 Mar 2020 07:48:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF60A175413
+	for <lists+sparclinux@lfdr.de>; Mon,  2 Mar 2020 07:48:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726956AbgCBGsR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 2 Mar 2020 01:48:17 -0500
-Received: from foss.arm.com ([217.140.110.172]:56722 "EHLO foss.arm.com"
+        id S1726829AbgCBGs3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 2 Mar 2020 01:48:29 -0500
+Received: from foss.arm.com ([217.140.110.172]:56834 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726545AbgCBGsQ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 2 Mar 2020 01:48:16 -0500
+        id S1725911AbgCBGs3 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 2 Mar 2020 01:48:29 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EE837FEC;
-        Sun,  1 Mar 2020 22:48:14 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AFB4A106F;
+        Sun,  1 Mar 2020 22:48:27 -0800 (PST)
 Received: from p8cg001049571a15.arm.com (unknown [10.163.1.119])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 499D33F6CF;
-        Sun,  1 Mar 2020 22:51:52 -0800 (PST)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 042053F6CF;
+        Sun,  1 Mar 2020 22:52:16 -0800 (PST)
 From:   Anshuman Khandual <anshuman.khandual@arm.com>
 To:     linux-mm@kvack.org
 Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Salter <msalter@redhat.com>, Guo Ren <guoren@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Brian Cain <bcain@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        Nick Hu <nickhu@andestech.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jeff Dike <jdike@addtoit.com>, Chris Zankel <chris@zankel.net>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org
-Subject: [RFC 1/3] mm/vma: Define a default value for VM_DATA_DEFAULT_FLAGS
-Date:   Mon,  2 Mar 2020 12:17:44 +0530
-Message-Id: <1583131666-15531-2-git-send-email-anshuman.khandual@arm.com>
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Hugh Dickins <hughd@google.com>, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: [RFC 3/3] mm/vma: Introduce some more VMA flag wrappers
+Date:   Mon,  2 Mar 2020 12:17:46 +0530
+Message-Id: <1583131666-15531-4-git-send-email-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1583131666-15531-1-git-send-email-anshuman.khandual@arm.com>
 References: <1583131666-15531-1-git-send-email-anshuman.khandual@arm.com>
@@ -67,524 +43,635 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-There are many platforms with exact same value for VM_DATA_DEFAULT_FLAGS
-This creates a default value for VM_DATA_DEFAULT_FLAGS in line with the
-existing VM_STACK_DEFAULT_FLAGS. While here, also define some more macros
-with standard VMA access flag combinations that are used frequently across
-many platforms. Apart from simplification, this reduces code duplication
-as well.
+This adds the following new VMA flag wrappers which will replace current
+open encodings across various places. This should not have any functional
+implications.
 
-Cc: Richard Henderson <rth@twiddle.net>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Mark Salter <msalter@redhat.com>
-Cc: Guo Ren <guoren@kernel.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Brian Cain <bcain@codeaurora.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Michal Simek <monstr@monstr.eu>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paulburton@kernel.org>
-Cc: Nick Hu <nickhu@andestech.com>
-Cc: Ley Foon Tan <ley.foon.tan@intel.com>
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Rich Felker <dalias@libc.org>
+vma_is_dontdump()
+vma_is_noreserve()
+vma_is_special()
+vma_is_locked()
+vma_is_mergeable()
+vma_is_softdirty()
+vma_is_thp()
+vma_is_nothp()
+
 Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Guan Xuetao <gxt@pku.edu.cn>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jeff Dike <jdike@addtoit.com>
-Cc: Chris Zankel <chris@zankel.net>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-c6x-dev@linux-c6x.org
-Cc: uclinux-h8-devel@lists.sourceforge.jp
-Cc: linux-hexagon@vger.kernel.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: linux-mips@vger.kernel.org
-Cc: nios2-dev@lists.rocketboards.org
-Cc: openrisc@lists.librecores.org
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
 Cc: sparclinux@vger.kernel.org
-Cc: linux-um@lists.infradead.org
-Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
 Cc: linux-mm@kvack.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/alpha/include/asm/page.h      |  3 ---
- arch/arc/include/asm/page.h        |  2 +-
- arch/arm/include/asm/page.h        |  4 +---
- arch/arm64/include/asm/page.h      |  4 +---
- arch/c6x/include/asm/page.h        |  5 +----
- arch/csky/include/asm/page.h       |  3 ---
- arch/h8300/include/asm/page.h      |  2 --
- arch/hexagon/include/asm/page.h    |  3 +--
- arch/ia64/include/asm/page.h       |  5 +----
- arch/m68k/include/asm/page.h       |  3 ---
- arch/microblaze/include/asm/page.h |  2 --
- arch/mips/include/asm/page.h       |  5 +----
- arch/nds32/include/asm/page.h      |  3 ---
- arch/nios2/include/asm/page.h      |  3 +--
- arch/openrisc/include/asm/page.h   |  5 -----
- arch/parisc/include/asm/page.h     |  3 ---
- arch/powerpc/include/asm/page.h    |  9 ++-------
- arch/powerpc/include/asm/page_64.h |  7 ++-----
- arch/riscv/include/asm/page.h      |  3 +--
- arch/s390/include/asm/page.h       |  3 +--
- arch/sh/include/asm/page.h         |  3 ---
- arch/sparc/include/asm/page_32.h   |  3 ---
- arch/sparc/include/asm/page_64.h   |  3 ---
- arch/unicore32/include/asm/page.h  |  3 ---
- arch/x86/include/asm/page_types.h  |  4 +---
- arch/x86/um/asm/vm-flags.h         | 10 ++--------
- arch/xtensa/include/asm/page.h     |  3 ---
- include/linux/mm.h                 | 15 +++++++++++++++
- 28 files changed, 32 insertions(+), 89 deletions(-)
+ arch/sparc/include/asm/mman.h |  2 +-
+ fs/binfmt_elf.c               |  2 +-
+ fs/proc/task_mmu.c            | 14 ++++++-------
+ include/linux/huge_mm.h       |  4 ++--
+ include/linux/mm.h            | 39 +++++++++++++++++++++++++++++++++++
+ kernel/events/core.c          |  2 +-
+ kernel/events/uprobes.c       |  2 +-
+ mm/gup.c                      |  2 +-
+ mm/huge_memory.c              |  6 +++---
+ mm/hugetlb.c                  |  4 ++--
+ mm/ksm.c                      |  8 +++----
+ mm/madvise.c                  |  4 ++--
+ mm/memory.c                   |  4 ++--
+ mm/migrate.c                  |  4 ++--
+ mm/mlock.c                    |  4 ++--
+ mm/mmap.c                     | 16 +++++++-------
+ mm/mprotect.c                 |  2 +-
+ mm/mremap.c                   |  4 ++--
+ mm/msync.c                    |  3 +--
+ mm/rmap.c                     |  6 +++---
+ mm/shmem.c                    |  8 +++----
+ 21 files changed, 89 insertions(+), 51 deletions(-)
 
-diff --git a/arch/alpha/include/asm/page.h b/arch/alpha/include/asm/page.h
-index f3fb2848470a..e241bd88880f 100644
---- a/arch/alpha/include/asm/page.h
-+++ b/arch/alpha/include/asm/page.h
-@@ -90,9 +90,6 @@ typedef struct page *pgtable_t;
- #define virt_addr_valid(kaddr)	pfn_valid(__pa(kaddr) >> PAGE_SHIFT)
- #endif /* CONFIG_DISCONTIGMEM */
+diff --git a/arch/sparc/include/asm/mman.h b/arch/sparc/include/asm/mman.h
+index f94532f25db1..661c56add451 100644
+--- a/arch/sparc/include/asm/mman.h
++++ b/arch/sparc/include/asm/mman.h
+@@ -80,7 +80,7 @@ static inline int sparc_validate_prot(unsigned long prot, unsigned long addr)
+ 				 * tags on them. Disallow ADI on mergeable
+ 				 * pages.
+ 				 */
+-				if (vma->vm_flags & VM_MERGEABLE)
++				if (vma_is_mergeable(vma))
+ 					return 0;
+ 			}
+ 		}
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 1eb63867e266..5d41047a4a77 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1305,7 +1305,7 @@ static unsigned long vma_dump_size(struct vm_area_struct *vma,
+ 	if (always_dump_vma(vma))
+ 		goto whole;
  
--#define VM_DATA_DEFAULT_FLAGS		(VM_READ | VM_WRITE | VM_EXEC | \
--					 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
+-	if (vma->vm_flags & VM_DONTDUMP)
++	if (vma_is_dontdump(vma))
+ 		return 0;
  
-diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
-index 0a32e8cfd074..b0dfed0f12be 100644
---- a/arch/arc/include/asm/page.h
-+++ b/arch/arc/include/asm/page.h
-@@ -102,7 +102,7 @@ typedef pte_t * pgtable_t;
- #define virt_addr_valid(kaddr)  pfn_valid(virt_to_pfn(kaddr))
+ 	/* support for DAX */
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 3ba9ae83bff5..e425a8cc6c15 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -523,7 +523,7 @@ static void smaps_pte_entry(pte_t *pte, unsigned long addr,
+ {
+ 	struct mem_size_stats *mss = walk->private;
+ 	struct vm_area_struct *vma = walk->vma;
+-	bool locked = !!(vma->vm_flags & VM_LOCKED);
++	bool locked = vma_is_locked(vma);
+ 	struct page *page = NULL;
  
- /* Default Permissions for stack/heaps pages (Non Executable) */
--#define VM_DATA_DEFAULT_FLAGS   (VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
+ 	if (pte_present(*pte)) {
+@@ -575,7 +575,7 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+ {
+ 	struct mem_size_stats *mss = walk->private;
+ 	struct vm_area_struct *vma = walk->vma;
+-	bool locked = !!(vma->vm_flags & VM_LOCKED);
++	bool locked = vma_is_locked(vma);
+ 	struct page *page;
  
- #define WANT_PAGE_VIRTUAL   1
+ 	/* FOLL_DUMP will return -EFAULT on huge zero page */
+@@ -1187,7 +1187,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
+ 		tlb_gather_mmu(&tlb, mm, 0, -1);
+ 		if (type == CLEAR_REFS_SOFT_DIRTY) {
+ 			for (vma = mm->mmap; vma; vma = vma->vm_next) {
+-				if (!(vma->vm_flags & VM_SOFTDIRTY))
++				if (!vma_is_softdirty(vma))
+ 					continue;
+ 				up_read(&mm->mmap_sem);
+ 				if (down_write_killable(&mm->mmap_sem)) {
+@@ -1309,7 +1309,7 @@ static int pagemap_pte_hole(unsigned long start, unsigned long end,
+ 			break;
  
-diff --git a/arch/arm/include/asm/page.h b/arch/arm/include/asm/page.h
-index c2b75cba26df..11b058a72a5b 100644
---- a/arch/arm/include/asm/page.h
-+++ b/arch/arm/include/asm/page.h
-@@ -161,9 +161,7 @@ extern int pfn_valid(unsigned long);
+ 		/* Addresses in the VMA. */
+-		if (vma->vm_flags & VM_SOFTDIRTY)
++		if (vma_is_softdirty(vma))
+ 			pme = make_pme(0, PM_SOFT_DIRTY);
+ 		for (; addr < min(end, vma->vm_end); addr += PAGE_SIZE) {
+ 			err = add_to_pagemap(addr, &pme, pm);
+@@ -1354,7 +1354,7 @@ static pagemap_entry_t pte_to_pagemap_entry(struct pagemapread *pm,
+ 		flags |= PM_FILE;
+ 	if (page && page_mapcount(page) == 1)
+ 		flags |= PM_MMAP_EXCLUSIVE;
+-	if (vma->vm_flags & VM_SOFTDIRTY)
++	if (vma_is_softdirty(vma))
+ 		flags |= PM_SOFT_DIRTY;
  
- #endif /* !__ASSEMBLY__ */
+ 	return make_pme(frame, flags);
+@@ -1376,7 +1376,7 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		pmd_t pmd = *pmdp;
+ 		struct page *page = NULL;
  
--#define VM_DATA_DEFAULT_FLAGS \
--	(((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0) | \
--	 VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
+-		if (vma->vm_flags & VM_SOFTDIRTY)
++		if (vma_is_softdirty(vma))
+ 			flags |= PM_SOFT_DIRTY;
  
- #include <asm-generic/getorder.h>
+ 		if (pmd_present(pmd)) {
+@@ -1464,7 +1464,7 @@ static int pagemap_hugetlb_range(pte_t *ptep, unsigned long hmask,
+ 	int err = 0;
+ 	pte_t pte;
  
-diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
-index d39ddb258a04..cb4e1e6ca385 100644
---- a/arch/arm64/include/asm/page.h
-+++ b/arch/arm64/include/asm/page.h
-@@ -32,9 +32,7 @@ extern int pfn_valid(unsigned long);
+-	if (vma->vm_flags & VM_SOFTDIRTY)
++	if (vma_is_softdirty(vma))
+ 		flags |= PM_SOFT_DIRTY;
  
- #endif /* !__ASSEMBLY__ */
- 
--#define VM_DATA_DEFAULT_FLAGS \
--	(((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0) | \
--	 VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
- 
- #include <asm-generic/getorder.h>
- 
-diff --git a/arch/c6x/include/asm/page.h b/arch/c6x/include/asm/page.h
-index 70db1e7632bc..40079899084d 100644
---- a/arch/c6x/include/asm/page.h
-+++ b/arch/c6x/include/asm/page.h
-@@ -2,10 +2,7 @@
- #ifndef _ASM_C6X_PAGE_H
- #define _ASM_C6X_PAGE_H
- 
--#define VM_DATA_DEFAULT_FLAGS \
--	(VM_READ | VM_WRITE | \
--	((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0) | \
--		 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
- 
- #include <asm-generic/page.h>
- 
-diff --git a/arch/csky/include/asm/page.h b/arch/csky/include/asm/page.h
-index 9738eacefdc7..9b98bf31d57c 100644
---- a/arch/csky/include/asm/page.h
-+++ b/arch/csky/include/asm/page.h
-@@ -85,9 +85,6 @@ extern unsigned long va_pa_offset;
- 				 PHYS_OFFSET_OFFSET)
- #define virt_to_page(x)	(mem_map + MAP_NR(x))
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
- #define pfn_to_kaddr(x)	__va(PFN_PHYS(x))
- 
- #include <asm-generic/memory_model.h>
-diff --git a/arch/h8300/include/asm/page.h b/arch/h8300/include/asm/page.h
-index 8da5124ad344..53e037544239 100644
---- a/arch/h8300/include/asm/page.h
-+++ b/arch/h8300/include/asm/page.h
-@@ -6,8 +6,6 @@
- #include <linux/types.h>
- 
- #define MAP_NR(addr) (((uintptr_t)(addr)-PAGE_OFFSET) >> PAGE_SHIFT)
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
- 
- #ifndef __ASSEMBLY__
- extern unsigned long rom_length;
-diff --git a/arch/hexagon/include/asm/page.h b/arch/hexagon/include/asm/page.h
-index ee31f36f48f3..7cbf719c578e 100644
---- a/arch/hexagon/include/asm/page.h
-+++ b/arch/hexagon/include/asm/page.h
-@@ -93,8 +93,7 @@ struct page;
- #define virt_to_page(kaddr) pfn_to_page(PFN_DOWN(__pa(kaddr)))
- 
- /* Default vm area behavior is non-executable.  */
--#define VM_DATA_DEFAULT_FLAGS (VM_READ | VM_WRITE | \
--				VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
- 
- #define pfn_valid(pfn) ((pfn) < max_mapnr)
- #define virt_addr_valid(kaddr) pfn_valid(__pa(kaddr) >> PAGE_SHIFT)
-diff --git a/arch/ia64/include/asm/page.h b/arch/ia64/include/asm/page.h
-index 5798bd2b462c..b69a5499d75b 100644
---- a/arch/ia64/include/asm/page.h
-+++ b/arch/ia64/include/asm/page.h
-@@ -218,10 +218,7 @@ get_order (unsigned long size)
- 
- #define PAGE_OFFSET			RGN_BASE(RGN_KERNEL)
- 
--#define VM_DATA_DEFAULT_FLAGS		(VM_READ | VM_WRITE |					\
--					 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC |		\
--					 (((current->personality & READ_IMPLIES_EXEC) != 0)	\
--					  ? VM_EXEC : 0))
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
- 
- #define GATE_ADDR		RGN_BASE(RGN_GATE)
- 
-diff --git a/arch/m68k/include/asm/page.h b/arch/m68k/include/asm/page.h
-index 05e1e1e77a9a..9d2ef0a51720 100644
---- a/arch/m68k/include/asm/page.h
-+++ b/arch/m68k/include/asm/page.h
-@@ -55,9 +55,6 @@ extern unsigned long _ramend;
- #define __phys_to_pfn(paddr)	((unsigned long)((paddr) >> PAGE_SHIFT))
- #define __pfn_to_phys(pfn)	PFN_PHYS(pfn)
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
- #include <asm-generic/getorder.h>
- 
- #endif /* _M68K_PAGE_H */
-diff --git a/arch/microblaze/include/asm/page.h b/arch/microblaze/include/asm/page.h
-index f4b44b24b02e..43bd560b7b67 100644
---- a/arch/microblaze/include/asm/page.h
-+++ b/arch/microblaze/include/asm/page.h
-@@ -197,8 +197,6 @@ extern int page_is_ram(unsigned long pfn);
- 
- #ifdef CONFIG_MMU
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
- #endif /* CONFIG_MMU */
- 
- #endif /* __KERNEL__ */
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index 0ba4ce6e2bf3..e2f503fc7a84 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -253,10 +253,7 @@ extern bool __virt_addr_valid(const volatile void *kaddr);
- #define virt_addr_valid(kaddr)						\
- 	__virt_addr_valid((const volatile void *) (kaddr))
- 
--#define VM_DATA_DEFAULT_FLAGS \
--	(VM_READ | VM_WRITE | \
--	 ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0) | \
--	 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
- 
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
-diff --git a/arch/nds32/include/asm/page.h b/arch/nds32/include/asm/page.h
-index 86b32014c5f9..add33a7f02c8 100644
---- a/arch/nds32/include/asm/page.h
-+++ b/arch/nds32/include/asm/page.h
-@@ -59,9 +59,6 @@ typedef struct page *pgtable_t;
- 
- #endif /* !__ASSEMBLY__ */
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
- #endif /* __KERNEL__ */
- 
- #endif
-diff --git a/arch/nios2/include/asm/page.h b/arch/nios2/include/asm/page.h
-index 79fcac61f6ef..6a989819a7c1 100644
---- a/arch/nios2/include/asm/page.h
-+++ b/arch/nios2/include/asm/page.h
-@@ -98,8 +98,7 @@ static inline bool pfn_valid(unsigned long pfn)
- # define virt_to_page(vaddr)	pfn_to_page(PFN_DOWN(virt_to_phys(vaddr)))
- # define virt_addr_valid(vaddr)	pfn_valid(PFN_DOWN(virt_to_phys(vaddr)))
- 
--# define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+# define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
- 
- #include <asm-generic/memory_model.h>
- 
-diff --git a/arch/openrisc/include/asm/page.h b/arch/openrisc/include/asm/page.h
-index 01069db59454..aab6e64d6db4 100644
---- a/arch/openrisc/include/asm/page.h
-+++ b/arch/openrisc/include/asm/page.h
-@@ -86,11 +86,6 @@ typedef struct page *pgtable_t;
- 
- #endif /* __ASSEMBLY__ */
- 
--
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
--
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
- 
-diff --git a/arch/parisc/include/asm/page.h b/arch/parisc/include/asm/page.h
-index 796ae29e9b9a..6b3f6740a6a6 100644
---- a/arch/parisc/include/asm/page.h
-+++ b/arch/parisc/include/asm/page.h
-@@ -180,9 +180,6 @@ extern int npmem_ranges;
- #define page_to_phys(page)	(page_to_pfn(page) << PAGE_SHIFT)
- #define virt_to_page(kaddr)     pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
- #include <asm/pdc.h>
-diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
-index 080a0bf8e54b..3ee8df0f66e0 100644
---- a/arch/powerpc/include/asm/page.h
-+++ b/arch/powerpc/include/asm/page.h
-@@ -240,13 +240,8 @@ static inline bool pfn_valid(unsigned long pfn)
-  * and needs to be executable.  This means the whole heap ends
-  * up being executable.
+ 	pte = huge_ptep_get(ptep);
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 5aca3d1bdb32..e04bd9eef47e 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -97,7 +97,7 @@ extern unsigned long transparent_hugepage_flags;
   */
--#define VM_DATA_DEFAULT_FLAGS32 \
--	(((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0) | \
--				 VM_READ | VM_WRITE | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
--#define VM_DATA_DEFAULT_FLAGS64	(VM_READ | VM_WRITE | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS32	VM_DATA_FLAGS_TSK_EXEC
-+#define VM_DATA_DEFAULT_FLAGS64	VM_DATA_FLAGS_NON_EXEC
+ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
+ {
+-	if (vma->vm_flags & VM_NOHUGEPAGE)
++	if (vma_is_nothp(vma))
+ 		return false;
  
- #ifdef __powerpc64__
- #include <asm/page_64.h>
-diff --git a/arch/powerpc/include/asm/page_64.h b/arch/powerpc/include/asm/page_64.h
-index 5962797f784a..79a9b7c6a132 100644
---- a/arch/powerpc/include/asm/page_64.h
-+++ b/arch/powerpc/include/asm/page_64.h
-@@ -94,11 +94,8 @@ extern u64 ppc64_pft_size;
-  * stack by default, so in the absence of a PT_GNU_STACK program header
-  * we turn execute permission off.
-  */
--#define VM_STACK_DEFAULT_FLAGS32	(VM_READ | VM_WRITE | VM_EXEC | \
--					 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
--#define VM_STACK_DEFAULT_FLAGS64	(VM_READ | VM_WRITE | \
--					 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_STACK_DEFAULT_FLAGS32	VM_DATA_FLAGS_EXEC
-+#define VM_STACK_DEFAULT_FLAGS64	VM_DATA_FLAGS_NON_EXEC
+ 	if (is_vma_temporary_stack(vma))
+@@ -119,7 +119,7 @@ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
  
- #define VM_STACK_DEFAULT_FLAGS \
- 	(is_32bit_task() ? \
-diff --git a/arch/riscv/include/asm/page.h b/arch/riscv/include/asm/page.h
-index 8ca1930caa44..2d50f76efe48 100644
---- a/arch/riscv/include/asm/page.h
-+++ b/arch/riscv/include/asm/page.h
-@@ -137,8 +137,7 @@ extern phys_addr_t __phys_addr_symbol(unsigned long x);
+ 	if (transparent_hugepage_flags &
+ 				(1 << TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG))
+-		return !!(vma->vm_flags & VM_HUGEPAGE);
++		return vma_is_thp(vma);
  
- #define virt_addr_valid(vaddr)	(pfn_valid(virt_to_pfn(vaddr)))
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
- 
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
-diff --git a/arch/s390/include/asm/page.h b/arch/s390/include/asm/page.h
-index 1019efd85b9d..089f49230966 100644
---- a/arch/s390/include/asm/page.h
-+++ b/arch/s390/include/asm/page.h
-@@ -176,8 +176,7 @@ static inline int devmem_is_allowed(unsigned long pfn)
- 
- #define virt_addr_valid(kaddr)	pfn_valid(__pa(kaddr) >> PAGE_SHIFT)
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
- 
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
-diff --git a/arch/sh/include/asm/page.h b/arch/sh/include/asm/page.h
-index 5eef8be3e59f..ea8d68f58e39 100644
---- a/arch/sh/include/asm/page.h
-+++ b/arch/sh/include/asm/page.h
-@@ -182,9 +182,6 @@ typedef struct page *pgtable_t;
- #endif
- #define virt_addr_valid(kaddr)	pfn_valid(__pa(kaddr) >> PAGE_SHIFT)
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
- 
-diff --git a/arch/sparc/include/asm/page_32.h b/arch/sparc/include/asm/page_32.h
-index b76d59edec8c..478260002836 100644
---- a/arch/sparc/include/asm/page_32.h
-+++ b/arch/sparc/include/asm/page_32.h
-@@ -133,9 +133,6 @@ extern unsigned long pfn_base;
- #define pfn_valid(pfn)		(((pfn) >= (pfn_base)) && (((pfn)-(pfn_base)) < max_mapnr))
- #define virt_addr_valid(kaddr)	((((unsigned long)(kaddr)-PAGE_OFFSET)>>PAGE_SHIFT) < max_mapnr)
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
- 
-diff --git a/arch/sparc/include/asm/page_64.h b/arch/sparc/include/asm/page_64.h
-index e80f2d5bf62f..254dffd85fb1 100644
---- a/arch/sparc/include/asm/page_64.h
-+++ b/arch/sparc/include/asm/page_64.h
-@@ -158,9 +158,6 @@ extern unsigned long PAGE_OFFSET;
- 
- #endif /* !(__ASSEMBLY__) */
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
- #include <asm-generic/getorder.h>
- 
- #endif /* _SPARC64_PAGE_H */
-diff --git a/arch/unicore32/include/asm/page.h b/arch/unicore32/include/asm/page.h
-index 8a89335673f9..96d6bdf180bd 100644
---- a/arch/unicore32/include/asm/page.h
-+++ b/arch/unicore32/include/asm/page.h
-@@ -69,9 +69,6 @@ extern int pfn_valid(unsigned long);
- 
- #endif /* !__ASSEMBLY__ */
- 
--#define VM_DATA_DEFAULT_FLAGS \
--	(VM_READ | VM_WRITE | VM_EXEC | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
- #include <asm-generic/getorder.h>
- 
- #endif
-diff --git a/arch/x86/include/asm/page_types.h b/arch/x86/include/asm/page_types.h
-index c85e15010f48..e27aa6be6320 100644
---- a/arch/x86/include/asm/page_types.h
-+++ b/arch/x86/include/asm/page_types.h
-@@ -35,9 +35,7 @@
- 
- #define PAGE_OFFSET		((unsigned long)__PAGE_OFFSET)
- 
--#define VM_DATA_DEFAULT_FLAGS \
--	(((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0 ) | \
--	 VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
- 
- #define __PHYSICAL_START	ALIGN(CONFIG_PHYSICAL_START, \
- 				      CONFIG_PHYSICAL_ALIGN)
-diff --git a/arch/x86/um/asm/vm-flags.h b/arch/x86/um/asm/vm-flags.h
-index 7c297e9e2413..df7a3896f5dd 100644
---- a/arch/x86/um/asm/vm-flags.h
-+++ b/arch/x86/um/asm/vm-flags.h
-@@ -9,17 +9,11 @@
- 
- #ifdef CONFIG_X86_32
- 
--#define VM_DATA_DEFAULT_FLAGS \
--	(VM_READ | VM_WRITE | \
--	((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0 ) | \
--		 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
- 
- #else
- 
--#define VM_DATA_DEFAULT_FLAGS (VM_READ | VM_WRITE | VM_EXEC | \
--	VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--#define VM_STACK_DEFAULT_FLAGS (VM_GROWSDOWN | VM_READ | VM_WRITE | \
--	VM_EXEC | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_STACK_DEFAULT_FLAGS (VM_GROWSDOWN | VM_DATA_FLAGS_EXEC)
- 
- #endif
- #endif
-diff --git a/arch/xtensa/include/asm/page.h b/arch/xtensa/include/asm/page.h
-index f4771c29c7e9..37ce25ef92d6 100644
---- a/arch/xtensa/include/asm/page.h
-+++ b/arch/xtensa/include/asm/page.h
-@@ -203,8 +203,5 @@ static inline unsigned long ___pa(unsigned long va)
- 
- #endif /* __ASSEMBLY__ */
- 
--#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
--				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
--
- #include <asm-generic/memory_model.h>
- #endif /* _XTENSA_PAGE_H */
+ 	return false;
+ }
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index b0e53ef13ff1..7a764ae6ab68 100644
+index 525026df1e58..4927e939a51d 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -342,6 +342,21 @@ extern unsigned int kobjsize(const void *objp);
- /* Bits set in the VMA until the stack is in its final location */
- #define VM_STACK_INCOMPLETE_SETUP	(VM_RAND_READ | VM_SEQ_READ)
+@@ -563,6 +563,45 @@ static inline bool vma_is_accessible(struct vm_area_struct *vma)
+ 	return vma->vm_flags & VM_ACCESS_FLAGS;
+ }
  
-+#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
++static inline bool vma_is_dontdump(struct vm_area_struct *vma)
++{
++	return vma->vm_flags & VM_DONTDUMP;
++}
 +
-+/* Common data flag combinations */
-+#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
-+				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_FLAGS_NON_EXEC	(VM_READ | VM_WRITE | VM_MAYREAD | \
-+				 VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_FLAGS_EXEC	(VM_READ | VM_WRITE | VM_EXEC | \
-+				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
++static inline bool vma_is_noreserve(struct vm_area_struct *vma)
++{
++	return vma->vm_flags & VM_NORESERVE;
++}
 +
-+#ifndef VM_DATA_DEFAULT_FLAGS		/* arch can override this */
-+#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
-+				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#endif
++static inline bool vma_is_special(struct vm_area_struct *vma)
++{
++	return vma->vm_flags & VM_SPECIAL;
++}
 +
- #ifndef VM_STACK_DEFAULT_FLAGS		/* arch can override this */
- #define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
- #endif
++static inline bool vma_is_locked(struct vm_area_struct *vma)
++{
++	return vma->vm_flags & VM_LOCKED;
++}
++
++static inline bool vma_is_thp(struct vm_area_struct *vma)
++{
++	return vma->vm_flags & VM_HUGEPAGE;
++}
++
++static inline bool vma_is_nothp(struct vm_area_struct *vma)
++{
++	return vma->vm_flags & VM_NOHUGEPAGE;
++}
++
++static inline bool vma_is_mergeable(struct vm_area_struct *vma)
++{
++	return vma->vm_flags & VM_MERGEABLE;
++}
++
++static inline bool vma_is_softdirty(struct vm_area_struct *vma)
++{
++	return vma->vm_flags & VM_SOFTDIRTY;
++}
+ #ifdef CONFIG_SHMEM
+ /*
+  * The vma_is_shmem is not inline because it is used only by slow
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index ef5be3ed0580..8f7a4b15026a 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7692,7 +7692,7 @@ static void perf_event_mmap_event(struct perf_mmap_event *mmap_event)
+ 		flags |= MAP_DENYWRITE;
+ 	if (vma->vm_flags & VM_MAYEXEC)
+ 		flags |= MAP_EXECUTABLE;
+-	if (vma->vm_flags & VM_LOCKED)
++	if (vma_is_locked(vma))
+ 		flags |= MAP_LOCKED;
+ 	if (is_vm_hugetlb_page(vma))
+ 		flags |= MAP_HUGETLB;
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index ece7e13f6e4a..5527098c1912 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -211,7 +211,7 @@ static int __replace_page(struct vm_area_struct *vma, unsigned long addr,
+ 		try_to_free_swap(old_page);
+ 	page_vma_mapped_walk_done(&pvmw);
+ 
+-	if (vma->vm_flags & VM_LOCKED)
++	if (vma_is_locked(vma))
+ 		munlock_vma_page(old_page);
+ 	put_page(old_page);
+ 
+diff --git a/mm/gup.c b/mm/gup.c
+index 58c8cbfeded6..ca23d23a90f2 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -289,7 +289,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 		 */
+ 		mark_page_accessed(page);
+ 	}
+-	if ((flags & FOLL_MLOCK) && (vma->vm_flags & VM_LOCKED)) {
++	if ((flags & FOLL_MLOCK) && vma_is_locked(vma)) {
+ 		/* Do not mlock pte-mapped THP */
+ 		if (PageTransCompound(page))
+ 			goto out;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index b08b199f9a11..d59ecb872ff2 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -674,7 +674,7 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf,
+  */
+ static inline gfp_t alloc_hugepage_direct_gfpmask(struct vm_area_struct *vma)
+ {
+-	const bool vma_madvised = !!(vma->vm_flags & VM_HUGEPAGE);
++	const bool vma_madvised = vma_is_thp(vma);
+ 
+ 	/* Always do synchronous compaction */
+ 	if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG, &transparent_hugepage_flags))
+@@ -1499,7 +1499,7 @@ struct page *follow_trans_huge_pmd(struct vm_area_struct *vma,
+ 	VM_BUG_ON_PAGE(!PageHead(page) && !is_zone_device_page(page), page);
+ 	if (flags & FOLL_TOUCH)
+ 		touch_pmd(vma, addr, pmd, flags);
+-	if ((flags & FOLL_MLOCK) && (vma->vm_flags & VM_LOCKED)) {
++	if ((flags & FOLL_MLOCK) && vma_is_locked(vma)) {
+ 		/*
+ 		 * We don't mlock() pte-mapped THPs. This way we can avoid
+ 		 * leaking mlocked pages into non-VM_LOCKED VMAs.
+@@ -3082,7 +3082,7 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
+ 	else
+ 		page_add_file_rmap(new, true);
+ 	set_pmd_at(mm, mmun_start, pvmw->pmd, pmde);
+-	if ((vma->vm_flags & VM_LOCKED) && !PageDoubleMap(new))
++	if (vma_is_locked(vma) && !PageDoubleMap(new))
+ 		mlock_vma_page(new);
+ 	update_mmu_cache_pmd(vma, address, pvmw->pmd);
+ }
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index dd8737a94bec..efe40f533224 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -757,7 +757,7 @@ void reset_vma_resv_huge_pages(struct vm_area_struct *vma)
+ /* Returns true if the VMA has associated reserve pages */
+ static bool vma_has_reserves(struct vm_area_struct *vma, long chg)
+ {
+-	if (vma->vm_flags & VM_NORESERVE) {
++	if (vma_is_noreserve(vma)) {
+ 		/*
+ 		 * This address is already reserved by other process(chg == 0),
+ 		 * so, we should decrement reserved count. Without decrementing,
+@@ -4558,7 +4558,7 @@ int hugetlb_reserve_pages(struct inode *inode,
+ 	 * attempt will be made for VM_NORESERVE to allocate a page
+ 	 * without using reserves
+ 	 */
+-	if (vm_flags & VM_NORESERVE)
++	if (vma_is_noreserve(vma))
+ 		return 0;
+ 
+ 	/*
+diff --git a/mm/ksm.c b/mm/ksm.c
+index d17c7d57d0d8..8bf11a543c27 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -525,7 +525,7 @@ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
+ 	vma = find_vma(mm, addr);
+ 	if (!vma || vma->vm_start > addr)
+ 		return NULL;
+-	if (!(vma->vm_flags & VM_MERGEABLE) || !vma->anon_vma)
++	if (!vma_is_mergeable(vma) || !vma->anon_vma)
+ 		return NULL;
+ 	return vma;
+ }
+@@ -980,7 +980,7 @@ static int unmerge_and_remove_all_rmap_items(void)
+ 		for (vma = mm->mmap; vma; vma = vma->vm_next) {
+ 			if (ksm_test_exit(mm))
+ 				break;
+-			if (!(vma->vm_flags & VM_MERGEABLE) || !vma->anon_vma)
++			if (!vma_is_mergeable(vma) || !vma->anon_vma)
+ 				continue;
+ 			err = unmerge_ksm_pages(vma,
+ 						vma->vm_start, vma->vm_end);
+@@ -1251,7 +1251,7 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
+ 			err = replace_page(vma, page, kpage, orig_pte);
+ 	}
+ 
+-	if ((vma->vm_flags & VM_LOCKED) && kpage && !err) {
++	if (vma_is_locked(vma) && kpage && !err) {
+ 		munlock_vma_page(page);
+ 		if (!PageMlocked(kpage)) {
+ 			unlock_page(page);
+@@ -2284,7 +2284,7 @@ static struct rmap_item *scan_get_next_rmap_item(struct page **page)
+ 		vma = find_vma(mm, ksm_scan.address);
+ 
+ 	for (; vma; vma = vma->vm_next) {
+-		if (!(vma->vm_flags & VM_MERGEABLE))
++		if (!vma_is_mergeable(vma))
+ 			continue;
+ 		if (ksm_scan.address < vma->vm_start)
+ 			ksm_scan.address = vma->vm_start;
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 43b47d3fae02..ffd6a4ff4c99 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -106,7 +106,7 @@ static long madvise_behavior(struct vm_area_struct *vma,
+ 		new_flags |= VM_DONTDUMP;
+ 		break;
+ 	case MADV_DODUMP:
+-		if (!is_vm_hugetlb_page(vma) && new_flags & VM_SPECIAL) {
++		if (!is_vm_hugetlb_page(vma) && vma_is_special(vma)) {
+ 			error = -EINVAL;
+ 			goto out;
+ 		}
+@@ -821,7 +821,7 @@ static long madvise_remove(struct vm_area_struct *vma,
+ 
+ 	*prev = NULL;	/* tell sys_madvise we drop mmap_sem */
+ 
+-	if (vma->vm_flags & VM_LOCKED)
++	if (vma_is_locked(vma))
+ 		return -EINVAL;
+ 
+ 	f = vma->vm_file;
+diff --git a/mm/memory.c b/mm/memory.c
+index 2f07747612b7..c45386dae91b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2604,7 +2604,7 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
+ 		 * Don't let another task, with possibly unlocked vma,
+ 		 * keep the mlocked page.
+ 		 */
+-		if (page_copied && (vma->vm_flags & VM_LOCKED)) {
++		if (page_copied && vma_is_locked(vma)) {
+ 			lock_page(old_page);	/* LRU manipulation */
+ 			if (PageMlocked(old_page))
+ 				munlock_vma_page(old_page);
+@@ -3083,7 +3083,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 
+ 	swap_free(entry);
+ 	if (mem_cgroup_swap_full(page) ||
+-	    (vma->vm_flags & VM_LOCKED) || PageMlocked(page))
++	    vma_is_locked(vma) || PageMlocked(page))
+ 		try_to_free_swap(page);
+ 	unlock_page(page);
+ 	if (page != swapcache && swapcache) {
+diff --git a/mm/migrate.c b/mm/migrate.c
+index b1092876e537..45ac5b750e77 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -270,7 +270,7 @@ static bool remove_migration_pte(struct page *page, struct vm_area_struct *vma,
+ 			else
+ 				page_add_file_rmap(new, false);
+ 		}
+-		if (vma->vm_flags & VM_LOCKED && !PageTransCompound(new))
++		if (vma_is_locked(vma) && !PageTransCompound(new))
+ 			mlock_vma_page(new);
+ 
+ 		if (PageTransHuge(page) && PageMlocked(page))
+@@ -2664,7 +2664,7 @@ int migrate_vma_setup(struct migrate_vma *args)
+ 	args->start &= PAGE_MASK;
+ 	args->end &= PAGE_MASK;
+ 	if (!args->vma || is_vm_hugetlb_page(args->vma) ||
+-	    (args->vma->vm_flags & VM_SPECIAL) || vma_is_dax(args->vma))
++	    (vma_is_special(args->vma) || vma_is_dax(args->vma))
+ 		return -EINVAL;
+ 	if (nr_pages <= 0)
+ 		return -EINVAL;
+diff --git a/mm/mlock.c b/mm/mlock.c
+index a72c1eeded77..3d4f66f2dee9 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -526,7 +526,7 @@ static int mlock_fixup(struct vm_area_struct *vma, struct vm_area_struct **prev,
+ 	int lock = !!(newflags & VM_LOCKED);
+ 	vm_flags_t old_flags = vma->vm_flags;
+ 
+-	if (newflags == vma->vm_flags || (vma->vm_flags & VM_SPECIAL) ||
++	if (newflags == vma->vm_flags || vma_is_special(vma) ||
+ 	    is_vm_hugetlb_page(vma) || vma == get_gate_vma(current->mm) ||
+ 	    vma_is_dax(vma))
+ 		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
+@@ -654,7 +654,7 @@ static unsigned long count_mm_mlocked_page_nr(struct mm_struct *mm,
+ 			continue;
+ 		if (start + len <=  vma->vm_start)
+ 			break;
+-		if (vma->vm_flags & VM_LOCKED) {
++		if (vma_is_locked(vma)) {
+ 			if (start > vma->vm_start)
+ 				count -= (start - vma->vm_start);
+ 			if (start + len < vma->vm_end) {
+diff --git a/mm/mmap.c b/mm/mmap.c
+index f9a01763857b..c93cad8aa9ac 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -2279,7 +2279,7 @@ static int acct_stack_growth(struct vm_area_struct *vma,
+ 		return -ENOMEM;
+ 
+ 	/* mlock limit tests */
+-	if (vma->vm_flags & VM_LOCKED) {
++	if (vma_is_locked(vma)) {
+ 		unsigned long locked;
+ 		unsigned long limit;
+ 		locked = mm->locked_vm + grow;
+@@ -2374,7 +2374,7 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
+ 				 * against concurrent vma expansions.
+ 				 */
+ 				spin_lock(&mm->page_table_lock);
+-				if (vma->vm_flags & VM_LOCKED)
++				if (vma_is_locked(vma))
+ 					mm->locked_vm += grow;
+ 				vm_stat_account(mm, vma->vm_flags, grow);
+ 				anon_vma_interval_tree_pre_update_vma(vma);
+@@ -2454,7 +2454,7 @@ int expand_downwards(struct vm_area_struct *vma,
+ 				 * against concurrent vma expansions.
+ 				 */
+ 				spin_lock(&mm->page_table_lock);
+-				if (vma->vm_flags & VM_LOCKED)
++				if (vma_is_locked(vma))
+ 					mm->locked_vm += grow;
+ 				vm_stat_account(mm, vma->vm_flags, grow);
+ 				anon_vma_interval_tree_pre_update_vma(vma);
+@@ -2508,7 +2508,7 @@ find_extend_vma(struct mm_struct *mm, unsigned long addr)
+ 	/* don't alter vm_end if the coredump is running */
+ 	if (!prev || !mmget_still_valid(mm) || expand_stack(prev, addr))
+ 		return NULL;
+-	if (prev->vm_flags & VM_LOCKED)
++	if (vma_is_locked(prev))
+ 		populate_vma_page_range(prev, addr, prev->vm_end, NULL);
+ 	return prev;
+ }
+@@ -2538,7 +2538,7 @@ find_extend_vma(struct mm_struct *mm, unsigned long addr)
+ 	start = vma->vm_start;
+ 	if (expand_stack(vma, addr))
+ 		return NULL;
+-	if (vma->vm_flags & VM_LOCKED)
++	if (vma_is_locked(vma))
+ 		populate_vma_page_range(vma, addr, start, NULL);
+ 	return vma;
+ }
+@@ -2790,7 +2790,7 @@ int __do_munmap(struct mm_struct *mm, unsigned long start, size_t len,
+ 	if (mm->locked_vm) {
+ 		struct vm_area_struct *tmp = vma;
+ 		while (tmp && tmp->vm_start < end) {
+-			if (tmp->vm_flags & VM_LOCKED) {
++			if (vma_is_locked(tmp)) {
+ 				mm->locked_vm -= vma_pages(tmp);
+ 				munlock_vma_pages_all(tmp);
+ 			}
+@@ -2925,7 +2925,7 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 
+ 	flags &= MAP_NONBLOCK;
+ 	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
+-	if (vma->vm_flags & VM_LOCKED) {
++	if (vma_is_locked(vma)) {
+ 		struct vm_area_struct *tmp;
+ 		flags |= MAP_LOCKED;
+ 
+@@ -3105,7 +3105,7 @@ void exit_mmap(struct mm_struct *mm)
+ 	if (mm->locked_vm) {
+ 		vma = mm->mmap;
+ 		while (vma) {
+-			if (vma->vm_flags & VM_LOCKED)
++			if (vma_is_locked(vma))
+ 				munlock_vma_pages_all(vma);
+ 			vma = vma->vm_next;
+ 		}
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 4921a4211c6b..d7d4629979fc 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -117,7 +117,7 @@ static unsigned long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
+ 			/* Avoid taking write faults for known dirty pages */
+ 			if (dirty_accountable && pte_dirty(ptent) &&
+ 					(pte_soft_dirty(ptent) ||
+-					 !(vma->vm_flags & VM_SOFTDIRTY))) {
++					 !vma_is_softdirty(vma))) {
+ 				ptent = pte_mkwrite(ptent);
+ 			}
+ 			ptep_modify_prot_commit(vma, addr, pte, oldpte, ptent);
+diff --git a/mm/mremap.c b/mm/mremap.c
+index af363063ea23..25d5ecbb783f 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -472,7 +472,7 @@ static struct vm_area_struct *vma_to_resize(unsigned long addr,
+ 	if (vma->vm_flags & (VM_DONTEXPAND | VM_PFNMAP))
+ 		return ERR_PTR(-EFAULT);
+ 
+-	if (vma->vm_flags & VM_LOCKED) {
++	if (vma_is_locked(vma)) {
+ 		unsigned long locked, lock_limit;
+ 		locked = mm->locked_vm << PAGE_SHIFT;
+ 		lock_limit = rlimit(RLIMIT_MEMLOCK);
+@@ -681,7 +681,7 @@ SYSCALL_DEFINE5(mremap, unsigned long, addr, unsigned long, old_len,
+ 			}
+ 
+ 			vm_stat_account(mm, vma->vm_flags, pages);
+-			if (vma->vm_flags & VM_LOCKED) {
++			if (vma_is_locked(vma)) {
+ 				mm->locked_vm += pages;
+ 				locked = true;
+ 				new_addr = addr;
+diff --git a/mm/msync.c b/mm/msync.c
+index c3bd3e75f687..e02327f8ccca 100644
+--- a/mm/msync.c
++++ b/mm/msync.c
+@@ -75,8 +75,7 @@ SYSCALL_DEFINE3(msync, unsigned long, start, size_t, len, int, flags)
+ 			unmapped_error = -ENOMEM;
+ 		}
+ 		/* Here vma->vm_start <= start < vma->vm_end. */
+-		if ((flags & MS_INVALIDATE) &&
+-				(vma->vm_flags & VM_LOCKED)) {
++		if ((flags & MS_INVALIDATE) && vma_is_locked(vma)) {
+ 			error = -EBUSY;
+ 			goto out_unlock;
+ 		}
+diff --git a/mm/rmap.c b/mm/rmap.c
+index b3e381919835..b7941238aea9 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -785,7 +785,7 @@ static bool page_referenced_one(struct page *page, struct vm_area_struct *vma,
+ 	while (page_vma_mapped_walk(&pvmw)) {
+ 		address = pvmw.address;
+ 
+-		if (vma->vm_flags & VM_LOCKED) {
++		if (vma_is_locked(vma)) {
+ 			page_vma_mapped_walk_done(&pvmw);
+ 			pra->vm_flags |= VM_LOCKED;
+ 			return false; /* To break the loop */
+@@ -1379,7 +1379,7 @@ static bool try_to_unmap_one(struct page *page, struct vm_area_struct *vma,
+ 	enum ttu_flags flags = (enum ttu_flags)arg;
+ 
+ 	/* munlock has nothing to gain from examining un-locked vmas */
+-	if ((flags & TTU_MUNLOCK) && !(vma->vm_flags & VM_LOCKED))
++	if ((flags & TTU_MUNLOCK) && !vma_is_locked(vma))
+ 		return true;
+ 
+ 	if (IS_ENABLED(CONFIG_MIGRATION) && (flags & TTU_MIGRATION) &&
+@@ -1429,7 +1429,7 @@ static bool try_to_unmap_one(struct page *page, struct vm_area_struct *vma,
+ 		 * skipped over this mm) then we should reactivate it.
+ 		 */
+ 		if (!(flags & TTU_IGNORE_MLOCK)) {
+-			if (vma->vm_flags & VM_LOCKED) {
++			if (vma_is_locked(vma)) {
+ 				/* PTE-mapped THP are never mlocked */
+ 				if (!PageTransCompound(page)) {
+ 					/*
+diff --git a/mm/shmem.c b/mm/shmem.c
+index aad3ba74b0e9..23fb58bb1e94 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2058,10 +2058,10 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
+ 
+ 	sgp = SGP_CACHE;
+ 
+-	if ((vma->vm_flags & VM_NOHUGEPAGE) ||
++	if (vma_is_nothp(vma) ||
+ 	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags))
+ 		sgp = SGP_NOHUGE;
+-	else if (vma->vm_flags & VM_HUGEPAGE)
++	else if (vma_is_thp(vma))
+ 		sgp = SGP_HUGE;
+ 
+ 	err = shmem_getpage_gfp(inode, vmf->pgoff, &vmf->page, sgp,
+@@ -3986,7 +3986,7 @@ bool shmem_huge_enabled(struct vm_area_struct *vma)
+ 	loff_t i_size;
+ 	pgoff_t off;
+ 
+-	if ((vma->vm_flags & VM_NOHUGEPAGE) ||
++	if (vma_is_nothp(vma) ||
+ 	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags))
+ 		return false;
+ 	if (shmem_huge == SHMEM_HUGE_FORCE)
+@@ -4007,7 +4007,7 @@ bool shmem_huge_enabled(struct vm_area_struct *vma)
+ 			/* fall through */
+ 		case SHMEM_HUGE_ADVISE:
+ 			/* TODO: implement fadvise() hints */
+-			return (vma->vm_flags & VM_HUGEPAGE);
++			return (vma_is_thp(vma));
+ 		default:
+ 			VM_BUG_ON(1);
+ 			return false;
 -- 
 2.20.1
 
