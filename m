@@ -2,165 +2,66 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69775177D5F
-	for <lists+sparclinux@lfdr.de>; Tue,  3 Mar 2020 18:25:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DAD31781EB
+	for <lists+sparclinux@lfdr.de>; Tue,  3 Mar 2020 20:03:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730272AbgCCRZZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 3 Mar 2020 12:25:25 -0500
-Received: from mx2.suse.de ([195.135.220.15]:41142 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728242AbgCCRZY (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 3 Mar 2020 12:25:24 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id BED26ACB8;
-        Tue,  3 Mar 2020 17:25:16 +0000 (UTC)
-Subject: Re: [RFC 1/3] mm/vma: Define a default value for
- VM_DATA_DEFAULT_FLAGS
-To:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mark Salter <msalter@redhat.com>, Guo Ren <guoren@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Brian Cain <bcain@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        Nick Hu <nickhu@andestech.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jeff Dike <jdike@addtoit.com>, Chris Zankel <chris@zankel.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org
-References: <1583131666-15531-1-git-send-email-anshuman.khandual@arm.com>
- <1583131666-15531-2-git-send-email-anshuman.khandual@arm.com>
-From:   Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <b243be54-7b5e-c6e9-fb68-46369d7d7aa4@suse.cz>
-Date:   Tue, 3 Mar 2020 18:25:06 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1728615AbgCCSH6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 3 Mar 2020 13:07:58 -0500
+Received: from mail-il1-f194.google.com ([209.85.166.194]:45895 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732319AbgCCSH5 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 3 Mar 2020 13:07:57 -0500
+Received: by mail-il1-f194.google.com with SMTP id p8so3564443iln.12
+        for <sparclinux@vger.kernel.org>; Tue, 03 Mar 2020 10:07:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
+        b=o7knf31qWPPEPlo4w+LEBMwo5OgUZ/Ti89x6f/a7pXPBRHPbLzgFJf7dq9wTqpQHoj
+         NoBpbrdKrkWWhtIIkd0si0GJhfizf8t1VT5Dz1T8BZbZ3uQBimBJ1Wxb0vvqFa0lOSXh
+         5vPchfT4rdRhRU3TlHXsVuIzKP6jUF3la4viTyxJVsa8VGSv9r4Zaixk0eDnoDeojcNe
+         Lh8q7UtxpEHvyCxRxFa1KjdH1T9w+1WM8mWTHv5OFdI3LQv6yfG3SrXMTjbb8xb3MT1g
+         RVF4wylJdEBoE+Q5rd4nfKuB7W19lXiZt1YlynuIcHJGS5ZuFC0xK2jdaJtEXOH8F6IR
+         /sIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
+        b=Rctm2kp2XrXO8uVR8USyXTMpbz/DdWxYTwxzF32o8RG5b4RTmIdUEYyexHFFQp0zh8
+         dTDr1C7KmU9oq+EXcvA0nsMgLRh2KKCJDjoCgd5GaQb9suVNwUUTeiFBHxayhgSbvhl1
+         Ds3k+KozTGDPIKmX99Ars8/eudxd857lv0zwjly7d3nFQ0wa2whM25mw1ro6L2J/8CwV
+         qM3xVUD+RBDs3pdRpDzyq3Si8sjmY44tpmr39i+adOoM0BoSQ+oXqjEVjDT8EPdsuan0
+         BFWVN+d/glYpUCmDTIQymRcy22eFWRfH02/Eap1Qz80JK85FR/PH66Qn38xspEoJsVJj
+         T10Q==
+X-Gm-Message-State: ANhLgQ2W7q2v6vH+zlmCypUQQasiPjjYLxF3DCvO1u76KYaTyDe3r8L8
+        MfawUvuIL3m47gb2nO9FSZ45ES9nBTppDcDEFJcJu2xumIQ=
+X-Google-Smtp-Source: ADFU+vvXxSLX0mdAukHaltiP00d3DRLiPoPjv1jy/cMEv01yuN3pFCHaQq8FSxYmkr/oVSNDya+Fs5MYhcoJCQYJ7JY=
+X-Received: by 2002:a92:8117:: with SMTP id e23mr5815271ild.220.1583258876392;
+ Tue, 03 Mar 2020 10:07:56 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1583131666-15531-2-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a02:9f04:0:0:0:0:0 with HTTP; Tue, 3 Mar 2020 10:07:56 -0800 (PST)
+Reply-To: dr.challynoah@gmail.com
+From:   DR CHALLY NOAH <mayorabrahamedge404@gmail.com>
+Date:   Tue, 3 Mar 2020 19:07:56 +0100
+Message-ID: <CALqVJWfs6c5u8GPtq5eVSK-ajudUdj5-F=fEyHY1UeBaPk8vjg@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 3/2/20 7:47 AM, Anshuman Khandual wrote:
-> There are many platforms with exact same value for VM_DATA_DEFAULT_FLAGS
-> This creates a default value for VM_DATA_DEFAULT_FLAGS in line with the
-> existing VM_STACK_DEFAULT_FLAGS. While here, also define some more macros
-> with standard VMA access flag combinations that are used frequently across
-> many platforms. Apart from simplification, this reduces code duplication
-> as well.
-> 
-> Cc: Richard Henderson <rth@twiddle.net>
-> Cc: Vineet Gupta <vgupta@synopsys.com>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Mark Salter <msalter@redhat.com>
-> Cc: Guo Ren <guoren@kernel.org>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Brian Cain <bcain@codeaurora.org>
-> Cc: Tony Luck <tony.luck@intel.com>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Michal Simek <monstr@monstr.eu>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paulburton@kernel.org>
-> Cc: Nick Hu <nickhu@andestech.com>
-> Cc: Ley Foon Tan <ley.foon.tan@intel.com>
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Guan Xuetao <gxt@pku.edu.cn>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Jeff Dike <jdike@addtoit.com>
-> Cc: Chris Zankel <chris@zankel.net>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-c6x-dev@linux-c6x.org
-> Cc: uclinux-h8-devel@lists.sourceforge.jp
-> Cc: linux-hexagon@vger.kernel.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: nios2-dev@lists.rocketboards.org
-> Cc: openrisc@lists.librecores.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: linux-um@lists.infradead.org
-> Cc: linux-xtensa@linux-xtensa.org
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-
-Nit:
-
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index b0e53ef13ff1..7a764ae6ab68 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -342,6 +342,21 @@ extern unsigned int kobjsize(const void *objp);
->  /* Bits set in the VMA until the stack is in its final location */
->  #define VM_STACK_INCOMPLETE_SETUP	(VM_RAND_READ | VM_SEQ_READ)
->  
-> +#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
-> +
-> +/* Common data flag combinations */
-> +#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
-> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-> +#define VM_DATA_FLAGS_NON_EXEC	(VM_READ | VM_WRITE | VM_MAYREAD | \
-> +				 VM_MAYWRITE | VM_MAYEXEC)
-> +#define VM_DATA_FLAGS_EXEC	(VM_READ | VM_WRITE | VM_EXEC | \
-> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-> +
-> +#ifndef VM_DATA_DEFAULT_FLAGS		/* arch can override this */
-> +#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
-> +				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-
-Should you use VM_DATA_FLAGS_EXEC here? Yeah one more macro to expand, but it's
-right above this.
-
-> +#endif
-> +
->  #ifndef VM_STACK_DEFAULT_FLAGS		/* arch can override this */
->  #define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
->  #endif
-> 
-
+Hello Dear,
+What Have Kept You Waiting To Claim Your $600,000.00 USD Compensation Award?
+This said fund was issued out by the UNITED NATIONS To compensate
+you.Please If You Have Not Claim Your Fund (Award),Kindly contact me
+at   DR.CHALLYNOAH@GMAIL.COM   for further details on how to proceed your
+fund (award)release to you or better still reply back Immediately You
+Receive This Information For An Urgent Confirmation And Release Of Your
+Fund To You Without Delays, as your email was listed among those to be
+compensated this year.Congratulations..
+Best Regards,
+Dr Chally Noah.
+Minister Of Finance On Foreign Remittance:
