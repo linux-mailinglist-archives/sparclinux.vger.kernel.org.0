@@ -2,93 +2,99 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B951180919
-	for <lists+sparclinux@lfdr.de>; Tue, 10 Mar 2020 21:26:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CED718250C
+	for <lists+sparclinux@lfdr.de>; Wed, 11 Mar 2020 23:38:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726268AbgCJU0O (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 10 Mar 2020 16:26:14 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:36287 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726100AbgCJU0O (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 10 Mar 2020 16:26:14 -0400
-Received: by mail-wm1-f68.google.com with SMTP id g62so2861614wme.1;
-        Tue, 10 Mar 2020 13:26:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=JqYk8R4UPwKS97k6zpIyj5riBjZ7GjDwEcUa5Ekupac=;
-        b=tCkxaKUGWKNb+HTFdm5JbBkMM4KtNpMAde+z/oWZh3mOGSVZ2p5N/0MdlVGcB8K27b
-         3ARO+n2hD1B00XYU/Y/P9RfKsDcCWTRsIkZYDjf1fWtRuvqJJUzrfduyJbeidLDwsxJi
-         apRYCKwT1z4pdpgXFVifYp++iYW1EHHw4fdRZUAP5VdrWn4scSsSsvpA2uYe8u3nMsx6
-         4gZyM6cLKDY8khJubIx5bQR1L+922dEpo4MAtMLgJQ5/GoxL814HlZTenVZeWdeTbyuE
-         531KTbZpXTCmUlUfmx9MDq8sCPIlcKWJDuulZy+9563ns1wcWGpLzHpEW8qlzpfBeNSL
-         7/0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=JqYk8R4UPwKS97k6zpIyj5riBjZ7GjDwEcUa5Ekupac=;
-        b=V6wN2DPztC6sn5Or5tulihCVHS5QJYVs0I1ReTM+1D0OmVAldrKEO17JpfLcT6Yvx0
-         dsY85I1fAAuitKMaJdaN5JtID6Gex7Da4J7pVobcPfplDkMscJ419/8g656Y0aCCgYlQ
-         9Dz6BgA6Abf9nKTpcvv9tizSUdLB8LFBtRrtbQ8XjZE1Bg3BWgiy61dCWyA904sU9bYO
-         i9W1eAGwNf/8fGoINsEN/LyhDRw64GuF1ZrM/XxD9o9ezryhWimHXMdKbZke+BcAHFaj
-         J58rQssxwwcakkEAoUO8JPBsJBXp/zjGbHdPlfeDPD1Ei6/3KwWQAJwfJ/PmfHxyLOhL
-         Kq8Q==
-X-Gm-Message-State: ANhLgQ3FZCQz9o6JnVTf8est9Memn+lzlCKBydU0wljBgvROql6dTO7/
-        Ht7ZVmFnAFC9eYQblqwsxL341P8=
-X-Google-Smtp-Source: ADFU+vvQS3dt6GEtid3fA+7d9DuJE3zKvSKgS14keG2HQAca41GrUO3nrwsCDXKWZ+MwILBlwMptqw==
-X-Received: by 2002:a1c:7e08:: with SMTP id z8mr3581832wmc.166.1583871972104;
-        Tue, 10 Mar 2020 13:26:12 -0700 (PDT)
-Received: from avx2 ([46.53.249.42])
-        by smtp.gmail.com with ESMTPSA id c2sm5593845wma.39.2020.03.10.13.26.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2020 13:26:11 -0700 (PDT)
-Date:   Tue, 10 Mar 2020 23:26:09 +0300
-From:   Alexey Dobriyan <adobriyan@gmail.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>, sparclinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC 3/3] mm/vma: Introduce some more VMA flag wrappers
-Message-ID: <20200310202609.GA6287@avx2>
-References: <1583131666-15531-1-git-send-email-anshuman.khandual@arm.com>
- <1583131666-15531-4-git-send-email-anshuman.khandual@arm.com>
- <alpine.LSU.2.11.2003022212090.1344@eggly.anvils>
- <ce7dd2ac-26e8-d83c-46d0-0c61609be417@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ce7dd2ac-26e8-d83c-46d0-0c61609be417@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1730038AbgCKWij (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 11 Mar 2020 18:38:39 -0400
+Received: from conuserg-12.nifty.com ([210.131.2.79]:26360 "EHLO
+        conuserg-12.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729881AbgCKWij (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 11 Mar 2020 18:38:39 -0400
+Received: from grover.flets-west.jp (softbank126093102113.bbtec.net [126.93.102.113]) (authenticated)
+        by conuserg-12.nifty.com with ESMTP id 02BMbYqf019805;
+        Thu, 12 Mar 2020 07:37:35 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 02BMbYqf019805
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1583966255;
+        bh=tiAHJid7/WA3U3683+xwU6rGIWKb4aM8B2wj4c+paIQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MV/GMLbmCnGT0J0XdohjNCc2KP58qmnj+qvhKNL/fsrbcvMC3bDunxeqpcOOSGB8o
+         VbnlRGNVZq/4ekRn0VrO25hw3SeikvzgF4LyU555iQJQARlhH/4CJ+K3ktLCLeWAZh
+         DvuWDq1y84t2/htCFsT276osv+/7n3tzeMhNFoQ2/WowYBRwz+rh7Oj5GxqtcRdkXM
+         glOUVtqjY6M1oG7sHZBcwkHNEbx76LVuBZXdzqA2t9HguwSHrbxrkL2eGLCOFmz4kg
+         eJAPbpJ31cLQw2R2QwAUfWSeMK1Fy8XyU80HYst1ZavOuRrXfS+8ujd9GrA8AkyjuU
+         KsFGU67GeGA3w==
+X-Nifty-SrcIP: [126.93.102.113]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     sparclinux@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        clang-built-linux@googlegroups.com,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Ilie Halip <ilie.halip@gmail.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH v2 1/2] sparc: revive __HAVE_ARCH_STRLEN for 32bit sparc
+Date:   Thu, 12 Mar 2020 07:37:24 +0900
+Message-Id: <20200311223725.27662-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Mar 03, 2020 at 02:43:21PM +0530, Anshuman Khandual wrote:
-> On 03/03/2020 12:04 PM, Hugh Dickins wrote:
-> > On Mon, 2 Mar 2020, Anshuman Khandual wrote:
+Prior to commit 70a6fcf3283a ("[sparc] unify 32bit and 64bit string.h"),
+__HAVE_ARCH_STRLEN was defined in both of string_32.h and string_64.h
 
-> >> vma_is_dontdump()
-> >> vma_is_noreserve()
-> >> vma_is_special()
-> >> vma_is_locked()
-> >> vma_is_mergeable()
-> >> vma_is_softdirty()
-> >> vma_is_thp()
-> >> vma_is_nothp()
+It did not unify __HAVE_ARCH_STRLEN, but deleted it from string_32.h
 
-> > Improved readability? Not to my eyes.
-> 
-> As mentioned before, I dont feel strongly about patch 3/3 and will drop.
+This issue was reported by the kbuild test robot in the trial of
+forcible linking of $(lib-y) to vmlinux.
 
-Should be "const struct vm_area_struct *" anyway.
+Fixes: 70a6fcf3283a ("[sparc] unify 32bit and 64bit string.h")
+Reported-by: kbuild test robot <lkp@intel.com>
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+Changes in v2:
+  - Insert a new patch to avoid sparc32 build error
+
+ arch/sparc/include/asm/string.h    | 4 ++++
+ arch/sparc/include/asm/string_64.h | 4 ----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/sparc/include/asm/string.h b/arch/sparc/include/asm/string.h
+index 3d9cd082716b..001a17baf2d5 100644
+--- a/arch/sparc/include/asm/string.h
++++ b/arch/sparc/include/asm/string.h
+@@ -37,6 +37,10 @@ void *memmove(void *, const void *, __kernel_size_t);
+ #define __HAVE_ARCH_MEMCMP
+ int memcmp(const void *,const void *,__kernel_size_t);
+ 
++/* Now the str*() stuff... */
++#define __HAVE_ARCH_STRLEN
++__kernel_size_t strlen(const char *);
++
+ #define __HAVE_ARCH_STRNCMP
+ int strncmp(const char *, const char *, __kernel_size_t);
+ 
+diff --git a/arch/sparc/include/asm/string_64.h b/arch/sparc/include/asm/string_64.h
+index ee9ba67321bd..d5c563058a5b 100644
+--- a/arch/sparc/include/asm/string_64.h
++++ b/arch/sparc/include/asm/string_64.h
+@@ -12,8 +12,4 @@
+ 
+ #include <asm/asi.h>
+ 
+-/* Now the str*() stuff... */
+-#define __HAVE_ARCH_STRLEN
+-__kernel_size_t strlen(const char *);
+-
+ #endif /* !(__SPARC64_STRING_H__) */
+-- 
+2.17.1
+
