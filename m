@@ -2,191 +2,127 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0A8C182511
-	for <lists+sparclinux@lfdr.de>; Wed, 11 Mar 2020 23:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2721826D9
+	for <lists+sparclinux@lfdr.de>; Thu, 12 Mar 2020 02:50:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731338AbgCKWil (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 11 Mar 2020 18:38:41 -0400
-Received: from conuserg-12.nifty.com ([210.131.2.79]:26361 "EHLO
-        conuserg-12.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729739AbgCKWik (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 11 Mar 2020 18:38:40 -0400
-Received: from grover.flets-west.jp (softbank126093102113.bbtec.net [126.93.102.113]) (authenticated)
-        by conuserg-12.nifty.com with ESMTP id 02BMbYqg019805;
-        Thu, 12 Mar 2020 07:37:36 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 02BMbYqg019805
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1583966256;
-        bh=eV641mEtJcxSe/x4CJ7sZRwpUKMRqHWiX6uSM6ikt7k=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Qv5mtexJ95oplfw3jKx4O598pCAJ9biXotcsFjwC37RUh5mjkalSW2Su/e7k5GrF
-         CS+dF74fN/6vnlWySkPqixNggjqPy8/vvoeZI/XfCS8+MT55iddwww1YHT2NIcvd9H
-         L7eToIXaLjE/X+We9JBBFEIVZaiI2urFw0llbu8b8UGdOaKOsjXnflKOIXLS9Q+E2r
-         kH2uBh+8b4vIuVYQ3X+EdkrkSfZS8jgjFnNKWw0V3D0sueyPh6wmd3sh66n3b0+dX8
-         5RI5gFGxW3DikjUcQbcGMRHsUpX/8Lo/z7yIbB73Z3AfdoAWlwm5f5h3JTqnkLXMz8
-         xLmnzEShuHyjQ==
-X-Nifty-SrcIP: [126.93.102.113]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     sparclinux@vger.kernel.org,
+        id S2387630AbgCLBuu (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 11 Mar 2020 21:50:50 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:41709 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387518AbgCLBuu (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 11 Mar 2020 21:50:50 -0400
+Received: by mail-pg1-f194.google.com with SMTP id b1so2197026pgm.8
+        for <sparclinux@vger.kernel.org>; Wed, 11 Mar 2020 18:50:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TNX4E2Oz+P2PqsWFGk/pjWA5oylWbxV8DXQ+/wHZJno=;
+        b=fVxMDJREtBZAj62pPpMyCBkOOX53uoDb5O4RTD2jewJ+/oSx/tczt2p2wdtCX8XM5G
+         pSAqKUXayRh6axkmQKz/AplA4OqD3m32fN8xIDPZERGd1uOlxgVlcz85BGw2QHu8cmDs
+         2mOF3QjglbHTmcyyA4G3fMonpiQLbgvkqUIK5FhYECBuuuOgJHUoHhjm6cBTDswAcYqJ
+         DHleBSofPZ69Gtttwk2ODOHFBdQuyn3GBIB/0ncBRs12+mFwhhHclknq6S+h6qWbyHMJ
+         04LJvZPWl2VhjrNAhD2ffKscJJir9y7jLyTrH2vrAXwcyzmXAsNSiSJRPczcjbxbS3Uu
+         op5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TNX4E2Oz+P2PqsWFGk/pjWA5oylWbxV8DXQ+/wHZJno=;
+        b=fzZdWAEDJwc8oK75oQjLVmR0I516O0M23N+oTOKFCh4E3JEYecsA/par5+HfRT1T4B
+         zeShmKFZ/rzz70psLqpINILIzO5gqys09gdbFVW7PbCxCEvSjHKtnW533MYaZFoM/3+7
+         Qs4amMFcANCA6PBaBNl8JuzL2AQDAyl68G1HptTLgJs8x8rZtO28bBcq17lKV5vL3G4B
+         tWKyiPwwsUbJD6wzbj6TR46tmV6n0YYT5artsDpqNuNPJfoJJstRmr1lcTZWgnzje7JY
+         gEyTtbXWI/b4C6fA/67xjWXfAmqeK1/4gtDcyNnwd+B93TesbTwsvEtltn5Xqq6ss9bO
+         VGcA==
+X-Gm-Message-State: ANhLgQ2No58AA3YaRTvRy4q1HihQux6NCWjZDaJScAyRjp8nN6JIvtGP
+        gwmrr5lY290Mk3RZXJrE1wtxZTw5uVgyVxD+Sw9v/g==
+X-Google-Smtp-Source: ADFU+vuzhRgnw4SaWfxZFbeh7XsrUD8yW2HZ4wH+4hXd6Kh30bMgMrlpb4+gL9Iasl0wQvcHgsaBJx/mWORy+9PV12A=
+X-Received: by 2002:a63:4453:: with SMTP id t19mr5119675pgk.381.1583977848854;
+ Wed, 11 Mar 2020 18:50:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200311223725.27662-1-masahiroy@kernel.org>
+In-Reply-To: <20200311223725.27662-1-masahiroy@kernel.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 11 Mar 2020 18:50:37 -0700
+Message-ID: <CAKwvOdncHn9deGkP_VoOyk7Yhs6YbEeX=DwrMKX-u8RqoVKkcg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] sparc: revive __HAVE_ARCH_STRLEN for 32bit sparc
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        sparclinux@vger.kernel.org,
         "David S . Miller" <davem@davemloft.net>,
-        clang-built-linux@googlegroups.com,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
-        Nick Desaulniers <ndesaulniers@google.com>,
         Ilie Halip <ilie.halip@gmail.com>,
         Nathan Chancellor <natechancellor@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>
-Subject: [PATCH v2 2/2] kbuild: link lib-y objects to vmlinux forcibly when CONFIG_MODULES=y
-Date:   Thu, 12 Mar 2020 07:37:25 +0900
-Message-Id: <20200311223725.27662-2-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200311223725.27662-1-masahiroy@kernel.org>
-References: <20200311223725.27662-1-masahiroy@kernel.org>
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Kbuild supports not only obj-y but also lib-y to list objects linked to
-vmlinux.
+On Wed, Mar 11, 2020 at 3:37 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> Prior to commit 70a6fcf3283a ("[sparc] unify 32bit and 64bit string.h"),
+> __HAVE_ARCH_STRLEN was defined in both of string_32.h and string_64.h
+>
+> It did not unify __HAVE_ARCH_STRLEN, but deleted it from string_32.h
+>
+> This issue was reported by the kbuild test robot in the trial of
+> forcible linking of $(lib-y) to vmlinux.
+>
+> Fixes: 70a6fcf3283a ("[sparc] unify 32bit and 64bit string.h")
 
-The difference between them is that all the objects from obj-y are
-forcibly linked to vmlinux by using --whole-archive, whereas the objects
-from lib-y are linked as needed; if there is no user of a lib-y object,
-it is not linked.
+Nice find with the above commit.  Thanks for the patch.  Without it,
+looks like 32b sparc is using strlen from lib/string.c.
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-lib-y is intended to list utility functions that may be called from all
-over the place (and may be unused at all), but it is a problem for
-EXPORT_SYMBOL(). Even if there is no call-site in the vmlinux, we need
-to keep exported symbols for the use from loadable modules.
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+> Changes in v2:
+>   - Insert a new patch to avoid sparc32 build error
+>
+>  arch/sparc/include/asm/string.h    | 4 ++++
+>  arch/sparc/include/asm/string_64.h | 4 ----
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/sparc/include/asm/string.h b/arch/sparc/include/asm/string.h
+> index 3d9cd082716b..001a17baf2d5 100644
+> --- a/arch/sparc/include/asm/string.h
+> +++ b/arch/sparc/include/asm/string.h
+> @@ -37,6 +37,10 @@ void *memmove(void *, const void *, __kernel_size_t);
+>  #define __HAVE_ARCH_MEMCMP
+>  int memcmp(const void *,const void *,__kernel_size_t);
+>
+> +/* Now the str*() stuff... */
+> +#define __HAVE_ARCH_STRLEN
+> +__kernel_size_t strlen(const char *);
+> +
+>  #define __HAVE_ARCH_STRNCMP
+>  int strncmp(const char *, const char *, __kernel_size_t);
+>
+> diff --git a/arch/sparc/include/asm/string_64.h b/arch/sparc/include/asm/string_64.h
+> index ee9ba67321bd..d5c563058a5b 100644
+> --- a/arch/sparc/include/asm/string_64.h
+> +++ b/arch/sparc/include/asm/string_64.h
+> @@ -12,8 +12,4 @@
+>
+>  #include <asm/asi.h>
+>
+> -/* Now the str*() stuff... */
+> -#define __HAVE_ARCH_STRLEN
+> -__kernel_size_t strlen(const char *);
+> -
+>  #endif /* !(__SPARC64_STRING_H__) */
+> --
+> 2.17.1
+>
 
-Commit 7f2084fa55e6 ("[kbuild] handle exports in lib-y objects reliably")
-worked around it by linking a dummy object, lib-ksyms.o, which contains
-references to all the symbols exported from lib.a in that directory.
-It uses the linker script command, EXTERN. Unfortunately, the meaning of
-EXTERN of ld.lld is different from that of ld.bfd. Therefore, this does
-not work with LD=ld.lld (CBL issue #515).
 
-Anyway, the build rule of lib-ksyms.o is somewhat tricky. So, I want to
-get rid of it.
-
-At first, I was thinking of accumulating lib-y objects into obj-y
-(or even replacing lib-y with obj-y entirely), but the lib-y syntax
-is used beyond the ordinary use in lib/ and arch/*/lib/.
-
-Examples:
-
- - drivers/firmware/efi/libstub/Makefile builds lib.a, which is linked
-   into vmlinux in the own way (arm64), or linked to the decompressor
-   (arm, x86).
-
- - arch/alpha/lib/Makefile builds lib.a which is linked not only to
-   vmlinux, but also to bootloaders in arch/alpha/boot/Makefile.
-
- - arch/xtensa/boot/lib/Makefile builds lib.a for use from
-   arch/xtensa/boot/boot-redboot/Makefile.
-
-One more thing, adding everything to obj-y would increase the vmlinux
-size of allnoconfig (or tinyconfig).
-
-For less impact, I tweaked the destination of lib.a at the top Makefile;
-when CONFIG_MODULES=y, lib.a goes to KBUILD_VMLINUX_OBJS, which is
-forcibly linked to vmlinux, otherwise lib.a goes to KBUILD_VMLINUX_LIBS
-as before.
-
-The size impact for normal usecases is quite small since at lease one
-symbol in every lib-y object is eventually called by someone. In case
-you are intrested, here are the figures.
-
-x86_64_defconfig:
-
-   text	   data	    bss	    dec	    hex	filename
-19566602 5422072 1589328 26578002 1958c52 vmlinux.before
-19566932 5422104 1589328 26578364 1958dbc vmlinux.after
-
-The case with the biggest impact is allnoconfig + CONFIG_MODULES=y.
-
-ARCH=x86 allnoconfig + CONFIG_MODULES=y:
-
-   text	   data	    bss	    dec	    hex	filename
-1175162	 254740	1220608	2650510	 28718e	vmlinux.before
-1177974	 254836	1220608	2653418	 287cea	vmlinux.after
-
-Hopefully this is still not a big deal. The per-file trimming with the
-static library is not so effective after all.
-
-If fine-grained optimization is desired, some architectures support
-CONFIG_LD_DEAD_CODE_DATA_ELIMINATION, which trims dead code per-symbol
-basis. When LTO is supported in mainline, even better optimization will
-be possible.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/515
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reported-by: kbuild test robot <lkp@intel.com>
----
-
-Changes in v2: None
-
- Makefile               |  7 ++++++-
- scripts/Makefile.build | 17 -----------------
- 2 files changed, 6 insertions(+), 18 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 6a538b79e61e..2cdbd4b3e36d 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1034,8 +1034,13 @@ init-y		:= $(patsubst %/, %/built-in.a, $(init-y))
- core-y		:= $(patsubst %/, %/built-in.a, $(core-y))
- drivers-y	:= $(patsubst %/, %/built-in.a, $(drivers-y))
- net-y		:= $(patsubst %/, %/built-in.a, $(net-y))
-+libs-y2		:= $(patsubst %/, %/built-in.a, $(filter %/, $(libs-y)))
-+ifdef CONFIG_MODULES
-+libs-y1		:= $(filter-out %/, $(libs-y))
-+libs-y2		+= $(patsubst %/, %/lib.a, $(filter %/, $(libs-y)))
-+else
- libs-y1		:= $(patsubst %/, %/lib.a, $(libs-y))
--libs-y2		:= $(patsubst %/, %/built-in.a, $(filter-out %.a, $(libs-y)))
-+endif
- virt-y		:= $(patsubst %/, %/built-in.a, $(virt-y))
- 
- # Externally visible symbols (used by link-vmlinux.sh)
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index a1730d42e5f3..356601994f3a 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -65,7 +65,6 @@ endif
- 
- ifneq ($(strip $(lib-y) $(lib-m) $(lib-)),)
- lib-target := $(obj)/lib.a
--real-obj-y += $(obj)/lib-ksyms.o
- endif
- 
- ifdef need-builtin
-@@ -410,22 +409,6 @@ $(lib-target): $(lib-y) FORCE
- 
- targets += $(lib-target)
- 
--dummy-object = $(obj)/.lib_exports.o
--ksyms-lds = $(dot-target).lds
--
--quiet_cmd_export_list = EXPORTS $@
--cmd_export_list = $(OBJDUMP) -h $< | \
--	sed -ne '/___ksymtab/s/.*+\([^ ]*\).*/EXTERN(\1)/p' >$(ksyms-lds);\
--	rm -f $(dummy-object);\
--	echo | $(CC) $(a_flags) -c -o $(dummy-object) -x assembler -;\
--	$(LD) $(ld_flags) -r -o $@ -T $(ksyms-lds) $(dummy-object);\
--	rm $(dummy-object) $(ksyms-lds)
--
--$(obj)/lib-ksyms.o: $(lib-target) FORCE
--	$(call if_changed,export_list)
--
--targets += $(obj)/lib-ksyms.o
--
- endif
- 
- # NOTE:
 -- 
-2.17.1
-
+Thanks,
+~Nick Desaulniers
