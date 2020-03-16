@@ -2,127 +2,140 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C2721826D9
-	for <lists+sparclinux@lfdr.de>; Thu, 12 Mar 2020 02:50:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEEE5186D83
+	for <lists+sparclinux@lfdr.de>; Mon, 16 Mar 2020 15:42:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387630AbgCLBuu (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 11 Mar 2020 21:50:50 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:41709 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387518AbgCLBuu (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 11 Mar 2020 21:50:50 -0400
-Received: by mail-pg1-f194.google.com with SMTP id b1so2197026pgm.8
-        for <sparclinux@vger.kernel.org>; Wed, 11 Mar 2020 18:50:49 -0700 (PDT)
+        id S1731684AbgCPOmO (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 16 Mar 2020 10:42:14 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:38281 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731766AbgCPOmO (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 16 Mar 2020 10:42:14 -0400
+Received: by mail-pl1-f195.google.com with SMTP id w3so8110715plz.5
+        for <sparclinux@vger.kernel.org>; Mon, 16 Mar 2020 07:42:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TNX4E2Oz+P2PqsWFGk/pjWA5oylWbxV8DXQ+/wHZJno=;
-        b=fVxMDJREtBZAj62pPpMyCBkOOX53uoDb5O4RTD2jewJ+/oSx/tczt2p2wdtCX8XM5G
-         pSAqKUXayRh6axkmQKz/AplA4OqD3m32fN8xIDPZERGd1uOlxgVlcz85BGw2QHu8cmDs
-         2mOF3QjglbHTmcyyA4G3fMonpiQLbgvkqUIK5FhYECBuuuOgJHUoHhjm6cBTDswAcYqJ
-         DHleBSofPZ69Gtttwk2ODOHFBdQuyn3GBIB/0ncBRs12+mFwhhHclknq6S+h6qWbyHMJ
-         04LJvZPWl2VhjrNAhD2ffKscJJir9y7jLyTrH2vrAXwcyzmXAsNSiSJRPczcjbxbS3Uu
-         op5Q==
+        d=arista.com; s=googlenew;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=CKzmyWGTBxUz5GAvFJd/RAIPCL6otj16Tz4SiAfElss=;
+        b=PPDVtvTLLuLVBBfjuG5HCnZ604AsQtpovQaVrospEvbfrdNJHG0dUj+z/uXvbO92V5
+         QQTAwVWXq+xy4nNZcPMtv+1YEK7HOw3jqaSeKlkyXzZBJA+bJOo5HGetbjFgA2ScD0fU
+         fz8BQaqjEmhaXFmot90WuLHM2hAJ+hzuqV/OyYMG4p7D1LDaAFwJqDOI1ap2W+PC4Wdv
+         ooXbaJepE1fUhHdceIl+aV47yUvclxNZzxgdGaadVZPQBhO2YLQ1/ypZQYOSWm9LBbPW
+         o0xZeMOtKCwy2vTq0JotdPddh5uKKi5v2kAJPiOGV9Zf+V7B1lucUpReN/cTTDq9AQgT
+         u+bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TNX4E2Oz+P2PqsWFGk/pjWA5oylWbxV8DXQ+/wHZJno=;
-        b=fzZdWAEDJwc8oK75oQjLVmR0I516O0M23N+oTOKFCh4E3JEYecsA/par5+HfRT1T4B
-         zeShmKFZ/rzz70psLqpINILIzO5gqys09gdbFVW7PbCxCEvSjHKtnW533MYaZFoM/3+7
-         Qs4amMFcANCA6PBaBNl8JuzL2AQDAyl68G1HptTLgJs8x8rZtO28bBcq17lKV5vL3G4B
-         tWKyiPwwsUbJD6wzbj6TR46tmV6n0YYT5artsDpqNuNPJfoJJstRmr1lcTZWgnzje7JY
-         gEyTtbXWI/b4C6fA/67xjWXfAmqeK1/4gtDcyNnwd+B93TesbTwsvEtltn5Xqq6ss9bO
-         VGcA==
-X-Gm-Message-State: ANhLgQ2No58AA3YaRTvRy4q1HihQux6NCWjZDaJScAyRjp8nN6JIvtGP
-        gwmrr5lY290Mk3RZXJrE1wtxZTw5uVgyVxD+Sw9v/g==
-X-Google-Smtp-Source: ADFU+vuzhRgnw4SaWfxZFbeh7XsrUD8yW2HZ4wH+4hXd6Kh30bMgMrlpb4+gL9Iasl0wQvcHgsaBJx/mWORy+9PV12A=
-X-Received: by 2002:a63:4453:: with SMTP id t19mr5119675pgk.381.1583977848854;
- Wed, 11 Mar 2020 18:50:48 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=CKzmyWGTBxUz5GAvFJd/RAIPCL6otj16Tz4SiAfElss=;
+        b=N4uhZEJlz1CPgaCX4JzHXJLAro9xPVSAQo2PBoz2cANj4e0E2A4RutV9jxHHia/Q9a
+         HiJIeXk/mifP/iwfRj/0EaPkbi0eQwST8oz7CFlXx+pIuB96Qge+kY/aNzjq24AVidoy
+         NOE2oT7bjF1JN/zwtloFFuVUYKW1aAtabk04K2m4+SGQcmgdrmTrdxoDF1UxSWFi3IEO
+         r7UzilzGQV1b18bWilm7FIhtLlT2jO4th6xYt22SdeFbmF6TiCkq1EOgnmOOAHC7lYZT
+         PEqYLHh+O69fgkWKBS4zsxUhDrSoQjsVnbntUP7mPP/dFSEDYINCYpocl++9vD2CHvPh
+         Awtg==
+X-Gm-Message-State: ANhLgQ2mlWXZlSA+cb5FE/eeiIlJh2aRNbLNblp1JF2yOp0CyZQBlWl1
+        VJk8cx+awXgN2rdXFwsTcXcprQ==
+X-Google-Smtp-Source: ADFU+vt5V4s6MO/GQlwK2npa7WQnZw4mRUtHAN7IY4q6iRlMzvJTAc+W0zCvC1+Mq/QtohzWjHRt2A==
+X-Received: by 2002:a17:90a:b94a:: with SMTP id f10mr1374711pjw.62.1584369733612;
+        Mon, 16 Mar 2020 07:42:13 -0700 (PDT)
+Received: from Mindolluin.aristanetworks.com ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
+        by smtp.gmail.com with ESMTPSA id i2sm81524pjs.21.2020.03.16.07.42.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2020 07:42:12 -0700 (PDT)
+From:   Dmitry Safonov <dima@arista.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
+        Dmitry Safonov <dima@arista.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Slaby <jslaby@suse.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: [PATCHv2 34/50] sparc: Add show_stack_loglvl()
+Date:   Mon, 16 Mar 2020 14:39:00 +0000
+Message-Id: <20200316143916.195608-35-dima@arista.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200316143916.195608-1-dima@arista.com>
+References: <20200316143916.195608-1-dima@arista.com>
 MIME-Version: 1.0
-References: <20200311223725.27662-1-masahiroy@kernel.org>
-In-Reply-To: <20200311223725.27662-1-masahiroy@kernel.org>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 11 Mar 2020 18:50:37 -0700
-Message-ID: <CAKwvOdncHn9deGkP_VoOyk7Yhs6YbEeX=DwrMKX-u8RqoVKkcg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] sparc: revive __HAVE_ARCH_STRLEN for 32bit sparc
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        sparclinux@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Ilie Halip <ilie.halip@gmail.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Mar 11, 2020 at 3:37 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> Prior to commit 70a6fcf3283a ("[sparc] unify 32bit and 64bit string.h"),
-> __HAVE_ARCH_STRLEN was defined in both of string_32.h and string_64.h
->
-> It did not unify __HAVE_ARCH_STRLEN, but deleted it from string_32.h
->
-> This issue was reported by the kbuild test robot in the trial of
-> forcible linking of $(lib-y) to vmlinux.
->
-> Fixes: 70a6fcf3283a ("[sparc] unify 32bit and 64bit string.h")
+Currently, the log-level of show_stack() depends on a platform
+realization. It creates situations where the headers are printed with
+lower log level or higher than the stacktrace (depending on
+a platform or user).
 
-Nice find with the above commit.  Thanks for the patch.  Without it,
-looks like 32b sparc is using strlen from lib/string.c.
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Furthermore, it forces the logic decision from user to an architecture
+side. In result, some users as sysrq/kdb/etc are doing tricks with
+temporary rising console_loglevel while printing their messages.
+And in result it not only may print unwanted messages from other CPUs,
+but also omit printing at all in the unlucky case where the printk()
+was deferred.
 
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
->
-> Changes in v2:
->   - Insert a new patch to avoid sparc32 build error
->
->  arch/sparc/include/asm/string.h    | 4 ++++
->  arch/sparc/include/asm/string_64.h | 4 ----
->  2 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/sparc/include/asm/string.h b/arch/sparc/include/asm/string.h
-> index 3d9cd082716b..001a17baf2d5 100644
-> --- a/arch/sparc/include/asm/string.h
-> +++ b/arch/sparc/include/asm/string.h
-> @@ -37,6 +37,10 @@ void *memmove(void *, const void *, __kernel_size_t);
->  #define __HAVE_ARCH_MEMCMP
->  int memcmp(const void *,const void *,__kernel_size_t);
->
-> +/* Now the str*() stuff... */
-> +#define __HAVE_ARCH_STRLEN
-> +__kernel_size_t strlen(const char *);
-> +
->  #define __HAVE_ARCH_STRNCMP
->  int strncmp(const char *, const char *, __kernel_size_t);
->
-> diff --git a/arch/sparc/include/asm/string_64.h b/arch/sparc/include/asm/string_64.h
-> index ee9ba67321bd..d5c563058a5b 100644
-> --- a/arch/sparc/include/asm/string_64.h
-> +++ b/arch/sparc/include/asm/string_64.h
-> @@ -12,8 +12,4 @@
->
->  #include <asm/asi.h>
->
-> -/* Now the str*() stuff... */
-> -#define __HAVE_ARCH_STRLEN
-> -__kernel_size_t strlen(const char *);
-> -
->  #endif /* !(__SPARC64_STRING_H__) */
-> --
-> 2.17.1
->
+Introducing log-level parameter and KERN_UNSUPPRESSED [1] seems
+an easier approach than introducing more printk buffers.
+Also, it will consolidate printings with headers.
 
+Introduce show_stack_loglvl(), that eventually will substitute
+show_stack().
 
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org
+[1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/T/#u
+Acked-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+---
+ arch/sparc/kernel/process_32.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/arch/sparc/kernel/process_32.c b/arch/sparc/kernel/process_32.c
+index 26cca65e9246..0b07de5618e5 100644
+--- a/arch/sparc/kernel/process_32.c
++++ b/arch/sparc/kernel/process_32.c
+@@ -145,10 +145,12 @@ void show_regs(struct pt_regs *r)
+ }
+ 
+ /*
+- * The show_stack is an external API which we do not use ourselves.
++ * The show_stack(), show_stack_loglvl() are external APIs which
++ * we do not use ourselves.
+  * The oops is printed in die_if_kernel.
+  */
+-void show_stack(struct task_struct *tsk, unsigned long *_ksp)
++void show_stack_loglvl(struct task_struct *tsk, unsigned long *_ksp,
++		       const char *loglvl)
+ {
+ 	unsigned long pc, fp;
+ 	unsigned long task_base;
+@@ -170,11 +172,16 @@ void show_stack(struct task_struct *tsk, unsigned long *_ksp)
+ 			break;
+ 		rw = (struct reg_window32 *) fp;
+ 		pc = rw->ins[7];
+-		printk("[%08lx : ", pc);
+-		printk("%pS ] ", (void *) pc);
++		printk("%s[%08lx : ", loglvl, pc);
++		printk("%s%pS ] ", loglvl, (void *) pc);
+ 		fp = rw->ins[6];
+ 	} while (++count < 16);
+-	printk("\n");
++	printk("%s\n", loglvl);
++}
++
++void show_stack(struct task_struct *task, unsigned long *sp)
++{
++	show_stack_loglvl(task, sp, KERN_DEFAULT);
+ }
+ 
+ /*
 -- 
-Thanks,
-~Nick Desaulniers
+2.25.1
+
