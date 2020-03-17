@@ -2,140 +2,74 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEEE5186D83
-	for <lists+sparclinux@lfdr.de>; Mon, 16 Mar 2020 15:42:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05F6A1876F0
+	for <lists+sparclinux@lfdr.de>; Tue, 17 Mar 2020 01:30:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731684AbgCPOmO (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 16 Mar 2020 10:42:14 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:38281 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731766AbgCPOmO (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 16 Mar 2020 10:42:14 -0400
-Received: by mail-pl1-f195.google.com with SMTP id w3so8110715plz.5
-        for <sparclinux@vger.kernel.org>; Mon, 16 Mar 2020 07:42:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arista.com; s=googlenew;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=CKzmyWGTBxUz5GAvFJd/RAIPCL6otj16Tz4SiAfElss=;
-        b=PPDVtvTLLuLVBBfjuG5HCnZ604AsQtpovQaVrospEvbfrdNJHG0dUj+z/uXvbO92V5
-         QQTAwVWXq+xy4nNZcPMtv+1YEK7HOw3jqaSeKlkyXzZBJA+bJOo5HGetbjFgA2ScD0fU
-         fz8BQaqjEmhaXFmot90WuLHM2hAJ+hzuqV/OyYMG4p7D1LDaAFwJqDOI1ap2W+PC4Wdv
-         ooXbaJepE1fUhHdceIl+aV47yUvclxNZzxgdGaadVZPQBhO2YLQ1/ypZQYOSWm9LBbPW
-         o0xZeMOtKCwy2vTq0JotdPddh5uKKi5v2kAJPiOGV9Zf+V7B1lucUpReN/cTTDq9AQgT
-         u+bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=CKzmyWGTBxUz5GAvFJd/RAIPCL6otj16Tz4SiAfElss=;
-        b=N4uhZEJlz1CPgaCX4JzHXJLAro9xPVSAQo2PBoz2cANj4e0E2A4RutV9jxHHia/Q9a
-         HiJIeXk/mifP/iwfRj/0EaPkbi0eQwST8oz7CFlXx+pIuB96Qge+kY/aNzjq24AVidoy
-         NOE2oT7bjF1JN/zwtloFFuVUYKW1aAtabk04K2m4+SGQcmgdrmTrdxoDF1UxSWFi3IEO
-         r7UzilzGQV1b18bWilm7FIhtLlT2jO4th6xYt22SdeFbmF6TiCkq1EOgnmOOAHC7lYZT
-         PEqYLHh+O69fgkWKBS4zsxUhDrSoQjsVnbntUP7mPP/dFSEDYINCYpocl++9vD2CHvPh
-         Awtg==
-X-Gm-Message-State: ANhLgQ2mlWXZlSA+cb5FE/eeiIlJh2aRNbLNblp1JF2yOp0CyZQBlWl1
-        VJk8cx+awXgN2rdXFwsTcXcprQ==
-X-Google-Smtp-Source: ADFU+vt5V4s6MO/GQlwK2npa7WQnZw4mRUtHAN7IY4q6iRlMzvJTAc+W0zCvC1+Mq/QtohzWjHRt2A==
-X-Received: by 2002:a17:90a:b94a:: with SMTP id f10mr1374711pjw.62.1584369733612;
-        Mon, 16 Mar 2020 07:42:13 -0700 (PDT)
-Received: from Mindolluin.aristanetworks.com ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
-        by smtp.gmail.com with ESMTPSA id i2sm81524pjs.21.2020.03.16.07.42.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2020 07:42:12 -0700 (PDT)
-From:   Dmitry Safonov <dima@arista.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
-        Dmitry Safonov <dima@arista.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Slaby <jslaby@suse.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: [PATCHv2 34/50] sparc: Add show_stack_loglvl()
-Date:   Mon, 16 Mar 2020 14:39:00 +0000
-Message-Id: <20200316143916.195608-35-dima@arista.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200316143916.195608-1-dima@arista.com>
-References: <20200316143916.195608-1-dima@arista.com>
+        id S1733137AbgCQAay (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 16 Mar 2020 20:30:54 -0400
+Received: from mail.uic.edu.hk ([61.143.62.86]:21927 "EHLO umgp.uic.edu.hk"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1732903AbgCQAay (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 16 Mar 2020 20:30:54 -0400
+X-IronPort-AV: E=Sophos;i="5.43,368,1503331200"; 
+   d="scan'208";a="17256612"
+Received: from unknown (HELO zpmail.uic.edu.hk) ([192.168.111.249])
+  by umgp.uic.edu.hk with ESMTP; 17 Mar 2020 08:30:53 +0800
+Received: from zpmail.uic.edu.hk (localhost [127.0.0.1])
+        by zpmail.uic.edu.hk (Postfix) with ESMTPS id 039C941C058B;
+        Tue, 17 Mar 2020 08:30:51 +0800 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by zpmail.uic.edu.hk (Postfix) with ESMTP id 51DFC41C09B8;
+        Tue, 17 Mar 2020 08:30:50 +0800 (CST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zpmail.uic.edu.hk 51DFC41C09B8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uic.edu.hk;
+        s=6465647E-9D7B-11E8-B17B-42130C7FA3B9; t=1584405050;
+        bh=Wn2BcVyAdGxyDvB/5AnVfCr/iJTzisyuX4dwKssec6E=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=eijr184zQWayHix8z8iq/LzwOeOiOsyeeU+DE90iXy93VV1voBNvRsaikLKghbULd
+         9g1LWcyjQNzb+UhBKAE2mK4m3ICIsz58S0uKN3IAQiyC9/dFtbJwjE0IK7UgOvftY8
+         2m7pd3ld6IskX4VJKeiXw2nAm5+Vn28V6XdT6NzUfGIMeq8Wk8MOybL9lkmFsm6Lgm
+         07HauDXMJCmQWcHBNpfcZsUaQxhEmqBcftBfla42VqIlQmyFN67r/hH3kq8l7wcLOS
+         ax7vIUt/4JKm/pT5txnptGCRSUCab7yQcX6MDtmvY5PqQvGm4XlnQNebpZb01QDy4Z
+         F8bERSxJAkFZQ==
+Received: from zpmail.uic.edu.hk ([127.0.0.1])
+        by localhost (zpmail.uic.edu.hk [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id i9Iud7AndYRW; Tue, 17 Mar 2020 08:30:50 +0800 (CST)
+Received: from zpmail.uic.edu.hk (zpmail.uic.edu.hk [192.168.111.249])
+        by zpmail.uic.edu.hk (Postfix) with ESMTP id 1539741C0664;
+        Tue, 17 Mar 2020 08:30:44 +0800 (CST)
+Date:   Tue, 17 Mar 2020 08:30:44 +0800 (CST)
+From:   David Ibe <ylawrence@uic.edu.hk>
+Reply-To: David Ibe <davidibe718@gmail.com>
+Message-ID: <1962998701.63764382.1584405044025.JavaMail.zimbra@uic.edu.hk>
+Subject: 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.111.160]
+X-Mailer: Zimbra 8.8.15_GA_3829 (ZimbraWebClient - GC80 (Win)/8.8.15_GA_3829)
+Thread-Index: PsCeTF4LXWfS0rlgHWUFCTjzYDPdiA==
+Thread-Topic: 
+To:     unlisted-recipients:; (no To-header on input)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Currently, the log-level of show_stack() depends on a platform
-realization. It creates situations where the headers are printed with
-lower log level or higher than the stacktrace (depending on
-a platform or user).
 
-Furthermore, it forces the logic decision from user to an architecture
-side. In result, some users as sysrq/kdb/etc are doing tricks with
-temporary rising console_loglevel while printing their messages.
-And in result it not only may print unwanted messages from other CPUs,
-but also omit printing at all in the unlucky case where the printk()
-was deferred.
 
-Introducing log-level parameter and KERN_UNSUPPRESSED [1] seems
-an easier approach than introducing more printk buffers.
-Also, it will consolidate printings with headers.
+Good Day,                
 
-Introduce show_stack_loglvl(), that eventually will substitute
-show_stack().
+I am Mr. David Ibe, I work with the International Standards on Auditing, I have seen on records, that several times people has divert your funds into their own personal accounts.
 
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-[1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/T/#u
-Acked-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Dmitry Safonov <dima@arista.com>
----
- arch/sparc/kernel/process_32.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+Now I am writing to you in respect of the amount which I have been able to send to you through our International United Nations accredited and approved Diplomat, who has arrived Africa, I want you to know that the diplomat would deliver the funds which I have packaged as a diplomatic compensation to you and the amount in the consignment is  $10,000,000.00 United State Dollars.
 
-diff --git a/arch/sparc/kernel/process_32.c b/arch/sparc/kernel/process_32.c
-index 26cca65e9246..0b07de5618e5 100644
---- a/arch/sparc/kernel/process_32.c
-+++ b/arch/sparc/kernel/process_32.c
-@@ -145,10 +145,12 @@ void show_regs(struct pt_regs *r)
- }
- 
- /*
-- * The show_stack is an external API which we do not use ourselves.
-+ * The show_stack(), show_stack_loglvl() are external APIs which
-+ * we do not use ourselves.
-  * The oops is printed in die_if_kernel.
-  */
--void show_stack(struct task_struct *tsk, unsigned long *_ksp)
-+void show_stack_loglvl(struct task_struct *tsk, unsigned long *_ksp,
-+		       const char *loglvl)
- {
- 	unsigned long pc, fp;
- 	unsigned long task_base;
-@@ -170,11 +172,16 @@ void show_stack(struct task_struct *tsk, unsigned long *_ksp)
- 			break;
- 		rw = (struct reg_window32 *) fp;
- 		pc = rw->ins[7];
--		printk("[%08lx : ", pc);
--		printk("%pS ] ", (void *) pc);
-+		printk("%s[%08lx : ", loglvl, pc);
-+		printk("%s%pS ] ", loglvl, (void *) pc);
- 		fp = rw->ins[6];
- 	} while (++count < 16);
--	printk("\n");
-+	printk("%s\n", loglvl);
-+}
-+
-+void show_stack(struct task_struct *task, unsigned long *sp)
-+{
-+	show_stack_loglvl(task, sp, KERN_DEFAULT);
- }
- 
- /*
--- 
-2.25.1
+I did not disclose the contents to the diplomat, but I told him that it is your compensation from the Auditing Corporate Governance and Stewardship, Auditing and Assurance Standards Board. I want you to know that these funds would help with your financial status as I have seen in records that you have spent a lot trying to receive these funds and I am not demanding so much from you but only 30% for my stress and logistics.
 
+I would like you to get back to me with your personal contact details, so that I can give you the contact information's of the diplomat who has arrived Africa and has been waiting to get your details so that he can proceed with the delivery to you.
+
+Yours Sincerely,
+Kindly forward your details to: mrdavidibe966@gmail.com
+Mr. David Ibe
+International Auditor,
+Corporate Governance and Stewardship
