@@ -2,161 +2,149 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE64A18AD1B
-	for <lists+sparclinux@lfdr.de>; Thu, 19 Mar 2020 08:04:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C97618AD47
+	for <lists+sparclinux@lfdr.de>; Thu, 19 Mar 2020 08:21:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727001AbgCSHEc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 19 Mar 2020 03:04:32 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:14423 "EHLO pegase1.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725787AbgCSHEc (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 19 Mar 2020 03:04:32 -0400
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 48jdF71sjtz9v1Md;
-        Thu, 19 Mar 2020 08:04:27 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
-        reason="1024-bit key; insecure key"
-        header.d=c-s.fr header.i=@c-s.fr header.b=miVDWU3+; dkim-adsp=pass;
-        dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id LNpYefN951gJ; Thu, 19 Mar 2020 08:04:27 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 48jdF70XNZz9v1Mc;
-        Thu, 19 Mar 2020 08:04:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
-        t=1584601467; bh=5ZZ9JpRLP71PK+VNpemb+Gegi8ltDnpAruGHqikdnkM=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=miVDWU3+a2y0u275N9hD/wlPdJIb1qmEFxnWhWbDAcuzzhQKA62bOJRlcQS+0FgpJ
-         1oDaIjZur3d9lpK8mGIRkzkhqA4W3uvhQ9x7BDYfoczEr1ShtNesHCpCKh7CmjNR3c
-         w9QIjLFWO20jXxv/VZmy7eFG3M/ZUt7wHjFbPowk=
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id E903D8B772;
-        Thu, 19 Mar 2020 08:04:27 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id NWMcTA98PEcE; Thu, 19 Mar 2020 08:04:27 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 8F89E8B769;
-        Thu, 19 Mar 2020 08:04:26 +0100 (CET)
-Subject: Re: [PATCH 2/4] hugetlbfs: move hugepagesz= parsing to arch
- independent code
-To:     Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-doc@vger.kernel.org
-Cc:     Albert Ou <aou@eecs.berkeley.edu>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Longpeng <longpeng2@huawei.com>, Will Deacon <will@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>
-References: <20200318220634.32100-1-mike.kravetz@oracle.com>
- <20200318220634.32100-3-mike.kravetz@oracle.com>
-From:   Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <2ca058dc-47e6-1d08-154b-77d2cbe98e34@c-s.fr>
-Date:   Thu, 19 Mar 2020 08:04:21 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1727003AbgCSHVG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 19 Mar 2020 03:21:06 -0400
+Received: from conssluserg-05.nifty.com ([210.131.2.90]:32234 "EHLO
+        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725767AbgCSHVG (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 19 Mar 2020 03:21:06 -0400
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178]) (authenticated)
+        by conssluserg-05.nifty.com with ESMTP id 02J7KsFk016064;
+        Thu, 19 Mar 2020 16:20:54 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 02J7KsFk016064
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1584602455;
+        bh=7mIqQ7KnCxUIjZLM3J+eJp954uanv6Sg/97Cuvsmk4c=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=0/vp+6Jtj1Jf9pHf20OEFJxJhhrn1mdJev9TauRC4vXqodip+RusjM3QIkyoXis1P
+         RtKrXhgPnx9bAnwpZGzTGG5qjOR6ezFT3A4rfttICM2tpkpovl58GKrKXRr/UDwdIp
+         Y60Pw7ejP9xJxsenNXP3QzbbFAaJKJM06yBOYt8UYlomgIDwETTgCSczKjfjkbfyMG
+         2G7y0R/tnf/F1Pn8P0oQrszyDyomurI+yJXSn7LjyaAh+2wc3gd3DDaWYFK8B2Ikut
+         ptUU5vmyLHkd9ROwJEXs7oTVUGJHq+VvpoNYz6x61HxCO6afSfVOddEeO4N/OyJO7e
+         47EuGeM4lyUOQ==
+X-Nifty-SrcIP: [209.85.221.178]
+Received: by mail-vk1-f178.google.com with SMTP id t3so425719vkm.10;
+        Thu, 19 Mar 2020 00:20:54 -0700 (PDT)
+X-Gm-Message-State: ANhLgQ3bozs7GTmtjtF35/3uuxbdfO5DpAvtjM8HBranG2JeWseAEh+d
+        3POW/mWp8mv9sv7FCDzoCmhwuQTOot+TT8/Pdqw=
+X-Google-Smtp-Source: ADFU+vuCxl0Onrw3EfkEIVZzViurJVhPaxrRYjvLS9lcpMK1fWxXsaeLxg0lCp9XSBbeKesKsW+vyK1hPHtm6/H5GpI=
+X-Received: by 2002:a1f:32cf:: with SMTP id y198mr1387267vky.96.1584602453713;
+ Thu, 19 Mar 2020 00:20:53 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200318220634.32100-3-mike.kravetz@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20200220110807.32534-1-masahiroy@kernel.org>
+In-Reply-To: <20200220110807.32534-1-masahiroy@kernel.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Thu, 19 Mar 2020 16:20:17 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARHBfp=gkVO9q3pC9o_w9PgNW=5AP95s1MR1tHLJV=0fg@mail.gmail.com>
+Message-ID: <CAK7LNARHBfp=gkVO9q3pC9o_w9PgNW=5AP95s1MR1tHLJV=0fg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] sparc,x86: vdso: remove meaningless undefining CONFIG_OPTIMIZE_INLINING
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>, X86 ML <x86@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hi Andrew,
+
+Ping.
+Could you pick up this series?
 
 
-Le 18/03/2020 à 23:06, Mike Kravetz a écrit :
-> Now that architectures provide arch_hugetlb_valid_size(), parsing
-> of "hugepagesz=" can be done in architecture independent code.
-> Create a single routine to handle hugepagesz= parsing and remove
-> all arch specific routines.  We can also remove the interface
-> hugetlb_bad_size() as this is no longer used outside arch independent
-> code.
-> 
-> This also provides consistent behavior of hugetlbfs command line
-> options.  The hugepagesz= option should only be specified once for
-> a specific size, but some architectures allow multiple instances.
-> This appears to be more of an oversight when code was added by some
-> architectures to set up ALL huge pages sizes.
-> 
-> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+Thanks.
+
+
+On Thu, Feb 20, 2020 at 8:08 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> The code, #undef CONFIG_OPTIMIZE_INLINING, is not working as expected
+> because <linux/compiler_types.h> is parsed before vclock_gettime.c
+> since 28128c61e08e ("kconfig.h: Include compiler types to avoid missed
+> struct attributes").
+>
+> Since then, <linux/compiler_types.h> is included really early by
+> using the '-include' option. So, you cannot negate the decision of
+> <linux/compiler_types.h> in this way.
+>
+> You can confirm it by checking the pre-processed code, like this:
+>
+>   $ make arch/x86/entry/vdso/vdso32/vclock_gettime.i
+>
+> There is no difference with/without CONFIG_CC_OPTIMIZE_FOR_SIZE.
+>
+> It is about two years since 28128c61e08e. Nobody has reported a
+> problem (or, nobody has even noticed the fact that this code is not
+> working).
+>
+> It is ugly and unreliable to attempt to undefine a CONFIG option from
+> C files, and anyway the inlining heuristic is up to the compiler.
+>
+> Just remove the broken code.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Acked-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 > ---
->   arch/arm64/mm/hugetlbpage.c   | 15 ---------------
->   arch/powerpc/mm/hugetlbpage.c | 15 ---------------
->   arch/riscv/mm/hugetlbpage.c   | 16 ----------------
->   arch/s390/mm/hugetlbpage.c    | 18 ------------------
->   arch/sparc/mm/init_64.c       | 22 ----------------------
->   arch/x86/mm/hugetlbpage.c     | 16 ----------------
->   include/linux/hugetlb.h       |  1 -
->   mm/hugetlb.c                  | 24 ++++++++++++++++++------
->   8 files changed, 18 insertions(+), 109 deletions(-)
-> 
-
-[snip]
-
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 2f99359b93af..cd4ec07080fb 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3149,12 +3149,6 @@ static int __init hugetlb_init(void)
->   }
->   subsys_initcall(hugetlb_init);
->   
-> -/* Should be called on processing a hugepagesz=... option */
-> -void __init hugetlb_bad_size(void)
-> -{
-> -	parsed_valid_hugepagesz = false;
-> -}
+>
+> Changes in v2:
+>   - fix a type
+>   - add Acked-by
+>
+>  arch/sparc/vdso/vdso32/vclock_gettime.c     | 4 ----
+>  arch/x86/entry/vdso/vdso32/vclock_gettime.c | 4 ----
+>  2 files changed, 8 deletions(-)
+>
+> diff --git a/arch/sparc/vdso/vdso32/vclock_gettime.c b/arch/sparc/vdso/vdso32/vclock_gettime.c
+> index 026abb3b826c..d7f99e6745ea 100644
+> --- a/arch/sparc/vdso/vdso32/vclock_gettime.c
+> +++ b/arch/sparc/vdso/vdso32/vclock_gettime.c
+> @@ -4,10 +4,6 @@
+>
+>  #define        BUILD_VDSO32
+>
+> -#ifndef        CONFIG_CC_OPTIMIZE_FOR_SIZE
+> -#undef CONFIG_OPTIMIZE_INLINING
+> -#endif
 > -
->   void __init hugetlb_add_hstate(unsigned int order)
->   {
->   	struct hstate *h;
-> @@ -3224,6 +3218,24 @@ static int __init hugetlb_nrpages_setup(char *s)
->   }
->   __setup("hugepages=", hugetlb_nrpages_setup);
->   
-> +static int __init hugepagesz_setup(char *s)
-> +{
-> +	unsigned long long size;
-> +	char *saved_s = s;
-> +
-> +	size = memparse(s, &s);
+>  #ifdef CONFIG_SPARC64
+>
+>  /*
+> diff --git a/arch/x86/entry/vdso/vdso32/vclock_gettime.c b/arch/x86/entry/vdso/vdso32/vclock_gettime.c
+> index 9242b28418d5..3c26488db94d 100644
+> --- a/arch/x86/entry/vdso/vdso32/vclock_gettime.c
+> +++ b/arch/x86/entry/vdso/vdso32/vclock_gettime.c
+> @@ -1,10 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  #define BUILD_VDSO32
+>
+> -#ifndef CONFIG_CC_OPTIMIZE_FOR_SIZE
+> -#undef CONFIG_OPTIMIZE_INLINING
+> -#endif
+> -
+>  #ifdef CONFIG_X86_64
+>
+>  /*
+> --
+> 2.17.1
+>
+> --
+> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20200220110807.32534-1-masahiroy%40kernel.org.
 
-You don't use s after that, so you can pass NULL instead of &s and avoid 
-the saved_s
 
-> +
-> +	if (!arch_hugetlb_valid_size(size)) {
-> +		parsed_valid_hugepagesz = false;
-> +		pr_err("HugeTLB: unsupported hugepagesz %s\n", saved_s);
-> +		return 0;
-> +	}
-> +
-> +	hugetlb_add_hstate(ilog2(size) - PAGE_SHIFT);
-> +	return 1;
-> +}
-> +__setup("hugepagesz=", hugepagesz_setup);
-> +
->   static int __init default_hugepagesz_setup(char *s)
->   {
->   	unsigned long long size;
-> 
 
-Christophe
+-- 
+Best Regards
+Masahiro Yamada
