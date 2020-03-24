@@ -2,74 +2,113 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8FA5190B87
-	for <lists+sparclinux@lfdr.de>; Tue, 24 Mar 2020 11:53:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD66C1917E6
+	for <lists+sparclinux@lfdr.de>; Tue, 24 Mar 2020 18:43:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726818AbgCXKw7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 24 Mar 2020 06:52:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33126 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727444AbgCXKw4 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 24 Mar 2020 06:52:56 -0400
-Received: from localhost.localdomain (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2CBB1208D6;
-        Tue, 24 Mar 2020 10:52:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585047176;
-        bh=4AeA8qWdzDTXrdHBQNY6oqVXBpONA5xeP0MnGuOm3ws=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B9iQT6/H/5Xzq0o5fj8/mJPPykRqVvFDZd+Iu3LD/DFJ2124mZU0uBeaVbbb3zEEr
-         PwjG8wArYlccQ+1WL4hCBdLvOYHbwLSHf05qoj+foYATyS+3w6+GlXPr8S3LFfydPd
-         LiWJRA0Jiku5UnMwGZq5U3lutrGCxpLUHeoWu0vg=
-From:   Will Deacon <will@kernel.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     kernel-team@android.com, Will Deacon <will@kernel.org>,
+        id S1727574AbgCXRmG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 24 Mar 2020 13:42:06 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:35510 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727487AbgCXRmG (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 24 Mar 2020 13:42:06 -0400
+Received: by mail-pf1-f193.google.com with SMTP id u68so9659253pfb.2
+        for <sparclinux@vger.kernel.org>; Tue, 24 Mar 2020 10:42:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HQvsNwxzxnaojuxdbx2mdkelhql3N9f429mWyfD3kfk=;
+        b=GJksm+dIOqXM5eXFzqz3cV/vl2mEZfHIiK/PqwWIEYgsP9oFl7+BKZd3q69fGEco8i
+         KXzcnsZOnj53hwEZ4CVDkeKeNdr11Bvyrf2ruZ3ghfxb1lkbF34Te8+uoYF/iKARVSZk
+         53Hyb16KVJqpQFrkXOEmNl80TA3u8+eKT/tnYstthmmVSDMxlu8iWnztXCzcFXLpynvo
+         Y1vZba79yaPrukpv6R7eC4pQPz/ukm/MwXxrawIKgZ8F28Rd/jhSsj+eSm76goQVtSGR
+         xWABVQfCyvYHfZgJB//dA19rdshcf89CEu5cSJzREj810H6B8VToJZXNBUmjpvRCJhpx
+         0PNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HQvsNwxzxnaojuxdbx2mdkelhql3N9f429mWyfD3kfk=;
+        b=nStA+Bb7or8JLRUmsj1rIs1Lnq3OckxjbYIRK0dMy3IGNY4QpKT0DVIneRImASZTvf
+         QezQOD1xZdibcJDeaUw/zXZOACRYU0JmdGy958HgmUrMrCW4Ng6tN0y/uzdvxU9mX6fi
+         ZmbcIJ6HKtndQr9KQ7j7tXUvlHnBuSZTKzfa1uWeWDghmiqvABZPQtJ/ucUpHRZYFF3u
+         2VitQ5jYiNR0zpfnD5YyrjEf2mKhJy4IU0M0ZfA4zV/JLqSRNgCwGggezAFqCSEZZuPw
+         y2fkn0Q1R69D2EcQBq1MxEai9FWuPjHppfZUy7nuTxh2tfooohUXiLOTDn2Iszq5eKP1
+         REOQ==
+X-Gm-Message-State: ANhLgQ27d4d8InZ4vzS+P0ck4M+kkbK1tmSueH9lantFysOOrVrpY4ne
+        AZdwtFJsAlHVwNj2E9nYgv+q4UPKo+tfc2bI/zt4lw==
+X-Google-Smtp-Source: ADFU+vuI9Q2NMgKPwV+54NfG9A4c5DDLK/vxfhGRUrBZNWUwML032OwOdrGfJUtd7SxTuglgUf50kwg7PJF4bCs3HaI=
+X-Received: by 2002:a63:a34d:: with SMTP id v13mr7252015pgn.10.1585071724656;
+ Tue, 24 Mar 2020 10:42:04 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200324104005.11279-1-will@kernel.org> <20200324104005.11279-2-will@kernel.org>
+In-Reply-To: <20200324104005.11279-2-will@kernel.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 24 Mar 2020 10:41:52 -0700
+Message-ID: <CAKwvOd=_v__=b6ijFYkxgDsmxakmkxwDWFG48601Gh9cyhj3PA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] sparc32: mm: Fix argument checking in __srmmu_get_nocache()
+To:     Will Deacon <will@kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-team <kernel-team@android.com>,
         "David S. Miller" <davem@davemloft.net>,
         Peter Zijlstra <peterz@infradead.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
         Matt Fleming <matt@codeblueprint.co.uk>,
         sparclinux@vger.kernel.org
-Subject: [PATCH 4/4] sparc32: mm: Reduce allocation size for PMD and PTE tables
-Date:   Tue, 24 Mar 2020 10:40:05 +0000
-Message-Id: <20200324104005.11279-5-will@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200324104005.11279-1-will@kernel.org>
-References: <20200324104005.11279-1-will@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Now that the page table allocator can free page table allocations
-smaller than PAGE_SIZE, reduce the size of the PMD and PTE allocations
-to avoid needlessly wasting memory.
+On Tue, Mar 24, 2020 at 3:52 AM Will Deacon <will@kernel.org> wrote:
+>
+> The 'size' argument to __srmmu_get_nocache() is a number of bytes not
+> a shift value, so fix up the sanity checking to treat it properly.
+>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Signed-off-by: Will Deacon <will@kernel.org>
+> ---
+>  arch/sparc/mm/srmmu.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
+> index f56c3c9a9793..a19863cac0c4 100644
+> --- a/arch/sparc/mm/srmmu.c
+> +++ b/arch/sparc/mm/srmmu.c
+> @@ -175,18 +175,18 @@ pte_t *pte_offset_kernel(pmd_t *dir, unsigned long address)
+>   */
+>  static void *__srmmu_get_nocache(int size, int align)
+>  {
+> -       int offset;
+> +       int offset, minsz = 1 << SRMMU_NOCACHE_BITMAP_SHIFT;
+>         unsigned long addr;
+>
+> -       if (size < SRMMU_NOCACHE_BITMAP_SHIFT) {
+> +       if (size < minsz) {
+>                 printk(KERN_ERR "Size 0x%x too small for nocache request\n",
+>                        size);
+> -               size = SRMMU_NOCACHE_BITMAP_SHIFT;
+> +               size = minsz;
+>         }
+> -       if (size & (SRMMU_NOCACHE_BITMAP_SHIFT - 1)) {
+> -               printk(KERN_ERR "Size 0x%x unaligned int nocache request\n",
+> +       if (size & (minsz - 1)) {
+> +               printk(KERN_ERR "Size 0x%x unaligned in nocache request\n",
 
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Will Deacon <will@kernel.org>
----
- arch/sparc/include/asm/pgtsrmmu.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Was modifying the printk intentional? int vs in ?
 
-diff --git a/arch/sparc/include/asm/pgtsrmmu.h b/arch/sparc/include/asm/pgtsrmmu.h
-index 58ea8e8c6ee7..7708d015712b 100644
---- a/arch/sparc/include/asm/pgtsrmmu.h
-+++ b/arch/sparc/include/asm/pgtsrmmu.h
-@@ -17,8 +17,8 @@
- /* Number of contexts is implementation-dependent; 64k is the most we support */
- #define SRMMU_MAX_CONTEXTS	65536
- 
--#define SRMMU_PTE_TABLE_SIZE		(PAGE_SIZE)
--#define SRMMU_PMD_TABLE_SIZE		(PAGE_SIZE)
-+#define SRMMU_PTE_TABLE_SIZE		(PTRS_PER_PTE*4)
-+#define SRMMU_PMD_TABLE_SIZE		(PTRS_PER_PMD*4)
- #define SRMMU_PGD_TABLE_SIZE		(PTRS_PER_PGD*4)
- 
- /* Definition of the values in the ET field of PTD's and PTE's */
+>                        size);
+> -               size += SRMMU_NOCACHE_BITMAP_SHIFT - 1;
+> +               size += minsz - 1;
+>         }
+>         BUG_ON(align > SRMMU_NOCACHE_ALIGN_MAX);
+>
+> --
+> 2.20.1
+>
+
+
 -- 
-2.20.1
-
+Thanks,
+~Nick Desaulniers
