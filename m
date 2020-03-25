@@ -2,54 +2,53 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE2F5191E73
-	for <lists+sparclinux@lfdr.de>; Wed, 25 Mar 2020 02:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31AF8192456
+	for <lists+sparclinux@lfdr.de>; Wed, 25 Mar 2020 10:38:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727188AbgCYBNg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 24 Mar 2020 21:13:36 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:56978 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727119AbgCYBNg (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 24 Mar 2020 21:13:36 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02P1AJ0R048600;
-        Wed, 25 Mar 2020 01:12:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=YRi4mb9uG3tgUWBrs1ed4oarNhqa/no2+uBKt2mPO0I=;
- b=X1GYU1zrtODyAZmLxxSuIi6wF25xK5Iptr9D4zm4crNgbz7mnhhHzl+m0S+8trQNakHO
- qYEeB+QCozDAk9I/dsNJrju1255Y1S2Fp4C41axP5+nvpqKcq10QS8eNGgq3hFZMnfWw
- qkjlxJ0Mw0p4itm90v7itlW+1C8CmcVStLceaCg57w0mQadA37fDItuy4SoUwi81cP90
- WMOyTFu0C78xuUgH/6uvrDH8uuyx1h8IcTXbzX43RQwyH7S/8mtsD7enuYspGGEguPrH
- hqgSR2/2iiP1OmhBFafNzjB9Qz7TKYJ4XRCen1bNINFwCRx6G4E3r3pz5j7CevMrdmI9 DA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2ywabr7anf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Mar 2020 01:12:18 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02P16oZi062576;
-        Wed, 25 Mar 2020 01:12:17 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2yymbuy4n7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Mar 2020 01:12:17 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02P1C6e1026545;
-        Wed, 25 Mar 2020 01:12:06 GMT
-Received: from [192.168.1.206] (/71.63.128.209)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 24 Mar 2020 18:12:06 -0700
-Subject: Re: [PATCH 4/4] hugetlbfs: clean up command line processing
+        id S1727301AbgCYJi4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 25 Mar 2020 05:38:56 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:52038 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727340AbgCYJi4 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 25 Mar 2020 05:38:56 -0400
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02P9XXCU130880
+        for <sparclinux@vger.kernel.org>; Wed, 25 Mar 2020 05:38:55 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2ywet4pd76-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <sparclinux@vger.kernel.org>; Wed, 25 Mar 2020 05:38:54 -0400
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <sparclinux@vger.kernel.org> from <borntraeger@de.ibm.com>;
+        Wed, 25 Mar 2020 09:38:49 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 25 Mar 2020 09:38:43 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 02P9bglF50790860
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 25 Mar 2020 09:37:42 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C0E794C04E;
+        Wed, 25 Mar 2020 09:38:44 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 846CB4C046;
+        Wed, 25 Mar 2020 09:38:41 +0000 (GMT)
+Received: from oc7455500831.ibm.com (unknown [9.145.106.7])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 25 Mar 2020 09:38:41 +0000 (GMT)
+Subject: Re: [PATCH 1/4] hugetlbfs: add arch_hugetlb_valid_size
 To:     "Longpeng (Mike, Cloud Infrastructure Service Product Dept.)" 
-        <longpeng2@huawei.com>, Mina Almasry <almasrymina@google.com>
-Cc:     Linux-MM <linux-mm@kvack.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
+        <longpeng2@huawei.com>, Mike Kravetz <mike.kravetz@oracle.com>,
+        Dave Hansen <dave.hansen@intel.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
         linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-doc@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
+        linux-doc@vger.kernel.org
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
@@ -58,7 +57,6 @@ Cc:     Linux-MM <linux-mm@kvack.org>,
         Albert Ou <aou@eecs.berkeley.edu>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
         "David S.Miller" <davem@davemloft.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
@@ -66,131 +64,104 @@ Cc:     Linux-MM <linux-mm@kvack.org>,
         Jonathan Corbet <corbet@lwn.net>,
         Andrew Morton <akpm@linux-foundation.org>
 References: <20200318220634.32100-1-mike.kravetz@oracle.com>
- <20200318220634.32100-5-mike.kravetz@oracle.com>
- <CAHS8izOhjvNVDXsx_SqP_oUQhCw-i_xcG9hxbvV86fFDeY_SAw@mail.gmail.com>
- <d067c5d1-89b8-a71b-7b71-a8bbbd613efa@huawei.com>
-From:   Mike Kravetz <mike.kravetz@oracle.com>
-Message-ID: <0cfeecb3-95d6-9fd2-d985-f70f1dd416b9@oracle.com>
-Date:   Tue, 24 Mar 2020 18:12:02 -0700
+ <20200318220634.32100-2-mike.kravetz@oracle.com>
+ <831a0773-1ba6-4d72-44b9-7472123b8528@intel.com>
+ <5aceea6a-8dc0-a44b-80c6-94511b5c75ca@oracle.com>
+ <5ea6313e-ec4f-a043-632b-ef2901ce2cc9@huawei.com>
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+Autocrypt: addr=borntraeger@de.ibm.com; prefer-encrypt=mutual; keydata=
+ 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
+ nS4h0HDFPrrp1C2EMVYIQrMokWvlFZbCpsdYbBI=
+Date:   Wed, 25 Mar 2020 10:38:40 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <d067c5d1-89b8-a71b-7b71-a8bbbd613efa@huawei.com>
+In-Reply-To: <5ea6313e-ec4f-a043-632b-ef2901ce2cc9@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9570 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
- adultscore=0 malwarescore=0 bulkscore=0 spamscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003250008
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9570 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
- lowpriorityscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- clxscore=1015 adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003250008
+X-TM-AS-GCONF: 00
+x-cbid: 20032509-0008-0000-0000-000003638BC7
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032509-0009-0000-0000-00004A84FAF9
+Message-Id: <505b3d0a-b754-ba56-0b98-b7551ef414be@de.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
+ definitions=2020-03-25_01:2020-03-23,2020-03-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ mlxlogscore=833 adultscore=0 spamscore=0 clxscore=1011 phishscore=0
+ malwarescore=0 lowpriorityscore=0 mlxscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003250082
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 3/23/20 8:47 PM, Longpeng (Mike, Cloud Infrastructure Service Product Dept.) wrote:
+
+
+On 25.03.20 03:58, Longpeng (Mike, Cloud Infrastructure Service Product Dept.) wrote:
+[...]
+> Hi Mike,
 > 
+> Inspired by Dave's opinion, it seems the x86-specific hugepages_supported should
+> also need to use cpu_feature_enabled instead.
 > 
-> On 2020/3/24 8:43, Mina Almasry wrote:
->> On Wed, Mar 18, 2020 at 3:07 PM Mike Kravetz <mike.kravetz@oracle.com> wrote:
->>> +default_hugepagesz - Specify the default huge page size.  This parameter can
->>> +       only be specified on the command line.  No other hugetlb command line
->>> +       parameter is associated with default_hugepagesz.  Therefore, it can
->>> +       appear anywhere on the command line.  Valid default huge page size is
->>> +       architecture dependent.
->>
->> Maybe specify what happens/should happen in a case like:
->>
->> hugepages=100 default_hugepagesz=1G
->>
->> Does that allocate 100 2MB pages or 100 1G pages? Assuming the default
->> size is 2MB.
-
-That will allocate 100 1G pages as 1G is the default.  However, if the
-command line reads:
-
-hugepages=100 default_hugepagesz=1G hugepages=200
-
-You will get this warning,
-
-HugeTLB: First hugepages=104857600 kB ignored
-
->>
->> Also, regarding Randy's comment. It may be nice to keep these docs in
->> one place only, so we don't have to maintain 2 docs in sync.
-
-Let me think about that a bit.  We should probably expand the
-kernel-parameters doc.  Or, we should at least make it more clear.  This
-doc also talks about the command line parameters and in general goes into
-more detail.  However, more people read kernel-parameters doc.
-
->>> +
->>>  When multiple huge page sizes are supported, ``/proc/sys/vm/nr_hugepages``
->>>  indicates the current number of pre-allocated huge pages of the default size.
->>>  Thus, one can use the following command to dynamically allocate/deallocate
->>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>> index cc85b4f156ca..2b9bf01db2b6 100644
->>> --- a/mm/hugetlb.c
->>> +++ b/mm/hugetlb.c
-<snip>
->>> -static int __init hugetlb_nrpages_setup(char *s)
->>> +/*
->>> + * hugepages command line processing
->>> + * hugepages must normally follows a valid hugepagsz specification.  If not,
->>
->> 'hugepages must' or 'hugepages normally follows'
->>> + * ignore the hugepages value.  hugepages can also be the first huge page
->>> + * command line option in which case it specifies the number of huge pages
->>> + * for the default size.
->>> + */
->>> +static int __init hugepages_setup(char *s)
->>>  {
->>>         unsigned long *mhp;
->>>         static unsigned long *last_mhp;
->>>
->>>         if (!parsed_valid_hugepagesz) {
->>> -               pr_warn("hugepages = %s preceded by "
->>> +               pr_warn("HugeTLB: hugepages = %s preceded by "
->>>                         "an unsupported hugepagesz, ignoring\n", s);
->>>                 parsed_valid_hugepagesz = true;
->>>                 return 1;
->>>         }
->>>         /*
->>> -        * !hugetlb_max_hstate means we haven't parsed a hugepagesz= parameter yet,
->>> -        * so this hugepages= parameter goes to the "default hstate".
->>> +        * !hugetlb_max_hstate means we haven't parsed a hugepagesz= parameter
->>> +        * yet, so this hugepages= parameter goes to the "default hstate".
->>>          */
->>>         else if (!hugetlb_max_hstate)
->>>                 mhp = &default_hstate_max_huge_pages;
->>
->> We don't set parsed_valid_hugepagesz to false at the end of this
->> function, shouldn't we? Parsing a hugepages= value should 'consume' a
->> previously defined hugepagesz= value, so that this is invalid IIUC:
->>
->> hugepagesz=x hugepages=z hugepages=y
->>
-> In this case, we'll get:
-> "HugeTLB: hugepages= specified twice without interleaving hugepagesz=, ignoring
-> hugepages=y"
+> Also, I wonder if the hugepages_supported is correct ? There're two arch
+> specific hugepages_supported:
+> x86:
+> #define hugepages_supported() boot_cpu_has(X86_FEATURE_PSE)
+> and
+> s390:
+> #define hugepages_supported() (MACHINE_HAS_EDAT1)
 > 
+> Is it possible that x86 has X86_FEATURE_GBPAGES but hasn't X86_FEATURE_GBPAGES
+> or s390 has MACHINE_HAS_EDAT2 but hasn't MACHINE_HAS_EDAT1 ?
 
-Thanks Longpeng (Mike),
+The s390 architecture says that 
 
-I believe that is the desired message in this situation.  The code uses saved
-values of mhp (max hstate pointer) to catch this condition.  Setting
-parsed_valid_hugepagesz to false would result in the message:
+When EDAT-2 applies, the following function is available in the DAT process:
+ - EDAT-1 applies.
+[..]
 
-HugeTLB: hugepages=y preceded by an unsupported hugepagesz, ignoring
+So if the machine has EDAT-2 it also has EDAT-1.
 
-Thanks for all your comments I will incorporate in v2 and send later this
-week.
--- 
-Mike Kravetz
