@@ -2,113 +2,195 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F122B191866
-	for <lists+sparclinux@lfdr.de>; Tue, 24 Mar 2020 19:04:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE2F5191E73
+	for <lists+sparclinux@lfdr.de>; Wed, 25 Mar 2020 02:13:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727310AbgCXSEh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 24 Mar 2020 14:04:37 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:41320 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727314AbgCXSEh (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 24 Mar 2020 14:04:37 -0400
-Received: by mail-pl1-f193.google.com with SMTP id t16so7716036plr.8
-        for <sparclinux@vger.kernel.org>; Tue, 24 Mar 2020 11:04:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=q6D1qQMRRPZ5xDrX5sp8lcIjV/Vfj8BIv8e4N9X0r+E=;
-        b=CtW9lS6Y4fS4UkKTuPejMOdSIuUWtVumC0y+idku0teJFY0Ons5GmbVuvn/1ynq1VL
-         bujXj6rBx1VLLR/5v+d50dIhSkezniXi1jI0xkKoxZY5o839joVw4zaP+kFSPm4B7VNN
-         KEX9lBIrCOMHzomGYlOZTgb/stIwB5+Y8Q7WVq+Tb2FTgTckL7/9mhKeufeE/kYiofUZ
-         CGC65HSefnN4HVLP91NomsmYmFMHWw+KHG6S3Cn1GqNo3mALkQaVjf5wxHCfnVmLyzMC
-         yCAJHzcSeWFSkHfqF3nHehV2uoA46i6WZMXe/KrecQd5hhY36HOk9WMj2Yk/iKAHA9x2
-         DKKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=q6D1qQMRRPZ5xDrX5sp8lcIjV/Vfj8BIv8e4N9X0r+E=;
-        b=KZgJaljOHlFjNbp8wn7sHUmLjgdw/7D/LXqCSXak/WVy16sEH+A73yxhwPGrSva3uT
-         oVG91LvS50krbdAdhyEG0UWd/UB8gHCE75ySI/OFKHG9QvmuOEscDJaj9wI8jqBQiI6E
-         uL/8R7qjnBcEvE0+LUd75O9/lP+EAprkt2ZxsZHzE5HvfJTz4Dr2siluW+fof7T7IJPm
-         KsLKxOx/41CPoCm/GK1IvVQ0ylxJDwgEEERIwiKbqqk7CKAIbO73KE9w67aJ4cmlg6+M
-         DS4MdsgBmSJmPMKUmC2MidVoy8XSUlSR4MblhX2Et0g2+b3KKZ7B4OtW9u684/RyaBX0
-         5Egw==
-X-Gm-Message-State: ANhLgQ0BzH/M5R8mu9PTZshBGzpzr5uWaMqWZkAO/fsro+5UfrkBZYO6
-        6H/8c8D1U4IQW0ShHkzS7iDhErMXw9kxkc1ngPR7AA==
-X-Google-Smtp-Source: ADFU+vszYgPhPSWp9GTbcfQOr/YTNugd2UHb1LSPkkmg+AKX4oRyirK+NJxXo2eP+nGfaRn2NqRfie1Evh/HYQbt2bM=
-X-Received: by 2002:a17:90b:8d2:: with SMTP id ds18mr6206355pjb.186.1585073074176;
- Tue, 24 Mar 2020 11:04:34 -0700 (PDT)
+        id S1727188AbgCYBNg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 24 Mar 2020 21:13:36 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:56978 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727119AbgCYBNg (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 24 Mar 2020 21:13:36 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02P1AJ0R048600;
+        Wed, 25 Mar 2020 01:12:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=YRi4mb9uG3tgUWBrs1ed4oarNhqa/no2+uBKt2mPO0I=;
+ b=X1GYU1zrtODyAZmLxxSuIi6wF25xK5Iptr9D4zm4crNgbz7mnhhHzl+m0S+8trQNakHO
+ qYEeB+QCozDAk9I/dsNJrju1255Y1S2Fp4C41axP5+nvpqKcq10QS8eNGgq3hFZMnfWw
+ qkjlxJ0Mw0p4itm90v7itlW+1C8CmcVStLceaCg57w0mQadA37fDItuy4SoUwi81cP90
+ WMOyTFu0C78xuUgH/6uvrDH8uuyx1h8IcTXbzX43RQwyH7S/8mtsD7enuYspGGEguPrH
+ hqgSR2/2iiP1OmhBFafNzjB9Qz7TKYJ4XRCen1bNINFwCRx6G4E3r3pz5j7CevMrdmI9 DA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2ywabr7anf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 25 Mar 2020 01:12:18 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02P16oZi062576;
+        Wed, 25 Mar 2020 01:12:17 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2yymbuy4n7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 25 Mar 2020 01:12:17 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02P1C6e1026545;
+        Wed, 25 Mar 2020 01:12:06 GMT
+Received: from [192.168.1.206] (/71.63.128.209)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 24 Mar 2020 18:12:06 -0700
+Subject: Re: [PATCH 4/4] hugetlbfs: clean up command line processing
+To:     "Longpeng (Mike, Cloud Infrastructure Service Product Dept.)" 
+        <longpeng2@huawei.com>, Mina Almasry <almasrymina@google.com>
+Cc:     Linux-MM <linux-mm@kvack.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "David S.Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <20200318220634.32100-1-mike.kravetz@oracle.com>
+ <20200318220634.32100-5-mike.kravetz@oracle.com>
+ <CAHS8izOhjvNVDXsx_SqP_oUQhCw-i_xcG9hxbvV86fFDeY_SAw@mail.gmail.com>
+ <d067c5d1-89b8-a71b-7b71-a8bbbd613efa@huawei.com>
+From:   Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <0cfeecb3-95d6-9fd2-d985-f70f1dd416b9@oracle.com>
+Date:   Tue, 24 Mar 2020 18:12:02 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <20200324104005.11279-1-will@kernel.org> <20200324104005.11279-2-will@kernel.org>
- <CAKwvOd=_v__=b6ijFYkxgDsmxakmkxwDWFG48601Gh9cyhj3PA@mail.gmail.com> <20200324175113.GA16742@willie-the-truck>
-In-Reply-To: <20200324175113.GA16742@willie-the-truck>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 24 Mar 2020 11:04:23 -0700
-Message-ID: <CAKwvOdm9q0wPun0zLcFB0Z5NPec08OpHWp3tJV3-ddFiuU2jQA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] sparc32: mm: Fix argument checking in __srmmu_get_nocache()
-To:     Will Deacon <will@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-team <kernel-team@android.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <d067c5d1-89b8-a71b-7b71-a8bbbd613efa@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9570 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
+ adultscore=0 malwarescore=0 bulkscore=0 spamscore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003250008
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9570 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ clxscore=1015 adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003250008
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 10:51 AM Will Deacon <will@kernel.org> wrote:
->
-> On Tue, Mar 24, 2020 at 10:41:52AM -0700, Nick Desaulniers wrote:
-> > On Tue, Mar 24, 2020 at 3:52 AM Will Deacon <will@kernel.org> wrote:
-> > >
-> > > The 'size' argument to __srmmu_get_nocache() is a number of bytes not
-> > > a shift value, so fix up the sanity checking to treat it properly.
-> > >
-> > > Cc: "David S. Miller" <davem@davemloft.net>
-> > > Cc: Peter Zijlstra <peterz@infradead.org>
-> > > Signed-off-by: Will Deacon <will@kernel.org>
-> > > ---
-> > >  arch/sparc/mm/srmmu.c | 12 ++++++------
-> > >  1 file changed, 6 insertions(+), 6 deletions(-)
-> > >
-> > > diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
-> > > index f56c3c9a9793..a19863cac0c4 100644
-> > > --- a/arch/sparc/mm/srmmu.c
-> > > +++ b/arch/sparc/mm/srmmu.c
-> > > @@ -175,18 +175,18 @@ pte_t *pte_offset_kernel(pmd_t *dir, unsigned long address)
-> > >   */
-> > >  static void *__srmmu_get_nocache(int size, int align)
-> > >  {
-> > > -       int offset;
-> > > +       int offset, minsz = 1 << SRMMU_NOCACHE_BITMAP_SHIFT;
-> > >         unsigned long addr;
-> > >
-> > > -       if (size < SRMMU_NOCACHE_BITMAP_SHIFT) {
-> > > +       if (size < minsz) {
-> > >                 printk(KERN_ERR "Size 0x%x too small for nocache request\n",
-> > >                        size);
-> > > -               size = SRMMU_NOCACHE_BITMAP_SHIFT;
-> > > +               size = minsz;
-> > >         }
-> > > -       if (size & (SRMMU_NOCACHE_BITMAP_SHIFT - 1)) {
-> > > -               printk(KERN_ERR "Size 0x%x unaligned int nocache request\n",
-> > > +       if (size & (minsz - 1)) {
-> > > +               printk(KERN_ERR "Size 0x%x unaligned in nocache request\n",
-> >
-> > Was modifying the printk intentional? int vs in ?
->
-> Yes, I think "int" is a typo so I just fixed it up while I was here. Do you
-> prefer the old way? I couldn't parse it at first, but now you mention it
-> I suppose the type of 'size' is int, so *maybe* it makes sense after all!
+On 3/23/20 8:47 PM, Longpeng (Mike, Cloud Infrastructure Service Product Dept.) wrote:
+> 
+> 
+> On 2020/3/24 8:43, Mina Almasry wrote:
+>> On Wed, Mar 18, 2020 at 3:07 PM Mike Kravetz <mike.kravetz@oracle.com> wrote:
+>>> +default_hugepagesz - Specify the default huge page size.  This parameter can
+>>> +       only be specified on the command line.  No other hugetlb command line
+>>> +       parameter is associated with default_hugepagesz.  Therefore, it can
+>>> +       appear anywhere on the command line.  Valid default huge page size is
+>>> +       architecture dependent.
+>>
+>> Maybe specify what happens/should happen in a case like:
+>>
+>> hugepages=100 default_hugepagesz=1G
+>>
+>> Does that allocate 100 2MB pages or 100 1G pages? Assuming the default
+>> size is 2MB.
 
-No preference; the code is validating/updating the `size` which as you
-noted is an `int`.
+That will allocate 100 1G pages as 1G is the default.  However, if the
+command line reads:
 
+hugepages=100 default_hugepagesz=1G hugepages=200
+
+You will get this warning,
+
+HugeTLB: First hugepages=104857600 kB ignored
+
+>>
+>> Also, regarding Randy's comment. It may be nice to keep these docs in
+>> one place only, so we don't have to maintain 2 docs in sync.
+
+Let me think about that a bit.  We should probably expand the
+kernel-parameters doc.  Or, we should at least make it more clear.  This
+doc also talks about the command line parameters and in general goes into
+more detail.  However, more people read kernel-parameters doc.
+
+>>> +
+>>>  When multiple huge page sizes are supported, ``/proc/sys/vm/nr_hugepages``
+>>>  indicates the current number of pre-allocated huge pages of the default size.
+>>>  Thus, one can use the following command to dynamically allocate/deallocate
+>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>> index cc85b4f156ca..2b9bf01db2b6 100644
+>>> --- a/mm/hugetlb.c
+>>> +++ b/mm/hugetlb.c
+<snip>
+>>> -static int __init hugetlb_nrpages_setup(char *s)
+>>> +/*
+>>> + * hugepages command line processing
+>>> + * hugepages must normally follows a valid hugepagsz specification.  If not,
+>>
+>> 'hugepages must' or 'hugepages normally follows'
+>>> + * ignore the hugepages value.  hugepages can also be the first huge page
+>>> + * command line option in which case it specifies the number of huge pages
+>>> + * for the default size.
+>>> + */
+>>> +static int __init hugepages_setup(char *s)
+>>>  {
+>>>         unsigned long *mhp;
+>>>         static unsigned long *last_mhp;
+>>>
+>>>         if (!parsed_valid_hugepagesz) {
+>>> -               pr_warn("hugepages = %s preceded by "
+>>> +               pr_warn("HugeTLB: hugepages = %s preceded by "
+>>>                         "an unsupported hugepagesz, ignoring\n", s);
+>>>                 parsed_valid_hugepagesz = true;
+>>>                 return 1;
+>>>         }
+>>>         /*
+>>> -        * !hugetlb_max_hstate means we haven't parsed a hugepagesz= parameter yet,
+>>> -        * so this hugepages= parameter goes to the "default hstate".
+>>> +        * !hugetlb_max_hstate means we haven't parsed a hugepagesz= parameter
+>>> +        * yet, so this hugepages= parameter goes to the "default hstate".
+>>>          */
+>>>         else if (!hugetlb_max_hstate)
+>>>                 mhp = &default_hstate_max_huge_pages;
+>>
+>> We don't set parsed_valid_hugepagesz to false at the end of this
+>> function, shouldn't we? Parsing a hugepages= value should 'consume' a
+>> previously defined hugepagesz= value, so that this is invalid IIUC:
+>>
+>> hugepagesz=x hugepages=z hugepages=y
+>>
+> In this case, we'll get:
+> "HugeTLB: hugepages= specified twice without interleaving hugepagesz=, ignoring
+> hugepages=y"
+> 
+
+Thanks Longpeng (Mike),
+
+I believe that is the desired message in this situation.  The code uses saved
+values of mhp (max hstate pointer) to catch this condition.  Setting
+parsed_valid_hugepagesz to false would result in the message:
+
+HugeTLB: hugepages=y preceded by an unsupported hugepagesz, ignoring
+
+Thanks for all your comments I will incorporate in v2 and send later this
+week.
 -- 
-Thanks,
-~Nick Desaulniers
+Mike Kravetz
