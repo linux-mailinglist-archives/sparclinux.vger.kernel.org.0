@@ -2,40 +2,40 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A292A1975EF
-	for <lists+sparclinux@lfdr.de>; Mon, 30 Mar 2020 09:44:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D453F197629
+	for <lists+sparclinux@lfdr.de>; Mon, 30 Mar 2020 10:05:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729512AbgC3Hoc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 30 Mar 2020 03:44:32 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:40909 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728766AbgC3Hob (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 30 Mar 2020 03:44:31 -0400
-Received: by mail-wm1-f68.google.com with SMTP id a81so20714147wmf.5;
-        Mon, 30 Mar 2020 00:44:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=+lQxT4rOXYS7igvmWe+aSLt8H9b/hooDSaFj9dpIoBo=;
-        b=sXB3Axt3bNhLZM4yzWIsP8VuxlH6kiWXUpjSZd93e6MR4/ML7UYW7UltVKYUH0rV93
-         Ev80J0qi5a9JpLUExrvqq0XFdw3GwLqk2T+quHuw55eio69i1xnbNpyF2bThds3+jNEb
-         V2U+nBHDuWacYhv5s88y8Ozcy49+oJ7w1Eky0yRA4GPdb/64PCT1D4oqPAic/4FD5e9G
-         WH1DzkV82oO+RLuzoLZIbfBIklx657PvJGkhEotRL1TIezZHCCTTUV3E+VmysclcefZk
-         2iSbjt27A+/KsuAr6ebt0YeZVI66NiG4cyoPNofKmHpQigs5gU9y/9eJoQiOwC7dVsh1
-         FhDA==
-X-Gm-Message-State: ANhLgQ2Ct3curkqzdWT/eevI4jDwwpVc1+sK4Schy/AqqRtb7EWn4Ke+
-        J3/9SwzFGjBAZRXMM7dorDQ=
-X-Google-Smtp-Source: ADFU+vv5zPfvR6n12LY62/oTKOim3ahnJoTy88I5ftZ61ckUgrrKlF39ljyabbjxRYuNzhw3oecv9w==
-X-Received: by 2002:a7b:cc06:: with SMTP id f6mr11831239wmh.65.1585554268222;
-        Mon, 30 Mar 2020 00:44:28 -0700 (PDT)
-Received: from localhost (ip-37-188-180-223.eurotel.cz. [37.188.180.223])
-        by smtp.gmail.com with ESMTPSA id p16sm20037964wmi.40.2020.03.30.00.44.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2020 00:44:27 -0700 (PDT)
-Date:   Mon, 30 Mar 2020 09:44:26 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Baoquan He <bhe@redhat.com>
+        id S1729597AbgC3IFK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 30 Mar 2020 04:05:10 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:23571 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729560AbgC3IFJ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 30 Mar 2020 04:05:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585555509;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=nVwRo6XO9WRKmSULb4OWrX5slFKDiMD/LCNJjQ0boIs=;
+        b=IIzrUg8jPgrmEVQPxsZ35B7nHXAckKB4sQbtembRyfrd9dS+PE4dbkMsnv8lzdGV/uAXgF
+        hBnc/TLm1PKNWueF9CWHY+BisQlmhKhDBbH1nYsyV1t2P1SBP+PF4N6Vq3Mg2y21nb6mgP
+        mK1NpybUWmUdLBJJ0505XPT8Ofvp/rU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-468-l4TLxabQO2KtEB9hP7eswA-1; Mon, 30 Mar 2020 04:05:04 -0400
+X-MC-Unique: l4TLxabQO2KtEB9hP7eswA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F135A801E5C;
+        Mon, 30 Mar 2020 08:05:00 +0000 (UTC)
+Received: from localhost (ovpn-12-53.pek2.redhat.com [10.72.12.53])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 27E25953DB;
+        Mon, 30 Mar 2020 08:04:59 +0000 (UTC)
+Date:   Mon, 30 Mar 2020 16:04:56 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     Michal Hocko <mhocko@kernel.org>
 Cc:     Hoan Tran <Hoan@os.amperecomputing.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
@@ -62,35 +62,42 @@ Cc:     Hoan Tran <Hoan@os.amperecomputing.com>,
         lho@amperecomputing.com, mmorana@amperecomputing.com
 Subject: Re: [PATCH v3 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
  default for NUMA
-Message-ID: <20200330074426.GB14243@dhcp22.suse.cz>
+Message-ID: <20200330080456.GJ9942@MiWiFi-R3L-srv>
 References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
  <20200329001924.GS3039@MiWiFi-R3L-srv>
+ <20200330074426.GB14243@dhcp22.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200329001924.GS3039@MiWiFi-R3L-srv>
+In-Reply-To: <20200330074426.GB14243@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun 29-03-20 08:19:24, Baoquan He wrote:
-> On 03/28/20 at 11:31am, Hoan Tran wrote:
-> > In NUMA layout which nodes have memory ranges that span across other nodes,
-> > the mm driver can detect the memory node id incorrectly.
+On 03/30/20 at 09:44am, Michal Hocko wrote:
+> On Sun 29-03-20 08:19:24, Baoquan He wrote:
+> > On 03/28/20 at 11:31am, Hoan Tran wrote:
+> > > In NUMA layout which nodes have memory ranges that span across other nodes,
+> > > the mm driver can detect the memory node id incorrectly.
+> > > 
+> > > For example, with layout below
+> > > Node 0 address: 0000 xxxx 0000 xxxx
+> > > Node 1 address: xxxx 1111 xxxx 1111
 > > 
-> > For example, with layout below
-> > Node 0 address: 0000 xxxx 0000 xxxx
-> > Node 1 address: xxxx 1111 xxxx 1111
+> > Sorry, I read this example several times, but still don't get what it
+> > means. Can it be given with real hex number address as an exmaple? I
+> > mean just using the memory layout you have seen from some systems. The
+> > change looks interesting though.
 > 
-> Sorry, I read this example several times, but still don't get what it
-> means. Can it be given with real hex number address as an exmaple? I
-> mean just using the memory layout you have seen from some systems. The
-> change looks interesting though.
+> Does this make it more clear?
+>            physical address range and its node associaion
+>          [0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 1]
 
-Does this make it more clear?
-           physical address range and its node associaion
-         [0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 1]
--- 
-Michal Hocko
-SUSE Labs
+I later read it again, have got what Hoan is trying to say, thanks.
+
+I think the change in this patchset makes sense, still have some concern
+though, let me add comment in other thread.
+
