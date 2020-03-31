@@ -2,67 +2,149 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08A2E19922C
-	for <lists+sparclinux@lfdr.de>; Tue, 31 Mar 2020 11:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D815199814
+	for <lists+sparclinux@lfdr.de>; Tue, 31 Mar 2020 16:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730527AbgCaJYj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 31 Mar 2020 05:24:39 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:42139 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729925AbgCaJYi (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 31 Mar 2020 05:24:38 -0400
-Received: by mail-ot1-f68.google.com with SMTP id z5so21066594oth.9
-        for <sparclinux@vger.kernel.org>; Tue, 31 Mar 2020 02:24:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
-        b=tr7958ll1HMsM3Hkt4RgDmZHn2v3PQ15vGKjCJgBJArPjuxF2G77vOasAFpzTtM+81
-         OpdGWigwIWyc33JubVr1EbxDnGixrDGv8+AI9vWe38aDZqvVauCO7Rg6PV4qFK1melRa
-         AOGEXkVIhJE1lzj8SwXqdIHTQVcc1D3JT3LNnsSniYX+3emz3CnxVvtgmVBLZLiaZ0XC
-         esV87xeNX0hFzn1izKfHK4sHZiU/Dv0k1yDb9U0sT/gGSpik/Fv26IhkwSt+4AccfU1F
-         +9JjstBB3AZbLSwvP50Gal6Qm1cwvWyPkG19jVzvF5pxYawrXN120goT1zxfu+3XTeKs
-         5Uqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
-        b=iFTQxHNf/IVpR1XIMXTu9tpJuerqUnW5nCyHxsKpZx6srKK3SMC+ePjxf+Ob1sXPwg
-         nvg0PwvN8cp9u6gPbdVVtsTpvOl0JHfnN1gY6wtBNeJ0L5s9aQBylqHpA95prA1stD1b
-         oLBiwS5/JxbW50h6QQDLQoxcFc/g7UkYzjlLSQpkT8pGjywTwlIpHL1D0FpIrzWvWv7D
-         0hzdh3VN/7T1f2MuxuSxaZ8iVKJEuCmbp6QZSx6DEN90RzTcVyFN7+wTLbHBcrM5vsLe
-         7QA7Yb7kbaA/j8ShHLi5sJSvKPFP1jcXhT+Qidte867F0Rjw6yIuV4Oo8VFgwQFK9+Uh
-         gc7A==
-X-Gm-Message-State: ANhLgQ0hg0yTWPYvfB+F+0P0zGjBEmWpzkVUfdAMtm+QAu38CyI4lCQh
-        T/4Ld4j0CzFHajRjUqexi0I/a2D3icP84AO5ZIM=
-X-Google-Smtp-Source: ADFU+vsXi7bRF+d06qzrgJs29jEj8fmtX74VvBuQZ/lJR8BsR52tYcEbZVPmGJ1GgSX1og0m97PrxM9EUq3Nb3l/oUE=
-X-Received: by 2002:a9d:5888:: with SMTP id x8mr11775078otg.361.1585646677926;
- Tue, 31 Mar 2020 02:24:37 -0700 (PDT)
+        id S1731048AbgCaOEg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 31 Mar 2020 10:04:36 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:36760 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1730617AbgCaOEe (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 31 Mar 2020 10:04:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585663473;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=KCZob0/LBRxC1X3ExJ7YgbkD9QNtWVeW3MS6pGS5Hm0=;
+        b=Tbe4haT2uNeVSYm5cIj191ydfjEGWKQnCdLg6G013xj2jKU0imXQzCD9plJy5KnG5725Qp
+        4UAvSmfs/cpJveo3irvqLwYyZ4atBGw6HXmGmSzmPlavVVcLtEMzHhZuqObyMNfWn6ZA4B
+        /QqL6MY+1C/U8Bv5XaWLKCN1J6BsQSo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-354-La1ubasMNmmujyoYcqk85g-1; Tue, 31 Mar 2020 10:04:29 -0400
+X-MC-Unique: La1ubasMNmmujyoYcqk85g-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 18D9E108E9E2;
+        Tue, 31 Mar 2020 14:03:39 +0000 (UTC)
+Received: from localhost (ovpn-13-64.pek2.redhat.com [10.72.13.64])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 0102960BFE;
+        Tue, 31 Mar 2020 14:03:34 +0000 (UTC)
+Date:   Tue, 31 Mar 2020 22:03:32 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     Michal Hocko <mhocko@kernel.org>
+Cc:     Mike Rapoport <rppt@linux.ibm.com>,
+        Hoan Tran <Hoan@os.amperecomputing.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Oscar Salvador <osalvador@suse.de>,
+        Pavel Tatashin <pavel.tatashin@microsoft.com>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        lho@amperecomputing.com, mmorana@amperecomputing.com
+Subject: Re: [PATCH v3 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
+ default for NUMA
+Message-ID: <20200331140332.GA2129@MiWiFi-R3L-srv>
+References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
+ <20200330074246.GA14243@dhcp22.suse.cz>
+ <20200330175100.GD30942@linux.ibm.com>
+ <20200330182301.GM14243@dhcp22.suse.cz>
+ <20200331081423.GE30942@linux.ibm.com>
+ <20200331085513.GE30449@dhcp22.suse.cz>
 MIME-Version: 1.0
-Received: by 2002:ac9:7992:0:0:0:0:0 with HTTP; Tue, 31 Mar 2020 02:24:37
- -0700 (PDT)
-Reply-To: maryalice00.12@postribe.com
-From:   Maryalice Williams <peterugwunnaokorie@gmail.com>
-Date:   Tue, 31 Mar 2020 07:24:37 -0200
-Message-ID: <CAH9tiDdOfBQR=niOJ6Wvx2SmFPo0ifz3=AvdT_utQ1-abueiDw@mail.gmail.com>
-Subject: Reply For More Details.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200331085513.GE30449@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
--- 
-My dear,
+Hi Michal,
 
-I am Mrs Maryalice Williams, I want to send you donation of two
-million seven hundred thousand Dollars ($2.7M) for volunteer projects
-in your country due to my ill health that could not permit me. Kindly
-reply for more details, and also send me the following details, as per
-below, your full Name ..........,  Address...........,
-Age...............,  Occupation ...............
+On 03/31/20 at 10:55am, Michal Hocko wrote:
+> On Tue 31-03-20 11:14:23, Mike Rapoport wrote:
+> > Maybe I mis-read the code, but I don't see how this could happen. In the
+> > HAVE_MEMBLOCK_NODE_MAP=y case, free_area_init_node() calls
+> > calculate_node_totalpages() that ensures that node->node_zones are entirely
+> > within the node because this is checked in zone_spanned_pages_in_node().
+> 
+> zone_spanned_pages_in_node does chech the zone boundaries are within the
+> node boundaries. But that doesn't really tell anything about other
+> potential zones interleaving with the physical memory range.
+> zone->spanned_pages simply gives the physical range for the zone
+> including holes. Interleaving nodes are essentially a hole
+> (__absent_pages_in_range is going to skip those).
+> 
+> That means that when free_area_init_core simply goes over the whole
+> physical zone range including holes and that is why we need to check
+> both for physical and logical holes (aka other nodes).
+> 
+> The life would be so much easier if the whole thing would simply iterate
+> over memblocks...
 
-Remain blessed,
-Mrs. Maryalice Williams.
+The memblock iterating sounds a great idea. I tried with putting the
+memblock iterating in the upper layer, memmap_init(), which is used for
+boot mem only anyway. Do you think it's doable and OK? It yes, I can
+work out a formal patch to make this simpler as you said. The draft code
+is as below. Like this it uses the existing code and involves little change.
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 138a56c0f48f..558d421f294b 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6007,14 +6007,6 @@ void __meminit memmap_init_zone(unsigned long size, int nid, unsigned long zone,
+ 		 * function.  They do not exist on hotplugged memory.
+ 		 */
+ 		if (context == MEMMAP_EARLY) {
+-			if (!early_pfn_valid(pfn)) {
+-				pfn = next_pfn(pfn);
+-				continue;
+-			}
+-			if (!early_pfn_in_nid(pfn, nid)) {
+-				pfn++;
+-				continue;
+-			}
+ 			if (overlap_memmap_init(zone, &pfn))
+ 				continue;
+ 			if (defer_init(nid, pfn, end_pfn))
+@@ -6130,9 +6122,17 @@ static void __meminit zone_init_free_lists(struct zone *zone)
+ }
+ 
+ void __meminit __weak memmap_init(unsigned long size, int nid,
+-				  unsigned long zone, unsigned long start_pfn)
++				  unsigned long zone, unsigned long range_start_pfn)
+ {
+-	memmap_init_zone(size, nid, zone, start_pfn, MEMMAP_EARLY, NULL);
++	unsigned long start_pfn, end_pfn;
++	unsigned long range_end_pfn = range_start_pfn + size;
++	int i;
++	for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
++		start_pfn = clamp(start_pfn, range_start_pfn, range_end_pfn);
++		end_pfn = clamp(end_pfn, range_start_pfn, range_end_pfn);
++		if (end_pfn > start_pfn)
++			memmap_init_zone(size, nid, zone, start_pfn, MEMMAP_EARLY, NULL);
++	}
+ }
+ 
+ static int zone_batchsize(struct zone *zone)
+
