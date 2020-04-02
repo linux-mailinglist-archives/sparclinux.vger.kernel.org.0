@@ -2,108 +2,191 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 330EB19BD39
-	for <lists+sparclinux@lfdr.de>; Thu,  2 Apr 2020 10:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DBFF19BFC4
+	for <lists+sparclinux@lfdr.de>; Thu,  2 Apr 2020 13:01:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387509AbgDBIBt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 2 Apr 2020 04:01:49 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:52817 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387403AbgDBIBs (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 2 Apr 2020 04:01:48 -0400
-Received: by mail-wm1-f66.google.com with SMTP id t8so2346786wmi.2;
-        Thu, 02 Apr 2020 01:01:47 -0700 (PDT)
+        id S2387476AbgDBLBE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 2 Apr 2020 07:01:04 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:44687 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728803AbgDBLBE (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 2 Apr 2020 07:01:04 -0400
+Received: by mail-ed1-f66.google.com with SMTP id i16so3527189edy.11
+        for <sparclinux@vger.kernel.org>; Thu, 02 Apr 2020 04:01:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=9Z1qUgkIZYTwfWjuKSto+a54YWgYjhe31C4kNW/8Tvo=;
+        b=HtjasVvH/lT3GBHz0/O31R7lpMTMls1+ppdqQAAahC5ompMpJ2zHz7Lu62AvoK3wtT
+         lsK1NXX5X8bAUbcxizYQjMIVa8ZEMpMggvZ4LVhRzUvM72lbJFM3k8cdsiJjSxMhuntU
+         igGW/lZDv1bcS9xYl3GxogiMXbCKyxg//lCv6ZsNz1Huy+aJYzcQibRi/CybaIyaWwNy
+         LqR3ZptXa7N7eda/FTb1Ll2GeS33x0xggLTGFe4xZL33ndTanJXFYgpHHVdK+Pr7kxtj
+         uMaxdzI0FfbNQv2N9Wb3ujG8CIn1UZlBwIXB6swS/cYoRFktJ8Xa9PZAYpltVoHeLnPI
+         JEEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=UrBSIQuzAujdG2IKZQy1WDw2nZSqWHmIp0pyFUuT55I=;
-        b=LrggHGRMVSGYe3cA9hzSQ9/2bZIts+IiiLjba5rhCXl6Cm1YiC6zpadBohM4floUPE
-         6ZM98hVNKBNijEnd4t0Ldy0WAS2bw2VNrLTEEED6inMji83qPVWCzea0gkIgkLQwqYu6
-         cLzqu+XddQ89E3RZ+fdpak571z5N0joWyLooWiiI3Yjs8l0qP9L+C1tzYrfsxm6ZvVEO
-         TsvJ4jf9CU7BaywTGIsZCUZbT3DKzhhLYv10Y86Ua7mvoMDlJPy2D+o72zqC0u3e48kA
-         +bL+xjCYuAus2Qm4CJv6XFZCJTlbIORMhn97eWEc7qo1KvDqL6WUKtvSVMhFXwi38euk
-         Rzsg==
-X-Gm-Message-State: AGi0Pua694FIJ8XxF6lH1ijv65yZ6DDKtSSGumPvY0WBssKLv4ai6/wx
-        qnuCqoe1nzDJJHmTCz4udxs=
-X-Google-Smtp-Source: APiQypLKMYqb9qsRd12t2lZK0oNaHQe5op/Ct4om+69/3ikerP3v6RKRd1oyx6YEyyBTpuIaTaPA/w==
-X-Received: by 2002:a1c:4d16:: with SMTP id o22mr2320220wmh.56.1585814506667;
-        Thu, 02 Apr 2020 01:01:46 -0700 (PDT)
-Received: from localhost (ip-37-188-180-223.eurotel.cz. [37.188.180.223])
-        by smtp.gmail.com with ESMTPSA id v21sm5906815wmh.26.2020.04.02.01.01.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2020 01:01:45 -0700 (PDT)
-Date:   Thu, 2 Apr 2020 10:01:44 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     Baoquan He <bhe@redhat.com>,
-        Hoan Tran <Hoan@os.amperecomputing.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Oscar Salvador <osalvador@suse.de>,
-        Pavel Tatashin <pavel.tatashin@microsoft.com>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
-        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        lho@amperecomputing.com, mmorana@amperecomputing.com
-Subject: Re: [PATCH RFC] mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP (was: Re:
- [PATCH v3 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA)
-Message-ID: <20200402080144.GK22681@dhcp22.suse.cz>
-References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
- <20200330074246.GA14243@dhcp22.suse.cz>
- <20200330092127.GB30942@linux.ibm.com>
- <20200330095843.GF14243@dhcp22.suse.cz>
- <20200331215618.GG30942@linux.ibm.com>
- <20200401054227.GC2129@MiWiFi-R3L-srv>
- <20200401075155.GH30942@linux.ibm.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=9Z1qUgkIZYTwfWjuKSto+a54YWgYjhe31C4kNW/8Tvo=;
+        b=XcJ45QApl4DzQtIs9v9h1BxJb/ych//4bPnweICow0SGXagnyPdVzLYk3xlAw0ycHu
+         BlwniQOQaUT6lPX3hkvYRcmwj5li6ptzRi6lWFvIb8Kk4hxbz4mMSlh/IKWiuEvbzs4O
+         sx7Jt0GSY5i3FB9ZvNeOZy23q2El9P6ELXc12eCoBSlRlwtdSSbH3A7bPbo6Wf+64Ubh
+         qGgYDHVS9hsGR7GoNPkFXSxQSI/6krifRrCjXXx+KKZZ+BQgCaZmruWS8lsB6PYgLaT6
+         pYv/ZKVZjV5yr0cPwrPpGMsdpKHpuwZ1sNylePaeIpxFNf8NGs7pkB1Cv5qSpQmhvUDE
+         f1iQ==
+X-Gm-Message-State: AGi0Pub/zWSdEIbgnzv9qY9vJuSYDJ3JYb4RtIHa7K2smwxpqkjvjmHT
+        zeEOqSU9UkLtdp4xlB34eU65DRKbEOM/Vve0Z5M=
+X-Google-Smtp-Source: APiQypLrQW+3rF/61+ywUTTNWptwR4CtF6pJMJZlFxTVqWonJmiPWdpXXcN93TI676qXFwOfjBLESm3X2BAyHTKluQs=
+X-Received: by 2002:a17:906:32d8:: with SMTP id k24mr2703264ejk.2.1585825262245;
+ Thu, 02 Apr 2020 04:01:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200401075155.GH30942@linux.ibm.com>
+From:   Anatoly Pugachev <matorola@gmail.com>
+Date:   Thu, 2 Apr 2020 14:00:51 +0300
+Message-ID: <CADxRZqwHdRd=3fzr=-9hdR7_cW2VXXHwoySzbSpWx+aZ1S=ysA@mail.gmail.com>
+Subject: [sparc64] OOPS after 'serial: core: Allow detach and attach serial
+ device for console'
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed 01-04-20 10:51:55, Mike Rapoport wrote:
-> Hi,
-> 
-> On Wed, Apr 01, 2020 at 01:42:27PM +0800, Baoquan He wrote:
-[...]
-> > From above information, we can remove HAVE_MEMBLOCK_NODE_MAP, and
-> > replace it with CONFIG_NUMA. That sounds more sensible to store nid into
-> > memblock when NUMA support is enabled.
->  
-> Replacing CONFIG_HAVE_MEMBLOCK_NODE_MAP with CONFIG_NUMA will work, but
-> this will not help cleaning up the whole node/zone initialization mess and
-> we'll be stuck with two implementations.
+Hello!
 
-Yeah, this is far from optimal.
+Bisected the following call trace on kernel boot with linux sparc64
+debian sid LDOM:
 
-> The overhead of enabling HAVE_MEMBLOCK_NODE_MAP is only for init time as
-> most architectures will anyway discard the entire memblock, so having it in
-> a UMA arch won't be a problem. The only exception is arm that uses
-> memblock for pfn_valid(), here we may also think about a solution to
-> compensate the addition of nid to the memblock structures. 
 
-Well, we can make memblock_region->nid defined only for CONFIG_NUMA.
-memblock_get_region_node would then unconditionally return 0 on UMA.
-Essentially the same way we do NUMA for other MM code. I only see few
-direct usage of region->nid.
--- 
-Michal Hocko
-SUSE Labs
+...
+[    1.722396] des_sparc64: Using sparc64 des opcodes optimized DES
+implementation
+[    2.256609] camellia_sparc64: Using sparc64 camellia opcodes
+optimized CAMELLIA implementation
+[    2.460130] workingset: timestamp_bits=46 max_order=23 bucket_order=0
+[    2.478401] zbud: loaded
+[    2.480698] SGI XFS with ACLs, security attributes, quota, fatal
+assert, debug enabled
+[    2.486675] *** VALIDATE xfs ***
+[    2.501604] Block layer SCSI generic (bsg) driver version 0.4
+loaded (major 252)
+[    2.502560] io scheduler mq-deadline registered
+[    2.505276] f029b788: ttyHV0 at I/O 0x0 (irq = 1, base_baud =
+115200) is a SUN4V HCONS
+[    2.505359] INFO: trying to register non-static key.
+[    2.505365] the code is fine but needs lockdep annotation.
+[    2.505371] turning off the locking correctness validator.
+[    2.505380] CPU: 16 PID: 1 Comm: swapper/0 Not tainted
+5.6.0-rc5-00128-ga3cb39d258ef #55
+[    2.505388] Call Trace:
+[    2.505402]  [00000000004dbbd8] register_lock_class+0x278/0x720
+[    2.505410]  [00000000004d8930] __lock_acquire+0x90/0x2520
+[    2.505416]  [00000000004db74c] lock_acquire+0x1ac/0x1e0
+[    2.505426]  [0000000000b86404] _raw_spin_lock_irqsave+0x44/0x60
+[    2.505439]  [000000000097245c] uart_add_one_port+0x35c/0x500
+[    2.505447]  [0000000000977ee4] hv_probe+0x144/0x200
+[    2.505455]  [00000000009888f4] platform_drv_probe+0x34/0xa0
+[    2.505462]  [0000000000986414] really_probe+0x214/0x460
+[    2.505468]  [0000000000986b7c] driver_probe_device+0xfc/0x140
+[    2.505475]  [0000000000986e5c] device_driver_attach+0x3c/0x60
+[    2.505481]  [0000000000986fc8] __driver_attach+0x148/0x160
+[    2.505488]  [0000000000984b04] bus_for_each_dev+0x44/0xa0
+[    2.505495]  [0000000000986ffc] driver_attach+0x1c/0x40
+[    2.505501]  [0000000000985184] bus_add_driver+0x124/0x220
+[    2.505507]  [00000000009877a4] driver_register+0xc4/0x120
+[    2.505514]  [0000000000988860] __platform_driver_register+0x40/0x60
+[    2.506081] printk: console [ttyHV0] enabled
+[    2.507815] sunvdc.c:v1.2 (November 24, 2014)
+[    2.509338] sunvdc: Virtual Hard disk vdiskc
+...
+
+
+Can someone look why it is started to print stack trace?
+
+Thanks.
+
+Full boot log files are at https://github.com/mator/sparc64-dmesg/
+
+Full bisect log:
+
+mator@ttip:~/linux-2.6$ git bisect bad
+a3cb39d258efef830181606134cfb0f7babe8c8e is the first bad commit
+commit a3cb39d258efef830181606134cfb0f7babe8c8e
+Author: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date:   Mon Feb 17 13:40:12 2020 +0200
+
+    serial: core: Allow detach and attach serial device for console
+
+    In the future we would like to disable power management on the
+serial devices
+    used as kernel consoles to avoid weird behaviour in some cases. However,
+    disabling PM may prevent system to go to deep sleep states, which
+in its turn
+    leads to the higher power consumption.
+
+    Tony Lindgren proposed a work around, i.e. allow user to detach
+such consoles
+    to make PM working again. In case user wants to see what's going on, it also
+    provides a mechanism to attach console back.
+
+    Link: https://lists.openwall.net/linux-kernel/2018/09/29/65
+    Suggested-by: Tony Lindgren <tony@atomide.com>
+    Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+    Link: https://lore.kernel.org/r/20200217114016.49856-3-andriy.shevchenko@linux.intel.com
+    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+ Documentation/ABI/testing/sysfs-tty |  7 +++++
+ drivers/tty/serial/serial_core.c    | 60 ++++++++++++++++++++++++++++++++++---
+ 2 files changed, 63 insertions(+), 4 deletions(-)
+mator@ttip:~/linux-2.6$
+
+
+mator@ttip:~/linux-2.6$ git bisect log
+git bisect start
+# bad: [1a323ea5356edbb3073dc59d51b9e6b86908857d] x86: get rid of
+'errret' argument to __get_user_xyz() macross
+git bisect bad 1a323ea5356edbb3073dc59d51b9e6b86908857d
+# good: [458ef2a25e0cbdc216012aa2b9cf549d64133b08] Merge tag
+'x86-timers-2020-03-30' of
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+git bisect good 458ef2a25e0cbdc216012aa2b9cf549d64133b08
+# good: [2efefb56f92689b2e216857834df69dd3ea47d2b] ice: use __le16
+types for explicitly Little Endian values
+git bisect good 2efefb56f92689b2e216857834df69dd3ea47d2b
+# bad: [1f944f976d7ef8a29d1ad296253d3a9387c58e62] Merge tag
+'tty-5.7-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty
+git bisect bad 1f944f976d7ef8a29d1ad296253d3a9387c58e62
+# good: [15c981d16d70e8a5be297fa4af07a64ab7e080ed] Merge tag
+'for-5.7-tag' of
+git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+git bisect good 15c981d16d70e8a5be297fa4af07a64ab7e080ed
+# good: [dfabb077d62552797ca0ae7756cb30d3e195ead5] Merge tag
+'mmc-v5.7' of git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc
+git bisect good dfabb077d62552797ca0ae7756cb30d3e195ead5
+# good: [058bc104f7ca5c83d81695ee96f03dbd93bae518] serial: 8250:
+Generalize rs485 software emulation
+git bisect good 058bc104f7ca5c83d81695ee96f03dbd93bae518
+# good: [5f3a48132412123135595fcbb2a760cfe626f592] Merge branch
+'for-5.7-console-exit' of
+git://git.kernel.org/pub/scm/linux/kernel/git/pmladek/printk into
+tty-next
+git bisect good 5f3a48132412123135595fcbb2a760cfe626f592
+# bad: [4bcf59a5dea0f4e768e2b84fc78ce13a7fb27863] serial: 8250:
+8250_omap: Account for data in flight during DMA teardown
+git bisect bad 4bcf59a5dea0f4e768e2b84fc78ce13a7fb27863
+# bad: [caa47cc639470485ee0ae3c76d56ccf4cfda2045] tty: nozomi: Use
+scnprintf() for avoiding potential buffer overflow
+git bisect bad caa47cc639470485ee0ae3c76d56ccf4cfda2045
+# bad: [630db5cbc7b444bf47cd717906abb092a2ab5724] tty: serial: Add
+CONSOLE_POLL support to SiFive UART
+git bisect bad 630db5cbc7b444bf47cd717906abb092a2ab5724
+# bad: [bedb404e91bb2908d9921fc736a518a9d89525fc] serial: 8250_port:
+Don't use power management for kernel console
+git bisect bad bedb404e91bb2908d9921fc736a518a9d89525fc
+# bad: [a3cb39d258efef830181606134cfb0f7babe8c8e] serial: core: Allow
+detach and attach serial device for console
+git bisect bad a3cb39d258efef830181606134cfb0f7babe8c8e
+# first bad commit: [a3cb39d258efef830181606134cfb0f7babe8c8e] serial:
+core: Allow detach and attach serial device for console
