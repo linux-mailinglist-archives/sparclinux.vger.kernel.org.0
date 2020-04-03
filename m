@@ -2,134 +2,139 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1F3719CFF4
-	for <lists+sparclinux@lfdr.de>; Fri,  3 Apr 2020 07:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BBE519D0D2
+	for <lists+sparclinux@lfdr.de>; Fri,  3 Apr 2020 09:09:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730759AbgDCF6R (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 3 Apr 2020 01:58:17 -0400
-Received: from conssluserg-05.nifty.com ([210.131.2.90]:27849 "EHLO
-        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729349AbgDCF6R (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 3 Apr 2020 01:58:17 -0400
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id 0335vv2M032130;
-        Fri, 3 Apr 2020 14:57:58 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 0335vv2M032130
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1585893478;
-        bh=EauiOmcsg1tATmXp9SYcg/opN412JjjoRaNrMk4wkYs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=MiT2I4Gf6yQXBlahGR2e51hcMDifnvDtlga+cJRwgxBLgXU0mhFNs7VMIVDh6kxSm
-         4To1F1uko7JHV6uArqU+/D+UYb8ZdTgt9X+547QQuNbbncB7PreNnS5Q/xueFsLEQD
-         q5ydCw1TzTVDvPohS0w/g9HXskG5BR83LDJ0bqw2YDtEIJCp95VDAcz9KEMPD77bRz
-         awraRmyCo/h9SJxZFrFUxkPsr7yi78yJQBOxo94CZ/Pl1GiR1FkcQIQGANRF7/BUug
-         zG4lJhyRX6ltUL3sotpDEgatJvqCFIXi/jjqpQizu6xE8KiKpWJQkGeGiWodxtUj6v
-         PPCQPSQcfYGkQ==
-X-Nifty-SrcIP: [209.85.221.173]
-Received: by mail-vk1-f173.google.com with SMTP id b187so1687502vkh.12;
-        Thu, 02 Apr 2020 22:57:57 -0700 (PDT)
-X-Gm-Message-State: AGi0Pubc5qycHO9lkQwDF47hRA4DPBiCutym0/kAc/Qn5uw4gzjxkqKS
-        GCG5qAYtL75P6J9bE8C3ReZBsLtvH1dxMEBs6mQ=
-X-Google-Smtp-Source: APiQypJlUG8LSYIid8JBWOaho2mXzKabqwJpGDBTp1vS3AtKoLS0qgKztRjzYQLbJ4xGsI7r0wGmvCzN5JFFwIWOBds=
-X-Received: by 2002:a1f:3649:: with SMTP id d70mr4923181vka.12.1585893476720;
- Thu, 02 Apr 2020 22:57:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200220110807.32534-1-masahiroy@kernel.org> <CAK7LNARHBfp=gkVO9q3pC9o_w9PgNW=5AP95s1MR1tHLJV=0fg@mail.gmail.com>
-In-Reply-To: <CAK7LNARHBfp=gkVO9q3pC9o_w9PgNW=5AP95s1MR1tHLJV=0fg@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Fri, 3 Apr 2020 14:57:20 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQuOF-DcA7v3Uy-7hdVeT5hDuatGg6FY9TgG10T3OBr0w@mail.gmail.com>
-Message-ID: <CAK7LNAQuOF-DcA7v3Uy-7hdVeT5hDuatGg6FY9TgG10T3OBr0w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] sparc,x86: vdso: remove meaningless undefining CONFIG_OPTIMIZE_INLINING
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, X86 ML <x86@kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "David S. Miller" <davem@davemloft.net>,
+        id S1730759AbgDCHJR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 3 Apr 2020 03:09:17 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:26267 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730550AbgDCHJQ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 3 Apr 2020 03:09:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585897755;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=TUShErNk8cwU7hJf8BxmK0K5c6pEQ4hGGKwc5zmiaaw=;
+        b=H0qa3p45pEFu5dODv0kZ4FEEaztxIqONFBQwnlxq4QvXs20WggEOCRypwiRArckAb2mzOw
+        BueenI1alP3CSFcNU0G2OXwxtWMvQF8NqY0//4NkycZMIBnWCPf9OSE6A3BI7JZvNk73po
+        qqClTaYvuhZf5y5/01GRSehcTEh/10Y=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-63-Cvy3b_roPf66oPbJTVFQdA-1; Fri, 03 Apr 2020 03:09:13 -0400
+X-MC-Unique: Cvy3b_roPf66oPbJTVFQdA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2400818A6EC1;
+        Fri,  3 Apr 2020 07:09:09 +0000 (UTC)
+Received: from localhost (ovpn-12-42.pek2.redhat.com [10.72.12.42])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 115A11147D2;
+        Fri,  3 Apr 2020 07:09:07 +0000 (UTC)
+Date:   Fri, 3 Apr 2020 15:09:04 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     Hoan Tran <hoan@os.amperecomputing.com>
+Cc:     Michal Hocko <mhocko@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Oscar Salvador <osalvador@suse.de>,
+        Pavel Tatashin <pavel.tatashin@microsoft.com>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         "H. Peter Anvin" <hpa@zytor.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "David S. Miller" <davem@davemloft.net>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        lho@amperecomputing.com, mmorana@amperecomputing.com
+Subject: Re: [PATCH v3 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
+ default for NUMA
+Message-ID: <20200403070904.GO2402@MiWiFi-R3L-srv>
+References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
+ <20200330074246.GA14243@dhcp22.suse.cz>
+ <20200330175100.GD30942@linux.ibm.com>
+ <20200330182301.GM14243@dhcp22.suse.cz>
+ <20200331081423.GE30942@linux.ibm.com>
+ <20200331085513.GE30449@dhcp22.suse.cz>
+ <20200331140332.GA2129@MiWiFi-R3L-srv>
+ <20200331142138.GL30449@dhcp22.suse.cz>
+ <20200331143140.GA2402@MiWiFi-R3L-srv>
+ <cc717f09-2b18-b242-e438-3ec730c5dac0@os.amperecomputing.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cc717f09-2b18-b242-e438-3ec730c5dac0@os.amperecomputing.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Mar 19, 2020 at 4:20 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> Hi Andrew,
->
-> Ping.
-> Could you pick up this series?
->
->
-> Thanks.
->
->
-> On Thu, Feb 20, 2020 at 8:08 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> >
-> > The code, #undef CONFIG_OPTIMIZE_INLINING, is not working as expected
-> > because <linux/compiler_types.h> is parsed before vclock_gettime.c
-> > since 28128c61e08e ("kconfig.h: Include compiler types to avoid missed
-> > struct attributes").
-> >
-> > Since then, <linux/compiler_types.h> is included really early by
-> > using the '-include' option. So, you cannot negate the decision of
-> > <linux/compiler_types.h> in this way.
-> >
-> > You can confirm it by checking the pre-processed code, like this:
-> >
-> >   $ make arch/x86/entry/vdso/vdso32/vclock_gettime.i
-> >
-> > There is no difference with/without CONFIG_CC_OPTIMIZE_FOR_SIZE.
-> >
-> > It is about two years since 28128c61e08e. Nobody has reported a
-> > problem (or, nobody has even noticed the fact that this code is not
-> > working).
-> >
-> > It is ugly and unreliable to attempt to undefine a CONFIG option from
-> > C files, and anyway the inlining heuristic is up to the compiler.
-> >
-> > Just remove the broken code.
-> >
-> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> > Acked-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+On 04/02/20 at 09:46pm, Hoan Tran wrote:
+> Hi All,
+> 
+> On 3/31/20 7:31 AM, Baoquan He wrote:
+> > On 03/31/20 at 04:21pm, Michal Hocko wrote:
+> > > On Tue 31-03-20 22:03:32, Baoquan He wrote:
+> > > > Hi Michal,
+> > > > 
+> > > > On 03/31/20 at 10:55am, Michal Hocko wrote:
+> > > > > On Tue 31-03-20 11:14:23, Mike Rapoport wrote:
+> > > > > > Maybe I mis-read the code, but I don't see how this could happen. In the
+> > > > > > HAVE_MEMBLOCK_NODE_MAP=y case, free_area_init_node() calls
+> > > > > > calculate_node_totalpages() that ensures that node->node_zones are entirely
+> > > > > > within the node because this is checked in zone_spanned_pages_in_node().
+> > > > > 
+> > > > > zone_spanned_pages_in_node does chech the zone boundaries are within the
+> > > > > node boundaries. But that doesn't really tell anything about other
+> > > > > potential zones interleaving with the physical memory range.
+> > > > > zone->spanned_pages simply gives the physical range for the zone
+> > > > > including holes. Interleaving nodes are essentially a hole
+> > > > > (__absent_pages_in_range is going to skip those).
+> > > > > 
+> > > > > That means that when free_area_init_core simply goes over the whole
+> > > > > physical zone range including holes and that is why we need to check
+> > > > > both for physical and logical holes (aka other nodes).
+> > > > > 
+> > > > > The life would be so much easier if the whole thing would simply iterate
+> > > > > over memblocks...
+> > > > 
+> > > > The memblock iterating sounds a great idea. I tried with putting the
+> > > > memblock iterating in the upper layer, memmap_init(), which is used for
+> > > > boot mem only anyway. Do you think it's doable and OK? It yes, I can
+> > > > work out a formal patch to make this simpler as you said. The draft code
+> > > > is as below. Like this it uses the existing code and involves little change.
+> > > 
+> > > Doing this would be a step in the right direction! I haven't checked the
+> > > code very closely though. The below sounds way too simple to be truth I
+> > > am afraid. First for_each_mem_pfn_range is available only for
+> > > CONFIG_HAVE_MEMBLOCK_NODE_MAP (which is one of the reasons why I keep
+> > > saying that I really hate that being conditional). Also I haven't really
+> > > checked the deferred initialization path - I have a very vague
+> > > recollection that it has been converted to the memblock api but I have
+> > > happilly dropped all that memory.
+> > 
+> > Thanks for your quick response and pointing out the rest suspect aspects,
+> > I will investigate what you mentioned, see if they impact.
+> 
+> I would like to check if we still move on with my patch to remove
+> CONFIG_NODES_SPAN_OTHER_NODES and have another patch on top it?
 
+I think we would like to replace CONFIG_NODES_SPAN_OTHER_NODES with
+CONFIG_NUMA, and just let UMA return 0 as node id, as Michal replied in
+another mail. Anyway, your patch 2~5 are still needed to sit on top of
+the change of this new plan.
 
-
-I think adding the patch author to Cc:
-is strange.
-
-
-
-The footer of 6290b47e9aa282c11f38390931b06402c553dbc4
-looks like this.
-
-
-    Link: http://lkml.kernel.org/r/20200220110807.32534-1-masahiroy@kernel.org
-    Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-    Acked-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-    Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-    Cc: Arnd Bergmann <arnd@arndb.de>
-    Cc: Ingo Molnar <mingo@redhat.com>
-    Cc: Thomas Gleixner <tglx@linutronix.de>
-    Cc: Masahiro Yamada <masahiroy@kernel.org>
-    Cc: Borislav Petkov <bp@alien8.de>
-    Cc: "H. Peter Anvin" <hpa@zytor.com>
-    Cc: David Miller <davem@davemloft.net>
-    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-
-
-
-"Cc: Masahiro Yamada <masahiroy@kernel.org>"
-is unneeded since I am the author.
-
-
-
--- 
-Best Regards
-Masahiro Yamada
