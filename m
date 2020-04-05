@@ -2,83 +2,91 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8724719E6E8
-	for <lists+sparclinux@lfdr.de>; Sat,  4 Apr 2020 19:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06CFF19EDE8
+	for <lists+sparclinux@lfdr.de>; Sun,  5 Apr 2020 22:19:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726712AbgDDRvH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 4 Apr 2020 13:51:07 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:39615 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726707AbgDDRvH (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 4 Apr 2020 13:51:07 -0400
-Received: by mail-ed1-f66.google.com with SMTP id a43so13423154edf.6;
-        Sat, 04 Apr 2020 10:51:06 -0700 (PDT)
+        id S1727390AbgDEUTL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 5 Apr 2020 16:19:11 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:40107 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727081AbgDEUTL (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 5 Apr 2020 16:19:11 -0400
+Received: by mail-ed1-f67.google.com with SMTP id w26so16401161edu.7
+        for <sparclinux@vger.kernel.org>; Sun, 05 Apr 2020 13:19:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=EYHlE7hzY1zLv8qJzBgPTe/TIerRSF04fiRQ/AXOHvk=;
-        b=bOWN+MEenAoHrmIoRO75xbw7spR9Ma0bRi9pqeptH70bXQFnvrkLF6PYMDVeIbfCk/
-         BwBbMqbU30aWM9snVArnPw+ivNd8QUyWm/G3WcNAA3KnWz0tWCu8+jPAum44QnpMZKqx
-         F0gfeKpdJLqSe5v+QYs21jycUe8Pcasx8EiWo36R7udYDuL+c9MRNSk33RulxRf1RqjO
-         puqJS6SlGjllg95t0M7g9CYzC6+d6RFfG0NUxetenqSo31WVWaCoFPqU7VgJP+3+GCEk
-         04tJWIL9AmBYBeeYyOJ7U0vVP1YAauTYu6fVPx+0Ub/mNAPiyrjk/DqdTk291ByHOE0E
-         pgjA==
+        bh=iEZk7U6art2tiy5AhAkA3SUpHJfBRVG8B0TQ9i4RHzE=;
+        b=d3J+H6FY5SoQwMV6y7agWZdD56fYHU7tsn5wdsHsCrzE8FgoJXwsmC6X4tAaCp5fsy
+         8TxOwtCxqRwKbihjOmdbGfVR6o5TNoCkp/rS6K3Vj1HjcLntT876hEqwAMWTFCwTlDX6
+         uePtqiJXUhkoTjB5MVqn3unLakhX4Fr5YqyRIPkbr4ZDfO8HlXY1WArgKFZajd4l8Mg2
+         jIwHMJidxDfYW99d7+JPcqe4qtyjCJ5VCNbf/DkZiAAyrI6d11EAUr7mJD/kxNHQu6Td
+         8+p2QoUzyivIiUbMGFQTfLasgyNheV3hPEtWU5qhZ/EwSCb6Gr25ADzMKyxdEDfhnRgs
+         B8kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=EYHlE7hzY1zLv8qJzBgPTe/TIerRSF04fiRQ/AXOHvk=;
-        b=DZfbaDbSGIQ63scGFSZ8AabEeFZJIvka/XaU0W7/581Xk/kX0KJUKAOuvaoOBxkeJ0
-         Jwg0sm+YMqK12VEHUZVMKN4N+4aU3gymEAhi5tCA34XZCbL8cCB/zK08O5j5R5aT7ZYs
-         +Ku/uavmQVZUNGWafw8YnMnkWSanoRc53BchQLex0cUlZzeWcSf/1ymwnvNwuo+Ct9Nd
-         OrXzVAFVXTOI9Na34FE9QRkMWSoWSpLIpoh9GfRfAptIa7yTlo9G6Ja6/JDXeLkZq5cu
-         hmi2QH5xDYqNuYY10qAE3CGoQJBWh2NvG0b1TgisylTqyP+FEvY6fxgUvx+lUhBR02L1
-         U/9w==
-X-Gm-Message-State: AGi0Puay08wMNorV6fPsyYo+RPRN8e8aSzP3mRbzBZKzPSS8FvnPaUoZ
-        F5E79HwAyGF4EHTpkn30EEAO17Xc7MB505tNC6Y=
-X-Google-Smtp-Source: APiQypL2xGjZbHIcOwqwCbdecCSlLtYicurlMAvux3jaJL76RMSNxBNgwbsRzxerqmiGxFu9p2ZRkwfdGBmbAhvV+Rc=
-X-Received: by 2002:a17:906:c295:: with SMTP id r21mr14273848ejz.337.1586022665928;
- Sat, 04 Apr 2020 10:51:05 -0700 (PDT)
+        bh=iEZk7U6art2tiy5AhAkA3SUpHJfBRVG8B0TQ9i4RHzE=;
+        b=Uh7/SmrzMhuXPm+swndlIwBwElqB0s9UJmf54MeJCl9cWdBokDyeYOAv9+/0XX7ld5
+         zYvNrKrzc+OKVFKAek8gwOvojX7E05lX+dNrKXnG466XybfXYJpkZFXWXak0hSmAC9ax
+         Oq7XGD4lFu+pPbRxLLW11FBJTlUu3AG4ig45QaBLHqCreeSw5oyZsxaU3oB5BKR4T/FH
+         6tor1ESDX7QBxvMGQhnBqJzTIDllMe/Afsdppa3gmofWcdXdmZKuozm4S23OpRqt8Qav
+         9MoMVklCShGtq+cuoopVK98nyEwb2+ylNAFcyHRA6GdfJeZM+U9XMz2WuQQtMZklnI45
+         PS2Q==
+X-Gm-Message-State: AGi0PuYfhlxTANdYwkJWHdfPgZLRhBPFrc4dBoHhUEK281FGcmUThhNz
+        pEbo/pKCzWo+hdS6Sf6HHLX+b8wMTbwIZlLB6MDJ+Q==
+X-Google-Smtp-Source: APiQypLARoPbr6wIFD5dQ1Q2SpXSURtuc0B4d5qzKJtOqc75qfe3LHx7A9F9skcYpBzOWsStMfz3dtl2sMoGOCgVen8=
+X-Received: by 2002:a17:907:212c:: with SMTP id qo12mr18895358ejb.357.1586117948775;
+ Sun, 05 Apr 2020 13:19:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200402172026.79478-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20200402172026.79478-1-andriy.shevchenko@linux.intel.com>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Sat, 4 Apr 2020 20:50:56 +0300
-Message-ID: <CADxRZqzgenruphXAKE8MJM2zayR7u7yvc=-5YwPHkCN4gW2eNQ@mail.gmail.com>
-Subject: Re: [PATCH v1] serial: sunhv: Initialize lock for non-registered console
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-serial@vger.kernel.org,
-        Sparc kernel list <sparclinux@vger.kernel.org>,
-        David Miller <davem@davemloft.net>
+References: <20200405185451.3963937-1-mattst88@gmail.com> <20200405185451.3963937-4-mattst88@gmail.com>
+ <20200405190748.GB16352@darkstar.musicnaut.iki.fi>
+In-Reply-To: <20200405190748.GB16352@darkstar.musicnaut.iki.fi>
+From:   Matt Turner <mattst88@gmail.com>
+Date:   Sun, 5 Apr 2020 13:18:56 -0700
+Message-ID: <CAEdQ38HQ+tb+ZQ2-7tGQSsuz=6fcKa5++-dMOdhcUs=ZzbBFwQ@mail.gmail.com>
+Subject: Re: [PATCH 4/5] second: Fix typo'd operator
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Apr 2, 2020 at 8:20 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Sun, Apr 5, 2020 at 12:23 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
 >
-> The commit a3cb39d258ef
-> ("serial: core: Allow detach and attach serial device for console")
-> changed a bit logic behind lock initialization since for most of the console
-> driver it's supposed to have lock already initialized even if console is not
-> enabled. However, it's not the case for Sparc HV console.
+> Hi,
 >
-> Initialize lock explicitly in the ->probe().
+> On Sun, Apr 05, 2020 at 11:54:50AM -0700, Matt Turner wrote:
+> > Signed-off-by: Matt Turner <mattst88@gmail.com>
+> > ---
+> >  second/disk.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/second/disk.c b/second/disk.c
+> > index 40234b3..b81a465 100644
+> > --- a/second/disk.c
+> > +++ b/second/disk.c
+> > @@ -293,7 +293,7 @@ int silo_disk_read(char *buff, int size, unsigned long long offset)
+> >       if (!net) {
+> >           if (prom_vers != PROM_P1275) {
+> >                   if (((romvec->pv_printrev >> 16) < 2 ||
+> > -                      ((romvec->pv_printrev >> 16) == 2 && (romvec->pv_printrev && 0xffff) < 6))
+> > +                      ((romvec->pv_printrev >> 16) == 2 && (romvec->pv_printrev & 0xffff) < 6))
+> >                       && offset >= 0x40000000) {
+> >                       printf ("Buggy old PROMs don't allow reading past 1GB from start of the disk. Send complaints to SMCC\n");
+> >                       return -1;
 >
-> Note, there is still an open question should or shouldn't not this driver
-> register console properly.
->
-> Fixes: a3cb39d258ef ("serial: core: Allow detach and attach serial device for console")
-> Reported-by: Anatoly Pugachev <matorola@gmail.com>
-> Cc: David Miller <davem@davemloft.net>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/tty/serial/sunhv.c | 3 +++
->  1 file changed, 3 insertions(+)
+> I think it's worth mentioning in the commit log that this is changing
+> the behaviour... After the patch only < 2.6 PROMs will fail (which is
+> probably correct), instead of every 2.* like now.
 
+Sure, that's fair.
 
-fixes issue for me, sorry for the late testing
+> BTW, I guess you found this error after a GCC warning, not in real use?
+
+Correct.
