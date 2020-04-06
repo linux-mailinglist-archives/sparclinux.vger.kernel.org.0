@@ -2,74 +2,64 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7296F19F3F1
-	for <lists+sparclinux@lfdr.de>; Mon,  6 Apr 2020 12:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FEFC19FD16
+	for <lists+sparclinux@lfdr.de>; Mon,  6 Apr 2020 20:25:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727254AbgDFK5w (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 6 Apr 2020 06:57:52 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:44607 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727131AbgDFK5w (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 6 Apr 2020 06:57:52 -0400
-Received: by mail-ed1-f66.google.com with SMTP id i16so18611704edy.11;
-        Mon, 06 Apr 2020 03:57:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CMfHof/TA0PWVnfgKpWlGDofI6slg4wF6Ylw4mLnCY0=;
-        b=rIDem+v1sd1TXsYWi0U9qUKax2Gli//LKJ0qF/7v13IDLGOXOissSC8j4pEOyb9Gtt
-         PIpiIH8V/tt5aUTO2Dz3q9TEl3ecSyyPoUFFx6capL8qnzNm34RxgXcbZURkIIwBXw4G
-         BwXAJLO0fEurH4h/04U6DxLSE+QMTquMTemFGdPqb+tRgwAr8pOyrmbfQxPmy3QeM+60
-         dTIxh26K9hdrs+U+z6GTtr30+MHlrRQta2rwPwaVLb8ntZd7L2Z/UqNtsioSwifNY9nU
-         qi9vku/uCoQxe69DixQA+7tpT9YkAR++5+C7rQXdIEES4ETWrQsURSOz3XNYS82w4jIS
-         WqkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CMfHof/TA0PWVnfgKpWlGDofI6slg4wF6Ylw4mLnCY0=;
-        b=p1hbGPmPiVPhVTHw9U2YodQlyeUsHASdAVStiKmeHKEcY1WnMl0wgtHjeYNC3hx1nz
-         LW7KE5Sz3PaksAcxK50bUFQiFWeeeB+MZ5gjF9namYieebJSaeW3lVzHhVDLPD2MeHWT
-         409RXVEYYTGds2OC7zr73CFOodGnghLOKaU7w9kYFRitrGwYTQCrk+JEAP3xXs/Psz/z
-         BqdiJpGKWPXoG31XWhTncjfu+lrddF/1N41ojBKdiEQhXkyofwOG19AjNDhRLbCJDWEf
-         wOTU9vKzlSDtEDT6cZj654DL3qy6aqBBEpyOe7XRhEr6dwYeMzS3pGnklQAXth1ftmzb
-         U0rw==
-X-Gm-Message-State: AGi0PubjqyHyUu65iSYTtG0sj9gNnEidOb4v6t5DXFjdKWY2TMtwnXhR
-        X94A/0jdzWokyGLcOopiTMxlKwE580BgnYBTHMikzg==
-X-Google-Smtp-Source: APiQypJmffUJ5UfCO5N0+TfKggr0kFNy8CWsTvRkTTZuGdrPcvcnED6Dr9zqyc0uivDYls8PrpfjQDt5MrZ7ihHSY4I=
-X-Received: by 2002:a17:907:1189:: with SMTP id uz9mr8519209ejb.143.1586170670443;
- Mon, 06 Apr 2020 03:57:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200402172026.79478-1-andriy.shevchenko@linux.intel.com>
- <CADxRZqzgenruphXAKE8MJM2zayR7u7yvc=-5YwPHkCN4gW2eNQ@mail.gmail.com> <20200406105227.GP3676135@smile.fi.intel.com>
-In-Reply-To: <20200406105227.GP3676135@smile.fi.intel.com>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Mon, 6 Apr 2020 13:57:39 +0300
-Message-ID: <CADxRZqzVL0jgT-YimqbMn=rAnUnZUDKdWuTjSTOskvO4if+Czw@mail.gmail.com>
-Subject: Re: [PATCH v1] serial: sunhv: Initialize lock for non-registered console
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-serial@vger.kernel.org,
-        Sparc kernel list <sparclinux@vger.kernel.org>,
-        David Miller <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726521AbgDFSZa (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 6 Apr 2020 14:25:30 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:57986 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726520AbgDFSZa (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 6 Apr 2020 14:25:30 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 8DB6515DB0249;
+        Mon,  6 Apr 2020 11:25:29 -0700 (PDT)
+Date:   Mon, 06 Apr 2020 11:25:28 -0700 (PDT)
+Message-Id: <20200406.112528.895031681027517472.davem@davemloft.net>
+To:     torvalds@linux-foundation.org
+CC:     akpm@linux-foundation.org, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [GIT] Sparc
+From:   David Miller <davem@davemloft.net>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 06 Apr 2020 11:25:29 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Apr 6, 2020 at 1:52 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > fixes issue for me, sorry for the late testing
->
-> Thank you! Can you formally provide a Tested-by tag?
 
-Andy,
+A per-device DMA ops conversion for sparc32 by Chrstioph Hellwig.
 
-up to you actually to add needed tags. Thanks.
+Please pull, thanks a lot!
 
-But anyway,
+The following changes since commit bef7b2a7be28638770972ab2709adf11d601c11a:
 
-Tested-by: Anatoly Pugachev <matorola@gmail.com>
+  Merge tag 'devicetree-for-5.7' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux (2020-04-02 17:32:52 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git 
+
+for you to fetch changes up to 255a69a94b8cbbcfef142137b5e7f99b5d168771:
+
+  sparc32: use per-device dma_ops (2020-04-02 18:11:55 -0700)
+
+----------------------------------------------------------------
+Christoph Hellwig (1):
+      sparc32: use per-device dma_ops
+
+ arch/sparc/include/asm/dma-mapping.h | 15 ++-------------
+ arch/sparc/kernel/ioport.c           |  3 ---
+ arch/sparc/kernel/of_device_common.c |  1 +
+ arch/sparc/mm/io-unit.c              |  9 ++++-----
+ arch/sparc/mm/iommu.c                | 15 ++++++++-------
+ arch/sparc/mm/mm_32.h                |  3 ---
+ arch/sparc/mm/srmmu.c                |  4 +---
+ 7 files changed, 16 insertions(+), 34 deletions(-)
