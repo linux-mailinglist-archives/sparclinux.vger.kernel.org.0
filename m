@@ -2,91 +2,83 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06CFF19EDE8
-	for <lists+sparclinux@lfdr.de>; Sun,  5 Apr 2020 22:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A871D19F3DC
+	for <lists+sparclinux@lfdr.de>; Mon,  6 Apr 2020 12:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727390AbgDEUTL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 5 Apr 2020 16:19:11 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:40107 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727081AbgDEUTL (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 5 Apr 2020 16:19:11 -0400
-Received: by mail-ed1-f67.google.com with SMTP id w26so16401161edu.7
-        for <sparclinux@vger.kernel.org>; Sun, 05 Apr 2020 13:19:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=iEZk7U6art2tiy5AhAkA3SUpHJfBRVG8B0TQ9i4RHzE=;
-        b=d3J+H6FY5SoQwMV6y7agWZdD56fYHU7tsn5wdsHsCrzE8FgoJXwsmC6X4tAaCp5fsy
-         8TxOwtCxqRwKbihjOmdbGfVR6o5TNoCkp/rS6K3Vj1HjcLntT876hEqwAMWTFCwTlDX6
-         uePtqiJXUhkoTjB5MVqn3unLakhX4Fr5YqyRIPkbr4ZDfO8HlXY1WArgKFZajd4l8Mg2
-         jIwHMJidxDfYW99d7+JPcqe4qtyjCJ5VCNbf/DkZiAAyrI6d11EAUr7mJD/kxNHQu6Td
-         8+p2QoUzyivIiUbMGFQTfLasgyNheV3hPEtWU5qhZ/EwSCb6Gr25ADzMKyxdEDfhnRgs
-         B8kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iEZk7U6art2tiy5AhAkA3SUpHJfBRVG8B0TQ9i4RHzE=;
-        b=Uh7/SmrzMhuXPm+swndlIwBwElqB0s9UJmf54MeJCl9cWdBokDyeYOAv9+/0XX7ld5
-         zYvNrKrzc+OKVFKAek8gwOvojX7E05lX+dNrKXnG466XybfXYJpkZFXWXak0hSmAC9ax
-         Oq7XGD4lFu+pPbRxLLW11FBJTlUu3AG4ig45QaBLHqCreeSw5oyZsxaU3oB5BKR4T/FH
-         6tor1ESDX7QBxvMGQhnBqJzTIDllMe/Afsdppa3gmofWcdXdmZKuozm4S23OpRqt8Qav
-         9MoMVklCShGtq+cuoopVK98nyEwb2+ylNAFcyHRA6GdfJeZM+U9XMz2WuQQtMZklnI45
-         PS2Q==
-X-Gm-Message-State: AGi0PuYfhlxTANdYwkJWHdfPgZLRhBPFrc4dBoHhUEK281FGcmUThhNz
-        pEbo/pKCzWo+hdS6Sf6HHLX+b8wMTbwIZlLB6MDJ+Q==
-X-Google-Smtp-Source: APiQypLARoPbr6wIFD5dQ1Q2SpXSURtuc0B4d5qzKJtOqc75qfe3LHx7A9F9skcYpBzOWsStMfz3dtl2sMoGOCgVen8=
-X-Received: by 2002:a17:907:212c:: with SMTP id qo12mr18895358ejb.357.1586117948775;
- Sun, 05 Apr 2020 13:19:08 -0700 (PDT)
+        id S1727118AbgDFKw1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 6 Apr 2020 06:52:27 -0400
+Received: from mga14.intel.com ([192.55.52.115]:52283 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726841AbgDFKw1 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 6 Apr 2020 06:52:27 -0400
+IronPort-SDR: mAgSOo+e6hQiR9xOIMlJyY1utSAaO0DSumuaiCdWMnZxbXItcjrN5Rh2rSNDQaJkleQnUlxgZg
+ EJ+XtSR1skJQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2020 03:52:27 -0700
+IronPort-SDR: 3iO8vEClobRDdW9tOWuf47BYkZUXI19mvjxa1J8lgAFzmykLZlvxW9Plc1iPXPu3mRYpxosP6B
+ uP4zeP3uNRkA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,350,1580803200"; 
+   d="scan'208";a="424316506"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga005.jf.intel.com with ESMTP; 06 Apr 2020 03:52:24 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jLPMh-00G9kw-A5; Mon, 06 Apr 2020 13:52:27 +0300
+Date:   Mon, 6 Apr 2020 13:52:27 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Anatoly Pugachev <matorola@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-serial@vger.kernel.org,
+        Sparc kernel list <sparclinux@vger.kernel.org>,
+        David Miller <davem@davemloft.net>
+Subject: Re: [PATCH v1] serial: sunhv: Initialize lock for non-registered
+ console
+Message-ID: <20200406105227.GP3676135@smile.fi.intel.com>
+References: <20200402172026.79478-1-andriy.shevchenko@linux.intel.com>
+ <CADxRZqzgenruphXAKE8MJM2zayR7u7yvc=-5YwPHkCN4gW2eNQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200405185451.3963937-1-mattst88@gmail.com> <20200405185451.3963937-4-mattst88@gmail.com>
- <20200405190748.GB16352@darkstar.musicnaut.iki.fi>
-In-Reply-To: <20200405190748.GB16352@darkstar.musicnaut.iki.fi>
-From:   Matt Turner <mattst88@gmail.com>
-Date:   Sun, 5 Apr 2020 13:18:56 -0700
-Message-ID: <CAEdQ38HQ+tb+ZQ2-7tGQSsuz=6fcKa5++-dMOdhcUs=ZzbBFwQ@mail.gmail.com>
-Subject: Re: [PATCH 4/5] second: Fix typo'd operator
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADxRZqzgenruphXAKE8MJM2zayR7u7yvc=-5YwPHkCN4gW2eNQ@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun, Apr 5, 2020 at 12:23 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
->
-> Hi,
->
-> On Sun, Apr 05, 2020 at 11:54:50AM -0700, Matt Turner wrote:
-> > Signed-off-by: Matt Turner <mattst88@gmail.com>
-> > ---
-> >  second/disk.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
+On Sat, Apr 04, 2020 at 08:50:56PM +0300, Anatoly Pugachev wrote:
+> On Thu, Apr 2, 2020 at 8:20 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
 > >
-> > diff --git a/second/disk.c b/second/disk.c
-> > index 40234b3..b81a465 100644
-> > --- a/second/disk.c
-> > +++ b/second/disk.c
-> > @@ -293,7 +293,7 @@ int silo_disk_read(char *buff, int size, unsigned long long offset)
-> >       if (!net) {
-> >           if (prom_vers != PROM_P1275) {
-> >                   if (((romvec->pv_printrev >> 16) < 2 ||
-> > -                      ((romvec->pv_printrev >> 16) == 2 && (romvec->pv_printrev && 0xffff) < 6))
-> > +                      ((romvec->pv_printrev >> 16) == 2 && (romvec->pv_printrev & 0xffff) < 6))
-> >                       && offset >= 0x40000000) {
-> >                       printf ("Buggy old PROMs don't allow reading past 1GB from start of the disk. Send complaints to SMCC\n");
-> >                       return -1;
->
-> I think it's worth mentioning in the commit log that this is changing
-> the behaviour... After the patch only < 2.6 PROMs will fail (which is
-> probably correct), instead of every 2.* like now.
+> > The commit a3cb39d258ef
+> > ("serial: core: Allow detach and attach serial device for console")
+> > changed a bit logic behind lock initialization since for most of the console
+> > driver it's supposed to have lock already initialized even if console is not
+> > enabled. However, it's not the case for Sparc HV console.
+> >
+> > Initialize lock explicitly in the ->probe().
+> >
+> > Note, there is still an open question should or shouldn't not this driver
+> > register console properly.
+> >
+> > Fixes: a3cb39d258ef ("serial: core: Allow detach and attach serial device for console")
+> > Reported-by: Anatoly Pugachev <matorola@gmail.com>
+> > Cc: David Miller <davem@davemloft.net>
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > ---
+> >  drivers/tty/serial/sunhv.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> 
+> 
+> fixes issue for me, sorry for the late testing
 
-Sure, that's fair.
+Thank you! Can you formally provide a Tested-by tag?
 
-> BTW, I guess you found this error after a GCC warning, not in real use?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Correct.
+
