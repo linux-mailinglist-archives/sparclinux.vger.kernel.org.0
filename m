@@ -2,53 +2,51 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 930EC1A1641
-	for <lists+sparclinux@lfdr.de>; Tue,  7 Apr 2020 21:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 610831A3729
+	for <lists+sparclinux@lfdr.de>; Thu,  9 Apr 2020 17:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbgDGTzZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 7 Apr 2020 15:55:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56460 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727832AbgDGTzY (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 7 Apr 2020 15:55:24 -0400
-Subject: Re: [GIT] Sparc
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586289324;
-        bh=7YL7XPotzRGCWzzchqO5OTCahGneC+7ehXGVZsikb0Q=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=YegKSEKXGKQDH/ANtEDy3qOcj6a9EQ/Ht5XTidZzD+cBFeakk1KA5lDo2Wt4zs3SO
-         z76MlW92rSMbwh+HBmnPU1lxFtNqpjYg5vMSL1cWxiaup45YTgEQS7yFcqDGEWe7Rn
-         suA7tJfqTUwEGVmqAYQHBBE2QRniRRGwqD24fWYU=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20200406.112528.895031681027517472.davem@davemloft.net>
-References: <20200406.112528.895031681027517472.davem@davemloft.net>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20200406.112528.895031681027517472.davem@davemloft.net>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git
- refs/heads/master
-X-PR-Tracked-Commit-Id: 255a69a94b8cbbcfef142137b5e7f99b5d168771
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 12782fbe0f77dcc36c48de8b0ab36d336620a3e7
-Message-Id: <158628932413.3792.18059030227180244818.pr-tracker-bot@kernel.org>
-Date:   Tue, 07 Apr 2020 19:55:24 +0000
-To:     David Miller <davem@davemloft.net>
-Cc:     torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+        id S1728253AbgDIP3p convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Thu, 9 Apr 2020 11:29:45 -0400
+Received: from 79.98.220.50.ibreddigital.net ([79.98.220.50]:51772 "EHLO
+        zeta.ibetec.info" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728176AbgDIP3p (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 9 Apr 2020 11:29:45 -0400
+X-Greylist: delayed 51400 seconds by postgrey-1.27 at vger.kernel.org; Thu, 09 Apr 2020 11:29:44 EDT
+X-Virus-Scanned: amavisd-new at ibetec.info
+Received: from [45.143.223.129] (gateway [192.168.7.1])
+ by zeta.ibetec.info (Postfix) with ESMTP id 4C39321D365B;
+ Wed,  8 Apr 2020 20:30:29 +0200 (CEST)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Attention,
+To:     "info@uba.group" <info@ubagroup.com>
+From:   "ATM CARD" <info@ubagroup.com>
+Date:   Wed, 08 Apr 2020 11:30:22 -0700
+Reply-To: ups.courierlogistics@citromail.hu
+Message-Id: <20200409002152.4AB242384909@zeta.ibetec.info>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The pull request you sent on Mon, 06 Apr 2020 11:25:28 -0700 (PDT):
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git refs/heads/master
+(GESGC1/79.50)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/12782fbe0f77dcc36c48de8b0ab36d336620a3e7
+Your ATM card worth the sum Four Million, Five Hundred Thousand United States Of American Dollars ($4.500’000’00 ) has been deposited with UNITED PARCEL SERVICE (UPS) for delivery to your home address. We are sorry for the Delay which was as a result of the CoronaVirus Pandemic. You are advised to stay safe band clean.  
 
-Thank you!
+Please Do Reconfirm the below Details;
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+Your name____________
+Delivery Address:____
+Country______________
+Phone Number:________
+
+Note, All charges regards this delivery was paid except , that it's mandatory the recepient to pay for the safe keeping fees charged $50 USD Daily which is payable before dispatching the parcel to your destination. for further inquiries please  Now contact UNITED PARCEL SERVICE (UPS) Nigerian Regional Director :        Mr Morris Soma
+                                      ups.courier518@gmail.com 
+                                     +234(815)7599680
+
+Your faithfully
+Mr.Davis Luiz
+Acting Manager of UBA Bank Plc
