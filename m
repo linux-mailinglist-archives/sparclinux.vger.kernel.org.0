@@ -2,41 +2,42 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62A011A3618
-	for <lists+sparclinux@lfdr.de>; Thu,  9 Apr 2020 16:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C1331A373F
+	for <lists+sparclinux@lfdr.de>; Thu,  9 Apr 2020 17:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727763AbgDIOle (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 9 Apr 2020 10:41:34 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:30842 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727611AbgDIOld (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 9 Apr 2020 10:41:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586443292;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=89GNIOSKjsOD8QJV6eCKtCzrS0MjyFeJYEzczikaUfM=;
-        b=WmixIhEAPyFwklTqe2cWyM/gqP7bbMkWxLW1zsOUbwnsQK0j7bVTPNIxHWzYUZYGleDfAY
-        Z9os8mmtSg8kd/sDxmSN7Qz19eYl/3zLcQR61fy9wI0AIr+OBQT+ZhRB8oPF1LLQlWaCbO
-        eq0g8yhX1cNKOMuXEuJwQ4HGioxH5/c=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-282-cRVUOBR5Nx2JHnnd5Bfdcg-1; Thu, 09 Apr 2020 10:41:26 -0400
-X-MC-Unique: cRVUOBR5Nx2JHnnd5Bfdcg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4E8F08017F3;
-        Thu,  9 Apr 2020 14:41:23 +0000 (UTC)
-Received: from localhost (ovpn-12-133.pek2.redhat.com [10.72.12.133])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 0F81E391;
-        Thu,  9 Apr 2020 14:41:22 +0000 (UTC)
-Date:   Thu, 9 Apr 2020 22:41:19 +0800
-From:   Baoquan He <bhe@redhat.com>
-To:     Mike Rapoport <rppt@linux.ibm.com>,
-        Michal Hocko <mhocko@kernel.org>
-Cc:     Hoan Tran <Hoan@os.amperecomputing.com>,
+        id S1728203AbgDIPd0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 9 Apr 2020 11:33:26 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:33810 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727919AbgDIPd0 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 9 Apr 2020 11:33:26 -0400
+Received: by mail-wr1-f65.google.com with SMTP id 65so12453075wrl.1;
+        Thu, 09 Apr 2020 08:33:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=eU8HVKPcEFasCzGb3YcmSlRzYlNKnx8U/U7SeGkKTM4=;
+        b=C+8DZyqPajHcUCsRWoTTPdTzp+9mYo3pWjlIfXH3GRnCf+cdk0McSbKJvwBTPTgbzN
+         gG7RNoybDzIk7efDPLlLMjf/MCfapIHuElEML9W5yyiSqIQIs3Gvp1HRevesRnmSvT8j
+         0cU0lHiPhDHBSWVA0/r4NsmWDahWp+bgiGxJrE2LrGEtKCd9zpRzbsPziWcvh6lf0s9B
+         cSHIDhSElFmJj76sRVqEZc4XSX40rLQE5T0sVzelazRG72Zp7IiS2azgaDcnrniQGzfe
+         t+ymP8afc2A+pu+APkeCwunUP/M4jzCEqVyArme0EBuqyor5/IzJ/H+H4Gi9ygugTJ8n
+         jzBw==
+X-Gm-Message-State: AGi0PuZK+e7JQOjWSdthtkNTSvEkXqFCAiQ0TqH1Ea4s8fmt5waXlbbF
+        xNT7LM6ZYrAL6mjjcpIuqII=
+X-Google-Smtp-Source: APiQypLhnJ0ArE660dAIRKPg+UfX8htjcJDtxqzlxSXIrBucMDxX/FoA+uq76nGwKcjVTj7PGoGnsA==
+X-Received: by 2002:a5d:5112:: with SMTP id s18mr15000370wrt.306.1586446403503;
+        Thu, 09 Apr 2020 08:33:23 -0700 (PDT)
+Received: from localhost (ip-37-188-180-223.eurotel.cz. [37.188.180.223])
+        by smtp.gmail.com with ESMTPSA id o67sm4335914wmo.5.2020.04.09.08.33.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2020 08:33:22 -0700 (PDT)
+Date:   Thu, 9 Apr 2020 17:33:21 +0200
+From:   Michal Hocko <mhocko@kernel.org>
+To:     Baoquan He <bhe@redhat.com>
+Cc:     Mike Rapoport <rppt@linux.ibm.com>,
+        Hoan Tran <Hoan@os.amperecomputing.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -61,7 +62,7 @@ Cc:     Hoan Tran <Hoan@os.amperecomputing.com>,
         lho@amperecomputing.com, mmorana@amperecomputing.com
 Subject: Re: [PATCH RFC] mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP (was: Re:
  [PATCH v3 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA)
-Message-ID: <20200409144119.GE2129@MiWiFi-R3L-srv>
+Message-ID: <20200409153321.GQ18386@dhcp22.suse.cz>
 References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
  <20200330074246.GA14243@dhcp22.suse.cz>
  <20200330092127.GB30942@linux.ibm.com>
@@ -70,57 +71,57 @@ References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
  <20200401054227.GC2129@MiWiFi-R3L-srv>
  <20200401075155.GH30942@linux.ibm.com>
  <20200402080144.GK22681@dhcp22.suse.cz>
+ <20200409144119.GE2129@MiWiFi-R3L-srv>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200402080144.GK22681@dhcp22.suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+In-Reply-To: <20200409144119.GE2129@MiWiFi-R3L-srv>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 04/02/20 at 10:01am, Michal Hocko wrote:
-> On Wed 01-04-20 10:51:55, Mike Rapoport wrote:
-> > Hi,
+On Thu 09-04-20 22:41:19, Baoquan He wrote:
+> On 04/02/20 at 10:01am, Michal Hocko wrote:
+> > On Wed 01-04-20 10:51:55, Mike Rapoport wrote:
+> > > Hi,
+> > > 
+> > > On Wed, Apr 01, 2020 at 01:42:27PM +0800, Baoquan He wrote:
+> > [...]
+> > > > From above information, we can remove HAVE_MEMBLOCK_NODE_MAP, and
+> > > > replace it with CONFIG_NUMA. That sounds more sensible to store nid into
+> > > > memblock when NUMA support is enabled.
+> > >  
+> > > Replacing CONFIG_HAVE_MEMBLOCK_NODE_MAP with CONFIG_NUMA will work, but
+> > > this will not help cleaning up the whole node/zone initialization mess and
+> > > we'll be stuck with two implementations.
 > > 
-> > On Wed, Apr 01, 2020 at 01:42:27PM +0800, Baoquan He wrote:
-> [...]
-> > > From above information, we can remove HAVE_MEMBLOCK_NODE_MAP, and
-> > > replace it with CONFIG_NUMA. That sounds more sensible to store nid into
-> > > memblock when NUMA support is enabled.
-> >  
-> > Replacing CONFIG_HAVE_MEMBLOCK_NODE_MAP with CONFIG_NUMA will work, but
-> > this will not help cleaning up the whole node/zone initialization mess and
-> > we'll be stuck with two implementations.
+> > Yeah, this is far from optimal.
+> > 
+> > > The overhead of enabling HAVE_MEMBLOCK_NODE_MAP is only for init time as
+> > > most architectures will anyway discard the entire memblock, so having it in
+> > > a UMA arch won't be a problem. The only exception is arm that uses
+> > > memblock for pfn_valid(), here we may also think about a solution to
+> > > compensate the addition of nid to the memblock structures. 
+> > 
+> > Well, we can make memblock_region->nid defined only for CONFIG_NUMA.
+> > memblock_get_region_node would then unconditionally return 0 on UMA.
+> > Essentially the same way we do NUMA for other MM code. I only see few
+> > direct usage of region->nid.
 > 
-> Yeah, this is far from optimal.
-> 
-> > The overhead of enabling HAVE_MEMBLOCK_NODE_MAP is only for init time as
-> > most architectures will anyway discard the entire memblock, so having it in
-> > a UMA arch won't be a problem. The only exception is arm that uses
-> > memblock for pfn_valid(), here we may also think about a solution to
-> > compensate the addition of nid to the memblock structures. 
-> 
-> Well, we can make memblock_region->nid defined only for CONFIG_NUMA.
-> memblock_get_region_node would then unconditionally return 0 on UMA.
-> Essentially the same way we do NUMA for other MM code. I only see few
-> direct usage of region->nid.
+> Checked code again, seems HAVE_MEMBLOCK_NODE_MAP is selected directly in
+> all ARCHes which support it. Means HAVE_MEMBLOCK_NODE_MAP is enabled by
+> default on those ARCHes, and has no dependency on CONFIG_NUMA at all.
+> E.g on x86, it just calls free_area_init_nodes() in generic code path,
+> while free_area_init_nodes() is defined in CONFIG_HAVE_MEMBLOCK_NODE_MAP
+> ifdeffery scope. So I tend to agree with Mike to remove
+> HAVE_MEMBLOCK_NODE_MAP firstly on all ARCHes. We can check if it's worth
+> only defining memblock_region->nid for CONFIG_NUMA case after
+> HAVE_MEMBLOCK_NODE_MAP is removed.
 
-Checked code again, seems HAVE_MEMBLOCK_NODE_MAP is selected directly in
-all ARCHes which support it. Means HAVE_MEMBLOCK_NODE_MAP is enabled by
-default on those ARCHes, and has no dependency on CONFIG_NUMA at all.
-E.g on x86, it just calls free_area_init_nodes() in generic code path,
-while free_area_init_nodes() is defined in CONFIG_HAVE_MEMBLOCK_NODE_MAP
-ifdeffery scope. So I tend to agree with Mike to remove
-HAVE_MEMBLOCK_NODE_MAP firstly on all ARCHes. We can check if it's worth
-only defining memblock_region->nid for CONFIG_NUMA case after
-HAVE_MEMBLOCK_NODE_MAP is removed.
+This can surely go in separate patches. What I meant to say is the
+region->nid is by definition 0 on !CONFIG_NUMA.
 
-config X86
-        def_bool y
-	...
-	select HAVE_MEMBLOCK_NODE_MAP
-	...
-
+-- 
+Michal Hocko
+SUSE Labs
