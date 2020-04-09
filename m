@@ -2,51 +2,63 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 610831A3729
-	for <lists+sparclinux@lfdr.de>; Thu,  9 Apr 2020 17:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6770B1A30AC
+	for <lists+sparclinux@lfdr.de>; Thu,  9 Apr 2020 10:11:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728253AbgDIP3p convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Thu, 9 Apr 2020 11:29:45 -0400
-Received: from 79.98.220.50.ibreddigital.net ([79.98.220.50]:51772 "EHLO
-        zeta.ibetec.info" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728176AbgDIP3p (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 9 Apr 2020 11:29:45 -0400
-X-Greylist: delayed 51400 seconds by postgrey-1.27 at vger.kernel.org; Thu, 09 Apr 2020 11:29:44 EDT
-X-Virus-Scanned: amavisd-new at ibetec.info
-Received: from [45.143.223.129] (gateway [192.168.7.1])
- by zeta.ibetec.info (Postfix) with ESMTP id 4C39321D365B;
- Wed,  8 Apr 2020 20:30:29 +0200 (CEST)
-Content-Type: text/plain; charset="utf-8"
+        id S1726052AbgDIIL1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 9 Apr 2020 04:11:27 -0400
+Received: from mail.sf-mail.de ([116.202.16.50]:49821 "EHLO mail.sf-mail.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725828AbgDIIL1 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 9 Apr 2020 04:11:27 -0400
+Received: (qmail 8600 invoked from network); 9 Apr 2020 08:04:53 -0000
+Received: from p548d4451.dip0.t-ipconnect.de ([::ffff:84.141.68.81]:56238 HELO daneel.sf-tec.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.37dev) with (DHE-RSA-AES256-GCM-SHA384 encrypted) ESMTPSA
+        for <sparclinux@vger.kernel.org>; Thu, 09 Apr 2020 10:04:53 +0200
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     sparclinux@vger.kernel.org
+Subject: Re: Suspected bug in wait syscall or similar
+Date:   Thu, 09 Apr 2020 10:11:18 +0200
+Message-ID: <5121018.IRn6nV2ZPn@daneel.sf-tec.de>
+In-Reply-To: <1848982.8N1hjUtedq@eto.sf-tec.de>
+References: <1848982.8N1hjUtedq@eto.sf-tec.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Attention,
-To:     "info@uba.group" <info@ubagroup.com>
-From:   "ATM CARD" <info@ubagroup.com>
-Date:   Wed, 08 Apr 2020 11:30:22 -0700
-Reply-To: ups.courierlogistics@citromail.hu
-Message-Id: <20200409002152.4AB242384909@zeta.ibetec.info>
+Content-Type: multipart/signed; boundary="nextPart3940060.4HlUvDv14c"; micalg="pgp-sha1"; protocol="application/pgp-signature"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+--nextPart3940060.4HlUvDv14c
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 
-(GESGC1/79.50)
+Am Montag, 30. M=E4rz 2020, 10:41:09 CEST schrieb Rolf Eike Beer:
+> I run a 32 bit Gentoo userspace on my T5120 with a 64 bit kernel (5.5.7 at
+> the moment). This is nothing really new, I see this for a while, but it
+> seems to got a bit worse lately.
+>=20
+> My observations are:
+> -the testsuite of the fish shell often hangs. A subprocess goes zombie, b=
+ut
+> the parent never cleans this up
 
-Your ATM card worth the sum Four Million, Five Hundred Thousand United States Of American Dollars ($4.500’000’00 ) has been deposited with UNITED PARCEL SERVICE (UPS) for delivery to your home address. We are sorry for the Delay which was as a result of the CoronaVirus Pandemic. You are advised to stay safe band clean.  
+This also happens on sparc64.
 
-Please Do Reconfirm the below Details;
+Eike
+--nextPart3940060.4HlUvDv14c
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-Your name____________
-Delivery Address:____
-Country______________
-Phone Number:________
+-----BEGIN PGP SIGNATURE-----
 
-Note, All charges regards this delivery was paid except , that it's mandatory the recepient to pay for the safe keeping fees charged $50 USD Daily which is payable before dispatching the parcel to your destination. for further inquiries please  Now contact UNITED PARCEL SERVICE (UPS) Nigerian Regional Director :        Mr Morris Soma
-                                      ups.courier518@gmail.com 
-                                     +234(815)7599680
+iF0EABECAB0WIQSaYVDeqwKa3fTXNeNcpIk+abn8TgUCXo7YpgAKCRBcpIk+abn8
+TgpGAJ90O55i68WPNuWj3pjQ71sxwBYoRwCgibeZmu0fjCXphc3Lj5PsqNTLV00=
+=pdaS
+-----END PGP SIGNATURE-----
 
-Your faithfully
-Mr.Davis Luiz
-Acting Manager of UBA Bank Plc
+--nextPart3940060.4HlUvDv14c--
+
+
+
