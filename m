@@ -2,196 +2,122 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70F891A42AB
-	for <lists+sparclinux@lfdr.de>; Fri, 10 Apr 2020 08:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 515141A4A3B
+	for <lists+sparclinux@lfdr.de>; Fri, 10 Apr 2020 21:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725776AbgDJGu4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 10 Apr 2020 02:50:56 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:60270 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725839AbgDJGux (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 10 Apr 2020 02:50:53 -0400
+        id S1726701AbgDJTQU (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 10 Apr 2020 15:16:20 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:43956 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726203AbgDJTQU (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 10 Apr 2020 15:16:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586501453;
+        s=mimecast20190719; t=1586546179;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=g9JE7+kQcGRHuqYE15Qj2LdCxQJFZbqVW19T+MEzEiw=;
-        b=ZM3ufTJc0Qqpm9Pdq9U6WBlEiq3wrtYIlqjPua67yQdOSgrqMRWfs08mxcU2fdsqUlhwdk
-        sdalJKMxLWT/3Wf+bz4mrmsWGBLQcfPVb/qZOX8rGL/2Vprg0XWnhtgjgGM85gVsBgDlei
-        s/v9m0swT/sQSSCOD7cCOqNOfMYarQc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-116-YFk-c_hfPIunR-iCRoa7nA-1; Fri, 10 Apr 2020 02:50:47 -0400
-X-MC-Unique: YFk-c_hfPIunR-iCRoa7nA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id ACA40107B275;
-        Fri, 10 Apr 2020 06:50:43 +0000 (UTC)
-Received: from localhost (ovpn-13-236.pek2.redhat.com [10.72.13.236])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id E95605DA7C;
-        Fri, 10 Apr 2020 06:50:41 +0000 (UTC)
-Date:   Fri, 10 Apr 2020 14:50:39 +0800
-From:   Baoquan He <bhe@redhat.com>
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     Michal Hocko <mhocko@kernel.org>,
-        Hoan Tran <Hoan@os.amperecomputing.com>,
+        bh=mwSL4Svde7cDyREN44P4y94Qc6dx9Sv2bNY13UCrEho=;
+        b=BCq9/dHDdKFYRrAjKI63OhKa4fkohIcfoT8HZNSvzCe0wflLxY8vSHMaNUdlAogf5tK3Oa
+        iQwNjINST84PLtYN1QFJ/OQcwv53Z5iOQD98IXEetYUoiO7ISVpsdIq8AvMZ+g1HSO9jxo
+        HFWCNqzXctpI3qu0kaHN8pUHQlufudQ=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-71-SV-aebm3Ox-U05Lxvq3VsQ-1; Fri, 10 Apr 2020 15:16:17 -0400
+X-MC-Unique: SV-aebm3Ox-U05Lxvq3VsQ-1
+Received: by mail-qk1-f197.google.com with SMTP id f187so1510402qkd.11
+        for <sparclinux@vger.kernel.org>; Fri, 10 Apr 2020 12:16:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=mwSL4Svde7cDyREN44P4y94Qc6dx9Sv2bNY13UCrEho=;
+        b=XOaLcMCGdMtZQXtSqTRkDF0Sk38Nn+MtXSdPJs3H2AbM1w9zk7eVrIFgS+Wk2xWv4b
+         /5IzYdFMLRXqlpWC8RIvQ1nCyGg9cK8YenJg2i9i/1ZcCOIPA7HoDNI3YljZeso+6cQy
+         i1atL2hGsKpafPshf/0PBWxTp++BPetZ5s+xA4qT928RlHbXRr4w/wPgZbHJMNFQzIug
+         NuWIClOE6O53Sl/PJlVZU0ToColzzyPuZG2BFdx5vQVAoX4s1LIoPkKIwkGTloSyLsIV
+         PMye0Au3EU7f47qtxs63eZv9b8HYFy8VdGtR10UbTv4aXhcr9wq1du1o+WuSRRhqukPd
+         9myQ==
+X-Gm-Message-State: AGi0PuaRZulsaB7IjZuzBS4XLIaaJ0tqcOvXPQHHOA+EL2JCE95+PTvD
+        yzl3yPiVD32IvzMHnwXiL0a9nOywPe6si/ksv1eUof+cF5ujv+cUTHUwvTB24u7noPP4+4QgruP
+        MIV/8AlXKmzIOvtnQFHRT5w==
+X-Received: by 2002:a05:620a:89d:: with SMTP id b29mr5792234qka.329.1586546177443;
+        Fri, 10 Apr 2020 12:16:17 -0700 (PDT)
+X-Google-Smtp-Source: APiQypLiuHO8rQfrWs/w6IUs43Srn34pCDFpZie/ieWUpJNT3bX04my6S/Xtwb+5j5ZmCFgzwIqbpg==
+X-Received: by 2002:a05:620a:89d:: with SMTP id b29mr5792202qka.329.1586546177111;
+        Fri, 10 Apr 2020 12:16:17 -0700 (PDT)
+Received: from xz-x1 ([2607:9880:19c0:32::2])
+        by smtp.gmail.com with ESMTPSA id b13sm1590230qtp.46.2020.04.10.12.16.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2020 12:16:16 -0700 (PDT)
+Date:   Fri, 10 Apr 2020 15:16:13 -0400
+From:   Peter Xu <peterx@redhat.com>
+To:     Mike Kravetz <mike.kravetz@oracle.com>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-doc@vger.kernel.org,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Oscar Salvador <osalvador@suse.de>,
-        Pavel Tatashin <pavel.tatashin@microsoft.com>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        Will Deacon <will@kernel.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>,
         Christian Borntraeger <borntraeger@de.ibm.com>,
-        "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
-        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        lho@amperecomputing.com, mmorana@amperecomputing.com
-Subject: Re: [PATCH v3 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
- default for NUMA
-Message-ID: <20200410065039.GG2129@MiWiFi-R3L-srv>
-References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
- <20200330074246.GA14243@dhcp22.suse.cz>
- <20200330175100.GD30942@linux.ibm.com>
- <20200330182301.GM14243@dhcp22.suse.cz>
- <20200331081423.GE30942@linux.ibm.com>
- <20200331085513.GE30449@dhcp22.suse.cz>
- <20200331140332.GA2129@MiWiFi-R3L-srv>
- <20200331142138.GL30449@dhcp22.suse.cz>
- <20200409162741.GA9387@linux.ibm.com>
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Longpeng <longpeng2@huawei.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Mina Almasry <almasrymina@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 1/4] hugetlbfs: add arch_hugetlb_valid_size
+Message-ID: <20200410191613.GD3172@xz-x1>
+References: <20200401183819.20647-1-mike.kravetz@oracle.com>
+ <20200401183819.20647-2-mike.kravetz@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200409162741.GA9387@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+In-Reply-To: <20200401183819.20647-2-mike.kravetz@oracle.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 04/09/20 at 07:27pm, Mike Rapoport wrote:
-> On Tue, Mar 31, 2020 at 04:21:38PM +0200, Michal Hocko wrote:
-> > On Tue 31-03-20 22:03:32, Baoquan He wrote:
-> > > Hi Michal,
-> > > 
-> > > On 03/31/20 at 10:55am, Michal Hocko wrote:
-> > > > On Tue 31-03-20 11:14:23, Mike Rapoport wrote:
-> > > > > Maybe I mis-read the code, but I don't see how this could happen. In the
-> > > > > HAVE_MEMBLOCK_NODE_MAP=y case, free_area_init_node() calls
-> > > > > calculate_node_totalpages() that ensures that node->node_zones are entirely
-> > > > > within the node because this is checked in zone_spanned_pages_in_node().
-> > > > 
-> > > > zone_spanned_pages_in_node does chech the zone boundaries are within the
-> > > > node boundaries. But that doesn't really tell anything about other
-> > > > potential zones interleaving with the physical memory range.
-> > > > zone->spanned_pages simply gives the physical range for the zone
-> > > > including holes. Interleaving nodes are essentially a hole
-> > > > (__absent_pages_in_range is going to skip those).
-> > > > 
-> > > > That means that when free_area_init_core simply goes over the whole
-> > > > physical zone range including holes and that is why we need to check
-> > > > both for physical and logical holes (aka other nodes).
-> > > > 
-> > > > The life would be so much easier if the whole thing would simply iterate
-> > > > over memblocks...
-> > > 
-> > > The memblock iterating sounds a great idea. I tried with putting the
-> > > memblock iterating in the upper layer, memmap_init(), which is used for
-> > > boot mem only anyway. Do you think it's doable and OK? It yes, I can
-> > > work out a formal patch to make this simpler as you said. The draft code
-> > > is as below. Like this it uses the existing code and involves little change.
-> > 
-> > Doing this would be a step in the right direction! I haven't checked the
-> > code very closely though. The below sounds way too simple to be truth I
-> > am afraid. First for_each_mem_pfn_range is available only for
-> > CONFIG_HAVE_MEMBLOCK_NODE_MAP (which is one of the reasons why I keep
-> > saying that I really hate that being conditional). Also I haven't really
-> > checked the deferred initialization path - I have a very vague
-> > recollection that it has been converted to the memblock api but I have
-> > happilly dropped all that memory.
-> 
-> The Baoquan's patch almost did it, at least for simple case of qemu with 2
-> nodes. It's only missing the adjustment to the size passed to
-> memmap_init_zone() as it may change because of clamping.
+On Wed, Apr 01, 2020 at 11:38:16AM -0700, Mike Kravetz wrote:
+> diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
+> index 2eb6c234d594..81606223494f 100644
+> --- a/arch/arm64/include/asm/hugetlb.h
+> +++ b/arch/arm64/include/asm/hugetlb.h
+> @@ -59,6 +59,8 @@ extern void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+>  extern void set_huge_swap_pte_at(struct mm_struct *mm, unsigned long addr,
+>  				 pte_t *ptep, pte_t pte, unsigned long sz);
+>  #define set_huge_swap_pte_at set_huge_swap_pte_at
+> +bool __init arch_hugetlb_valid_size(unsigned long size);
+> +#define arch_hugetlb_valid_size arch_hugetlb_valid_size
 
-Right, the size need be adjusted after start and end clamping.
+Sorry for chimming in late.
 
-> 
-> I've drafted something that removes HAVE_MEMBLOCK_NODE_MAP and added this
-> patch there [1]. For several memory configurations I could emulate with
-> qemu it worked.
-> I'm going to wait a bit to see of kbuild is happy and then I'll send the
-> patches.
-> 
-> Baoquan, I took liberty to add your SoB, hope you don't mind.
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=memblock/all-have-node-map 
+Since we're working on removing arch-dependent codes after all.. I'm
+thinking whether we can define arch_hugetlb_valid_size() once in the
+common header (e.g. linux/hugetlb.h), then in mm/hugetlb.c:
 
-Of course not. Thanks for doing this, and look forward to seeing your
-formal patchset posting when it's ready.
+bool __init __attribute((weak)) arch_hugetlb_valid_size(unsigned long size)
+{
+	return size == HPAGE_SIZE;
+}
 
->   
-> > > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > > index 138a56c0f48f..558d421f294b 100644
-> > > --- a/mm/page_alloc.c
-> > > +++ b/mm/page_alloc.c
-> > > @@ -6007,14 +6007,6 @@ void __meminit memmap_init_zone(unsigned long size, int nid, unsigned long zone,
-> > >  		 * function.  They do not exist on hotplugged memory.
-> > >  		 */
-> > >  		if (context == MEMMAP_EARLY) {
-> > > -			if (!early_pfn_valid(pfn)) {
-> > > -				pfn = next_pfn(pfn);
-> > > -				continue;
-> > > -			}
-> > > -			if (!early_pfn_in_nid(pfn, nid)) {
-> > > -				pfn++;
-> > > -				continue;
-> > > -			}
-> > >  			if (overlap_memmap_init(zone, &pfn))
-> > >  				continue;
-> > >  			if (defer_init(nid, pfn, end_pfn))
-> > > @@ -6130,9 +6122,17 @@ static void __meminit zone_init_free_lists(struct zone *zone)
-> > >  }
-> > >  
-> > >  void __meminit __weak memmap_init(unsigned long size, int nid,
-> > > -				  unsigned long zone, unsigned long start_pfn)
-> > > +				  unsigned long zone, unsigned long range_start_pfn)
-> > >  {
-> > > -	memmap_init_zone(size, nid, zone, start_pfn, MEMMAP_EARLY, NULL);
-> > > +	unsigned long start_pfn, end_pfn;
-> > > +	unsigned long range_end_pfn = range_start_pfn + size;
-> > > +	int i;
-> > > +	for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
-> > > +		start_pfn = clamp(start_pfn, range_start_pfn, range_end_pfn);
-> > > +		end_pfn = clamp(end_pfn, range_start_pfn, range_end_pfn);
-> > > +		if (end_pfn > start_pfn)
-> > > +			memmap_init_zone(size, nid, zone, start_pfn, MEMMAP_EARLY, NULL);
-> > > +	}
-> > >  }
-> > >  
-> > >  static int zone_batchsize(struct zone *zone)
-> > 
-> > -- 
-> > Michal Hocko
-> > SUSE Labs
-> 
-> -- 
-> Sincerely yours,
-> Mike.
-> 
-> 
+We can simply redefine arch_hugetlb_valid_size() in arch specific C
+files where we want to override the default.  Would that be slightly
+cleaner?
+
+Thanks,
+
+-- 
+Peter Xu
 
