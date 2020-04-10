@@ -2,54 +2,54 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A15B1A4A61
-	for <lists+sparclinux@lfdr.de>; Fri, 10 Apr 2020 21:27:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66C551A4A7D
+	for <lists+sparclinux@lfdr.de>; Fri, 10 Apr 2020 21:34:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726713AbgDJT1D (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 10 Apr 2020 15:27:03 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:26458 "EHLO
+        id S1726646AbgDJTe2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 10 Apr 2020 15:34:28 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:27872 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726702AbgDJT1C (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 10 Apr 2020 15:27:02 -0400
+        with ESMTP id S1726726AbgDJTe1 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 10 Apr 2020 15:34:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586546822;
+        s=mimecast20190719; t=1586547267;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=ddNmEkCT3NuYAPr19Gh+8RyFM7t2I+OUmUTTKHVjsXQ=;
-        b=R4H65oV/piiaFxCONv2hcd8uancE7pSECUD7QWxBzAOxcWBeqN9pEqRellE6VOpm+CkyqF
-        nD605fpUH+9FLepEoOx6LXHdwhoL1sOwGQyNtgV1ki1Hg5DDi+ayeIhvzsJI8044A3/WvE
-        tNOvb2uCzedeyxcKHAsyfjilBGTzgYY=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-222-3AWSTFidNwmGlWnyEww4gA-1; Fri, 10 Apr 2020 15:27:00 -0400
-X-MC-Unique: 3AWSTFidNwmGlWnyEww4gA-1
-Received: by mail-qt1-f200.google.com with SMTP id x4so2685052qti.8
-        for <sparclinux@vger.kernel.org>; Fri, 10 Apr 2020 12:27:00 -0700 (PDT)
+        bh=dR0pnT92lTl7PiXH1/vycyqLlKqG/upjftJ1HpISkMA=;
+        b=LX0OxR2w0kPWwvsxu0xV3/HQXXpoxvpJ8g+og0O5a7FitVUEWxgutKv+I6GPqqr2SRigJd
+        /VP9YiHOakXdO9iLclTYSdBNIV54RhAtL7xZi9NqIRRHOf3P1IhpUbdZp5x9qYhqqDhp2H
+        kz5ra127yZwWpir5YPSPrRAKEhv4vMo=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-31-AyAMlGGIM2GgyP3Inh1ToQ-1; Fri, 10 Apr 2020 15:34:23 -0400
+X-MC-Unique: AyAMlGGIM2GgyP3Inh1ToQ-1
+Received: by mail-qt1-f199.google.com with SMTP id e44so2710289qta.9
+        for <sparclinux@vger.kernel.org>; Fri, 10 Apr 2020 12:34:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=ddNmEkCT3NuYAPr19Gh+8RyFM7t2I+OUmUTTKHVjsXQ=;
-        b=TLaR62KwUpQrKhzPr35LYHM4kHL82n5ECz4o16QFehqS6EusDWRA+86YolW4OSeghQ
-         RmVrMSiSuPAxrF2eZtnTFJcc5fXS91zkJfV9ObEEACPkxOnJFwcqaqqcgXBmyzEv/JMR
-         ZJrmfKHTGfSHKdRww5VcPu2KfHnvwMopbN4CYDkdP0oIUJkRC280fJlrmEFZR+bhCKu5
-         kLa9ySH7UDYho1SHM0tZ8lTMH+qujokEWI17OpSc+R4tqPbEQB0T+yEppRcwE5jtswX7
-         xcpRHwJWwhPzCZ2ZAgwgVhcCEOL1Pjhb84jr/vr+AEcY3nAvNlpZ+NqNzto0RxIjPm0Y
-         jvOQ==
-X-Gm-Message-State: AGi0PuYMymm2HQdSg7MmAhb5KHVmtphC64nKlnwaeZIc717SOXvwPylM
-        ZnAJ+0JzweXiC6T2XvOuyV9mzTfY/uf4rvooDW2TcSc0O4qLUiGgYC+rm40bSfyhcjkrIXMfLld
-        is96H2cZ7G0rcFoL8ttrK/w==
-X-Received: by 2002:ac8:2c66:: with SMTP id e35mr769592qta.188.1586546820320;
-        Fri, 10 Apr 2020 12:27:00 -0700 (PDT)
-X-Google-Smtp-Source: APiQypJUBND9mw4a79BsRjlZQBzcyo9K+K4n4uLp4F1mRayVM5WnYx0Zu2cY7436wozu46yjuIupKQ==
-X-Received: by 2002:ac8:2c66:: with SMTP id e35mr769568qta.188.1586546820098;
-        Fri, 10 Apr 2020 12:27:00 -0700 (PDT)
+        bh=dR0pnT92lTl7PiXH1/vycyqLlKqG/upjftJ1HpISkMA=;
+        b=HGifPaqRIRtzpuNRNliiFY3Vnq+Bu9ii4S1HAbnrFtmF0/dobXHxVjNIXqxAiF89Uz
+         uBr7kjGzPjAAV49b9z5yHC/Xo6rJpv1xzG+JkeTKB7SPknNCh/Ew9RV1da5xlqxU6yu8
+         4dk0Tx8CB/9ltoAVlAvG5cCt/84qg3jyjUZWPIv4/dpwN/2sIazdixs35ZqMfsZOCEJN
+         MUxWPm8UiX0N35kTtYi6VdrHAbXhAsgXSHttVrrVpm7NjxDQnbA0UpI4qz6BnlWHfQWC
+         o+QD72AeRdvhOrBxeMOaPi2MhAnQQSSar4UUJf56w60Qp+Km5bm2miRjn7rxKJqdXOLo
+         S+/w==
+X-Gm-Message-State: AGi0Pua58TyXZdBKxzwpvDj8zV+P9qeBUoJFhzlUT1x3EMo2q/PSiAUC
+        f6LPRzwRzMLFjLpi1AV/VOvAWY/T7aWYlSTHqXDGkO3FiBdrVvcIVFGoTtm19/e1tOFCis5jnt+
+        se/synxmSxjU5PrdVYhLeyw==
+X-Received: by 2002:ac8:6d06:: with SMTP id o6mr768731qtt.165.1586547263228;
+        Fri, 10 Apr 2020 12:34:23 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKE+9gdKAAzqM7E075abKl7yEhzpSisddiPAFgdbjLHprLwAVDEdymEnBo0qMB8GT4NFqVJjg==
+X-Received: by 2002:ac8:6d06:: with SMTP id o6mr768725qtt.165.1586547263017;
+        Fri, 10 Apr 2020 12:34:23 -0700 (PDT)
 Received: from xz-x1 ([2607:9880:19c0:32::2])
-        by smtp.gmail.com with ESMTPSA id o33sm2321940qtj.62.2020.04.10.12.26.57
+        by smtp.gmail.com with ESMTPSA id m11sm2214328qkg.130.2020.04.10.12.34.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2020 12:26:59 -0700 (PDT)
-Date:   Fri, 10 Apr 2020 15:26:56 -0400
+        Fri, 10 Apr 2020 12:34:22 -0700 (PDT)
+Date:   Fri, 10 Apr 2020 15:34:19 -0400
 From:   Peter Xu <peterx@redhat.com>
 To:     Mike Kravetz <mike.kravetz@oracle.com>
 Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -76,39 +76,34 @@ Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         Christophe Leroy <christophe.leroy@c-s.fr>,
         Mina Almasry <almasrymina@google.com>,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 2/4] hugetlbfs: move hugepagesz= parsing to arch
- independent code
-Message-ID: <20200410192656.GE3172@xz-x1>
+Subject: Re: [PATCH v2 3/4] hugetlbfs: remove hugetlb_add_hstate() warning
+ for existing hstate
+Message-ID: <20200410193419.GF3172@xz-x1>
 References: <20200401183819.20647-1-mike.kravetz@oracle.com>
- <20200401183819.20647-3-mike.kravetz@oracle.com>
+ <20200401183819.20647-4-mike.kravetz@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200401183819.20647-3-mike.kravetz@oracle.com>
+In-Reply-To: <20200401183819.20647-4-mike.kravetz@oracle.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Apr 01, 2020 at 11:38:17AM -0700, Mike Kravetz wrote:
-> Now that architectures provide arch_hugetlb_valid_size(), parsing
-> of "hugepagesz=" can be done in architecture independent code.
-> Create a single routine to handle hugepagesz= parsing and remove
-> all arch specific routines.  We can also remove the interface
-> hugetlb_bad_size() as this is no longer used outside arch independent
-> code.
-> 
-> This also provides consistent behavior of hugetlbfs command line
-> options.  The hugepagesz= option should only be specified once for
-> a specific size, but some architectures allow multiple instances.
-> This appears to be more of an oversight when code was added by some
-> architectures to set up ALL huge pages sizes.
-> 
-> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+On Wed, Apr 01, 2020 at 11:38:18AM -0700, Mike Kravetz wrote:
 
-This could change the error messages for a wrong setup on archs, but I
-guess it's not a big deal, assuming even to capture error people will
-majorly still look for error lines in general..
+[...]
+
+> @@ -3255,7 +3254,6 @@ void __init hugetlb_add_hstate(unsigned int order)
+>  	unsigned long i;
+>  
+>  	if (size_to_hstate(PAGE_SIZE << order)) {
+> -		pr_warn("hugepagesz= specified twice, ignoring\n");
+>  		return;
+>  	}
+
+Nitpick: I think the brackets need to be removed to follow linux
+coding style.  With that:
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 
