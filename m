@@ -2,28 +2,29 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0137B1AF650
-	for <lists+sparclinux@lfdr.de>; Sun, 19 Apr 2020 05:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CAE61AFF2D
+	for <lists+sparclinux@lfdr.de>; Mon, 20 Apr 2020 02:26:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725903AbgDSDAZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 18 Apr 2020 23:00:25 -0400
-Received: from baliza.dreformarra.com ([134.73.232.212]:4252 "HELO
+        id S1725949AbgDTA0w (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 19 Apr 2020 20:26:52 -0400
+Received: from baliza.dreformarra.com ([134.73.232.212]:3311 "HELO
         elitetorrent1.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with SMTP id S1725877AbgDSDAZ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 18 Apr 2020 23:00:25 -0400
-Received: from unknown (167.99.72.130)
-        by mtu67.syds.piswix.net with SMTP; Sat, 18 Apr 2020 15:50:26 -1100
-Message-ID: <4066CC0B.90C5C4CE@elitetorrent1.com>
-Date:   Sat, 18 Apr 2020 15:37:12 -1100
-Reply-To: "elitetorrent1.com" <info@elitetorrent1.com>
+        with SMTP id S1725947AbgDTA0w (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 19 Apr 2020 20:26:52 -0400
+Received: from unknown (128.212.171.33)
+        by relay37.vosimerkam.net with SMTP; Mon, 20 Apr 2020 02:23:57 +0200
+Received: from mail.webhostings4u.com ([79.154.103.66]) by smtp-server1.cfdenselr.com with LOCAL; Mon, 20 Apr 2020 02:20:59 +0200
+Received: from mail.gimmicc.net ([Mon, 20 Apr 2020 02:08:06 +0200])
+        by group21.345mail.com with NNFMP; Mon, 20 Apr 2020 02:08:06 +0200
+Message-ID: <882A2E55.11D6672F@elitetorrent1.com>
+Date:   Mon, 20 Apr 2020 01:50:31 +0200
 From:   "elitetorrent1.com" <info@elitetorrent1.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9pre) Gecko/2008050715 Thunderbird/3.0a1
-X-Accept-Language: en-us
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.8) Gecko/20100408 Thunderbird/3.0.3
 MIME-Version: 1.0
 To:     <sparclinux@vger.kernel.org>
 Subject: Download latest movies from elitetorrent1.com
 Content-Type: text/plain;
-        charset="us-ascii"
+        charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
