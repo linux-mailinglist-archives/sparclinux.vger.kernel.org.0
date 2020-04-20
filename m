@@ -2,83 +2,90 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C4781B0685
-	for <lists+sparclinux@lfdr.de>; Mon, 20 Apr 2020 12:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B69B21B1040
+	for <lists+sparclinux@lfdr.de>; Mon, 20 Apr 2020 17:34:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726100AbgDTKZz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 20 Apr 2020 06:25:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39954 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725773AbgDTKZy (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 20 Apr 2020 06:25:54 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0238DC061A0C;
-        Mon, 20 Apr 2020 03:25:53 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id p8so4830736pgi.5;
-        Mon, 20 Apr 2020 03:25:52 -0700 (PDT)
+        id S1727123AbgDTPec (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 20 Apr 2020 11:34:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59584 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726584AbgDTPea (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 20 Apr 2020 11:34:30 -0400
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21ACBC061A41
+        for <sparclinux@vger.kernel.org>; Mon, 20 Apr 2020 08:34:29 -0700 (PDT)
+Received: by mail-qk1-x742.google.com with SMTP id b62so11012955qkf.6
+        for <sparclinux@vger.kernel.org>; Mon, 20 Apr 2020 08:34:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=yypQDahjbXqJhDbVQSiASHihfGpSC0JMzsgU8Cz/AiY=;
-        b=HdCWUfWuE1u+XaXD9Ms85gt4izU8DyOrmmvb1s/Jb/Vh5rKqf9BQq9h5pCmTjXXb8E
-         i1UeedwF++2a3WAWjZe5irqGqtuCmn1sqTn985LVCgLRPFMufdeksavjuiSojGUipIdZ
-         KuEf+TG/qxTGRCRUtJ2GKY3NIj3P93vGRM0HLck6KdcKx4DGwm+0M9vy2nIlfVF7NNsx
-         sye5nxxQEOtR0dyZ/uTdz2bHo6IPo03UlAOiO7CTUc83i4baqLwa3JKWU4scp5Bb9LZB
-         pg1dl1F8j76CX5u1r2aZ9/L9ZVP5bNKuWBRNtyK6n4Bidq3Wq9nle2G3W7KDxUqkhV/I
-         iVOA==
+        d=lca.pw; s=google;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=npWq2XT20dmtrkzpn/wWrvRXENSuyiO3LHGOrfDPnHs=;
+        b=jjjTrvy2vg5nuieofgLvVo3mBlaSZX2b9oWKA5VtEiQ6EvWHnkfztV+jI725AG3Xan
+         3V7zdKw0z1oVgAEYO2If54k1Up3g3aqj1T+1QXj7qIcI2tKy/YW4tiBYp+m28jE14wCF
+         5i+/2rVjwuUj8zKMSQlQ+PFf/if8JEfOhSIx0x4jjjKQsWuYE+l2kNguAOUymoAuOlZJ
+         WfERH2FVT3WrkIC69PASIz/eibcyTS6dOhztcvnxs4+OOsCPb/UzYWbXlQ6lOosqG7vN
+         qsJWEKj+6CtkfMRxXwqzdDVQCJ7K9+c6wZA3ZaOKa6ny6cXEzmN2xOcYJv2AdOhrSU7Y
+         KIZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=yypQDahjbXqJhDbVQSiASHihfGpSC0JMzsgU8Cz/AiY=;
-        b=J/a94mo1ZdoSSAE6gC0TkDuX8Lc1jt9IUMOaIuVwAsPZXZuqGu7FVYDPDS8ZBBxkwZ
-         F6zOV1wP0UbxHHP2mJ+OngHu5ojTwVz6C8au44jeYuKNppv/MuhT98lGkeCN5GgAkXal
-         yjdPoYW8TC0hSKe5Y24RdL0ll68NuA+iEy/r+COiZs3SgZ3H1b1u+Dxxwd18oHpPJ4QM
-         AdkZz5msh3/QbVLYHiBynaU/apzmxvV2tNXbgrbfaSmCpH71xA/q1uW2pepHcotwWDBZ
-         7tSANFv7cuesU2EUWRpW5qIojQVjIeNgxqqrc7UYvvgLl7GTVQeYHXKrLcuZmqybYCNk
-         uC/Q==
-X-Gm-Message-State: AGi0PuZ7fNOJM0hFzBy4LKDO+qBUH2uxXXWbsuWLzsoAAF4IZxbeyHnT
-        aKu7kLtCltjPkDyX7J/3kM0=
-X-Google-Smtp-Source: APiQypLziiZ4XFGGVOnDb/VHoxNBse93+oqNzvsu4l35WhyBRM2f0vKvSNofiSie8P1sNgYipNPpAg==
-X-Received: by 2002:a62:2a8c:: with SMTP id q134mr16642242pfq.35.1587378352530;
-        Mon, 20 Apr 2020 03:25:52 -0700 (PDT)
-Received: from [192.168.86.235] (c-73-241-150-58.hsd1.ca.comcast.net. [73.241.150.58])
-        by smtp.gmail.com with ESMTPSA id h14sm651899pjc.46.2020.04.20.03.25.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Apr 2020 03:25:51 -0700 (PDT)
-Subject: Re: [PATCH 1/4] fs: Implement close-on-fork
-To:     Nate Karstens <nate.karstens@garmin.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-parisc@vger.kernel.org,
-        sparclinux@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Changli Gao <xiaosuo@gmail.com>
-References: <20200420071548.62112-1-nate.karstens@garmin.com>
- <20200420071548.62112-2-nate.karstens@garmin.com>
-From:   Eric Dumazet <eric.dumazet@gmail.com>
-Message-ID: <36dce9b4-a0bf-0015-f6bc-1006938545b1@gmail.com>
-Date:   Mon, 20 Apr 2020 03:25:49 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <20200420071548.62112-2-nate.karstens@garmin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=npWq2XT20dmtrkzpn/wWrvRXENSuyiO3LHGOrfDPnHs=;
+        b=FqN+uUALrHKjysb4xVg3eo5L8CEUnjuphWMAvWic7gIv1vGW6GinD7MMX7BxV/l2tO
+         wJv2m7/ARVcVUKw3+8bKdqJG4YW+XHTFB6VessQQ54ss3tDrsgfD3pLprhzXpXaEx8x1
+         kW9l5SdUy5M0L79Xo4lsGRvpPRHnT2PbE4zICHaXWx0j6fz6TNK8RnJcJhSbZupFwT18
+         8oa8BWgor4eBftff1opVKQ+FINjEkHc0594C/MqFtyAkhjLXqjCI28XPY+3eBuSDWPuO
+         iHltpsd8/NHP+z/Yk5OAG2sCmp6wc7cb/sR5A9UZ6lggIjrfTAz8ZUCdMfkRDGtk2lG+
+         a7gg==
+X-Gm-Message-State: AGi0PubwasvR6Nb2QJPlTRzjxhevQkQXNyP2TYMN9nWXTupzRbscNA68
+        Z1wiKhe8b+e0Gz5CKvTxFLvVPA==
+X-Google-Smtp-Source: APiQypInAT0yQSOyX2ykJEcndc4QbjNLYen1mhs6MpEFOqtQyBg2OXGSeBnhQqPwJE4FVuLfBonbvA==
+X-Received: by 2002:a37:61cf:: with SMTP id v198mr15721385qkb.485.1587396867942;
+        Mon, 20 Apr 2020 08:34:27 -0700 (PDT)
+Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+        by smtp.gmail.com with ESMTPSA id m1sm744465qtm.22.2020.04.20.08.34.24
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 20 Apr 2020 08:34:27 -0700 (PDT)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+Subject: Re: [PATCH v3 0/4] Clean up hugetlb boot command line processing
+From:   Qian Cai <cai@lca.pw>
+In-Reply-To: <20200417185049.275845-1-mike.kravetz@oracle.com>
+Date:   Mon, 20 Apr 2020 11:34:22 -0400
+Cc:     Linux-MM <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-doc@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Longpeng <longpeng2@huawei.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mina Almasry <almasrymina@google.com>,
+        Peter Xu <peterx@redhat.com>,
+        Nitesh Narayan Lal <nitesh@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5E312000-05D8-4C5D-A7C0-DDDE1842CB0E@lca.pw>
+References: <20200417185049.275845-1-mike.kravetz@oracle.com>
+To:     Mike Kravetz <mike.kravetz@oracle.com>
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
@@ -86,79 +93,212 @@ X-Mailing-List: sparclinux@vger.kernel.org
 
 
 
-On 4/20/20 12:15 AM, Nate Karstens wrote:
-> The close-on-fork flag causes the file descriptor to be closed
-> atomically in the child process before the child process returns
-> from fork(). Implement this feature and provide a method to
-> get/set the close-on-fork flag using fcntl(2).
-> 
-> This functionality was approved by the Austin Common Standards
-> Revision Group for inclusion in the next revision of the POSIX
-> standard (see issue 1318 in the Austin Group Defect Tracker).
+> On Apr 17, 2020, at 2:50 PM, Mike Kravetz <mike.kravetz@oracle.com> =
+wrote:
+>=20
+> Longpeng(Mike) reported a weird message from hugetlb command line =
+processing
+> and proposed a solution [1].  While the proposed patch does address =
+the
+> specific issue, there are other related issues in command line =
+processing.
+> As hugetlbfs evolved, updates to command line processing have been =
+made to
+> meet immediate needs and not necessarily in a coordinated manner.  The =
+result
+> is that some processing is done in arch specific code, some is done in =
+arch
+> independent code and coordination is problematic.  Semantics can vary =
+between
+> architectures.
+>=20
+> The patch series does the following:
+> - Define arch specific arch_hugetlb_valid_size routine used to =
+validate
+>  passed huge page sizes.
+> - Move hugepagesz=3D command line parsing out of arch specific code =
+and into
+>  an arch independent routine.
+> - Clean up command line processing to follow desired semantics and
+>  document those semantics.
+>=20
+> [1] =
+https://lore.kernel.org/linux-mm/20200305033014.1152-1-longpeng2@huawei.co=
+m
+>=20
+> Mike Kravetz (4):
+>  hugetlbfs: add arch_hugetlb_valid_size
+>  hugetlbfs: move hugepagesz=3D parsing to arch independent code
+>  hugetlbfs: remove hugetlb_add_hstate() warning for existing hstate
+>  hugetlbfs: clean up command line processing
 
-Oh well... yet another feature slowing down a critical path.
+Reverted this series fixed many undefined behaviors on arm64 with the =
+config,
 
-> 
-> Co-developed-by: Changli Gao <xiaosuo@gmail.com>
-> Signed-off-by: Changli Gao <xiaosuo@gmail.com>
-> Signed-off-by: Nate Karstens <nate.karstens@garmin.com>
-> ---
->  fs/fcntl.c                             |  2 ++
->  fs/file.c                              | 50 +++++++++++++++++++++++++-
->  include/linux/fdtable.h                |  7 ++++
->  include/linux/file.h                   |  2 ++
->  include/uapi/asm-generic/fcntl.h       |  5 +--
->  tools/include/uapi/asm-generic/fcntl.h |  5 +--
->  6 files changed, 66 insertions(+), 5 deletions(-)
-> 
-> diff --git a/fs/fcntl.c b/fs/fcntl.c
-> index 2e4c0fa2074b..23964abf4a1a 100644
-> --- a/fs/fcntl.c
-> +++ b/fs/fcntl.c
-> @@ -335,10 +335,12 @@ static long do_fcntl(int fd, unsigned int cmd, unsigned long arg,
->  		break;
->  	case F_GETFD:
->  		err = get_close_on_exec(fd) ? FD_CLOEXEC : 0;
-> +		err |= get_close_on_fork(fd) ? FD_CLOFORK : 0;
->  		break;
->  	case F_SETFD:
->  		err = 0;
->  		set_close_on_exec(fd, arg & FD_CLOEXEC);
-> +		set_close_on_fork(fd, arg & FD_CLOFORK);
->  		break;
->  	case F_GETFL:
->  		err = filp->f_flags;
-> diff --git a/fs/file.c b/fs/file.c
-> index c8a4e4c86e55..de7260ba718d 100644
-> --- a/fs/file.c
-> +++ b/fs/file.c
-> @@ -57,6 +57,8 @@ static void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
->  	memset((char *)nfdt->open_fds + cpy, 0, set);
->  	memcpy(nfdt->close_on_exec, ofdt->close_on_exec, cpy);
->  	memset((char *)nfdt->close_on_exec + cpy, 0, set);
-> +	memcpy(nfdt->close_on_fork, ofdt->close_on_fork, cpy);
-> +	memset((char *)nfdt->close_on_fork + cpy, 0, set);
->  
+https://raw.githubusercontent.com/cailca/linux-mm/master/arm64.config
 
-I suggest we group the two bits of a file (close_on_exec, close_on_fork) together,
-so that we do not have to dirty two separate cache lines.
+[   54.172683][    T1] UBSAN: shift-out-of-bounds in =
+./include/linux/hugetlb.h:555:34
+[   54.180411][    T1] shift exponent 4294967285 is too large for 64-bit =
+type 'unsigned long'
+[   54.188885][    T1] CPU: 130 PID: 1 Comm: swapper/0 Not tainted =
+5.7.0-rc2-next-20200420 #1
+[   54.197284][    T1] Hardware name: HPE Apollo 70             =
+/C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+[   54.207888][    T1] Call trace:
+[   54.211100][    T1]  dump_backtrace+0x0/0x224
+[   54.215565][    T1]  show_stack+0x20/0x2c
+[   54.219651][    T1]  dump_stack+0xfc/0x184
+[   54.223829][    T1]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+[   54.230204][    T1]  hugetlb_add_hstate+0x3ec/0x414
+huge_page_size at include/linux/hugetlb.h:555
+(inlined by) hugetlb_add_hstate at mm/hugetlb.c:3301
+[   54.235191][    T1]  hugetlbpage_init+0x14/0x30
+[   54.239824][    T1]  do_one_initcall+0x6c/0x144
+[   54.244446][    T1]  do_initcall_level+0x158/0x1c4
+[   54.249336][    T1]  do_initcalls+0x68/0xb0
+[   54.253597][    T1]  do_basic_setup+0x28/0x30
+[   54.258049][    T1]  kernel_init_freeable+0x19c/0x228
+[   54.263188][    T1]  kernel_init+0x14/0x208
+[   54.267473][    T1]  ret_from_fork+0x10/0x18
 
-Otherwise we will add yet another cache line miss at every file opening/closing for processes
-with big file tables.
 
-Ie having a _single_ bitmap array, even bit for close_on_exec, odd bit for close_on_fork
+[   55.534338][    T1] UBSAN: shift-out-of-bounds in =
+./include/linux/hugetlb.h:555:34
+[   55.542064][    T1] shift exponent 4294967285 is too large for 64-bit =
+type 'unsigned long'
+[   55.550555][    T1] CPU: 129 PID: 1 Comm: swapper/0 Not tainted =
+5.7.0-rc2-next-20200420 #1
+[   55.558992][    T1] Hardware name: HPE Apollo 70             =
+/C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+[   55.569659][    T1] Call trace:
+[   55.572898][    T1]  dump_backtrace+0x0/0x224
+[   55.577335][    T1]  show_stack+0x20/0x2c
+[   55.581442][    T1]  dump_stack+0xfc/0x184
+[   55.585621][    T1]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+[   55.592031][    T1]  __hugetlb_cgroup_file_dfl_init+0x37c/0x384
+[   55.598062][    T1]  hugetlb_cgroup_file_init+0x9c/0xd8
+[   55.603399][    T1]  hugetlb_init+0x248/0x448
+[   55.607840][    T1]  do_one_initcall+0x6c/0x144
+[   55.612493][    T1]  do_initcall_level+0x158/0x1c4
+[   55.617404][    T1]  do_initcalls+0x68/0xb0
+[   55.621664][    T1]  do_basic_setup+0x28/0x30
+[   55.626107][    T1]  kernel_init_freeable+0x19c/0x228
+[   55.631253][    T1]  kernel_init+0x14/0x208
+[   55.635519][    T1]  ret_from_fork+0x10/0x18
 
-static inline void __set_close_on_exec(unsigned int fd, struct fdtable *fdt)
-{
-	__set_bit(fd * 2, fdt->close_on_fork_exec);
-}
+[  153.283648][    T1] =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+[  153.293078][    T1] UBSAN: shift-out-of-bounds in =
+./include/linux/hugetlb.h:555:34
+[  153.300841][    T1] shift exponent 4294967285 is too large for 64-bit =
+type 'unsigned long'
+[  153.309185][    T1] CPU: 161 PID: 1 Comm: swapper/0 Tainted: G        =
+     L    5.7.0-rc2-next-20200420 #1
+[  153.318879][    T1] Hardware name: HPE Apollo 70             =
+/C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+[  153.329352][    T1] Call trace:
+[  153.332545][    T1]  dump_backtrace+0x0/0x224
+[  153.336945][    T1]  show_stack+0x20/0x2c
+[  153.341000][    T1]  dump_stack+0xfc/0x184
+[  153.345149][    T1]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+[  153.351465][    T1]  hugetlbfs_fill_super+0x424/0x43c
+[  153.356560][    T1]  vfs_get_super+0xcc/0x170
+[  153.360959][    T1]  get_tree_nodev+0x28/0x34
+[  153.365358][    T1]  hugetlbfs_get_tree+0xfc/0x128
+[  153.370193][    T1]  vfs_get_tree+0x54/0x158
+[  153.374513][    T1]  fc_mount+0x1c/0x5c
+[  153.378399][    T1]  mount_one_hugetlbfs+0x54/0xc8
+[  153.383233][    T1]  init_hugetlbfs_fs+0x18c/0x268
+[  153.388068][    T1]  do_one_initcall+0x6c/0x144
+[  153.392647][    T1]  do_initcall_level+0x158/0x1c4
+[  153.397480][    T1]  do_initcalls+0x68/0xb0
+[  153.401706][    T1]  do_basic_setup+0x28/0x30
+[  153.406105][    T1]  kernel_init_freeable+0x19c/0x228
+[  153.411208][    T1]  kernel_init+0x14/0x208
+[  153.415436][    T1]  ret_from_fork+0x10/0x18
 
-static inline void __set_close_on_fork(unsigned int fd, struct fdtable *fdt)
-{
-	__set_bit(fd * 2 + 1, fdt->close_on_fork_exec);
-}
 
-Also the F_GETFD/F_SETFD implementation must use a single function call,
-to not acquire the spinlock twice.
+[  194.312926][ T1828] UBSAN: shift-out-of-bounds in =
+./include/linux/hugetlb.h:584:11
+[  194.320664][ T1828] shift exponent 4294967285 is too large for 32-bit =
+type 'int'
+[  194.328103][ T1828] CPU: 194 PID: 1828 Comm: systemd-journal Tainted: =
+G             L    5.7.0-rc2-next-20200420 #1
+[  194.338558][ T1828] Hardware name: HPE Apollo 70             =
+/C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+[  194.349010][ T1828] Call trace:
+[  194.352183][ T1828]  dump_backtrace+0x0/0x224
+[  194.356560][ T1828]  show_stack+0x20/0x2c
+[  194.360595][ T1828]  dump_stack+0xfc/0x184
+[  194.364724][ T1828]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+[  194.371020][ T1828]  hugetlb_total_pages+0x100/0x128
+[  194.376017][ T1828]  vm_commit_limit+0x54/0xb0
+[  194.380484][ T1828]  meminfo_proc_show+0x8f4/0xc4c
+[  194.385297][ T1828]  seq_read+0x380/0x930
+[  194.389353][ T1828]  pde_read+0x5c/0x78
+[  194.393232][ T1828]  proc_reg_read+0x74/0xc0
+[  194.397528][ T1828]  __vfs_read+0x84/0x1d0
+[  194.401646][ T1828]  vfs_read+0xec/0x124
+[  194.405588][ T1828]  ksys_read+0xb0/0x120
+[  194.409643][ T1828]  __arm64_sys_read+0x54/0x88
+[  194.414195][ T1828]  do_el0_svc+0x128/0x1dc
+[  194.418405][ T1828]  el0_sync_handler+0x150/0x250
+[  194.423157][ T1828]  el0_sync+0x164/0x180
+[  194.427425][ T1828] =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+[  194.436930][ T1828] =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+[  194.446355][ T1828] UBSAN: shift-out-of-bounds in =
+mm/hugetlb.c:3564:23
+[  194.453190][ T1828] shift exponent 4294967285 is too large for 64-bit =
+type 'unsigned long'
+[  194.461752][ T1828] CPU: 194 PID: 1828 Comm: systemd-journal Tainted: =
+G             L    5.7.0-rc2-next-20200420 #1
+[  194.472245][ T1828] Hardware name: HPE Apollo 70             =
+/C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+[  194.482720][ T1828] Call trace:
+[  194.485909][ T1828]  dump_backtrace+0x0/0x224
+[  194.490312][ T1828]  show_stack+0x20/0x2c
+[  194.494368][ T1828]  dump_stack+0xfc/0x184
+[  194.498513][ T1828]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+[  194.504828][ T1828]  hugetlb_report_meminfo+0x25c/0x2ac
+[  194.510103][ T1828]  meminfo_proc_show+0xc08/0xc4c
+[  194.514938][ T1828]  seq_read+0x380/0x930
+[  194.518993][ T1828]  pde_read+0x5c/0x78
+[  194.522874][ T1828]  proc_reg_read+0x74/0xc0
+[  194.527190][ T1828]  __vfs_read+0x84/0x1d0
+[  194.531335][ T1828]  vfs_read+0xec/0x124
+[  194.535304][ T1828]  ksys_read+0xb0/0x120
+[  194.539371][ T1828]  __arm64_sys_read+0x54/0x88
+[  194.543958][ T1828]  do_el0_svc+0x128/0x1dc
+[  194.548187][ T1828]  el0_sync_handler+0x150/0x250
+[  194.552936][ T1828]  el0_sync+0x164/0x180
 
+>=20
+> .../admin-guide/kernel-parameters.txt         |  40 ++--
+> Documentation/admin-guide/mm/hugetlbpage.rst  |  35 ++++
+> arch/arm64/mm/hugetlbpage.c                   |  30 +--
+> arch/powerpc/mm/hugetlbpage.c                 |  30 +--
+> arch/riscv/mm/hugetlbpage.c                   |  24 +--
+> arch/s390/mm/hugetlbpage.c                    |  24 +--
+> arch/sparc/mm/init_64.c                       |  43 +---
+> arch/x86/mm/hugetlbpage.c                     |  23 +--
+> include/linux/hugetlb.h                       |   2 +-
+> mm/hugetlb.c                                  | 190 +++++++++++++++---
+> 10 files changed, 271 insertions(+), 170 deletions(-)
+>=20
+> --=20
+> 2.25.2
+>=20
+>=20
 
