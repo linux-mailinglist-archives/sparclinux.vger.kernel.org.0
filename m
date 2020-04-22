@@ -2,163 +2,166 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE89B1B28EC
-	for <lists+sparclinux@lfdr.de>; Tue, 21 Apr 2020 16:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B37B31B35A0
+	for <lists+sparclinux@lfdr.de>; Wed, 22 Apr 2020 05:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729022AbgDUOCW (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 21 Apr 2020 10:02:22 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:15086 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728807AbgDUOCT (ORCPT
+        id S1726423AbgDVDiq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 21 Apr 2020 23:38:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57744 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726228AbgDVDip (ORCPT
         <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 21 Apr 2020 10:02:19 -0400
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03LE1MwS144910
-        for <sparclinux@vger.kernel.org>; Tue, 21 Apr 2020 10:02:17 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 30ghu6xhqn-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <sparclinux@vger.kernel.org>; Tue, 21 Apr 2020 10:02:17 -0400
-Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <sparclinux@vger.kernel.org> from <gerald.schaefer@de.ibm.com>;
-        Tue, 21 Apr 2020 15:01:30 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 21 Apr 2020 15:01:21 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 03LE24dv53608476
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 21 Apr 2020 14:02:04 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0AFD5A4057;
-        Tue, 21 Apr 2020 14:02:04 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2FEB3A405B;
-        Tue, 21 Apr 2020 14:02:03 +0000 (GMT)
-Received: from thinkpad (unknown [9.145.65.41])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 21 Apr 2020 14:02:03 +0000 (GMT)
-Date:   Tue, 21 Apr 2020 16:02:01 +0200
-From:   Gerald Schaefer <gerald.schaefer@de.ibm.com>
-To:     Mike Kravetz <mike.kravetz@oracle.com>
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-doc@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Longpeng <longpeng2@huawei.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Mina Almasry <almasrymina@google.com>,
-        Peter Xu <peterx@redhat.com>,
-        Nitesh Narayan Lal <nitesh@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>
-Subject: Re: [PATCH v3 0/4] Clean up hugetlb boot command line processing
-In-Reply-To: <20200417185049.275845-1-mike.kravetz@oracle.com>
-References: <20200417185049.275845-1-mike.kravetz@oracle.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        Tue, 21 Apr 2020 23:38:45 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41D40C0610D6;
+        Tue, 21 Apr 2020 20:38:45 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id t11so448885lfe.4;
+        Tue, 21 Apr 2020 20:38:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cjSTi7hlF1/NelCXmbeNWnOnAcO/OjzgBK0nAtkVF1M=;
+        b=HsYir1MD1qN3cOFB5Lr3179LEcQcQ1a/Qq3NCUTytLRTeuLM6l9Rixek6ovajwT16b
+         BMP9vfjjaXChJCfi00vAzyGiJPpHofR2+PIw9/z7h8vSXN9Ha0RkgU3gQTFJgkAe2HGQ
+         W5fCz7w7LP1mkVNxJDhgDJsp586/okfTrd0rancohGo7/OAN863jRiEwLN8kGkOC4P+h
+         9IPyvWOfG/qXyqqXp4L2tadElFAk//2zk3q6qm3zcY0lBsTOw3BLEg0BSy6YGPPF+otf
+         pnpXsE6oUgHvE10hJqnJrncoARHmSXGczeEb3AZtba2V4x0ku1caTdPk7cba5nhn1Mw3
+         hYkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cjSTi7hlF1/NelCXmbeNWnOnAcO/OjzgBK0nAtkVF1M=;
+        b=oCHQFWo9/CeYmde5RL7xiQClD3oiFv1UVYIQ3O3G9k/dvWUmjfBhEzS9F7KSQVCeYn
+         fFp6teUs6ge8OmAnH848Nfq7KXeD1h9teTWI9LrwJ0gvmVl1xBIM2HQ1rCKlRHvmJ+2V
+         b4lw/Q+Qxd/aw5XZ4tW74HiZfXov/qo7T5T/Z3VnkGxlMF6V4Bk7UPcQohvZk8kkhMmK
+         b3bwUf9iTy3vKmx4srDyCzWsJL7mF7mXqnfheSqdxbLxXpRlRii+0YgkxX6xpn94ieIU
+         aGoMMtxCyqNCASc0CfuSyUssfL/8woZQ8WLQCr4YjBeT8dI+BK3FmsfGIpNXgOvGulmV
+         EvxA==
+X-Gm-Message-State: AGi0PubJvgD6GgKLOZbF/6AvPWX7OBDj9vKh1qI7/hM9S2hK+8WaTgHm
+        rJZPeUJIHmmcrtXuBzWzxMNev59chdo1E0feBkBtM4FiKQ0=
+X-Google-Smtp-Source: APiQypIpUMoiM4pLlpvoneXnVmUpQwIHtS5zEdjT4qynaypGLsgcvfd5TCUNGVuboXjX5mw49Gl/fP8JXcB430T44RI=
+X-Received: by 2002:ac2:519c:: with SMTP id u28mr15656394lfi.17.1587526723542;
+ Tue, 21 Apr 2020 20:38:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20042114-4275-0000-0000-000003C3FB90
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20042114-4276-0000-0000-000038D9805D
-Message-Id: <20200421160201.0ddb9763@thinkpad>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-21_05:2020-04-20,2020-04-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- suspectscore=0 bulkscore=0 spamscore=0 phishscore=0 adultscore=0
- clxscore=1011 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- mlxscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004210108
+References: <20200420071548.62112-1-nate.karstens@garmin.com>
+ <20200420071548.62112-2-nate.karstens@garmin.com> <36dce9b4-a0bf-0015-f6bc-1006938545b1@gmail.com>
+In-Reply-To: <36dce9b4-a0bf-0015-f6bc-1006938545b1@gmail.com>
+From:   Changli Gao <xiaosuo@gmail.com>
+Date:   Wed, 22 Apr 2020 11:38:32 +0800
+Message-ID: <CABa6K_HWsy9DdjsKXE2d_JrC+OsNuW+OALS+-_HiV3r2XgC1bw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] fs: Implement close-on-fork
+To:     Eric Dumazet <eric.dumazet@gmail.com>
+Cc:     Nate Karstens <nate.karstens@garmin.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        Linux Netdev List <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, 17 Apr 2020 11:50:45 -0700
-Mike Kravetz <mike.kravetz@oracle.com> wrote:
+On Mon, Apr 20, 2020 at 6:25 PM Eric Dumazet <eric.dumazet@gmail.com> wrote:
+>
+>
+>
+> On 4/20/20 12:15 AM, Nate Karstens wrote:
+> > The close-on-fork flag causes the file descriptor to be closed
+> > atomically in the child process before the child process returns
+> > from fork(). Implement this feature and provide a method to
+> > get/set the close-on-fork flag using fcntl(2).
+> >
+> > This functionality was approved by the Austin Common Standards
+> > Revision Group for inclusion in the next revision of the POSIX
+> > standard (see issue 1318 in the Austin Group Defect Tracker).
+>
+> Oh well... yet another feature slowing down a critical path.
+>
+> >
+> > Co-developed-by: Changli Gao <xiaosuo@gmail.com>
+> > Signed-off-by: Changli Gao <xiaosuo@gmail.com>
+> > Signed-off-by: Nate Karstens <nate.karstens@garmin.com>
+> > ---
+> >  fs/fcntl.c                             |  2 ++
+> >  fs/file.c                              | 50 +++++++++++++++++++++++++-
+> >  include/linux/fdtable.h                |  7 ++++
+> >  include/linux/file.h                   |  2 ++
+> >  include/uapi/asm-generic/fcntl.h       |  5 +--
+> >  tools/include/uapi/asm-generic/fcntl.h |  5 +--
+> >  6 files changed, 66 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/fs/fcntl.c b/fs/fcntl.c
+> > index 2e4c0fa2074b..23964abf4a1a 100644
+> > --- a/fs/fcntl.c
+> > +++ b/fs/fcntl.c
+> > @@ -335,10 +335,12 @@ static long do_fcntl(int fd, unsigned int cmd, unsigned long arg,
+> >               break;
+> >       case F_GETFD:
+> >               err = get_close_on_exec(fd) ? FD_CLOEXEC : 0;
+> > +             err |= get_close_on_fork(fd) ? FD_CLOFORK : 0;
+> >               break;
+> >       case F_SETFD:
+> >               err = 0;
+> >               set_close_on_exec(fd, arg & FD_CLOEXEC);
+> > +             set_close_on_fork(fd, arg & FD_CLOFORK);
+> >               break;
+> >       case F_GETFL:
+> >               err = filp->f_flags;
+> > diff --git a/fs/file.c b/fs/file.c
+> > index c8a4e4c86e55..de7260ba718d 100644
+> > --- a/fs/file.c
+> > +++ b/fs/file.c
+> > @@ -57,6 +57,8 @@ static void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
+> >       memset((char *)nfdt->open_fds + cpy, 0, set);
+> >       memcpy(nfdt->close_on_exec, ofdt->close_on_exec, cpy);
+> >       memset((char *)nfdt->close_on_exec + cpy, 0, set);
+> > +     memcpy(nfdt->close_on_fork, ofdt->close_on_fork, cpy);
+> > +     memset((char *)nfdt->close_on_fork + cpy, 0, set);
+> >
+>
+> I suggest we group the two bits of a file (close_on_exec, close_on_fork) together,
+> so that we do not have to dirty two separate cache lines.
+>
+> Otherwise we will add yet another cache line miss at every file opening/closing for processes
+> with big file tables.
+>
+> Ie having a _single_ bitmap array, even bit for close_on_exec, odd bit for close_on_fork
+>
+> static inline void __set_close_on_exec(unsigned int fd, struct fdtable *fdt)
+> {
+>         __set_bit(fd * 2, fdt->close_on_fork_exec);
+> }
+>
+> static inline void __set_close_on_fork(unsigned int fd, struct fdtable *fdt)
+> {
+>         __set_bit(fd * 2 + 1, fdt->close_on_fork_exec);
+> }
+>
+> Also the F_GETFD/F_SETFD implementation must use a single function call,
+> to not acquire the spinlock twice.
+>
 
-> v3 -
->    Used weak attribute method of defining arch_hugetlb_valid_size.
->      This eliminates changes to arch specific hugetlb.h files (Peter)
->    Updated documentation (Peter, Randy)
->    Fixed handling of implicitly specified gigantic page preallocation
->      in existing code and removed documentation of such.  There is now
->      no difference between handling of gigantic and non-gigantic pages.
->      (Peter, Nitesh).
->      This requires the most review as there is a small change to
->      undocumented behavior.  See patch 4 commit message for details.
->    Added Acks and Reviews (Mina, Peter)
-> 
-> v2 -
->    Fix build errors with patch 1 (Will)
->    Change arch_hugetlb_valid_size arg to unsigned long and remove
->      irrelevant 'extern' keyword (Christophe)
->    Documentation and other misc changes (Randy, Christophe, Mina)
->    Do not process command line options if !hugepages_supported()
->      (Dave, but it sounds like we may want to additional changes to
->       hugepages_supported() for x86?  If that is needed I would prefer
->       a separate patch.)
-> 
-> Longpeng(Mike) reported a weird message from hugetlb command line processing
-> and proposed a solution [1].  While the proposed patch does address the
-> specific issue, there are other related issues in command line processing.
-> As hugetlbfs evolved, updates to command line processing have been made to
-> meet immediate needs and not necessarily in a coordinated manner.  The result
-> is that some processing is done in arch specific code, some is done in arch
-> independent code and coordination is problematic.  Semantics can vary between
-> architectures.
-> 
-> The patch series does the following:
-> - Define arch specific arch_hugetlb_valid_size routine used to validate
->   passed huge page sizes.
-> - Move hugepagesz= command line parsing out of arch specific code and into
->   an arch independent routine.
-> - Clean up command line processing to follow desired semantics and
->   document those semantics.
-> 
-> [1] https://lore.kernel.org/linux-mm/20200305033014.1152-1-longpeng2@huawei.com
-> 
-> Mike Kravetz (4):
->   hugetlbfs: add arch_hugetlb_valid_size
->   hugetlbfs: move hugepagesz= parsing to arch independent code
->   hugetlbfs: remove hugetlb_add_hstate() warning for existing hstate
->   hugetlbfs: clean up command line processing
-> 
->  .../admin-guide/kernel-parameters.txt         |  40 ++--
->  Documentation/admin-guide/mm/hugetlbpage.rst  |  35 ++++
->  arch/arm64/mm/hugetlbpage.c                   |  30 +--
->  arch/powerpc/mm/hugetlbpage.c                 |  30 +--
->  arch/riscv/mm/hugetlbpage.c                   |  24 +--
->  arch/s390/mm/hugetlbpage.c                    |  24 +--
->  arch/sparc/mm/init_64.c                       |  43 +---
->  arch/x86/mm/hugetlbpage.c                     |  23 +--
->  include/linux/hugetlb.h                       |   2 +-
->  mm/hugetlb.c                                  | 190 +++++++++++++++---
->  10 files changed, 271 insertions(+), 170 deletions(-)
-> 
+Good suggestions.
 
-Looks good and works fine for s390, thanks for cleaning up!
+At the same time, we'd better extend other syscalls, which set the
+FD_CLOEXEC when  creating FDs. i.e. open, pipe3...
 
-Acked-by: Gerald Schaefer <gerald.schaefer@de.ibm.com> # s390
 
+-- 
+Regards,
+Changli Gao(xiaosuo@gmail.com)
