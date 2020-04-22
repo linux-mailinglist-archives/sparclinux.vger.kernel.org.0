@@ -2,131 +2,92 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2F231B4030
-	for <lists+sparclinux@lfdr.de>; Wed, 22 Apr 2020 12:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A0931B475A
+	for <lists+sparclinux@lfdr.de>; Wed, 22 Apr 2020 16:33:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731617AbgDVKoJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 22 Apr 2020 06:44:09 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:36152 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731500AbgDVKoF (ORCPT
+        id S1727038AbgDVOdB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 22 Apr 2020 10:33:01 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:57460 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725935AbgDVOdA (ORCPT
         <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 22 Apr 2020 06:44:05 -0400
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03MAYWdd060141;
-        Wed, 22 Apr 2020 06:43:02 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 30jh8xp4ea-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 22 Apr 2020 06:43:02 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03MAdcXn070893;
-        Wed, 22 Apr 2020 06:43:01 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 30jh8xp4dj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 22 Apr 2020 06:43:01 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-        by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03MAeZbo005876;
-        Wed, 22 Apr 2020 10:42:59 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
-        by ppma01dal.us.ibm.com with ESMTP id 30fs670rje-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 22 Apr 2020 10:42:59 +0000
-Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
-        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 03MAgumL56820100
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 22 Apr 2020 10:42:56 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 99EC96E050;
-        Wed, 22 Apr 2020 10:42:56 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DCFE26E04C;
-        Wed, 22 Apr 2020 10:42:31 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.79.185.239])
-        by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Wed, 22 Apr 2020 10:42:30 +0000 (GMT)
-X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
-From:   "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To:     Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-doc@vger.kernel.org
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Longpeng <longpeng2@huawei.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Mina Almasry <almasrymina@google.com>,
-        Peter Xu <peterx@redhat.com>,
-        Nitesh Narayan Lal <nitesh@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-Subject: Re: [PATCH v3 3/4] hugetlbfs: remove hugetlb_add_hstate() warning
- for existing hstate
-In-Reply-To: <20200417185049.275845-4-mike.kravetz@oracle.com>
-References: <20200417185049.275845-1-mike.kravetz@oracle.com>
- <20200417185049.275845-4-mike.kravetz@oracle.com>
-Date:   Wed, 22 Apr 2020 16:12:26 +0530
-Message-ID: <87blnj4x9p.fsf@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-22_03:2020-04-22,2020-04-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 mlxlogscore=935 spamscore=0
- mlxscore=0 priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1011
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004220083
+        Wed, 22 Apr 2020 10:33:00 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 659B38EE19C;
+        Wed, 22 Apr 2020 07:32:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1587565978;
+        bh=M6gdDcbuW+flffcj7MyeO+/4m9VT7LtFOrK/yRp2scQ=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=WrO5XdhMaAlNqj3XroFFwRez3dqb7oiOPLPHX+STuA7bKkQXrqzCXeilgs2vj62a8
+         dtN7T5MWew9GQ5rEfY3QG2jfw0MOZBCAFJlqWm5balqonOlZMl8LgK+o1HHZ9yL/RJ
+         P7q+a4hsvlPez4qWuCoGEOS2WFTgBuelCsScuJJc=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Ne34ZMO5wtea; Wed, 22 Apr 2020 07:32:58 -0700 (PDT)
+Received: from [153.66.254.194] (unknown [50.35.76.230])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id CC09D8EE0CE;
+        Wed, 22 Apr 2020 07:32:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1587565977;
+        bh=M6gdDcbuW+flffcj7MyeO+/4m9VT7LtFOrK/yRp2scQ=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=aAZ5k2GjVbhrgCgDYq1cHevIi1wz2C1YDR0Di2NdAIIxxOPJgzetvPaxqQm67/dYG
+         86owFnqs87t+/+AP5VxJwVX3igQ/oLPNgJMsTtVpgYHpb3YGP/du4FoU7UbDGe5Pio
+         X+J541MSFakK8AyKXdxMyDl6K4CCsOgkMu6rgb3k=
+Message-ID: <1587565975.3485.5.camel@HansenPartnership.com>
+Subject: Re: Implement close-on-fork
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Nate Karstens <nate.karstens@garmin.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>, Helge Deller <deller@gmx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Changli Gao <xiaosuo@gmail.com>
+Date:   Wed, 22 Apr 2020 07:32:55 -0700
+In-Reply-To: <20200420071548.62112-1-nate.karstens@garmin.com>
+References: <20200420071548.62112-1-nate.karstens@garmin.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Mike Kravetz <mike.kravetz@oracle.com> writes:
+On Mon, 2020-04-20 at 02:15 -0500, Nate Karstens wrote:
+> Series of 4 patches to implement close-on-fork. Tests have been
+> published to https://github.com/nkarstens/ltp/tree/close-on-fork.
+> 
+> close-on-fork addresses race conditions in system(), which
+> (depending on the implementation) is non-atomic in that it
+> first calls a fork() and then an exec().
 
-> The routine hugetlb_add_hstate prints a warning if the hstate already
-> exists.  This was originally done as part of kernel command line
-> parsing.  If 'hugepagesz=' was specified more than once, the warning
-> 	pr_warn("hugepagesz= specified twice, ignoring\n");
-> would be printed.
->
-> Some architectures want to enable all huge page sizes.  They would
-> call hugetlb_add_hstate for all supported sizes.  However, this was
-> done after command line processing and as a result hstates could have
-> already been created for some sizes.  To make sure no warning were
-> printed, there would often be code like:
-> 	if (!size_to_hstate(size)
-> 		hugetlb_add_hstate(ilog2(size) - PAGE_SHIFT)
->
-> The only time we want to print the warning is as the result of command
-> line processing.
+Why is this a problem?  I get that there's a time between fork and exec
+when you have open file descriptors, but they should still be running
+in the binary context of the programme that called fork, i.e. under
+your control.  The security problems don't seem to occur until you exec
+some random binary, which close on exec covers.  So what problem would
+close on fork fix?
 
-Does this patch break hugepages=x command line? I haven't tested this
-yet. But one of the details w.r.t. skipping that hugetlb_add_hstate is
-to make sure we can configure the max_huge_pages. 
+> This functionality was approved by the Austin Common Standards
+> Revision Group for inclusion in the next revision of the POSIX
+> standard (see issue 1318 in the Austin Group Defect Tracker).
 
+URL?  Does this standard give a reason why the functionality might be
+useful.
 
->So, remove the warning from hugetlb_add_hstate and
-> add it to the single arch independent routine processing "hugepagesz=".
-> After this, calls to size_to_hstate() in arch specific code can be
-> removed and hugetlb_add_hstate can be called without worrying about
-> warning messages.
->
+James
 
--aneesh
