@@ -2,93 +2,131 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCBEA1B3A39
-	for <lists+sparclinux@lfdr.de>; Wed, 22 Apr 2020 10:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F231B4030
+	for <lists+sparclinux@lfdr.de>; Wed, 22 Apr 2020 12:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726497AbgDVIf3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 22 Apr 2020 04:35:29 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:45190 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725934AbgDVIf3 (ORCPT
+        id S1731617AbgDVKoJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 22 Apr 2020 06:44:09 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:36152 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1731500AbgDVKoF (ORCPT
         <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 22 Apr 2020 04:35:29 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-215-Rc3bmRY2MJO0palgJOyylw-1; Wed, 22 Apr 2020 09:35:24 +0100
-X-MC-Unique: Rc3bmRY2MJO0palgJOyylw-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Wed, 22 Apr 2020 09:35:23 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Wed, 22 Apr 2020 09:35:23 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Eric Dumazet' <eric.dumazet@gmail.com>,
-        Nate Karstens <nate.karstens@garmin.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        "Jeff Layton" <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        "Arnd Bergmann" <arnd@arndb.de>,
-        Richard Henderson <rth@twiddle.net>,
-        "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Changli Gao <xiaosuo@gmail.com>
-Subject: RE: [PATCH 1/4] fs: Implement close-on-fork
-Thread-Topic: [PATCH 1/4] fs: Implement close-on-fork
-Thread-Index: AQHWFv4Vssv9Cm82zkePzv5DmgsrOaiE0vEQ
-Date:   Wed, 22 Apr 2020 08:35:23 +0000
-Message-ID: <39a872f23b16405fb4e4683bf049beef@AcuMS.aculab.com>
-References: <20200420071548.62112-1-nate.karstens@garmin.com>
- <20200420071548.62112-2-nate.karstens@garmin.com>
- <36dce9b4-a0bf-0015-f6bc-1006938545b1@gmail.com>
-In-Reply-To: <36dce9b4-a0bf-0015-f6bc-1006938545b1@gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Wed, 22 Apr 2020 06:44:05 -0400
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03MAYWdd060141;
+        Wed, 22 Apr 2020 06:43:02 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 30jh8xp4ea-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 22 Apr 2020 06:43:02 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03MAdcXn070893;
+        Wed, 22 Apr 2020 06:43:01 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 30jh8xp4dj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 22 Apr 2020 06:43:01 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+        by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03MAeZbo005876;
+        Wed, 22 Apr 2020 10:42:59 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+        by ppma01dal.us.ibm.com with ESMTP id 30fs670rje-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 22 Apr 2020 10:42:59 +0000
+Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 03MAgumL56820100
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 22 Apr 2020 10:42:56 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 99EC96E050;
+        Wed, 22 Apr 2020 10:42:56 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DCFE26E04C;
+        Wed, 22 Apr 2020 10:42:31 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.79.185.239])
+        by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Wed, 22 Apr 2020 10:42:30 +0000 (GMT)
+X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
+From:   "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To:     Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Longpeng <longpeng2@huawei.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mina Almasry <almasrymina@google.com>,
+        Peter Xu <peterx@redhat.com>,
+        Nitesh Narayan Lal <nitesh@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>
+Subject: Re: [PATCH v3 3/4] hugetlbfs: remove hugetlb_add_hstate() warning
+ for existing hstate
+In-Reply-To: <20200417185049.275845-4-mike.kravetz@oracle.com>
+References: <20200417185049.275845-1-mike.kravetz@oracle.com>
+ <20200417185049.275845-4-mike.kravetz@oracle.com>
+Date:   Wed, 22 Apr 2020 16:12:26 +0530
+Message-ID: <87blnj4x9p.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-22_03:2020-04-22,2020-04-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 mlxlogscore=935 spamscore=0
+ mlxscore=0 priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1011
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004220083
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-RnJvbTogRXJpYyBEdW1hemV0DQo+IFNlbnQ6IDIwIEFwcmlsIDIwMjAgMTE6MjYNCj4gT24gNC8y
-MC8yMCAxMjoxNSBBTSwgTmF0ZSBLYXJzdGVucyB3cm90ZToNCj4gPiBUaGUgY2xvc2Utb24tZm9y
-ayBmbGFnIGNhdXNlcyB0aGUgZmlsZSBkZXNjcmlwdG9yIHRvIGJlIGNsb3NlZA0KPiA+IGF0b21p
-Y2FsbHkgaW4gdGhlIGNoaWxkIHByb2Nlc3MgYmVmb3JlIHRoZSBjaGlsZCBwcm9jZXNzIHJldHVy
-bnMNCj4gPiBmcm9tIGZvcmsoKS4gSW1wbGVtZW50IHRoaXMgZmVhdHVyZSBhbmQgcHJvdmlkZSBh
-IG1ldGhvZCB0bw0KPiA+IGdldC9zZXQgdGhlIGNsb3NlLW9uLWZvcmsgZmxhZyB1c2luZyBmY250
-bCgyKS4NCj4gPg0KPiA+IFRoaXMgZnVuY3Rpb25hbGl0eSB3YXMgYXBwcm92ZWQgYnkgdGhlIEF1
-c3RpbiBDb21tb24gU3RhbmRhcmRzDQo+ID4gUmV2aXNpb24gR3JvdXAgZm9yIGluY2x1c2lvbiBp
-biB0aGUgbmV4dCByZXZpc2lvbiBvZiB0aGUgUE9TSVgNCj4gPiBzdGFuZGFyZCAoc2VlIGlzc3Vl
-IDEzMTggaW4gdGhlIEF1c3RpbiBHcm91cCBEZWZlY3QgVHJhY2tlcikuDQo+IA0KPiBPaCB3ZWxs
-Li4uIHlldCBhbm90aGVyIGZlYXR1cmUgc2xvd2luZyBkb3duIGEgY3JpdGljYWwgcGF0aC4NCi4u
-Lg0KPiBJIHN1Z2dlc3Qgd2UgZ3JvdXAgdGhlIHR3byBiaXRzIG9mIGEgZmlsZSAoY2xvc2Vfb25f
-ZXhlYywgY2xvc2Vfb25fZm9yaykgdG9nZXRoZXIsDQo+IHNvIHRoYXQgd2UgZG8gbm90IGhhdmUg
-dG8gZGlydHkgdHdvIHNlcGFyYXRlIGNhY2hlIGxpbmVzLg0KPiANCj4gT3RoZXJ3aXNlIHdlIHdp
-bGwgYWRkIHlldCBhbm90aGVyIGNhY2hlIGxpbmUgbWlzcyBhdCBldmVyeSBmaWxlIG9wZW5pbmcv
-Y2xvc2luZyBmb3IgcHJvY2Vzc2VzDQo+IHdpdGggYmlnIGZpbGUgdGFibGVzLg0KDQpIb3cgYWJv
-dXQgb25seSBhbGxvY2F0aW5nIHRoZSAnY2xvc2Ugb24gZm9yaycgYml0bWFwIHRoZSBmaXJzdCB0
-aW1lDQphIHByb2Nlc3Mgc2V0cyBhIGJpdCBpbiBpdD8NCg0KT2ZmIGhhbmQgSSBjYW4ndCBpbWFn
-aW5lIHRoZSB1c2UgY2FzZS4NCkkgdGhvdWdodCBwb3NpeCBhbHdheXMgc2hhcmVkIGZkIHRhYmxl
-cyBhY3Jvc3MgZm9yaygpLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2Vz
-aWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVL
-DQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
+Mike Kravetz <mike.kravetz@oracle.com> writes:
 
+> The routine hugetlb_add_hstate prints a warning if the hstate already
+> exists.  This was originally done as part of kernel command line
+> parsing.  If 'hugepagesz=' was specified more than once, the warning
+> 	pr_warn("hugepagesz= specified twice, ignoring\n");
+> would be printed.
+>
+> Some architectures want to enable all huge page sizes.  They would
+> call hugetlb_add_hstate for all supported sizes.  However, this was
+> done after command line processing and as a result hstates could have
+> already been created for some sizes.  To make sure no warning were
+> printed, there would often be code like:
+> 	if (!size_to_hstate(size)
+> 		hugetlb_add_hstate(ilog2(size) - PAGE_SHIFT)
+>
+> The only time we want to print the warning is as the result of command
+> line processing.
+
+Does this patch break hugepages=x command line? I haven't tested this
+yet. But one of the details w.r.t. skipping that hugetlb_add_hstate is
+to make sure we can configure the max_huge_pages. 
+
+
+>So, remove the warning from hugetlb_add_hstate and
+> add it to the single arch independent routine processing "hugepagesz=".
+> After this, calls to size_to_hstate() in arch specific code can be
+> removed and hugetlb_add_hstate can be called without worrying about
+> warning messages.
+>
+
+-aneesh
