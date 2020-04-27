@@ -2,52 +2,63 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7ECD1BA46F
-	for <lists+sparclinux@lfdr.de>; Mon, 27 Apr 2020 15:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9A6B1BA47D
+	for <lists+sparclinux@lfdr.de>; Mon, 27 Apr 2020 15:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726945AbgD0NSB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 27 Apr 2020 09:18:01 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:2063 "EHLO huawei.com"
+        id S1726879AbgD0NVO (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 27 Apr 2020 09:21:14 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:57514 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726786AbgD0NSA (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 27 Apr 2020 09:18:00 -0400
-Received: from DGGEML402-HUB.china.huawei.com (unknown [172.30.72.54])
-        by Forcepoint Email with ESMTP id 523D021BA65E58ECFFC7;
-        Mon, 27 Apr 2020 21:17:54 +0800 (CST)
-Received: from DGGEML532-MBS.china.huawei.com ([169.254.7.137]) by
- DGGEML402-HUB.china.huawei.com ([fe80::fca6:7568:4ee3:c776%31]) with mapi id
- 14.03.0487.000; Mon, 27 Apr 2020 21:17:52 +0800
-From:   "weiyongjun (A)" <weiyongjun1@huawei.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Jiri Slaby <jslaby@suse.com>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: re: [PATCH -next] sparc64: vcc: Fix error return code in vcc_probe()
-Thread-Topic: [PATCH -next] sparc64: vcc: Fix error return code in
- vcc_probe()
-Thread-Index: AdYclibIjQBIrwehQse7Q+sCeteTTQ==
-Date:   Mon, 27 Apr 2020 13:17:51 +0000
-Message-ID: <6AADFAC011213A4C87B956458587ADB419A68C11@dggeml532-mbs.china.huawei.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.166.215.142]
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+        id S1727040AbgD0NVN (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 27 Apr 2020 09:21:13 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id DF6824AAED82E4CD3C08;
+        Mon, 27 Apr 2020 21:21:11 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 27 Apr 2020 21:21:01 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <sparclinux@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next v2] tty: vcc: Fix error return code in vcc_probe()
+Date:   Mon, 27 Apr 2020 13:22:20 +0000
+Message-ID: <20200427132220.22028-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200427122415.47416-1-weiyongjun1@huawei.com>
+References: <20200427122415.47416-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-DQo+IE9uIE1vbiwgQXByIDI3LCAyMDIwIGF0IDEyOjI0OjE1UE0gKzAwMDAsIFdlaSBZb25nanVu
-IHdyb3RlOg0KPiA+IEZpeCB0byByZXR1cm4gbmVnYXRpdmUgZXJyb3IgY29kZSAtRU5PTUVNIGZy
-b20gdGhlIGVycm9yIGhhbmRsaW5nIGNhc2UNCj4gPiBpbnN0ZWFkIG9mIDAsIGFzIGRvbmUgZWxz
-ZXdoZXJlIGluIHRoaXMgZnVuY3Rpb24uDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBXZWkgWW9u
-Z2p1biA8d2VpeW9uZ2p1bjFAaHVhd2VpLmNvbT4NCj4gPiAtLS0NCj4gPiAgZHJpdmVycy90dHkv
-dmNjLmMgfCAxICsNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspDQo+IA0KPiBX
-aHkgaXMgc3BhcmM2NCBpbiB5b3VyIHN1YmplY3QgbGluZT8NCj4gDQo+IGNvbmZ1c2VkLA0KPiAN
-Cg0KSSBnb3QgJ3NwYXJjNjSjunZjYzonIGZyb20gZ2l0IGxvZyAsd2lsbCBjaGFuZ2UgdG8gJ3R0
-eTogdmNjJywgdGhhbmtzLg0KDQpSZWdhcmRzDQo=
+Fix to return negative error code -ENOMEM from the error handling
+case instead of 0, as done elsewhere in this function.
+
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+v1 -> v2: fix module name in subject
+---
+ drivers/tty/vcc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/tty/vcc.c b/drivers/tty/vcc.c
+index d2a1e1228c82..9ffd42e333b8 100644
+--- a/drivers/tty/vcc.c
++++ b/drivers/tty/vcc.c
+@@ -605,6 +605,7 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 	port->index = vcc_table_add(port);
+ 	if (port->index == -1) {
+ 		pr_err("VCC: no more TTY indices left for allocation\n");
++		rv = -ENOMEM;
+ 		goto free_ldc;
+ 	}
+
+
+
