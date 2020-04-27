@@ -2,105 +2,158 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 964B11B94DC
-	for <lists+sparclinux@lfdr.de>; Mon, 27 Apr 2020 03:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E30B91B9662
+	for <lists+sparclinux@lfdr.de>; Mon, 27 Apr 2020 07:04:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726403AbgD0BQc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 26 Apr 2020 21:16:32 -0400
-Received: from mga11.intel.com ([192.55.52.93]:62678 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726323AbgD0BQc (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 26 Apr 2020 21:16:32 -0400
-IronPort-SDR: Lv/v2Jhj0NyWAobklZlghw3MydTkknmxfhC7JeS1RSQhe+MFITHVsWvc2aHAnd5si+epKjfCQu
- IEveEu/quQnw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2020 18:16:31 -0700
-IronPort-SDR: ZrrKsQ6Zur3/bE2CO6sc6Wdv34dqrhqrjSlpkUGUwoboNwAHWFqd68hpZ33zjqX/g7EQHldNW4
- L627f0bj0fUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,321,1583222400"; 
-   d="scan'208";a="336090274"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
-  by orsmga001.jf.intel.com with ESMTP; 26 Apr 2020 18:16:31 -0700
-Date:   Sun, 26 Apr 2020 18:16:30 -0700
-From:   Ira Weiny <ira.weiny@intel.com>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
+        id S1726198AbgD0FEt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 27 Apr 2020 01:04:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59086 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726178AbgD0FEt (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 27 Apr 2020 01:04:49 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FA6BC061A0F;
+        Sun, 26 Apr 2020 22:04:49 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id t40so6941564pjb.3;
+        Sun, 26 Apr 2020 22:04:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=RpEFDruZhhlXBhX9QpFVEyfUVGVZWtywwb585yNz+7Y=;
+        b=bT29SBfOK96SESehhTW4BCxtsJFVttVeoi/t0urpRpj0AFJ020vN2h1/7jbZohDiWY
+         G+7rYY/cyjMWRX2nWM1nQUHRK5DYY0Z3Re/LQsmmL5pheEmdu3Z1rJ7IPvBhUWW1vcYA
+         rRAUC3qAszhg7SieSVaXNxX3irqWsJ185lS+6xxGA+5B6PInlCzT3e4IzLqCdgG84LZT
+         0O5T2gDAaSxEEY9ruwlPztv5j6dMcOK3Fxvpnkz0f3/jF7y8KJINeGHpr20aF1GemJoJ
+         vZnP/QcZkHuVdvvx0xYhq+BbBscy9ve367kNA6XTMOpJq4QXGHxO/ZNnzNN5zxO0WihD
+         fgVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=RpEFDruZhhlXBhX9QpFVEyfUVGVZWtywwb585yNz+7Y=;
+        b=VgeOvtMAr5lvxAiR/T/dnr9JqoGAv2N79bmByarfr8ANh0UyDFa19QF/WWP+cQnJwE
+         uxOON+HNRqCBLM2cV0XLiCyA72n3jBPtxwbKNBgbZgVua3zSYarP98DQsQCF5dlzKlKB
+         2yjtx6nd2TC2UJjTX0noO1kcKM0HzH9wBt8GF7B4ustpiKuiFp7DCDOrdpmYH/9WlmAU
+         Gb8rAGyWSuXMW9grSxvQ3P5QasotdrHACRIzLuFBCFZUvK8rQLMd5F/+/AyM3M9DWGLC
+         nnLTe+3MIfAzKcucAaEqBbQ0js9FXDYUye+CyT34nVtZFERDdk8m3bC5f3ipt/+Z6VDh
+         O8vw==
+X-Gm-Message-State: AGi0PuZJxQO2LCBbyP8Wpkm1uoUCs98hja/WBBxhYYOWhLd0b6yBpVbk
+        Hz3Oi+sylhfxjeE/bPSYio4=
+X-Google-Smtp-Source: APiQypIf/qo/TUxxXd3N0x5q5i+APW/p3XTbnR6PLJskh1YyRzL4PAyXKe0dL0wTZKlCFIs0r3ai3g==
+X-Received: by 2002:a17:90a:3f8e:: with SMTP id m14mr20357937pjc.92.1587963888745;
+        Sun, 26 Apr 2020 22:04:48 -0700 (PDT)
+Received: from [192.168.0.102] ([49.205.220.192])
+        by smtp.gmail.com with ESMTPSA id o21sm9822670pgk.16.2020.04.26.22.04.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Apr 2020 22:04:48 -0700 (PDT)
+Subject: Re: [PATCH v3 2/4] hugetlbfs: move hugepagesz= parsing to arch
+ independent code
+To:     Mike Kravetz <mike.kravetz@oracle.com>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Ingo Molnar <mingo@redhat.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org
-Subject: Re: [PATCH 4/5] arch/kmap_atomic: Consolidate duplicate code
-Message-ID: <20200427011630.GC135929@iweiny-DESK2.sc.intel.com>
-References: <20200426055406.134198-1-ira.weiny@intel.com>
- <20200426055406.134198-5-ira.weiny@intel.com>
- <20200426072642.GB22024@infradead.org>
+        Jonathan Corbet <corbet@lwn.net>,
+        Longpeng <longpeng2@huawei.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mina Almasry <almasrymina@google.com>,
+        Peter Xu <peterx@redhat.com>,
+        Nitesh Narayan Lal <nitesh@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <20200417185049.275845-1-mike.kravetz@oracle.com>
+ <20200417185049.275845-3-mike.kravetz@oracle.com>
+From:   Sandipan Das <sandipan.osd@gmail.com>
+Message-ID: <7583dfcc-62d8-2a54-6eef-bcb4e01129b3@gmail.com>
+Date:   Mon, 27 Apr 2020 10:34:36 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200426072642.GB22024@infradead.org>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20200417185049.275845-3-mike.kravetz@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun, Apr 26, 2020 at 12:26:42AM -0700, Christoph Hellwig wrote:
-> > diff --git a/arch/arc/mm/highmem.c b/arch/arc/mm/highmem.c
-> > index 4db13a6b9f3b..1cae4b911a33 100644
-> > --- a/arch/arc/mm/highmem.c
-> > +++ b/arch/arc/mm/highmem.c
-> > @@ -53,11 +53,10 @@ void *kmap_atomic(struct page *page)
-> >  {
-> >  	int idx, cpu_idx;
-> >  	unsigned long vaddr;
-> > +	void *addr = kmap_atomic_fast(page);
-> >  
-> > -	preempt_disable();
-> > -	pagefault_disable();
-> > -	if (!PageHighMem(page))
-> > -		return page_address(page);
-> > +	if (addr)
-> > +		return addr;
+Hi Mike,
+
+On 18/04/20 12:20 am, Mike Kravetz wrote:
+> Now that architectures provide arch_hugetlb_valid_size(), parsing
+> of "hugepagesz=" can be done in architecture independent code.
+> Create a single routine to handle hugepagesz= parsing and remove
+> all arch specific routines.  We can also remove the interface
+> hugetlb_bad_size() as this is no longer used outside arch independent
+> code.
 > 
-> Wouldn't it make sense to just move kmap_atomic itelf to common code,
-> and call out to a kmap_atomic_high for the highmem case, following the
-> scheme in kmap?
->
+> This also provides consistent behavior of hugetlbfs command line
+> options.  The hugepagesz= option should only be specified once for
+> a specific size, but some architectures allow multiple instances.
+> This appears to be more of an oversight when code was added by some
+> architectures to set up ALL huge pages sizes.
+> 
+> [...]
+> 
+> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+> index de54d2a37830..2c3fa0a7787b 100644
+> --- a/arch/powerpc/mm/hugetlbpage.c
+> +++ b/arch/powerpc/mm/hugetlbpage.c
+> @@ -589,21 +589,6 @@ static int __init add_huge_page_size(unsigned long long size)
+>  	return 0;
+>  }
+>  
+> -static int __init hugepage_setup_sz(char *str)
+> -{
+> -	unsigned long long size;
+> -
+> -	size = memparse(str, &str);
+> -
+> -	if (add_huge_page_size(size) != 0) {
+> -		hugetlb_bad_size();
+> -		pr_err("Invalid huge page size specified(%llu)\n", size);
+> -	}
+> -
+> -	return 1;
+> -}
+> -__setup("hugepagesz=", hugepage_setup_sz);
+> -
+> [...]
 
-Sure I do like that symmetry between the calls.
+This isn't working as expected on powerpc64.
 
->
-> Same for the unmap side.
+  [    0.000000] Kernel command line: root=UUID=dc7b49cf-95a2-4996-8e7d-7c64ddc7a6ff hugepagesz=16G hugepages=2 
+  [    0.000000] HugeTLB: huge pages not supported, ignoring hugepagesz = 16G
+  [    0.000000] HugeTLB: huge pages not supported, ignoring hugepages = 2
+  [    0.284177] HugeTLB registered 16.0 MiB page size, pre-allocated 0 pages
+  [    0.284182] HugeTLB registered 16.0 GiB page size, pre-allocated 0 pages
+  [    2.585062]     hugepagesz=16G
+  [    2.585063]     hugepages=2
 
-FWIW that would simply be renaming  __kunmap_atomic() to kunmap_atomic_high()
+The "huge pages not supported" messages are under a !hugepages_supported()
+condition which checks if HPAGE_SHIFT is non-zero. On powerpc64, HPAGE_SHIFT
+comes from the hpage_shift variable. At this point, it is still zero and yet
+to be set. Hence the check fails. The reason being hugetlbpage_init_default(),
+which sets hpage_shift, it now called after hugepage_setup_sz().
 
->
-> That might require to support
-> kmap_atomic_prot everywhere first, which sounds like a really good
-> idea anyway, and would avoid the need for strange workaround in drm.
 
-Having a kmap_atomic_prot() seems like a good idea.  But I'm not exactly sure
-why CONFIG_x86 is being called out specifically in the DRM code?
-
-Ira
-
+- Sandipan
