@@ -2,104 +2,159 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE7C61BBD5A
-	for <lists+sparclinux@lfdr.de>; Tue, 28 Apr 2020 14:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0AF11BCDD9
+	for <lists+sparclinux@lfdr.de>; Tue, 28 Apr 2020 22:58:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726791AbgD1MTP (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 28 Apr 2020 08:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41928 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726645AbgD1MTO (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 28 Apr 2020 08:19:14 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B76CC03C1A9
-        for <sparclinux@vger.kernel.org>; Tue, 28 Apr 2020 05:19:14 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id h124so4288915qke.11
-        for <sparclinux@vger.kernel.org>; Tue, 28 Apr 2020 05:19:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=cZeXyS6KXD6Xo/aaEAoEuGpGCUzH9InSVCXg87n1+qk=;
-        b=fUiPsUDVfgaxAKaz5TgFb0YLZhf27aUF9CFySMhAJWh2az3rUeMpwuEJomjKDrSZBl
-         DvumcZ6FRomcnlSNgevHYdnw97h6zsxHehNr5k1n1Vz0HWgrkj/Xmajt9UoeZWZCTCM/
-         CSXX13L9bvymtOqFJ/OvTUB9YfuAT0lYlf+sXxI2vBp107PbXSAKu5bi2RMd+T5umh/e
-         gmvNwi0BbuVESA+B6NX++97JgH0HtzfKqwdEJHc+jAauP5QtiLGPQLrwxIHzPat6mx7o
-         68BRoxlonLIDLBgPJ7ruiSGlKaxh5B/fbvF0oCotxE7PpaLaLEMbkiP+lOAAL8ucQA8o
-         MOdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=cZeXyS6KXD6Xo/aaEAoEuGpGCUzH9InSVCXg87n1+qk=;
-        b=onjL5VE9YUnEViP8T0Ex4NajgJE7U23R/rkJcxusXeYgkcKvxKBpH52MXHuTgkbRFC
-         WLqWAH5hPocmJd/cTE0J2NdG0p0RIU1vF1bK8XxFhhv90ZaxJxUApWfyfTFAE4ouwQUk
-         4wvzAtp5Uf8LyYm1L4fWtrww+jSzwKJQpv1eCm2Q7w97dMsmW/2ndkxX4N0sAR1hVNY4
-         3NggrTakw3cIF8oJoA2xmlT8Qo0vYF4Ox0MepxQHktBZdJJR+Lo6bDAyePkY/QaU8YVE
-         u6AYNpNQUhs0GTsMkd543J74kQn2qNg2CDipUdEcUNEO0ZxyEcJe/P/PR6m37SFhnkvq
-         4S+A==
-X-Gm-Message-State: AGi0PuYdRmPhynO7f0wDY9u14fD4O0XzTcOukOMU+qPYVMrjjr/mKzvU
-        9mmxgnRh9lXD34k4DzCgwXW4+1VFusEnstRfPvc=
-X-Google-Smtp-Source: APiQypKz3mokaO6xgzsF2eycWEYIh4uvy4CSgIt4t0DpdFPCzJ78U596yUOPC7uELKFr++cwCSG1SbCpFLjmEpLjfFk=
-X-Received: by 2002:a37:a406:: with SMTP id n6mr26500641qke.282.1588076353723;
- Tue, 28 Apr 2020 05:19:13 -0700 (PDT)
+        id S1726676AbgD1U6n (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 28 Apr 2020 16:58:43 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:50778 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726344AbgD1U6i (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 28 Apr 2020 16:58:38 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SKqvaJ036359;
+        Tue, 28 Apr 2020 20:56:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2020-01-29; bh=3EBd0JFCCDiBFwAIUR2awq/QssydoJhBBr3apN0hNL4=;
+ b=nzmQliv6J5k3gHWPvWJnPS0vCXA935IwAWlquOi+UB4cAOG5GVA8x0EevBJ6Y7/4S/Wk
+ cv/nnjbngxq/xJG7dp3yAjkB+bsgpWoDW9qZNV+cAqAZns+fDRhkr+rg2+tDHEZ/681c
+ xkLQsXTstu9RMA24ANZwGtc5hQztAHf/yefkq+EIN6UcQxslL2wUYZ6Tq5F8xiUINzSg
+ WRLXyPu9XyyVs0d1h1qHTOO5xQEIKOY9IVd4tzdbzR0qekcaam1PlrOpTOfy61AeKw2P
+ r2lDbxIbSa7ZBs2XqvAuCMXzfVZKlVpJeAzcr+bTdwGyAVkjeLBKw+Kw/mVMVWpq+i94 sQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 30nucg2bth-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 Apr 2020 20:56:31 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SKr0DT002838;
+        Tue, 28 Apr 2020 20:56:31 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 30my0ebuum-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 Apr 2020 20:56:31 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03SKuJJT014969;
+        Tue, 28 Apr 2020 20:56:20 GMT
+Received: from monkey.oracle.com (/71.63.128.209)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 28 Apr 2020 13:56:19 -0700
+From:   Mike Kravetz <mike.kravetz@oracle.com>
+To:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Longpeng <longpeng2@huawei.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mina Almasry <almasrymina@google.com>,
+        Peter Xu <peterx@redhat.com>,
+        Nitesh Narayan Lal <nitesh@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>
+Subject: [PATCH v4 0/4] Clean up hugetlb boot command line processing
+Date:   Tue, 28 Apr 2020 13:56:10 -0700
+Message-Id: <20200428205614.246260-1-mike.kravetz@oracle.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Received: by 2002:ac8:3f2f:0:0:0:0:0 with HTTP; Tue, 28 Apr 2020 05:19:13
- -0700 (PDT)
-Reply-To: boa.benin107@yahoo.com
-From:   "Mrs. Angella Michelle" <westernunion.benin982@gmail.com>
-Date:   Tue, 28 Apr 2020 14:19:13 +0200
-Message-ID: <CAP=nHBK+P2rQzR138LMfYJUGSB=T5L6dBFfq+3NSVU4Z2UrOqw@mail.gmail.com>
-Subject: Contact Bank of Africa-Benin to receive your payment funds transfer
- amount of $14.800.000,00 Million USD,approved this morning by IMF.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0
+ suspectscore=0 adultscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004280163
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 priorityscore=1501
+ mlxlogscore=999 impostorscore=0 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 mlxscore=0 spamscore=0 adultscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004280163
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Attn Dear.
+v4 -
+   Fixed huge page order definitions for arm64 (Qian Cai)
+   Removed hugepages_supported() checks in command line processing as
+     powerpc does not set hugepages_supported until later in boot (Sandipan)
+   Added Acks, Reviews and Tested (Will, Gerald, Anders, Sandipan)
 
-Your luck has shined, Thank Your God, IMF has approved your transfer
-this Morning.
+v3 -
+   Used weak attribute method of defining arch_hugetlb_valid_size.
+     This eliminates changes to arch specific hugetlb.h files (Peter)
+   Updated documentation (Peter, Randy)
+   Fixed handling of implicitly specified gigantic page preallocation
+     in existing code and removed documentation of such.  There is now
+     no difference between handling of gigantic and non-gigantic pages.
+     (Peter, Nitesh).
+     This requires the most review as there is a small change to
+     undocumented behavior.  See patch 4 commit message for details.
+   Added Acks and Reviews (Mina, Peter)
 
-Contact Bank of Africa-Benin to receive your payment funds transfer amount =
-of
-$14.800.000,00 Million USD,approved this morning by IMF.
+v2 -
+   Fix build errors with patch 1 (Will)
+   Change arch_hugetlb_valid_size arg to unsigned long and remove
+     irrelevant 'extern' keyword (Christophe)
+   Documentation and other misc changes (Randy, Christophe, Mina)
+   Do not process command line options if !hugepages_supported()
+     (Dave, but it sounds like we may want to additional changes to
+      hugepages_supported() for x86?  If that is needed I would prefer
+      a separate patch.)
 
-Happy to inform you, we have finally deposited your payment funds
-$14.8 million us dollars with the Paying Bank of Africa-Benin
-to transfer the payment amount of $14.800,000,00 Million Us Dollars to you
-Barrister Robert Richter, attorney general of UN-office Benin assigned
-the finally approval of your transfer to you today.
-Contact the bank immediately you receive this email now.
+Longpeng(Mike) reported a weird message from hugetlb command line processing
+and proposed a solution [1].  While the proposed patch does address the
+specific issue, there are other related issues in command line processing.
+As hugetlbfs evolved, updates to command line processing have been made to
+meet immediate needs and not necessarily in a coordinated manner.  The result
+is that some processing is done in arch specific code, some is done in arch
+independent code and coordination is problematic.  Semantics can vary between
+architectures.
 
-Director Bank of Africa-Benin: Dr. Festus Obiara
-Email id:  boa.benin107@yahoo.com
-Tel/mobile, (229) 62819378
-BOA-BENIN | GROUPE BANK OF AFRICA, boa-benin
-Avenue Jean-Paul II - 08 BP 0879 - Cotonou - B=C3=A9nin
-Phone:(229) 62819378.
-2020 GROUPE BANK OF AFRICA
+The patch series does the following:
+- Define arch specific arch_hugetlb_valid_size routine used to validate
+  passed huge page sizes.
+- Move hugepagesz= command line parsing out of arch specific code and into
+  an arch independent routine.
+- Clean up command line processing to follow desired semantics and
+  document those semantics.
 
-Be advised to re-confirm your bank details to this bank as listed.
+[1] https://lore.kernel.org/linux-mm/20200305033014.1152-1-longpeng2@huawei.com
 
-Your account Holder's name----------------
-Bank Name----------------------------------------------------------
-Bank address----------------------------------------------
-Account Numbers---------------------------------------
-Routing-----------------------------------------------------------------
-Your direct Phone Numbers----------------------------------------------
+Mike Kravetz (4):
+  hugetlbfs: add arch_hugetlb_valid_size
+  hugetlbfs: move hugepagesz= parsing to arch independent code
+  hugetlbfs: remove hugetlb_add_hstate() warning for existing hstate
+  hugetlbfs: clean up command line processing
 
-Note,I have paid the deposit and insurance fees for you
-But the only money you are to send to this bank is $150.00 us dollars,
-Been for the wire transfer fees of your funds,
+ .../admin-guide/kernel-parameters.txt         |  40 ++--
+ Documentation/admin-guide/mm/hugetlbpage.rst  |  35 ++++
+ arch/arm64/mm/hugetlbpage.c                   |  30 +--
+ arch/powerpc/mm/hugetlbpage.c                 |  30 +--
+ arch/riscv/mm/hugetlbpage.c                   |  24 +--
+ arch/s390/mm/hugetlbpage.c                    |  24 +--
+ arch/sparc/mm/init_64.c                       |  43 +----
+ arch/x86/mm/hugetlbpage.c                     |  23 +--
+ include/linux/hugetlb.h                       |   2 +-
+ mm/hugetlb.c                                  | 180 ++++++++++++++----
+ 10 files changed, 260 insertions(+), 171 deletions(-)
 
-Contact Him now to receive your transfer deposited this morning
-I wait for your reply upon confirmation
-Mrs. Angella Michelle
-Editor, Zenith Bank- Companies Benin
-mrsa9389@gmail.com
+-- 
+2.25.4
+
