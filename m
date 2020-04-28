@@ -2,222 +2,104 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A59011BB50F
-	for <lists+sparclinux@lfdr.de>; Tue, 28 Apr 2020 06:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE7C61BBD5A
+	for <lists+sparclinux@lfdr.de>; Tue, 28 Apr 2020 14:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726258AbgD1EUI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 28 Apr 2020 00:20:08 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:29364 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725803AbgD1EUH (ORCPT
+        id S1726791AbgD1MTP (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 28 Apr 2020 08:19:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41928 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726645AbgD1MTO (ORCPT
         <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 28 Apr 2020 00:20:07 -0400
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03S44aiX124128;
-        Tue, 28 Apr 2020 00:17:28 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 30pd53g8rh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 28 Apr 2020 00:17:28 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03S47gjm130005;
-        Tue, 28 Apr 2020 00:17:27 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 30pd53g8pd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 28 Apr 2020 00:17:26 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-        by ppma04fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03S45tWP018939;
-        Tue, 28 Apr 2020 04:17:24 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-        by ppma04fra.de.ibm.com with ESMTP id 30mcu58gsm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 28 Apr 2020 04:17:24 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 03S4HLNp41943218
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Apr 2020 04:17:21 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 79F1911C052;
-        Tue, 28 Apr 2020 04:17:21 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6834611C04A;
-        Tue, 28 Apr 2020 04:17:14 +0000 (GMT)
-Received: from [9.199.43.234] (unknown [9.199.43.234])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 28 Apr 2020 04:17:14 +0000 (GMT)
-Subject: Re: [PATCH v3 2/4] hugetlbfs: move hugepagesz= parsing to arch
- independent code
-To:     Mike Kravetz <mike.kravetz@oracle.com>
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-doc@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "David S.Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Longpeng <longpeng2@huawei.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Mina Almasry <almasrymina@google.com>,
-        Peter Xu <peterx@redhat.com>,
-        Nitesh Narayan Lal <nitesh@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20200417185049.275845-1-mike.kravetz@oracle.com>
- <20200417185049.275845-3-mike.kravetz@oracle.com>
- <7583dfcc-62d8-2a54-6eef-bcb4e01129b3@gmail.com>
- <5a380060-38db-b690-1003-678ca0f28f07@oracle.com>
- <b1f04f9f-fa46-c2a0-7693-4a0679d2a1ee@oracle.com>
-From:   Sandipan Das <sandipan@linux.ibm.com>
-Message-ID: <9c82a0b1-db0e-9b34-88a1-bc810d6b5eec@linux.ibm.com>
-Date:   Tue, 28 Apr 2020 09:47:13 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Tue, 28 Apr 2020 08:19:14 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B76CC03C1A9
+        for <sparclinux@vger.kernel.org>; Tue, 28 Apr 2020 05:19:14 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id h124so4288915qke.11
+        for <sparclinux@vger.kernel.org>; Tue, 28 Apr 2020 05:19:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=cZeXyS6KXD6Xo/aaEAoEuGpGCUzH9InSVCXg87n1+qk=;
+        b=fUiPsUDVfgaxAKaz5TgFb0YLZhf27aUF9CFySMhAJWh2az3rUeMpwuEJomjKDrSZBl
+         DvumcZ6FRomcnlSNgevHYdnw97h6zsxHehNr5k1n1Vz0HWgrkj/Xmajt9UoeZWZCTCM/
+         CSXX13L9bvymtOqFJ/OvTUB9YfuAT0lYlf+sXxI2vBp107PbXSAKu5bi2RMd+T5umh/e
+         gmvNwi0BbuVESA+B6NX++97JgH0HtzfKqwdEJHc+jAauP5QtiLGPQLrwxIHzPat6mx7o
+         68BRoxlonLIDLBgPJ7ruiSGlKaxh5B/fbvF0oCotxE7PpaLaLEMbkiP+lOAAL8ucQA8o
+         MOdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=cZeXyS6KXD6Xo/aaEAoEuGpGCUzH9InSVCXg87n1+qk=;
+        b=onjL5VE9YUnEViP8T0Ex4NajgJE7U23R/rkJcxusXeYgkcKvxKBpH52MXHuTgkbRFC
+         WLqWAH5hPocmJd/cTE0J2NdG0p0RIU1vF1bK8XxFhhv90ZaxJxUApWfyfTFAE4ouwQUk
+         4wvzAtp5Uf8LyYm1L4fWtrww+jSzwKJQpv1eCm2Q7w97dMsmW/2ndkxX4N0sAR1hVNY4
+         3NggrTakw3cIF8oJoA2xmlT8Qo0vYF4Ox0MepxQHktBZdJJR+Lo6bDAyePkY/QaU8YVE
+         u6AYNpNQUhs0GTsMkd543J74kQn2qNg2CDipUdEcUNEO0ZxyEcJe/P/PR6m37SFhnkvq
+         4S+A==
+X-Gm-Message-State: AGi0PuYdRmPhynO7f0wDY9u14fD4O0XzTcOukOMU+qPYVMrjjr/mKzvU
+        9mmxgnRh9lXD34k4DzCgwXW4+1VFusEnstRfPvc=
+X-Google-Smtp-Source: APiQypKz3mokaO6xgzsF2eycWEYIh4uvy4CSgIt4t0DpdFPCzJ78U596yUOPC7uELKFr++cwCSG1SbCpFLjmEpLjfFk=
+X-Received: by 2002:a37:a406:: with SMTP id n6mr26500641qke.282.1588076353723;
+ Tue, 28 Apr 2020 05:19:13 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <b1f04f9f-fa46-c2a0-7693-4a0679d2a1ee@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-27_17:2020-04-27,2020-04-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
- suspectscore=0 phishscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999
- bulkscore=0 lowpriorityscore=0 clxscore=1011 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004280027
+Received: by 2002:ac8:3f2f:0:0:0:0:0 with HTTP; Tue, 28 Apr 2020 05:19:13
+ -0700 (PDT)
+Reply-To: boa.benin107@yahoo.com
+From:   "Mrs. Angella Michelle" <westernunion.benin982@gmail.com>
+Date:   Tue, 28 Apr 2020 14:19:13 +0200
+Message-ID: <CAP=nHBK+P2rQzR138LMfYJUGSB=T5L6dBFfq+3NSVU4Z2UrOqw@mail.gmail.com>
+Subject: Contact Bank of Africa-Benin to receive your payment funds transfer
+ amount of $14.800.000,00 Million USD,approved this morning by IMF.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Mike,
+Attn Dear.
 
-On 28/04/20 12:39 am, Mike Kravetz wrote:
-> On 4/27/20 10:25 AM, Mike Kravetz wrote:
->> On 4/26/20 10:04 PM, Sandipan Das wrote:
->>> On 18/04/20 12:20 am, Mike Kravetz wrote:
->>>> Now that architectures provide arch_hugetlb_valid_size(), parsing
->>>> of "hugepagesz=" can be done in architecture independent code.
->>>
->>> This isn't working as expected on powerpc64.
->>>
->>>   [    0.000000] Kernel command line: root=UUID=dc7b49cf-95a2-4996-8e7d-7c64ddc7a6ff hugepagesz=16G hugepages=2 
->>>   [    0.000000] HugeTLB: huge pages not supported, ignoring hugepagesz = 16G
->>>   [    0.000000] HugeTLB: huge pages not supported, ignoring hugepages = 2
->>>   [    0.284177] HugeTLB registered 16.0 MiB page size, pre-allocated 0 pages
->>>   [    0.284182] HugeTLB registered 16.0 GiB page size, pre-allocated 0 pages
->>>   [    2.585062]     hugepagesz=16G
->>>   [    2.585063]     hugepages=2
->>>
->>
->> In the new arch independent version of hugepages_setup, I added the following
->> code in patch 4 off this series:
->>
->>> +	if (!hugepages_supported()) {
->>> +		pr_warn("HugeTLB: huge pages not supported, ignoring hugepages = %s\n", s);
->>> +		return 0;
->>> +	}
->>> +
->>
->> The easy solution is to remove all the hugepages_supported() checks from
->> command line parsing routines and rely on the later check in hugetlb_init().
-> 
-> Here is a patch to address the issue.  Sorry, as my series breaks all hugetlb
-> command line processing on powerpc.
-> 
-> Sandipan, can you test the following patch?
-> 
+Your luck has shined, Thank Your God, IMF has approved your transfer
+this Morning.
 
-The following patch does fix the issue. Thanks.
+Contact Bank of Africa-Benin to receive your payment funds transfer amount =
+of
+$14.800.000,00 Million USD,approved this morning by IMF.
 
-Tested-by: Sandipan Das <sandipan@linux.ibm.com>
+Happy to inform you, we have finally deposited your payment funds
+$14.8 million us dollars with the Paying Bank of Africa-Benin
+to transfer the payment amount of $14.800,000,00 Million Us Dollars to you
+Barrister Robert Richter, attorney general of UN-office Benin assigned
+the finally approval of your transfer to you today.
+Contact the bank immediately you receive this email now.
 
+Director Bank of Africa-Benin: Dr. Festus Obiara
+Email id:  boa.benin107@yahoo.com
+Tel/mobile, (229) 62819378
+BOA-BENIN | GROUPE BANK OF AFRICA, boa-benin
+Avenue Jean-Paul II - 08 BP 0879 - Cotonou - B=C3=A9nin
+Phone:(229) 62819378.
+2020 GROUPE BANK OF AFRICA
 
-> From 480fe2847361e2a85aeec1fb39fe643bb7100a07 Mon Sep 17 00:00:00 2001
-> From: Mike Kravetz <mike.kravetz@oracle.com>
-> Date: Mon, 27 Apr 2020 11:37:30 -0700
-> Subject: [PATCH] hugetlbfs: fix changes to command line processing
-> 
-> Previously, a check for hugepages_supported was added before processing
-> hugetlb command line parameters.  On some architectures such as powerpc,
-> hugepages_supported() is not set to true until after command line
-> processing.  Therefore, no hugetlb command line parameters would be
-> accepted.
-> 
-> Remove the additional checks for hugepages_supported.  In hugetlb_init,
-> print a warning if !hugepages_supported and command line parameters were
-> specified.
-> 
-> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-> ---
->  mm/hugetlb.c | 20 ++++----------------
->  1 file changed, 4 insertions(+), 16 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 1075abdb5717..5548e8851b93 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3212,8 +3212,11 @@ static int __init hugetlb_init(void)
->  {
->  	int i;
->  
-> -	if (!hugepages_supported())
-> +	if (!hugepages_supported()) {
-> +		if (hugetlb_max_hstate || default_hstate_max_huge_pages)
-> +			pr_warn("HugeTLB: huge pages not supported, ignoring associated command-line parameters\n");
->  		return 0;
-> +	}
->  
->  	/*
->  	 * Make sure HPAGE_SIZE (HUGETLB_PAGE_ORDER) hstate exists.  Some
-> @@ -3315,11 +3318,6 @@ static int __init hugepages_setup(char *s)
->  	unsigned long *mhp;
->  	static unsigned long *last_mhp;
->  
-> -	if (!hugepages_supported()) {
-> -		pr_warn("HugeTLB: huge pages not supported, ignoring hugepages = %s\n", s);
-> -		return 0;
-> -	}
-> -
->  	if (!parsed_valid_hugepagesz) {
->  		pr_warn("HugeTLB: hugepages=%s does not follow a valid hugepagesz, ignoring\n", s);
->  		parsed_valid_hugepagesz = true;
-> @@ -3372,11 +3370,6 @@ static int __init hugepagesz_setup(char *s)
->  	struct hstate *h;
->  
->  	parsed_valid_hugepagesz = false;
-> -	if (!hugepages_supported()) {
-> -		pr_warn("HugeTLB: huge pages not supported, ignoring hugepagesz = %s\n", s);
-> -		return 0;
-> -	}
-> -
->  	size = (unsigned long)memparse(s, NULL);
->  
->  	if (!arch_hugetlb_valid_size(size)) {
-> @@ -3424,11 +3417,6 @@ static int __init default_hugepagesz_setup(char *s)
->  	unsigned long size;
->  
->  	parsed_valid_hugepagesz = false;
-> -	if (!hugepages_supported()) {
-> -		pr_warn("HugeTLB: huge pages not supported, ignoring default_hugepagesz = %s\n", s);
-> -		return 0;
-> -	}
-> -
->  	if (parsed_default_hugepagesz) {
->  		pr_err("HugeTLB: default_hugepagesz previously specified, ignoring %s\n", s);
->  		return 0;
-> 
+Be advised to re-confirm your bank details to this bank as listed.
+
+Your account Holder's name----------------
+Bank Name----------------------------------------------------------
+Bank address----------------------------------------------
+Account Numbers---------------------------------------
+Routing-----------------------------------------------------------------
+Your direct Phone Numbers----------------------------------------------
+
+Note,I have paid the deposit and insurance fees for you
+But the only money you are to send to this bank is $150.00 us dollars,
+Been for the wire transfer fees of your funds,
+
+Contact Him now to receive your transfer deposited this morning
+I wait for your reply upon confirmation
+Mrs. Angella Michelle
+Editor, Zenith Bank- Companies Benin
+mrsa9389@gmail.com
