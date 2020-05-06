@@ -2,88 +2,90 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6591C6833
-	for <lists+sparclinux@lfdr.de>; Wed,  6 May 2020 08:14:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9FB1C6853
+	for <lists+sparclinux@lfdr.de>; Wed,  6 May 2020 08:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727810AbgEFGON (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 6 May 2020 02:14:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57424 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726495AbgEFGON (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 6 May 2020 02:14:13 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D22AC061A0F;
-        Tue,  5 May 2020 23:14:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=4GHTrlwGxcD7riSfw6FoiiWpv9lgWgy1e6SGI+Jf+lk=; b=YQdcPidwWxUsGPCqlsV5vlo08W
-        WE8x+MoDuXM7hVPD+/jHc3dDvfTrn9tM8b6ev+ngbwncTVqcdaxewm6WCDle9njCK90Fa6uDM8pzz
-        V1XKGx1+Kpcns1k6UZYJf5Fj5DEan46YXQrVVoWIg1pzlOvy252FRwu+V+Xz4mzIUqpwuO0rHOWQ3
-        44n+12vujyorLPu546uL9Jr9Rjc2cs3Px+jF8MGMUozOLUVhKI7jXCci3SoqI+7OPayG3rYjHx9QF
-        3xqDiBy6CDrTege8f3bj4NtjfsI9xry8OurnktjyDACV315FnjWOvzsuEqTT6dzYmPcWVFR+g3F8g
-        +dARHVUA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jWDJq-00064d-Uc; Wed, 06 May 2020 06:14:10 +0000
-Date:   Tue, 5 May 2020 23:14:10 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     ira.weiny@intel.com
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH V2 10/11] arch/kmap: Define kmap_atomic_prot() for all
- arch's
-Message-ID: <20200506061410.GE5192@infradead.org>
-References: <20200504010912.982044-1-ira.weiny@intel.com>
- <20200504010912.982044-11-ira.weiny@intel.com>
+        id S1726558AbgEFGRt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 6 May 2020 02:17:49 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:58184 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725873AbgEFGRt (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 6 May 2020 02:17:49 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id AD4FED3E8FAC46294EF1;
+        Wed,  6 May 2020 14:17:46 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.487.0; Wed, 6 May 2020
+ 14:17:37 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <davem@davemloft.net>, <akpm@linux-foundation.org>,
+        <rppt@linux.ibm.com>, <sparclinux@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Jason Yan <yanaijie@huawei.com>
+Subject: [PATCH] sparc: mm: return true,false in kern_addr_valid()
+Date:   Wed, 6 May 2020 14:16:59 +0800
+Message-ID: <20200506061659.19128-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200504010912.982044-11-ira.weiny@intel.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun, May 03, 2020 at 06:09:11PM -0700, ira.weiny@intel.com wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
-> 
-> To support kmap_atomic_prot(), all architectures need to support
-> protections passed to their kmap_atomic_high() function.  Pass
-> protections into kmap_atomic_high() and change the name to
-> kmap_atomic_high_prot() to match.
-> 
-> Then define kmap_atomic_prot() as a core function which calls
-> kmap_atomic_high_prot() when needed.
-> 
-> Finally, redefine kmap_atomic() as a wrapper of kmap_atomic_prot() with
-> the default kmap_prot exported by the architectures.
-> 
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+This function's return type is bool and returns both true/false and 0/1.
+This fixes the following coccicheck warning:
 
-Looks good,
+arch/sparc/mm/init_64.c:1652:9-10: WARNING: return of 0/1 in function
+'kern_addr_valid' with return type bool
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+---
+ arch/sparc/mm/init_64.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index 5774529ceb43..2ef6826a6ca6 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -1649,29 +1649,29 @@ bool kern_addr_valid(unsigned long addr)
+ 
+ 	pgd = pgd_offset_k(addr);
+ 	if (pgd_none(*pgd))
+-		return 0;
++		return false;
+ 
+ 	p4d = p4d_offset(pgd, addr);
+ 	if (p4d_none(*p4d))
+-		return 0;
++		return false;
+ 
+ 	pud = pud_offset(p4d, addr);
+ 	if (pud_none(*pud))
+-		return 0;
++		return false;
+ 
+ 	if (pud_large(*pud))
+ 		return pfn_valid(pud_pfn(*pud));
+ 
+ 	pmd = pmd_offset(pud, addr);
+ 	if (pmd_none(*pmd))
+-		return 0;
++		return false;
+ 
+ 	if (pmd_large(*pmd))
+ 		return pfn_valid(pmd_pfn(*pmd));
+ 
+ 	pte = pte_offset_kernel(pmd, addr);
+ 	if (pte_none(*pte))
+-		return 0;
++		return false;
+ 
+ 	return pfn_valid(pte_pfn(*pte));
+ }
+-- 
+2.21.1
+
