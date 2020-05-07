@@ -2,131 +2,111 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0311E1C9AC7
-	for <lists+sparclinux@lfdr.de>; Thu,  7 May 2020 21:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F12ED1C9CB3
+	for <lists+sparclinux@lfdr.de>; Thu,  7 May 2020 22:53:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728097AbgEGTSg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 7 May 2020 15:18:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41400 "EHLO mail.kernel.org"
+        id S1726579AbgEGUxC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 7 May 2020 16:53:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34952 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726367AbgEGTSg (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 7 May 2020 15:18:36 -0400
-Received: from embeddedor (unknown [189.207.59.248])
+        id S1726218AbgEGUxC (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 7 May 2020 16:53:02 -0400
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 409EA2063A;
-        Thu,  7 May 2020 19:18:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E2E7920735;
+        Thu,  7 May 2020 20:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588879115;
-        bh=PmaRvWKL0WGLgfjQ1uvdyt1NSJQfqavoNxrgKWSaeQk=;
-        h=Date:From:To:Cc:Subject:From;
-        b=C3Kelkzg4jGnKUJAti5PEFqSI042uFT80iLvvdSVCw3XhrJby/ZYUfBPVkFl5kZlj
-         ynKQnuPOAzSq7MPWh8KjZ6E8mjgM5nmLYoaVewBuUbUNNggTlkSJgbVx4HLzEUowUk
-         syh9hvRxFT7UkK8LnoTwCP6EFjf79wiDIAWi54Ao=
-Date:   Thu, 7 May 2020 14:23:02 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] sparc64: Replace zero-length array with flexible-array
-Message-ID: <20200507192302.GA16402@embeddedor>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        s=default; t=1588884780;
+        bh=TyVMubmSwnb6HspI26I671gs2+xz/BioghUujIiqGH8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=pLECSGx/bjY/e6dPZHg/pogKtFknD7CQxEbYnTijPvo31G65TH5qkje/0482SYoYN
+         DUxu9XSArBxL1RHMChRsQBx2Ke74CL6dm6TMRGPJJfX7xkDXTBpZl44fWyvfgMqhU0
+         epsvy3zKnV8VlRwcWKCyI4E8L4mB8LcbloZDf/RA=
+Date:   Thu, 7 May 2020 13:52:58 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     ira.weiny@intel.com
+Cc:     linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org,
+        Christian Koenig <christian.koenig@amd.com>,
+        Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH V3 13/15] parisc/kmap: Remove duplicate kmap code
+Message-Id: <20200507135258.f430182578c0d63b7488916e@linux-foundation.org>
+In-Reply-To: <20200507150004.1423069-14-ira.weiny@intel.com>
+References: <20200507150004.1423069-1-ira.weiny@intel.com>
+        <20200507150004.1423069-14-ira.weiny@intel.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The current codebase makes use of the zero-length array language
-extension to the C90 standard, but the preferred mechanism to declare
-variable-length types such as these ones is a flexible array member[1][2],
-introduced in C99:
+On Thu,  7 May 2020 08:00:01 -0700 ira.weiny@intel.com wrote:
 
-struct foo {
-        int stuff;
-        struct boo array[];
-};
+> parisc reimplements the kmap calls except to flush it's dcache.  This is
+> arguably an abuse of kmap but regardless it is messy and confusing.
+> 
+> Remove the duplicate code and have parisc define
+> ARCH_HAS_FLUSH_ON_KUNMAP for a kunmap_flush_on_unmap() architecture
+> specific call to flush the cache.
 
-By making use of the mechanism above, we will get a compiler warning
-in case the flexible array does not occur last in the structure, which
-will help us prevent some kind of undefined behavior bugs from being
-inadvertently introduced[3] to the codebase from now on.
+checkpatch says:
 
-Also, notice that, dynamic memory allocations won't be affected by
-this change:
+ERROR: #define of 'ARCH_HAS_FLUSH_ON_KUNMAP' is wrong - use Kconfig variables or standard guards instead
+#69: FILE: arch/parisc/include/asm/cacheflush.h:103:
++#define ARCH_HAS_FLUSH_ON_KUNMAP
 
-"Flexible array members have incomplete type, and so the sizeof operator
-may not be applied. As a quirk of the original implementation of
-zero-length arrays, sizeof evaluates to zero."[1]
+which is fair enough, I guess.  More conventional would be
 
-sizeof(flexible-array-member) triggers a warning because flexible array
-members have incomplete type[1]. There are some instances of code in
-which the sizeof operator is being incorrectly/erroneously applied to
-zero-length arrays and the result is zero. Such instances may be hiding
-some bugs. So, this work (flexible-array member conversions) will also
-help to get completely rid of those sorts of issues.
+arch/parisc/include/asm/cacheflush.h:
 
-This issue was found with the help of Coccinelle.
+static inline void kunmap_flush_on_unmap(void *addr)
+{
+	...
+}
+#define kunmap_flush_on_unmap kunmap_flush_on_unmap
 
-[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-[2] https://github.com/KSPP/linux/issues/21
-[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
 
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- arch/sparc/kernel/cpumap.c |    2 +-
- arch/sparc/kernel/ds.c     |    8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+include/linux/highmem.h:
 
-diff --git a/arch/sparc/kernel/cpumap.c b/arch/sparc/kernel/cpumap.c
-index 1cb62bfeaa1f..f07ea88a83af 100644
---- a/arch/sparc/kernel/cpumap.c
-+++ b/arch/sparc/kernel/cpumap.c
-@@ -50,7 +50,7 @@ struct cpuinfo_tree {
- 
- 	/* Offsets into nodes[] for each level of the tree */
- 	struct cpuinfo_level level[CPUINFO_LVL_MAX];
--	struct cpuinfo_node  nodes[0];
-+	struct cpuinfo_node  nodes[];
- };
- 
- 
-diff --git a/arch/sparc/kernel/ds.c b/arch/sparc/kernel/ds.c
-index 75232cbd58bf..522e5b51050c 100644
---- a/arch/sparc/kernel/ds.c
-+++ b/arch/sparc/kernel/ds.c
-@@ -87,7 +87,7 @@ struct ds_reg_req {
- 	__u64			handle;
- 	__u16			major;
- 	__u16			minor;
--	char			svc_id[0];
-+	char			svc_id[];
- };
- 
- struct ds_reg_ack {
-@@ -701,12 +701,12 @@ struct ds_var_hdr {
- 
- struct ds_var_set_msg {
- 	struct ds_var_hdr		hdr;
--	char				name_and_value[0];
-+	char				name_and_value[];
- };
- 
- struct ds_var_delete_msg {
- 	struct ds_var_hdr		hdr;
--	char				name[0];
-+	char				name[];
- };
- 
- struct ds_var_resp {
-@@ -989,7 +989,7 @@ struct ds_queue_entry {
- 	struct ds_info			*dp;
- 	int				req_len;
- 	int				__pad;
--	u64				req[0];
-+	u64				req[];
- };
- 
- static void process_ds_work(void)
+#ifndef kunmap_flush_on_unmap
+static inline void kunmap_flush_on_unmap(void *addr)
+{
+}
+#define kunmap_flush_on_unmap kunmap_flush_on_unmap
+#endif
 
+
+static inline void kunmap_atomic_high(void *addr)
+{
+	/* Mostly nothing to do in the CONFIG_HIGHMEM=n case as kunmap_atomic()
+	 * handles re-enabling faults + preemption */
+	kunmap_flush_on_unmap(addr);
+}
+
+
+but I don't really think it's worth bothering changing it.	
+
+(Ditto patch 3/15)
