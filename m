@@ -2,102 +2,54 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80DF01CFBC6
-	for <lists+sparclinux@lfdr.de>; Tue, 12 May 2020 19:16:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03F791CFCB9
+	for <lists+sparclinux@lfdr.de>; Tue, 12 May 2020 20:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730012AbgELRPp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 12 May 2020 13:15:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43906 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728941AbgELRPl (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 12 May 2020 13:15:41 -0400
-Received: from ip5f5af183.dynamic.kabel-deutschland.de ([95.90.241.131] helo=wittgenstein.fritz.box)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <christian.brauner@ubuntu.com>)
-        id 1jYYVE-0002Ci-Ob; Tue, 12 May 2020 17:15:36 +0000
-From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        Christian Brauner <christian.brauner@ubuntu.com>
-Subject: [PATCH 3/3] sparc: unconditionally enable HAVE_COPY_THREAD_TLS
-Date:   Tue, 12 May 2020 19:15:27 +0200
-Message-Id: <20200512171527.570109-4-christian.brauner@ubuntu.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200512171527.570109-1-christian.brauner@ubuntu.com>
-References: <20200512171527.570109-1-christian.brauner@ubuntu.com>
+        id S1728039AbgELSA3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 12 May 2020 14:00:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50246 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725938AbgELSA2 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 12 May 2020 14:00:28 -0400
+Received: from embeddedor (unknown [189.207.59.248])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0BE5120673;
+        Tue, 12 May 2020 18:00:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589306428;
+        bh=6ybMNosTnj9A54T0sdFcdYBIPDjIp0M+eT+TUICpV2w=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tOsFO3YzqYyRmheH0sY74sFTrSLKlnO3Hn5fsEb1aAvpWlBC9MIn/3loRl2hS3v3P
+         Y9sbCZ77tH0JCDf/sFaSQalmSEMV0KUwRijxggCY64blFndf7HcHEFczCF8YMrePD2
+         avFvFVMQQnC1XmF54L2JirNk5aXQ+Bxey4fybnJg=
+Date:   Tue, 12 May 2020 13:05:02 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     David Miller <davem@davemloft.net>
+Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sparc64: Replace zero-length array with flexible-array
+Message-ID: <20200512180502.GC4897@embeddedor>
+References: <20200507192302.GA16402@embeddedor>
+ <20200507.184916.273108688700388097.davem@davemloft.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200507.184916.273108688700388097.davem@davemloft.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Now that both sparc and sparc64 support copy_thread_tls() and don't rely
-on do_fork() anymore, turn on HAVE_COPY_THREAD_TLS unconditionally. Once
-all architectures are switched over this macro will be removed and
-the old do_fork() calling convention fully abandoned in favor of the
-cleaner struct kernel_clone_args one.
+On Thu, May 07, 2020 at 06:49:16PM -0700, David Miller wrote:
+> From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+> Date: Thu, 7 May 2020 14:23:02 -0500
+> 
+> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> 
+> Applied, thank you.
 
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Guo Ren <guoren@kernel.org>
-Cc: linux-csky@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
----
- arch/sparc/Kconfig             | 2 +-
- arch/sparc/kernel/process_32.c | 7 ++++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+Thanks, Dave.
 
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 423f6bc41de2..9f44afe1f73d 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -48,6 +48,7 @@ config SPARC
- 	select LOCKDEP_SMALL if LOCKDEP
- 	select NEED_DMA_MAP_STATE
- 	select NEED_SG_DMA_LENGTH
-+	select HAVE_COPY_THREAD_TLS
- 
- config SPARC32
- 	def_bool !64BIT
-@@ -95,7 +96,6 @@ config SPARC64
- 	select ARCH_HAS_PTE_SPECIAL
- 	select PCI_DOMAINS if PCI
- 	select ARCH_HAS_GIGANTIC_PAGE
--	select HAVE_COPY_THREAD_TLS
- 
- config ARCH_PROC_KCORE_TEXT
- 	def_bool y
-diff --git a/arch/sparc/kernel/process_32.c b/arch/sparc/kernel/process_32.c
-index 9c510e6625aa..575bfbda7373 100644
---- a/arch/sparc/kernel/process_32.c
-+++ b/arch/sparc/kernel/process_32.c
-@@ -274,8 +274,9 @@ clone_stackframe(struct sparc_stackf __user *dst,
- extern void ret_from_fork(void);
- extern void ret_from_kernel_thread(void);
- 
--int copy_thread(unsigned long clone_flags, unsigned long sp,
--		unsigned long arg, struct task_struct *p)
-+int copy_thread_tls(unsigned long clone_flags, unsigned long sp,
-+		    unsigned long arg, struct task_struct *p,
-+		    unsigned long tls)
- {
- 	struct thread_info *ti = task_thread_info(p);
- 	struct pt_regs *childregs, *regs = current_pt_regs();
-@@ -377,7 +378,7 @@ int copy_thread(unsigned long clone_flags, unsigned long sp,
- 	regs->u_regs[UREG_I1] = 0;
- 
- 	if (clone_flags & CLONE_SETTLS)
--		childregs->u_regs[UREG_G7] = regs->u_regs[UREG_I3];
-+		childregs->u_regs[UREG_G7] = tls;
- 
- 	return 0;
- }
--- 
-2.26.2
-
+--
+Gustavo
