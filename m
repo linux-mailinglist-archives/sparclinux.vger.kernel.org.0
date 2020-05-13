@@ -2,55 +2,50 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0CE01D2211
-	for <lists+sparclinux@lfdr.de>; Thu, 14 May 2020 00:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FE0E1D2217
+	for <lists+sparclinux@lfdr.de>; Thu, 14 May 2020 00:36:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726031AbgEMWc3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 13 May 2020 18:32:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55728 "EHLO
+        id S1726061AbgEMWgW (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 13 May 2020 18:36:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725925AbgEMWc2 (ORCPT
+        by vger.kernel.org with ESMTP id S1726034AbgEMWgW (ORCPT
         <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 13 May 2020 18:32:28 -0400
+        Wed, 13 May 2020 18:36:22 -0400
 Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE455C061A0C;
-        Wed, 13 May 2020 15:32:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BE81C061A0C;
+        Wed, 13 May 2020 15:36:22 -0700 (PDT)
 Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 25C671218DDC4;
-        Wed, 13 May 2020 15:32:27 -0700 (PDT)
-Date:   Wed, 13 May 2020 15:32:26 -0700 (PDT)
-Message-Id: <20200513.153226.1639916880914538869.davem@davemloft.net>
-To:     will@kernel.org
-Cc:     linux-kernel@vger.kernel.org, peterz@infradead.org,
-        ndesaulniers@google.com, matt@codeblueprint.co.uk,
-        sparclinux@vger.kernel.org, kernel-team@android.com
-Subject: Re: [RESEND PATCH 0/4] Rework sparc32 page-table layout
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id AE7D51227DF82;
+        Wed, 13 May 2020 15:36:21 -0700 (PDT)
+Date:   Wed, 13 May 2020 15:36:20 -0700 (PDT)
+Message-Id: <20200513.153620.318526782161817591.davem@davemloft.net>
+To:     chenzhou10@huawei.com
+Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next 0/2] sparc: use snprintf() in show() methods
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200414214011.2699-1-will@kernel.org>
-References: <20200414214011.2699-1-will@kernel.org>
+In-Reply-To: <20200509091849.116954-1-chenzhou10@huawei.com>
+References: <20200509091849.116954-1-chenzhou10@huawei.com>
 X-Mailer: Mew version 6.8 on Emacs 26.3
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 13 May 2020 15:32:27 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 13 May 2020 15:36:21 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Will Deacon <will@kernel.org>
-Date: Tue, 14 Apr 2020 22:40:07 +0100
+From: Chen Zhou <chenzhou10@huawei.com>
+Date: Sat, 9 May 2020 17:18:47 +0800
 
-> This is a reposting of the patch series I sent previously to rework the
-> sparc32 page-table layout so that 'pmd_t' can be used safely with
-> READ_ONCE():
-> 
-> https://lore.kernel.org/lkml/20200324104005.11279-1-will@kernel.org
-> 
-> This is blocking the READ_ONCE() rework, which in turn allows us to
-> bump the minimum GCC version for building the kernel up to 4.8.
+> snprintf() returns the number of bytes that would be written,
+> which may be greater than the the actual length to be written.
+> 	    
+> show() methods should return the number of bytes printed into the
+> buffer. This is the return value of scnprintf().
 
-Series applied to sparc-next, thanks Will.
+Series applied with Subject lines corrected.
