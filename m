@@ -2,61 +2,80 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41DC91D6C7E
-	for <lists+sparclinux@lfdr.de>; Sun, 17 May 2020 21:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E97E11D6DC8
+	for <lists+sparclinux@lfdr.de>; Mon, 18 May 2020 00:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726299AbgEQTq2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 17 May 2020 15:46:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52422 "EHLO
+        id S1726552AbgEQWN5 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 17 May 2020 18:13:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726269AbgEQTq2 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 17 May 2020 15:46:28 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50998C061A0C;
-        Sun, 17 May 2020 12:46:28 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0AEF1128A2DB1;
-        Sun, 17 May 2020 12:46:27 -0700 (PDT)
-Date:   Sun, 17 May 2020 12:46:27 -0700 (PDT)
-Message-Id: <20200517.124627.503340627820837794.davem@davemloft.net>
-To:     jhubbard@nvidia.com
-Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH] oradax: convert get_user_pages() --> pin_user_pages()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200517020829.856731-1-jhubbard@nvidia.com>
-References: <20200517020829.856731-1-jhubbard@nvidia.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 17 May 2020 12:46:28 -0700 (PDT)
+        with ESMTP id S1726299AbgEQWN5 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 17 May 2020 18:13:57 -0400
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48834C061A0C;
+        Sun, 17 May 2020 15:13:57 -0700 (PDT)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.93 #3 (Red Hat Linux))
+        id 1jaRXW-00Alrb-WC; Sun, 17 May 2020 22:13:47 +0000
+Date:   Sun, 17 May 2020 23:13:46 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc:     Christian Brauner <christian.brauner@ubuntu.com>,
+        David Miller <davem@davemloft.net>, arnd@arndb.de,
+        guoren@kernel.org, linux-csky@vger.kernel.org,
+        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH 0/3] sparc: port to copy_thread_tls() and struct
+ kernel_clone_args
+Message-ID: <20200517221346.GL23230@ZenIV.linux.org.uk>
+References: <20200512171527.570109-1-christian.brauner@ubuntu.com>
+ <20200512.130633.293867428547074800.davem@davemloft.net>
+ <20200517150123.sl36ug27gwnyz6gf@wittgenstein>
+ <cfc07b63-29e6-cda9-c611-235e37970763@ilande.co.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cfc07b63-29e6-cda9-c611-235e37970763@ilande.co.uk>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: John Hubbard <jhubbard@nvidia.com>
-Date: Sat, 16 May 2020 19:08:29 -0700
+On Sun, May 17, 2020 at 05:34:34PM +0100, Mark Cave-Ayland wrote:
 
-> This code was using get_user_pages_fast(), in a "Case 2" scenario
-> (DMA/RDMA), using the categorization from [1]. That means that it's
-> time to convert the get_user_pages_fast() + put_page() calls to
-> pin_user_pages_fast() + unpin_user_pages() calls.
+> FWIW if you're running a more recent version of QEMU (>=3.1) then you can also boot
+> from the virtio-blk-pci device directly instead of having to switch back to the IDE
+> device after installation as you have done above. Should be something like:
 > 
-> There is some helpful background in [2]: basically, this is a small
-> part of fixing a long-standing disconnect between pinning pages, and
-> file systems' use of those pages.
+> qemu-system-sparc64 \
+>          -m 4096 \
+>    	-device virtio-blk-pci,bus=pciB,drive=hd \
+>  	-drive
+> file=/home/brauner/.local/share/qemu/sparc64.img,format=raw,if=none,id=hd,bootindex=0 \
+>         -net nic \
+>  	-net user \
+>  	-nographic
 > 
-> [1] Documentation/core-api/pin_user_pages.rst
-> 
-> [2] "Explicit pinning of user-space pages":
->     https://lwn.net/Articles/807108/
-> 
-> Cc: David S. Miller <davem@davemloft.net>
-> Cc: sparclinux@vger.kernel.org
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> Note the removal of the legacy -boot argument and the addition of "bootindex=0" to
+> the -drive argument.
 
-Applied to sparc-next, thanks.
+	Is virtio-blk-pci more resilent to lost interrupt bug introduced in 
+"sun4u: update PCI topology to include simba PCI bridges"?  I hadn't tried
+it yet (reverted to the last working mainline qemu commit for now); IDE
+definitely is screwed by that - both the Linux and NetBSD drivers, actually.
+
+	A 50Mb worth of wget(1) is more than enough to trigger that crap;
+
+commit 063833a6ec
+Merge: d634fc0499 bcf9e2c2f2
+Author: Peter Maydell <peter.maydell@linaro.org>
+Date:   Thu Oct 19 18:42:51 2017 +0100
+
+    Merge remote-tracking branch 'remotes/mcayland/tags/qemu-sparc-signed' into staging
+
+hangs, d634fc0499 works, bcf9e2c2f2 hangs.
+
+I hadn't looked into details (the branch itself is only two commits long, but it
+incorporates an openbios update - 35 commits there, some obviously pci- and
+sun4u-related), but it's really easy to reproduce - -m 1024 and -hda <image>
+are probably the only relevant arguments.  Even dd if=/dev/sda of=/dev/null bs=64m
+is often enough to hang it, so I rather doubt that networking (e1000 on pciB,
+FWIW, with tap for backend) has anything to do with that.
