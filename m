@@ -2,114 +2,121 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCD881D6525
-	for <lists+sparclinux@lfdr.de>; Sun, 17 May 2020 04:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 370801D687F
+	for <lists+sparclinux@lfdr.de>; Sun, 17 May 2020 17:01:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726936AbgEQCIb (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 16 May 2020 22:08:31 -0400
-Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:12575 "EHLO
-        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726880AbgEQCIa (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 16 May 2020 22:08:30 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5ec09c510000>; Sat, 16 May 2020 19:07:13 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Sat, 16 May 2020 19:08:30 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Sat, 16 May 2020 19:08:30 -0700
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL101.nvidia.com
- (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sun, 17 May
- 2020 02:08:30 +0000
-Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
- Transport; Sun, 17 May 2020 02:08:29 +0000
-Received: from sandstorm.nvidia.com (Not Verified[10.2.48.175]) by hqnvemgw03.nvidia.com with Trustwave SEG (v7,5,8,10121)
-        id <B5ec09c9d0002>; Sat, 16 May 2020 19:08:29 -0700
-From:   John Hubbard <jhubbard@nvidia.com>
-To:     LKML <linux-kernel@vger.kernel.org>
-CC:     John Hubbard <jhubbard@nvidia.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        <sparclinux@vger.kernel.org>
-Subject: [PATCH] oradax: convert get_user_pages() --> pin_user_pages()
-Date:   Sat, 16 May 2020 19:08:29 -0700
-Message-ID: <20200517020829.856731-1-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.26.2
+        id S1728010AbgEQPBa (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 17 May 2020 11:01:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59300 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727970AbgEQPBa (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 17 May 2020 11:01:30 -0400
+Received: from ip5f5af183.dynamic.kabel-deutschland.de ([95.90.241.131] helo=wittgenstein)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <christian.brauner@ubuntu.com>)
+        id 1jaKn6-00031w-BG; Sun, 17 May 2020 15:01:24 +0000
+Date:   Sun, 17 May 2020 17:01:23 +0200
+From:   Christian Brauner <christian.brauner@ubuntu.com>
+To:     David Miller <davem@davemloft.net>
+Cc:     arnd@arndb.de, guoren@kernel.org, linux-csky@vger.kernel.org,
+        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH 0/3] sparc: port to copy_thread_tls() and struct
+ kernel_clone_args
+Message-ID: <20200517150123.sl36ug27gwnyz6gf@wittgenstein>
+References: <20200512171527.570109-1-christian.brauner@ubuntu.com>
+ <20200512.130633.293867428547074800.davem@davemloft.net>
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1589681233; bh=XuRV06lShXX0mEEPxDvd+aeuC8h5utZZzMaYdY4ajCA=;
-        h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-         MIME-Version:X-NVConfidentiality:Content-Transfer-Encoding:
-         Content-Type;
-        b=AGf4hNM+Hifu2oHtMx1No3HpgirZ8E3C//643LsAa2WPrXWuKELF4Icoa4Kbtzday
-         S9Cnaz7rPJVHC9Ult3l8VmEilT7ZO8da2Nexc90RtVkKCDzSAlZHeg8BeZqJdz1ECJ
-         W7hXD7NkKjDQKErQJV4xA3659jO9NCbzu5NUMUFo4FgDKqkOIwdoGxL0S6ciGDx5Uu
-         WXxhlYAp3CMoOIacLqwTt7d0POwcvwDyOt6r1jo67shqGeHwiekD7u4GUFYlko0Dts
-         aeZ+LKH9CHcnkckthYL8gp3fHLycl/dDdjzgeFhuSu9oVprMxHuqjzatJ1kjwfbkpF
-         EmD+wIi+5lI+A==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200512.130633.293867428547074800.davem@davemloft.net>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-This code was using get_user_pages_fast(), in a "Case 2" scenario
-(DMA/RDMA), using the categorization from [1]. That means that it's
-time to convert the get_user_pages_fast() + put_page() calls to
-pin_user_pages_fast() + unpin_user_pages() calls.
+On Tue, May 12, 2020 at 01:06:33PM -0700, David Miller wrote:
+> From: Christian Brauner <christian.brauner@ubuntu.com>
+> Date: Tue, 12 May 2020 19:15:24 +0200
+> 
+> > I've tested this series with qemu-system-sparc64 and a Debian Sid image
+> > and it comes up no problem (Here's a little recording
+> > https://asciinema.org/a/329510 ).
+> 
+> Can you show how you put this environment together and also what
+> compilation tools you used?  Looks great.
 
-There is some helpful background in [2]: basically, this is a small
-part of fixing a long-standing disconnect between pinning pages, and
-file systems' use of those pages.
+Sorry for the delay. That mail somehow got lost in my inbox.
 
-[1] Documentation/core-api/pin_user_pages.rst
+So in general, I used qemu-system-sparc64 which is available in Universe
+with either Debian or Ubuntu and that's what I've been using as host
+distro. So you need a 
 
-[2] "Explicit pinning of user-space pages":
-    https://lwn.net/Articles/807108/
+deb http://us.archive.ubuntu.com/ubuntu/ <release-name> universe
+deb-src http://us.archive.ubuntu.com/ubuntu/ <release-name> universe
+deb http://us.archive.ubuntu.com/ubuntu/ <release-name>-updates universe
+deb-src http://us.archive.ubuntu.com/ubuntu/ <release-name>-updates universe
 
-Cc: David S. Miller <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- drivers/sbus/char/oradax.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+int /etc/apt/sources.list
 
-diff --git a/drivers/sbus/char/oradax.c b/drivers/sbus/char/oradax.c
-index 8af216287a84..21b7cb6e7e70 100644
---- a/drivers/sbus/char/oradax.c
-+++ b/drivers/sbus/char/oradax.c
-@@ -410,9 +410,7 @@ static void dax_unlock_pages(struct dax_ctx *ctx, int c=
-cb_index, int nelem)
-=20
- 			if (p) {
- 				dax_dbg("freeing page %p", p);
--				if (j =3D=3D OUT)
--					set_page_dirty(p);
--				put_page(p);
-+				unpin_user_pages_dirty_lock(&p, 1, j =3D=3D OUT);
- 				ctx->pages[i][j] =3D NULL;
- 			}
- 		}
-@@ -425,13 +423,13 @@ static int dax_lock_page(void *va, struct page **p)
-=20
- 	dax_dbg("uva %p", va);
-=20
--	ret =3D get_user_pages_fast((unsigned long)va, 1, FOLL_WRITE, p);
-+	ret =3D pin_user_pages_fast((unsigned long)va, 1, FOLL_WRITE, p);
- 	if (ret =3D=3D 1) {
- 		dax_dbg("locked page %p, for VA %p", *p, va);
- 		return 0;
- 	}
-=20
--	dax_dbg("get_user_pages failed, va=3D%p, ret=3D%d", va, ret);
-+	dax_dbg("pin_user_pages failed, va=3D%p, ret=3D%d", va, ret);
- 	return -1;
- }
-=20
+So after this, you should be able to install
 
-base-commit: 3d1c1e5931ce45b3a3f309385bbc00c78e9951c6
---=20
-2.26.2
+apt install qemu-system-sparc
 
+Now we need an image and believe it or not there's a guy who lives in
+Berlin too who builds Debian images for all crazy architectures. You can
+download them from:
+
+https://cdimage.debian.org/cdimage/ports/
+
+They're built quite frequently. Sometimes you get unlucky because a new
+kernel won't boot anymore then going a couple of months back usually
+helps. So for this experiment I downloaded:
+
+https://cdimage.debian.org/cdimage/ports/9.0/sparc64/iso-cd/debian-9.0-sparc64-NETINST-1.iso
+
+then I did:
+
+cd .local/share/qemu
+truncate -s 15GB sparc64.img
+
+And then to _install_:
+
+qemu-system-sparc64 \
+        -m 4096 \
+  	-device virtio-blk-pci,bus=pciB,drive=hd \
+  	-drive file=/home/brauner/Downloads/debian-9.0-sparc64-NETINST-1.iso,format=raw,if=ide,bus=1,unit=0,media=cdrom,readonly=on \
+	-drive file=/home/brauner/.local/share/qemu/sparc64.img,format=raw,if=none,id=hd \
+	-boot order=d \
+        -net nic \
+	-net user \
+	-nographic \
+
+Then the Debian install will run after it finishes you can boot with:
+
+qemu-system-sparc64 \
+	-name debian-unstable-sparc64 -machine sun4u,accel=tcg,usb=off -m 4096 \
+	-smp 1,sockets=1,cores=1,threads=1 \
+	-uuid ccd8b5c2-b8e4-4d5e-af19-9322cd8e55bf -rtc base=utc -no-reboot -no-shutdown \
+	-boot strict=on \
+	-drive file=/home/brauner/.local/share/qemu/sparc64.img,if=none,id=drive-ide0-0-1,format=raw,cache=none,aio=native \
+	-device ide-hd,bus=ide.0,unit=0,drive=drive-ide0-0-1,id=ide0-0-1 \
+	-msg timestamp=on -nographic
+
+If the install isn't setting up the repos right and you can't install
+stuff the correct url is:
+http://ftp.ports.debian.org/debian-ports/
+to put into sources.list
+
+> 
+> > This is the sparc specific bit and _if_ you agree with the changes here
+> > it'd be nice if I could get your review, and if technically correct,
+> > your ack so I can fold this into a larger series and move on to the next
+> > arch.
+> 
+> With the delay slot instruction indentation fixed:
+> 
+> Acked-by: David S. Miller <davem@davemloft.net>
+
+Thank you, Dave!
+Christian
