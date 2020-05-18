@@ -2,74 +2,138 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 174191D7944
-	for <lists+sparclinux@lfdr.de>; Mon, 18 May 2020 15:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B44B81D7DFB
+	for <lists+sparclinux@lfdr.de>; Mon, 18 May 2020 18:11:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727814AbgERNEx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 18 May 2020 09:04:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47346 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726872AbgERNEw (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 18 May 2020 09:04:52 -0400
-Received: from linux-8ccs.fritz.box (p57a239f2.dip0.t-ipconnect.de [87.162.57.242])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AD592207D3;
-        Mon, 18 May 2020 13:04:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589807091;
-        bh=bQOel0Owh5Jsy7D7It/KRrP7k71oDOZIFpOrOzQ9AhA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YqZBNW7MWDqiTSCxmly8oMsUsg4WN7C2JY9aDcakJBGzWq/UP00eyjCdLpfBridZ5
-         yEWjvi7dzrZTtKaXjd/2d6IuYc59csAsUVZSfRs5jq7Rr7rdKAsQZJF1Mc/s+At7dk
-         CA/eN9nd7O70bEOB0H0VqgRfIrUmH9kT0XamFLi8=
-Date:   Mon, 18 May 2020 15:04:44 +0200
-From:   Jessica Yu <jeyu@kernel.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Roman Zippel <zippel@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, linux-fsdevel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 29/29] module: move the set_fs hack for
- flush_icache_range to m68k
-Message-ID: <20200518130444.GA21096@linux-8ccs.fritz.box>
-References: <20200515143646.3857579-1-hch@lst.de>
- <20200515143646.3857579-30-hch@lst.de>
+        id S1728216AbgERQLf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 18 May 2020 12:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45548 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727005AbgERQLe (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 18 May 2020 12:11:34 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B53DC061A0C;
+        Mon, 18 May 2020 09:11:34 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id t7so4430011plr.0;
+        Mon, 18 May 2020 09:11:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=PZweTdyCTeKAMxoHO6mO1oUT3tSSWyHLqvLyIKGeBVY=;
+        b=GET0otAdKNcL69ksN3IiyWVrfDMA5oTmg2ORXQXg1dxMLmeJHGcqKUPueDZ892Waqk
+         LiahGzxVvAOb6eviKgbVMqpqH2xTB2Jmjekr265F2YTq8WGVTbTdHDJqMl0wXrOFGznR
+         /ndT2roEGwCQ/iQPRVIOevzp+C4dHL7DUiGmL/Du2l5bOwMSnizD6OXLURl/+Bmh0CrV
+         cSMqAO24vnPf3FXPRoGy9nntgG7zwj7eHXcOGf/gUHHXIQkUmuqSD2TACIHoLCzpICsI
+         E//FSD44Fk7xhaRAKeOGCz7JAFGzEWqiq8lgebRBy1KrqTyGOmYukDswhUiC3e2tvmjo
+         Hr2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=PZweTdyCTeKAMxoHO6mO1oUT3tSSWyHLqvLyIKGeBVY=;
+        b=iglhkoupjheawNSQDkHvm47CwK5a+ZAwQ2F7Jj21oE5+ZCXKWkNsdkVs9U22TkbaLK
+         oFbajjkp+Zvg/kiGd2UnsdHc+sOWDeBFiI1T++u3V8c0piPlirzV6T8XR3wbbsuW9pz8
+         5RsQoxW0KAQOek4QIx8ns7MKWFjnk/4petFgxO6jDyoVwuUC/BsgKPDufa0l9+65s1S0
+         7v1cq/p2qbLh3D1LBgQ4cUu2+0sEqMNjkXEn397GDgo8giZ7d+RWvkpyYp3mwoy1ISXg
+         NYrJvQlG57qIQWRWW2pDv9VFFZNe0aB5BdIkhte+bxs8qGk0UIoV+LVKiz1jDLwnaXec
+         RW3A==
+X-Gm-Message-State: AOAM530xsxZs1RWCnnjKvDCPWogtle65rGFC0NPVF2vkfk9alq0j1/Hh
+        DXkNZtrjmuJWp3U6nMweR6o=
+X-Google-Smtp-Source: ABdhPJyiyoD11kFujK6YPCyAvn3cJt1s0JbqDvxe/z4TQ6/BdwXltCUrMAiNJwcIIoiI8qiWwb2Mbg==
+X-Received: by 2002:a17:902:228:: with SMTP id 37mr17432610plc.105.1589818294182;
+        Mon, 18 May 2020 09:11:34 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id k3sm13299pjc.38.2020.05.18.09.11.33
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 18 May 2020 09:11:33 -0700 (PDT)
+Date:   Mon, 18 May 2020 09:11:32 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Ira Weiny <ira.weiny@intel.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org,
+        Christian Koenig <christian.koenig@amd.com>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH V3 07/15] arch/kunmap_atomic: Consolidate duplicate code
+Message-ID: <20200518161132.GB66689@roeck-us.net>
+References: <20200507150004.1423069-1-ira.weiny@intel.com>
+ <20200507150004.1423069-8-ira.weiny@intel.com>
+ <20200516223306.GA161252@roeck-us.net>
+ <20200518034938.GA3023182@iweiny-DESK2.sc.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200515143646.3857579-30-hch@lst.de>
-X-OS:   Linux linux-8ccs 4.12.14-lp150.12.61-default x86_64
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200518034938.GA3023182@iweiny-DESK2.sc.intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-+++ Christoph Hellwig [15/05/20 16:36 +0200]:
->flush_icache_range generally operates on kernel addresses, but for some
->reason m68k needed a set_fs override.  Move that into the m68k code
->insted of keeping it in the module loader.
->
->Signed-off-by: Christoph Hellwig <hch@lst.de>
->Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
->Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
->---
-> arch/m68k/mm/cache.c | 4 ++++
-> kernel/module.c      | 8 --------
-> 2 files changed, 4 insertions(+), 8 deletions(-)
+On Sun, May 17, 2020 at 08:49:39PM -0700, Ira Weiny wrote:
 
-Thanks for cleaning this up. For module.c:
+[ ... ]
 
-Acked-by: Jessica Yu <jeyu@kernel.org>
+> > 
+> > ---
+> > # bad: [bdecf38f228bcca73b31ada98b5b7ba1215eb9c9] Add linux-next specific files for 20200515
+> > # good: [2ef96a5bb12be62ef75b5828c0aab838ebb29cb8] Linux 5.7-rc5
+> > git bisect start 'HEAD' 'v5.7-rc5'
+> > # good: [3674d7aa7a8e61d993886c2fb7c896c5ef85e988] Merge remote-tracking branch 'crypto/master'
+> > git bisect good 3674d7aa7a8e61d993886c2fb7c896c5ef85e988
+> > # good: [87f6f21783522e6d62127cf33ae5e95f50874beb] Merge remote-tracking branch 'spi/for-next'
+> > git bisect good 87f6f21783522e6d62127cf33ae5e95f50874beb
+> > # good: [5c428e8277d5d97c85126387d4e00aa5adde4400] Merge remote-tracking branch 'staging/staging-next'
+> > git bisect good 5c428e8277d5d97c85126387d4e00aa5adde4400
+> > # good: [f68de67ed934e7bdef4799fd7777c86f33f14982] Merge remote-tracking branch 'hyperv/hyperv-next'
+> > git bisect good f68de67ed934e7bdef4799fd7777c86f33f14982
+> > # bad: [54acd2dc52b069da59639eea0d0c92726f32fb01] mm/memblock: fix a typo in comment "implict"->"implicit"
+> > git bisect bad 54acd2dc52b069da59639eea0d0c92726f32fb01
+> > # good: [784a17aa58a529b84f7cc50f351ed4acf3bd11f3] mm: remove the pgprot argument to __vmalloc
+> > git bisect good 784a17aa58a529b84f7cc50f351ed4acf3bd11f3
+> > # good: [6cd8137ff37e9a37aee2d2a8889c8beb8eab192f] khugepaged: replace the usage of system(3) in the test
+> > git bisect good 6cd8137ff37e9a37aee2d2a8889c8beb8eab192f
+> > # bad: [6987da379826ed01b8a1cf046b67cc8cc10117cc] sparc: remove unnecessary includes
+> > git bisect bad 6987da379826ed01b8a1cf046b67cc8cc10117cc
+> > # good: [bc17b545388f64c09e83e367898e28f60277c584] mm/hugetlb: define a generic fallback for is_hugepage_only_range()
+> > git bisect good bc17b545388f64c09e83e367898e28f60277c584
+> > # bad: [9b5aa5b43f957f03a1f4a9aff5f7924e2ebbc011] arch-kmap_atomic-consolidate-duplicate-code-checkpatch-fixes
+> > git bisect bad 9b5aa5b43f957f03a1f4a9aff5f7924e2ebbc011
+> > # good: [0941a38ff0790c1004270f952067a5918a4ba32d] arch/kmap: remove redundant arch specific kmaps
+> > git bisect good 0941a38ff0790c1004270f952067a5918a4ba32d
+> > # good: [56e635a64c2cbfa815c851af10e0f811e809977b] arch-kunmap-remove-duplicate-kunmap-implementations-fix
+> > git bisect good 56e635a64c2cbfa815c851af10e0f811e809977b
+> > # bad: [60f96b2233c790d4f1c49317643051f1670bcb29] arch/kmap_atomic: consolidate duplicate code
+> > git bisect bad 60f96b2233c790d4f1c49317643051f1670bcb29
+> > # good: [7b3708dc3bf72a647243064fe7ddf9a76248ddfd] {x86,powerpc,microblaze}/kmap: move preempt disable
+> > git bisect good 7b3708dc3bf72a647243064fe7ddf9a76248ddfd
+> > # first bad commit: [60f96b2233c790d4f1c49317643051f1670bcb29] arch/kmap_atomic: consolidate duplicate code
+> 
+> I'm confused by this.  This points to an earlier commit being bad?
+> 
 
+Yes, you are correct. I was looking up the wrong commit; it had a similar
+subject line. Sorry for the confusion.
+
+Guenter
