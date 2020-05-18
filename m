@@ -2,181 +2,224 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FBA81D88A4
-	for <lists+sparclinux@lfdr.de>; Mon, 18 May 2020 21:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABC561D8B79
+	for <lists+sparclinux@lfdr.de>; Tue, 19 May 2020 01:09:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728708AbgERT7J (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 18 May 2020 15:59:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53102 "EHLO
+        id S1726794AbgERXIy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 18 May 2020 19:08:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728704AbgERT7I (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 18 May 2020 15:59:08 -0400
-Received: from mail.default.ilande.uk0.bigv.io (mail.ilande.co.uk [IPv6:2001:41c9:1:41f::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83503C061A0C;
-        Mon, 18 May 2020 12:59:08 -0700 (PDT)
-Received: from host109-156-104-24.range109-156.btcentralplus.com ([109.156.104.24] helo=[192.168.1.65])
-        by mail.default.ilande.uk0.bigv.io with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <mark.cave-ayland@ilande.co.uk>)
-        id 1jalud-0003Dx-DZ; Mon, 18 May 2020 20:59:06 +0100
-To:     Al Viro <viro@zeniv.linux.org.uk>
+        with ESMTP id S1726481AbgERXIy (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 18 May 2020 19:08:54 -0400
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB793C061A0C
+        for <sparclinux@vger.kernel.org>; Mon, 18 May 2020 16:08:53 -0700 (PDT)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.93 #3 (Red Hat Linux))
+        id 1jaosC-00BQr1-7j; Mon, 18 May 2020 23:08:40 +0000
+Date:   Tue, 19 May 2020 00:08:40 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Cc:     Christian Brauner <christian.brauner@ubuntu.com>,
         David Miller <davem@davemloft.net>, arnd@arndb.de,
-        guoren@kernel.org, linux-csky@vger.kernel.org,
-        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH 0/3] sparc: port to copy_thread_tls() and struct
+ kernel_clone_args
+Message-ID: <20200518230840.GN23230@ZenIV.linux.org.uk>
 References: <20200512171527.570109-1-christian.brauner@ubuntu.com>
  <20200512.130633.293867428547074800.davem@davemloft.net>
  <20200517150123.sl36ug27gwnyz6gf@wittgenstein>
  <cfc07b63-29e6-cda9-c611-235e37970763@ilande.co.uk>
  <20200517221346.GL23230@ZenIV.linux.org.uk>
  <20200518181825.GM23230@ZenIV.linux.org.uk>
-From:   Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- mQENBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAG0ME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPokB
- OAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63LkBDQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABiQEfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-Message-ID: <cf84ad0e-11a8-1066-5b7b-edb7cf482f76@ilande.co.uk>
-Date:   Mon, 18 May 2020 20:58:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ <cf84ad0e-11a8-1066-5b7b-edb7cf482f76@ilande.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <20200518181825.GM23230@ZenIV.linux.org.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 109.156.104.24
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
-        mail.default.ilande.uk0.bigv.io
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/3] sparc: port to copy_thread_tls() and struct
- kernel_clone_args
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.default.ilande.uk0.bigv.io)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cf84ad0e-11a8-1066-5b7b-edb7cf482f76@ilande.co.uk>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 18/05/2020 19:18, Al Viro wrote:
+[l-k and csky folks trimmed from Cc]
+On Mon, May 18, 2020 at 08:58:45PM +0100, Mark Cave-Ayland wrote:
 
->> I hadn't looked into details (the branch itself is only two commits long, but it
->> incorporates an openbios update - 35 commits there, some obviously pci- and
->> sun4u-related), but it's really easy to reproduce - -m 1024 and -hda <image>
->> are probably the only relevant arguments.  Even dd if=/dev/sda of=/dev/null bs=64m
->> is often enough to hang it, so I rather doubt that networking (e1000 on pciB,
->> FWIW, with tap for backend) has anything to do with that.
+> Well it certainly looks like there's an IRQ going missing somewhere, but glad to hear
+> the virtio-blk-pci is working much better for you. Presumably the virtio-net-pci NIC
+> also works?
+
+Will check.
+
+> I've had one other report of a cmd646 hang on Linux several years ago and that was on
+> some pretty high end hardware; however when tracing was enabled everything worked as
+> it should. Despite my best attempts I can't seem to reproduce it here on my normal i7
+> laptop which is quite frustrating.
+
+FWIW, googling around turns up at least
+	http://mail-index.netbsd.org/port-sparc64/2019/03/03/msg002831.html
+and
+	http://gnats.netbsd.org/54035
+
+> Before bcf9e2c2f2 the on-board NIC (sunhme) and cmd646 were wired to sabre's PCI IRQ
+> lines directly onto a single PCI bus, and after that commit they were rewired via
+> simba PCI bridges to legacy OBIO IRQs since some OSs like NetBSD hard-coded the
+> legacy IRQ numbers for on-board devices. I'm not sure whether this is relevant to the
+> kernel or not, or perhaps there is some magic register somewhere missing from
+> emulation that should be helping here.
 > 
-> 	FWIW, virtio-blk-pci does appear to be much more resilent; I hadn't been
-> able to reproduce hangs on that, while mounting identical fs from pata_cmd64x
-> and doing the same aptitude dist-upgrade --download-only ended up with
-> 
-> ...
-> Note: Using 'Download Only' mode, no other actions will be performed.
-> Do you want to continue? [Y/n/?] y
-> Get: 1 http://ftp.ports.debian.org/debian-ports sid/main sparc64 perl-modules-5.30 all 5.30.2-1 [2,806 kB]
-> Get: 2 http://ftp.ports.debian.org/debian-ports sid/main sparc64 libperl5.30 sparc64 5.30.2-1 [3,388 kB]
-> Get: 3 http://ftp.ports.debian.org/debian-ports sid/main sparc64 perl sparc64 5.30.2-1 [290 kB]
-> Get: 4 http://ftp.ports.debian.org/debian-ports sid/main sparc64 perl-base sparc64 5.30.2-1 [1,427 kB]
-> Get: 5 http://ftp.ports.debian.org/debian-ports sid/main sparc64 libsystemd0 sparc64 245.5-3 [309 kB]
-> Get: 6 http://ftp.ports.debian.org/debian-ports sid/main sparc64 udev sparc64 245.5-3 [1,356 kB]
-> Get: 7 http://ftp.ports.debian.org/debian-ports sid/main sparc64 libudev1 sparc64 245.5-3 [153 kB]
-> [ 1472.613660] ata2: lost interrupt (Status 0x58)
-> [ 1472.615124] ata1: lost interrupt (Status 0x50)
-> [ 1472.615812] ata1.00: exception Emask 0x0 SAct 0x0 SErr 0x0 action 0x6 frozen
-> [ 1472.616515] ata1.00: failed command: WRITE DMA
-> [ 1472.617145] ata1.00: cmd ca/00:60:0c:9b:23/00:00:00:00:00/e0 tag 0 dma 49152 out
-> [ 1472.617145]          res 40/00:01:00:00:00/00:00:00:00:00/a0 Emask 0x4 (timeout)
-> [ 1472.618229] ata1.00: status: { DRDY }
-> [ 1472.618743] ata1: soft resetting link
-> [ 1472.779489] ata1.00: configured for UDMA/33
-> [ 1472.781211] ata1: EH complete
-> [ 1477.977424] ata2.00: qc timeout (cmd 0xa0)
-> [ 1477.977897] ata2.00: TEST_UNIT_READY failed (err_mask=0x5)
-> [ 1483.353324] ata2.00: qc timeout (cmd 0xa0)
-> [ 1483.353697] ata2.00: TEST_UNIT_READY failed (err_mask=0x5)
-> [ 1483.354453] ata2.00: limiting speed to UDMA/33:PIO3
-> [ 1488.729323] ata2.00: qc timeout (cmd 0xa0)
-> [ 1488.730255] ata2.00: TEST_UNIT_READY failed (err_mask=0x5)
-> [ 1488.731320] ata2.00: disabled
-> [ 1503.333388] ata1: lost interrupt (Status 0x50)
+> One thing to check is whether you see any network hangs using the sunhme NIC since
+> that is wired in exactly the same way as cmd646. That should help determine whether
+> it's related to the IRQs routing via the simba PCI bridge or just the cmd646 device.
 
-(lots cut)
+Same test, only this time it happened after downloading just 3 files:
 
-Well it certainly looks like there's an IRQ going missing somewhere, but glad to hear
-the virtio-blk-pci is working much better for you. Presumably the virtio-net-pci NIC
-also works?
+Get: 1 http://ftp.ports.debian.org/debian-ports sid/main sparc64 perl-modules-5.30 all 5.30.2-1 [2,806 kB]
+Get: 2 http://ftp.ports.debian.org/debian-ports sid/main sparc64 libperl5.30 sparc64 5.30.2-1 [3,388 kB]
+Get: 3 http://ftp.ports.debian.org/debian-ports sid/main sparc64 perl sparc64 5.30.2-1 [290 kB]
+[  429.539542] enp2s1: Happy Meal out of receive descriptors, packet dropped.
+[  429.543010] enp2s1: Happy Meal out of receive descriptors, packet dropped.
+[  462.181704] ata1: lost interrupt (Status 0x50)
+[  462.183233] ata1.00: exception Emask 0x0 SAct 0x0 SErr 0x0 action 0x6 frozen
+[  462.184116] ata1.00: failed command: WRITE DMA EXT
+[  462.184886] ata1.00: cmd 35/00:38:0c:1d:0f/00:02:00:00:00/e0 tag 0 dma 290816 out
+[  462.184886]          res 40/00:01:00:00:00/00:00:00:00:00/a0 Emask 0x4 (timeout)
+[  462.186223] ata1.00: status: { DRDY }
+[  462.186953] ata1: soft resetting link
+[  462.347419] ata1.00: configured for UDMA/33
+[  462.349154] ata1: EH complete
+[  464.228913] ata2: lost interrupt (Status 0x58)
+[  469.592953] ata2.00: qc timeout (cmd 0xa0)
+[  469.594068] ata2.00: TEST_UNIT_READY failed (err_mask=0x5)
+[  474.968914] ata2.00: qc timeout (cmd 0xa0)
+[  474.969988] ata2.00: TEST_UNIT_READY failed (err_mask=0x5)
+[  474.971523] ata2.00: limiting speed to UDMA/33:PIO3
+[  480.344855] ata2.00: qc timeout (cmd 0xa0)
+[  480.345249] ata2.00: TEST_UNIT_READY failed (err_mask=0x5)
+[  480.345715] ata2.00: disabled
 
-> ... at which point I killed the damn thing.  Unpingable, doesn't react to serial
-> console (the output is obviously there, the input doesn't reach shell, at the
-> very least).  That was on current debian kernel (5.6.0-based), but the mainline
-> 5.7-rc1 behaves the same way.  qemu is (yesterday) mainline:
-> 
-> commit debe78ce14bf8f8940c2bdf3ef387505e9e035a9 (HEAD -> master, origin/master, origin/HEAD)
-> Merge: 66706192de 9ecaf5ccec
-> Author: Peter Maydell <peter.maydell@linaro.org>
-> Date:   Fri May 15 19:51:16 2020 +0100
-> 
->     Merge remote-tracking branch 'remotes/rth/tags/pull-fpu-20200515' into staging
-> 
-> and anything since bcf9e2c2f2 exhibits that behaviour.  qemu arguments:
-> ../qemu1/build/sparc64-softmmu/qemu-system-sparc64 \
->         -hda sid.img \
->         -drive id=hd,if=none,file=foo.raw,format=raw \
->         -device virtio-blk-pci,bus=pciB,drive=hd \
->         -netdev tap,ifname=tap4,script=no,downscript=no,id=net \
->         -device e1000,bus=pciB,netdev=net \
->         -nographic -m 1024
-> foo.raw and sid.img have the same contents (sid.img is qcow2 - might or might not
-> cause enough timing differences to trigger whatever's happening).
-> 
-> Looks like something got screwed in PCI interrupt routing in that sun4u branch back in
-> 2017.  If you have any suggestions on debugging that, I'd be glad to help; I'm not
-> familiar with openbios guts, though ;-/
+and from that point on - as with e1000+cmd646 setup...  wait, no - after a while there's
 
-I've had one other report of a cmd646 hang on Linux several years ago and that was on
-some pretty high end hardware; however when tracing was enabled everything worked as
-it should. Despite my best attempts I can't seem to reproduce it here on my normal i7
-laptop which is quite frustrating.
+[  721.496809] ------------[ cut here ]------------
+[  721.497403] WARNING: CPU: 0 PID: 0 at net/sched/sch_generic.c:442 dev_watchdog+0x2b8/0x2e0
+[  721.498148] NETDEV WATCHDOG: enp2s1 (hme): transmit queue 0 timed out
+[  721.498752] Modules linked in: ext4(E) crc16(E) mbcache(E) jbd2(E) crc32c_generic(E) sd_mod(E) t10_pi(E) crc_t10dif(E) sr_mod(E) cdrom(E) crct10dif_generic(E) crct10dif_common(E) virtio_blk(E) ata_generic(E) pata_cmd64x(E) libata(E) scsi_mod(E) virtio_pci(E) virtio_ring(E) virtio(E) sunhme(E)
+[  721.501214] CPU: 0 PID: 0 Comm: swapper Tainted: G            E     5.6.0-1-sparc64 #1 Debian 5.6.7-1
+[  721.501939] Call Trace:
+[  721.502346]  [0000000000468028] __warn+0xc8/0xe0
+[  721.502746]  [00000000004683e4] warn_slowpath_fmt+0x64/0x80
+[  721.503159]  [00000000009a7dd8] dev_watchdog+0x2b8/0x2e0
+[  721.503556]  [00000000004c8d58] call_timer_fn+0x18/0x120
+[  721.503941]  [00000000004c9550] run_timer_softirq+0x410/0x4e0
+[  721.504344]  [0000000000b1605c] __do_softirq+0xdc/0x300
+[  721.504725]  [000000000042cd88] do_softirq_own_stack+0x28/0x40
+[  721.505151]  [000000000046d020] irq_exit+0xa0/0xc0
+[  721.505509]  [0000000000b15f14] timer_interrupt+0x54/0x80
+[  721.505887]  [00000000004209d4] tl0_irq14+0x14/0x20
+[  721.506297]  [0000000000b145a0] default_idle_call+0x40/0x60
+[  721.506728]  [00000000004973e4] do_idle+0xa4/0x140
+[  721.507076]  [00000000004976d4] cpu_startup_entry+0x14/0x40
+[  721.507476]  [0000000000b0f0a0] rest_init+0x80/0x90
+[  721.507833]  [0000000000e046b4] arch_call_rest_init+0xc/0x1c
+[  721.508227]  [0000000000e04c74] start_kernel+0x54c/0x55c
+[  721.508659] ---[ end trace 4359c4abd98957e4 ]---
+[  721.509094] enp2s1: transmit timed out, resetting
+[  721.509522] enp2s1: Happy Status 03030000 TX[00000001:00000201]
+[  721.510697] kernel BUG at arch/sparc/kernel/iommu-common.c:240!
+[  721.511263]               \|/ ____ \|/
+[  721.511263]               "@'/ .. \`@"
+[  721.511263]               /_| \__/ |_\
+[  721.511263]                  \__U_/
+[  721.512270] swapper(0): Kernel bad sw trap 5 [#1]
+[  721.512705] CPU: 0 PID: 0 Comm: swapper Tainted: G        W   E     5.6.0-1-sparc64 #1 Debian 5.6.7-1
+[  721.513396] TSTATE: 0000004480e01603 TPC: 0000000000439674 TNPC: 0000000000439678 Y: 00000000    Tainted: G        W   E    
+[  721.514186] TPC: <iommu_tbl_range_free+0x94/0xa0>
+[  721.514637] g0: 0000000000d5b1b0 g1: 0000000000d46260 g2: 0000000000d46260 g3: 000000000000000e
+[  721.515257] g4: 0000000000d26ea8 g5: fffff80100037aa8 g6: 0000000000d14000 g7: 0720072007200720
+[  721.515876] o0: 0000000000c28348 o1: 00000000000000f0 o2: 0000000000000007 o3: 00000000000001db
+[  721.516496] o4: 00000000000001db o5: 0000000000000000 sp: fffff8003fe12ff1 ret_pc: 000000000043966c
+[  721.517131] RPC: <iommu_tbl_range_free+0x8c/0xa0>
+[  721.517543] l0: 0000000000ea8c00 l1: 0000000000000001 l2: 0000000000000000 l3: 0000000000d44a10
+[  721.518152] l4: 0000000000de7c00 l5: 0000000000de7c00 l6: 0000000000000001 l7: 0000000000d4cac0
+[  721.518839] i0: fffff8003a1fd000 i1: ffffffff40000000 i2: 0000000000000000 i3: 0007fffffffa0000
+[  721.519463] i4: 00000000000001da i5: ffffffffffffe000 i6: fffff8003fe130a1 i7: 00000000004388f4
+[  721.520105] I7: <dma_4u_unmap_page+0x114/0x1a0>
+[  721.520463] Call Trace:
+[  721.520675]  [00000000004388f4] dma_4u_unmap_page+0x114/0x1a0
+[  721.521122]  [00000000100029d8] happy_meal_clean_rings+0x138/0x1c0 [sunhme]
+[  721.521602]  [0000000010002d98] happy_meal_init+0x98/0x920 [sunhme]
+[  721.522060]  [0000000010004c64] happy_meal_tx_timeout+0x74/0x90 [sunhme]
+[  721.522591]  [00000000009a7d58] dev_watchdog+0x238/0x2e0
+[  721.522979]  [00000000004c8d58] call_timer_fn+0x18/0x120
+[  721.523368]  [00000000004c9550] run_timer_softirq+0x410/0x4e0
+[  721.523765]  [0000000000b1605c] __do_softirq+0xdc/0x300
+[  721.524131]  [000000000042cd88] do_softirq_own_stack+0x28/0x40
+[  721.524536]  [000000000046d020] irq_exit+0xa0/0xc0
+[  721.524886]  [0000000000b15f14] timer_interrupt+0x54/0x80
+[  721.525260]  [00000000004209d4] tl0_irq14+0x14/0x20
+[  721.525606]  [0000000000b145a0] default_idle_call+0x40/0x60
+[  721.525993]  [00000000004973e4] do_idle+0xa4/0x140
+[  721.526389]  [00000000004976d4] cpu_startup_entry+0x14/0x40
+[  721.526815]  [0000000000b0f0a0] rest_init+0x80/0x90
+[  721.527239] Disabling lock debugging due to kernel taint
+[  721.527763] Caller[00000000004388f4]: dma_4u_unmap_page+0x114/0x1a0
+[  721.528280] Caller[00000000100029d8]: happy_meal_clean_rings+0x138/0x1c0 [sunhme]
+[  721.528820] Caller[0000000010002d98]: happy_meal_init+0x98/0x920 [sunhme]
+[  721.529312] Caller[0000000010004c64]: happy_meal_tx_timeout+0x74/0x90 [sunhme]
+[  721.529822] Caller[00000000009a7d58]: dev_watchdog+0x238/0x2e0
+[  721.530225] Caller[00000000004c8d58]: call_timer_fn+0x18/0x120
+[  721.530701] Caller[00000000004c9550]: run_timer_softirq+0x410/0x4e0
+[  721.531138] Caller[0000000000b1605c]: __do_softirq+0xdc/0x300
+[  721.531546] Caller[000000000042cd88]: do_softirq_own_stack+0x28/0x40
+[  721.531991] Caller[000000000046d020]: irq_exit+0xa0/0xc0
+[  721.532357] Caller[0000000000b15f14]: timer_interrupt+0x54/0x80
+[  721.532763] Caller[00000000004209d4]: tl0_irq14+0x14/0x20
+[  721.533148] Caller[0000000000b14598]: default_idle_call+0x38/0x60
+[  721.533576] Caller[00000000004973e4]: do_idle+0xa4/0x140
+[  721.533954] Caller[00000000004976d4]: cpu_startup_entry+0x14/0x40
+[  721.534427] Caller[0000000000b0f0a0]: rest_init+0x80/0x90
+[  721.534835] Caller[0000000000e046b4]: arch_call_rest_init+0xc/0x1c
+[  721.535251] Caller[0000000000e04c74]: start_kernel+0x54c/0x55c
+[  721.535665] Caller[0000000000e071e0]: start_early_boot+0x2c4/0x2d4
+[  721.536094] Caller[0000000000b0f000]: tlb_fixup_done+0x4c/0x6c
+[  721.536495] Caller[0000000000000000]: 0x0
+[  721.536807] Instruction DUMP:
+[  721.536870]  921020f0 
+[  721.537162]  7fffbd8d 
+[  721.537354]  90122348 
+[  721.537544] <91d02005>
+[  721.537727]  01000000 
+[  721.537918]  01000000 
+[  721.538100]  9de3bf50 
+[  721.538348]  01000000 
+[  721.538550]  01000000 
+[  721.538792] 
+[  721.539279] Kernel panic - not syncing: Aiee, killing interrupt handler!
+[  721.540430] Press Stop-A (L1-A) from sun keyboard or send break
+[  721.540430] twice on console to return to the boot prom
+[  721.541191] ---[ end Kernel panic - not syncing: Aiee, killing interrupt handler! ]---
 
-Before bcf9e2c2f2 the on-board NIC (sunhme) and cmd646 were wired to sabre's PCI IRQ
-lines directly onto a single PCI bus, and after that commit they were rewired via
-simba PCI bridges to legacy OBIO IRQs since some OSs like NetBSD hard-coded the
-legacy IRQ numbers for on-board devices. I'm not sure whether this is relevant to the
-kernel or not, or perhaps there is some magic register somewhere missing from
-emulation that should be helping here.
+That's
+                unsigned int pool_nr = entry / tbl->poolsize;
 
-One thing to check is whether you see any network hangs using the sunhme NIC since
-that is wired in exactly the same way as cmd646. That should help determine whether
-it's related to the IRQs routing via the simba PCI bridge or just the cmd646 device.
+                BUG_ON(pool_nr >= tbl->nr_pools);
+                p = &tbl->pools[pool_nr];
 
-If you able to reproduce the issue consistently and can help figure out what's going
-on then that would be a great help. Perhaps it might make sense to split this into a
-separate thread and drop the non-sparc lists?
+in get_pool(), so it looks like 'entry' is too large here.  The call chain is
+get_pool() <- iommu_tbl_range_free() <- dma_4u_unmap_page() (get_pool() itself got
+inlined), so we have
+        iommu_tbl_range_free(&iommu->tbl, bus_addr, npages, IOMMU_ERROR_CODE);
+in the end of dma_4u_unmap_page(), with
+        unsigned long shift = iommu->table_shift;
+        if (entry == IOMMU_ERROR_CODE) /* use default addr->entry mapping */
+                entry = (dma_addr - iommu->table_map_base) >> shift;
+        pool = get_pool(iommu, entry);
 
+in iommu_tlb_range_free().  Hmm...  Anyway, that looks like more like fallout from
+buggered attempt of recovery in sunhme.  We are definitely losing IRQs here.
 
-ATB,
+> If you able to reproduce the issue consistently and can help figure out what's going
+> on then that would be a great help. Perhaps it might make sense to split this into a
+> separate thread and drop the non-sparc lists?
 
-Mark.
+Sure, no problem.  As for "able to reproduce" - generally takes under half an hour.
+Less in this case, as you can see from printk timestamps...
