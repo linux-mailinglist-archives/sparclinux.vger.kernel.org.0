@@ -2,51 +2,142 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACDEC1D802F
-	for <lists+sparclinux@lfdr.de>; Mon, 18 May 2020 19:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 034AD1D844D
+	for <lists+sparclinux@lfdr.de>; Mon, 18 May 2020 20:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728431AbgERRcN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 18 May 2020 13:32:13 -0400
-Received: from sonic310-24.consmr.mail.ne1.yahoo.com ([66.163.186.205]:41469
-        "EHLO sonic310-24.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727942AbgERRcN (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 18 May 2020 13:32:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1589823132; bh=5gCyJ+OqEpp5mbAlNtNv58P62XCklDNCTlGARRHXZQA=; h=Date:From:Reply-To:Subject:References:From:Subject; b=gvDjEzoYFnVMUE9kARm+QYdjYPBknpNt9m4WeS2kPuBHVHfWRoWIr0GkJoj4tZKNYIEWZxHpwYaTKX7LNIjHtgKk6ZVNjt3IIyxvmJGRftNyKS3vPz0vbSelxWGdf/P2gEDtg65wXHEOeY+z9TDQZZSpW8BO3UfbT+gyNZbuGycLmNZmx3hqN56rao6eT2znGtU6baAKtT2K+YkT0es7q6UBN7TRa6cbBjxEJCZolXEpfpgruOUkEcKAt1/t666otY7choXf4socIrV1AJrThAO+0/O44x/r1hmn6Nfz1ob2+tHcZ1xEKp9M6mmxBsZfcoHnJ7vqC7NpJTgR3s8UPw==
-X-YMail-OSG: QIY8PpgVM1nfcscaORkwY0wfOoQFoqoAaEuhfOb96VxtS4wwDUdQr4IB2XADZeY
- xVfLG6U5Jmi7pLNoYDtlefIYni_R4WjxHvOdmqcM2AeWPIaBrWG9IICkWlbWoNyi64drCtHfIodm
- 2iB3dncNSflZ5RezBgg4nCnOdrhIR5BjE6cb92i6pMCdYlfFLtkk.Z53jG_u4Trd1436RcxMmBDI
- jy6MSfPKs0JAORGUc2dN8fjlW.rpA9tTv_3GgUI4.gLEFlbtcoYPdtCe5amWsfkEWAfHqmdPEEh5
- oO3RzvCFHPj2tweHB.mdwEqKMOMG8QkEv_aug2M_JN0L3qKrDQteILajx_brXNfdSOc.hyxfWQ8y
- emR.NrbpAJg2VeYUYBtV6oweXx9FuGC8gLk_OMRM02qgD0ZsA5wyB0.6aggKT6GTu3a6SD8Hwz5W
- tyYFDqE8pnP.utvyNPuyg2Y3azrEEGUNx0uWW7NPSDHlfYUA0b.t8lZm.y8cSdcnpaMg.aAuKz47
- 9WNZGBlWcN2Qt5Zj9Xb5zyXahMkgasxkX25gi8Lbg7ndWYZwErj7_9R25IQUBnEqXksUZEG1T33T
- ZaAkfuykVGdGvrT6dw4XsHOec9fquhZqiRQkOQ_vkN4wLIEUJxSdpWiESF_ob2n5ns9UMX3olGFw
- VvPKX1CN8Xiy1zzkTfxF52atYH_vbLW78hJzFAp4EQNqJgQ7gY0aTu1ekp29R3dgmd9NzS8252GA
- sMv3EMn38RDhhmBEPQmoEqQmyv4L1ObnC6NJniHUv6bYZhHaaTT34oEbi.FWNHHetag_RBH2.BLT
- 8OBFLykSEOM653K65YqSNUFxn.Gs.RZ8DV5FJ_nktYkwpHrgqA5N06l1goJWE8AJoskIO6ddaTC.
- _gfG04IHJO8kvszfhci78SdcoMLefrhq0dsoh2ukTDljMqZvA5SFGN6W2GymA9hD2gbi7wMj7t8l
- tJNIurWwLe5dCQ45sbu4GN1TABhcxhEOHKE7f0sHJ3hGW8kF6O4.i6UI0HvFYS.XAvraaRPiVVj8
- Ck5t8tSzKAFdFUHYREMoTdeuhVKMFuVFvY962FiuF7QjzCYAPvWmtoOQERqhN9QwJjhlG.oqMAGs
- cSMM8ZUlNJSziIBCi3vt9XgfOwCsmxsoL42hN.xv4IVuf0xPr_gJJJFmHjdAhBtdCnJs0Dif5FJA
- yQcPzzBpCLdTYMoTMhSH.J7Rx_GCSXYK5Rp1K92hCZj.aW3tFJGXM_J.JcBa_UrOzNW4vQSHayw3
- 2DCcGf4dKpeZKTaRlrwWUdum77tyJx6fdAzBT7dn8yRpZv2.39QAz1qHrVbTk.Ejz2YibJV1Mol8
- 5
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Mon, 18 May 2020 17:32:12 +0000
-Date:   Mon, 18 May 2020 17:32:09 +0000 (UTC)
-From:   Rose Gordon <rosegordonor@gmail.com>
-Reply-To: rosegordonor@gmail.com
-Message-ID: <1166969588.961336.1589823129709@mail.yahoo.com>
-Subject: Hi there
+        id S1730185AbgERSLK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 18 May 2020 14:11:10 -0400
+Received: from mga04.intel.com ([192.55.52.120]:52500 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728606AbgERSLI (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 18 May 2020 14:11:08 -0400
+IronPort-SDR: MEihRUQKPD9yLYzUOyQEKFWM725X5E1TW5wxJL26f7d7grexz9Y/SMaIpHJZCs3EXY9zAUzGC1
+ OcI675kOf6IQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2020 11:11:08 -0700
+IronPort-SDR: 4PTj0JCNuHA2KBITWxMsHBG0lvanYZRK6CkXelcZuJd9rLLbOv9o5Xe4vuYLc2cXwOltPBKNMq
+ LeWae4iARKuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,407,1583222400"; 
+   d="scan'208";a="308177709"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+  by FMSMGA003.fm.intel.com with ESMTP; 18 May 2020 11:11:08 -0700
+Date:   Mon, 18 May 2020 11:11:08 -0700
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org,
+        Christian Koenig <christian.koenig@amd.com>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH V3 07/15] arch/kunmap_atomic: Consolidate duplicate code
+Message-ID: <20200518181107.GC3025231@iweiny-DESK2.sc.intel.com>
+References: <20200507150004.1423069-1-ira.weiny@intel.com>
+ <20200507150004.1423069-8-ira.weiny@intel.com>
+ <20200516223306.GA161252@roeck-us.net>
+ <20200518034938.GA3023182@iweiny-DESK2.sc.intel.com>
+ <20200518042932.GA59205@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1166969588.961336.1589823129709.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15960 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200518042932.GA59205@roeck-us.net>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Best of the day to you I'm Rose by name 32years old single lady, Can we be friends? born and raised in London in United Kingdom Take care Rose.
+On Sun, May 17, 2020 at 09:29:32PM -0700, Guenter Roeck wrote:
+> On Sun, May 17, 2020 at 08:49:39PM -0700, Ira Weiny wrote:
+> > On Sat, May 16, 2020 at 03:33:06PM -0700, Guenter Roeck wrote:
+> > > On Thu, May 07, 2020 at 07:59:55AM -0700, ira.weiny@intel.com wrote:
+> > > > From: Ira Weiny <ira.weiny@intel.com>
+> > > > 
+> > > > Every single architecture (including !CONFIG_HIGHMEM) calls...
+> > > > 
+> > > > 	pagefault_enable();
+> > > > 	preempt_enable();
+> > > > 
+> > > > ... before returning from __kunmap_atomic().  Lift this code into the
+> > > > kunmap_atomic() macro.
+> > > > 
+> > > > While we are at it rename __kunmap_atomic() to kunmap_atomic_high() to
+> > > > be consistent.
+> > > > 
+> > > > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > > > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > > 
+> > > This patch results in:
+> > > 
+> > > Starting init: /bin/sh exists but couldn't execute it (error -14)
+> > > 
+> > > when trying to boot microblazeel:petalogix-ml605 in qemu.
+> > 
+> > Thanks for the report.  I'm not readily seeing the issue.
+> > 
+> > Do you have a kernel config?  Specifically is CONFIG_HIGHMEM set?
+> > 
+> See below. Yes, CONFIG_HIGHMEM is set.
+> 
+> The scripts used to build and boot the image are at:
+> 
+> https://github.com/groeck/linux-build-test/tree/master/rootfs/microblazeel
+> 
+> Hope this helps,
+
+Thank you ...
+
+Could you try the following patch?
+
+
+commit 82c284b2bb74ca195dfcd35b70a175f010b9fd46 (HEAD -> lm-kmap17)
+Author: Ira Weiny <ira.weiny@intel.com>
+Date:   Mon May 18 11:01:10 2020 -0700
+
+    microblaze/kmap: Don't enable pagefault/preempt twice
+    
+    The kunmap_atomic clean up failed to remove the pagefault/preempt
+    enables on this path.
+    
+    Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
+    Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+
+diff --git a/arch/microblaze/mm/highmem.c b/arch/microblaze/mm/highmem.c
+index ee8a422b2b76..92e0890416c9 100644
+--- a/arch/microblaze/mm/highmem.c
++++ b/arch/microblaze/mm/highmem.c
+@@ -57,11 +57,8 @@ void kunmap_atomic_high(void *kvaddr)
+        int type;
+        unsigned int idx;
+ 
+-       if (vaddr < __fix_to_virt(FIX_KMAP_END)) {
+-               pagefault_enable();
+-               preempt_enable();
++       if (vaddr < __fix_to_virt(FIX_KMAP_END))
+                return;
+-       }
+ 
+        type = kmap_atomic_idx();
+ 
