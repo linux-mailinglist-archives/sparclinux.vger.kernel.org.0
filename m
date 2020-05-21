@@ -2,29 +2,29 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFEB61DA9B0
-	for <lists+sparclinux@lfdr.de>; Wed, 20 May 2020 07:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 707161DD0E4
+	for <lists+sparclinux@lfdr.de>; Thu, 21 May 2020 17:14:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726737AbgETFNR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 20 May 2020 01:13:17 -0400
-Received: from mga02.intel.com ([134.134.136.20]:41182 "EHLO mga02.intel.com"
+        id S1729648AbgEUPOh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 21 May 2020 11:14:37 -0400
+Received: from mga09.intel.com ([134.134.136.24]:36332 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726403AbgETFNR (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 20 May 2020 01:13:17 -0400
-IronPort-SDR: /hKXzLxNFCTuoIpY3eoyY6djwEqBYaj8/JIMHNudlPFsyorwdXViLeje7Ke4GlgFZ8Jw7nD69l
- 6iQroEJ5VxmQ==
+        id S1728279AbgEUPOg (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 21 May 2020 11:14:36 -0400
+IronPort-SDR: +igdKqTdU9H8yOjU0PHw+IygvAGH5RqYGYH1hIY4JeqfZjDWNgN5BNMAgrS8t0maSy+J6BrDVC
+ pBBLpwe1Z1/w==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2020 22:13:16 -0700
-IronPort-SDR: WmoC4hUYiR7JNn8619hAjjYz7TWT9psqQxnwh045tX7/jT/bvy1RfqxhT5OjjfSF9i1OiaMvS+
- nDNlwL0DIiCg==
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 08:14:35 -0700
+IronPort-SDR: BwOSx3SLn5hYh7lfJYATkuwRv9Xo1tXSYFTpHS0cfstI4AjJK34k6fviFeZkvn7yH1q1zzDePs
+ kBoQRWM5dS5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,412,1583222400"; 
-   d="scan'208";a="264557290"
+X-IronPort-AV: E=Sophos;i="5.73,418,1583222400"; 
+   d="scan'208";a="255335714"
 Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
-  by orsmga003.jf.intel.com with ESMTP; 19 May 2020 22:13:16 -0700
-Date:   Tue, 19 May 2020 22:13:16 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 21 May 2020 08:14:34 -0700
+Date:   Thu, 21 May 2020 08:14:34 -0700
 From:   Ira Weiny <ira.weiny@intel.com>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-kernel@vger.kernel.org,
@@ -54,7 +54,7 @@ Cc:     linux-kernel@vger.kernel.org,
         Christoph Hellwig <hch@lst.de>
 Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
  pagefault/preempt twice
-Message-ID: <20200520051315.GA3660833@iweiny-DESK2.sc.intel.com>
+Message-ID: <20200521151434.GA176262@iweiny-DESK2.sc.intel.com>
 References: <20200507150004.1423069-8-ira.weiny@intel.com>
  <20200518184843.3029640-1-ira.weiny@intel.com>
  <20200519165422.GA5838@roeck-us.net>
@@ -71,28 +71,7 @@ List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
 On Tue, May 19, 2020 at 12:42:15PM -0700, Guenter Roeck wrote:
-> On Tue, May 19, 2020 at 11:40:32AM -0700, Ira Weiny wrote:
 > > On Tue, May 19, 2020 at 09:54:22AM -0700, Guenter Roeck wrote:
-> > > On Mon, May 18, 2020 at 11:48:43AM -0700, ira.weiny@intel.com wrote:
-> > > > From: Ira Weiny <ira.weiny@intel.com>
-> > > > 
-> > > > The kunmap_atomic clean up failed to remove one set of pagefault/preempt
-> > > > enables when vaddr is not in the fixmap.
-> > > > 
-> > > > Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
-> > > > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> > > 
-> > > microblazeel works with this patch,
-> > 
-> > Awesome...  Andrew in my rush yesterday I should have put a reported by on the
-> > patch for Guenter as well.
-> > 
-> > Sorry about that Guenter,
-> 
-> No worries.
-> 
-> > Ira
-> > 
 > > > as do the nosmp sparc32 boot tests,
 > > > but sparc32 boot tests with SMP enabled still fail with lots of messages
 > > > such as:
@@ -121,24 +100,16 @@ On Tue, May 19, 2020 at 12:42:15PM -0700, Guenter Roeck wrote:
 > > > 
 > > > Code path leading to that message is different but always the same
 > > > from free_unref_page().
-
-Actually it occurs to me that the patch consolidating kmap_prot is odd for
-sparc 32 bit...
-
-Its a long shot but could you try reverting this patch?
-
-4ea7d2419e3f kmap: consolidate kmap_prot definitions
-
-Alternately I will need to figure out how to run the sparc on qemu here...
-
-Thanks very much for all the testing though!  :-D
-
-Ira
-
 > > > 
 > > > Still testing ppc images.
 > > > 
 > 
 > ppc image tests are passing with this patch.
-> 
-> Guenter
+
+How about sparc?  I finally got your scripts to run on sparc and everything
+looks to be passing?
+
+Are we all good now?
+
+Thanks again!
+Ira
