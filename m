@@ -2,83 +2,136 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 854E11DDB9C
-	for <lists+sparclinux@lfdr.de>; Fri, 22 May 2020 02:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D8A11DDC45
+	for <lists+sparclinux@lfdr.de>; Fri, 22 May 2020 02:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730127AbgEVAGG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 21 May 2020 20:06:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60840 "EHLO
+        id S1726790AbgEVAqf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 21 May 2020 20:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729771AbgEVAGG (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 21 May 2020 20:06:06 -0400
+        with ESMTP id S1726335AbgEVAqf (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 21 May 2020 20:46:35 -0400
 Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68750C061A0E
-        for <sparclinux@vger.kernel.org>; Thu, 21 May 2020 17:06:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA6EC061A0E;
+        Thu, 21 May 2020 17:46:34 -0700 (PDT)
 Received: from viro by ZenIV.linux.org.uk with local (Exim 4.93 #3 (Red Hat Linux))
-        id 1jbvCG-00DDVu-JV; Fri, 22 May 2020 00:05:56 +0000
-Date:   Fri, 22 May 2020 01:05:56 +0100
+        id 1jbvpK-00DESM-Ds; Fri, 22 May 2020 00:46:18 +0000
+Date:   Fri, 22 May 2020 01:46:18 +0100
 From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc:     Christian Brauner <christian.brauner@ubuntu.com>,
-        David Miller <davem@davemloft.net>, arnd@arndb.de,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH 0/3] sparc: port to copy_thread_tls() and struct
- kernel_clone_args
-Message-ID: <20200522000556.GA3149788@ZenIV.linux.org.uk>
-References: <20200517150123.sl36ug27gwnyz6gf@wittgenstein>
- <cfc07b63-29e6-cda9-c611-235e37970763@ilande.co.uk>
- <20200517221346.GL23230@ZenIV.linux.org.uk>
- <20200518181825.GM23230@ZenIV.linux.org.uk>
- <cf84ad0e-11a8-1066-5b7b-edb7cf482f76@ilande.co.uk>
- <20200518230840.GN23230@ZenIV.linux.org.uk>
- <20200519002438.GA2726018@ZenIV.linux.org.uk>
- <3301bd45-d3b0-512a-c00b-53b3d9f76ff9@ilande.co.uk>
- <2ec71021-df8e-f267-faa7-c5f57fcf3f77@ilande.co.uk>
- <20200521202350.GI23230@ZenIV.linux.org.uk>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     ira.weiny@intel.com, linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org,
+        Christian Koenig <christian.koenig@amd.com>,
+        Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
+ pagefault/preempt twice
+Message-ID: <20200522004618.GA3151350@ZenIV.linux.org.uk>
+References: <20200507150004.1423069-8-ira.weiny@intel.com>
+ <20200518184843.3029640-1-ira.weiny@intel.com>
+ <20200519165422.GA5838@roeck-us.net>
+ <20200521172704.GF23230@ZenIV.linux.org.uk>
+ <bdc8dc64-622c-3b0d-1ae1-48222cf34358@roeck-us.net>
+ <20200521224612.GJ23230@ZenIV.linux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200521202350.GI23230@ZenIV.linux.org.uk>
+In-Reply-To: <20200521224612.GJ23230@ZenIV.linux.org.uk>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, May 21, 2020 at 09:23:50PM +0100, Al Viro wrote:
-> On Thu, May 21, 2020 at 08:42:34PM +0100, Mark Cave-Ayland wrote:
+On Thu, May 21, 2020 at 11:46:12PM +0100, Al Viro wrote:
+> On Thu, May 21, 2020 at 03:20:46PM -0700, Guenter Roeck wrote:
+> > On 5/21/20 10:27 AM, Al Viro wrote:
+> > > On Tue, May 19, 2020 at 09:54:22AM -0700, Guenter Roeck wrote:
+> > >> On Mon, May 18, 2020 at 11:48:43AM -0700, ira.weiny@intel.com wrote:
+> > >>> From: Ira Weiny <ira.weiny@intel.com>
+> > >>>
+> > >>> The kunmap_atomic clean up failed to remove one set of pagefault/preempt
+> > >>> enables when vaddr is not in the fixmap.
+> > >>>
+> > >>> Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
+> > >>> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > >>
+> > >> microblazeel works with this patch, as do the nosmp sparc32 boot tests,
+> > >> but sparc32 boot tests with SMP enabled still fail with lots of messages
+> > >> such as:
+> > > 
+> > > BTW, what's your setup for sparc32 boot tests?  IOW, how do you manage to
+> > > shrink the damn thing enough to have the loader cope with it?  I hadn't
+> > > been able to do that for the current mainline ;-/
+> > > 
+> > 
+> > defconfig seems to work just fine, even after enabling various debug
+> > and file system options.
 > 
-> > > Can you tell me a bit more about the host in terms of CPU and disk to help figure out
-> > > what's going on?
-> 
-> phenom II X6 1100T (6-way 3.3GHz), 8Gb RAM (4Gb given to guest), WDC WD10EACS-00D
-> disk (hdparm -tT gives
->  Timing cached reads:   6988 MB in  2.00 seconds = 3494.96 MB/sec
->  Timing buffered disk reads: 280 MB in  3.02 seconds =  92.75 MB/sec
-> )
-> 
-> > One other thought I had is that somehow the IVEC IRQs are managing to be overwritten
-> > on a faster host before being read by the guest. Does the following patch display the
-> > FATAL message at the point where things hang?
-> 
-> > diff --git a/hw/pci-host/sabre.c b/hw/pci-host/sabre.c
-> > index fae20ee97c..618ebd1300 100644
-> > --- a/hw/pci-host/sabre.c
-> > +++ b/hw/pci-host/sabre.c
-> > @@ -63,6 +63,9 @@
-> >  static inline void sabre_set_request(SabreState *s, unsigned int irq_num)
-> >  {
-> >      trace_sabre_set_request(irq_num);
-> > +    if (s->irq_request != 0 && s->irq_request != NO_IRQ_REQUEST) {
-> > +        fprintf(stderr, "FATAL: still waiting for IRQ %x, now %x\n", s->irq_request,
-> > irq_num);
-> > +    }
-> >      s->irq_request = irq_num;
-> >      qemu_set_irq(s->ivec_irqs[irq_num], 1);
-> >  }
-> 
-> I have to go AFK right now, will test when I get back (should be about an
-> hour or two)
+> The hell?  How do you manage to get the kernel in?  sparc32_defconfig
+> ends up with 5316876 bytes unpacked...
 
-Hang, nothing on stderr until killed, at which point it gave the expected
-qemu-system-sparc64: terminating on signal 15 from pid 15917 (-bash)
-IOW, stderr got flushed after hang - that fprintf simply has not triggered.
+Incidentally, trying to load it via -kernel/-initrd leads to
+Configuration device id QEMU version 1 machine id 64
+Probing SBus slot 0 offset 0
+Probing SBus slot 1 offset 0
+Probing SBus slot 2 offset 0
+Probing SBus slot 3 offset 0
+Probing SBus slot 15 offset 0
+Invalid FCode start byte
+CPUs: 1 x TI,TMS390Z55
+UUID: 00000000-0000-0000-0000-000000000000
+Welcome to OpenBIOS v1.1 built on Dec 27 2018 19:17
+  Type 'help' for detailed information
+[sparc] Kernel already loaded
+switching to new context:
+PROMLIB: obio_ranges 1
+PROMLIB: Sun Boot Prom Version 3 Revision 2
+Linux version 5.7.0-rc1-00002-gcf51e129b968 (al@duke) (gcc version 6.3.0 20170516 (Debian 6.3.0-18), GNU ld (GNU Binutils for Debian) 2.28) #32 Thu May 21 18:36:07 EDT 2020
+printk: bootconsole [earlyprom0] enabled
+ARCH: SUN4M
+TYPE: Sun4m SparcStation10/20
+Ethernet address: 52:54:00:12:34:56
+303MB HIGHMEM available.
+OF stdout device is: /obio/zs@0,100000:a
+PROM: Built device tree with 30051 bytes of memory.
+Booting Linux...
+Power off control detected.
+Kernel panic - not syncing: Failed to allocate memory for percpu areas.
+CPU: 0 PID: 0 Comm: swapper Not tainted 5.7.0-rc1-00002-gcf51e129b968 #32
+[f04f92a8 : 
+setup_per_cpu_areas+0x58/0x90 ] 
+[f04edbf4 : 
+start_kernel+0xc0/0x4a0 ] 
+[f04ed43c : 
+continue_boot+0x324/0x334 ] 
+[00000000 : 
+0x0 ] 
+
+Press Stop-A (L1-A) from sun keyboard or send break
+twice on console to return to the boot prom
+---[ end Kernel panic - not syncing: Failed to allocate memory for percpu areas. ]---
+
+Giving guest more RAM doesn't change the outcome (well, the number HIGHMEM line is
+obviously higher, but that's it).
+
+So which sparc32 kernel have you booted with defconfig and how have you done
+that?
