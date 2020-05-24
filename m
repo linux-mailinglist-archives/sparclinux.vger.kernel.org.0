@@ -2,97 +2,81 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 011461E00C5
-	for <lists+sparclinux@lfdr.de>; Sun, 24 May 2020 18:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 848F81E0114
+	for <lists+sparclinux@lfdr.de>; Sun, 24 May 2020 19:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728847AbgEXQyG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 24 May 2020 12:54:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34050 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728375AbgEXQyF (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 24 May 2020 12:54:05 -0400
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5264B2073B;
-        Sun, 24 May 2020 16:54:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590339245;
-        bh=tbfyF8Gc0VJZg/qt06s+XuPIZbuK7GsvX8u3HOrwBQY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=lgVmuHWzTKcfFO926HF7v+JvUBv/SAafc4WDxcrRf1btKKf9XdaKY99pxOWRYvR3o
-         cScRHiUgRP1zyTfdcx5N0AS1O53w6n/k9rY4271Bk2ptxtvsMFCW0A6E9BlPTGqL4Y
-         2TEXdt6SqEojy7Nvm6HJ9m+wBUQ2ofw1Cdz0N1j4=
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Guenter Roeck <linux@roeck-us.net>, sparclinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Mike Rapoport <rppt@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCH] sparc32: register memory occupied by kernel as memblock.memory
-Date:   Sun, 24 May 2020 19:53:58 +0300
-Message-Id: <20200524165358.27188-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        id S2387790AbgEXR2o (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 24 May 2020 13:28:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47498 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387453AbgEXR2n (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 24 May 2020 13:28:43 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D11D7C061A0E
+        for <sparclinux@vger.kernel.org>; Sun, 24 May 2020 10:28:42 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id q2so18327125ljm.10
+        for <sparclinux@vger.kernel.org>; Sun, 24 May 2020 10:28:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zih7ZsMrjYQCqYbEWLRH+G7lEmyVJyvd9Lwb6ZvIrvU=;
+        b=SW2MLdRMFXNNvKoP39IhZYrM/Jwz/2mK6IWqwxhVsbS6jINM029QoPrAJgLqQHzbG2
+         xlcgITMNNPoP7p26/U1idl/c5YuBk5iyn9zlqKZupxeDu+i0OC2cwqITf0enHiXfVb4M
+         Izmh+jmEuOjfvPSu/aXJRvxqJOM7E71BAq0CM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zih7ZsMrjYQCqYbEWLRH+G7lEmyVJyvd9Lwb6ZvIrvU=;
+        b=jUC8VPbYDHfdNkkUHfOyaYPCYk69Z5DhtrSyWRf3x+2CNQB12hYFaCStldQo9bwPYu
+         IUtquOvKRm2CwjQg57Z1DaWdACJBC89N9lUYp0Cnj0p0WDIuFNC/nBnBBNFHGUKxrnIJ
+         Kr5ViVmDj+9CWi7dMM6XU4PaoFiQSUbZKk37LeXldewZQepuWmuLMSyphOxCDPjtXKJa
+         uWHtdCgsGYV1og3SXvt2Gn0WD6YqGRlRE9drAAfJVp3s2FS8/kQcrOkhYAOpMYWqZkrU
+         3Jjw+iMigtWFg9TY9+8VgWIgvr3s6vCqYPRk1vtwy6xyQS+tQRmWZdaxXCjUNrnLdSiD
+         g+kg==
+X-Gm-Message-State: AOAM530+DI0R1p7EWRxeVwoesEnY3qKu6anR1fAdBTdZIEfBoOIHKIBF
+        P/IyvVtxWimkn3d6i3EMyuR3D9iW7DM=
+X-Google-Smtp-Source: ABdhPJwJ0cm3fsXc4jnHxldfXjeXxZEPM9iOdppA0/brNQhlKNvP1z/dJDsqLUaM10N/5Q37ziZ0Zw==
+X-Received: by 2002:a2e:8115:: with SMTP id d21mr6004859ljg.167.1590341319473;
+        Sun, 24 May 2020 10:28:39 -0700 (PDT)
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
+        by smtp.gmail.com with ESMTPSA id y28sm3832189ljn.4.2020.05.24.10.28.38
+        for <sparclinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 24 May 2020 10:28:38 -0700 (PDT)
+Received: by mail-lj1-f170.google.com with SMTP id q2so18327053ljm.10
+        for <sparclinux@vger.kernel.org>; Sun, 24 May 2020 10:28:38 -0700 (PDT)
+X-Received: by 2002:a05:651c:2c6:: with SMTP id f6mr9700653ljo.371.1590341318199;
+ Sun, 24 May 2020 10:28:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200524162151.3493-1-rppt@kernel.org> <20200524162151.3493-3-rppt@kernel.org>
+In-Reply-To: <20200524162151.3493-3-rppt@kernel.org>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun, 24 May 2020 10:28:22 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiHEt=c2A+xhjKbW_N7DrxH=EV70B1diY8nYHGio0Bf2w@mail.gmail.com>
+Message-ID: <CAHk-=wiHEt=c2A+xhjKbW_N7DrxH=EV70B1diY8nYHGio0Bf2w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] sparc32: srmmu: improve type safety of __nocache_fix()
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        sparclinux@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+On Sun, May 24, 2020 at 9:22 AM Mike Rapoport <rppt@kernel.org> wrote:
+>
+> The addition of the casting to __nocache_fix() also allows to remove
+> explicit casts at its call sites.
 
-sparc32 never registered the memory occupied by the kernel image with
-memblock_add() and it only reserved this memory with meblock_reserve().
+Ahh, bonus cleanup.
 
-With openbios as system firmware, the memory occupied by the kernel is
-reserved in openbios and removed from mem.available. The prom setup code in
-the kernel uses mem.available to set up the memory banks and essentially
-there is a hole for the memory occupied by the kernel image.
+Looks obviously fine to me, but it's not like I build- or boot-test
+sparc32, so this had probably better go through somebody who does.
 
-Later in bootmem_init() this memory is memblock_reserve()d.
-
-Up until recently, memmap initialization would call __init_single_page()
-for the pages in that hole, the free_low_memory_core_early() would mark
-them as reserved and everything would be Ok.
-
-After the change in memmap initialization introduced by the commit "mm:
-memmap_init: iterate over memblock regions rather that check each PFN", the
-hole is skipped and the page structs for it are not initialized. And when
-they are passed from memblock to page allocator as reserved, the latter
-gets confused.
-
-Simply registering the memory occupied by the kernel with memblock_add()
-resolves this issue.
-
-Tested on qemu-system-sparc with Debian Etch [1] userspace.
-
-[1] https://people.debian.org/~aurel32/qemu/sparc/debian_etch_sparc_small.qcow2
-
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-Link: https://lkml.kernel.org/r/20200517000050.GA87467@roeck-us.nlllllet/ 
----
-
-David,
-
-I'd really appreciate your Ack or an explanation where my analysis is wrong :)
-
- arch/sparc/mm/init_32.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/sparc/mm/init_32.c b/arch/sparc/mm/init_32.c
-index e45160839f79..eb2946b1df8a 100644
---- a/arch/sparc/mm/init_32.c
-+++ b/arch/sparc/mm/init_32.c
-@@ -192,6 +192,7 @@ unsigned long __init bootmem_init(unsigned long *pages_avail)
- 	/* Reserve the kernel text/data/bss. */
- 	size = (start_pfn << PAGE_SHIFT) - phys_base;
- 	memblock_reserve(phys_base, size);
-+	memblock_add(phys_base, size);
- 
- 	size = memblock_phys_mem_size() - memblock_reserved_size();
- 	*pages_avail = (size >> PAGE_SHIFT) - high_pages;
--- 
-2.26.2
-
+               Linus
