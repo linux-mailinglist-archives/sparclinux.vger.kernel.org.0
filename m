@@ -2,81 +2,95 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 848F81E0114
-	for <lists+sparclinux@lfdr.de>; Sun, 24 May 2020 19:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 323DB1E0891
+	for <lists+sparclinux@lfdr.de>; Mon, 25 May 2020 10:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387790AbgEXR2o (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 24 May 2020 13:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47498 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387453AbgEXR2n (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 24 May 2020 13:28:43 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D11D7C061A0E
-        for <sparclinux@vger.kernel.org>; Sun, 24 May 2020 10:28:42 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id q2so18327125ljm.10
-        for <sparclinux@vger.kernel.org>; Sun, 24 May 2020 10:28:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zih7ZsMrjYQCqYbEWLRH+G7lEmyVJyvd9Lwb6ZvIrvU=;
-        b=SW2MLdRMFXNNvKoP39IhZYrM/Jwz/2mK6IWqwxhVsbS6jINM029QoPrAJgLqQHzbG2
-         xlcgITMNNPoP7p26/U1idl/c5YuBk5iyn9zlqKZupxeDu+i0OC2cwqITf0enHiXfVb4M
-         Izmh+jmEuOjfvPSu/aXJRvxqJOM7E71BAq0CM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zih7ZsMrjYQCqYbEWLRH+G7lEmyVJyvd9Lwb6ZvIrvU=;
-        b=jUC8VPbYDHfdNkkUHfOyaYPCYk69Z5DhtrSyWRf3x+2CNQB12hYFaCStldQo9bwPYu
-         IUtquOvKRm2CwjQg57Z1DaWdACJBC89N9lUYp0Cnj0p0WDIuFNC/nBnBBNFHGUKxrnIJ
-         Kr5ViVmDj+9CWi7dMM6XU4PaoFiQSUbZKk37LeXldewZQepuWmuLMSyphOxCDPjtXKJa
-         uWHtdCgsGYV1og3SXvt2Gn0WD6YqGRlRE9drAAfJVp3s2FS8/kQcrOkhYAOpMYWqZkrU
-         3Jjw+iMigtWFg9TY9+8VgWIgvr3s6vCqYPRk1vtwy6xyQS+tQRmWZdaxXCjUNrnLdSiD
-         g+kg==
-X-Gm-Message-State: AOAM530+DI0R1p7EWRxeVwoesEnY3qKu6anR1fAdBTdZIEfBoOIHKIBF
-        P/IyvVtxWimkn3d6i3EMyuR3D9iW7DM=
-X-Google-Smtp-Source: ABdhPJwJ0cm3fsXc4jnHxldfXjeXxZEPM9iOdppA0/brNQhlKNvP1z/dJDsqLUaM10N/5Q37ziZ0Zw==
-X-Received: by 2002:a2e:8115:: with SMTP id d21mr6004859ljg.167.1590341319473;
-        Sun, 24 May 2020 10:28:39 -0700 (PDT)
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
-        by smtp.gmail.com with ESMTPSA id y28sm3832189ljn.4.2020.05.24.10.28.38
-        for <sparclinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 24 May 2020 10:28:38 -0700 (PDT)
-Received: by mail-lj1-f170.google.com with SMTP id q2so18327053ljm.10
-        for <sparclinux@vger.kernel.org>; Sun, 24 May 2020 10:28:38 -0700 (PDT)
-X-Received: by 2002:a05:651c:2c6:: with SMTP id f6mr9700653ljo.371.1590341318199;
- Sun, 24 May 2020 10:28:38 -0700 (PDT)
+        id S1731316AbgEYIQ3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 25 May 2020 04:16:29 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:52540 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727894AbgEYIQ3 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 25 May 2020 04:16:29 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id C429A1C02AB; Mon, 25 May 2020 10:16:26 +0200 (CEST)
+Date:   Mon, 25 May 2020 10:16:26 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     "Karstens, Nate" <Nate.Karstens@garmin.com>
+Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>, Helge Deller <deller@gmx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        David Laight <David.Laight@aculab.com>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Changli Gao <xiaosuo@gmail.com>,
+        "a.josey@opengroup.org" <a.josey@opengroup.org>
+Subject: Re: [PATCH v2] Implement close-on-fork
+Message-ID: <20200525081626.GA16796@amd>
+References: <20200515152321.9280-1-nate.karstens@garmin.com>
+ <20200515155730.GF16070@bombadil.infradead.org>
+ <5b1929aa9f424e689c7f430663891827@garmin.com>
+ <1589559950.3653.11.camel@HansenPartnership.com>
+ <4964fe0ccdf7495daf4045c195b14ed6@garmin.com>
 MIME-Version: 1.0
-References: <20200524162151.3493-1-rppt@kernel.org> <20200524162151.3493-3-rppt@kernel.org>
-In-Reply-To: <20200524162151.3493-3-rppt@kernel.org>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sun, 24 May 2020 10:28:22 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiHEt=c2A+xhjKbW_N7DrxH=EV70B1diY8nYHGio0Bf2w@mail.gmail.com>
-Message-ID: <CAHk-=wiHEt=c2A+xhjKbW_N7DrxH=EV70B1diY8nYHGio0Bf2w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] sparc32: srmmu: improve type safety of __nocache_fix()
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        sparclinux@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="5vNYLRcllDrimb99"
+Content-Disposition: inline
+In-Reply-To: <4964fe0ccdf7495daf4045c195b14ed6@garmin.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun, May 24, 2020 at 9:22 AM Mike Rapoport <rppt@kernel.org> wrote:
->
-> The addition of the casting to __nocache_fix() also allows to remove
-> explicit casts at its call sites.
 
-Ahh, bonus cleanup.
+--5vNYLRcllDrimb99
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Looks obviously fine to me, but it's not like I build- or boot-test
-sparc32, so this had probably better go through somebody who does.
+Hi!
 
-               Linus
+>=20
+> If the feedback from the community is truly and finally that system() sho=
+uld not be used in these applications, then is there support for updating t=
+he man page to better communicate that?
+>=20
+
+Clarifying documenation might be the best way forward. Note you'd have
+to do that anyway, since people would not know about O_CLOFORK without
+pointers in documentation.
+
+Best regards,
+									Pavel
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--5vNYLRcllDrimb99
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl7LftoACgkQMOfwapXb+vJqEACcD+lR3XKYglSp+Req63ZwDi9m
+e/8An0k5uMvqkwoEcFAXFS3vLQ/eJejy
+=GABB
+-----END PGP SIGNATURE-----
+
+--5vNYLRcllDrimb99--
