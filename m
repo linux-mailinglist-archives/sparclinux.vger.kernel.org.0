@@ -2,138 +2,108 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6D4C1E3772
-	for <lists+sparclinux@lfdr.de>; Wed, 27 May 2020 06:37:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 931D01E3789
+	for <lists+sparclinux@lfdr.de>; Wed, 27 May 2020 06:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727940AbgE0Eg4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 27 May 2020 00:36:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37308 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727881AbgE0Egy (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 27 May 2020 00:36:54 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF762C061A0F;
-        Tue, 26 May 2020 21:36:54 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id 185so2988049pgb.10;
-        Tue, 26 May 2020 21:36:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=lOpmpojWwwDKmdgvBgyDR/91akL7lsEVaaRXHGRRif0=;
-        b=RhgQiHKjSFxt0e4hdk9XFdFmwXlaqqy/oTAekflZtHFdhEKO64qFc1mpKDXZr69CPy
-         jdKKGgMYF3/PwLMQqZRA0p7MJV/Go6tkta/h4swizRoRpVhai4LlQKtDfpzOQXol3xcY
-         3TW/CBGWUO1G35QH1UIuJXs9WTI3G+E29PktRQFzMSdgmMsbx+ViIkPx4XIoQKnwHjtI
-         iuFirKyvXOkp6bKvGs8xYK3w/Dn4sctZ1lOJtxsH8Aa2nP03Bsx7PgwJODEguoGDFtQe
-         EV7yB1UHGazYqjCw0y7SPUOzeb1Rx+s20xn4YP/gkyyGkm4H/LKnhLTIPlstwN50FD9J
-         kU0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=lOpmpojWwwDKmdgvBgyDR/91akL7lsEVaaRXHGRRif0=;
-        b=D04p47AQjHiFVOLa1Xh9S82T1TQSXfPu4wykqPdRaEnJY3choB7Zy/8EsvzJAaIKgq
-         Rbg6/DEh5iBwjGiA3ps9Ygt67mVmPEUNfb2Yv7Ktb2XxyoDw6EVp03UAvw9fDxBVfo0+
-         8YysgchrbyChFVHXA8wh0ht8hp+uDYVkOV50iyixHGSLe584qU74hnQK8EZyNI65MBFR
-         HKuFkNlwEjxNWIUKgcJ3/q8JXhuSGzcGRLQ2gFZaJBmVRtADBfafD1T6or1QgWLUsusu
-         CKDVZ0NqgIhSMu/JIcHL32GNOG7eqXsVb+f4E4a77Q4ezQOouP6OzeNP4L/+O9looQRt
-         353w==
-X-Gm-Message-State: AOAM532ZbR1SF3hgJuyeojKsQhntXLGLx5PXTeCF5wAgIB2eawYyCiNo
-        oannJ3fyqSMhNoXMHvoFdIA=
-X-Google-Smtp-Source: ABdhPJxaG/pR1wu1n7WufrFJ+x4wcg8X7uq9rcDJKu3YRWfpwt3nhECM4aeG8mrZfzsEkO9ezvPt1w==
-X-Received: by 2002:aa7:9302:: with SMTP id 2mr2035203pfj.164.1590554214171;
-        Tue, 26 May 2020 21:36:54 -0700 (PDT)
-Received: from localhost.localdomain ([2604:1380:4111:8b00::1])
-        by smtp.gmail.com with ESMTPSA id e13sm893604pfm.103.2020.05.26.21.36.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2020 21:36:53 -0700 (PDT)
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     hch@lst.de
-Cc:     akpm@linux-foundation.org, arnd@arndb.de, jeyu@kernel.org,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
-        linux-sh@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
-        monstr@monstr.eu, openrisc@lists.librecores.org,
-        sparclinux@vger.kernel.org, x86@kernel.org, zippel@linux-m68k.org,
-        Nathan Chancellor <natechancellor@gmail.com>
-Subject: [PATCH] media: omap3isp: Shuffle cacheflush.h and include mm.h
-Date:   Tue, 26 May 2020 21:34:27 -0700
-Message-Id: <20200527043426.3242439-1-natechancellor@gmail.com>
-X-Mailer: git-send-email 2.27.0.rc0
-In-Reply-To: <20200515143646.3857579-7-hch@lst.de>
-References: <20200515143646.3857579-7-hch@lst.de>
+        id S1726612AbgE0Ew0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 27 May 2020 00:52:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51152 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725294AbgE0Ew0 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 27 May 2020 00:52:26 -0400
+Received: from kernel.org (unknown [87.70.212.59])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3783A2078C;
+        Wed, 27 May 2020 04:52:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590555146;
+        bh=g9E/3oh8BLmGA2vnSGwK3RlCX7bKSJ1TEs8S9N8IiPQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IrjBrjdDUZNJQSzIIYIANzlV2wU2224Px8XobZtZWK7nzfw5rmSjOK75Hp0cov2Xv
+         891nlgAP9Hr7ZijdAqskear/wAwO/8WBhCvfyRSOKLevoXTZ92zrHwsHaOevxHFimY
+         ZTtGUOIgZeDsk5wW/cW9smubJ2jdMZYOhRv495ZE=
+Date:   Wed, 27 May 2020 07:52:19 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Guenter Roeck <linux@roeck-us.net>, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH] sparc32: register memory occupied by kernel as
+ memblock.memory
+Message-ID: <20200527045219.GG48741@kernel.org>
+References: <20200524165358.27188-1-rppt@kernel.org>
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200524165358.27188-1-rppt@kernel.org>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-After mm.h was removed from the asm-generic version of cacheflush.h,
-s390 allyesconfig shows several warnings of the following nature:
+Andrew, David,
 
-In file included from ./arch/s390/include/generated/asm/cacheflush.h:1,
-                 from drivers/media/platform/omap3isp/isp.c:42:
-./include/asm-generic/cacheflush.h:16:42: warning: 'struct mm_struct'
-declared inside parameter list will not be visible outside of this
-definition or declaration
+Any comments on this?
 
-cacheflush.h does not include mm.h nor does it include any forward
-declaration of these structures hence the warning. To avoid this,
-include mm.h explicitly in this file and shuffle cacheflush.h below it.
+On Sun, May 24, 2020 at 07:53:58PM +0300, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> sparc32 never registered the memory occupied by the kernel image with
+> memblock_add() and it only reserved this memory with meblock_reserve().
+> 
+> With openbios as system firmware, the memory occupied by the kernel is
+> reserved in openbios and removed from mem.available. The prom setup code in
+> the kernel uses mem.available to set up the memory banks and essentially
+> there is a hole for the memory occupied by the kernel image.
+> 
+> Later in bootmem_init() this memory is memblock_reserve()d.
+> 
+> Up until recently, memmap initialization would call __init_single_page()
+> for the pages in that hole, the free_low_memory_core_early() would mark
+> them as reserved and everything would be Ok.
+> 
+> After the change in memmap initialization introduced by the commit "mm:
+> memmap_init: iterate over memblock regions rather that check each PFN", the
+> hole is skipped and the page structs for it are not initialized. And when
+> they are passed from memblock to page allocator as reserved, the latter
+> gets confused.
+> 
+> Simply registering the memory occupied by the kernel with memblock_add()
+> resolves this issue.
+> 
+> Tested on qemu-system-sparc with Debian Etch [1] userspace.
+> 
+> [1] https://people.debian.org/~aurel32/qemu/sparc/debian_etch_sparc_small.qcow2
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> Link: https://lkml.kernel.org/r/20200517000050.GA87467@roeck-us.nlllllet/ 
+> ---
+> 
+> David,
+> 
+> I'd really appreciate your Ack or an explanation where my analysis is wrong :)
+> 
+>  arch/sparc/mm/init_32.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/sparc/mm/init_32.c b/arch/sparc/mm/init_32.c
+> index e45160839f79..eb2946b1df8a 100644
+> --- a/arch/sparc/mm/init_32.c
+> +++ b/arch/sparc/mm/init_32.c
+> @@ -192,6 +192,7 @@ unsigned long __init bootmem_init(unsigned long *pages_avail)
+>  	/* Reserve the kernel text/data/bss. */
+>  	size = (start_pfn << PAGE_SHIFT) - phys_base;
+>  	memblock_reserve(phys_base, size);
+> +	memblock_add(phys_base, size);
+>  
+>  	size = memblock_phys_mem_size() - memblock_reserved_size();
+>  	*pages_avail = (size >> PAGE_SHIFT) - high_pages;
+> -- 
+> 2.26.2
+> 
 
-Fixes: 19c0054597a0 ("asm-generic: don't include <linux/mm.h> in cacheflush.h")
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
-
-I am aware the fixes tag is kind of irrelevant because that SHA will
-change in the next linux-next revision and this will probably get folded
-into the original patch anyways but still.
-
-The other solution would be to add forward declarations of these structs
-to the top of cacheflush.h, I just chose to do what Christoph did in the
-original patch. I am happy to do that instead if you all feel that is
-better.
-
- drivers/media/platform/omap3isp/isp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/media/platform/omap3isp/isp.c b/drivers/media/platform/omap3isp/isp.c
-index a4ee6b86663e..54106a768e54 100644
---- a/drivers/media/platform/omap3isp/isp.c
-+++ b/drivers/media/platform/omap3isp/isp.c
-@@ -39,8 +39,6 @@
-  *	Troy Laramy <t-laramy@ti.com>
-  */
- 
--#include <asm/cacheflush.h>
--
- #include <linux/clk.h>
- #include <linux/clkdev.h>
- #include <linux/delay.h>
-@@ -49,6 +47,7 @@
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/mfd/syscon.h>
-+#include <linux/mm.h>
- #include <linux/module.h>
- #include <linux/omap-iommu.h>
- #include <linux/platform_device.h>
-@@ -58,6 +57,8 @@
- #include <linux/sched.h>
- #include <linux/vmalloc.h>
- 
-+#include <asm/cacheflush.h>
-+
- #ifdef CONFIG_ARM_DMA_USE_IOMMU
- #include <asm/dma-iommu.h>
- #endif
 -- 
-2.27.0.rc0
-
+Sincerely yours,
+Mike.
