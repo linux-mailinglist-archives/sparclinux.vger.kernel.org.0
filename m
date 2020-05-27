@@ -2,51 +2,53 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C27A1E37BD
-	for <lists+sparclinux@lfdr.de>; Wed, 27 May 2020 07:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6DDC1E38AC
+	for <lists+sparclinux@lfdr.de>; Wed, 27 May 2020 07:58:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728891AbgE0FKT (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 27 May 2020 01:10:19 -0400
-Received: from verein.lst.de ([213.95.11.211]:48230 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726477AbgE0FKS (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 27 May 2020 01:10:18 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 627CA68B02; Wed, 27 May 2020 07:10:12 +0200 (CEST)
-Date:   Wed, 27 May 2020 07:10:11 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Nathan Chancellor <natechancellor@gmail.com>
-Cc:     hch@lst.de, akpm@linux-foundation.org, arnd@arndb.de,
-        jeyu@kernel.org, linux-alpha@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-c6x-dev@linux-c6x.org, linux-fsdevel@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-mm@kvack.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org, monstr@monstr.eu,
-        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, zippel@linux-m68k.org
-Subject: Re: [PATCH] media: omap3isp: Shuffle cacheflush.h and include mm.h
-Message-ID: <20200527051011.GB16317@lst.de>
-References: <20200515143646.3857579-7-hch@lst.de> <20200527043426.3242439-1-natechancellor@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200527043426.3242439-1-natechancellor@gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+        id S1725710AbgE0F62 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 27 May 2020 01:58:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49882 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725267AbgE0F62 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 27 May 2020 01:58:28 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997A7C061A0F;
+        Tue, 26 May 2020 22:58:28 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 55CF8127E900C;
+        Tue, 26 May 2020 22:58:27 -0700 (PDT)
+Date:   Tue, 26 May 2020 22:58:24 -0700 (PDT)
+Message-Id: <20200526.225824.2202331208378344398.davem@davemloft.net>
+To:     rppt@kernel.org
+Cc:     akpm@linux-foundation.org, linux@roeck-us.net,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, rppt@linux.ibm.com
+Subject: Re: [PATCH] sparc32: register memory occupied by kernel as
+ memblock.memory
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200527045219.GG48741@kernel.org>
+References: <20200524165358.27188-1-rppt@kernel.org>
+        <20200527045219.GG48741@kernel.org>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 26 May 2020 22:58:27 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, May 26, 2020 at 09:34:27PM -0700, Nathan Chancellor wrote:
-> After mm.h was removed from the asm-generic version of cacheflush.h,
-> s390 allyesconfig shows several warnings of the following nature:
+From: Mike Rapoport <rppt@kernel.org>
+Date: Wed, 27 May 2020 07:52:19 +0300
 
-Hmm, I'm pretty sure I sent the same fix a few days ago in response to
-a build bot report.  But if that didn't get picked up I'm fine with
-your version of it as well of course:
+> Andrew, David,
+> 
+> Any comments on this?
 
-Acked-by: Christoph Hellwig <hch@lst.de>
+No objections from me:
+
+Acked-by: David S. Miller <davem@davemloft.net>
