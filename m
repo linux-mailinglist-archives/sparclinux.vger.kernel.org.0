@@ -2,56 +2,42 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D94B1E54C5
-	for <lists+sparclinux@lfdr.de>; Thu, 28 May 2020 05:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C7921E5E20
+	for <lists+sparclinux@lfdr.de>; Thu, 28 May 2020 13:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726793AbgE1DrB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 27 May 2020 23:47:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55330 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726856AbgE1DrA (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 27 May 2020 23:47:00 -0400
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC3DC08C5C1
-        for <sparclinux@vger.kernel.org>; Wed, 27 May 2020 20:47:00 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id i22so23739772oik.10
-        for <sparclinux@vger.kernel.org>; Wed, 27 May 2020 20:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=2qx91aVPuFO0vUiP0/I7F3TMnsxZODsCo0wW/nZA/Ek=;
-        b=PL6zETkbGU9mqzrGsocE1HBzwqKl3IMV7yV8wFZbGm4wHOwRBD8OMMG+y5JKGvCgPi
-         vm5n3+sf1eGzsQmqX4L8++JRmCX3DzLApuWLh2lFuHx1IPNt0zVceXBi8JMZm08yMjJi
-         dgTLtqCBs6olHY2rqJsuK9NL5GyMjlA9kP/Cz6nR6Si2xwGFFoE603kc/Dr53G3rQp6S
-         gFBb+PddTEBGiaWOuBvRGs40Im9zVq8VTNmoIb/MzDf19j1pLiqnHKik2BuMsIkBrRbh
-         TYnm6OVvmQUcyWzw/IOjcAS7zNs0Q98eBrYT94efLyjDduG9AxjlXGJtnrsATHUpOImZ
-         HIag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=2qx91aVPuFO0vUiP0/I7F3TMnsxZODsCo0wW/nZA/Ek=;
-        b=LGc6dKZp7hdjNMr3g4QFRhI3cQZpy5N7KCiJ3fRvf8GprqYCUSesqtKmFH8I/P1VZK
-         SfZ18pdY5vz76tRdFaixV4/ZZqYcB3ZYkJshdME8SofjNGra1YEliwZ01H5swewkTR/k
-         9YGdEjZbywnjZtR6JhHzwjFCxunY1qVN/Cx5z8UfSQmsVCwo0ZdCM0seSdFh5wOZMOBI
-         MxkErl5pHQJGghjeF9YFyUyLkeKHY/cgYKZKoDZbHyNZRKVIHt1+V2m91vPH6ICsw4mQ
-         tU46YXYF0EBpgK5v9tQqIcK+lT5Tiyr9NDyeqHX86ugrvR65Kj5SObbuKzmWIqIb1aKN
-         tHOg==
-X-Gm-Message-State: AOAM532oBW3g67EsJb/ANIZ06SgBZLke8xGbkcWYC+NpXWXxy9ytV8Qd
-        g89JoApIUmTUB9vifgRlnuj3Tg==
-X-Google-Smtp-Source: ABdhPJyOlEQNd0DWG0KMQ3iclWevL0B8TV/DHISOzSWHCezO7ksCSIPPniMHO6dFdL8N85bmZfl1CA==
-X-Received: by 2002:aca:d856:: with SMTP id p83mr958723oig.38.1590637619384;
-        Wed, 27 May 2020 20:46:59 -0700 (PDT)
-Received: from eggly.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id v10sm1036334oov.15.2020.05.27.20.46.55
-        (version=TLS1 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128);
-        Wed, 27 May 2020 20:46:58 -0700 (PDT)
-Date:   Wed, 27 May 2020 20:46:22 -0700 (PDT)
-From:   Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@eggly.anvils
-To:     Jerome Glisse <jglisse@redhat.com>
-cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        id S2388251AbgE1LUo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 28 May 2020 07:20:44 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:35000 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2388311AbgE1LUn (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 28 May 2020 07:20:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1590664841;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0pDdsaPJ9DSWTCG29xVVgPA72+92+ZpKaGKhvHYc8/o=;
+        b=cnGYK2JC5bYnTT2Pd08ImODjvO31mfBzx6DCuwCatJUslkIA68z3sN8V+SAI0uwCmF7riy
+        oZ98Ejx2vo6hC9D5lt4lZqF3Ah6wX+67qWpQUied2otSd9O0NlcXwKUJNXT0AMsTpkVBtM
+        qZOOCOQ7RFgWFcEOIQTt0/klvhEp9jc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-357-rz4JWXClNKyU_Z2vtGkSbw-1; Thu, 28 May 2020 07:20:37 -0400
+X-MC-Unique: rz4JWXClNKyU_Z2vtGkSbw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C3F14805730;
+        Thu, 28 May 2020 11:20:32 +0000 (UTC)
+Received: from redhat.com (ovpn-113-1.rdu2.redhat.com [10.10.113.1])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id E409A7A8B6;
+        Thu, 28 May 2020 11:20:26 +0000 (UTC)
+Date:   Thu, 28 May 2020 07:20:25 -0400
+From:   Jerome Glisse <jglisse@redhat.com>
+To:     Hugh Dickins <hughd@google.com>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         Huang Ying <ying.huang@intel.com>,
         linux-kernel@vger.kernel.org,
         Steven Capper <steve.capper@linaro.org>,
@@ -74,102 +60,55 @@ cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         Chris Zankel <chris@zankel.net>
 Subject: Re: Cache flush issue with page_mapping_file() and swap back shmem
  page ?
-In-Reply-To: <20200528002033.GB1992500@redhat.com>
-Message-ID: <alpine.LSU.2.11.2005272021220.3857@eggly.anvils>
+Message-ID: <20200528112025.GA10175@redhat.com>
 References: <20200528002033.GB1992500@redhat.com>
-User-Agent: Alpine 2.11 (LSU 23 2013-08-11)
+ <alpine.LSU.2.11.2005272021220.3857@eggly.anvils>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <alpine.LSU.2.11.2005272021220.3857@eggly.anvils>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Jerome,
-
-On Wed, 27 May 2020, Jerome Glisse wrote:
-> So any arch code which uses page_mapping_file() might get the wrong
-> answer, this function will return NULL for a swap backed page which
-> can be a shmem pages. But shmem pages can still be shared among
-> multiple process (and possibly at different virtual addresses if
-> mremap was use).
+On Wed, May 27, 2020 at 08:46:22PM -0700, Hugh Dickins wrote:
+> Hi Jerome,
 > 
-> Attached is a patch that changes page_mapping_file() to return the
-> shmem mapping for swap backed shmem page. I have not tested it (no
-> way for me to test all those architecture) and i spotted this while
-> working on something else. So i hope someone can take a closer look.
-
-I'm certainly no expert on flush_dcache_page() and friends, but I'd
-be very surprised if such a problem exists, yet has gone unnoticed
-for so long.  page_mapping_file() itself is fairly new, added when
-a risk of crashing on a race with swapoff came in: but the previous
-use of page_mapping() would have suffered equally if there were such
-a cache flushinhg problem here.
-
-And I'm afraid your patch won't do anything to help if there is a
-problem: very soon after shmem calls add_to_swap_cache(), it calls
-shmem_delete_from_page_cache(), which sets page->mapping to NULL.
-
-But I can assure you that a shmem page (unlike an anon page) is never
-put into swap cache while it is mapped into userspace, and never
-mapped into userspace while it is still in swap cache: does that help?
-
-Hugh
-
-> This might be a shmem page that is in a sense a file that
-> can be mapped multiple times in different processes at
-> possibly different virtual addresses (fork + mremap). So
-> return the shmem mapping that will allow any arch code to
-> find all mappings of the page.
+> On Wed, 27 May 2020, Jerome Glisse wrote:
+> > So any arch code which uses page_mapping_file() might get the wrong
+> > answer, this function will return NULL for a swap backed page which
+> > can be a shmem pages. But shmem pages can still be shared among
+> > multiple process (and possibly at different virtual addresses if
+> > mremap was use).
+> > 
+> > Attached is a patch that changes page_mapping_file() to return the
+> > shmem mapping for swap backed shmem page. I have not tested it (no
+> > way for me to test all those architecture) and i spotted this while
+> > working on something else. So i hope someone can take a closer look.
 > 
-> Note that even if page is not anonymous then the page might
-> have a NULL page->mapping field if it is being truncated,
-> but then it is fine as each pte poiting to the page will be
-> remove and cache flushing should be handled properly by that
-> part of the code.
+> I'm certainly no expert on flush_dcache_page() and friends, but I'd
+> be very surprised if such a problem exists, yet has gone unnoticed
+> for so long.  page_mapping_file() itself is fairly new, added when
+> a risk of crashing on a race with swapoff came in: but the previous
+> use of page_mapping() would have suffered equally if there were such
+> a cache flushinhg problem here.
 > 
-> Signed-off-by: Jerome Glisse <jglisse@redhat.com>
-> Cc: "Huang, Ying" <ying.huang@intel.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Mel Gorman <mgorman@techsingularity.net>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
-> ---
->  mm/util.c | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
+> And I'm afraid your patch won't do anything to help if there is a
+> problem: very soon after shmem calls add_to_swap_cache(), it calls
+> shmem_delete_from_page_cache(), which sets page->mapping to NULL.
 > 
-> diff --git a/mm/util.c b/mm/util.c
-> index 988d11e6c17c..ec8739ab0cc3 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -685,8 +685,24 @@ EXPORT_SYMBOL(page_mapping);
->   */
->  struct address_space *page_mapping_file(struct page *page)
->  {
-> -	if (unlikely(PageSwapCache(page)))
-> +	if (unlikely(PageSwapCache(page))) {
-> +		/*
-> +		 * This might be a shmem page that is in a sense a file that
-> +		 * can be mapped multiple times in different processes at
-> +		 * possibly different virtual addresses (fork + mremap). So
-> +		 * return the shmem mapping that will allow any arch code to
-> +		 * find all mappings of the page.
-> +		 *
-> +		 * Note that even if page is not anonymous then the page might
-> +		 * have a NULL page->mapping field if it is being truncated,
-> +		 * but then it is fine as each pte poiting to the page will be
-> +		 * remove and cache flushing should be handled properly by that
-> +		 * part of the code.
-> +		 */
-> +		if (!PageAnon(page))
-> +			return page->mapping;
->  		return NULL;
-> +	}
->  	return page_mapping(page);
->  }
->  
-> -- 
-> 2.26.2
+> But I can assure you that a shmem page (unlike an anon page) is never
+> put into swap cache while it is mapped into userspace, and never
+> mapped into userspace while it is still in swap cache: does that help?
+> 
+
+You are right i missed/forgot the part where shmem is never swapcache
+and mapped at the same time, thus page_mapping_file() can return NULL
+for those as they can no longer have alias mapping.
+
+Thank you Hugh
+Jérôme
+
