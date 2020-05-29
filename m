@@ -2,114 +2,118 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E88461E7AE2
-	for <lists+sparclinux@lfdr.de>; Fri, 29 May 2020 12:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 090651E7D58
+	for <lists+sparclinux@lfdr.de>; Fri, 29 May 2020 14:36:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725971AbgE2KsR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 29 May 2020 06:48:17 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:49031 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725863AbgE2KsQ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 29 May 2020 06:48:16 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.93)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jecYZ-000UMs-3p; Fri, 29 May 2020 12:48:07 +0200
-Received: from p57bd9b57.dip0.t-ipconnect.de ([87.189.155.87] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.93)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jecYY-001Rsu-QC; Fri, 29 May 2020 12:48:07 +0200
-Subject: Re: sparc vs sparc64: O_NDELAY and O_NONBLOCK mismatch in kernel and
- in glibc
-To:     Sergei Trofimovich <slyfox@gentoo.org>, sparclinux@vger.kernel.org,
-        libc-alpha@sourceware.org
-Cc:     "David S. Miller" <davem@davemloft.net>, sparc@gentoo.org,
-        toolchain@gentoo.org,
-        =?UTF-8?B?TWljaGHFgiBHw7Nybnk=?= <mgorny@gentoo.org>
-References: <20200529104019.72983ef9@sf>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
- 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
- scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <dbf139ca-9914-8d16-7a8d-7a8e84646a77@physik.fu-berlin.de>
-Date:   Fri, 29 May 2020 12:48:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
-MIME-Version: 1.0
-In-Reply-To: <20200529104019.72983ef9@sf>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.155.87
+        id S1726887AbgE2Mgm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 29 May 2020 08:36:42 -0400
+Received: from mailout4.samsung.com ([203.254.224.34]:17686 "EHLO
+        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726629AbgE2Mgk (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 29 May 2020 08:36:40 -0400
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20200529123636epoutp04951bec3352ca8b456009bac21452d451~Tf-gYA23R3147831478epoutp04B
+        for <sparclinux@vger.kernel.org>; Fri, 29 May 2020 12:36:36 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20200529123636epoutp04951bec3352ca8b456009bac21452d451~Tf-gYA23R3147831478epoutp04B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1590755796;
+        bh=wUNzcywfsqFiLG1FtR4Yk2Zx32Jp7ZN9xdDjQ3Zctwg=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=ltNTq8cjA4Zq46NBi2Jp6kKmCg9nZ8xcUgGLlPzgGH+AV/qap4c4iN6Eea3KT5ula
+         3bMAuYX0110JL0NnjdHvhyV9IJz5mIEJSkC66LUwXT4JNss9KGg6ECZBMDSfct72bb
+         gMWfkZ8xIcl7gXBx+r/cnZANVUVaRv1F6aIu9X/U=
+Received: from epsmges5p2new.samsung.com (unknown [182.195.42.74]) by
+        epcas5p2.samsung.com (KnoxPortal) with ESMTP id
+        20200529123636epcas5p2b3c34d6669ee614b317e0c11e92fd185~Tf-gIPYAz3089630896epcas5p2k;
+        Fri, 29 May 2020 12:36:36 +0000 (GMT)
+Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
+        epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        18.B3.09703.4D101DE5; Fri, 29 May 2020 21:36:36 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+        20200529122614epcas5p38e0acf63c010f8b691caf68916f512bd~Tf2cYLDi10566205662epcas5p3z;
+        Fri, 29 May 2020 12:26:14 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200529122614epsmtrp14bc392f630cc06525d0a500d139e0544~Tf2cXlS5c1294412944epsmtrp1B;
+        Fri, 29 May 2020 12:26:14 +0000 (GMT)
+X-AuditID: b6c32a4a-4b5ff700000025e7-a7-5ed101d44084
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        AD.24.08382.66FF0DE5; Fri, 29 May 2020 21:26:14 +0900 (KST)
+Received: from localhost.localdomain (unknown [107.109.224.135]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200529122612epsmtip1b8b8f6b507b3407382d195ee11e7b2d2~Tf2bLLc-m2983829838epsmtip1S;
+        Fri, 29 May 2020 12:26:12 +0000 (GMT)
+From:   Anupam Aggarwal <anupam.al@samsung.com>
+To:     davem@davemloft.net
+Cc:     a.sahrawat@samsung.com, t.vivek@samsung.com,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Anupam Aggarwal <anupam.al@samsung.com>
+Subject: [PATCH] sparc: remove unused header file nfs_fs.h
+Date:   Fri, 29 May 2020 17:56:00 +0530
+Message-Id: <1590755160-26009-1-git-send-email-anupam.al@samsung.com>
+X-Mailer: git-send-email 2.7.4
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNIsWRmVeSWpSXmKPExsWy7bCmpu4VxotxBh2/VC0u7k61eN9whd1i
+        zvkWFovLu+awWTScXMFq8bJvI5sDm8eWlTeZPPq2rGL0+LxJLoA5issmJTUnsyy1SN8ugStj
+        x9EX7AU7WSvWnTjI3MB4m6WLkZNDQsBE4vu+p0A2F4eQwG5GiSs9WxghnE+MEo1rpjBDON8Y
+        JXbtus8O0/J8wwxGEFtIYC+jxJ77nBBFXxklOi99YwNJsAnoSsx9MZsVxBYREJdofvOUCaSI
+        WWAKo8S+V+fBioQFrCTm/zkANolFQFViwbuTYHFeAVeJx2+mskFsk5O4ea4T7AwJgensElMW
+        HIC63EViy6P3UEXCEq+Ob4E6T0riZX8bO0RDP6NE17ILrBDODEaJI3u2QXXbS7xubgC6iQPo
+        Jk2J9bv0IcKyElNPrWMCsZkF+CR6fz9hgojzSuyYB2MrS0y99poVwpaUeNzZygxhe0i8OLGR
+        FRIusRIbZi1jn8AoOwthwwJGxlWMkqkFxbnpqcWmBUZ5qeV6xYm5xaV56XrJ+bmbGMHxreW1
+        g/Hhgw96hxiZOBgPMUpwMCuJ8K45ez5OiDclsbIqtSg/vqg0J7X4EKM0B4uSOK/SjzNxQgLp
+        iSWp2ampBalFMFkmDk6pBqaynEu8sSbHq8yWtBpe3Gc769jyq8WSuRP/u07uNH7Y8XFuUtLC
+        nO0y0jpzpKa/ymF3PmmwdJVIVZnatS/vzHmrszOKNv2L6GYuvrnXtdb7uUZN7KrXE1MOv//6
+        qSeq7f80z9a/OtPcdLd8DSk+FK3OdixQe/3pkKDZjPy3GD96f2xMvrElsIWVr969u0jq4W3V
+        U73bDJls7+n7VweufNPRcWknV9qma4YHr2T+XdMlc6J+0V3njVsL1j1ODXEJsOe81Bx1Ytlv
+        LZOFl77KbUiQYNnHdCREOyXK1v+LYZvQA8/Jyb/CPuS8mrvT/9F9p1XZr6b2x+Wyr2rTney8
+        +gKXhaJkWXrtYdtpG6ZVfVViKc5INNRiLipOBADmdVAIXgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrAJMWRmVeSWpSXmKPExsWy7bCSnG7a/wtxBvPWslhc3J1q8b7hCrvF
+        nPMtLBaXd81hs2g4uYLV4mXfRjYHNo8tK28yefRtWcXo8XmTXABzFJdNSmpOZllqkb5dAlfG
+        jqMv2At2slasO3GQuYHxNksXIyeHhICJxPMNMxi7GLk4hAR2M0r8ez6DCSIhKdH0egMjhC0s
+        sfLfc3aIos+MEpsvtrKBJNgEdCXmvpjNCmKLCIhLNL95ygRSxCwwi1Hi5vqvYAlhASuJ+X8O
+        gE1iEVCVWPDuJFgzr4CrxOM3U9kgNshJ3DzXyTyBkWcBI8MqRsnUguLc9NxiwwLDvNRyveLE
+        3OLSvHS95PzcTYzgQNHS3MG4fdUHvUOMTByMhxglOJiVRHjXnD0fJ8SbklhZlVqUH19UmpNa
+        fIhRmoNFSZz3RuHCOCGB9MSS1OzU1ILUIpgsEwenVANT9ZW8hwkez8tKDyl8Zi/L87zub/eP
+        Z94aS/3On3fuXoudv6mP1fRpzVmG7bJp+wJEBXbsrcm2O+DbL3WgOMCOa1HjsvfHGe9qfZxQ
+        cHPfv4K8FQb1s6S1emZkfvyY8jr6VoSCmnX+Ok6xtvdnjsxfWdqxJ6QhLzfV8bpZ52bmpa6m
+        y7lvNLXFTt/ZpHrbfMUN/1Pdk/uFmO0b1fR9gLEdGH8n+lL1f+sjrs57Lkxqiz+WdGnRW3vm
+        z7+Mprnsyj8+I+6ic9ELabWvihcljrw3nK30b5Jy9JPshsZbiUYT9dV4CrZseRh2d9Kay7Mb
+        3O6WJB1dHBh6nEOEcx9/p9B2/3a1RRPX9kXW/31WwK7EUpyRaKjFXFScCACIAD+8gwIAAA==
+X-CMS-MailID: 20200529122614epcas5p38e0acf63c010f8b691caf68916f512bd
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+X-CMS-RootMailID: 20200529122614epcas5p38e0acf63c010f8b691caf68916f512bd
+References: <CGME20200529122614epcas5p38e0acf63c010f8b691caf68916f512bd@epcas5p3.samsung.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 5/29/20 11:40 AM, Sergei Trofimovich wrote:
-> On most targets glibc defines O_NDELAY as O_NONBLOCK.
-> (...)
->   I think '#define O_NDELAY O_NONBLOCK' would be most
->   consistent.
-> 
-> What do you think?
+Remove unused header file linux/nfs_fs.h
 
-Would this, by any chance, also fix some of the glibc testsuite failures
-we are seeing on SPARC? [1]
+Signed-off-by: Anupam Aggarwal <anupam.al@samsung.com>
+Signed-off-by: Vivek Trivedi <t.vivek@samsung.com>
+Signed-off-by: Amit Sahrawat <a.sahrawat@samsung.com>
+---
+ arch/sparc/kernel/sys_sparc32.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Adrian
-
-> [1] https://buildd.debian.org/status/fetch.php?pkg=glibc&arch=sparc64&ver=2.30-8&stamp=1589400224&raw=0
-
+diff --git a/arch/sparc/kernel/sys_sparc32.c b/arch/sparc/kernel/sys_sparc32.c
+index b5da3bf..f84a02a 100644
+--- a/arch/sparc/kernel/sys_sparc32.c
++++ b/arch/sparc/kernel/sys_sparc32.c
+@@ -22,7 +22,6 @@
+ #include <linux/msg.h>
+ #include <linux/shm.h>
+ #include <linux/uio.h>
+-#include <linux/nfs_fs.h>
+ #include <linux/quota.h>
+ #include <linux/poll.h>
+ #include <linux/personality.h>
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+1.9.1
+
