@@ -2,118 +2,64 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 090651E7D58
-	for <lists+sparclinux@lfdr.de>; Fri, 29 May 2020 14:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CB781E8A51
+	for <lists+sparclinux@lfdr.de>; Fri, 29 May 2020 23:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726887AbgE2Mgm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 29 May 2020 08:36:42 -0400
-Received: from mailout4.samsung.com ([203.254.224.34]:17686 "EHLO
-        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726629AbgE2Mgk (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 29 May 2020 08:36:40 -0400
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20200529123636epoutp04951bec3352ca8b456009bac21452d451~Tf-gYA23R3147831478epoutp04B
-        for <sparclinux@vger.kernel.org>; Fri, 29 May 2020 12:36:36 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20200529123636epoutp04951bec3352ca8b456009bac21452d451~Tf-gYA23R3147831478epoutp04B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1590755796;
-        bh=wUNzcywfsqFiLG1FtR4Yk2Zx32Jp7ZN9xdDjQ3Zctwg=;
-        h=From:To:Cc:Subject:Date:References:From;
-        b=ltNTq8cjA4Zq46NBi2Jp6kKmCg9nZ8xcUgGLlPzgGH+AV/qap4c4iN6Eea3KT5ula
-         3bMAuYX0110JL0NnjdHvhyV9IJz5mIEJSkC66LUwXT4JNss9KGg6ECZBMDSfct72bb
-         gMWfkZ8xIcl7gXBx+r/cnZANVUVaRv1F6aIu9X/U=
-Received: from epsmges5p2new.samsung.com (unknown [182.195.42.74]) by
-        epcas5p2.samsung.com (KnoxPortal) with ESMTP id
-        20200529123636epcas5p2b3c34d6669ee614b317e0c11e92fd185~Tf-gIPYAz3089630896epcas5p2k;
-        Fri, 29 May 2020 12:36:36 +0000 (GMT)
-Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
-        epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        18.B3.09703.4D101DE5; Fri, 29 May 2020 21:36:36 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-        20200529122614epcas5p38e0acf63c010f8b691caf68916f512bd~Tf2cYLDi10566205662epcas5p3z;
-        Fri, 29 May 2020 12:26:14 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200529122614epsmtrp14bc392f630cc06525d0a500d139e0544~Tf2cXlS5c1294412944epsmtrp1B;
-        Fri, 29 May 2020 12:26:14 +0000 (GMT)
-X-AuditID: b6c32a4a-4b5ff700000025e7-a7-5ed101d44084
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        AD.24.08382.66FF0DE5; Fri, 29 May 2020 21:26:14 +0900 (KST)
-Received: from localhost.localdomain (unknown [107.109.224.135]) by
-        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200529122612epsmtip1b8b8f6b507b3407382d195ee11e7b2d2~Tf2bLLc-m2983829838epsmtip1S;
-        Fri, 29 May 2020 12:26:12 +0000 (GMT)
-From:   Anupam Aggarwal <anupam.al@samsung.com>
-To:     davem@davemloft.net
-Cc:     a.sahrawat@samsung.com, t.vivek@samsung.com,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Anupam Aggarwal <anupam.al@samsung.com>
-Subject: [PATCH] sparc: remove unused header file nfs_fs.h
-Date:   Fri, 29 May 2020 17:56:00 +0530
-Message-Id: <1590755160-26009-1-git-send-email-anupam.al@samsung.com>
-X-Mailer: git-send-email 2.7.4
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNIsWRmVeSWpSXmKPExsWy7bCmpu4VxotxBh2/VC0u7k61eN9whd1i
-        zvkWFovLu+awWTScXMFq8bJvI5sDm8eWlTeZPPq2rGL0+LxJLoA5issmJTUnsyy1SN8ugStj
-        x9EX7AU7WSvWnTjI3MB4m6WLkZNDQsBE4vu+p0A2F4eQwG5GiSs9WxghnE+MEo1rpjBDON8Y
-        JXbtus8O0/J8wwxGEFtIYC+jxJ77nBBFXxklOi99YwNJsAnoSsx9MZsVxBYREJdofvOUCaSI
-        WWAKo8S+V+fBioQFrCTm/zkANolFQFViwbuTYHFeAVeJx2+mskFsk5O4ea4T7AwJgensElMW
-        HIC63EViy6P3UEXCEq+Ob4E6T0riZX8bO0RDP6NE17ILrBDODEaJI3u2QXXbS7xubgC6iQPo
-        Jk2J9bv0IcKyElNPrWMCsZkF+CR6fz9hgojzSuyYB2MrS0y99poVwpaUeNzZygxhe0i8OLGR
-        FRIusRIbZi1jn8AoOwthwwJGxlWMkqkFxbnpqcWmBUZ5qeV6xYm5xaV56XrJ+bmbGMHxreW1
-        g/Hhgw96hxiZOBgPMUpwMCuJ8K45ez5OiDclsbIqtSg/vqg0J7X4EKM0B4uSOK/SjzNxQgLp
-        iSWp2ampBalFMFkmDk6pBqaynEu8sSbHq8yWtBpe3Gc769jyq8WSuRP/u07uNH7Y8XFuUtLC
-        nO0y0jpzpKa/ymF3PmmwdJVIVZnatS/vzHmrszOKNv2L6GYuvrnXtdb7uUZN7KrXE1MOv//6
-        qSeq7f80z9a/OtPcdLd8DSk+FK3OdixQe/3pkKDZjPy3GD96f2xMvrElsIWVr969u0jq4W3V
-        U73bDJls7+n7VweufNPRcWknV9qma4YHr2T+XdMlc6J+0V3njVsL1j1ODXEJsOe81Bx1Ytlv
-        LZOFl77KbUiQYNnHdCREOyXK1v+LYZvQA8/Jyb/CPuS8mrvT/9F9p1XZr6b2x+Wyr2rTney8
-        +gKXhaJkWXrtYdtpG6ZVfVViKc5INNRiLipOBADmdVAIXgMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrAJMWRmVeSWpSXmKPExsWy7bCSnG7a/wtxBvPWslhc3J1q8b7hCrvF
-        nPMtLBaXd81hs2g4uYLV4mXfRjYHNo8tK28yefRtWcXo8XmTXABzFJdNSmpOZllqkb5dAlfG
-        jqMv2At2slasO3GQuYHxNksXIyeHhICJxPMNMxi7GLk4hAR2M0r8ez6DCSIhKdH0egMjhC0s
-        sfLfc3aIos+MEpsvtrKBJNgEdCXmvpjNCmKLCIhLNL95ygRSxCwwi1Hi5vqvYAlhASuJ+X8O
-        gE1iEVCVWPDuJFgzr4CrxOM3U9kgNshJ3DzXyTyBkWcBI8MqRsnUguLc9NxiwwLDvNRyveLE
-        3OLSvHS95PzcTYzgQNHS3MG4fdUHvUOMTByMhxglOJiVRHjXnD0fJ8SbklhZlVqUH19UmpNa
-        fIhRmoNFSZz3RuHCOCGB9MSS1OzU1ILUIpgsEwenVANT9ZW8hwkez8tKDyl8Zi/L87zub/eP
-        Z94aS/3On3fuXoudv6mP1fRpzVmG7bJp+wJEBXbsrcm2O+DbL3WgOMCOa1HjsvfHGe9qfZxQ
-        cHPfv4K8FQb1s6S1emZkfvyY8jr6VoSCmnX+Ok6xtvdnjsxfWdqxJ6QhLzfV8bpZ52bmpa6m
-        y7lvNLXFTt/ZpHrbfMUN/1Pdk/uFmO0b1fR9gLEdGH8n+lL1f+sjrs57Lkxqiz+WdGnRW3vm
-        z7+Mprnsyj8+I+6ic9ELabWvihcljrw3nK30b5Jy9JPshsZbiUYT9dV4CrZseRh2d9Kay7Mb
-        3O6WJB1dHBh6nEOEcx9/p9B2/3a1RRPX9kXW/31WwK7EUpyRaKjFXFScCACIAD+8gwIAAA==
-X-CMS-MailID: 20200529122614epcas5p38e0acf63c010f8b691caf68916f512bd
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-X-CMS-RootMailID: 20200529122614epcas5p38e0acf63c010f8b691caf68916f512bd
-References: <CGME20200529122614epcas5p38e0acf63c010f8b691caf68916f512bd@epcas5p3.samsung.com>
+        id S1728420AbgE2Vpz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 29 May 2020 17:45:55 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:55476 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728265AbgE2Vpy (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 29 May 2020 17:45:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Subject:Cc:To:From:Date:Message-ID:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=RNuAZkRuWdbMfqnpvN7spk0s8Bbmz59zdmfGiC6+E4g=; b=vaz+sD1Cyird0t3NvpnMaViBZE
+        lpOHWi0O2xQPOUNArQgbtNl3NxU2BAR+jmY0Q0sWCO62a81Iy1/AlHiznI8q5bbNbwt2HyF6KPsOm
+        Cn7RrPBmYIpB/jZL/972e+qHjTboxvdIQG1aj6m45T283MBep6QD1EtT/E5bQ+eEyvA18JlsWrXCr
+        D4RB8B4Hb8vKwYsAZRzCmSo89XVCjgIjK4FKMK/T3XyHvBH/FMj/7orkFy+n8PHwpUZUdY7UWQBlT
+        34uq51a9n66Ao4ve+YzqFEJWHl7Fj9BmU5h/fhLTJ0NkbmLmyiILYVeK2jVw7ftp7JMIgY7FtBNv5
+        Ywvn8fdQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jemmJ-0007TF-Ue; Fri, 29 May 2020 21:43:00 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 21F203011FF;
+        Fri, 29 May 2020 23:42:57 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
+        id CB10F2B9B1BC4; Fri, 29 May 2020 23:42:57 +0200 (CEST)
+Message-ID: <20200529213550.683440625@infradead.org>
+User-Agent: quilt/0.66
+Date:   Fri, 29 May 2020 23:35:50 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     mingo@kernel.org, will@kernel.org, tglx@linutronix.de
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
+        a.darwish@linutronix.de, rostedt@goodmis.org,
+        bigeasy@linutronix.de, peterz@infradead.org, davem@davemloft.net,
+        sparclinux@vger.kernel.org, mpe@ellerman.id.au,
+        linuxppc-dev@lists.ozlabs.org, heiko.carstens@de.ibm.com,
+        linux-s390@vger.kernel.org
+Subject: [PATCH v3 0/5] lockdep: Change IRQ state tracking to use per-cpu variables
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Remove unused header file linux/nfs_fs.h
+Ahmed and Sebastian wanted additional lockdep_assert*() macros and ran
+into header hell.
 
-Signed-off-by: Anupam Aggarwal <anupam.al@samsung.com>
-Signed-off-by: Vivek Trivedi <t.vivek@samsung.com>
-Signed-off-by: Amit Sahrawat <a.sahrawat@samsung.com>
----
- arch/sparc/kernel/sys_sparc32.c | 1 -
- 1 file changed, 1 deletion(-)
+Move the IRQ state into per-cpu variables, which removes the dependency on
+task_struct, which is what generated the header-hell.
 
-diff --git a/arch/sparc/kernel/sys_sparc32.c b/arch/sparc/kernel/sys_sparc32.c
-index b5da3bf..f84a02a 100644
---- a/arch/sparc/kernel/sys_sparc32.c
-+++ b/arch/sparc/kernel/sys_sparc32.c
-@@ -22,7 +22,6 @@
- #include <linux/msg.h>
- #include <linux/shm.h>
- #include <linux/uio.h>
--#include <linux/nfs_fs.h>
- #include <linux/quota.h>
- #include <linux/poll.h>
- #include <linux/personality.h>
--- 
-1.9.1
+These patches are intended to go on top of:
+
+ https://lkml.kernel.org/r/20200529212728.795169701@infradead.org
+
+but should apply on current tip/master without much difficulty.
+
+There are a few build fixes for Sparc64, PowerPC64 and s390. Especially the
+Sparc one I'm not sure about.
 
