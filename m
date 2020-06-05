@@ -2,182 +2,123 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7DAA1EEC68
-	for <lists+sparclinux@lfdr.de>; Thu,  4 Jun 2020 22:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 696671EF619
+	for <lists+sparclinux@lfdr.de>; Fri,  5 Jun 2020 13:06:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730132AbgFDUvn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 4 Jun 2020 16:51:43 -0400
-Received: from mga06.intel.com ([134.134.136.31]:46522 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729855AbgFDUvm (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 4 Jun 2020 16:51:42 -0400
-IronPort-SDR: 5rLgl5+qO89McM0SHHgm2sv/I44a8qLqr0eIFVtK26LQLge7H3mgQhRKAZDHnAlKxWdYvVV4sc
- /PCMYwoAvBVA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2020 13:51:41 -0700
-IronPort-SDR: zs+MMvxWw13sjlZ9Bw72P4E7fjGK2DTGpjrAZCIfDuEufJrPSBND+RoMuQFrepsdDPuoy+96Bf
- +AJaXGZ7wG6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,472,1583222400"; 
-   d="scan'208";a="348215104"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
-  by orsmga001.jf.intel.com with ESMTP; 04 Jun 2020 13:51:40 -0700
-Date:   Thu, 4 Jun 2020 13:51:40 -0700
-From:   Ira Weiny <ira.weiny@intel.com>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dri-devel@lists.freedesktop.org,
-        Christian Koenig <christian.koenig@amd.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
- pagefault/preempt twice
-Message-ID: <20200604205140.GN1505637@iweiny-DESK2.sc.intel.com>
-References: <20200519165422.GA5838@roeck-us.net>
- <20200519184031.GB3356843@iweiny-DESK2.sc.intel.com>
- <20200519194215.GA71941@roeck-us.net>
- <20200520051315.GA3660833@iweiny-DESK2.sc.intel.com>
- <d86dba19-4f4b-061e-a2c7-4f037e9e2de2@roeck-us.net>
- <20200521174250.GB176262@iweiny-DESK2.sc.intel.com>
- <20200603135736.e7b5ded0082a81ae6d9067a0@linux-foundation.org>
- <20200603211416.GA1740285@iweiny-DESK2.sc.intel.com>
- <3538c8ad-674e-d310-d870-4ef6888092ed@roeck-us.net>
- <20200604094133.GC202650@kernel.org>
+        id S1726828AbgFELGT (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 5 Jun 2020 07:06:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46560 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726743AbgFELGN (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 5 Jun 2020 07:06:13 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE6F4C08C5C2;
+        Fri,  5 Jun 2020 04:05:39 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id x14so9323703wrp.2;
+        Fri, 05 Jun 2020 04:05:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=79WkwIDyqMiX32euMiWXXxC5SiRfx2kHzXerVEMHJjs=;
+        b=sYTZ6YdgN1/Sbp6SOZVZyHY8MCy2iGnmI/oTKmBJXvTbh1W3iYrxkGHPnNBzqIci55
+         7E//pIMpiOlxA0YgiAhyqj9dJdzUpMrhVBCwKxlayIKCHcN4hcoNd98lKBFsth9L3N9s
+         8/QNalT/mv2w0kX2AMj0a/ETLmx8R+28y/IQJ11xfOurh/YD7l5/KqFYSnrdPlstINWK
+         uaroFYmvBHrZvIr59E4NktiM/HXOeebmkgj4eo7L4R8e0lAA1Ep0NO2yW0vYLd5pN8D0
+         J/MV+tFOr4kb2aSIn+qnv2wGr+/isoues/LsuxVeNDLnk0sYBCuv8ofN8uuL7C3GhDKy
+         qSwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=79WkwIDyqMiX32euMiWXXxC5SiRfx2kHzXerVEMHJjs=;
+        b=HoJT1EPm19JAEOmar1ww9OHBjQ+iuGIM1QbwvhNS6rEIeR9x+0RBYUalXhvUgUfP63
+         9VgjZtW/9lHOq5VfkcwNYLy8AUxTl+lAqP9j/915yq18sO35k86R7ztxDzbtWEHQa6hF
+         tuiUPOsbYIiF3osmZ9fR1Th8BtQhARWb/slo99Awld2na+1uLrV3LC5DrU2UhXZos9B8
+         vPMH7JMAml1XfvokS6Ggvl9YmriVvWQniGPQ8owL6VdTer6+p3A3slLcmqSxfM9bn+/K
+         iJPgkDSfzcXXmYeHgamiQI7iNT+EBR3Z9Dg4UiPNVEC/QwZjGnc9GLLPuAiQPX2r62i5
+         HZLQ==
+X-Gm-Message-State: AOAM530sApEP2urH0/PnqtqyySyCMlrubEeKMuXW1w097cIF89HhkxTR
+        m8h1IeukVUVd3Y8JFRC4VNaDihZy
+X-Google-Smtp-Source: ABdhPJwH9qoXN/4AI5aIZz4mwTcaxFGasA4tRMeBaSNWUBNVfiqh3elNUjOpJJ+knPG3GEEH0uRaUA==
+X-Received: by 2002:adf:cd08:: with SMTP id w8mr8861357wrm.36.1591355137981;
+        Fri, 05 Jun 2020 04:05:37 -0700 (PDT)
+Received: from Red ([2a01:cb1d:3d5:a100:2e56:dcff:fed2:c6d6])
+        by smtp.googlemail.com with ESMTPSA id h12sm11364322wro.80.2020.06.05.04.05.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2020 04:05:37 -0700 (PDT)
+Date:   Fri, 5 Jun 2020 13:05:35 +0200
+From:   Corentin Labbe <clabbe.montjoie@gmail.com>
+To:     davem@davemloft.net, sparclinux@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+Subject: Fail to build tftpboot.img
+Message-ID: <20200605110535.GA9025@Red>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200604094133.GC202650@kernel.org>
-User-Agent: Mutt/1.11.1 (2018-12-01)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Jun 04, 2020 at 12:41:33PM +0300, Mike Rapoport wrote:
-> On Wed, Jun 03, 2020 at 04:44:17PM -0700, Guenter Roeck wrote:
-> > 
-> > sparc32 smp images in next-20200603 still crash for me with a spinlock
-> > recursion. s390 images hang early in boot. Several others (alpha, arm64,
-> > various ppc) don't even compile. I can run some more bisects over time,
-> > but this is becoming a full-time job :-(.
-> 
-> I've been able to bisect s390 hang to commit b614345f52bc ("x86/entry:
-> Clarify irq_{enter,exit}_rcu()").
-> 
-> After this commit, lockdep_hardirq_exit() is called twice on s390 (and
-> others) - one time in irq_exit_rcu() and another one in irq_exit():
-> 
-> /**
->  * irq_exit_rcu() - Exit an interrupt context without updating RCU
->  *
->  * Also processes softirqs if needed and possible.
->  */
-> void irq_exit_rcu(void)
-> {
-> 	__irq_exit_rcu();
-> 	 /* must be last! */
-> 	lockdep_hardirq_exit();
-> }
-> 
-> /**
->  * irq_exit - Exit an interrupt context, update RCU and lockdep
->  *
->  * Also processes softirqs if needed and possible.
->  */
-> void irq_exit(void)
-> {
-> 	irq_exit_rcu();
-> 	rcu_irq_exit();
-> 	 /* must be last! */
-> 	lockdep_hardirq_exit();
-> }
-> 
-> Removing the call in irq_exit() make s390 boot again, and judgung by the
-> x86 entry code, the comment /* must be last! */ is stale...
+Hello
 
-FWIW I got s390 to compile and this patch fixes s390 booting for me as well.
+For reinstalling an old SPARC machine , I need a netboot image.
+I tried to create it via make tftpboot.img but got:
+BUILD: sparc to /home/compile/crossbuild/next/sparc/sparc64/defconfig
+make[1]: Entering directory '/usr/src/crossbuild/next/sparc/sparc64/defconfig'
+  GEN     Makefile
+scripts/kconfig/conf  --syncconfig Kconfig
+  GEN     Makefile
+  CALL    /linux-next/scripts/atomic/check-atomics.sh
+  CALL    /linux-next/scripts/checksyscalls.sh
+<stdin>:1511:2: warning: #warning syscall clone3 not implemented [-Wcpp]
+  CHK     include/generated/compile.h
+  GZIP    kernel/config_data.gz
+  CC      kernel/configs.o
+  AR      kernel/built-in.a
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  AR      init/built-in.a
+  LD      vmlinux.o
+  MODPOST vmlinux.symvers
+WARNING: modpost: EXPORT symbol "_mcount" [vmlinux] version generation failed, symbol will not be versioned.
+  MODINFO modules.builtin.modinfo
+  GEN     modules.builtin
+  LD      .tmp_vmlinux.kallsyms1
+  KSYM    .tmp_vmlinux.kallsyms1.o
+  LD      .tmp_vmlinux.kallsyms2
+  KSYM    .tmp_vmlinux.kallsyms2.o
+  LD      vmlinux
+  SYSMAP  System.map
+  MODPOST Module.symvers
+  STRIP   arch/sparc/boot/image
+  kernel: arch/sparc/boot/image is ready
+  ELFTOAOUT arch/sparc/boot/tftpboot.img
+PT 0 Entry: Loadable to 0x400000[0x5288d0] from 0x0[0x4ca694] align 0x100000
+PT 1 Entry: Note
+PT 2 Entry: unknown
+  PIGGY   arch/sparc/boot/tftpboot.img
+lseek: Invalid argument
+make[2]: *** [/linux-next/arch/sparc/boot/Makefile:72: arch/sparc/boot/tftpboot.img] Error 1
+make[2]: *** Deleting file 'arch/sparc/boot/tftpboot.img'
+make[1]: *** [arch/sparc/Makefile:76: tftpboot.img] Error 2
+make[1]: Leaving directory '/usr/src/crossbuild/next/sparc/sparc64/defconfig'
+make: *** [Makefile:185: __sub-make] Error 2
 
-13:05:25 > /home/iweiny/dev/linux-build-test/rootfs/s390/run-qemu-s390.sh 
-Build reference: next-20200603-4-g840714292d8c
+I got this result on both linux-next and 5.6.15
 
-Building s390:defconfig:initrd ... running ........... passed
-Building s390:defconfig:virtio-blk-ccw:rootfs ... running ........... passed
-Building s390:defconfig:scsi[virtio-ccw]:rootfs ... running ..............  passed
-Building s390:defconfig:virtio-pci:rootfs ... running ........... passed
-Building s390:defconfig:scsi[virtio-pci]:rootfs ... running ........... passed
+I have straced the process:
+22495 openat(AT_FDCWD, "arch/sparc/boot/tftpboot.img", O_RDWR) = 3              
+22495 read(3, "\1\3\1\7\0\0\0\0\0Lf\224\0\0\0\0\0\0\0\0\0\0\0\0\0\5\342<\0\0\0\0"..., 512) = 512
+22495 lseek(3, 0, SEEK_SET)             = 0                                     
+22495 read(3, "\1\3\1\7\0\0\0\0\0Lf\224\0\0\0\0\0\0\0\0\0\0\0\0\0\5\342<\0\0\0\0"..., 1024) = 1024
+22495 lseek(3, -480, SEEK_SET)          = -1 EINVAL (Argument invalide)         
+22495 dup(2)                            = 4                                     
+22495 fcntl(4, F_GETFL)                 = 0x402 (flags O_RDWR|O_APPEND)         
+22495 fstat(4, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1a), ...}) = 0    
+22495 write(4, "lseek: Invalid argument\n", 24) = 24                            
+22495 close(4)                          = 0                                     
 
-Ira
-
-> 
-> @Peter, @Thomas, can you comment please?
-> 
-> From e51d50ee6f4d1f446decf91c2c67230da14ff82c Mon Sep 17 00:00:00 2001
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> Date: Thu, 4 Jun 2020 12:37:03 +0300
-> Subject: [PATCH] softirq: don't call lockdep_hardirq_exit() twice
-> 
-> After commit b614345f52bc ("x86/entry: Clarify irq_{enter,exit}_rcu()")
-> lockdep_hardirq_exit() is called twice on every architecture that uses
-> irq_exit(): one time in irq_exit_rcu() and another one in irq_exit().
-> 
-> Remove the extra call in irq_exit().
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  kernel/softirq.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/kernel/softirq.c b/kernel/softirq.c
-> index a3eb6eba8c41..7523f4ce4c1d 100644
-> --- a/kernel/softirq.c
-> +++ b/kernel/softirq.c
-> @@ -427,7 +427,6 @@ static inline void __irq_exit_rcu(void)
->  void irq_exit_rcu(void)
->  {
->  	__irq_exit_rcu();
-> -	 /* must be last! */
->  	lockdep_hardirq_exit();
->  }
->  
-> @@ -440,8 +439,6 @@ void irq_exit(void)
->  {
->  	irq_exit_rcu();
->  	rcu_irq_exit();
-> -	 /* must be last! */
-> -	lockdep_hardirq_exit();
->  }
->  
->  /*
-> -- 
-> 2.26.2
-> 
-> 
-> 
-> > Guenter
-> 
-> -- 
-> Sincerely yours,
-> Mike.
+Regards
