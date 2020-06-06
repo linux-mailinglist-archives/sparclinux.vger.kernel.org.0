@@ -2,19 +2,21 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DCBA1F0572
-	for <lists+sparclinux@lfdr.de>; Sat,  6 Jun 2020 08:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A02B1F0992
+	for <lists+sparclinux@lfdr.de>; Sun,  7 Jun 2020 06:16:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726384AbgFFGhV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 6 Jun 2020 02:37:21 -0400
-Received: from mx1.sudrf.ru ([79.133.87.11]:33397 "EHLO mx1.sudrf.ru"
+        id S1726199AbgFGEQS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 7 Jun 2020 00:16:18 -0400
+Received: from mx1.sudrf.ru ([79.133.87.11]:46385 "EHLO mx1.sudrf.ru"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725765AbgFFGhV (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sat, 6 Jun 2020 02:37:21 -0400
-X-Greylist: delayed 11108 seconds by postgrey-1.27 at vger.kernel.org; Sat, 06 Jun 2020 02:37:21 EDT
+        id S1726132AbgFGEQS (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 7 Jun 2020 00:16:18 -0400
 Received: from CAS1.sudrf.local (172.16.10.140) by CAS10.sudrf.local
- (172.16.10.141) with Microsoft SMTP Server (TLS) id 14.3.468.0; Sat, 6 Jun
- 2020 06:32:12 +0300
+ (172.16.10.141) with Microsoft SMTP Server (TLS) id 14.3.468.0; Sun, 7 Jun
+ 2020 07:01:57 +0300
+Received: from CAS1.sudrf.local ((172.16.10.140)) by CAS1.sudrf.local
+ ((172.16.10.140)) with ShadowRedundancy id 14.3.468.0; Sun, 7 Jun 2020
+ 03:44:05 +0000
 Received: from User (172.16.10.134) by CAS1.sudrf.local (172.16.10.140) with
  Microsoft SMTP Server id 14.3.468.0; Sat, 6 Jun 2020 06:32:10 +0300
 Reply-To: <Anders.Karlsson@swedbankabgroup.com>
