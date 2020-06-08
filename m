@@ -2,90 +2,65 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE551F2D01
-	for <lists+sparclinux@lfdr.de>; Tue,  9 Jun 2020 02:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C1E21F32E0
+	for <lists+sparclinux@lfdr.de>; Tue,  9 Jun 2020 06:03:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730279AbgFIA37 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 8 Jun 2020 20:29:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37276 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730152AbgFHXQC (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:16:02 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5431220760;
-        Mon,  8 Jun 2020 23:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591658162;
-        bh=qhYCEQfSq1AIL7uUJiMFmb/JrY9ncCLZK+5BK5+eA/E=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xPMGQaK9hLE2ifWHlBeBy+BafvceQy12OMqkPdnZrI+m4z9ckl8ST05b1ikRboZNS
-         K+f7uPC95MRLyav+vzVdrjltmluej+WlU40Siy7gnG2MwMNjQifJnMivYRmllp4VPn
-         dIprpmNFyrM4bqohA77IUhgF2VvRG6P9Po/RW72k=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Mike Rapoport <rppt@linux.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Anatoly Pugachev <matorola@gmail.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 191/606] sparc32: fix page table traversal in srmmu_nocache_init()
-Date:   Mon,  8 Jun 2020 19:05:16 -0400
-Message-Id: <20200608231211.3363633-191-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200608231211.3363633-1-sashal@kernel.org>
-References: <20200608231211.3363633-1-sashal@kernel.org>
+        id S1726286AbgFIEDz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 9 Jun 2020 00:03:55 -0400
+Received: from russianitgroup.ru ([109.197.194.157]:35851 "EHLO localhost"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725772AbgFIEDy (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 9 Jun 2020 00:03:54 -0400
+X-Greylist: delayed 8783 seconds by postgrey-1.27 at vger.kernel.org; Tue, 09 Jun 2020 00:03:54 EDT
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+        by localhost (Postfix) with SMTP id 057DC13D882;
+        Tue,  9 Jun 2020 02:34:50 +0300 (MSK)
+Received: from [156.148.11.53] by 127.0.0.1; Mon, 08 Jun 2020 18:33:03 -0600
+Message-ID: <6f0252$92620@lwmyi90.gu5yqz>
+From:   "Mrs Aisha Al-Qaddafi" <alqaddafim06@gmail.com>
+Reply-To: "Mrs Aisha Al-Qaddafi" <alqaddafim06@gmail.com>
+To:     sparc@pacbell.net
+Subject: Funds
+Date:   Mon, 08 Jun 20 18:33:03 GMT
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+        boundary=".B.A1F8.5.176EE."
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Mike Rapoport <rppt@linux.ibm.com>
 
-commit 0cfc8a8d70dcd51db783e8e87917e02149c71458 upstream.
+--.B.A1F8.5.176EE.
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-The srmmu_nocache_init() uses __nocache_fix() macro to add an offset to
-page table entry to access srmmu_nocache_pool.
+Assalamu Alaikum Wa Rahmatullahi Wa Barakatuh,
 
-But since sparc32 has only three actual page table levels, pgd, p4d and
-pud are essentially the same thing and pgd_offset() and p4d_offset() are
-no-ops, the __nocache_fix() should be done only at PUD level.
+My Dear Good Friend
 
-Remove __nocache_fix() for p4d_offset() and pud_offset() and keep it
-only for PUD and lower levels.
+May i use this medium to open a mutual communication with you seeking your=
+ acceptance towards investing in your country under your management as my =
+partner, My name is Aisha  Gaddafi and presently living in Oman, i am a Wi=
+dow and single Mother with three Children, the only biological
+Daughter of late Libyan President (Late Colonel Muammar Gaddafi) and prese=
+ntly i am under political asylum protection by the Omani Government..Pleas=
+e Reply me in my box. ( alqaddafim06@gmail.com)
 
-Fixes: c2bc26f7ca1f ("sparc32: use PUD rather than PGD to get PMD in srmmu_nocache_init()")
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Anatoly Pugachev <matorola@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/sparc/mm/srmmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I have funds worth "Twenty Seven Million Five Hundred Thousand United Stat=
+e Dollars" -$27.500.000.00 US Dollars which i want to entrust on you for i=
+nvestment project in your country.If you are willing to handle this projec=
+t on my behalf, kindly reply urgent to enable me provide you more
 
-diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
-index 083ba02c94e6..80061bc93bdc 100644
---- a/arch/sparc/mm/srmmu.c
-+++ b/arch/sparc/mm/srmmu.c
-@@ -331,8 +331,8 @@ static void __init srmmu_nocache_init(void)
+details to start the transfer process.
+I shall appreciate your urgent response through my email address below: (a=
+lqaddafim06@gmail.com)
  
- 	while (vaddr < srmmu_nocache_end) {
- 		pgd = pgd_offset_k(vaddr);
--		p4d = p4d_offset(__nocache_fix(pgd), vaddr);
--		pud = pud_offset(__nocache_fix(p4d), vaddr);
-+		p4d = p4d_offset(pgd, vaddr);
-+		pud = pud_offset(p4d, vaddr);
- 		pmd = pmd_offset(__nocache_fix(pud), vaddr);
- 		pte = pte_offset_kernel(__nocache_fix(pmd), vaddr);
- 
--- 
-2.25.1
+Best Regards
+Mrs Aisha Al-Qaddafi
+
+--.B.A1F8.5.176EE.--
 
