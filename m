@@ -2,30 +2,29 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C1E21F32E0
-	for <lists+sparclinux@lfdr.de>; Tue,  9 Jun 2020 06:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE1CF1F354C
+	for <lists+sparclinux@lfdr.de>; Tue,  9 Jun 2020 09:45:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726286AbgFIEDz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 9 Jun 2020 00:03:55 -0400
-Received: from russianitgroup.ru ([109.197.194.157]:35851 "EHLO localhost"
+        id S1728071AbgFIHo4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 9 Jun 2020 03:44:56 -0400
+Received: from russianitgroup.ru ([109.197.194.157]:42528 "EHLO localhost"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725772AbgFIEDy (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 9 Jun 2020 00:03:54 -0400
-X-Greylist: delayed 8783 seconds by postgrey-1.27 at vger.kernel.org; Tue, 09 Jun 2020 00:03:54 EDT
+        id S1726852AbgFIHoy (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 9 Jun 2020 03:44:54 -0400
 Received: from 127.0.0.1 (localhost [127.0.0.1])
-        by localhost (Postfix) with SMTP id 057DC13D882;
-        Tue,  9 Jun 2020 02:34:50 +0300 (MSK)
-Received: from [156.148.11.53] by 127.0.0.1; Mon, 08 Jun 2020 18:33:03 -0600
-Message-ID: <6f0252$92620@lwmyi90.gu5yqz>
+        by localhost (Postfix) with SMTP id D52CD13E629;
+        Tue,  9 Jun 2020 02:12:47 +0300 (MSK)
+Received: from [150.129.173.159] by 127.0.0.1; Mon, 08 Jun 2020 23:06:06 -0100
+Message-ID: <z5tv66i0z70w-8qz$$x6$v@4y7mx0>
 From:   "Mrs Aisha Al-Qaddafi" <alqaddafim06@gmail.com>
 Reply-To: "Mrs Aisha Al-Qaddafi" <alqaddafim06@gmail.com>
-To:     sparc@pacbell.net
+To:     spapainn@yahoo.co.jp
 Subject: Funds
-Date:   Mon, 08 Jun 20 18:33:03 GMT
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
+Date:   Mon, 08 Jun 20 23:06:06 GMT
+X-Mailer: Microsoft Outlook, Build 10.0.2627
 MIME-Version: 1.0
 Content-Type: multipart/alternative;
-        boundary=".B.A1F8.5.176EE."
+        boundary="30_2C_9D7.8.4.347A_FA6A"
 X-Priority: 3
 X-MSMail-Priority: Normal
 Sender: sparclinux-owner@vger.kernel.org
@@ -34,7 +33,7 @@ List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
 
---.B.A1F8.5.176EE.
+--30_2C_9D7.8.4.347A_FA6A
 Content-Type: text/plain;
 Content-Transfer-Encoding: quoted-printable
 
@@ -62,5 +61,5 @@ lqaddafim06@gmail.com)
 Best Regards
 Mrs Aisha Al-Qaddafi
 
---.B.A1F8.5.176EE.--
+--30_2C_9D7.8.4.347A_FA6A--
 
