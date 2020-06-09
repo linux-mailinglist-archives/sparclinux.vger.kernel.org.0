@@ -2,64 +2,92 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE1CF1F354C
-	for <lists+sparclinux@lfdr.de>; Tue,  9 Jun 2020 09:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 580531F3D51
+	for <lists+sparclinux@lfdr.de>; Tue,  9 Jun 2020 15:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728071AbgFIHo4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 9 Jun 2020 03:44:56 -0400
-Received: from russianitgroup.ru ([109.197.194.157]:42528 "EHLO localhost"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726852AbgFIHoy (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 9 Jun 2020 03:44:54 -0400
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-        by localhost (Postfix) with SMTP id D52CD13E629;
-        Tue,  9 Jun 2020 02:12:47 +0300 (MSK)
-Received: from [150.129.173.159] by 127.0.0.1; Mon, 08 Jun 2020 23:06:06 -0100
-Message-ID: <z5tv66i0z70w-8qz$$x6$v@4y7mx0>
-From:   "Mrs Aisha Al-Qaddafi" <alqaddafim06@gmail.com>
-Reply-To: "Mrs Aisha Al-Qaddafi" <alqaddafim06@gmail.com>
-To:     spapainn@yahoo.co.jp
-Subject: Funds
-Date:   Mon, 08 Jun 20 23:06:06 GMT
-X-Mailer: Microsoft Outlook, Build 10.0.2627
+        id S1730383AbgFINwn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 9 Jun 2020 09:52:43 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:40063 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730327AbgFINwk (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 9 Jun 2020 09:52:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1591710759;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=1QZxzGJLd7MwraWpl9HYsPVgjFSkkdnN13rxpeDTWvE=;
+        b=bNcxCSaVY4LbDXddGZPULryKNQOp9rhnZwPnUAkw4Wmu5KJtFh+k4aM8EFRnXVb5rsFxbc
+        7/K66D3UkgQEr5zQ7WoK6vmMPJ8Wco7pkZWyV2w62EjnwLsDRTC0J8sMoAoxlOPzJ7CkVt
+        4Z7fOflo5Bl+Ts91bC/g+WHCP8+friM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-374-SKVCis5-OQWdNQGNLlklxw-1; Tue, 09 Jun 2020 09:52:35 -0400
+X-MC-Unique: SKVCis5-OQWdNQGNLlklxw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id ABB2A18A8235;
+        Tue,  9 Jun 2020 13:52:33 +0000 (UTC)
+Received: from oldenburg2.str.redhat.com (ovpn-113-78.ams2.redhat.com [10.36.113.78])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 708335C1BD;
+        Tue,  9 Jun 2020 13:52:19 +0000 (UTC)
+From:   Florian Weimer <fweimer@redhat.com>
+To:     Palmer Dabbelt <palmer@sifive.com>
+Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
+        tony.luck@intel.com, fenghua.yu@intel.com, geert@linux-m68k.org,
+        monstr@monstr.eu, ralf@linux-mips.org, paul.burton@mips.com,
+        jhogan@kernel.org, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
+        mpe@ellerman.id.au, heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, luto@kernel.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+        x86@kernel.org, peterz@infradead.org, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, dhowells@redhat.com, firoz.khan@linaro.org,
+        stefan@agner.ch, schwidefsky@de.ibm.com, axboe@kernel.dk,
+        christian@brauner.io, hare@suse.com, deepa.kernel@gmail.com,
+        tycho@tycho.ws, kim.phillips@arm.com, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: Add a new fchmodat4() syscall, v2
+References: <20190717012719.5524-1-palmer@sifive.com>
+Date:   Tue, 09 Jun 2020 15:52:17 +0200
+In-Reply-To: <20190717012719.5524-1-palmer@sifive.com> (Palmer Dabbelt's
+        message of "Tue, 16 Jul 2019 18:27:15 -0700")
+Message-ID: <87o8pscpny.fsf@oldenburg2.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="30_2C_9D7.8.4.347A_FA6A"
-X-Priority: 3
-X-MSMail-Priority: Normal
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+* Palmer Dabbelt:
 
---30_2C_9D7.8.4.347A_FA6A
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+> This patch set adds fchmodat4(), a new syscall. The actual
+> implementation is super simple: essentially it's just the same as
+> fchmodat(), but LOOKUP_FOLLOW is conditionally set based on the flags.
+> I've attempted to make this match "man 2 fchmodat" as closely as
+> possible, which says EINVAL is returned for invalid flags (as opposed to
+> ENOTSUPP, which is currently returned by glibc for AT_SYMLINK_NOFOLLOW).
+> I have a sketch of a glibc patch that I haven't even compiled yet, but
+> seems fairly straight-forward:
 
-Assalamu Alaikum Wa Rahmatullahi Wa Barakatuh,
+What's the status here?  We'd really like to see this system call in the
+kernel because our emulation in glibc has its problems (especially if
+/proc is not mounted).
 
-My Dear Good Friend
-
-May i use this medium to open a mutual communication with you seeking your=
- acceptance towards investing in your country under your management as my =
-partner, My name is Aisha  Gaddafi and presently living in Oman, i am a Wi=
-dow and single Mother with three Children, the only biological
-Daughter of late Libyan President (Late Colonel Muammar Gaddafi) and prese=
-ntly i am under political asylum protection by the Omani Government..Pleas=
-e Reply me in my box. ( alqaddafim06@gmail.com)
-
-I have funds worth "Twenty Seven Million Five Hundred Thousand United Stat=
-e Dollars" -$27.500.000.00 US Dollars which i want to entrust on you for i=
-nvestment project in your country.If you are willing to handle this projec=
-t on my behalf, kindly reply urgent to enable me provide you more
-
-details to start the transfer process.
-I shall appreciate your urgent response through my email address below: (a=
-lqaddafim06@gmail.com)
- 
-Best Regards
-Mrs Aisha Al-Qaddafi
-
---30_2C_9D7.8.4.347A_FA6A--
+Thanks,
+Florian
 
