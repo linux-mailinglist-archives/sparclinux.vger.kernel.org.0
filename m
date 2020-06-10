@@ -2,132 +2,88 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA401F3FA2
-	for <lists+sparclinux@lfdr.de>; Tue,  9 Jun 2020 17:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C1291F4FB2
+	for <lists+sparclinux@lfdr.de>; Wed, 10 Jun 2020 09:55:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730795AbgFIPll (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 9 Jun 2020 11:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49762 "EHLO
+        id S1726535AbgFJHza (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 10 Jun 2020 03:55:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728533AbgFIPlk (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 9 Jun 2020 11:41:40 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56CE4C05BD1E;
-        Tue,  9 Jun 2020 08:41:39 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id x14so21846847wrp.2;
-        Tue, 09 Jun 2020 08:41:39 -0700 (PDT)
+        with ESMTP id S1726081AbgFJHza (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 10 Jun 2020 03:55:30 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6453C03E96B
+        for <sparclinux@vger.kernel.org>; Wed, 10 Jun 2020 00:55:29 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id j198so4009769wmj.0
+        for <sparclinux@vger.kernel.org>; Wed, 10 Jun 2020 00:55:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=r7h76P0dKyHEx8WPlkV2onlEY1gE+C6vJU2/8YGmV8c=;
-        b=jMCRLXqCC5n46nxhZSTRYiUOjijr53ShFSQrank/4QderFdAP2/dM57IcLxL6h0o+6
-         I6X6rAyGBx6ckaB8AvgDUru1yLbdP+Mj2S4xowMXTOSUotZqLlL/zudC10Kjkt7LkM9+
-         /FRI4CQBdyMz6K4Q4s1fPpmtujCprnM6Y9AN3ka1gSb65W4PnWxyuamcS3EsucC4TFfV
-         B4LeYERziSVb0Y+fYu8WVZNQAO69o7gyXTCkeCAMHFVgtTjLzW846y/6gU1CWNrEeJNw
-         JRpY2kiGzOczChzcQZC4yKiOtNmeOBOaGW5S9ZNN4DROd1AstiIBPl9ItGl/TtYKJKjV
-         v7Ow==
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=EnIrIGj03Y4Bw7tljoWmg+qr0vZ8tq42skzZqInftnc=;
+        b=jwy2W0tb37SqP+WwCJTfsgps4wsHjgbA1/9/PhiM1buumDf/rLO0m3mEcOlp6aStgk
+         m6E5PDh3ObL/D5EmvOP9cLJNkMeQY4RTyYpBSY4BJmFquRZxnWK52rzPA2OlpCDuqVLx
+         MZY8EVyUH8aW8Ppn8g7xR+PzwdGolsyOU4rgt8F9WREHAXxgHB6JScKugxpfEhmMjgJe
+         cJaTaavF4oCH+CCiNtSLD+4UE0PRchlbHNwtTS7T9poiKReJs396mn9TWqu4wo8oCYpT
+         OuqUGWMW0a0PmYzn/7xD4otdO3qu95HUaOExLZ9l94fmXM87Un1VXq5pcwk2qgvMjvB2
+         c6MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=r7h76P0dKyHEx8WPlkV2onlEY1gE+C6vJU2/8YGmV8c=;
-        b=WYKXnxwkSUBhd/0jJwlpuTeqX+Be95I6mhiYNCTcOzaJml7As6uXkJvvpEIaPGo5c/
-         eJjDtyQ5oMd7pn+tyPWznH3a82LBB/nrDn+Qv2xITOqE7fVLbPslxHEtlLqpPMw7hgwf
-         r8sauhjfxOCcU+tazmk8QX+Vpg1sV7CUUTyfz/mc504baKR+XtJFR5tWLB0gVUyyYcbK
-         vyz3XnFIUQ2j+p9fi4JzeZJ9nAWYwLSDFFNBegkRU3nwSHDcDG2izs9Qj1arfG9xa5m2
-         m1F9kpTMn7VeBWwtgLI6/CdKM/b0qFwgZ0DpqqXir0C7d2cm8wgyIqM2OiS+DTx74EHe
-         AkJQ==
-X-Gm-Message-State: AOAM530+CIK5RC6aXQNPqHuxxGB2Oi+TkeuuckTTSXD3I8VbOm8iwoB4
-        LCIsCQ/3CFuMMs9MwKD+oBemfroI
-X-Google-Smtp-Source: ABdhPJzX0xm8+EZE/x/FTYVRtjfyRU8LCykbMUd4i6f9dEB4R5VZqml1CFxFR03A9O3apmbS2wygpA==
-X-Received: by 2002:adf:a491:: with SMTP id g17mr5486612wrb.132.1591717297973;
-        Tue, 09 Jun 2020 08:41:37 -0700 (PDT)
-Received: from Red ([2a01:cb1d:3d5:a100:2e56:dcff:fed2:c6d6])
-        by smtp.googlemail.com with ESMTPSA id v19sm3249259wml.26.2020.06.09.08.41.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2020 08:41:37 -0700 (PDT)
-Date:   Tue, 9 Jun 2020 17:41:35 +0200
-From:   Corentin Labbe <clabbe.montjoie@gmail.com>
-To:     davem@davemloft.net, sparclinux@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: Re: Fail to build tftpboot.img
-Message-ID: <20200609154135.GB30571@Red>
-References: <20200605110535.GA9025@Red>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200605110535.GA9025@Red>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=EnIrIGj03Y4Bw7tljoWmg+qr0vZ8tq42skzZqInftnc=;
+        b=Z8vM626sjt9Lv+65NCa153kxnz72lUpZ2IWV7tvmGGUL8SSP78JdrzN5hrzxfWrmuj
+         hA3li6LPYob4Ve91B/X9ZmtqXL4KEfXA45tcgwe9q6wbpxiTUIdjGbW2DjfSPqkmAmUT
+         TIH9fu9GBoj7xeIUmU1ORDTNfNwU1qjrzlhAzgXea4poAXdAXx3SSQC2xnJkkJJhvt8Y
+         WG8NH2vTMJUFsfMUqIFCLKmqhGfMdhiI2DZQjZ0Ix46cplHoNXoxhD3vEBXrZqomQqNb
+         IXjQvi+9dkTaM3fpnzuqUwEod+AU4WTrnFgggLwMVvCD/zi9PFmz6ZC3pSK8hDELAYmz
+         0l1w==
+X-Gm-Message-State: AOAM533zokWVSt9pkF5V+HWtkzLqXnFQpXZgL6KO0HAmpTg1xban1WxJ
+        rQ5n/OoN/zw6Wmvj7Vw950liTw==
+X-Google-Smtp-Source: ABdhPJzT49tgR9+60rfN4830eLLMnTGAHQQvKlJEI8DFusTTWcDAw3O1Rr7NzXEWdzQdZL/5s+h6KA==
+X-Received: by 2002:a7b:c1c5:: with SMTP id a5mr1841091wmj.35.1591775728269;
+        Wed, 10 Jun 2020 00:55:28 -0700 (PDT)
+Received: from localhost.localdomain ([51.15.160.169])
+        by smtp.googlemail.com with ESMTPSA id k14sm6849615wrq.97.2020.06.10.00.55.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 10 Jun 2020 00:55:27 -0700 (PDT)
+From:   Corentin Labbe <clabbe@baylibre.com>
+To:     davem@davemloft.net
+Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+        Corentin Labbe <clabbe@baylibre.com>
+Subject: [PATCH] sparc: piggyback: handle invalid image
+Date:   Wed, 10 Jun 2020 07:55:19 +0000
+Message-Id: <1591775719-28390-1-git-send-email-clabbe@baylibre.com>
+X-Mailer: git-send-email 2.7.4
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Jun 05, 2020 at 01:05:35PM +0200, Corentin Labbe wrote:
-> Hello
-> 
-> For reinstalling an old SPARC machine , I need a netboot image.
-> I tried to create it via make tftpboot.img but got:
-> BUILD: sparc to /home/compile/crossbuild/next/sparc/sparc64/defconfig
-> make[1]: Entering directory '/usr/src/crossbuild/next/sparc/sparc64/defconfig'
->   GEN     Makefile
-> scripts/kconfig/conf  --syncconfig Kconfig
->   GEN     Makefile
->   CALL    /linux-next/scripts/atomic/check-atomics.sh
->   CALL    /linux-next/scripts/checksyscalls.sh
-> <stdin>:1511:2: warning: #warning syscall clone3 not implemented [-Wcpp]
->   CHK     include/generated/compile.h
->   GZIP    kernel/config_data.gz
->   CC      kernel/configs.o
->   AR      kernel/built-in.a
->   GEN     .version
->   CHK     include/generated/compile.h
->   UPD     include/generated/compile.h
->   CC      init/version.o
->   AR      init/built-in.a
->   LD      vmlinux.o
->   MODPOST vmlinux.symvers
-> WARNING: modpost: EXPORT symbol "_mcount" [vmlinux] version generation failed, symbol will not be versioned.
->   MODINFO modules.builtin.modinfo
->   GEN     modules.builtin
->   LD      .tmp_vmlinux.kallsyms1
->   KSYM    .tmp_vmlinux.kallsyms1.o
->   LD      .tmp_vmlinux.kallsyms2
->   KSYM    .tmp_vmlinux.kallsyms2.o
->   LD      vmlinux
->   SYSMAP  System.map
->   MODPOST Module.symvers
->   STRIP   arch/sparc/boot/image
->   kernel: arch/sparc/boot/image is ready
->   ELFTOAOUT arch/sparc/boot/tftpboot.img
-> PT 0 Entry: Loadable to 0x400000[0x5288d0] from 0x0[0x4ca694] align 0x100000
-> PT 1 Entry: Note
-> PT 2 Entry: unknown
->   PIGGY   arch/sparc/boot/tftpboot.img
-> lseek: Invalid argument
-> make[2]: *** [/linux-next/arch/sparc/boot/Makefile:72: arch/sparc/boot/tftpboot.img] Error 1
-> make[2]: *** Deleting file 'arch/sparc/boot/tftpboot.img'
-> make[1]: *** [arch/sparc/Makefile:76: tftpboot.img] Error 2
-> make[1]: Leaving directory '/usr/src/crossbuild/next/sparc/sparc64/defconfig'
-> make: *** [Makefile:185: __sub-make] Error 2
-> 
-> I got this result on both linux-next and 5.6.15
-> 
-> I have straced the process:
-> 22495 openat(AT_FDCWD, "arch/sparc/boot/tftpboot.img", O_RDWR) = 3              
-> 22495 read(3, "\1\3\1\7\0\0\0\0\0Lf\224\0\0\0\0\0\0\0\0\0\0\0\0\0\5\342<\0\0\0\0"..., 512) = 512
-> 22495 lseek(3, 0, SEEK_SET)             = 0                                     
-> 22495 read(3, "\1\3\1\7\0\0\0\0\0Lf\224\0\0\0\0\0\0\0\0\0\0\0\0\0\5\342<\0\0\0\0"..., 1024) = 1024
-> 22495 lseek(3, -480, SEEK_SET)          = -1 EINVAL (Argument invalide)         
-> 22495 dup(2)                            = 4                                     
-> 22495 fcntl(4, F_GETFL)                 = 0x402 (flags O_RDWR|O_APPEND)         
-> 22495 fstat(4, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1a), ...}) = 0    
-> 22495 write(4, "lseek: Invalid argument\n", 24) = 24                            
-> 22495 close(4)                          = 0                                     
-> 
-> Regards
+With an old elftoaout, the generation of tftpboot.img fail with "lseek:
+invalid argument".
+This is due to offset being negative.
 
-The problem was a too old elftoaout binary.
-I will send a patch for printing a better error message.
+Instead of printing this error message, let's print a better one.
 
-Regards
+Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
+---
+ arch/sparc/boot/piggyback.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/sparc/boot/piggyback.c b/arch/sparc/boot/piggyback.c
+index a7a38fb4ece0..613e23a1016e 100644
+--- a/arch/sparc/boot/piggyback.c
++++ b/arch/sparc/boot/piggyback.c
+@@ -154,6 +154,10 @@ static off_t get_hdrs_offset(int kernelfd, const char *filename)
+ 		offset -= LOOKBACK;
+ 		/* skip a.out header */
+ 		offset += AOUT_TEXT_OFFSET;
++		if (offset < 0) {
++			errno = -EINVAL;
++			die("Calculated a negative offset, probably elftoaout generated an invalid image. Did you use a recent elftoaout ?");
++		}
+ 		if (lseek(kernelfd, offset, SEEK_SET) < 0)
+ 			die("lseek");
+ 		if (read(kernelfd, buffer, BUFSIZE) != BUFSIZE)
+-- 
+2.26.2
+
