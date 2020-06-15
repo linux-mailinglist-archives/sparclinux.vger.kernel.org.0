@@ -2,55 +2,54 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CF531FA373
-	for <lists+sparclinux@lfdr.de>; Tue, 16 Jun 2020 00:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46FB61FA37C
+	for <lists+sparclinux@lfdr.de>; Tue, 16 Jun 2020 00:24:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726484AbgFOWX0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 15 Jun 2020 18:23:26 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:34392 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726536AbgFOWXV (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 15 Jun 2020 18:23:21 -0400
+        id S1726680AbgFOWXy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 15 Jun 2020 18:23:54 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:44309 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726538AbgFOWXY (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 15 Jun 2020 18:23:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592259800;
+        s=mimecast20190719; t=1592259802;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rD6jqofe19p826ewHi4IKOMv32t8zGceLQG6Qi0KA6A=;
-        b=D9Jiz/e4jY6C0Zv0VytEiZPchVSQA1Ws1hArjQI3wseoLnQYZHYojCwOBq/VVLpWp8dFTQ
-        PJo7W5xjtxLCucoOxTZK8XMSo+ScsVvBpTqzK+NRVed34bzJJs2JXq+ScaJFGd6cHTGSM7
-        qALBRz5qG2Z1BWj7OEF38FMOJIAqQX4=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-422-lAJAOGtjPHekLWJEZ2sthg-1; Mon, 15 Jun 2020 18:23:18 -0400
-X-MC-Unique: lAJAOGtjPHekLWJEZ2sthg-1
-Received: by mail-qk1-f200.google.com with SMTP id 140so15354782qko.23
-        for <sparclinux@vger.kernel.org>; Mon, 15 Jun 2020 15:23:18 -0700 (PDT)
+        bh=jqMMZBxWd6hyp1UyBnh6ZHWn/4PP621jPkJ/KevHqC4=;
+        b=ZJlSCPiJRzeBu2W7HsbfzyzY2V9bN5jGMrtQ9kk9iyPxRiRMv+qPh7mpSuvOfVU/nLalDl
+        PEvxZzk5mzbYznnduNHBvB0+EurnfQ99E83zzAPbdWIyGgKhWjVrHHOM4gqdC6DP1nK0Eg
+        qHEVb085Dn7nC6VyugGnwXAyCOSGWtA=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-465-S8sC4sD1MKOEAx4YxTIaZA-1; Mon, 15 Jun 2020 18:23:21 -0400
+X-MC-Unique: S8sC4sD1MKOEAx4YxTIaZA-1
+Received: by mail-qk1-f199.google.com with SMTP id p138so15398029qke.7
+        for <sparclinux@vger.kernel.org>; Mon, 15 Jun 2020 15:23:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=rD6jqofe19p826ewHi4IKOMv32t8zGceLQG6Qi0KA6A=;
-        b=tAdxuv0G2IF4oROIRkHoZ8gftuYbyvv73Q8Dzogt1FE1DHVN9dmHjN3bqIZsRrO1AL
-         s3SuwWUM4xApl7VwCVVmON7iHzOv+xgR1E+dvzCuqqHQeTnNxpu3ZHaXtT9tl5eijI6A
-         4x6ZpWIdb2dtbSQ05kUO7r3OkJ3DyU976qyCvKhNvlALKYz09MuEMY/UfxyGNtq/F9hC
-         cXoPqinYZ+kGYCiO11GjP9ezNQ5oDtS8laRS5r3JFMNahr4HSG03/IRkThDA7uLVoGKS
-         cbx8kfvgYUdrxGrO3tPYw+kQ+kbVU3Y8lmVTybRjz7Es4uO6pjs+Y7YFASibYGNv8PcW
-         eXWQ==
-X-Gm-Message-State: AOAM531Y/WQDm3dm1batVLsG/A6voV/CLE3S5XHyF+l6iOv++xunrk0d
-        m9DjWpAtC8j6BxND4QQefhukpr8YLTOqk8DhqMTpCwXhBdreBBApl+SkVQrQ7xqglEpgaECSnr2
-        9ALooodh+7KPfLRPVdEV5lw==
-X-Received: by 2002:ad4:4c0d:: with SMTP id bz13mr27999612qvb.164.1592259797817;
-        Mon, 15 Jun 2020 15:23:17 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxoYFbvQP7f745RiHe5XpfLpFaM5rWW6QJeCE9RJ1UwqB//J+ePvEAngR737a2w3RSMKlY7Gw==
-X-Received: by 2002:ad4:4c0d:: with SMTP id bz13mr27999595qvb.164.1592259797560;
-        Mon, 15 Jun 2020 15:23:17 -0700 (PDT)
+        bh=jqMMZBxWd6hyp1UyBnh6ZHWn/4PP621jPkJ/KevHqC4=;
+        b=lIsYB98YDyEf67DD7BvLvMavDCc3x/tEltp5wvRTJg+cNyWlPuT8yBe9wxGJF4NgUn
+         EH4HS5fxcwqrYi2BsYbv2Qdf8CWfL14oBNhAULLN06Gnka7ymQv+LLzvHKz+fK4T8L/x
+         JQyao97gKSVgl8gaL78gp+ggN7GMsVLjm+sYFWwCQj3ioYzdDu9QFvKxtUpuwDLSIeDz
+         oNumM5ZVj7Gk94FMQ3zwMtHoZ0aO9nxqI4/Np7gB74d1j5gqWls4ze/V4mmMsYGlGi2e
+         0Ib/+EOHPBXnpPuIHMUlof4xnSE3fuc0WA7q/OEti4QN8iTQHZRfocm6QC3Gf26HO5mO
+         TpUA==
+X-Gm-Message-State: AOAM5337pmofg3KGoUuLfwhXtDPAicBWJS00fNiQbXjIICIOy/jcawUA
+        20fy0oTvXZswuYVPb+A5p8Ycx6mXw+sqRw9k7X3SNLvBOFc/U0w1AipzGUeg7eI3dgIA7YtxfJc
+        lkJUtKH6p+yNz5SaN92CoJw==
+X-Received: by 2002:ac8:7303:: with SMTP id x3mr17706234qto.44.1592259800788;
+        Mon, 15 Jun 2020 15:23:20 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxSUb5XIZHW5E1zJcz4VzqFpZD90tEroXjdCFUGU0zNGGOM8YwfFLC116uqeodWPbF2zjxDTA==
+X-Received: by 2002:ac8:7303:: with SMTP id x3mr17706219qto.44.1592259800592;
+        Mon, 15 Jun 2020 15:23:20 -0700 (PDT)
 Received: from xz-x1.hitronhub.home ([2607:9880:19c0:32::2])
-        by smtp.gmail.com with ESMTPSA id k7sm12645910qth.10.2020.06.15.15.23.16
+        by smtp.gmail.com with ESMTPSA id b24sm12209333qkj.0.2020.06.15.15.23.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2020 15:23:17 -0700 (PDT)
+        Mon, 15 Jun 2020 15:23:20 -0700 (PDT)
 From:   Peter Xu <peterx@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Peter Xu <peterx@redhat.com>,
@@ -60,9 +59,9 @@ Cc:     Peter Xu <peterx@redhat.com>,
         Andrea Arcangeli <aarcange@redhat.com>,
         "David S . Miller" <davem@davemloft.net>,
         sparclinux@vger.kernel.org
-Subject: [PATCH 21/25] mm/sparc32: Use mm_fault_accounting()
-Date:   Mon, 15 Jun 2020 18:23:16 -0400
-Message-Id: <20200615222316.8551-1-peterx@redhat.com>
+Subject: [PATCH 22/25] mm/sparc64: Use mm_fault_accounting()
+Date:   Mon, 15 Jun 2020 18:23:19 -0400
+Message-Id: <20200615222319.8601-1-peterx@redhat.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200615221607.7764-1-peterx@redhat.com>
 References: <20200615221607.7764-1-peterx@redhat.com>
@@ -81,41 +80,40 @@ CC: David S. Miller <davem@davemloft.net>
 CC: sparclinux@vger.kernel.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- arch/sparc/mm/fault_32.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ arch/sparc/mm/fault_64.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/arch/sparc/mm/fault_32.c b/arch/sparc/mm/fault_32.c
-index f6e0e601f857..299e6e241a1c 100644
---- a/arch/sparc/mm/fault_32.c
-+++ b/arch/sparc/mm/fault_32.c
-@@ -167,7 +167,7 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
- 	unsigned long g2;
- 	int from_user = !(regs->psr & PSR_PS);
- 	int code;
+diff --git a/arch/sparc/mm/fault_64.c b/arch/sparc/mm/fault_64.c
+index c0c0dd471b6b..61be0a0d79c6 100644
+--- a/arch/sparc/mm/fault_64.c
++++ b/arch/sparc/mm/fault_64.c
+@@ -269,7 +269,7 @@ asmlinkage void __kprobes do_sparc64_fault(struct pt_regs *regs)
+ 	struct vm_area_struct *vma;
+ 	unsigned int insn = 0;
+ 	int si_code, fault_code;
 -	vm_fault_t fault;
 +	vm_fault_t fault, major = 0;
+ 	unsigned long address, mm_rss;
  	unsigned int flags = FAULT_FLAG_DEFAULT;
  
- 	if (text_fault)
-@@ -192,9 +192,6 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
- 	 */
- 	if (pagefault_disabled() || !mm)
- 		goto no_context;
--
+@@ -317,8 +317,6 @@ asmlinkage void __kprobes do_sparc64_fault(struct pt_regs *regs)
+ 	if (faulthandler_disabled() || !mm)
+ 		goto intr_or_no_mm;
+ 
 -	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
 -
- retry:
- 	down_read(&mm->mmap_sem);
+ 	if (!down_read_trylock(&mm->mmap_sem)) {
+ 		if ((regs->tstate & TSTATE_PRIV) &&
+ 		    !search_exception_tables(regs->tpc)) {
+@@ -424,6 +422,7 @@ asmlinkage void __kprobes do_sparc64_fault(struct pt_regs *regs)
+ 	}
  
-@@ -236,6 +233,7 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
- 	 * the fault.
- 	 */
  	fault = handle_mm_fault(vma, address, flags);
 +	major |= fault & VM_FAULT_MAJOR;
  
  	if (fault_signal_pending(fault, regs))
- 		return;
-@@ -251,15 +249,6 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
+ 		goto exit_exception;
+@@ -439,15 +438,6 @@ asmlinkage void __kprobes do_sparc64_fault(struct pt_regs *regs)
  	}
  
  	if (flags & FAULT_FLAG_ALLOW_RETRY) {
@@ -131,14 +129,15 @@ index f6e0e601f857..299e6e241a1c 100644
  		if (fault & VM_FAULT_RETRY) {
  			flags |= FAULT_FLAG_TRIED;
  
-@@ -273,6 +262,7 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
+@@ -461,6 +451,8 @@ asmlinkage void __kprobes do_sparc64_fault(struct pt_regs *regs)
  	}
- 
  	up_read(&mm->mmap_sem);
-+	mm_fault_accounting(current, regs, address, major);
- 	return;
  
- 	/*
++	mm_fault_accounting(current, regs, address, major);
++
+ 	mm_rss = get_mm_rss(mm);
+ #if defined(CONFIG_TRANSPARENT_HUGEPAGE)
+ 	mm_rss -= (mm->context.thp_pte_count * (HPAGE_SIZE / PAGE_SIZE));
 -- 
 2.26.2
 
