@@ -2,126 +2,143 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 197DC1FA2DB
-	for <lists+sparclinux@lfdr.de>; Mon, 15 Jun 2020 23:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CF531FA373
+	for <lists+sparclinux@lfdr.de>; Tue, 16 Jun 2020 00:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726207AbgFOVei (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 15 Jun 2020 17:34:38 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:51040 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1731476AbgFOVei (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 15 Jun 2020 17:34:38 -0400
+        id S1726484AbgFOWX0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 15 Jun 2020 18:23:26 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:34392 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726536AbgFOWXV (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 15 Jun 2020 18:23:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592256876;
+        s=mimecast20190719; t=1592259800;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ItwxuioZVdA5XdCXR1QbAewm4+8qdb0KbH1lb+9ehrA=;
-        b=gVPACN6xO1SeIGsjRKFWvtdrnZBydlA/xLaXlBTA9ukZGl8rrSHTnjN2uogdd2Fc4Dt43t
-        N034oGy0lR/F8iU1msOQSncDNnrtFpLzDG+Yj7bkEUSC/23fQh5XZcOAkeqq2c9/GUp5z8
-        vlzphSUVDu2xnhW42LAOptOJw/OIneY=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-369-Dcxba9-uMhmGDKRVGFE9pQ-1; Mon, 15 Jun 2020 17:34:34 -0400
-X-MC-Unique: Dcxba9-uMhmGDKRVGFE9pQ-1
-Received: by mail-qv1-f69.google.com with SMTP id 59so14083872qvb.4
-        for <sparclinux@vger.kernel.org>; Mon, 15 Jun 2020 14:34:34 -0700 (PDT)
+        bh=rD6jqofe19p826ewHi4IKOMv32t8zGceLQG6Qi0KA6A=;
+        b=D9Jiz/e4jY6C0Zv0VytEiZPchVSQA1Ws1hArjQI3wseoLnQYZHYojCwOBq/VVLpWp8dFTQ
+        PJo7W5xjtxLCucoOxTZK8XMSo+ScsVvBpTqzK+NRVed34bzJJs2JXq+ScaJFGd6cHTGSM7
+        qALBRz5qG2Z1BWj7OEF38FMOJIAqQX4=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-422-lAJAOGtjPHekLWJEZ2sthg-1; Mon, 15 Jun 2020 18:23:18 -0400
+X-MC-Unique: lAJAOGtjPHekLWJEZ2sthg-1
+Received: by mail-qk1-f200.google.com with SMTP id 140so15354782qko.23
+        for <sparclinux@vger.kernel.org>; Mon, 15 Jun 2020 15:23:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ItwxuioZVdA5XdCXR1QbAewm4+8qdb0KbH1lb+9ehrA=;
-        b=oR5EqFfcvd8625GBuup42s3QH9cMs3AdpWlsBORc49g/6ueIBRrRJwB7hZiOiyADUr
-         9x1+rPn+mk55bb9LnaiSafKz3qcEVmrjGwPLreB6m4neFcGTh3Vyif6eG6g7dzfQ9WTt
-         3MzzAGskUVg+yEbgeJgrDZQ7cFFUKMsYLxesr9wlMaTDLdDXHfzkE2Dj6V6pJOV5ahLc
-         i0CJ/OE7+OZwWc49OdQkdFpx791/U44GCGN1OI4WNQLV2X957yilNxjxzqHn7fUgTvaX
-         LheihnEJdkbnvj8n7iXyClqvzp4x6jRCXkIcmM2/eHbB1Rit2gB1Ur1eXNTou9QzMPZX
-         e29A==
-X-Gm-Message-State: AOAM533dTPdUSYqn7XcGUNuIfUtCNK9sT+GwH/X8dZh5JT8Bt/q8IMZl
-        JLWnajPpUNj2FtKMn6CBI3MnswyYliYGX7lJgOlPCTiFXcpPXGl3uuykykadmzQwUkXjSInD/S1
-        vvWl6hUrzd+XqbGSeNnCSvA==
-X-Received: by 2002:a0c:ed31:: with SMTP id u17mr25540566qvq.117.1592256874105;
-        Mon, 15 Jun 2020 14:34:34 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJz0iHGiHde51cucRTUPE7NzfM/1jQRbNlFV4ChXmFExBXup/Ay4TPRKGywEeToUwHIWcL2Psg==
-X-Received: by 2002:a0c:ed31:: with SMTP id u17mr25540552qvq.117.1592256873805;
-        Mon, 15 Jun 2020 14:34:33 -0700 (PDT)
-Received: from xz-x1 ([2607:9880:19c0:32::2])
-        by smtp.gmail.com with ESMTPSA id f30sm12961493qtb.9.2020.06.15.14.34.31
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=rD6jqofe19p826ewHi4IKOMv32t8zGceLQG6Qi0KA6A=;
+        b=tAdxuv0G2IF4oROIRkHoZ8gftuYbyvv73Q8Dzogt1FE1DHVN9dmHjN3bqIZsRrO1AL
+         s3SuwWUM4xApl7VwCVVmON7iHzOv+xgR1E+dvzCuqqHQeTnNxpu3ZHaXtT9tl5eijI6A
+         4x6ZpWIdb2dtbSQ05kUO7r3OkJ3DyU976qyCvKhNvlALKYz09MuEMY/UfxyGNtq/F9hC
+         cXoPqinYZ+kGYCiO11GjP9ezNQ5oDtS8laRS5r3JFMNahr4HSG03/IRkThDA7uLVoGKS
+         cbx8kfvgYUdrxGrO3tPYw+kQ+kbVU3Y8lmVTybRjz7Es4uO6pjs+Y7YFASibYGNv8PcW
+         eXWQ==
+X-Gm-Message-State: AOAM531Y/WQDm3dm1batVLsG/A6voV/CLE3S5XHyF+l6iOv++xunrk0d
+        m9DjWpAtC8j6BxND4QQefhukpr8YLTOqk8DhqMTpCwXhBdreBBApl+SkVQrQ7xqglEpgaECSnr2
+        9ALooodh+7KPfLRPVdEV5lw==
+X-Received: by 2002:ad4:4c0d:: with SMTP id bz13mr27999612qvb.164.1592259797817;
+        Mon, 15 Jun 2020 15:23:17 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxoYFbvQP7f745RiHe5XpfLpFaM5rWW6QJeCE9RJ1UwqB//J+ePvEAngR737a2w3RSMKlY7Gw==
+X-Received: by 2002:ad4:4c0d:: with SMTP id bz13mr27999595qvb.164.1592259797560;
+        Mon, 15 Jun 2020 15:23:17 -0700 (PDT)
+Received: from xz-x1.hitronhub.home ([2607:9880:19c0:32::2])
+        by smtp.gmail.com with ESMTPSA id k7sm12645910qth.10.2020.06.15.15.23.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2020 14:34:33 -0700 (PDT)
-Date:   Mon, 15 Jun 2020 17:34:31 -0400
+        Mon, 15 Jun 2020 15:23:17 -0700 (PDT)
 From:   Peter Xu <peterx@redhat.com>
-To:     Gerald Schaefer <gerald.schaefer@de.ibm.com>
-Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, Michal Simek <monstr@monstr.eu>,
-        linux-mips@vger.kernel.org, Nick Hu <nickhu@andestech.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        Guan Xuetao <gxt@pku.edu.cn>, linux-xtensa@linux-xtensa.org,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
+To:     linux-kernel@vger.kernel.org
+Cc:     Peter Xu <peterx@redhat.com>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: Possible duplicate page fault accounting on some archs after
- commit 4064b9827063
-Message-ID: <20200615213431.GC111927@xz-x1>
-References: <20200610174811.44b94525@thinkpad>
- <20200610165023.GA67179@xz-x1>
+        Andrea Arcangeli <aarcange@redhat.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org
+Subject: [PATCH 21/25] mm/sparc32: Use mm_fault_accounting()
+Date:   Mon, 15 Jun 2020 18:23:16 -0400
+Message-Id: <20200615222316.8551-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200615221607.7764-1-peterx@redhat.com>
+References: <20200615221607.7764-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200610165023.GA67179@xz-x1>
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Jun 10, 2020 at 12:50:23PM -0400, Peter Xu wrote:
-> On Wed, Jun 10, 2020 at 05:48:11PM +0200, Gerald Schaefer wrote:
-> > Hi,
-> 
-> Hi, Gerald,
-> 
-> > 
-> > Some architectures have their page fault accounting code inside the fault
-> > retry loop, and rely on only going through that code once. Before commit
-> > 4064b9827063 ("mm: allow VM_FAULT_RETRY for multiple times"), that was
-> > ensured by testing for and clearing FAULT_FLAG_ALLOW_RETRY.
-> > 
-> > That commit had to remove the clearing of FAULT_FLAG_ALLOW_RETRY for all
-> > architectures, and introduced a subtle change to page fault accounting
-> > logic in the affected archs. It is now possible to go through the retry
-> > loop multiple times, and the affected archs would then account multiple
-> > page faults instead of just one.
-> > 
-> > This was found by coincidence in s390 code, and a quick check showed that
-> > there are quite a lot of other architectures that seem to be affected in a
-> > similar way. I'm preparing a fix for s390, by moving the accounting behind
-> > the retry loop, similar to x86. It is not completely straight-forward, so
-> > I leave the fix for other archs to the respective maintainers.
-> 
-> Sorry for not noticing this before.  The accounting part should definitely be
-> put at least into a check against fault_flag_allow_retry_first() to mimic what
-> was done before.  And I agree it would be even better to put it after the retry
-> logic, so if any of the page faults gets a major fault, it'll be accounted as a
-> major fault which makes more sense to me, just like what x86 is doing now with:
-> 
-> 	major |= fault & VM_FAULT_MAJOR;
-> 
-> I'm not sure what's the preference of the arch maintainers, just let me know if
-> it's preferred to use a single series to address this issue for all affected
-> archs (or the archs besides s390), then I'll do.
+Use the new mm_fault_accounting() helper for page fault accounting.
 
-To make sure this won't fall through the cracks... I'll give it a shot with a
-single series to address this issue for all archs.  Although it might not be
-easy to do accounting directly in handle_mm_fault(), it might be still a chance
-to introduce a helper so the accounting can be done in general code.
+Avoid doing page fault accounting multiple times if the page fault is retried.
 
-Thanks,
+CC: David S. Miller <davem@davemloft.net>
+CC: sparclinux@vger.kernel.org
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ arch/sparc/mm/fault_32.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
+diff --git a/arch/sparc/mm/fault_32.c b/arch/sparc/mm/fault_32.c
+index f6e0e601f857..299e6e241a1c 100644
+--- a/arch/sparc/mm/fault_32.c
++++ b/arch/sparc/mm/fault_32.c
+@@ -167,7 +167,7 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
+ 	unsigned long g2;
+ 	int from_user = !(regs->psr & PSR_PS);
+ 	int code;
+-	vm_fault_t fault;
++	vm_fault_t fault, major = 0;
+ 	unsigned int flags = FAULT_FLAG_DEFAULT;
+ 
+ 	if (text_fault)
+@@ -192,9 +192,6 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
+ 	 */
+ 	if (pagefault_disabled() || !mm)
+ 		goto no_context;
+-
+-	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
+-
+ retry:
+ 	down_read(&mm->mmap_sem);
+ 
+@@ -236,6 +233,7 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
+ 	 * the fault.
+ 	 */
+ 	fault = handle_mm_fault(vma, address, flags);
++	major |= fault & VM_FAULT_MAJOR;
+ 
+ 	if (fault_signal_pending(fault, regs))
+ 		return;
+@@ -251,15 +249,6 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
+ 	}
+ 
+ 	if (flags & FAULT_FLAG_ALLOW_RETRY) {
+-		if (fault & VM_FAULT_MAJOR) {
+-			current->maj_flt++;
+-			perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MAJ,
+-				      1, regs, address);
+-		} else {
+-			current->min_flt++;
+-			perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MIN,
+-				      1, regs, address);
+-		}
+ 		if (fault & VM_FAULT_RETRY) {
+ 			flags |= FAULT_FLAG_TRIED;
+ 
+@@ -273,6 +262,7 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
+ 	}
+ 
+ 	up_read(&mm->mmap_sem);
++	mm_fault_accounting(current, regs, address, major);
+ 	return;
+ 
+ 	/*
 -- 
-Peter Xu
+2.26.2
 
