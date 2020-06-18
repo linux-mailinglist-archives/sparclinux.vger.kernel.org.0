@@ -2,69 +2,81 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 526121FCD2C
-	for <lists+sparclinux@lfdr.de>; Wed, 17 Jun 2020 14:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B05EB1FE513
+	for <lists+sparclinux@lfdr.de>; Thu, 18 Jun 2020 04:23:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725964AbgFQMTs (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 17 Jun 2020 08:19:48 -0400
-Received: from u164.east.ru ([195.170.63.164]:12050 "EHLO u164.east.ru"
+        id S1729848AbgFRCXG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 17 Jun 2020 22:23:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49496 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725901AbgFQMTs (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 17 Jun 2020 08:19:48 -0400
-X-Greylist: delayed 339 seconds by postgrey-1.27 at vger.kernel.org; Wed, 17 Jun 2020 08:19:47 EDT
-Received: by u164.east.ru (Postfix, from userid 1001)
-        id 80E78512B95; Wed, 17 Jun 2020 15:14:06 +0300 (MSK)
-Date:   Wed, 17 Jun 2020 15:14:06 +0300
-From:   Anatoly Pugachev <matorola@gmail.com>
-To:     linux-kselftest@vger.kernel.org
-Cc:     Jiri Kosina <trivial@kernel.org>, sparclinux@vger.kernel.org
-Subject: [PATCH] selftests: kvm: don't try to build kvm tests on sparc64
- architecture
-Message-ID: <20200617121406.GA29692@yogzotot>
+        id S1729882AbgFRBSG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:18:06 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 53DFC21D90;
+        Thu, 18 Jun 2020 01:18:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592443086;
+        bh=OSy/OGfvGshqjHEGkwGYZClMEVPpuaEOBEcpLWkcDoQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=XgYqeWNKfpxg3NhhaZYurjv14pjePToWpaT+YsZo3Xgn2hsPa039XE/iwrs6xKamZ
+         sUWIQzQpB/u4W6guJ1pidV15gytHOfg1zpOrgOaBnCoWGkGvK5N7UgSarsxnJm5HcN
+         7yS1mrz6nVybBX1UN/RaRGd4BONkjdoudaZnUzgI=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Will Deacon <will@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 070/266] sparc32: mm: Don't try to free page-table pages if ctor() fails
+Date:   Wed, 17 Jun 2020 21:13:15 -0400
+Message-Id: <20200618011631.604574-70-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200618011631.604574-1-sashal@kernel.org>
+References: <20200618011631.604574-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-There's no support for KVM on sparc64, so don't try to build kvm tests.
+From: Will Deacon <will@kernel.org>
 
-gcc -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99
--fno-stack-protector -fno-PIE -I../../../../tools/include
--I../../../../tools/arch/sparc64/include -I../../../../usr/include/
--Iinclude -Ilib -Iinclude/sparc64 -I..   -c lib/elf.c -o
-/1/mator/linux-2.6/tools/testing/selftests/kvm/lib/elf.o
-In file included from lib/elf.c:13:
-include/kvm_util.h:12:10: fatal error: asm/kvm.h: No such file or
-directory
-   12 | #include "asm/kvm.h"
-      |          ^~~~~~~~~~~
-compilation terminated.
+[ Upstream commit 454b0289c6b5f2c66164654b80212d15fbef7a03 ]
 
-Signed-off-by: Anatoly Pugachev <matorola@gmail.com>
-CC: Jiri Kosina <trivial@kernel.org>
-CC: sparclinux@vger.kernel.org
+The pages backing page-table allocations for SRMMU are allocated via
+memblock as part of the "nocache" region initialisation during
+srmmu_paging_init() and should not be freed even if a later call to
+pgtable_pte_page_ctor() fails.
+
+Remove the broken call to __free_page().
+
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Kirill A. Shutemov <kirill@shutemov.name>
+Fixes: 1ae9ae5f7df7 ("sparc: handle pgtable_page_ctor() fail")
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kvm/Makefile | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/sparc/mm/srmmu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile b/tools/testing/selftests/kvm/Makefile
-index 4a166588d99f..00be52199cb9 100644
---- a/tools/testing/selftests/kvm/Makefile
-+++ b/tools/testing/selftests/kvm/Makefile
-@@ -32,6 +32,9 @@ endif
- ifeq ($(ARCH),s390)
- 	UNAME_M := s390x
- endif
-+ifeq ($(UNAME_M),sparc64)
-+$(error kvm selftests is not supported on sparc64)
-+endif
- 
- LIBKVM = lib/assert.c lib/elf.c lib/io.c lib/kvm_util.c lib/sparsebit.c lib/test_util.c
- LIBKVM_x86_64 = lib/x86_64/processor.c lib/x86_64/vmx.c lib/x86_64/svm.c lib/x86_64/ucall.c
+diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
+index cc3ad64479ac..9e256d4d1f4c 100644
+--- a/arch/sparc/mm/srmmu.c
++++ b/arch/sparc/mm/srmmu.c
+@@ -379,7 +379,6 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
+ 		return NULL;
+ 	page = pfn_to_page(__nocache_pa(pte) >> PAGE_SHIFT);
+ 	if (!pgtable_pte_page_ctor(page)) {
+-		__free_page(page);
+ 		return NULL;
+ 	}
+ 	return page;
 -- 
-2.27.0
+2.25.1
 
