@@ -2,33 +2,54 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82F311FF570
-	for <lists+sparclinux@lfdr.de>; Thu, 18 Jun 2020 16:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0620F2003E0
+	for <lists+sparclinux@lfdr.de>; Fri, 19 Jun 2020 10:29:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731286AbgFROq7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 18 Jun 2020 10:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57840 "EHLO
+        id S1731271AbgFSI3J (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 19 Jun 2020 04:29:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730924AbgFROq5 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 18 Jun 2020 10:46:57 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0086C0613ED;
-        Thu, 18 Jun 2020 07:46:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=T94kCvjMg3POOYY9QZ5B+bKnsinmf9rCUNlS0Naq4B0=; b=sZIUAkI2NjZ+MMiCdvtfYxmhhZ
-        QSfUBaQNaFTFjYXrnoa0k4CfMSMBYgWQJcIeJT2KPiGTzastkugYaRi0P2OkdM+B9tZ1giWQFDEAu
-        2xX9amWSGWOU8oF7zGU04ktP0FLYqU657CZfucoyNEhEny+VDLOxDC0qMFWvalfdkhsvTTYC8QmgH
-        WrqZ4LAO5GNL64WUFddp82LA21mBJE9Kg0c2s2xM1T+A7AOKiD/B+MZISNiupYctsyLexsbpGTaYl
-        RPdqczujbtE412KJXCBAeVRyHRT5BW4lEA9qrdRJUA3JtyyPAKSfu0XHEGWFrcTiq+7RnTdV7r0ks
-        TF1gnuUg==;
-Received: from 195-192-102-148.dyn.cablelink.at ([195.192.102.148] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jlvoX-0006W3-Dz; Thu, 18 Jun 2020 14:46:50 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Al Viro <viro@zeniv.linux.org.uk>
+        with ESMTP id S1731358AbgFSI3C (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 19 Jun 2020 04:29:02 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A5F6C061794
+        for <sparclinux@vger.kernel.org>; Fri, 19 Jun 2020 01:29:01 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id u25so5094693lfm.1
+        for <sparclinux@vger.kernel.org>; Fri, 19 Jun 2020 01:29:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=irVvm75B8uOjhet4ds9NewlHhGnanjSr3qTRTZzIUE4=;
+        b=qkbi8YvZIpYdgXOhuLz+oLhk6FU5nre6FOh8jwCxVM9654uCe38mG3xi4sHqGzzDyG
+         SEH1hJrw2TFIChHUxX1ZXnbwARwg6RC5j0BV0+jMRPStvzbKMhHOWFkkmEsrWjqdX5F+
+         D1IOfQlW2zLQg/nVx9gJMOxi4uOERKvqBd1S1RhEt6EhjY5th0/tAvBfP2KAJAM96y7o
+         h72udRwv1GPKxwptl875dVONvJoltvXpQNW88Rr7UCqkXi2dwlS43kJ7lnlN+shZedPc
+         UEpFi+EUsizwMgSG5KrzWkYQzjXdopu2qfdbxfjTUi6dvlVTSJe8cWAu3gdUIqCShHxT
+         T2Bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=irVvm75B8uOjhet4ds9NewlHhGnanjSr3qTRTZzIUE4=;
+        b=pnkjPOWBsDNd9w81d3YF2rzbgGe5qbcrLKKhJcucMSd/esqWZNlgkJSrP7JmjjnGtW
+         VgS/0QoDD96sAPFL8Cznc5TIACAHBPkHV5xeM51h09PcBazw37tNiwa2F0DNPBok9Mf6
+         XTLX0sr6CHWSLD0Etg7fjlmpMtRr02v7hqaD3motjnossRXGIMrUCAHTtROk9o25rbAT
+         7iUSC4Q64BqFxnxJDHcwDnh/SP4N+WpoifiqWiUA1T0/cucEPPSuoOdi+E6YbO53rlyP
+         yd+4y2QjJAjmbNEHOlkG3POEezT2jgqFriRtipOaHewnn6HGeAJPdGGW0p1VVvnAbRUK
+         S/ew==
+X-Gm-Message-State: AOAM5314Jm4HgY6Gj+prpAaqTeDC4ZS6P5VTd2yLVvl1Z5S4hsGATVmz
+        40E4tP2ab5dxMRK8L6C6U8tW4A==
+X-Google-Smtp-Source: ABdhPJxnSAk4hCfsyIu7N052ONa1UuRXTstPiF0JmLx3L/kM6WdrlnqV1xaj4A+uNl5wLop8yEYwoQ==
+X-Received: by 2002:ac2:5c49:: with SMTP id s9mr1327184lfp.90.1592555339610;
+        Fri, 19 Jun 2020 01:28:59 -0700 (PDT)
+Received: from ?IPv6:2a00:1fa0:8c9:4beb:2ce8:f19d:33e5:571e? ([2a00:1fa0:8c9:4beb:2ce8:f19d:33e5:571e])
+        by smtp.gmail.com with ESMTPSA id a16sm1058721ljb.107.2020.06.19.01.28.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Jun 2020 01:28:58 -0700 (PDT)
+Subject: Re: [PATCH 3/6] exec: cleanup the count() function
+To:     Christoph Hellwig <hch@lst.de>, Al Viro <viro@zeniv.linux.org.uk>
 Cc:     Arnd Bergmann <arnd@arndb.de>, Brian Gerst <brgerst@gmail.com>,
         Luis Chamberlain <mcgrof@kernel.org>,
         linux-arm-kernel@lists.infradead.org, x86@kernel.org,
@@ -36,117 +57,35 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Brian Gerst <brgerst@gmail.com>,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
         linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] kernel: add a kernel_wait helper
-Date:   Thu, 18 Jun 2020 16:46:27 +0200
-Message-Id: <20200618144627.114057-7-hch@lst.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200618144627.114057-1-hch@lst.de>
 References: <20200618144627.114057-1-hch@lst.de>
+ <20200618144627.114057-4-hch@lst.de>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <04e7876b-a8f3-3f6e-939c-bb0764ece1ac@cogentembedded.com>
+Date:   Fri, 19 Jun 2020 11:28:44 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20200618144627.114057-4-hch@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Add a helper that waits for a pid and stores the status in the passed
-in kernel pointer.  Use it to fix the usage of kernel_wait4 in
-call_usermodehelper_exec_sync that only happens to work due to the
-implicit set_fs(KERNEL_DS) for kernel threads.
+Hello!
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- include/linux/sched/task.h |  1 +
- kernel/exit.c              | 16 ++++++++++++++++
- kernel/umh.c               | 29 ++++-------------------------
- 3 files changed, 21 insertions(+), 25 deletions(-)
+On 18.06.2020 17:46, Christoph Hellwig wrote:
 
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index 38359071236ad7..a80007df396e95 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -102,6 +102,7 @@ struct task_struct *fork_idle(int);
- struct mm_struct *copy_init_mm(void);
- extern pid_t kernel_thread(int (*fn)(void *), void *arg, unsigned long flags);
- extern long kernel_wait4(pid_t, int __user *, int, struct rusage *);
-+int kernel_wait(pid_t pid, int *stat);
- 
- extern void free_task(struct task_struct *tsk);
- 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 727150f2810338..fd598846df0b17 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -1626,6 +1626,22 @@ long kernel_wait4(pid_t upid, int __user *stat_addr, int options,
- 	return ret;
- }
- 
-+int kernel_wait(pid_t pid, int *stat)
-+{
-+	struct wait_opts wo = {
-+		.wo_type	= PIDTYPE_PID,
-+		.wo_pid		= find_get_pid(pid),
-+		.wo_flags	= WEXITED,
-+	};
-+	int ret;
-+
-+	ret = do_wait(&wo);
-+	if (ret > 0 && wo.wo_stat)
-+		*stat = wo.wo_stat;
-+	put_pid(wo.wo_pid);
-+	return ret;
-+}
-+
- SYSCALL_DEFINE4(wait4, pid_t, upid, int __user *, stat_addr,
- 		int, options, struct rusage __user *, ru)
- {
-diff --git a/kernel/umh.c b/kernel/umh.c
-index 1284823dbad338..6fd948e478bec4 100644
---- a/kernel/umh.c
-+++ b/kernel/umh.c
-@@ -126,37 +126,16 @@ static void call_usermodehelper_exec_sync(struct subprocess_info *sub_info)
- {
- 	pid_t pid;
- 
--	/* If SIGCLD is ignored kernel_wait4 won't populate the status. */
-+	/* If SIGCLD is ignored do_wait won't populate the status. */
- 	kernel_sigaction(SIGCHLD, SIG_DFL);
- 	pid = kernel_thread(call_usermodehelper_exec_async, sub_info, SIGCHLD);
--	if (pid < 0) {
-+	if (pid < 0)
- 		sub_info->retval = pid;
--	} else {
--		int ret = -ECHILD;
--		/*
--		 * Normally it is bogus to call wait4() from in-kernel because
--		 * wait4() wants to write the exit code to a userspace address.
--		 * But call_usermodehelper_exec_sync() always runs as kernel
--		 * thread (workqueue) and put_user() to a kernel address works
--		 * OK for kernel threads, due to their having an mm_segment_t
--		 * which spans the entire address space.
--		 *
--		 * Thus the __user pointer cast is valid here.
--		 */
--		kernel_wait4(pid, (int __user *)&ret, 0, NULL);
--
--		/*
--		 * If ret is 0, either call_usermodehelper_exec_async failed and
--		 * the real error code is already in sub_info->retval or
--		 * sub_info->retval is 0 anyway, so don't mess with it then.
--		 */
--		if (ret)
--			sub_info->retval = ret;
--	}
-+	else
-+		kernel_wait(pid, &sub_info->retval);
- 
- 	/* Restore default kernel sig handler */
- 	kernel_sigaction(SIGCHLD, SIG_IGN);
--
- 	umh_complete(sub_info);
- }
- 
--- 
-2.26.2
+> Remove the max argument as it is hard wired to MAX_ARG_STRINGS, and
 
+    Technically, argument is what's actually passed to a function, you're 
+removing a function parameter.
+
+> give the function a slightly less generic name.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+[...]
+
+MBR, Sergei
