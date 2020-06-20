@@ -2,80 +2,82 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9436201F63
-	for <lists+sparclinux@lfdr.de>; Sat, 20 Jun 2020 03:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E9C82021EF
+	for <lists+sparclinux@lfdr.de>; Sat, 20 Jun 2020 08:35:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731221AbgFTBIl (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 19 Jun 2020 21:08:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53764 "EHLO mail.kernel.org"
+        id S1725989AbgFTGfn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 20 Jun 2020 02:35:43 -0400
+Received: from verein.lst.de ([213.95.11.211]:57570 "EHLO verein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731220AbgFTBIl (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 19 Jun 2020 21:08:41 -0400
-Received: from embeddedor (unknown [189.207.59.248])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 08A0322B51;
-        Sat, 20 Jun 2020 01:08:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592615321;
-        bh=R7DEl1i5DHqfvffOoBsF0oTwiT8GHdBiHp5N18EJxhU=;
-        h=Date:From:To:Cc:Subject:From;
-        b=wkzaJEhxoVhT9pDss5CSE7QvIJmmDQuwpB2eSfavy4Nc+t2+c7lya16GP4DOYPyKB
-         miM8Ne3ZwTlmHqfF7WqNfbWgQMjigiAJcp04ulY+75/negUHxsDGbMDKtOK6U2kaEG
-         FpmMOkqFJgOhflOUD8CE/iReF4yf4TZvYE4brFtY=
-Date:   Fri, 19 Jun 2020 20:14:06 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] sparc64: viohs: Use struct_size() helper
-Message-ID: <20200620011406.GA3260@embeddedor>
+        id S1725789AbgFTGfm (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sat, 20 Jun 2020 02:35:42 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id D6CC268CEC; Sat, 20 Jun 2020 08:35:38 +0200 (CEST)
+Date:   Sat, 20 Jun 2020 08:35:38 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>, Brian Gerst <brgerst@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] kernel: add a kernel_wait helper
+Message-ID: <20200620063538.GA2408@lst.de>
+References: <20200618144627.114057-1-hch@lst.de> <20200618144627.114057-7-hch@lst.de> <20200619211700.GS11244@42.do-not-panic.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200619211700.GS11244@42.do-not-panic.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Make use of the struct_size() helper instead of an open-coded version
-in order to avoid any potential type mistakes. Also, remove unnecessary
-variable _len_.
-
-This code was detected with the help of Coccinelle and, audited and
-fixed manually.
-
-Addresses-KSPP-ID: https://github.com/KSPP/linux/issues/83
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- arch/sparc/kernel/viohs.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/arch/sparc/kernel/viohs.c b/arch/sparc/kernel/viohs.c
-index 7db5aabe9708..e27afd233bf5 100644
---- a/arch/sparc/kernel/viohs.c
-+++ b/arch/sparc/kernel/viohs.c
-@@ -428,7 +428,7 @@ static int process_dreg_info(struct vio_driver_state *vio,
- 			     struct vio_dring_register *pkt)
- {
- 	struct vio_dring_state *dr;
--	int i, len;
-+	int i;
- 
- 	viodbg(HS, "GOT DRING_REG INFO ident[%llx] "
- 	       "ndesc[%u] dsz[%u] opt[0x%x] ncookies[%u]\n",
-@@ -482,9 +482,7 @@ static int process_dreg_info(struct vio_driver_state *vio,
- 	       pkt->num_descr, pkt->descr_size, pkt->options,
- 	       pkt->num_cookies);
- 
--	len = (sizeof(*pkt) +
--	       (dr->ncookies * sizeof(struct ldc_trans_cookie)));
--	if (send_ctrl(vio, &pkt->tag, len) < 0)
-+	if (send_ctrl(vio, &pkt->tag, struct_size(pkt, cookies, dr->ncookies)) < 0)
- 		goto send_nack;
- 
- 	vio->dr_state |= VIO_DR_STATE_RXREG;
--- 
-2.27.0
-
+On Fri, Jun 19, 2020 at 09:17:00PM +0000, Luis Chamberlain wrote:
+> On Thu, Jun 18, 2020 at 04:46:27PM +0200, Christoph Hellwig wrote:
+> > --- a/kernel/exit.c
+> > +++ b/kernel/exit.c
+> > @@ -1626,6 +1626,22 @@ long kernel_wait4(pid_t upid, int __user *stat_addr, int options,
+> >  	return ret;
+> >  }
+> >  
+> > +int kernel_wait(pid_t pid, int *stat)
+> > +{
+> > +	struct wait_opts wo = {
+> > +		.wo_type	= PIDTYPE_PID,
+> > +		.wo_pid		= find_get_pid(pid),
+> > +		.wo_flags	= WEXITED,
+> > +	};
+> > +	int ret;
+> > +
+> > +	ret = do_wait(&wo);
+> > +	if (ret > 0 && wo.wo_stat)
+> > +		*stat = wo.wo_stat;
+> 
+> Since all we care about is WEXITED, that could be simplified
+> to something like this:
+> 
+> if (ret > 0 && KWIFEXITED(wo.wo_stat)
+>  	*stat = KWEXITSTATUS(wo.wo_stat)
+> 
+> Otherwise callers have to use W*() wrappers.
+> 
+> > +	put_pid(wo.wo_pid);
+> > +	return ret;
+> > +}
+> 
+> Then we don't get *any* in-kernel code dealing with the W*() crap.
+> I just unwrapped this for the umh [0], given that otherwise we'd
+> have to use KW*() callers elsewhere. Doing it upshot one level
+> further would be even better.
+> 
+> [0] https://lkml.kernel.org/r/20200610154923.27510-1-mcgrof@kernel.org              
+Do you just want to pick this patch up, add your suggested bits and
+add it to the beginning of your series?  That should clean the whole
+thing up a bit.  Nothing else in this series depends on the patch.
