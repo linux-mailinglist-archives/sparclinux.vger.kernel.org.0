@@ -2,54 +2,51 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DF212043D7
-	for <lists+sparclinux@lfdr.de>; Tue, 23 Jun 2020 00:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3100E2043F7
+	for <lists+sparclinux@lfdr.de>; Tue, 23 Jun 2020 00:46:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731399AbgFVWng (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 22 Jun 2020 18:43:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49478 "EHLO
+        id S1731555AbgFVWo7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 22 Jun 2020 18:44:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731381AbgFVWn3 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 22 Jun 2020 18:43:29 -0400
+        with ESMTP id S1731503AbgFVWo7 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 22 Jun 2020 18:44:59 -0400
 Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28317C061573;
-        Mon, 22 Jun 2020 15:43:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1CEFC061573;
+        Mon, 22 Jun 2020 15:44:58 -0700 (PDT)
 Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id D52F31296C074;
-        Mon, 22 Jun 2020 15:43:28 -0700 (PDT)
-Date:   Mon, 22 Jun 2020 15:43:28 -0700 (PDT)
-Message-Id: <20200622.154328.664862561349747570.davem@davemloft.net>
-To:     gustavoars@kernel.org
-Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        gustavo@embeddedor.com
-Subject: Re: [PATCH][next] sparc64: viohs: Use struct_size() helper
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id B0DCE1296C088;
+        Mon, 22 Jun 2020 15:44:58 -0700 (PDT)
+Date:   Mon, 22 Jun 2020 15:44:58 -0700 (PDT)
+Message-Id: <20200622.154458.2067869648476467711.davem@davemloft.net>
+To:     clabbe@baylibre.com
+Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH] sparc: piggyback: handle invalid image
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200620011406.GA3260@embeddedor>
-References: <20200620011406.GA3260@embeddedor>
+In-Reply-To: <1591775719-28390-1-git-send-email-clabbe@baylibre.com>
+References: <1591775719-28390-1-git-send-email-clabbe@baylibre.com>
 X-Mailer: Mew version 6.8 on Emacs 26.3
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 22 Jun 2020 15:43:29 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 22 Jun 2020 15:44:58 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Date: Fri, 19 Jun 2020 20:14:06 -0500
+From: Corentin Labbe <clabbe@baylibre.com>
+Date: Wed, 10 Jun 2020 07:55:19 +0000
 
-> Make use of the struct_size() helper instead of an open-coded version
-> in order to avoid any potential type mistakes. Also, remove unnecessary
-> variable _len_.
+> With an old elftoaout, the generation of tftpboot.img fail with "lseek:
+> invalid argument".
+> This is due to offset being negative.
 > 
-> This code was detected with the help of Coccinelle and, audited and
-> fixed manually.
+> Instead of printing this error message, let's print a better one.
 > 
-> Addresses-KSPP-ID: https://github.com/KSPP/linux/issues/83
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
 
 Applied, thank you.
