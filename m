@@ -2,74 +2,67 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B91EF2047F9
-	for <lists+sparclinux@lfdr.de>; Tue, 23 Jun 2020 05:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7416A204C92
+	for <lists+sparclinux@lfdr.de>; Tue, 23 Jun 2020 10:39:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731275AbgFWDfW (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 22 Jun 2020 23:35:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38018 "EHLO
+        id S1731888AbgFWIjZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 23 Jun 2020 04:39:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728526AbgFWDfV (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 22 Jun 2020 23:35:21 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 864D2C061573;
-        Mon, 22 Jun 2020 20:35:21 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        with ESMTP id S1731691AbgFWIjY (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 23 Jun 2020 04:39:24 -0400
+Received: from merlin.infradead.org (unknown [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66FF8C061796;
+        Tue, 23 Jun 2020 01:39:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Subject:Cc:To:From:Date:Message-ID:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=FUcYaPjVDKdvDgNAWCH0VBlsZbePqhZn2SLAs+XhAu0=; b=gAD0zWOYV1+jt4nVM7z3Ipgm51
+        8evIRze1W8EJ84Zziy4r0WwCuxroavZRpy3Og/W1UjErOpi6RCmIobX3Tzp0kzffSS92hZ8WR7Zg4
+        ERPvMDZqZNAAL5Oz52cyutYWBqvlQAyf06hrFtjEQkNtFHKd7gb9jAQdwhR8GY4DlfIO6apmajpsq
+        VpoFUEZ4Ub0Po92gBI3L0eKUBXEin+WKsQww5Yk9FWCyVIkpVZ8BtzVNu7yFhsLGCwf3Pqj7rZfme
+        8dB7efJJJ4z0/Oa9PxCrzyQNoAtVgmATijrl+3obs5f9ulPN4QuvT38m7AyeP8w6Jbg2JLgnZxXkQ
+        US5MHr1A==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jneS5-0005Rk-Dn; Tue, 23 Jun 2020 08:38:45 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7AD43120F93F8;
-        Mon, 22 Jun 2020 20:35:19 -0700 (PDT)
-Date:   Mon, 22 Jun 2020 20:35:16 -0700 (PDT)
-Message-Id: <20200622.203516.1857672250009821997.davem@davemloft.net>
-To:     christian.brauner@ubuntu.com
-Cc:     linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        arnd@arndb.de, guoren@kernel.org, linux-csky@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH 02/17] sparc64: enable HAVE_COPY_THREAD_TLS
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200622234326.906346-3-christian.brauner@ubuntu.com>
-References: <20200622234326.906346-1-christian.brauner@ubuntu.com>
-        <20200622234326.906346-3-christian.brauner@ubuntu.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 22 Jun 2020 20:35:19 -0700 (PDT)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 13B29306E5C;
+        Tue, 23 Jun 2020 10:38:39 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
+        id DB18B237095F8; Tue, 23 Jun 2020 10:38:39 +0200 (CEST)
+Message-ID: <20200623083645.277342609@infradead.org>
+User-Agent: quilt/0.66
+Date:   Tue, 23 Jun 2020 10:36:45 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     mingo@kernel.org, will@kernel.org, tglx@linutronix.de
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
+        a.darwish@linutronix.de, rostedt@goodmis.org,
+        bigeasy@linutronix.de, peterz@infradead.org, davem@davemloft.net,
+        sparclinux@vger.kernel.org, mpe@ellerman.id.au,
+        linuxppc-dev@lists.ozlabs.org, heiko.carstens@de.ibm.com,
+        linux-s390@vger.kernel.org, linux@armlinux.org.uk
+Subject: [PATCH v4 0/8] lockdep: Change IRQ state tracking to use per-cpu variables
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Christian Brauner <christian.brauner@ubuntu.com>
-Date: Tue, 23 Jun 2020 01:43:11 +0200
+Ahmed and Sebastian wanted additional lockdep_assert*() macros and ran into
+header hell. I figured using per-cpu variables would cure that, and also
+ran into header hell, still tracktable though.
 
-> diff --git a/arch/sparc/kernel/syscalls.S b/arch/sparc/kernel/syscalls.S
-> index db42b4fb3708..192f3a28a2b7 100644
-> --- a/arch/sparc/kernel/syscalls.S
-> +++ b/arch/sparc/kernel/syscalls.S
-> @@ -86,19 +86,22 @@ sys32_rt_sigreturn:
->  	 * during system calls...
->  	 */
->  	.align	32
-> -sys_vfork: /* Under Linux, vfork and fork are just special cases of clone. */
-> -	sethi	%hi(0x4000 | 0x0100 | SIGCHLD), %o0
-> -	or	%o0, %lo(0x4000 | 0x0100 | SIGCHLD), %o0
-> -	ba,pt	%xcc, sys_clone
-> +sys_vfork:
-> +	flushw
-> +	ba,pt	%xcc, sparc_vfork
-> +	add	%sp, PTREGS_OFF, %o0
+By moving the IRQ state into per-cpu variables we remove the dependency on
+task_struct.
 
-Please indent branch delay slot instructions with one extra space, as
-was done in the code you are changing.
+Patches go on top of anything recent I think, an actual git tree with them
+in is (for now) here:
 
-> +	ba,pt	%xcc, sparc_fork
-> +	add	%sp, PTREGS_OFF, %o0
+  git://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git locking/irqstate
 
-Likewise.
+Which 0day blessed with 0 build fails.
 
-> +	ba,pt	%xcc, sparc_clone
-> +	add	%sp, PTREGS_OFF, %o0
 
-Likewise.
