@@ -2,41 +2,26 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF1982055C6
-	for <lists+sparclinux@lfdr.de>; Tue, 23 Jun 2020 17:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43D6C2056D4
+	for <lists+sparclinux@lfdr.de>; Tue, 23 Jun 2020 18:13:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732925AbgFWPZc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 23 Jun 2020 11:25:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34982 "EHLO
+        id S1732182AbgFWQNm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 23 Jun 2020 12:13:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732878AbgFWPZc (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 23 Jun 2020 11:25:32 -0400
-Received: from merlin.infradead.org (unknown [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 249D0C061573;
-        Tue, 23 Jun 2020 08:25:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=CdyXQj2K/WhL99i44E17m8NIjPfggDEZJpNq1YwlkZk=; b=Q2asf/D+1IaMFnf1i/OVF98de3
-        7rs3gVfXshkpsFSSEaP3Y7T3/jTzoRPpqVcpPUtnk9TLPRm/yqsLW5rzqU45RZvshYlmMrH648Bp+
-        +VOJgyFc0NC5Vs3bN8mgZAsW1mnElkGwPu5PAeUQupo9bWrU7jFZFfQc7FPoQxcaxz//lpCJDxhJD
-        ZuHJZtkrYUFb3n/y9sZEBKLUqfwZkaGs+bglrCumueb5ZG54b/NxCLJJzXQmO9LxeKerFKX+t6AXz
-        6X8YpY8hQffzfIE7GoVgFOKPODFGi4aJCr3+VXGUB9CZeB/MY6yUCEz72sg0jKQIZ694RVvWzj7SD
-        Plpff4LA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jnkn7-0003Pr-8v; Tue, 23 Jun 2020 15:24:53 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 180DE303DA0;
-        Tue, 23 Jun 2020 17:24:51 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id F17AC234EBA53; Tue, 23 Jun 2020 17:24:50 +0200 (CEST)
-Date:   Tue, 23 Jun 2020 17:24:50 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Ahmed S. Darwish" <a.darwish@linutronix.de>
+        with ESMTP id S1728916AbgFWQNm (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 23 Jun 2020 12:13:42 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF8AEC061573;
+        Tue, 23 Jun 2020 09:13:41 -0700 (PDT)
+Received: from [5.158.153.53] (helo=debian-buster-darwi.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <a.darwish@linutronix.de>)
+        id 1jnlY2-0005Ko-Kg; Tue, 23 Jun 2020 18:13:22 +0200
+Date:   Tue, 23 Jun 2020 18:13:21 +0200
+From:   "Ahmed S. Darwish" <a.darwish@linutronix.de>
+To:     Peter Zijlstra <peterz@infradead.org>
 Cc:     mingo@kernel.org, will@kernel.org, tglx@linutronix.de,
         x86@kernel.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org,
         bigeasy@linutronix.de, davem@davemloft.net,
@@ -45,35 +30,66 @@ Cc:     mingo@kernel.org, will@kernel.org, tglx@linutronix.de,
         linux-s390@vger.kernel.org, linux@armlinux.org.uk
 Subject: Re: [PATCH v4 7/8] lockdep: Change hardirq{s_enabled,_context} to
  per-cpu variables
-Message-ID: <20200623152450.GM4817@hirez.programming.kicks-ass.net>
+Message-ID: <20200623161320.GA2996373@debian-buster-darwi.lab.linutronix.de>
 References: <20200623083645.277342609@infradead.org>
  <20200623083721.512673481@infradead.org>
  <20200623150031.GA2986783@debian-buster-darwi.lab.linutronix.de>
+ <20200623152450.GM4817@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200623150031.GA2986783@debian-buster-darwi.lab.linutronix.de>
+In-Reply-To: <20200623152450.GM4817@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Jun 23, 2020 at 05:00:31PM +0200, Ahmed S. Darwish wrote:
-> On Tue, Jun 23, 2020 at 10:36:52AM +0200, Peter Zijlstra wrote:
-> ...
-> > -#define lockdep_assert_irqs_disabled()	do {				\
-> > -		WARN_ONCE(debug_locks && !current->lockdep_recursion &&	\
-> > -			  current->hardirqs_enabled,			\
-> > -			  "IRQs not disabled as expected\n");		\
-> > -	} while (0)
-> > +#define lockdep_assert_irqs_enabled()					\
-> > +do {									\
-> > +	WARN_ON_ONCE(debug_locks && !this_cpu_read(hardirqs_enabled));	\
-> > +} while (0)
+On Tue, Jun 23, 2020 at 05:24:50PM +0200, Peter Zijlstra wrote:
+> On Tue, Jun 23, 2020 at 05:00:31PM +0200, Ahmed S. Darwish wrote:
+> > On Tue, Jun 23, 2020 at 10:36:52AM +0200, Peter Zijlstra wrote:
+> > ...
+> > > -#define lockdep_assert_irqs_disabled()	do {				\
+> > > -		WARN_ONCE(debug_locks && !current->lockdep_recursion &&	\
+> > > -			  current->hardirqs_enabled,			\
+> > > -			  "IRQs not disabled as expected\n");		\
+> > > -	} while (0)
+> > > +#define lockdep_assert_irqs_enabled()					\
+> > > +do {									\
+> > > +	WARN_ON_ONCE(debug_locks && !this_cpu_read(hardirqs_enabled));	\
+> > > +} while (0)
+> > >
 > >
-> 
-> Can we add a small comment on top of lockdep_off(), stating that lockdep
-> IRQ tracking will still be kept after a lockdep_off call?
+> > Can we add a small comment on top of lockdep_off(), stating that lockdep
+> > IRQ tracking will still be kept after a lockdep_off call?
+>
+> That would only legitimize lockdep_off(). The only comment I want to put
+> on that is: "if you use this, you're doing it wrong'.
+>
 
-That would only legitimize lockdep_off(). The only comment I want to put
-on that is: "if you use this, you're doing it wrong'.
+Well, freshly merged code is using it. For example, KCSAN:
+
+    => f1bc96210c6a ("kcsan: Make KCSAN compatible with lockdep")
+    => kernel/kcsan/report.c:
+
+    void kcsan_report(...)
+    {
+	...
+        /*
+         * With TRACE_IRQFLAGS, lockdep's IRQ trace state becomes corrupted if
+         * we do not turn off lockdep here; this could happen due to recursion
+         * into lockdep via KCSAN if we detect a race in utilities used by
+         * lockdep.
+         */
+        lockdep_off();
+	...
+    }
+
+thanks,
+
+--
+Ahmed S. Darwish
+Linutronix GmbH
