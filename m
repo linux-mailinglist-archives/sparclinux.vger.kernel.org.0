@@ -2,263 +2,75 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 879C1204CA1
-	for <lists+sparclinux@lfdr.de>; Tue, 23 Jun 2020 10:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93FA5204CBD
+	for <lists+sparclinux@lfdr.de>; Tue, 23 Jun 2020 10:42:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731952AbgFWIjf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 23 Jun 2020 04:39:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56474 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731898AbgFWIjZ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 23 Jun 2020 04:39:25 -0400
-Received: from casper.infradead.org (unknown [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7507CC061795;
-        Tue, 23 Jun 2020 01:39:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
-        Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-        Content-ID:Content-Description:In-Reply-To;
-        bh=Pm0qeLUgtNdFZvdu/jg2s3/JXfU4zGZxInPrc6eUgNY=; b=h4SfwS0cyhRsYNDNc5kDr3XUE1
-        ttFxx+PRP430I61zGRaCwix1SzjNmgj7u5JZswlirmn+egh1bRuqhV+I1zkR9MAdU6WiepoAzxbVs
-        CEvYSACqG9ZMi0Cc+i4XkxGFafh+ESI3fShtPX+aLyH38vOiI9T4xQS1iHtEKEDTm8J7HS8Ahe8+V
-        L+tvR4fVVK2OUqvGT8PCg0Lmc8fSC4zwvXEJA/xHp0LVNUva254iZLQrYmd6zO71AvO64FbtKKHoT
-        KkRCLiER/74ytMLaiyhBTT1TbImham+mlzkglUnt6vZRTm30w/9yIi6U4TT7Z/uGgITXBh6U9CxQU
-        PM13oV2g==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jneS2-0000fp-Jx; Tue, 23 Jun 2020 08:38:42 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C67C0307995;
-        Tue, 23 Jun 2020 10:38:41 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
-        id 00FE5237095FF; Tue, 23 Jun 2020 10:38:39 +0200 (CEST)
-Message-ID: <20200623083721.571835311@infradead.org>
-User-Agent: quilt/0.66
-Date:   Tue, 23 Jun 2020 10:36:53 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     mingo@kernel.org, will@kernel.org, tglx@linutronix.de
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org,
-        a.darwish@linutronix.de, rostedt@goodmis.org,
-        bigeasy@linutronix.de, peterz@infradead.org, davem@davemloft.net,
-        sparclinux@vger.kernel.org, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, heiko.carstens@de.ibm.com,
-        linux-s390@vger.kernel.org, linux@armlinux.org.uk
-Subject: [PATCH v4 8/8] lockdep: Remove lockdep_hardirq{s_enabled,_context}() argument
-References: <20200623083645.277342609@infradead.org>
+        id S1731921AbgFWImd (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 23 Jun 2020 04:42:33 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41706 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731691AbgFWImc (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 23 Jun 2020 04:42:32 -0400
+Received: from ip5f5af08c.dynamic.kabel-deutschland.de ([95.90.240.140] helo=wittgenstein)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <christian.brauner@ubuntu.com>)
+        id 1jneVh-0003DY-GX; Tue, 23 Jun 2020 08:42:29 +0000
+Date:   Tue, 23 Jun 2020 10:42:28 +0200
+From:   Christian Brauner <christian.brauner@ubuntu.com>
+To:     David Miller <davem@davemloft.net>
+Cc:     linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        arnd@arndb.de, guoren@kernel.org, linux-csky@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH 02/17] sparc64: enable HAVE_COPY_THREAD_TLS
+Message-ID: <20200623084228.jpufvn5mn3lhjc36@wittgenstein>
+References: <20200622234326.906346-1-christian.brauner@ubuntu.com>
+ <20200622234326.906346-3-christian.brauner@ubuntu.com>
+ <20200622.203516.1857672250009821997.davem@davemloft.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200622.203516.1857672250009821997.davem@davemloft.net>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Now that the macros use per-cpu data, we no longer need the argument.
+On Mon, Jun 22, 2020 at 08:35:16PM -0700, David Miller wrote:
+> From: Christian Brauner <christian.brauner@ubuntu.com>
+> Date: Tue, 23 Jun 2020 01:43:11 +0200
+> 
+> > diff --git a/arch/sparc/kernel/syscalls.S b/arch/sparc/kernel/syscalls.S
+> > index db42b4fb3708..192f3a28a2b7 100644
+> > --- a/arch/sparc/kernel/syscalls.S
+> > +++ b/arch/sparc/kernel/syscalls.S
+> > @@ -86,19 +86,22 @@ sys32_rt_sigreturn:
+> >  	 * during system calls...
+> >  	 */
+> >  	.align	32
+> > -sys_vfork: /* Under Linux, vfork and fork are just special cases of clone. */
+> > -	sethi	%hi(0x4000 | 0x0100 | SIGCHLD), %o0
+> > -	or	%o0, %lo(0x4000 | 0x0100 | SIGCHLD), %o0
+> > -	ba,pt	%xcc, sys_clone
+> > +sys_vfork:
+> > +	flushw
+> > +	ba,pt	%xcc, sparc_vfork
+> > +	add	%sp, PTREGS_OFF, %o0
+> 
+> Please indent branch delay slot instructions with one extra space, as
+> was done in the code you are changing.
+> 
+> > +	ba,pt	%xcc, sparc_fork
+> > +	add	%sp, PTREGS_OFF, %o0
+> 
+> Likewise.
+> 
+> > +	ba,pt	%xcc, sparc_clone
+> > +	add	%sp, PTREGS_OFF, %o0
+> 
+> Likewise.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- arch/x86/entry/common.c        |    2 +-
- include/linux/irqflags.h       |    8 ++++----
- include/linux/lockdep.h        |    2 +-
- kernel/locking/lockdep.c       |   30 +++++++++++++++---------------
- kernel/softirq.c               |    2 +-
- tools/include/linux/irqflags.h |    4 ++--
- 6 files changed, 24 insertions(+), 24 deletions(-)
+Fixed, thanks for taking a look again! This somehow slipped past me when
+applying. 
 
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -689,7 +689,7 @@ noinstr void idtentry_exit_user(struct p
- 
- noinstr bool idtentry_enter_nmi(struct pt_regs *regs)
- {
--	bool irq_state = lockdep_hardirqs_enabled(current);
-+	bool irq_state = lockdep_hardirqs_enabled();
- 
- 	__nmi_enter();
- 	lockdep_hardirqs_off(CALLER_ADDR0);
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -40,9 +40,9 @@ DECLARE_PER_CPU(int, hardirq_context);
-   extern void trace_hardirqs_off_finish(void);
-   extern void trace_hardirqs_on(void);
-   extern void trace_hardirqs_off(void);
--# define lockdep_hardirq_context(p)	(this_cpu_read(hardirq_context))
-+# define lockdep_hardirq_context()	(this_cpu_read(hardirq_context))
- # define lockdep_softirq_context(p)	((p)->softirq_context)
--# define lockdep_hardirqs_enabled(p)	(this_cpu_read(hardirqs_enabled))
-+# define lockdep_hardirqs_enabled()	(this_cpu_read(hardirqs_enabled))
- # define lockdep_softirqs_enabled(p)	((p)->softirqs_enabled)
- # define lockdep_hardirq_enter()			\
- do {							\
-@@ -109,9 +109,9 @@ do {						\
- # define trace_hardirqs_off_finish()		do { } while (0)
- # define trace_hardirqs_on()		do { } while (0)
- # define trace_hardirqs_off()		do { } while (0)
--# define lockdep_hardirq_context(p)	0
-+# define lockdep_hardirq_context()	0
- # define lockdep_softirq_context(p)	0
--# define lockdep_hardirqs_enabled(p)	0
-+# define lockdep_hardirqs_enabled()	0
- # define lockdep_softirqs_enabled(p)	0
- # define lockdep_hardirq_enter()	do { } while (0)
- # define lockdep_hardirq_threaded()	do { } while (0)
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -736,7 +736,7 @@ do {									\
- 
- # define lockdep_assert_RT_in_threaded_ctx() do {			\
- 		WARN_ONCE(debug_locks && !current->lockdep_recursion &&	\
--			  lockdep_hardirq_context(current) &&		\
-+			  lockdep_hardirq_context() &&			\
- 			  !(current->hardirq_threaded || current->irq_config),	\
- 			  "Not in threaded context on PREEMPT_RT as expected\n");	\
- } while (0)
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -2062,9 +2062,9 @@ print_bad_irq_dependency(struct task_str
- 	pr_warn("-----------------------------------------------------\n");
- 	pr_warn("%s/%d [HC%u[%lu]:SC%u[%lu]:HE%u:SE%u] is trying to acquire:\n",
- 		curr->comm, task_pid_nr(curr),
--		lockdep_hardirq_context(curr), hardirq_count() >> HARDIRQ_SHIFT,
-+		lockdep_hardirq_context(), hardirq_count() >> HARDIRQ_SHIFT,
- 		curr->softirq_context, softirq_count() >> SOFTIRQ_SHIFT,
--		lockdep_hardirqs_enabled(curr),
-+		lockdep_hardirqs_enabled(),
- 		curr->softirqs_enabled);
- 	print_lock(next);
- 
-@@ -3331,9 +3331,9 @@ print_usage_bug(struct task_struct *curr
- 
- 	pr_warn("%s/%d [HC%u[%lu]:SC%u[%lu]:HE%u:SE%u] takes:\n",
- 		curr->comm, task_pid_nr(curr),
--		lockdep_hardirq_context(curr), hardirq_count() >> HARDIRQ_SHIFT,
-+		lockdep_hardirq_context(), hardirq_count() >> HARDIRQ_SHIFT,
- 		lockdep_softirq_context(curr), softirq_count() >> SOFTIRQ_SHIFT,
--		lockdep_hardirqs_enabled(curr),
-+		lockdep_hardirqs_enabled(),
- 		lockdep_softirqs_enabled(curr));
- 	print_lock(this);
- 
-@@ -3658,7 +3658,7 @@ void lockdep_hardirqs_on_prepare(unsigne
- 	if (unlikely(current->lockdep_recursion & LOCKDEP_RECURSION_MASK))
- 		return;
- 
--	if (unlikely(lockdep_hardirqs_enabled(current))) {
-+	if (unlikely(lockdep_hardirqs_enabled())) {
- 		/*
- 		 * Neither irq nor preemption are disabled here
- 		 * so this is racy by nature but losing one hit
-@@ -3686,7 +3686,7 @@ void lockdep_hardirqs_on_prepare(unsigne
- 	 * Can't allow enabling interrupts while in an interrupt handler,
- 	 * that's general bad form and such. Recursion, limited stack etc..
- 	 */
--	if (DEBUG_LOCKS_WARN_ON(lockdep_hardirq_context(current)))
-+	if (DEBUG_LOCKS_WARN_ON(lockdep_hardirq_context()))
- 		return;
- 
- 	current->hardirq_chain_key = current->curr_chain_key;
-@@ -3724,7 +3724,7 @@ void noinstr lockdep_hardirqs_on(unsigne
- 	if (unlikely(current->lockdep_recursion & LOCKDEP_RECURSION_MASK))
- 		return;
- 
--	if (lockdep_hardirqs_enabled(curr)) {
-+	if (lockdep_hardirqs_enabled()) {
- 		/*
- 		 * Neither irq nor preemption are disabled here
- 		 * so this is racy by nature but losing one hit
-@@ -3783,7 +3783,7 @@ void noinstr lockdep_hardirqs_off(unsign
- 	if (DEBUG_LOCKS_WARN_ON(!irqs_disabled()))
- 		return;
- 
--	if (lockdep_hardirqs_enabled(curr)) {
-+	if (lockdep_hardirqs_enabled()) {
- 		/*
- 		 * We have done an ON -> OFF transition:
- 		 */
-@@ -3832,7 +3832,7 @@ void lockdep_softirqs_on(unsigned long i
- 	 * usage bit for all held locks, if hardirqs are
- 	 * enabled too:
- 	 */
--	if (lockdep_hardirqs_enabled(curr))
-+	if (lockdep_hardirqs_enabled())
- 		mark_held_locks(curr, LOCK_ENABLED_SOFTIRQ);
- 	lockdep_recursion_finish();
- }
-@@ -3881,7 +3881,7 @@ mark_usage(struct task_struct *curr, str
- 	 */
- 	if (!hlock->trylock) {
- 		if (hlock->read) {
--			if (lockdep_hardirq_context(curr))
-+			if (lockdep_hardirq_context())
- 				if (!mark_lock(curr, hlock,
- 						LOCK_USED_IN_HARDIRQ_READ))
- 					return 0;
-@@ -3890,7 +3890,7 @@ mark_usage(struct task_struct *curr, str
- 						LOCK_USED_IN_SOFTIRQ_READ))
- 					return 0;
- 		} else {
--			if (lockdep_hardirq_context(curr))
-+			if (lockdep_hardirq_context())
- 				if (!mark_lock(curr, hlock, LOCK_USED_IN_HARDIRQ))
- 					return 0;
- 			if (curr->softirq_context)
-@@ -3928,7 +3928,7 @@ mark_usage(struct task_struct *curr, str
- 
- static inline unsigned int task_irq_context(struct task_struct *task)
- {
--	return LOCK_CHAIN_HARDIRQ_CONTEXT * !!lockdep_hardirq_context(task) +
-+	return LOCK_CHAIN_HARDIRQ_CONTEXT * !!lockdep_hardirq_context() +
- 	       LOCK_CHAIN_SOFTIRQ_CONTEXT * !!task->softirq_context;
- }
- 
-@@ -4021,7 +4021,7 @@ static inline short task_wait_context(st
- 	 * Set appropriate wait type for the context; for IRQs we have to take
- 	 * into account force_irqthread as that is implied by PREEMPT_RT.
- 	 */
--	if (lockdep_hardirq_context(curr)) {
-+	if (lockdep_hardirq_context()) {
- 		/*
- 		 * Check if force_irqthreads will run us threaded.
- 		 */
-@@ -4864,11 +4864,11 @@ static void check_flags(unsigned long fl
- 		return;
- 
- 	if (irqs_disabled_flags(flags)) {
--		if (DEBUG_LOCKS_WARN_ON(lockdep_hardirqs_enabled(current))) {
-+		if (DEBUG_LOCKS_WARN_ON(lockdep_hardirqs_enabled())) {
- 			printk("possible reason: unannotated irqs-off.\n");
- 		}
- 	} else {
--		if (DEBUG_LOCKS_WARN_ON(!lockdep_hardirqs_enabled(current))) {
-+		if (DEBUG_LOCKS_WARN_ON(!lockdep_hardirqs_enabled())) {
- 			printk("possible reason: unannotated irqs-on.\n");
- 		}
- 	}
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -230,7 +230,7 @@ static inline bool lockdep_softirq_start
- {
- 	bool in_hardirq = false;
- 
--	if (lockdep_hardirq_context(current)) {
-+	if (lockdep_hardirq_context()) {
- 		in_hardirq = true;
- 		lockdep_hardirq_exit();
- 	}
---- a/tools/include/linux/irqflags.h
-+++ b/tools/include/linux/irqflags.h
-@@ -2,9 +2,9 @@
- #ifndef _LIBLOCKDEP_LINUX_TRACE_IRQFLAGS_H_
- #define _LIBLOCKDEP_LINUX_TRACE_IRQFLAGS_H_
- 
--# define lockdep_hardirq_context(p)	0
-+# define lockdep_hardirq_context()	0
- # define lockdep_softirq_context(p)	0
--# define lockdep_hardirqs_enabled(p)	0
-+# define lockdep_hardirqs_enabled()	0
- # define lockdep_softirqs_enabled(p)	0
- # define lockdep_hardirq_enter()	do { } while (0)
- # define lockdep_hardirq_exit()		do { } while (0)
-
-
+Christian
