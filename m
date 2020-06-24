@@ -2,56 +2,54 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F9EC20735B
-	for <lists+sparclinux@lfdr.de>; Wed, 24 Jun 2020 14:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3632C207736
+	for <lists+sparclinux@lfdr.de>; Wed, 24 Jun 2020 17:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389613AbgFXMce (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 24 Jun 2020 08:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60628 "EHLO
+        id S2404108AbgFXPTL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 24 Jun 2020 11:19:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388181AbgFXMcb (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 24 Jun 2020 08:32:31 -0400
-Received: from merlin.infradead.org (unknown [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 829FDC061573;
-        Wed, 24 Jun 2020 05:32:31 -0700 (PDT)
+        with ESMTP id S2404017AbgFXPTL (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 24 Jun 2020 11:19:11 -0400
+Received: from casper.infradead.org (unknown [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCBC6C061573;
+        Wed, 24 Jun 2020 08:19:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=it9VsGosZwW2AP+pfNnE7lbVlyMIxAC0ndaAV7moVK0=; b=PP2H5yDL6sw2rzJ9wwDgYU5npx
-        DegwUhHRBC74l2k/7QgLFXzQ5D+rkWEwAvKbR1I5BlI3E3ORsNoJvAslgybSzD5AK5rhJzXFD9sm3
-        mt64QM+6t3xLhYJDfrIEQpnM0hDmOYoIVcwI8VD8r0PDAcNUZuwgBIVdbWNDkDXIJQOxE1FsInSLv
-        Sf+tHA7qRjaCnJTY/+JKlEIEsbrcHXeyfpbpuBdU/2wzslLrG1aUsGLBJWajvVmeAXZX600RE+BpO
-        OFaoNN3K7C/ocakwoK8OLA1wyT8a/7ZWsuYQfmNbVvXBJzgiVQ1+T+wiZ9xpB65R7HiUVOMsvyoCB
-        Z12SiQnw==;
+        bh=OzpoSzSO3ZwwkTaaz+DbzEmnMWM/twLb1Ew9uO9Omg4=; b=IiAut47R5a9gS07Hg7ZrLDUswa
+        MPDOrqrb35FNW7KA4s0pUdZ+xW7oaaLhOoeJiu9J+UTLn/Qj+ir5baR9VA7kEydjQwVr4EB3fZcl1
+        UDWmBsrI+TkqD4KDiZAQKns4WXZ8EvOchOT2GpbdTro1j6tZQa9K4MwEydqHn12TfL+dOAUZbtzk6
+        knDrzkV/e9M9xycx+wIfsS57Dwf6vaVxcQkDVYa96lmKIONLDVeVIGvZLcKENzqqTC7rZJHYnTbf3
+        aKNMRDwBPvihLQrDIWqXFNrvsBzZsruACWqWCs1VrhRRLtKG9pkW8T7/p0yi5CvGJhUvk1loFIU9p
+        +Q/nmH+w==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jo4ZB-000677-UW; Wed, 24 Jun 2020 12:31:50 +0000
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jo7AG-0003Sa-Sx; Wed, 24 Jun 2020 15:18:17 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 51910301A7A;
-        Wed, 24 Jun 2020 14:31:47 +0200 (CEST)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 97715301A7A;
+        Wed, 24 Jun 2020 17:18:14 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 3D90821211CCA; Wed, 24 Jun 2020 14:31:47 +0200 (CEST)
-Date:   Wed, 24 Jun 2020 14:31:47 +0200
+        id 8CDC9203CDC50; Wed, 24 Jun 2020 17:18:14 +0200 (CEST)
+Date:   Wed, 24 Jun 2020 17:18:14 +0200
 From:   Peter Zijlstra <peterz@infradead.org>
 To:     Marco Elver <elver@google.com>
-Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>, bigeasy@linutronix.de,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>, mingo@kernel.org,
+        will@kernel.org, tglx@linutronix.de, x86@kernel.org,
+        linux-kernel@vger.kernel.org, rostedt@goodmis.org,
+        bigeasy@linutronix.de, davem@davemloft.net,
+        sparclinux@vger.kernel.org, mpe@ellerman.id.au,
         linuxppc-dev@lists.ozlabs.org, heiko.carstens@de.ibm.com,
         linux-s390@vger.kernel.org, linux@armlinux.org.uk,
-        "Paul E. McKenney" <paulmck@kernel.org>
+        paulmck@kernel.org
 Subject: Re: [PATCH v4 7/8] lockdep: Change hardirq{s_enabled,_context} to
  per-cpu variables
-Message-ID: <20200624123147.GH4781@hirez.programming.kicks-ass.net>
-References: <20200623083721.512673481@infradead.org>
+Message-ID: <20200624151814.GI4781@hirez.programming.kicks-ass.net>
+References: <20200623083645.277342609@infradead.org>
+ <20200623083721.512673481@infradead.org>
  <20200623150031.GA2986783@debian-buster-darwi.lab.linutronix.de>
  <20200623152450.GM4817@hirez.programming.kicks-ass.net>
  <20200623161320.GA2996373@debian-buster-darwi.lab.linutronix.de>
@@ -59,34 +57,32 @@ References: <20200623083721.512673481@infradead.org>
  <20200623175957.GA106514@elver.google.com>
  <20200623181232.GB4800@hirez.programming.kicks-ass.net>
  <20200623202404.GE2483@worktop.programming.kicks-ass.net>
- <20200624090033.GD4800@hirez.programming.kicks-ass.net>
- <CANpmjNMj8FZuBrZsH62V3bZEhFvT2zXwLusVOLwNuH_-kLhp2g@mail.gmail.com>
+ <20200624113246.GA170324@elver.google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANpmjNMj8FZuBrZsH62V3bZEhFvT2zXwLusVOLwNuH_-kLhp2g@mail.gmail.com>
+In-Reply-To: <20200624113246.GA170324@elver.google.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Jun 24, 2020 at 12:17:56PM +0200, Marco Elver wrote:
-> On Wed, 24 Jun 2020 at 11:01, Peter Zijlstra <peterz@infradead.org> wrote:
-
-> > And I figured a quick way to get rid of that would be something like the
-> > below, seeing how volatile gets auto annotated... but that doesn't seem
-> > to actually work.
-> >
-> > What am I missing?
+On Wed, Jun 24, 2020 at 01:32:46PM +0200, Marco Elver wrote:
+> From: Marco Elver <elver@google.com>
+> Date: Wed, 24 Jun 2020 11:23:22 +0200
+> Subject: [PATCH] kcsan: Make KCSAN compatible with new IRQ state tracking
 > 
-> There's one more in include/linux/rcupdate.h. I suggested this at some point:
+> The new IRQ state tracking code does not honor lockdep_off(), and as
+> such we should again permit tracing by using non-raw functions in
+> core.c. Update the lockdep_off() comment in report.c, to reflect the
+> fact there is still a potential risk of deadlock due to using printk()
+> from scheduler code.
 > 
->     https://lore.kernel.org/lkml/20200220213317.GA35033@google.com/
-> 
-> To avoid volatiles as I don't think they are needed here.
+> Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Marco Elver <elver@google.com>
 
-Urgghh.. local_t is very expensive for this. The current code is
-actually fine, even on load-store architectures. Using local_t will only
-result in it being more expensive for no gain.
+Thanks!
 
-I'll go put data_race() around it.
+I've put this in front of the series at hand. I'll wait a little while
+longer for arch people to give feedback on their header patches before I
+stuff the lot into tip/locking/core.
