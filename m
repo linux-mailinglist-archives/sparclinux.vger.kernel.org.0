@@ -2,87 +2,122 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3632C207736
-	for <lists+sparclinux@lfdr.de>; Wed, 24 Jun 2020 17:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90948207AF7
+	for <lists+sparclinux@lfdr.de>; Wed, 24 Jun 2020 19:55:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404108AbgFXPTL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 24 Jun 2020 11:19:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58308 "EHLO
+        id S2405715AbgFXRzF (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 24 Jun 2020 13:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404017AbgFXPTL (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 24 Jun 2020 11:19:11 -0400
+        with ESMTP id S2405677AbgFXRzE (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 24 Jun 2020 13:55:04 -0400
 Received: from casper.infradead.org (unknown [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCBC6C061573;
-        Wed, 24 Jun 2020 08:19:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFC50C061573;
+        Wed, 24 Jun 2020 10:55:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=OzpoSzSO3ZwwkTaaz+DbzEmnMWM/twLb1Ew9uO9Omg4=; b=IiAut47R5a9gS07Hg7ZrLDUswa
-        MPDOrqrb35FNW7KA4s0pUdZ+xW7oaaLhOoeJiu9J+UTLn/Qj+ir5baR9VA7kEydjQwVr4EB3fZcl1
-        UDWmBsrI+TkqD4KDiZAQKns4WXZ8EvOchOT2GpbdTro1j6tZQa9K4MwEydqHn12TfL+dOAUZbtzk6
-        knDrzkV/e9M9xycx+wIfsS57Dwf6vaVxcQkDVYa96lmKIONLDVeVIGvZLcKENzqqTC7rZJHYnTbf3
-        aKNMRDwBPvihLQrDIWqXFNrvsBzZsruACWqWCs1VrhRRLtKG9pkW8T7/p0yi5CvGJhUvk1loFIU9p
-        +Q/nmH+w==;
+        bh=ITI+6nMfT1OTxjvFBXS8SqWS++zlFeNEzUYzivsKdN8=; b=ta0+ik8IcGl2bYYyUFC54uqCk6
+        +qqjbp4JGa3fmCsMN/1XR64QetGWyQS7cOPLkZ8Sd7seu27n2ZU99DG+4ZKeiqVLFi2Rd7wtO2UQL
+        GW1uJnydKQdPJ+UYCtnZqxOq3N+MMH4ujD7+ifq6lXpdKwBallQxHrfd/GFtCJ50BRlw/CGboN9pc
+        McgLZcB/OlZcMCQsulJ8euQOvryCEFjsKTzMp3VAhwXyIV2SrxsERi8YF8lKPZ3whCYUpdG9ydSSy
+        8mm8SW6N3uO4HWb9t4VOVM4mMwpHKHwfG2gwyqBetkNwHqtzniEsgU9+gFIcvhEFRolCmsw5lTQoG
+        QoEIkerQ==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
         by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jo7AG-0003Sa-Sx; Wed, 24 Jun 2020 15:18:17 +0000
+        id 1jo9aM-0002ji-Rj; Wed, 24 Jun 2020 17:53:23 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 97715301A7A;
-        Wed, 24 Jun 2020 17:18:14 +0200 (CEST)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 6C7B1307966;
+        Wed, 24 Jun 2020 19:53:20 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 8CDC9203CDC50; Wed, 24 Jun 2020 17:18:14 +0200 (CEST)
-Date:   Wed, 24 Jun 2020 17:18:14 +0200
+        id 5D2E321AD36DB; Wed, 24 Jun 2020 19:53:20 +0200 (CEST)
+Date:   Wed, 24 Jun 2020 19:53:20 +0200
 From:   Peter Zijlstra <peterz@infradead.org>
-To:     Marco Elver <elver@google.com>
-Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>, mingo@kernel.org,
-        will@kernel.org, tglx@linutronix.de, x86@kernel.org,
-        linux-kernel@vger.kernel.org, rostedt@goodmis.org,
-        bigeasy@linutronix.de, davem@davemloft.net,
+To:     Will Deacon <will@kernel.org>
+Cc:     mingo@kernel.org, tglx@linutronix.de, x86@kernel.org,
+        linux-kernel@vger.kernel.org, a.darwish@linutronix.de,
+        rostedt@goodmis.org, bigeasy@linutronix.de, davem@davemloft.net,
         sparclinux@vger.kernel.org, mpe@ellerman.id.au,
         linuxppc-dev@lists.ozlabs.org, heiko.carstens@de.ibm.com,
-        linux-s390@vger.kernel.org, linux@armlinux.org.uk,
-        paulmck@kernel.org
-Subject: Re: [PATCH v4 7/8] lockdep: Change hardirq{s_enabled,_context} to
- per-cpu variables
-Message-ID: <20200624151814.GI4781@hirez.programming.kicks-ass.net>
+        linux-s390@vger.kernel.org, linux@armlinux.org.uk
+Subject: Re: [PATCH v4 6/8] arm: Break cyclic percpu include
+Message-ID: <20200624175320.GN4781@hirez.programming.kicks-ass.net>
 References: <20200623083645.277342609@infradead.org>
- <20200623083721.512673481@infradead.org>
- <20200623150031.GA2986783@debian-buster-darwi.lab.linutronix.de>
- <20200623152450.GM4817@hirez.programming.kicks-ass.net>
- <20200623161320.GA2996373@debian-buster-darwi.lab.linutronix.de>
- <20200623163730.GA4800@hirez.programming.kicks-ass.net>
- <20200623175957.GA106514@elver.google.com>
- <20200623181232.GB4800@hirez.programming.kicks-ass.net>
- <20200623202404.GE2483@worktop.programming.kicks-ass.net>
- <20200624113246.GA170324@elver.google.com>
+ <20200623083721.454517573@infradead.org>
+ <20200623090257.GA3743@willie-the-truck>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200624113246.GA170324@elver.google.com>
+In-Reply-To: <20200623090257.GA3743@willie-the-truck>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Jun 24, 2020 at 01:32:46PM +0200, Marco Elver wrote:
-> From: Marco Elver <elver@google.com>
-> Date: Wed, 24 Jun 2020 11:23:22 +0200
-> Subject: [PATCH] kcsan: Make KCSAN compatible with new IRQ state tracking
+On Tue, Jun 23, 2020 at 10:02:57AM +0100, Will Deacon wrote:
+> On Tue, Jun 23, 2020 at 10:36:51AM +0200, Peter Zijlstra wrote:
+> > In order to use <asm/percpu.h> in irqflags.h, we need to make sure
+> > asm/percpu.h does not itself depend on irqflags.h.
+> > 
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > ---
+> >  arch/arm/include/asm/percpu.h |    2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > --- a/arch/arm/include/asm/percpu.h
+> > +++ b/arch/arm/include/asm/percpu.h
+> > @@ -10,6 +10,8 @@
+> >   * in the TPIDRPRW. TPIDRPRW only exists on V6K and V7
+> >   */
+> >  #if defined(CONFIG_SMP) && !defined(CONFIG_CPU_V6)
+> > +register unsigned long current_stack_pointer asm ("sp");
 > 
-> The new IRQ state tracking code does not honor lockdep_off(), and as
-> such we should again permit tracing by using non-raw functions in
-> core.c. Update the lockdep_off() comment in report.c, to reflect the
-> fact there is still a potential risk of deadlock due to using printk()
-> from scheduler code.
-> 
-> Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Signed-off-by: Marco Elver <elver@google.com>
+> If you define this unconditionally, then we can probably get rid of the
+> copy in asm/thread_info.h, rather than duplicate the same #define.
 
-Thanks!
+The below delta seems to build arm-allnoconfig, arm-defconfig and
+arm-allmodconfig.
 
-I've put this in front of the series at hand. I'll wait a little while
-longer for arch people to give feedback on their header patches before I
-stuff the lot into tip/locking/core.
+Although please don't ask me how asm/thread_info.h includes asm/percpu.h
+
+Does that work for you?
+
+diff --git a/arch/arm/include/asm/percpu.h b/arch/arm/include/asm/percpu.h
+index e86e47486b6b1..e2fcb3cfd3de5 100644
+--- a/arch/arm/include/asm/percpu.h
++++ b/arch/arm/include/asm/percpu.h
+@@ -5,13 +5,13 @@
+ #ifndef _ASM_ARM_PERCPU_H_
+ #define _ASM_ARM_PERCPU_H_
+ 
++register unsigned long current_stack_pointer asm ("sp");
++
+ /*
+  * Same as asm-generic/percpu.h, except that we store the per cpu offset
+  * in the TPIDRPRW. TPIDRPRW only exists on V6K and V7
+  */
+ #if defined(CONFIG_SMP) && !defined(CONFIG_CPU_V6)
+-register unsigned long current_stack_pointer asm ("sp");
+-
+ static inline void set_my_cpu_offset(unsigned long off)
+ {
+ 	/* Set TPIDRPRW */
+diff --git a/arch/arm/include/asm/thread_info.h b/arch/arm/include/asm/thread_info.h
+index 3609a6980c342..536b6b979f634 100644
+--- a/arch/arm/include/asm/thread_info.h
++++ b/arch/arm/include/asm/thread_info.h
+@@ -75,11 +75,6 @@ struct thread_info {
+ 	.addr_limit	= KERNEL_DS,					\
+ }
+ 
+-/*
+- * how to get the current stack pointer in C
+- */
+-register unsigned long current_stack_pointer asm ("sp");
+-
+ /*
+  * how to get the thread information struct from C
+  */
