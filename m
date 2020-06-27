@@ -2,291 +2,73 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EC2520BF80
-	for <lists+sparclinux@lfdr.de>; Sat, 27 Jun 2020 09:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9150B20C00C
+	for <lists+sparclinux@lfdr.de>; Sat, 27 Jun 2020 10:17:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726453AbgF0H1x (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 27 Jun 2020 03:27:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58582 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726412AbgF0H1t (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 27 Jun 2020 03:27:49 -0400
-Received: from casper.infradead.org (unknown [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01F01C03E97A;
-        Sat, 27 Jun 2020 00:27:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description;
-        bh=mURemflipje9eYopYQ4h3uusWn3YXYVAu+uuVrAN7pQ=; b=TlPnTimqsO2m30LvldYZKWVizZ
-        hpNyMesz2KmBGpNgKstCa9x+hZjeq/G/LSRMkegjvZ22YoGmrkgnX+pZNWw5KGTu0v468zw9T4sZI
-        Xu/MpJ2eSYmAE+ipVFlRyXHmj7yINmDtCVRDeT4inn/UpLST2JkhmV8QUh9BXIQDcWZI6goY8hoTK
-        4LzatZU6wTyWdTn1fSGkRe6TQ02ZarzjB0rP81o5Zm/pl6DVfHmLMMgslXwjVzsTycl+tfWpI1waO
-        hEgw54/dYKj+ZkSuM7HhgjVT0BbFo583J9Wu65cTYBtF8e6ZyiugH7Oj2JWPx8rHz3ol1injsjGRn
-        /VsHUW/A==;
-Received: from [2001:4bb8:184:76e3:595:ba65:ae56:65a6] (helo=localhost)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jp5FI-0006XS-Jx; Sat, 27 Jun 2020 07:27:30 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Brian Gerst <brgerst@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] exec: add a kernel_execveat helper
-Date:   Sat, 27 Jun 2020 09:27:04 +0200
-Message-Id: <20200627072704.2447163-6-hch@lst.de>
+        id S1726139AbgF0IRR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 27 Jun 2020 04:17:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51474 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725900AbgF0IRQ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sat, 27 Jun 2020 04:17:16 -0400
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9AB512080C;
+        Sat, 27 Jun 2020 08:17:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593245836;
+        bh=823ZeGyFFy5BoOmrk0GEhxGLRZDwTJnqPCvA2WheQgM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=pDtHUdN46bq4IFlAf+INwZcWh8Qck6B0vcNWGI43Hb6sl/+hSL/H+PL7dmuNLoIaa
+         o4XEfsBcN+QJ+4sVBvL+Gv2TZV2+JQo/ctCvXTpBvRXoVVqtyZpS89ri4buAgq9xvC
+         pjnJPrvttALvuI1yy3lX5xxOiajNTWujxFpXODYw=
+From:   Mike Rapoport <rppt@kernel.org>
+To:     sparclinux@vger.kernel.org
+Cc:     David Miller <davem@davemloft.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: [PATCH v2 0/2] sparc32: srmmu: improve type safety of __nocache_fix()
+Date:   Sat, 27 Jun 2020 11:16:51 +0300
+Message-Id: <20200627081653.25311-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200627072704.2447163-1-hch@lst.de>
-References: <20200627072704.2447163-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Add a kernel_execveat helper to execute a binary with kernel space argv
-and envp pointers.  Switch executing init and user mode helpers to this
-new helper instead of relying on the implicit set_fs(KERNEL_DS) for early
-init code and kernel threads, and move the getname call into the
-do_execve helper.
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- fs/exec.c               | 109 ++++++++++++++++++++++++++++++++--------
- include/linux/binfmts.h |   6 +--
- init/main.c             |   6 +--
- kernel/umh.c            |   8 ++-
- 4 files changed, 95 insertions(+), 34 deletions(-)
+Hi,
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 34781db6bf6889..7923b8334ae600 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -435,6 +435,21 @@ static int count_strings(const char __user *const __user *argv)
- 	return i;
- }
- 
-+static int count_kernel_strings(const char *const *argv)
-+{
-+	int i;
-+
-+	if (!argv)
-+		return 0;
-+
-+	for (i = 0; argv[i]; i++) {
-+		if (i >= MAX_ARG_STRINGS)
-+			return -E2BIG;
-+	}
-+
-+	return i;
-+}
-+
- static int check_arg_limit(struct linux_binprm *bprm)
- {
- 	unsigned long limit, ptr_size;
-@@ -611,6 +626,19 @@ int copy_string_kernel(const char *arg, struct linux_binprm *bprm)
- }
- EXPORT_SYMBOL(copy_string_kernel);
- 
-+static int copy_strings_kernel(int argc, const char *const *argv,
-+		struct linux_binprm *bprm)
-+{
-+	int ret;
-+
-+	while (argc-- > 0) {
-+		ret = copy_string_kernel(argv[argc], bprm);
-+		if (ret)
-+			break;
-+	}
-+	return ret;
-+}
-+
- #ifdef CONFIG_MMU
- 
- /*
-@@ -1793,9 +1821,11 @@ static int exec_binprm(struct linux_binprm *bprm)
- 	return 0;
- }
- 
--int do_execveat(int fd, struct filename *filename,
-+static int __do_execveat(int fd, struct filename *filename,
- 		const char __user *const __user *argv,
- 		const char __user *const __user *envp,
-+		const char *const *kernel_argv,
-+		const char *const *kernel_envp,
- 		int flags, struct file *file)
- {
- 	char *pathbuf = NULL;
-@@ -1876,16 +1906,30 @@ int do_execveat(int fd, struct filename *filename,
- 	if (retval)
- 		goto out_unmark;
- 
--	bprm->argc = count_strings(argv);
--	if (bprm->argc < 0) {
--		retval = bprm->argc;
--		goto out;
--	}
-+	if (unlikely(kernel_argv)) {
-+		bprm->argc = count_kernel_strings(kernel_argv);
-+		if (bprm->argc < 0) {
-+			retval = bprm->argc;
-+			goto out;
-+		}
- 
--	bprm->envc = count_strings(envp);
--	if (bprm->envc < 0) {
--		retval = bprm->envc;
--		goto out;
-+		bprm->envc = count_kernel_strings(kernel_envp);
-+		if (bprm->envc < 0) {
-+			retval = bprm->envc;
-+			goto out;
-+		}
-+	} else {
-+		bprm->argc = count_strings(argv);
-+		if (bprm->argc < 0) {
-+			retval = bprm->argc;
-+			goto out;
-+		}
-+
-+		bprm->envc = count_strings(envp);
-+		if (bprm->envc < 0) {
-+			retval = bprm->envc;
-+			goto out;
-+		}
- 	}
- 
- 	retval = check_arg_limit(bprm);
-@@ -1902,13 +1946,22 @@ int do_execveat(int fd, struct filename *filename,
- 		goto out;
- 
- 	bprm->exec = bprm->p;
--	retval = copy_strings(bprm->envc, envp, bprm);
--	if (retval < 0)
--		goto out;
- 
--	retval = copy_strings(bprm->argc, argv, bprm);
--	if (retval < 0)
--		goto out;
-+	if (unlikely(kernel_argv)) {
-+		retval = copy_strings_kernel(bprm->envc, kernel_envp, bprm);
-+		if (retval < 0)
-+			goto out;
-+		retval = copy_strings_kernel(bprm->argc, kernel_argv, bprm);
-+		if (retval < 0)
-+			goto out;
-+	} else {
-+		retval = copy_strings(bprm->envc, envp, bprm);
-+		if (retval < 0)
-+			goto out;
-+		retval = copy_strings(bprm->argc, argv, bprm);
-+		if (retval < 0)
-+			goto out;
-+	}
- 
- 	retval = exec_binprm(bprm);
- 	if (retval < 0)
-@@ -1959,6 +2012,23 @@ int do_execveat(int fd, struct filename *filename,
- 	return retval;
- }
- 
-+static int do_execveat(int fd, const char *filename,
-+		       const char __user *const __user *argv,
-+		       const char __user *const __user *envp, int flags)
-+{
-+	int lookup_flags = (flags & AT_EMPTY_PATH) ? LOOKUP_EMPTY : 0;
-+	struct filename *name = getname_flags(filename, lookup_flags, NULL);
-+
-+	return __do_execveat(fd, name, argv, envp, NULL, NULL, flags, NULL);
-+}
-+
-+int kernel_execveat(int fd, const char *filename, const char *const *argv,
-+		const char *const *envp, int flags, struct file *file)
-+{
-+	return __do_execveat(fd, getname_kernel(filename), NULL, NULL, argv,
-+			     envp, flags, file);
-+}
-+
- void set_binfmt(struct linux_binfmt *new)
- {
- 	struct mm_struct *mm = current->mm;
-@@ -1988,7 +2058,7 @@ SYSCALL_DEFINE3(execve,
- 		const char __user *const __user *, argv,
- 		const char __user *const __user *, envp)
- {
--	return do_execveat(AT_FDCWD, getname(filename), argv, envp, 0, NULL);
-+	return do_execveat(AT_FDCWD, filename, argv, envp, 0);
- }
- 
- SYSCALL_DEFINE5(execveat,
-@@ -1997,8 +2067,5 @@ SYSCALL_DEFINE5(execveat,
- 		const char __user *const __user *, envp,
- 		int, flags)
- {
--	int lookup_flags = (flags & AT_EMPTY_PATH) ? LOOKUP_EMPTY : 0;
--	struct filename *name = getname_flags(filename, lookup_flags, NULL);
--
--	return do_execveat(fd, name, argv, envp, flags, NULL);
-+	return do_execveat(fd, filename, argv, envp, flags);
- }
-diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
-index bed702e4b1fbd9..1e61c980c16354 100644
---- a/include/linux/binfmts.h
-+++ b/include/linux/binfmts.h
-@@ -134,9 +134,7 @@ int copy_string_kernel(const char *arg, struct linux_binprm *bprm);
- extern void set_binfmt(struct linux_binfmt *new);
- extern ssize_t read_code(struct file *, unsigned long, loff_t, size_t);
- 
--int do_execveat(int fd, struct filename *filename,
--		const char __user *const __user *__argv,
--		const char __user *const __user *__envp,
--		int flags, struct file *file);
-+int kernel_execveat(int fd, const char *filename, const char *const *argv,
-+		const char *const *envp, int flags, struct file *file);
- 
- #endif /* _LINUX_BINFMTS_H */
-diff --git a/init/main.c b/init/main.c
-index 838950ea7bca22..33de235dc2aa00 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -1329,10 +1329,8 @@ static int run_init_process(const char *init_filename)
- 	pr_debug("  with environment:\n");
- 	for (p = envp_init; *p; p++)
- 		pr_debug("    %s\n", *p);
--	return do_execveat(AT_FDCWD, getname_kernel(init_filename),
--			(const char __user *const __user *)argv_init,
--			(const char __user *const __user *)envp_init,
--			0, NULL);
-+	return kernel_execveat(AT_FDCWD, init_filename, argv_init, envp_init, 0,
-+			       NULL);
- }
- 
- static int try_to_run_init_process(const char *init_filename)
-diff --git a/kernel/umh.c b/kernel/umh.c
-index 7aa9a5817582ca..1284823dbad338 100644
---- a/kernel/umh.c
-+++ b/kernel/umh.c
-@@ -103,11 +103,9 @@ static int call_usermodehelper_exec_async(void *data)
- 	commit_creds(new);
- 
- 	sub_info->pid = task_pid_nr(current);
--	retval = do_execveat(AT_FDCWD,
--			sub_info->path ? getname_kernel(sub_info->path) : NULL,
--			(const char __user *const __user *)sub_info->argv,
--			(const char __user *const __user *)sub_info->envp,
--			0, sub_info->file);
-+	retval = kernel_execveat(AT_FDCWD, sub_info->path,
-+			(const char *const *)sub_info->argv,
-+			(const char *const *)sub_info->envp, 0, sub_info->file);
- 	if (sub_info->file && !retval)
- 		current->flags |= PF_UMH;
- out:
+As discussed at [1] the __nocache_fix() macro in sparc's SRMMU can be made
+type safe and so the compiler will yell anout misuse of pXd pointers for
+which the __nocache_fix() is primarily used.
+
+The first patch is an fix of such misuse that I've discovered after adding
+type cast to __nocache_fix(), but to avoid breaking bisection I've made it
+the first commit.
+
+v2: rebased on v5.8-rc2+
+
+--
+Sincerely yours,
+Mike.
+
+[1] https://lkml.kernel.org/r/CAHk-=wisORTa7QVPnFqNw9pFs62UiwgsD4C4d=MtYy1o4JPyGQ@mail.gmail.com
+
+Mike Rapoport (2):
+  sparc32: use PUD rather than PGD to get PMD in srmmu_inherit_prom_mappings()
+  sparc32: srmmu: improve type safety of __nocache_fix()
+
+ arch/sparc/include/asm/pgtsrmmu.h |  2 +-
+ arch/sparc/mm/srmmu.c             | 18 +++++++++---------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+base-commit: 1590a2e1c681b0991bd42c992cabfd380e0338f2
 -- 
 2.26.2
 
