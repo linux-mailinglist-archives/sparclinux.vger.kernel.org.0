@@ -2,105 +2,90 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8460220C6AD
-	for <lists+sparclinux@lfdr.de>; Sun, 28 Jun 2020 09:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F96620C98A
+	for <lists+sparclinux@lfdr.de>; Sun, 28 Jun 2020 20:25:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726146AbgF1HK6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 28 Jun 2020 03:10:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57228 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725958AbgF1HK4 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 28 Jun 2020 03:10:56 -0400
-Received: from kernel.org (unknown [87.71.40.38])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3D65920775;
-        Sun, 28 Jun 2020 07:10:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593328255;
-        bh=yK/mmEcayAp4K1SoJVYgv0KctiM5CGqsdRXbo6D8DTo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UyijhxBtiPImkMHKkSGIyXWOBHqIqoPqHi03HWzaGBbmBhYKOSRUunGTmaRWc4Gjn
-         2TMA+ldpEEnMFu0kFYBgT1B2G/Iqyrdp18UacvMYdOXnb2Y4yh/FSazt4w3nUe/3UB
-         VKf4vf+8Dah0/sxlNf+Z75XPskzsJ/8NsyHkTS2A=
-Date:   Sun, 28 Jun 2020 10:10:44 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Joerg Roedel <joro@8bytes.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
-        Stafford Horne <shorne@gmail.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org, openrisc@lists.librecores.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH 4/8] asm-generic: pgalloc: provide generic
- pmd_alloc_one() and pmd_free_one()
-Message-ID: <20200628071044.GC576120@kernel.org>
-References: <20200627143453.31835-1-rppt@kernel.org>
- <20200627143453.31835-5-rppt@kernel.org>
- <20200627190304.GG25039@casper.infradead.org>
+        id S1726636AbgF1SZL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 28 Jun 2020 14:25:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39170 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726060AbgF1SZK (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 28 Jun 2020 14:25:10 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A79D5C03E979
+        for <sparclinux@vger.kernel.org>; Sun, 28 Jun 2020 11:25:10 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id dr13so14412637ejc.3
+        for <sparclinux@vger.kernel.org>; Sun, 28 Jun 2020 11:25:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/bJJuAbxLOI8ZB5kWrg6GnM3H9CKnk3zJ1in7nW69lY=;
+        b=MabtKJWbo6VMgAHs1cgTH8QEKrYCDrmwtlMluM0BudRD3IEEGz4EuBZl+1lDWb6ZmP
+         IElqMYutqIZJ6j4KFvGtVCzr0t/+iIkAJTtwLKPoVsRyBwac8h89FhwI63ZgrPdlWskl
+         2m14tDJp6xHQPVH90sQTHYZ9jYlCio4qOi2SdTdgVsMleehvZM6SMFbYh217epKNTwbB
+         /fB6uiUvn7nt0wpLHtFgaqbQjlLFdAExD4kJeGBxktakBF6Rh26NN4/Ix7CHefCuMVcp
+         IqXnGewNzdRiNNPyJB7IOW8Zzayl8hUzkrNlHqsErpCoqEcZg2v8c4pieO3I2//HSrSJ
+         o7+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/bJJuAbxLOI8ZB5kWrg6GnM3H9CKnk3zJ1in7nW69lY=;
+        b=kEhf8bO+dqUQ/87u9Gi2xv8ikAzpraxvag2m6GcUBWjmisKXIWv/H2+/OEktDOZcdu
+         gu73RvY70mGzv1la0RBJaiIfUr2EqaV2tEZcBq+yIyIdKEBCkiCCgaowGk6JFypzSe39
+         OGEhXtaxDd3oD95xP95oJaEHKxmy/+FUHaM//kCuVX78NALNNGzNz3fOzQzqjHNVSDmt
+         8HDd2qWRSjn68BIriyR3CHKuakC7lNxO+xZs4+NKl+gGlLJCo4yOWV/W5uwzG353QG+P
+         yx0wU7/GZ7ceJph57r6q38LA7KXc5t05+XIw1PTlUOOI8ejt1xsLoOkgs7lI4yWB2eU8
+         4lzg==
+X-Gm-Message-State: AOAM530XYJUlxyoSOPKC5ic0KER6kkfMmSNVz1IYGKWwpSb+DiTNs3NL
+        7mVE1ZqXojAyLZorzdZrT7omkpHk7GZEXQEVnNs=
+X-Google-Smtp-Source: ABdhPJxFfof0h0hC3CE+3V++sLinwEYr53BhkAt/JRL0wPUsXQuBhDYSM+xsZ4iWLeEIl/uCMjN0Fhdhe/yRTFw0xU4=
+X-Received: by 2002:a17:907:395:: with SMTP id ss21mr10911225ejb.181.1593368708514;
+ Sun, 28 Jun 2020 11:25:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200627190304.GG25039@casper.infradead.org>
+Received: by 2002:ab4:a861:0:0:0:0:0 with HTTP; Sun, 28 Jun 2020 11:25:08
+ -0700 (PDT)
+Reply-To: mrjohnscottyounger35@gmail.com
+From:   John Scott Younger <martinsugo35@gmail.com>
+Date:   Sun, 28 Jun 2020 19:25:08 +0100
+Message-ID: <CA+7V0-mLTXKV3DM8mDD6CRTNKS6mnHBnmB0BiLvzkHdn2YsR8A@mail.gmail.com>
+Subject: Your attention to this news update.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sat, Jun 27, 2020 at 08:03:04PM +0100, Matthew Wilcox wrote:
-> On Sat, Jun 27, 2020 at 05:34:49PM +0300, Mike Rapoport wrote:
-> > More elaborate versions on arm64 and x86 account memory for the user page
-> > tables and call to pgtable_pmd_page_ctor() as the part of PMD page
-> > initialization.
-> > 
-> > Move the arm64 version to include/asm-generic/pgalloc.h and use the generic
-> > version on several architectures.
-> > 
-> > The pgtable_pmd_page_ctor() is a NOP when ARCH_ENABLE_SPLIT_PMD_PTLOCK is
-> > not enabled, so there is no functional change for most architectures except
-> > of the addition of __GFP_ACCOUNT for allocation of user page tables.
-> 
-> Thanks for including this line; it reminded me that we're not setting
-> the PageTable flag on the page, nor accounting it to the zone page stats.
-> Hope you don't mind me tagging a patch to do that on as 9/8.
-> 
-> We could also do with a pud_page_[cd]tor and maybe even p4d/pgd versions.
-> But that brings me to the next question -- could/should some of this
-> be moved over to asm-generic/pgalloc.h?  The ctor/dtor aren't called
-> from anywhere else, and there's value to reducing the total amount of
-> code in mm.h, but then there's also value to keeping all the ifdef
-> ARCH_ENABLE_SPLIT_PMD_PTLOCK code together too.  So I'm a bit torn.
-> What do you think?
-
-There are arhcitectures that don't use asm-generic/pgalloc.h but rather
-have their own, sometimes completely different, versoins of these
-funcitons.
-
-I've tried adding linux/pgalloc.h, but I've ended up with contradicting
-need to include asm/pgalloc.h before the generic code for some
-architecures or after the generic code for others :)
-
-I think let's leave it in mm.h for now, maybe after several more cleaups
-we could do better.
-
 -- 
-Sincerely yours,
-Mike.
+Your attention to this news update.
+
+The report / analysis received from our correspondence shows that you
+have NOT received your PAYMENT, due to administrative injustice from
+unpatriotic and uncivil payment officials. Following the resolution of
+the U.S Department of State, you are mandated to kindly reinstate your
+fund acquisition details for accreditation.
+
+Sequel to the joint /collaborative effort by United Nations and US
+Department of State, to review, nullify and release all STOP ORDER on
+beneficiary transferred sum and consignment HELD at custom port
+authorities. At this juncture, you are advised to forward information
+of agencies that has put a HOLD on your consignment or STOP ORDER on
+your transferred sum.
+
+This office is commission to investigate/rectify ISSUES affecting
+beneficiaries whose payment is HELD/STOP unjustly with the intent of
+demanding un-official fees/levies. Be informed that all administrative
+injustice imposed on beneficiaries by some dubious person(s) has come
+to the knowledge of oversight committee of United Nations and US
+Department of State.
+
+Thus our objective is to resolve all challenges facing release of your
+payment. Therefore get back to my office with the required information
+for assessment.
+
+Our in service,
+
+John Scott Younger
+Human Right Activist
+Tel:- + 44 770 002 8251
