@@ -2,162 +2,98 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D32ED213D11
-	for <lists+sparclinux@lfdr.de>; Fri,  3 Jul 2020 17:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2CE8213D92
+	for <lists+sparclinux@lfdr.de>; Fri,  3 Jul 2020 18:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726723AbgGCP47 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 3 Jul 2020 11:56:59 -0400
-Received: from foss.arm.com ([217.140.110.172]:46938 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726638AbgGCP46 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 3 Jul 2020 11:56:58 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8F6F31045;
-        Fri,  3 Jul 2020 08:56:57 -0700 (PDT)
-Received: from e113632-lin.cambridge.arm.com (e113632-lin.cambridge.arm.com [10.1.194.46])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8FC373F73C;
-        Fri,  3 Jul 2020 08:56:56 -0700 (PDT)
-From:   Valentin Schneider <valentin.schneider@arm.com>
-To:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>,
+        id S1726108AbgGCQaL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 3 Jul 2020 12:30:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33360 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726098AbgGCQaL (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 3 Jul 2020 12:30:11 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E652DC061794;
+        Fri,  3 Jul 2020 09:30:10 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id w16so34877154ejj.5;
+        Fri, 03 Jul 2020 09:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OZ1+T6J0Ni960NYvo1eswvIO/HAOFnUlkVGnAMuIgxk=;
+        b=lBjD4dhVanRWSWvbuR+jiGQEGFbptLkYYnLLhxXlf0G+nlF1EsP1YfRCSVx54CVl4o
+         lzVgNVYXuFq7MIf+8jM47uEU3T3FK6N8kVN3WpsSfQjfJpSxcOhG/B2ph/a4NvrAgGZf
+         Z+0qLSFrTZtBaaUzVxqmexECPEdFLLdZPjmpil5i9MRzuOtvQdTyvwWQeve1a0kARlDZ
+         bZldku7ExsXTgjR88sjv/dgPWJMaHZrbYeKTtJgq3iSNEs+CztNZ1g8lnfEzlFOc7tzx
+         y4uZJeaYg4heElWq32vF0eNPOXwCZO4uymQnBMCts3FHRKM7GewWqJAZ6kOKriEpwbLU
+         fnsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OZ1+T6J0Ni960NYvo1eswvIO/HAOFnUlkVGnAMuIgxk=;
+        b=MY1frqnOpAngA+26YuPhu9thHG23zg/cye5g4AICOhEoX7cLskg2JlD2iYbns+p51P
+         V529w0iX+AvPtbZt3YyQ/Q1PHrS3DM1sUDMSCv8oNaJcDqosQtmeJFNmdJ1vW++lRPLq
+         bi8HP+s7uYxuBlB1QUWw7Eaah2W3v72ZHaZnxBBYv1Z7Ww1mj2xEKntjTCxUr5cSHQC1
+         DOV7NoKdiHpOJrZlUXTGrM8+Y8cfVUoJgEBgwZs9zVnXlZmf4hMVvxQ/KcYfubOUF4YD
+         meudKw2qkaF4aDNjSkLykVwN6sHmBL25bR+LuZdwL413rVa6YCuujPXdgAC3uhD4Nkvm
+         zZZw==
+X-Gm-Message-State: AOAM530pdFK8TXsGAzbJEGYYxacTew3os4SoMpjXOF9vGdn2UiOR4e9/
+        d2LRn524rIl5Q2kXSvZhFg+ZmFLqQ6dpAqb5Vdc=
+X-Google-Smtp-Source: ABdhPJyrpPvbvu+7fsLvXQ5QwrtZszjqtmjACLXCYmIRdtOpRb5SPnOXOESXhJKYkGa42B79UNHA5NRDA6f12+i3JOw=
+X-Received: by 2002:a17:906:ae56:: with SMTP id lf22mr32577974ejb.59.1593793809278;
+ Fri, 03 Jul 2020 09:30:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200703155645.29703-1-valentin.schneider@arm.com> <20200703155645.29703-2-valentin.schneider@arm.com>
+In-Reply-To: <20200703155645.29703-2-valentin.schneider@arm.com>
+From:   Anatoly Pugachev <matorola@gmail.com>
+Date:   Fri, 3 Jul 2020 19:29:58 +0300
+Message-ID: <CADxRZqxcLXz4wp6Bj7=MWx04BJ7cHmHy6o_f+1V9_yNXNHH6-g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] sparc64: Deselect IRQ_PREFLOW_FASTEOI
+To:     Valentin Schneider <valentin.schneider@arm.com>
+Cc:     Linux Kernel list <linux-kernel@vger.kernel.org>,
+        Sparc kernel list <sparclinux@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
         Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 2/2] genirq: Remove preflow handler support
-Date:   Fri,  3 Jul 2020 16:56:45 +0100
-Message-Id: <20200703155645.29703-3-valentin.schneider@arm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200703155645.29703-1-valentin.schneider@arm.com>
-References: <20200703155645.29703-1-valentin.schneider@arm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-That was put in place for sparc64, and blackfin also used it for some time;
-sparc64 no longer uses those, and blackfin is dead.
+On Fri, Jul 3, 2020 at 6:58 PM Valentin Schneider
+<valentin.schneider@arm.com> wrote:
+>
+> sparc64 hasn't needed to select this since commit:
+>
+>   ee6a9333fa58 ("sparc64: sparse irq")
+>
+> which got rid of the calls to __irq_set_preflow_handler() first installed
+> by commit:
+>
+>   fcd8d4f49869 ("sparc: Use the new genirq functionality")
+>
+> Deselect this option.
+>
+> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+> ---
+>  arch/sparc/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+> index da515fdad83d..ed35760043e8 100644
+> --- a/arch/sparc/Kconfig
+> +++ b/arch/sparc/Kconfig
+> @@ -81,7 +81,6 @@ config SPARC64
+>         select RTC_DRV_STARFIRE
+>         select HAVE_PERF_EVENTS
+>         select PERF_USE_VMALLOC
+> -       select IRQ_PREFLOW_FASTEOI
+>         select ARCH_HAVE_NMI_SAFE_CMPXCHG
+>         select HAVE_C_RECORDMCOUNT
+>         select HAVE_ARCH_AUDITSYSCALL
 
-As there are no more users, remove preflow handlers.
 
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
----
- include/linux/irqdesc.h    | 15 ---------------
- include/linux/irqhandler.h |  1 -
- kernel/irq/Kconfig         |  4 ----
- kernel/irq/chip.c          | 13 -------------
- 4 files changed, 33 deletions(-)
-
-diff --git a/include/linux/irqdesc.h b/include/linux/irqdesc.h
-index 8f2820c5e69e..5745491303e0 100644
---- a/include/linux/irqdesc.h
-+++ b/include/linux/irqdesc.h
-@@ -22,7 +22,6 @@ struct pt_regs;
-  * @irq_common_data:	per irq and chip data passed down to chip functions
-  * @kstat_irqs:		irq stats per cpu
-  * @handle_irq:		highlevel irq-events handler
-- * @preflow_handler:	handler called before the flow handler (currently used by sparc)
-  * @action:		the irq action chain
-  * @status_use_accessors: status information
-  * @core_internal_state__do_not_mess_with_it: core internal status information
-@@ -58,9 +57,6 @@ struct irq_desc {
- 	struct irq_data		irq_data;
- 	unsigned int __percpu	*kstat_irqs;
- 	irq_flow_handler_t	handle_irq;
--#ifdef CONFIG_IRQ_PREFLOW_FASTEOI
--	irq_preflow_handler_t	preflow_handler;
--#endif
- 	struct irqaction	*action;	/* IRQ action list */
- 	unsigned int		status_use_accessors;
- 	unsigned int		core_internal_state__do_not_mess_with_it;
-@@ -268,15 +264,4 @@ irq_set_lockdep_class(unsigned int irq, struct lock_class_key *lock_class,
- 	}
- }
- 
--#ifdef CONFIG_IRQ_PREFLOW_FASTEOI
--static inline void
--__irq_set_preflow_handler(unsigned int irq, irq_preflow_handler_t handler)
--{
--	struct irq_desc *desc;
--
--	desc = irq_to_desc(irq);
--	desc->preflow_handler = handler;
--}
--#endif
--
- #endif
-diff --git a/include/linux/irqhandler.h b/include/linux/irqhandler.h
-index 1e6f4e7123d6..c30f454a9518 100644
---- a/include/linux/irqhandler.h
-+++ b/include/linux/irqhandler.h
-@@ -10,6 +10,5 @@
- struct irq_desc;
- struct irq_data;
- typedef	void (*irq_flow_handler_t)(struct irq_desc *desc);
--typedef	void (*irq_preflow_handler_t)(struct irq_data *data);
- 
- #endif
-diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
-index d63c324895ea..58f0e996a2c3 100644
---- a/kernel/irq/Kconfig
-+++ b/kernel/irq/Kconfig
-@@ -51,10 +51,6 @@ config GENERIC_IRQ_INJECTION
- config HARDIRQS_SW_RESEND
-        bool
- 
--# Preflow handler support for fasteoi (sparc64)
--config IRQ_PREFLOW_FASTEOI
--       bool
--
- # Edge style eoi based handler (cell)
- config IRQ_EDGE_EOI_HANDLER
-        bool
-diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
-index 41e7e37a0928..75bbaa8b38f1 100644
---- a/kernel/irq/chip.c
-+++ b/kernel/irq/chip.c
-@@ -656,16 +656,6 @@ void handle_level_irq(struct irq_desc *desc)
- }
- EXPORT_SYMBOL_GPL(handle_level_irq);
- 
--#ifdef CONFIG_IRQ_PREFLOW_FASTEOI
--static inline void preflow_handler(struct irq_desc *desc)
--{
--	if (desc->preflow_handler)
--		desc->preflow_handler(&desc->irq_data);
--}
--#else
--static inline void preflow_handler(struct irq_desc *desc) { }
--#endif
--
- static void cond_unmask_eoi_irq(struct irq_desc *desc, struct irq_chip *chip)
- {
- 	if (!(desc->istate & IRQS_ONESHOT)) {
-@@ -721,7 +711,6 @@ void handle_fasteoi_irq(struct irq_desc *desc)
- 	if (desc->istate & IRQS_ONESHOT)
- 		mask_irq(desc);
- 
--	preflow_handler(desc);
- 	handle_irq_event(desc);
- 
- 	cond_unmask_eoi_irq(desc, chip);
-@@ -1231,7 +1220,6 @@ void handle_fasteoi_ack_irq(struct irq_desc *desc)
- 	/* Start handling the irq */
- 	desc->irq_data.chip->irq_ack(&desc->irq_data);
- 
--	preflow_handler(desc);
- 	handle_irq_event(desc);
- 
- 	cond_unmask_eoi_irq(desc, chip);
-@@ -1281,7 +1269,6 @@ void handle_fasteoi_mask_irq(struct irq_desc *desc)
- 	if (desc->istate & IRQS_ONESHOT)
- 		mask_irq(desc);
- 
--	preflow_handler(desc);
- 	handle_irq_event(desc);
- 
- 	cond_unmask_eoi_irq(desc, chip);
--- 
-2.27.0
-
+tried/tested this patch on my test sparc64 ldom , boots ok
