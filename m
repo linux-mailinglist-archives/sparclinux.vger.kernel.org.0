@@ -2,102 +2,80 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16A952144B3
-	for <lists+sparclinux@lfdr.de>; Sat,  4 Jul 2020 11:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB4CE21485D
+	for <lists+sparclinux@lfdr.de>; Sat,  4 Jul 2020 21:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726621AbgGDJs7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 4 Jul 2020 05:48:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46834 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726178AbgGDJs7 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sat, 4 Jul 2020 05:48:59 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D248C20870;
-        Sat,  4 Jul 2020 09:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593856139;
-        bh=Cu67IPYD8RGEy878FxUK/SlxsdI9o47oKHu0OuTWDJU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NUSyLQj0oxeyBoZDZ5xlHGihuxvitaQoZltFvZPuadY+wBTWL1BLg6d7Fu1AGTUnk
-         e7GdxYUNAFBHSa0Pc0e0IQg/2HqEhIl8muhG8lyQRo9I/UQ5ugpiL/c7GQHQaMbEau
-         zE+AKSNGiUwBk7PP5RMRPhuJf6nOlhopUbhDCehI=
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <maz@kernel.org>)
-        id 1jren3-008vYO-6m; Sat, 04 Jul 2020 10:48:57 +0100
+        id S1727007AbgGDT1i (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 4 Jul 2020 15:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55756 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726926AbgGDT1h (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 4 Jul 2020 15:27:37 -0400
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3CF7C08C5DE
+        for <sparclinux@vger.kernel.org>; Sat,  4 Jul 2020 12:27:37 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id d27so26210611qtg.4
+        for <sparclinux@vger.kernel.org>; Sat, 04 Jul 2020 12:27:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=tGw7y2+ozvfaI5O0ckPyJEES122wpdGaQULo47ym37A=;
+        b=dqJWZhCqeM77pJ+REF/rvsYARlh2VShazLJUiBIzm0viTIaIYwLcRhCu2NuCJ1EJwt
+         RwhJr5rp9M3bUrZXTekO7JT0z+5KGiCx7r74p9r9/VBK91zlIRfNCrbrk2Y81HBU4gFr
+         X+r9D3mlvJKkummKjjNMtasZiVGVs0yaawePNk48MWSC1B/4Mu+CLz8yh43gSdonp+MA
+         vmnwlNB65gq6Mc8XgwUrLrA9lm0VPzbbS4A3o/w7WpR0JukVkb2WsSYXrEUYL85nF01T
+         mTQEFG+0pMno0g7Y1RjOApjs1BDCJpZy0wyCqRJToYYh/Ry11OOtx5u2EMrodmUtC71s
+         PPBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=tGw7y2+ozvfaI5O0ckPyJEES122wpdGaQULo47ym37A=;
+        b=CBZHzuOJ5lJkyw5Gl7tKSJnYFiqXkgx5hm7dFFh8wm8Rq0Eiz7WmMZWf6iO8tiu4Hv
+         bQRs8rhrj8pNgSpb7Miu+EIw+DCeaZ2H5y13JttI80x2xTeG7bZQtzIn06Gcv7MN8dLN
+         QvB9gvnAVxJFTXiEJn6ypT+oVb1Hs10tHcOB/vC/ceqgqL7VLWrKvppBytbwCv1rTXtI
+         tvqqVmgjTbitfCuArorSRFIP9I4W8BuKxkxSkdqcFZ81qwDAqpyvaeHbQAlGqxmAMFHr
+         nc93bmFlgC5QXAHyjSqRsN3z168l7H0L8GaOscYGKjEJYD7g3QClF51Yq45LVDIGzB90
+         YRRw==
+X-Gm-Message-State: AOAM533ceIx7zT5ENiaYOl4f4C/0XxKEMQ50K0sJ/WdlyXXFhTESG6i5
+        Yiqz1zOGYcOAUa5Ds2awOkL2Fo6hHnXoY/V8tYU=
+X-Google-Smtp-Source: ABdhPJw8Cf/IzNuymfS7zBJwvfWsGxl47LQdLvcGn+0BYlfDaQRMOgg9IjokvIxDvHtvttTyjaPU9CHfc4/cq2m6r8g=
+X-Received: by 2002:ac8:4588:: with SMTP id l8mr42854646qtn.189.1593890856953;
+ Sat, 04 Jul 2020 12:27:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Sat, 04 Jul 2020 10:48:57 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Valentin Schneider <valentin.schneider@arm.com>
-Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>
-Subject: Re: [PATCH 0/2] genirq: Kill preflow handlers
-In-Reply-To: <20200703155645.29703-1-valentin.schneider@arm.com>
-References: <20200703155645.29703-1-valentin.schneider@arm.com>
-User-Agent: Roundcube Webmail/1.4.5
-Message-ID: <6d902159f1819b6f3a0af5e982d11868@kernel.org>
-X-Sender: maz@kernel.org
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: valentin.schneider@arm.com, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, davem@davemloft.net, tglx@linutronix.de, jason@lakedaemon.net
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Received: by 2002:ac8:698b:0:0:0:0:0 with HTTP; Sat, 4 Jul 2020 12:27:36 -0700 (PDT)
+Reply-To: johndav37@aol.com
+From:   "Barrister Ms. Linda B. Bammann, UN-Attorney at Law Court-Benin" 
+        <westernunion.benin982@gmail.com>
+Date:   Sat, 4 Jul 2020 21:27:36 +0200
+Message-ID: <CAP=nHB+F4-mxDV7_0dmOmAefRU7yq200G=OMkbbdOZewAKLr4w@mail.gmail.com>
+Subject: Contact Diplomatic Agent, Mr. JOHN DAV to receive your ATM Card
+ AMOUNT $12,850.000Million USD today.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Valentin,
-
-On 2020-07-03 16:56, Valentin Schneider wrote:
-> Hi,
-> 
-> while strolling around the different flow handlers, I tried to make 
-> sense of
-> what preflow_handler() was about. Turns out no one uses those anymore, 
-> but the
-> genirq support has remained in place.
-
-If we needed to reintroduce some form of preflow handler, we'd try and
-do it using hierarchical irqchips, if at all possible.
-
-> 
-> Unless we can see another user of those in the near future, this seems 
-> like as
-> good a time as any for a little housecleaning.
-> 
-> - Patch 1 simply deselects the (unexploited) preflow Kconfig for 
-> sparc64
-> - Patch 2 is the actual cleanup
-> 
-> Cheers,
-> Valentin
-> 
-> Valentin Schneider (2):
->   sparc64: Deselect IRQ_PREFLOW_FASTEOI
->   genirq: Remove preflow handler support
-> 
->  arch/sparc/Kconfig         |  1 -
->  include/linux/irqdesc.h    | 15 ---------------
->  include/linux/irqhandler.h |  1 -
->  kernel/irq/Kconfig         |  4 ----
->  kernel/irq/chip.c          | 13 -------------
->  5 files changed, 34 deletions(-)
-
-For the whole series, and assuming that there is no regression
-(can't imagine any for unused code):
-
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-
-Thanks,
-
-         M.
--- 
-Jazz is not dead. It just smells funny...
+Attn Dear,Atm Card Beneficiary.
+Contact Diplomatic Agent, Mr. JOHN DAV to receive your ATM Card AMOUNT
+$12,850.000Million USD today.
+His contact address:
+AGENT NAME: Mr. JOHN DAV
+Email: johndav37@aol.com
+We required you to re-confirm your mailing address to Him where the
+ATM Card will get posted to you, because the court has approved your
+delivery this morning.
+your mailing address is required as listed below.
+YOUR FULL-----------------------
+HOME ADDRESS--------------------------------
+COUNTRY------------------------------
+AGE-------------------------------
+SEX-------------------------
+OCCUPATION---------------------------
+COPY OF YOUR VAILID ID CARD---------------------
+Thanks for your full Understanding.
+Send your ATM Card delivery fee $15.00 only to Mr. JOHN DAV.
+Barrister Ms. Linda B. Bammann, UN-Attorney at Law Court-Benin
+Email ID lindabammann42@yahoo.com
