@@ -2,98 +2,102 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2CE8213D92
-	for <lists+sparclinux@lfdr.de>; Fri,  3 Jul 2020 18:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16A952144B3
+	for <lists+sparclinux@lfdr.de>; Sat,  4 Jul 2020 11:49:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726108AbgGCQaL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 3 Jul 2020 12:30:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33360 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726098AbgGCQaL (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 3 Jul 2020 12:30:11 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E652DC061794;
-        Fri,  3 Jul 2020 09:30:10 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id w16so34877154ejj.5;
-        Fri, 03 Jul 2020 09:30:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OZ1+T6J0Ni960NYvo1eswvIO/HAOFnUlkVGnAMuIgxk=;
-        b=lBjD4dhVanRWSWvbuR+jiGQEGFbptLkYYnLLhxXlf0G+nlF1EsP1YfRCSVx54CVl4o
-         lzVgNVYXuFq7MIf+8jM47uEU3T3FK6N8kVN3WpsSfQjfJpSxcOhG/B2ph/a4NvrAgGZf
-         Z+0qLSFrTZtBaaUzVxqmexECPEdFLLdZPjmpil5i9MRzuOtvQdTyvwWQeve1a0kARlDZ
-         bZldku7ExsXTgjR88sjv/dgPWJMaHZrbYeKTtJgq3iSNEs+CztNZ1g8lnfEzlFOc7tzx
-         y4uZJeaYg4heElWq32vF0eNPOXwCZO4uymQnBMCts3FHRKM7GewWqJAZ6kOKriEpwbLU
-         fnsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OZ1+T6J0Ni960NYvo1eswvIO/HAOFnUlkVGnAMuIgxk=;
-        b=MY1frqnOpAngA+26YuPhu9thHG23zg/cye5g4AICOhEoX7cLskg2JlD2iYbns+p51P
-         V529w0iX+AvPtbZt3YyQ/Q1PHrS3DM1sUDMSCv8oNaJcDqosQtmeJFNmdJ1vW++lRPLq
-         bi8HP+s7uYxuBlB1QUWw7Eaah2W3v72ZHaZnxBBYv1Z7Ww1mj2xEKntjTCxUr5cSHQC1
-         DOV7NoKdiHpOJrZlUXTGrM8+Y8cfVUoJgEBgwZs9zVnXlZmf4hMVvxQ/KcYfubOUF4YD
-         meudKw2qkaF4aDNjSkLykVwN6sHmBL25bR+LuZdwL413rVa6YCuujPXdgAC3uhD4Nkvm
-         zZZw==
-X-Gm-Message-State: AOAM530pdFK8TXsGAzbJEGYYxacTew3os4SoMpjXOF9vGdn2UiOR4e9/
-        d2LRn524rIl5Q2kXSvZhFg+ZmFLqQ6dpAqb5Vdc=
-X-Google-Smtp-Source: ABdhPJyrpPvbvu+7fsLvXQ5QwrtZszjqtmjACLXCYmIRdtOpRb5SPnOXOESXhJKYkGa42B79UNHA5NRDA6f12+i3JOw=
-X-Received: by 2002:a17:906:ae56:: with SMTP id lf22mr32577974ejb.59.1593793809278;
- Fri, 03 Jul 2020 09:30:09 -0700 (PDT)
+        id S1726621AbgGDJs7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 4 Jul 2020 05:48:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46834 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726178AbgGDJs7 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sat, 4 Jul 2020 05:48:59 -0400
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D248C20870;
+        Sat,  4 Jul 2020 09:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593856139;
+        bh=Cu67IPYD8RGEy878FxUK/SlxsdI9o47oKHu0OuTWDJU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=NUSyLQj0oxeyBoZDZ5xlHGihuxvitaQoZltFvZPuadY+wBTWL1BLg6d7Fu1AGTUnk
+         e7GdxYUNAFBHSa0Pc0e0IQg/2HqEhIl8muhG8lyQRo9I/UQ5ugpiL/c7GQHQaMbEau
+         zE+AKSNGiUwBk7PP5RMRPhuJf6nOlhopUbhDCehI=
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <maz@kernel.org>)
+        id 1jren3-008vYO-6m; Sat, 04 Jul 2020 10:48:57 +0100
 MIME-Version: 1.0
-References: <20200703155645.29703-1-valentin.schneider@arm.com> <20200703155645.29703-2-valentin.schneider@arm.com>
-In-Reply-To: <20200703155645.29703-2-valentin.schneider@arm.com>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Fri, 3 Jul 2020 19:29:58 +0300
-Message-ID: <CADxRZqxcLXz4wp6Bj7=MWx04BJ7cHmHy6o_f+1V9_yNXNHH6-g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] sparc64: Deselect IRQ_PREFLOW_FASTEOI
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Sat, 04 Jul 2020 10:48:57 +0100
+From:   Marc Zyngier <maz@kernel.org>
 To:     Valentin Schneider <valentin.schneider@arm.com>
-Cc:     Linux Kernel list <linux-kernel@vger.kernel.org>,
-        Sparc kernel list <sparclinux@vger.kernel.org>,
+Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Jason Cooper <jason@lakedaemon.net>
+Subject: Re: [PATCH 0/2] genirq: Kill preflow handlers
+In-Reply-To: <20200703155645.29703-1-valentin.schneider@arm.com>
+References: <20200703155645.29703-1-valentin.schneider@arm.com>
+User-Agent: Roundcube Webmail/1.4.5
+Message-ID: <6d902159f1819b6f3a0af5e982d11868@kernel.org>
+X-Sender: maz@kernel.org
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: valentin.schneider@arm.com, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, davem@davemloft.net, tglx@linutronix.de, jason@lakedaemon.net
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Jul 3, 2020 at 6:58 PM Valentin Schneider
-<valentin.schneider@arm.com> wrote:
->
-> sparc64 hasn't needed to select this since commit:
->
->   ee6a9333fa58 ("sparc64: sparse irq")
->
-> which got rid of the calls to __irq_set_preflow_handler() first installed
-> by commit:
->
->   fcd8d4f49869 ("sparc: Use the new genirq functionality")
->
-> Deselect this option.
->
-> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-> ---
->  arch/sparc/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-> index da515fdad83d..ed35760043e8 100644
-> --- a/arch/sparc/Kconfig
-> +++ b/arch/sparc/Kconfig
-> @@ -81,7 +81,6 @@ config SPARC64
->         select RTC_DRV_STARFIRE
->         select HAVE_PERF_EVENTS
->         select PERF_USE_VMALLOC
-> -       select IRQ_PREFLOW_FASTEOI
->         select ARCH_HAVE_NMI_SAFE_CMPXCHG
->         select HAVE_C_RECORDMCOUNT
->         select HAVE_ARCH_AUDITSYSCALL
+Hi Valentin,
 
+On 2020-07-03 16:56, Valentin Schneider wrote:
+> Hi,
+> 
+> while strolling around the different flow handlers, I tried to make 
+> sense of
+> what preflow_handler() was about. Turns out no one uses those anymore, 
+> but the
+> genirq support has remained in place.
 
-tried/tested this patch on my test sparc64 ldom , boots ok
+If we needed to reintroduce some form of preflow handler, we'd try and
+do it using hierarchical irqchips, if at all possible.
+
+> 
+> Unless we can see another user of those in the near future, this seems 
+> like as
+> good a time as any for a little housecleaning.
+> 
+> - Patch 1 simply deselects the (unexploited) preflow Kconfig for 
+> sparc64
+> - Patch 2 is the actual cleanup
+> 
+> Cheers,
+> Valentin
+> 
+> Valentin Schneider (2):
+>   sparc64: Deselect IRQ_PREFLOW_FASTEOI
+>   genirq: Remove preflow handler support
+> 
+>  arch/sparc/Kconfig         |  1 -
+>  include/linux/irqdesc.h    | 15 ---------------
+>  include/linux/irqhandler.h |  1 -
+>  kernel/irq/Kconfig         |  4 ----
+>  kernel/irq/chip.c          | 13 -------------
+>  5 files changed, 34 deletions(-)
+
+For the whole series, and assuming that there is no regression
+(can't imagine any for unused code):
+
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+
+Thanks,
+
+         M.
+-- 
+Jazz is not dead. It just smells funny...
