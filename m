@@ -2,242 +2,120 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9862A217506
-	for <lists+sparclinux@lfdr.de>; Tue,  7 Jul 2020 19:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB436217B59
+	for <lists+sparclinux@lfdr.de>; Wed,  8 Jul 2020 00:53:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728326AbgGGRTK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 7 Jul 2020 13:19:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56200 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727886AbgGGRTK (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 7 Jul 2020 13:19:10 -0400
-Received: from embeddedor (unknown [200.39.26.250])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3F734206C3;
-        Tue,  7 Jul 2020 17:19:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594142349;
-        bh=UI6ad7jF+GLOgLZjqwH7py9rzEms/ROJb7QA5wR5xgk=;
-        h=Date:From:To:Cc:Subject:From;
-        b=ZSyuTZ6EI24W2lQFqC5tugp4B+j3WbMCzNaJsmb+4wy+MKNIjYTO4a14tOCIu9L4v
-         +M3NYX7Th3J3RntZFay5DBm7cu75ivq7ciStXnRAycFHcd44cGXqObLLFWkq7WM8QU
-         UMGv2QE2wvZsYpmb8rnjJrHPuIymJnDP2vsDLzhU=
-Date:   Tue, 7 Jul 2020 12:24:36 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: [PATCH][next] sparc: Use fallthrough pseudo-keyword
-Message-ID: <20200707172436.GA27273@embeddedor>
+        id S1728441AbgGGWvV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 7 Jul 2020 18:51:21 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:50680 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729742AbgGGWvC (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 7 Jul 2020 18:51:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1594162261;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=goLnSgg43tg59jYNEWM6oaQtVeQ81wyjekL4b1iRhCw=;
+        b=HWI0SCETIKWO6lFhXtY7HVlOdKVYg6f/TkFh5KlzcgOGxFe/uVA0cUaYDAkZlLeBAlmlPA
+        bZfXjQzeCF4bYOBL/9YZ/P09nEmigYFiT6spmKPwfzHRcsgJE884+FInO9lKCZsx4posMl
+        IjhHpwaCLWTRqbGrLdJU2Hal3ZV20Dg=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-152-lgt0VzKkMVyKNjc4R95tVA-1; Tue, 07 Jul 2020 18:50:57 -0400
+X-MC-Unique: lgt0VzKkMVyKNjc4R95tVA-1
+Received: by mail-qt1-f199.google.com with SMTP id t36so13853021qtc.16
+        for <sparclinux@vger.kernel.org>; Tue, 07 Jul 2020 15:50:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=goLnSgg43tg59jYNEWM6oaQtVeQ81wyjekL4b1iRhCw=;
+        b=ihd9/UAA8XayvxJNRBt1ZLoPs88Ljky905NaiTpNkmaNUGA3Jk9fKpGPo8it6GiBCM
+         a8MLHqqovxPjdAABVT5i3YmO24XmKvjrA5lmgoanbK0kfy/bSPT7dkCiyHHLpbHxSVDn
+         5p/0cALHxfRYwH+esMMtwbAyvLHjvirgIjt3C+Km8+aXz0Z/vaU124M26cR3hCMS2fhr
+         MTDCaPXq0hYyBHAF7NEnPsWnRrwKOZ4YZv90oD2vygvkeyo8TO0lyn5spLhCXF0cXEwz
+         QzPUyagVu4YNEQfjLslFYjdT2y2HYDczIBi12jFB7ldaSgk3rEm7rkEkTYNugxYfDW5d
+         3zUQ==
+X-Gm-Message-State: AOAM530r87JLaQWhecfxGf7i/yzxmryvzT1GuUOBYViz+F4QBYcOmfwh
+        vb+IoUsS8B8g8ltlov6j8fPvFu8Qfh7aHjlwH6U4JCu11DCd+tyzO5R3GPg58ygtzIHzdoIfhlA
+        NxcAZuFj2dpu4OknbhqgTFg==
+X-Received: by 2002:a37:c246:: with SMTP id j6mr51752075qkm.444.1594162257352;
+        Tue, 07 Jul 2020 15:50:57 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJy/jy6TEpSsbY6d9HXsHHh/wU6lHsQhKJI3A8F2vFrC2VOLnGIMx4NbmWJ0GFeoTMgVhdK5UA==
+X-Received: by 2002:a37:c246:: with SMTP id j6mr51752065qkm.444.1594162257119;
+        Tue, 07 Jul 2020 15:50:57 -0700 (PDT)
+Received: from xz-x1.redhat.com ([2607:9880:19c0:32::2])
+        by smtp.gmail.com with ESMTPSA id j16sm26267642qtp.92.2020.07.07.15.50.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2020 15:50:56 -0700 (PDT)
+From:   Peter Xu <peterx@redhat.com>
+To:     linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc:     Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        peterx@redhat.com, Andrew Morton <akpm@linux-foundation.org>,
+        Will Deacon <will@kernel.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org
+Subject: [PATCH v5 20/25] mm/sparc32: Use general page fault accounting
+Date:   Tue,  7 Jul 2020 18:50:16 -0400
+Message-Id: <20200707225021.200906-21-peterx@redhat.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200707225021.200906-1-peterx@redhat.com>
+References: <20200707225021.200906-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Replace the existing /* fall through */ comments and its variants with
-the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
-fall-through markings when it is the case.
+Use the general page fault accounting by passing regs into handle_mm_fault().
+It naturally solve the issue of multiple page fault accounting when page fault
+retry happened.
 
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+CC: David S. Miller <davem@davemloft.net>
+CC: sparclinux@vger.kernel.org
+Acked-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- arch/sparc/kernel/auxio_64.c  |    1 -
- arch/sparc/kernel/central.c   |    2 +-
- arch/sparc/kernel/kgdb_32.c   |    2 +-
- arch/sparc/kernel/kgdb_64.c   |    2 +-
- arch/sparc/kernel/pcr.c       |    2 +-
- arch/sparc/kernel/prom_32.c   |    2 +-
- arch/sparc/kernel/signal32.c  |    4 ++--
- arch/sparc/kernel/signal_32.c |    4 ++--
- arch/sparc/kernel/signal_64.c |    4 ++--
- arch/sparc/math-emu/math_32.c |    8 ++++----
- 10 files changed, 15 insertions(+), 16 deletions(-)
+ arch/sparc/mm/fault_32.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/arch/sparc/kernel/auxio_64.c b/arch/sparc/kernel/auxio_64.c
-index 4843f48bfe85..774a82b0c649 100644
---- a/arch/sparc/kernel/auxio_64.c
-+++ b/arch/sparc/kernel/auxio_64.c
-@@ -87,7 +87,6 @@ void auxio_set_lte(int on)
- 		__auxio_sbus_set_lte(on);
- 		break;
- 	case AUXIO_TYPE_EBUS:
--		/* FALL-THROUGH */
- 	default:
- 		break;
+diff --git a/arch/sparc/mm/fault_32.c b/arch/sparc/mm/fault_32.c
+index 06af03db4417..8071bfd72349 100644
+--- a/arch/sparc/mm/fault_32.c
++++ b/arch/sparc/mm/fault_32.c
+@@ -234,7 +234,7 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
+ 	 * make sure we exit gracefully rather than endlessly redo
+ 	 * the fault.
+ 	 */
+-	fault = handle_mm_fault(vma, address, flags, NULL);
++	fault = handle_mm_fault(vma, address, flags, regs);
+ 
+ 	if (fault_signal_pending(fault, regs))
+ 		return;
+@@ -250,15 +250,6 @@ asmlinkage void do_sparc_fault(struct pt_regs *regs, int text_fault, int write,
  	}
-diff --git a/arch/sparc/kernel/central.c b/arch/sparc/kernel/central.c
-index bfae98ab8638..23f8838dd96e 100644
---- a/arch/sparc/kernel/central.c
-+++ b/arch/sparc/kernel/central.c
-@@ -55,7 +55,7 @@ static int clock_board_calc_nslots(struct clock_board *p)
- 			else
- 				return 5;
- 		}
--		/* Fallthrough */
-+		fallthrough;
- 	default:
- 		return 4;
- 	}
-diff --git a/arch/sparc/kernel/kgdb_32.c b/arch/sparc/kernel/kgdb_32.c
-index 7580775a14b9..58ad3f7de1fb 100644
---- a/arch/sparc/kernel/kgdb_32.c
-+++ b/arch/sparc/kernel/kgdb_32.c
-@@ -122,7 +122,7 @@ int kgdb_arch_handle_exception(int e_vector, int signo, int err_code,
- 			linux_regs->pc = addr;
- 			linux_regs->npc = addr + 4;
- 		}
--		/* fall through */
-+		fallthrough;
  
- 	case 'D':
- 	case 'k':
-diff --git a/arch/sparc/kernel/kgdb_64.c b/arch/sparc/kernel/kgdb_64.c
-index 5d6c2d287e85..177746ae2c81 100644
---- a/arch/sparc/kernel/kgdb_64.c
-+++ b/arch/sparc/kernel/kgdb_64.c
-@@ -148,7 +148,7 @@ int kgdb_arch_handle_exception(int e_vector, int signo, int err_code,
- 			linux_regs->tpc = addr;
- 			linux_regs->tnpc = addr + 4;
- 		}
--		/* fall through */
-+		fallthrough;
+ 	if (flags & FAULT_FLAG_ALLOW_RETRY) {
+-		if (fault & VM_FAULT_MAJOR) {
+-			current->maj_flt++;
+-			perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MAJ,
+-				      1, regs, address);
+-		} else {
+-			current->min_flt++;
+-			perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MIN,
+-				      1, regs, address);
+-		}
+ 		if (fault & VM_FAULT_RETRY) {
+ 			flags |= FAULT_FLAG_TRIED;
  
- 	case 'D':
- 	case 'k':
-diff --git a/arch/sparc/kernel/pcr.c b/arch/sparc/kernel/pcr.c
-index c0886b400dad..2a12c86af956 100644
---- a/arch/sparc/kernel/pcr.c
-+++ b/arch/sparc/kernel/pcr.c
-@@ -359,7 +359,7 @@ int __init pcr_arch_init(void)
- 		 * counter overflow interrupt so we can't make use of
- 		 * their hardware currently.
- 		 */
--		/* fallthrough */
-+		fallthrough;
- 	default:
- 		err = -ENODEV;
- 		goto out_unregister;
-diff --git a/arch/sparc/kernel/prom_32.c b/arch/sparc/kernel/prom_32.c
-index da8902295c8c..3df960c137f7 100644
---- a/arch/sparc/kernel/prom_32.c
-+++ b/arch/sparc/kernel/prom_32.c
-@@ -224,7 +224,7 @@ void __init of_console_init(void)
- 
- 		case PROMDEV_TTYB:
- 			skip = 1;
--			/* FALLTHRU */
-+			fallthrough;
- 
- 		case PROMDEV_TTYA:
- 			type = "serial";
-diff --git a/arch/sparc/kernel/signal32.c b/arch/sparc/kernel/signal32.c
-index e2c6f0abda00..e9695a06492f 100644
---- a/arch/sparc/kernel/signal32.c
-+++ b/arch/sparc/kernel/signal32.c
-@@ -646,7 +646,7 @@ static inline void syscall_restart32(unsigned long orig_i0, struct pt_regs *regs
- 	case ERESTARTSYS:
- 		if (!(sa->sa_flags & SA_RESTART))
- 			goto no_system_call_restart;
--		/* fallthrough */
-+		fallthrough;
- 	case ERESTARTNOINTR:
- 		regs->u_regs[UREG_I0] = orig_i0;
- 		regs->tpc -= 4;
-@@ -686,7 +686,7 @@ void do_signal32(struct pt_regs * regs)
- 				regs->tpc -= 4;
- 				regs->tnpc -= 4;
- 				pt_regs_clear_syscall(regs);
--				/* fall through */
-+				fallthrough;
- 			case ERESTART_RESTARTBLOCK:
- 				regs->u_regs[UREG_G1] = __NR_restart_syscall;
- 				regs->tpc -= 4;
-diff --git a/arch/sparc/kernel/signal_32.c b/arch/sparc/kernel/signal_32.c
-index 3b005b6c3e0f..e08d294d63e4 100644
---- a/arch/sparc/kernel/signal_32.c
-+++ b/arch/sparc/kernel/signal_32.c
-@@ -441,7 +441,7 @@ static inline void syscall_restart(unsigned long orig_i0, struct pt_regs *regs,
- 	case ERESTARTSYS:
- 		if (!(sa->sa_flags & SA_RESTART))
- 			goto no_system_call_restart;
--		/* fallthrough */
-+		fallthrough;
- 	case ERESTARTNOINTR:
- 		regs->u_regs[UREG_I0] = orig_i0;
- 		regs->pc -= 4;
-@@ -507,7 +507,7 @@ static void do_signal(struct pt_regs *regs, unsigned long orig_i0)
- 				regs->pc -= 4;
- 				regs->npc -= 4;
- 				pt_regs_clear_syscall(regs);
--				/* fall through */
-+				fallthrough;
- 			case ERESTART_RESTARTBLOCK:
- 				regs->u_regs[UREG_G1] = __NR_restart_syscall;
- 				regs->pc -= 4;
-diff --git a/arch/sparc/kernel/signal_64.c b/arch/sparc/kernel/signal_64.c
-index 6937339a272c..255264bcb46a 100644
---- a/arch/sparc/kernel/signal_64.c
-+++ b/arch/sparc/kernel/signal_64.c
-@@ -461,7 +461,7 @@ static inline void syscall_restart(unsigned long orig_i0, struct pt_regs *regs,
- 	case ERESTARTSYS:
- 		if (!(sa->sa_flags & SA_RESTART))
- 			goto no_system_call_restart;
--		/* fallthrough */
-+		fallthrough;
- 	case ERESTARTNOINTR:
- 		regs->u_regs[UREG_I0] = orig_i0;
- 		regs->tpc -= 4;
-@@ -532,7 +532,7 @@ static void do_signal(struct pt_regs *regs, unsigned long orig_i0)
- 				regs->tpc -= 4;
- 				regs->tnpc -= 4;
- 				pt_regs_clear_syscall(regs);
--				/* fall through */
-+				fallthrough;
- 			case ERESTART_RESTARTBLOCK:
- 				regs->u_regs[UREG_G1] = __NR_restart_syscall;
- 				regs->tpc -= 4;
-diff --git a/arch/sparc/math-emu/math_32.c b/arch/sparc/math-emu/math_32.c
-index 72e560ef4a09..d5beec856146 100644
---- a/arch/sparc/math-emu/math_32.c
-+++ b/arch/sparc/math-emu/math_32.c
-@@ -359,7 +359,7 @@ static int do_one_mathemu(u32 insn, unsigned long *pfsr, unsigned long *fregs)
- 			*pfsr |= (6 << 14);
- 			return 0;			/* simulate invalid_fp_register exception */
- 		}
--	/* fall through */
-+		fallthrough;
- 	case 2:
- 		if (freg & 1) {				/* doublewords must have bit 5 zeroed */
- 			*pfsr |= (6 << 14);
-@@ -380,7 +380,7 @@ static int do_one_mathemu(u32 insn, unsigned long *pfsr, unsigned long *fregs)
- 			*pfsr |= (6 << 14);
- 			return 0;			/* simulate invalid_fp_register exception */
- 		}
--	/* fall through */
-+		fallthrough;
- 	case 2:
- 		if (freg & 1) {				/* doublewords must have bit 5 zeroed */
- 			*pfsr |= (6 << 14);
-@@ -408,13 +408,13 @@ static int do_one_mathemu(u32 insn, unsigned long *pfsr, unsigned long *fregs)
- 			*pfsr |= (6 << 14);
- 			return 0;			/* simulate invalid_fp_register exception */
- 		}
--	/* fall through */
-+		fallthrough;
- 	case 2:
- 		if (freg & 1) {				/* doublewords must have bit 5 zeroed */
- 			*pfsr |= (6 << 14);
- 			return 0;
- 		}
--	/* fall through */
-+		fallthrough;
- 	case 1:
- 		rd = (void *)&fregs[freg];
- 		break;
+-- 
+2.26.2
 
