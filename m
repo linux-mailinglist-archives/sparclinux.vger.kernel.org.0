@@ -2,163 +2,161 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF9921AF69
-	for <lists+sparclinux@lfdr.de>; Fri, 10 Jul 2020 08:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F076721BD60
+	for <lists+sparclinux@lfdr.de>; Fri, 10 Jul 2020 21:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726920AbgGJG21 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 10 Jul 2020 02:28:27 -0400
-Received: from mx2.suse.de ([195.135.220.15]:58362 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725851AbgGJG20 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 10 Jul 2020 02:28:26 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id DF4C0AC5E;
-        Fri, 10 Jul 2020 06:28:24 +0000 (UTC)
-Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
-To:     Sam Ravnborg <sam@ravnborg.org>, dri-devel@lists.freedesktop.org
-Cc:     Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+        id S1726872AbgGJTKX (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 10 Jul 2020 15:10:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59100 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726725AbgGJTKW (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 10 Jul 2020 15:10:22 -0400
+Received: from mail.default.ilande.uk0.bigv.io (mail.ilande.co.uk [IPv6:2001:41c9:1:41f::167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30728C08C5DC
+        for <sparclinux@vger.kernel.org>; Fri, 10 Jul 2020 12:10:22 -0700 (PDT)
+Received: from host86-182-221-233.range86-182.btcentralplus.com ([86.182.221.233] helo=[192.168.1.65])
+        by mail.default.ilande.uk0.bigv.io with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <mark.cave-ayland@ilande.co.uk>)
+        id 1jtyPX-0002IZ-M5; Fri, 10 Jul 2020 20:10:19 +0100
+To:     Thomas Zimmermann <tzimmermann@suse.de>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        dri-devel@lists.freedesktop.org
+Cc:     sparclinux@vger.kernel.org, Gerd Hoffmann <kraxel@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
 References: <20200709193016.291267-1-sam@ravnborg.org>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Message-ID: <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
-Date:   Fri, 10 Jul 2020 08:28:16 +0200
+ <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
+From:   Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ mQENBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAG0ME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPokB
+ OAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63LkBDQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABiQEfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+Message-ID: <18725e54-517d-75dc-282d-96d27e34d8b8@ilande.co.uk>
+Date:   Fri, 10 Jul 2020 20:10:01 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200709193016.291267-1-sam@ravnborg.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="PH8cRnOCkTaFLVPbHBLV0oa1JCyvUrVDc"
+In-Reply-To: <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 86.182.221.233
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
+        mail.default.ilande.uk0.bigv.io
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        SURBL_BLOCKED,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.default.ilande.uk0.bigv.io)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---PH8cRnOCkTaFLVPbHBLV0oa1JCyvUrVDc
-Content-Type: multipart/mixed; boundary="RsJANgEUq0jelz8BFBgDCcTyPyCYJh2Sf";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Sam Ravnborg <sam@ravnborg.org>, dri-devel@lists.freedesktop.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Gerd Hoffmann <kraxel@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- sparclinux@vger.kernel.org
-Message-ID: <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
-Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
-References: <20200709193016.291267-1-sam@ravnborg.org>
-In-Reply-To: <20200709193016.291267-1-sam@ravnborg.org>
+On 10/07/2020 07:28, Thomas Zimmermann wrote:
 
---RsJANgEUq0jelz8BFBgDCcTyPyCYJh2Sf
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Hi Sam,
 
-Hi
+Thanks again for the patch. I've spotted some small typos that you may like to fix if
+you repost the patch:
 
-Am 09.07.20 um 21:30 schrieb Sam Ravnborg:
-> Mark reported that sparc64 would panic while booting using qemu.
-> Mark bisected this to a patch that introduced generic fbdev emulation t=
-o
-> the bochs DRM driver.
-> Mark pointed out that a similar bug was fixed before where
-> the sys helpers was replaced by cfb helpers.
->=20
-> The culprint here is that the framebuffer reside in IO memory which
-> requires SPARC ASI_PHYS (physical) loads and stores.
->=20
-> The current bohcs DRM driver uses a shadow buffer.
-> So all copying to the framebuffer happens in
-> drm_fb_helper_dirty_blit_real().
->=20
-> The fix is to replace the memcpy with memcpy_toio() from io.h.
->=20
-> memcpy_toio() uses writeb() where the original fbdev code
-> used sbus_memcpy_toio(). The latter uses sbus_writeb().
->=20
-> The difference between writeb() and sbus_memcpy_toio() is
-> that writeb() writes bytes in little-endian, where sbus_writeb() writes=
+> Hi
+> 
+> Am 09.07.20 um 21:30 schrieb Sam Ravnborg:
+>> Mark reported that sparc64 would panic while booting using qemu.
+>> Mark bisected this to a patch that introduced generic fbdev emulation to
+>> the bochs DRM driver.
+>> Mark pointed out that a similar bug was fixed before where
+>> the sys helpers was replaced by cfb helpers.
+>> The culprint here is that the framebuffer reside in IO memory which
 
-> bytes in big-endian. As endian does not matter for byte writes they are=
+Typo here: culprit
 
-> the same. So we can safely use memcpy_toio() here.
->=20
-> For many architectures memcpy_toio() is a simple memcpy().
-> One sideeffect that is unknow is if this has any impact on other
-> architectures.
-> So far the analysis tells that this change is OK for other arch's.
-> but testing would be good.
->=20
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: sparclinux@vger.kernel.org
+>> requires SPARC ASI_PHYS (physical) loads and stores.
+>>
+>> The current bohcs DRM driver uses a shadow buffer.
 
-So this actually is a problem in practice. Do you know how userspace
-handles this?
+And another here: bochs
 
-For this patch
+>> So all copying to the framebuffer happens in
+>> drm_fb_helper_dirty_blit_real().
 
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+How about this as an alternative to the above paragraphs which might be a bit easier
+to read:
 
-but I'd like to have someone with more architecture expertise ack this
-as well.
+Recent kernels have been reported to panic using the bochs_drm framebuffer under
+qemu-system-sparc64 which was bisected to commit 7a0483ac4ffc "drm/bochs: switch to
+generic drm fbdev emulation". The backtrace indicates that the shadow framebuffer
+copy in drm_fb_helper_dirty_blit_real() is trying to access the real framebuffer
+using a virtual address rather than use an IO access typically implemented using a
+physical (ASI_PHYS) access on SPARC.
 
-Best regards
-Thomas
+>> The fix is to replace the memcpy with memcpy_toio() from io.h.
+>>
+>> memcpy_toio() uses writeb() where the original fbdev code
+>> used sbus_memcpy_toio(). The latter uses sbus_writeb().
+>>
+>> The difference between writeb() and sbus_memcpy_toio() is
+>> that writeb() writes bytes in little-endian, where sbus_writeb() writes
+>> bytes in big-endian. As endian does not matter for byte writes they are
+>> the same. So we can safely use memcpy_toio() here.
+>>
+>> For many architectures memcpy_toio() is a simple memcpy().
+>> One sideeffect that is unknow is if this has any impact on other
 
-> ---
->  drivers/gpu/drm/drm_fb_helper.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_h=
-elper.c
-> index 5609e164805f..4d05b0ab1592 100644
-> --- a/drivers/gpu/drm/drm_fb_helper.c
-> +++ b/drivers/gpu/drm/drm_fb_helper.c
-> @@ -399,7 +399,7 @@ static void drm_fb_helper_dirty_blit_real(struct dr=
-m_fb_helper *fb_helper,
->  	unsigned int y;
-> =20
->  	for (y =3D clip->y1; y < clip->y2; y++) {
-> -		memcpy(dst, src, len);
-> +		memcpy_toio(dst, src, len);
->  		src +=3D fb->pitches[0];
->  		dst +=3D fb->pitches[0];
->  	}
->=20
+side-effect
 
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+>> architectures.
+>> So far the analysis tells that this change is OK for other arch's.
+>> but testing would be good.
+>>
+>> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+>> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: Gerd Hoffmann <kraxel@redhat.com>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: sparclinux@vger.kernel.org
+> 
+> So this actually is a problem in practice. Do you know how userspace
+> handles this?
+> 
+> For this patch
+> 
+> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+> 
+> but I'd like to have someone with more architecture expertise ack this
+> as well.
+
+Agreed. All my testing is using the bochs_drm framebuffer under qemu-system-sparc64
+(a sun4u machine) so it would be nice to get an ACK from Dave or someone else who can
+vouch for this on real hardware.
 
 
---RsJANgEUq0jelz8BFBgDCcTyPyCYJh2Sf--
+ATB,
 
---PH8cRnOCkTaFLVPbHBLV0oa1JCyvUrVDc
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQFIBAEBCAAyFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl8ICocUHHR6aW1tZXJt
-YW5uQHN1c2UuZGUACgkQaA3BHVMLeiOWQQf9G3fcmhGdnaUUOgIOz0YLGOwKo8LO
-bsUzak9Uee+FXwO7fgVZBOXf827nRUpnEAMeB2YpSD/qy1lpEYZ/zrJS+tV0wc1A
-RUUVvBFAOtOC32PCzUPzEoRlpjGk2FBlr6UQMqPfXaQFwRIeWeo+ICcMB+WoKbm/
-GH2X82kTqwEg775iFxBfA0kSWF7wcI7PZswaFRUEBoVx0zhVBEmUWs6/kfW5Orsk
-2z2NqKP65BuJoAJ+EfFpEuAFDYPop30ip/ukHAJtradlljJjtQwFjg9cbkkrUG6O
-zr7H6lT/1iCbCtWRADed/bjrCAoLe/YSqACG1xc05splErGT6ASQAbe41w==
-=iAQZ
------END PGP SIGNATURE-----
-
---PH8cRnOCkTaFLVPbHBLV0oa1JCyvUrVDc--
+Mark.
