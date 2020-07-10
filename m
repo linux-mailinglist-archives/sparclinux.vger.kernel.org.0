@@ -2,161 +2,80 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F076721BD60
-	for <lists+sparclinux@lfdr.de>; Fri, 10 Jul 2020 21:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3B4C21BF0B
+	for <lists+sparclinux@lfdr.de>; Fri, 10 Jul 2020 23:12:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726872AbgGJTKX (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 10 Jul 2020 15:10:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59100 "EHLO
+        id S1726299AbgGJVMK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 10 Jul 2020 17:12:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726725AbgGJTKW (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 10 Jul 2020 15:10:22 -0400
-Received: from mail.default.ilande.uk0.bigv.io (mail.ilande.co.uk [IPv6:2001:41c9:1:41f::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30728C08C5DC
-        for <sparclinux@vger.kernel.org>; Fri, 10 Jul 2020 12:10:22 -0700 (PDT)
-Received: from host86-182-221-233.range86-182.btcentralplus.com ([86.182.221.233] helo=[192.168.1.65])
-        by mail.default.ilande.uk0.bigv.io with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <mark.cave-ayland@ilande.co.uk>)
-        id 1jtyPX-0002IZ-M5; Fri, 10 Jul 2020 20:10:19 +0100
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        dri-devel@lists.freedesktop.org
-Cc:     sparclinux@vger.kernel.org, Gerd Hoffmann <kraxel@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-References: <20200709193016.291267-1-sam@ravnborg.org>
- <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
-From:   Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- mQENBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAG0ME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPokB
- OAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63LkBDQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABiQEfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-Message-ID: <18725e54-517d-75dc-282d-96d27e34d8b8@ilande.co.uk>
-Date:   Fri, 10 Jul 2020 20:10:01 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        with ESMTP id S1726251AbgGJVMH (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 10 Jul 2020 17:12:07 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90461C08C5DC
+        for <sparclinux@vger.kernel.org>; Fri, 10 Jul 2020 14:12:07 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id n2so5685374edr.5
+        for <sparclinux@vger.kernel.org>; Fri, 10 Jul 2020 14:12:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2DBmedCYSo6ZfyDFSKXvvnu1ic71xYTJyTog2TIacjs=;
+        b=gMbOq/Hs7LKU3Yd13xvxEgCsFLxUkZxW8V/GiLsxSZl+wu37ukDW1fSweNUAJpIgF9
+         TI3r1g8YmqfpHnfIogFYwzoboSi2uIJ5q4de1IDitLKLsnvvRjVANtea7EcnmPa+sbUX
+         HRnLuasB0vPP9pKm99soCkBp2UzAguzQngictBI9P1DM4svhsUt/BgnKVqs9cjAJEX9v
+         Vk0kfQ5Nx+mpvmDH+Rll6LKVXOK/0aM/OirE148kzSbsL2Lf/kCFtaLV/HgpzhEXttKE
+         wwlej4ppgd73wSxFbKz6b4VoX3uSCdIGlCH2kVUAYw4slxeJxZCv5QSiw6sDlhiMYY2m
+         KynA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2DBmedCYSo6ZfyDFSKXvvnu1ic71xYTJyTog2TIacjs=;
+        b=SfQbCafOmultADguNrxukupkpcxgYibA+2FxKrhNYPJpMIu/yjud062G9EtVBRjv5/
+         YKWtBDofQf1FcGyTd+Ylq6tS1hXq3XPwH3bAU79GKKmZ3Qxjt5ODCq1GxmAFIImR6aqq
+         4r7+ecMLsiuZ9FemYOblDZ9zrwUB/YFLSPqbhVrnulqqfRBjS2ugIY3hAIREKxVGYBM0
+         rofleyovdFVnDXWJmQjVdbnJTtaE7cqbbnJNaUm8onv8ixhNJQpCa00m+Ju5GBRy1Ey/
+         gr9GJmfK9EVw4C4r5XJP2lgRjm0bKWQzylpHzQHNwK2DWD+8otlPuKLiJC+ZSUpLwxBz
+         yrUw==
+X-Gm-Message-State: AOAM530m5aqR5po1noyKC50/xEpE9CigVkVnpXeQDBWcOx+TDuDCh5rU
+        aesvzdPB+gyF0ZlS5tX9dZIqrvdaigh/DE8+90s=
+X-Google-Smtp-Source: ABdhPJzXTa8Qn5mgMQs8rYSE4QoQxTLzuqXS3vC7v8xPLvYv1KkPU/RuHEmYqvxD2wY41aVKYdmkvjbjreRXTSvGVXY=
+X-Received: by 2002:a50:fa07:: with SMTP id b7mr77435275edq.298.1594415526080;
+ Fri, 10 Jul 2020 14:12:06 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.182.221.233
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
-        mail.default.ilande.uk0.bigv.io
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        SURBL_BLOCKED,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.2
+References: <20200709193016.291267-1-sam@ravnborg.org> <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
+ <18725e54-517d-75dc-282d-96d27e34d8b8@ilande.co.uk>
+In-Reply-To: <18725e54-517d-75dc-282d-96d27e34d8b8@ilande.co.uk>
+From:   Dave Airlie <airlied@gmail.com>
+Date:   Sat, 11 Jul 2020 07:11:54 +1000
+Message-ID: <CAPM=9twjJs2mnNzxSQDBrOmDyp5iqM3ANhLwQ9N5kWEAKC0aZQ@mail.gmail.com>
 Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.default.ilande.uk0.bigv.io)
+To:     Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        sparclinux@vger.kernel.org, Gerd Hoffmann <kraxel@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 10/07/2020 07:28, Thomas Zimmermann wrote:
+> > Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+> >
+> > but I'd like to have someone with more architecture expertise ack this
+> > as well.
+>
+> Agreed. All my testing is using the bochs_drm framebuffer under qemu-system-sparc64
+> (a sun4u machine) so it would be nice to get an ACK from Dave or someone else who can
+> vouch for this on real hardware.
 
-Hi Sam,
+I'm not sure there exists real hardware that would come down this
+path, I believe the last sparc64 with a GPU is a mach64, or maybe an
+r128 card.
 
-Thanks again for the patch. I've spotted some small typos that you may like to fix if
-you repost the patch:
+Otherwise I think using the memcpy io should be fine here on all architectures.
 
-> Hi
-> 
-> Am 09.07.20 um 21:30 schrieb Sam Ravnborg:
->> Mark reported that sparc64 would panic while booting using qemu.
->> Mark bisected this to a patch that introduced generic fbdev emulation to
->> the bochs DRM driver.
->> Mark pointed out that a similar bug was fixed before where
->> the sys helpers was replaced by cfb helpers.
->> The culprint here is that the framebuffer reside in IO memory which
-
-Typo here: culprit
-
->> requires SPARC ASI_PHYS (physical) loads and stores.
->>
->> The current bohcs DRM driver uses a shadow buffer.
-
-And another here: bochs
-
->> So all copying to the framebuffer happens in
->> drm_fb_helper_dirty_blit_real().
-
-How about this as an alternative to the above paragraphs which might be a bit easier
-to read:
-
-Recent kernels have been reported to panic using the bochs_drm framebuffer under
-qemu-system-sparc64 which was bisected to commit 7a0483ac4ffc "drm/bochs: switch to
-generic drm fbdev emulation". The backtrace indicates that the shadow framebuffer
-copy in drm_fb_helper_dirty_blit_real() is trying to access the real framebuffer
-using a virtual address rather than use an IO access typically implemented using a
-physical (ASI_PHYS) access on SPARC.
-
->> The fix is to replace the memcpy with memcpy_toio() from io.h.
->>
->> memcpy_toio() uses writeb() where the original fbdev code
->> used sbus_memcpy_toio(). The latter uses sbus_writeb().
->>
->> The difference between writeb() and sbus_memcpy_toio() is
->> that writeb() writes bytes in little-endian, where sbus_writeb() writes
->> bytes in big-endian. As endian does not matter for byte writes they are
->> the same. So we can safely use memcpy_toio() here.
->>
->> For many architectures memcpy_toio() is a simple memcpy().
->> One sideeffect that is unknow is if this has any impact on other
-
-side-effect
-
->> architectures.
->> So far the analysis tells that this change is OK for other arch's.
->> but testing would be good.
->>
->> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
->> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Gerd Hoffmann <kraxel@redhat.com>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: sparclinux@vger.kernel.org
-> 
-> So this actually is a problem in practice. Do you know how userspace
-> handles this?
-> 
-> For this patch
-> 
-> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-> 
-> but I'd like to have someone with more architecture expertise ack this
-> as well.
-
-Agreed. All my testing is using the bochs_drm framebuffer under qemu-system-sparc64
-(a sun4u machine) so it would be nice to get an ACK from Dave or someone else who can
-vouch for this on real hardware.
-
-
-ATB,
-
-Mark.
+Dave.
