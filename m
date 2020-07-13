@@ -2,201 +2,177 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21D4021D6DF
-	for <lists+sparclinux@lfdr.de>; Mon, 13 Jul 2020 15:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F7F21DB97
+	for <lists+sparclinux@lfdr.de>; Mon, 13 Jul 2020 18:22:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729796AbgGMNYX (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 13 Jul 2020 09:24:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47580 "EHLO
+        id S1729806AbgGMQWE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 13 Jul 2020 12:22:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729984AbgGMNXK (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 13 Jul 2020 09:23:10 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCD7C061755;
-        Mon, 13 Jul 2020 06:23:09 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id n26so17185399ejx.0;
-        Mon, 13 Jul 2020 06:23:09 -0700 (PDT)
+        with ESMTP id S1729027AbgGMQWD (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 13 Jul 2020 12:22:03 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89C6BC061755
+        for <sparclinux@vger.kernel.org>; Mon, 13 Jul 2020 09:22:03 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id a6so343781wmm.0
+        for <sparclinux@vger.kernel.org>; Mon, 13 Jul 2020 09:22:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=rplWXqoRmMzG/PAypQDSMVo9rsbsvM0HW4mN54VwCPY=;
-        b=qOy7ElWW63EuFj1bTCYdyQLghlNDXNsRyywynTNgzD0Gq2x5qrJkewWFkC7exZ3ZK+
-         WszpqO334hwMhryyStOXx4Lr6yXFcseq6PMIyjonDk24NsGX1T9MUDI2QUBUjO3LWGbM
-         Li9jO95VLMGwEH/ZoYPlMg5XHj1kZ5ppuN+yX9tYvdA/nj3QJiO8zdIXlSNw2qo2a6nH
-         sqbqya0t9Apm7UjW5m5M6YLJRGsvsyAdyWdCif1CyKWabSWLz57vj7tLaSDUILABN/76
-         3mqzHZzhgpEV/h5XKdKHPT7Sv3o5sk5cKDjcx7xoPTUKFkv62VAV/8RkNo81Aco4xq90
-         zLlA==
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=078asBrUdAzX6V4HRPDBswsi0+2eriabHhVz3ArnjDc=;
+        b=aTKEK4S4PUIHVkAv6JErkNzh79Z888tYpNCRggfGNw1cGGVXzogegCneDgnPlBG92U
+         /N7YfWn1mzKs/he6l8dclI1/IBckZPQ23xCWTgMDT0uYnAbgm15utkRoHL2Al5aa86Cy
+         DPSlkDzEIEh/pyhVNKrn61LCgjEE+1+qvpkj8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=rplWXqoRmMzG/PAypQDSMVo9rsbsvM0HW4mN54VwCPY=;
-        b=hpoq7FtN3cKq95YYEtH2PFKR155P4ixw93SwsFFEBeLAy9CenaMbEYfRkQQYwjka4S
-         VSWzfWNL6aeX3soQWiRVMNPfN4W4tV+Bj/gEPiH37xRRP+n/CFH9yXtwI2fd4nI6oRqv
-         fW02dXav+yAJRWZAFFw9I5ziieOGwgM2RBl47MIxJUpbpa7C/2Vdz12b3IVgLBY9YkAr
-         86JxMSwpqKzOtenFRv9VQ5vib23Qsoi7/f4FLvsQcG4976eeFJg3ImkIJujQpDk8TNjh
-         WPfPZkdlBNavTLcpXEnc3SAWfpYRmFuHQGEooVjrmSU6guiAAiFBeCDncTSvnzqcmMcG
-         dblg==
-X-Gm-Message-State: AOAM533WUtPBI88HeVi1TkiLEcO1aSqAVj6EDggpPfjjDap2BxY7vyEE
-        Ek17vm9jUBD6MKlcG/siZI4=
-X-Google-Smtp-Source: ABdhPJwRfcZjb10nMLeLG67GTJhBUEo56JkZJMLUALmO5nYTsFEky+Xkmns5sJRXxh54bY0oHtpWTA==
-X-Received: by 2002:a17:906:7115:: with SMTP id x21mr71985610ejj.86.1594646588253;
-        Mon, 13 Jul 2020 06:23:08 -0700 (PDT)
-Received: from net.saheed (54007186.dsl.pool.telekom.hu. [84.0.113.134])
-        by smtp.gmail.com with ESMTPSA id n9sm11806540edr.46.2020.07.13.06.23.07
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=078asBrUdAzX6V4HRPDBswsi0+2eriabHhVz3ArnjDc=;
+        b=iju/44k8Pdxp/GaqSSegAuaa9OUeGfaOStmtZAV0GhXyHOXhfg16fJmQYhXdXLCfSB
+         OIMD8BZGqHs2zwWITryxd3+5M/3DjQqpcwJ18+VOCnoP7JjlCL6giR0wG6Ale4jWoors
+         SqEXm+rQBfzgRJjxYi0rmeJb3ehcMkh4ms0FEASISOQAvRXARRHsK0HGGAuLEDXs5/We
+         yeoZbYU+uLCsNR6qr0wmm+GcfKI7bfd5BERKuJP6QXfzI4gK849oR9piIouCO8fWxgiq
+         iQa6F7L2/jvI8DC2sfG6770XE0GuGETQd7ZNa6CHZibaJT9EzrTLGx+RycfIBmkA3Y8p
+         2i+g==
+X-Gm-Message-State: AOAM531nnxdDQJNGMb1c483sa9FHbVbb8pGxuuyguiEWBwBmNHnFtqm3
+        x/nJOn3G8aRM3wzHUMiVFKukAw==
+X-Google-Smtp-Source: ABdhPJwKF+xm8MFfAd0R5CoC3HwdOVssXV+RtQHlZXNvp4a2iUOVusv5GEmhSnWhuWC0Zddy4pgeFQ==
+X-Received: by 2002:a05:600c:2dc1:: with SMTP id e1mr159705wmh.108.1594657322307;
+        Mon, 13 Jul 2020 09:22:02 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id u8sm24532517wrt.28.2020.07.13.09.22.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2020 06:23:07 -0700 (PDT)
-From:   "Saheed O. Bolarinwa" <refactormyself@gmail.com>
-To:     helgaas@kernel.org, "David S. Miller" <davem@davemloft.net>
-Cc:     "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
-        bjorn@helgaas.com, skhan@linuxfoundation.org,
-        linux-pci@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: [RFC PATCH 23/35] sparc/PCI: Change PCIBIOS_SUCCESSFUL to 0
-Date:   Mon, 13 Jul 2020 14:22:35 +0200
-Message-Id: <20200713122247.10985-24-refactormyself@gmail.com>
-X-Mailer: git-send-email 2.18.2
-In-Reply-To: <20200713122247.10985-1-refactormyself@gmail.com>
-References: <20200713122247.10985-1-refactormyself@gmail.com>
+        Mon, 13 Jul 2020 09:22:01 -0700 (PDT)
+Date:   Mon, 13 Jul 2020 18:21:59 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Sam Ravnborg <sam@ravnborg.org>, dri-devel@lists.freedesktop.org,
+        sparclinux@vger.kernel.org,
+        Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
+Message-ID: <20200713162159.GR3278063@phenom.ffwll.local>
+References: <20200709193016.291267-1-sam@ravnborg.org>
+ <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
+X-Operating-System: Linux phenom 5.6.0-1-amd64 
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-In reference to the PCI spec (Chapter 2), PCIBIOS* is an x86 concept.
-Their scope should be limited within arch/x86.
+On Fri, Jul 10, 2020 at 08:28:16AM +0200, Thomas Zimmermann wrote:
+> Hi
+> 
+> Am 09.07.20 um 21:30 schrieb Sam Ravnborg:
+> > Mark reported that sparc64 would panic while booting using qemu.
+> > Mark bisected this to a patch that introduced generic fbdev emulation to
+> > the bochs DRM driver.
+> > Mark pointed out that a similar bug was fixed before where
+> > the sys helpers was replaced by cfb helpers.
+> > 
+> > The culprint here is that the framebuffer reside in IO memory which
+> > requires SPARC ASI_PHYS (physical) loads and stores.
+> > 
+> > The current bohcs DRM driver uses a shadow buffer.
+> > So all copying to the framebuffer happens in
+> > drm_fb_helper_dirty_blit_real().
+> > 
+> > The fix is to replace the memcpy with memcpy_toio() from io.h.
+> > 
+> > memcpy_toio() uses writeb() where the original fbdev code
+> > used sbus_memcpy_toio(). The latter uses sbus_writeb().
+> > 
+> > The difference between writeb() and sbus_memcpy_toio() is
+> > that writeb() writes bytes in little-endian, where sbus_writeb() writes
+> > bytes in big-endian. As endian does not matter for byte writes they are
+> > the same. So we can safely use memcpy_toio() here.
+> > 
+> > For many architectures memcpy_toio() is a simple memcpy().
+> > One sideeffect that is unknow is if this has any impact on other
+> > architectures.
+> > So far the analysis tells that this change is OK for other arch's.
+> > but testing would be good.
+> > 
+> > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> > Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> > Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> > Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > Cc: Gerd Hoffmann <kraxel@redhat.com>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: sparclinux@vger.kernel.org
+> 
+> So this actually is a problem in practice. Do you know how userspace
+> handles this?
+> 
+> For this patch
+> 
+> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+> 
+> but I'd like to have someone with more architecture expertise ack this
+> as well.
+> 
+> Best regards
+> Thomas
+> 
+> > ---
+> >  drivers/gpu/drm/drm_fb_helper.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+> > index 5609e164805f..4d05b0ab1592 100644
+> > --- a/drivers/gpu/drm/drm_fb_helper.c
+> > +++ b/drivers/gpu/drm/drm_fb_helper.c
+> > @@ -399,7 +399,7 @@ static void drm_fb_helper_dirty_blit_real(struct drm_fb_helper *fb_helper,
+> >  	unsigned int y;
+> >  
+> >  	for (y = clip->y1; y < clip->y2; y++) {
+> > -		memcpy(dst, src, len);
+> > +		memcpy_toio(dst, src, len);
 
-Change all PCIBIOS_SUCCESSFUL to 0
+I don't think we can do this unconditionally, there's fbdev-helper drivers
+using shmem helpers, and for shmem memcpy_toio is wrong. We need a switch
+to fix this properly I think.
 
-Signed-off-by: "Saheed O. Bolarinwa" <refactormyself@gmail.com>
----
- arch/sparc/kernel/pci_common.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+What Dave Airlie mentioned is just about memcpy_toio vs the sparc bus
+version, for which we don't have any drivers really. But I do think we
+need to differentiate between memcpy and memcpy_tio. That's what this
+entire annoying _cfb_ vs _sys_ business is all about, and also what gem
+vram helpers have to deal with.
+-Daniel
 
-diff --git a/arch/sparc/kernel/pci_common.c b/arch/sparc/kernel/pci_common.c
-index 4759ccd542fe..39175f26f401 100644
---- a/arch/sparc/kernel/pci_common.c
-+++ b/arch/sparc/kernel/pci_common.c
-@@ -59,7 +59,7 @@ static int sun4u_read_pci_cfg_host(struct pci_pbm_info *pbm,
- 
- 	addr = sun4u_config_mkaddr(pbm, bus, devfn, where);
- 	if (!addr)
--		return PCIBIOS_SUCCESSFUL;
-+		return 0;
- 
- 	switch (size) {
- 	case 1:
-@@ -102,7 +102,7 @@ static int sun4u_read_pci_cfg_host(struct pci_pbm_info *pbm,
- 		*value |= tmp32 << 16;
- 		break;
- 	}
--	return PCIBIOS_SUCCESSFUL;
-+	return 0;
- }
- 
- static int sun4u_read_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
-@@ -132,7 +132,7 @@ static int sun4u_read_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
- 
- 	addr = sun4u_config_mkaddr(pbm, bus, devfn, where);
- 	if (!addr)
--		return PCIBIOS_SUCCESSFUL;
-+		return 0;
- 
- 	switch (size) {
- 	case 1:
-@@ -144,7 +144,7 @@ static int sun4u_read_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
- 		if (where & 0x01) {
- 			printk("pci_read_config_word: misaligned reg [%x]\n",
- 			       where);
--			return PCIBIOS_SUCCESSFUL;
-+			return 0;
- 		}
- 		pci_config_read16((u16 *)addr, &tmp16);
- 		*value = (u32) tmp16;
-@@ -154,12 +154,12 @@ static int sun4u_read_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
- 		if (where & 0x03) {
- 			printk("pci_read_config_dword: misaligned reg [%x]\n",
- 			       where);
--			return PCIBIOS_SUCCESSFUL;
-+			return 0;
- 		}
- 		pci_config_read32(addr, value);
- 		break;
- 	}
--	return PCIBIOS_SUCCESSFUL;
-+	return 0;
- }
- 
- static int sun4u_write_pci_cfg_host(struct pci_pbm_info *pbm,
-@@ -170,7 +170,7 @@ static int sun4u_write_pci_cfg_host(struct pci_pbm_info *pbm,
- 
- 	addr = sun4u_config_mkaddr(pbm, bus, devfn, where);
- 	if (!addr)
--		return PCIBIOS_SUCCESSFUL;
-+		return 0;
- 
- 	switch (size) {
- 	case 1:
-@@ -206,7 +206,7 @@ static int sun4u_write_pci_cfg_host(struct pci_pbm_info *pbm,
- 					 where + 2, 2, value >> 16);
- 		break;
- 	}
--	return PCIBIOS_SUCCESSFUL;
-+	return 0;
- }
- 
- static int sun4u_write_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
-@@ -222,7 +222,7 @@ static int sun4u_write_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
- 
- 	addr = sun4u_config_mkaddr(pbm, bus, devfn, where);
- 	if (!addr)
--		return PCIBIOS_SUCCESSFUL;
-+		return 0;
- 
- 	switch (size) {
- 	case 1:
-@@ -233,7 +233,7 @@ static int sun4u_write_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
- 		if (where & 0x01) {
- 			printk("pci_write_config_word: misaligned reg [%x]\n",
- 			       where);
--			return PCIBIOS_SUCCESSFUL;
-+			return 0;
- 		}
- 		pci_config_write16((u16 *)addr, value);
- 		break;
-@@ -242,11 +242,11 @@ static int sun4u_write_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
- 		if (where & 0x03) {
- 			printk("pci_write_config_dword: misaligned reg [%x]\n",
- 			       where);
--			return PCIBIOS_SUCCESSFUL;
-+			return 0;
- 		}
- 		pci_config_write32(addr, value);
- 	}
--	return PCIBIOS_SUCCESSFUL;
-+	return 0;
- }
- 
- struct pci_ops sun4u_pci_ops = {
-@@ -284,7 +284,7 @@ static int sun4v_read_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
- 	}
- 
- 
--	return PCIBIOS_SUCCESSFUL;
-+	return 0;
- }
- 
- static int sun4v_write_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
-@@ -307,7 +307,7 @@ static int sun4v_write_pci_cfg(struct pci_bus *bus_dev, unsigned int devfn,
- 				     HV_PCI_DEVICE_BUILD(bus, device, func),
- 				     where, size, value);
- 	}
--	return PCIBIOS_SUCCESSFUL;
-+	return 0;
- }
- 
- struct pci_ops sun4v_pci_ops = {
+> >  		src += fb->pitches[0];
+> >  		dst += fb->pitches[0];
+> >  	}
+> > 
+> 
+> -- 
+> Thomas Zimmermann
+> Graphics Driver Developer
+> SUSE Software Solutions Germany GmbH
+> Maxfeldstr. 5, 90409 Nürnberg, Germany
+> (HRB 36809, AG Nürnberg)
+> Geschäftsführer: Felix Imendörffer
+> 
+
+
+
+
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+
 -- 
-2.18.2
-
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
