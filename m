@@ -2,282 +2,203 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABEBD21EBF2
-	for <lists+sparclinux@lfdr.de>; Tue, 14 Jul 2020 10:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98F6821F9B4
+	for <lists+sparclinux@lfdr.de>; Tue, 14 Jul 2020 20:45:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726041AbgGNI42 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 14 Jul 2020 04:56:28 -0400
-Received: from mx2.suse.de ([195.135.220.15]:46128 "EHLO mx2.suse.de"
+        id S1729024AbgGNSpx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 14 Jul 2020 14:45:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40288 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725833AbgGNI42 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 14 Jul 2020 04:56:28 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id D864DB11F;
-        Tue, 14 Jul 2020 08:56:28 +0000 (UTC)
-Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
-To:     Daniel Vetter <daniel@ffwll.ch>
-Cc:     Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-        dri-devel@lists.freedesktop.org, Gerd Hoffmann <kraxel@redhat.com>,
-        sparclinux@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
-        "David S. Miller" <davem@davemloft.net>
-References: <20200709193016.291267-1-sam@ravnborg.org>
- <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
- <20200713162159.GR3278063@phenom.ffwll.local>
- <1ed6bd2a-6f8f-ca69-3244-03402874d5a3@suse.de>
- <20200714084141.GW3278063@phenom.ffwll.local>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Message-ID: <a3fdd8b9-bf2b-dcd7-63b7-91f379865a6c@suse.de>
-Date:   Tue, 14 Jul 2020 10:56:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1728948AbgGNSpw (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 14 Jul 2020 14:45:52 -0400
+Received: from localhost (mobile-166-175-191-139.mycingular.net [166.175.191.139])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 839FA222B9;
+        Tue, 14 Jul 2020 18:45:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594752352;
+        bh=3OfvyawWxOWWLmXQVPZtn6FECuVWd3F0Ue8HezI5sRQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=M9TjDOCdh9hdhfOxp+E/b+GQRQRJigrTzFdSr08bZTbYfgplA8ZfIK7sw2uU4D17i
+         JnwGLNAMtpemAssFF0Jl2PbTYsF6P1lbaXH8vsBMr+WVIisiILxg/v2D+n7zNSVt6u
+         tBiC82XAr1HVg4w3jwKWvTKOh5aFHvV/m2Ll8Hf4=
+Date:   Tue, 14 Jul 2020 13:45:50 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
+        bjorn@helgaas.com, Shuah Khan <skhan@linuxfoundation.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Toan Le <toan@os.amperecomputing.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        Marek Vasut <marek.vasut+renesas@gmail.com>
+Subject: Re: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
+Message-ID: <20200714184550.GA397277@bjorn-Precision-5520>
 MIME-Version: 1.0
-In-Reply-To: <20200714084141.GW3278063@phenom.ffwll.local>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="BfWLemcF3LCGfD3X9opczAf63cnT4EjP6"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a3NWSZw6678k1O2eJ6-c5GuW7484PRvEzU9MEPPrCD-yw@mail.gmail.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---BfWLemcF3LCGfD3X9opczAf63cnT4EjP6
-Content-Type: multipart/mixed; boundary="Av61Xe9YVgK7F9axO7fShRrriOoR4kzoe";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Daniel Vetter <daniel@ffwll.ch>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- dri-devel@lists.freedesktop.org, Gerd Hoffmann <kraxel@redhat.com>,
- sparclinux@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
- "David S. Miller" <davem@davemloft.net>
-Message-ID: <a3fdd8b9-bf2b-dcd7-63b7-91f379865a6c@suse.de>
-Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
-References: <20200709193016.291267-1-sam@ravnborg.org>
- <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
- <20200713162159.GR3278063@phenom.ffwll.local>
- <1ed6bd2a-6f8f-ca69-3244-03402874d5a3@suse.de>
- <20200714084141.GW3278063@phenom.ffwll.local>
-In-Reply-To: <20200714084141.GW3278063@phenom.ffwll.local>
+[trimmed the cc list; it's still too large but maybe arch folks care]
 
---Av61Xe9YVgK7F9axO7fShRrriOoR4kzoe
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+On Mon, Jul 13, 2020 at 05:08:10PM +0200, Arnd Bergmann wrote:
+> On Mon, Jul 13, 2020 at 3:22 PM Saheed O. Bolarinwa
+> <refactormyself@gmail.com> wrote:
+> > This goal of these series is to move the definition of *all*
+> > PCIBIOS* from include/linux/pci.h to arch/x86 and limit their use
+> > within there.  All other tree specific definition will be left for
+> > intact. Maybe they can be renamed.
+> >
+> > PCIBIOS* is an x86 concept as defined by the PCI spec. The
+> > returned error codes of PCIBIOS* are positive values and this
+> > introduces some complexities which other archs need not incur.
+> 
+> I think the intention is good, but I find the series in its current
+> form very hard to review, in particular the way you touch some
+> functions three times with trivial changes. Instead of
+> 
+> 1) replace PCIBIOS_SUCCESSFUL with 0
+> 2) drop pointless 0-comparison
+> 3) reformat whitespace
+> 
+> I would suggest to combine the first two steps into one patch per
+> subsystem and drop the third step.
 
-Hi
+I agree.  BUT please don't just run out and post new patches to do
+this.  Let's talk about Arnd's further ideas below first.
 
-Am 14.07.20 um 10:41 schrieb Daniel Vetter:
-> On Tue, Jul 14, 2020 at 08:41:58AM +0200, Thomas Zimmermann wrote:
->> Hi
->>
->> Am 13.07.20 um 18:21 schrieb Daniel Vetter:
->>> On Fri, Jul 10, 2020 at 08:28:16AM +0200, Thomas Zimmermann wrote:
->>>> Hi
->>>>
->>>> Am 09.07.20 um 21:30 schrieb Sam Ravnborg:
->>>>> Mark reported that sparc64 would panic while booting using qemu.
->>>>> Mark bisected this to a patch that introduced generic fbdev emulati=
-on to
->>>>> the bochs DRM driver.
->>>>> Mark pointed out that a similar bug was fixed before where
->>>>> the sys helpers was replaced by cfb helpers.
->>>>>
->>>>> The culprint here is that the framebuffer reside in IO memory which=
+> ...
+> Maybe the work can be split up differently, with a similar end
+> result but fewer and easier reviewed patches. The way I'd look at
+> the problem, there are three main areas that can be dealt with one
+> at a time:
+> 
+> a) callers of the high-level config space accessors
+>    pci_{write,read}_config_{byte,word,dword}, mostly in device
+>    drivers.
+> b) low-level implementation of the config space accessors
+>     through struct pci_ops
+> c) all other occurrences of these constants
+> 
+> Starting with a), my first question is whether any high-level
+> drivers even need to care about errors from these functions. I see
+> 4913 callers that ignore the return code, and 576 that actually
+> check it, and almost none care about the specific error (as you
+> found as well). Unless we conclude that most PCI drivers are wrong,
+> could we just change the return type to 'void' and assume they never
+> fail for valid arguments on a valid pci_device* ?
 
->>>>> requires SPARC ASI_PHYS (physical) loads and stores.
->>>>>
->>>>> The current bohcs DRM driver uses a shadow buffer.
->>>>> So all copying to the framebuffer happens in
->>>>> drm_fb_helper_dirty_blit_real().
->>>>>
->>>>> The fix is to replace the memcpy with memcpy_toio() from io.h.
->>>>>
->>>>> memcpy_toio() uses writeb() where the original fbdev code
->>>>> used sbus_memcpy_toio(). The latter uses sbus_writeb().
->>>>>
->>>>> The difference between writeb() and sbus_memcpy_toio() is
->>>>> that writeb() writes bytes in little-endian, where sbus_writeb() wr=
-ites
->>>>> bytes in big-endian. As endian does not matter for byte writes they=
- are
->>>>> the same. So we can safely use memcpy_toio() here.
->>>>>
->>>>> For many architectures memcpy_toio() is a simple memcpy().
->>>>> One sideeffect that is unknow is if this has any impact on other
->>>>> architectures.
->>>>> So far the analysis tells that this change is OK for other arch's.
->>>>> but testing would be good.
->>>>>
->>>>> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
->>>>> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>>> Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>>> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->>>>> Cc: Gerd Hoffmann <kraxel@redhat.com>
->>>>> Cc: "David S. Miller" <davem@davemloft.net>
->>>>> Cc: sparclinux@vger.kernel.org
->>>>
->>>> So this actually is a problem in practice. Do you know how userspace=
+I really like this idea.
 
->>>> handles this?
->>>>
->>>> For this patch
->>>>
->>>> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
->>>>
->>>> but I'd like to have someone with more architecture expertise ack th=
-is
->>>> as well.
->>>>
->>>> Best regards
->>>> Thomas
->>>>
->>>>> ---
->>>>>  drivers/gpu/drm/drm_fb_helper.c | 2 +-
->>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_=
-fb_helper.c
->>>>> index 5609e164805f..4d05b0ab1592 100644
->>>>> --- a/drivers/gpu/drm/drm_fb_helper.c
->>>>> +++ b/drivers/gpu/drm/drm_fb_helper.c
->>>>> @@ -399,7 +399,7 @@ static void drm_fb_helper_dirty_blit_real(struc=
-t drm_fb_helper *fb_helper,
->>>>>  	unsigned int y;
->>>>> =20
->>>>>  	for (y =3D clip->y1; y < clip->y2; y++) {
->>>>> -		memcpy(dst, src, len);
->>>>> +		memcpy_toio(dst, src, len);
->>>
->>> I don't think we can do this unconditionally, there's fbdev-helper dr=
-ivers
->>> using shmem helpers, and for shmem memcpy_toio is wrong. We need a sw=
-itch
->>> to fix this properly I think.
->>
->> I once has a patch set for this problem, but it didn't make it. [1]
->>
->> Buffers can move between I/O and system memory, so a simple flag would=
+pci_write_config_*() has one return value, and only 100ish of 2500
+callers check for errors.  It's sometimes possible for config
+accessors to detect PCI errors and return failure, e.g., device was
+removed or didn't respond, but most of them don't, and detecting these
+errors is not really that valuable.
 
->> not work. I'd propose this
->>
->> bool drm_gem_is_iomem(struct drm_gem_object *obj)
->> {
->> 	if (obj->funcs && obj->funcs->is_iomem)
->> 		return obj->funcs->is_iomem(obj);
->> 	return false;
->> }
->>
->> Most GEM implmentations wouldn't bother, but VRAM helpers could set th=
-e
->> is_iomem function and return the current state. Fbdev helpers can then=
+pci_read_config_*() is much more interesting because it returns two
+things, the function return value and the value read from the PCI
+device, and it's complicated to check both. 
 
->> pick the correct memcpy_*() function.
->=20
-> Hm wasn't the (long term at least) idea to add the is_iomem flag to the=
+Again it's sometimes possible for config read accessors to detect PCI
+errors, but in most cases a PCI error means the accessor returns
+success and the value from PCI is ~0.
 
-> vmap functions? is_iomem is kinda only well-defined if there's a vmap o=
-f
-> the buffer around (which also pins it), or in general when the buffer i=
-s
-> pinned. Outside of that an ->is_iomem function doesn't make much sense.=
+Checking the function return value catches programming errors (bad
+alignment, etc) but misses most of the interesting errors (device was
+unplugged or reported a PCI error).
 
+Checking the value returned from PCI is tricky because ~0 is a valid
+value for some config registers, and only the driver knows for sure.
+If the driver knows that ~0 is a possible value, it would have to do
+something else, e.g., another config read of a register that *cannot*
+be ~0, to see whether it's really an error.
 
-Oh. From how I understood the original discussion, you shoot down the
-idea because sparse would not support it well?
+I suspect that if we had a single value to look at it would be easier
+to get right.  Error checking with current interface would look like
+this:
 
-The other idea was to add an additional vmap_iomem() helper that returns
-an__iomem pointer. Can we try that?
+  err = pci_read_config_word(dev, addr, &val);
+  if (err)
+    return -EINVAL;
 
-Best regards
-Thomas
+  if (PCI_POSSIBLE_ERROR(val)) {
+    /* if driver knows ~0 is invalid */
+    return -EINVAL;
 
-> -Daniel
->=20
->>
->> Best regards
->> Thomas
->>
->> [1]
->> https://lore.kernel.org/dri-devel/20191106093121.21762-1-tzimmermann@s=
-use.de/
->>
->>>
->>> What Dave Airlie mentioned is just about memcpy_toio vs the sparc bus=
+    /* if ~0 is potentially a valid value */
+    err = pci_read_config_word(dev, PCI_VENDOR_ID, &val2);
+    if (err)
+      return -EINVAL;
 
->>> version, for which we don't have any drivers really. But I do think w=
-e
->>> need to differentiate between memcpy and memcpy_tio. That's what this=
+    if (PCI_POSSIBLE_ERROR(val2))
+      return -EINVAL;
+  }
 
->>> entire annoying _cfb_ vs _sys_ business is all about, and also what g=
-em
->>> vram helpers have to deal with.
->>> -Daniel
->>>
->>>>>  		src +=3D fb->pitches[0];
->>>>>  		dst +=3D fb->pitches[0];
->>>>>  	}
->>>>>
->>>>
->>>> --=20
->>>> Thomas Zimmermann
->>>> Graphics Driver Developer
->>>> SUSE Software Solutions Germany GmbH
->>>> Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
->>>> (HRB 36809, AG N=C3=BCrnberg)
->>>> Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
->>>>
->>>
->>>
->>>
->>>
->>>> _______________________________________________
->>>> dri-devel mailing list
->>>> dri-devel@lists.freedesktop.org
->>>> https://lists.freedesktop.org/mailman/listinfo/dri-devel
->>>
->>>
->>
->> --=20
->> Thomas Zimmermann
->> Graphics Driver Developer
->> SUSE Software Solutions Germany GmbH
->> Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
->> (HRB 36809, AG N=C3=BCrnberg)
->> Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
->>
->=20
->=20
->=20
->=20
+Error checking with a possible interface that returned only a single
+value could look like this:
 
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+  val = pci_config_read_word(dev, addr);
+  if (PCI_POSSIBLE_ERROR(val)) {
+    /* if driver knows ~0 is invalid */
+    return -EINVAL;
 
+    /* if ~0 is potentially a valid value */
+    val2 = pci_config_read_word(dev, PCI_VENDOR_ID);
+    if (PCI_POSSIBLE_ERROR(val2))
+      return -EINVAL;
+  }
 
---Av61Xe9YVgK7F9axO7fShRrriOoR4kzoe--
+Am I understanding you correctly?
 
---BfWLemcF3LCGfD3X9opczAf63cnT4EjP6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+> For b), it might be nice to also change other aspects of the
+> interface, e.g. passing a pci_host_bridge pointer plus bus number
+> instead of a pci_bus pointer, or having the callback in the
+> pci_host_bridge structure.
 
------BEGIN PGP SIGNATURE-----
+I like this idea a lot, too.  I think the fact that
+pci_bus_read_config_word() requires a pci_bus * complicates things in
+a few places.
 
-iQFIBAEBCAAyFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl8NczUUHHR6aW1tZXJt
-YW5uQHN1c2UuZGUACgkQaA3BHVMLeiPnFQgAie4MjlLAelXMUbdneQZnHdLpBAVP
-7tEV+NqjNeF8o2NwOO+Fj0szZz2YoihtmUXlJxxKp3oSb9Ffz7jUPTGJO0eoGrs8
-KWEqaXVCGYRBR4Jq1pHufJ3QpVZ//POw1ZBOdv8N3q5/u2BwYng8hxbInv18onn6
-0ASkPsttsbwPgw+bgr0DM97mlnKCM8qUzTJ/9KWUe6iEJFLZ1LJM2NN1JF/ukLGG
-mzQgtrJhr8cKnTIrvq+JpDyOkn0qb3fkGNasg2V4glcGo+EZTsn9HHZC20wlki4G
-7RUSo2btZtQhQMpumQHNTBvSyFaFfYsiqWdazmsc82DWebrCvd0bGFZNvA==
-=+2fY
------END PGP SIGNATURE-----
+I think it's completely separate, as you say, and we should defer it
+for now because even part a) is a lot of work.  I added it to my list
+of possible future projects.
 
---BfWLemcF3LCGfD3X9opczAf63cnT4EjP6--
+Bjorn
