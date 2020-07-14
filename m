@@ -2,226 +2,282 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA5521EB9E
-	for <lists+sparclinux@lfdr.de>; Tue, 14 Jul 2020 10:41:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABEBD21EBF2
+	for <lists+sparclinux@lfdr.de>; Tue, 14 Jul 2020 10:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725981AbgGNIlq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 14 Jul 2020 04:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56598 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725833AbgGNIlp (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 14 Jul 2020 04:41:45 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E5BC061755
-        for <sparclinux@vger.kernel.org>; Tue, 14 Jul 2020 01:41:45 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id o2so4082170wmh.2
-        for <sparclinux@vger.kernel.org>; Tue, 14 Jul 2020 01:41:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=/Jd4c0WBcnRS0cd4fRvCiVdvCcz4Bz7vlXm1iqEjsmU=;
-        b=cQnNWiwv1BfjrBjCWhnIMToP/tRQKHBHPUH+ngtQ0uGUG0QlmDfpUSRN9kKM7FBEUq
-         iPUdnFcDLQRE04cbLo5Ce1LTvy9/zvEUcNTGg5GeWOReMKJ59SZdnegbgJqYaRwK3dE1
-         bKjsb0WZ868lmYmkFUWUTb66BxUN1OrxVTcJM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=/Jd4c0WBcnRS0cd4fRvCiVdvCcz4Bz7vlXm1iqEjsmU=;
-        b=X1tS758t9orrmri/qndg2wsuNPAUOtXcQK//58WVRG6A1nyJ/q6MV4/2IJ7XQ1Zu87
-         lDQ5CVL3A/PRnACUjnq/DNHtL1jhWw9R2JvYx5Js55AkH+6VXu4Qs0uTowTWKWxzvqlV
-         BVMNUc8RAgeJ9ovp6Yzq+xAnCUmcfGs7FOkHc0M5bLUEQS6EMQvRcrs75SfLCcOluOa/
-         r/oI5GqbtJiVVSnon1azRw+C1FsdJWpGKHouq0aExlHzWwk7qgdFWgxak9fAs/G1Vhaa
-         rP61ZGKKsAv3qmQdGdLpWA6EqmUurLlBVX3xvTF1PGOOzGPbpppo8AVZle656QUvbKTz
-         wa/g==
-X-Gm-Message-State: AOAM533dC2jRXIkdwKZsXJ8m6/RfzqlUmJuPGYfk2qA1LNM6g2ogojs7
-        IO4tGRtBGfoURwFi3pe4IhxIhw==
-X-Google-Smtp-Source: ABdhPJwbUmSG/acKsZeu4cBPlQ7IB8rNeOHEqy3Nuj6uLQs9miLVibvjrd2C7rIqiK7W7MFrPFWJsA==
-X-Received: by 2002:a1c:668b:: with SMTP id a133mr3193352wmc.10.1594716103802;
-        Tue, 14 Jul 2020 01:41:43 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id q188sm3502396wma.46.2020.07.14.01.41.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2020 01:41:43 -0700 (PDT)
-Date:   Tue, 14 Jul 2020 10:41:41 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     Daniel Vetter <daniel@ffwll.ch>,
-        Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+        id S1726041AbgGNI42 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 14 Jul 2020 04:56:28 -0400
+Received: from mx2.suse.de ([195.135.220.15]:46128 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725833AbgGNI42 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 14 Jul 2020 04:56:28 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id D864DB11F;
+        Tue, 14 Jul 2020 08:56:28 +0000 (UTC)
+Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
+To:     Daniel Vetter <daniel@ffwll.ch>
+Cc:     Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
         dri-devel@lists.freedesktop.org, Gerd Hoffmann <kraxel@redhat.com>,
         sparclinux@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
         "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
-Message-ID: <20200714084141.GW3278063@phenom.ffwll.local>
 References: <20200709193016.291267-1-sam@ravnborg.org>
  <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
  <20200713162159.GR3278063@phenom.ffwll.local>
  <1ed6bd2a-6f8f-ca69-3244-03402874d5a3@suse.de>
+ <20200714084141.GW3278063@phenom.ffwll.local>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+Message-ID: <a3fdd8b9-bf2b-dcd7-63b7-91f379865a6c@suse.de>
+Date:   Tue, 14 Jul 2020 10:56:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1ed6bd2a-6f8f-ca69-3244-03402874d5a3@suse.de>
-X-Operating-System: Linux phenom 5.6.0-1-amd64 
+In-Reply-To: <20200714084141.GW3278063@phenom.ffwll.local>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="BfWLemcF3LCGfD3X9opczAf63cnT4EjP6"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Jul 14, 2020 at 08:41:58AM +0200, Thomas Zimmermann wrote:
-> Hi
-> 
-> Am 13.07.20 um 18:21 schrieb Daniel Vetter:
-> > On Fri, Jul 10, 2020 at 08:28:16AM +0200, Thomas Zimmermann wrote:
-> >> Hi
-> >>
-> >> Am 09.07.20 um 21:30 schrieb Sam Ravnborg:
-> >>> Mark reported that sparc64 would panic while booting using qemu.
-> >>> Mark bisected this to a patch that introduced generic fbdev emulation to
-> >>> the bochs DRM driver.
-> >>> Mark pointed out that a similar bug was fixed before where
-> >>> the sys helpers was replaced by cfb helpers.
-> >>>
-> >>> The culprint here is that the framebuffer reside in IO memory which
-> >>> requires SPARC ASI_PHYS (physical) loads and stores.
-> >>>
-> >>> The current bohcs DRM driver uses a shadow buffer.
-> >>> So all copying to the framebuffer happens in
-> >>> drm_fb_helper_dirty_blit_real().
-> >>>
-> >>> The fix is to replace the memcpy with memcpy_toio() from io.h.
-> >>>
-> >>> memcpy_toio() uses writeb() where the original fbdev code
-> >>> used sbus_memcpy_toio(). The latter uses sbus_writeb().
-> >>>
-> >>> The difference between writeb() and sbus_memcpy_toio() is
-> >>> that writeb() writes bytes in little-endian, where sbus_writeb() writes
-> >>> bytes in big-endian. As endian does not matter for byte writes they are
-> >>> the same. So we can safely use memcpy_toio() here.
-> >>>
-> >>> For many architectures memcpy_toio() is a simple memcpy().
-> >>> One sideeffect that is unknow is if this has any impact on other
-> >>> architectures.
-> >>> So far the analysis tells that this change is OK for other arch's.
-> >>> but testing would be good.
-> >>>
-> >>> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> >>> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> >>> Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> >>> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> >>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> >>> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> >>> Cc: "David S. Miller" <davem@davemloft.net>
-> >>> Cc: sparclinux@vger.kernel.org
-> >>
-> >> So this actually is a problem in practice. Do you know how userspace
-> >> handles this?
-> >>
-> >> For this patch
-> >>
-> >> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-> >>
-> >> but I'd like to have someone with more architecture expertise ack this
-> >> as well.
-> >>
-> >> Best regards
-> >> Thomas
-> >>
-> >>> ---
-> >>>  drivers/gpu/drm/drm_fb_helper.c | 2 +-
-> >>>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-> >>> index 5609e164805f..4d05b0ab1592 100644
-> >>> --- a/drivers/gpu/drm/drm_fb_helper.c
-> >>> +++ b/drivers/gpu/drm/drm_fb_helper.c
-> >>> @@ -399,7 +399,7 @@ static void drm_fb_helper_dirty_blit_real(struct drm_fb_helper *fb_helper,
-> >>>  	unsigned int y;
-> >>>  
-> >>>  	for (y = clip->y1; y < clip->y2; y++) {
-> >>> -		memcpy(dst, src, len);
-> >>> +		memcpy_toio(dst, src, len);
-> > 
-> > I don't think we can do this unconditionally, there's fbdev-helper drivers
-> > using shmem helpers, and for shmem memcpy_toio is wrong. We need a switch
-> > to fix this properly I think.
-> 
-> I once has a patch set for this problem, but it didn't make it. [1]
-> 
-> Buffers can move between I/O and system memory, so a simple flag would
-> not work. I'd propose this
-> 
-> bool drm_gem_is_iomem(struct drm_gem_object *obj)
-> {
-> 	if (obj->funcs && obj->funcs->is_iomem)
-> 		return obj->funcs->is_iomem(obj);
-> 	return false;
-> }
-> 
-> Most GEM implmentations wouldn't bother, but VRAM helpers could set the
-> is_iomem function and return the current state. Fbdev helpers can then
-> pick the correct memcpy_*() function.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--BfWLemcF3LCGfD3X9opczAf63cnT4EjP6
+Content-Type: multipart/mixed; boundary="Av61Xe9YVgK7F9axO7fShRrriOoR4kzoe";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Daniel Vetter <daniel@ffwll.ch>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ dri-devel@lists.freedesktop.org, Gerd Hoffmann <kraxel@redhat.com>,
+ sparclinux@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
+ "David S. Miller" <davem@davemloft.net>
+Message-ID: <a3fdd8b9-bf2b-dcd7-63b7-91f379865a6c@suse.de>
+Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
+References: <20200709193016.291267-1-sam@ravnborg.org>
+ <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
+ <20200713162159.GR3278063@phenom.ffwll.local>
+ <1ed6bd2a-6f8f-ca69-3244-03402874d5a3@suse.de>
+ <20200714084141.GW3278063@phenom.ffwll.local>
+In-Reply-To: <20200714084141.GW3278063@phenom.ffwll.local>
 
-Hm wasn't the (long term at least) idea to add the is_iomem flag to the
-vmap functions? is_iomem is kinda only well-defined if there's a vmap of
-the buffer around (which also pins it), or in general when the buffer is
-pinned. Outside of that an ->is_iomem function doesn't make much sense.
--Daniel
+--Av61Xe9YVgK7F9axO7fShRrriOoR4kzoe
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> Best regards
-> Thomas
-> 
-> [1]
-> https://lore.kernel.org/dri-devel/20191106093121.21762-1-tzimmermann@suse.de/
-> 
-> > 
-> > What Dave Airlie mentioned is just about memcpy_toio vs the sparc bus
-> > version, for which we don't have any drivers really. But I do think we
-> > need to differentiate between memcpy and memcpy_tio. That's what this
-> > entire annoying _cfb_ vs _sys_ business is all about, and also what gem
-> > vram helpers have to deal with.
-> > -Daniel
-> > 
-> >>>  		src += fb->pitches[0];
-> >>>  		dst += fb->pitches[0];
-> >>>  	}
-> >>>
-> >>
-> >> -- 
-> >> Thomas Zimmermann
-> >> Graphics Driver Developer
-> >> SUSE Software Solutions Germany GmbH
-> >> Maxfeldstr. 5, 90409 Nürnberg, Germany
-> >> (HRB 36809, AG Nürnberg)
-> >> Geschäftsführer: Felix Imendörffer
-> >>
-> > 
-> > 
-> > 
-> > 
-> >> _______________________________________________
-> >> dri-devel mailing list
-> >> dri-devel@lists.freedesktop.org
-> >> https://lists.freedesktop.org/mailman/listinfo/dri-devel
-> > 
-> > 
-> 
-> -- 
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Maxfeldstr. 5, 90409 Nürnberg, Germany
-> (HRB 36809, AG Nürnberg)
-> Geschäftsführer: Felix Imendörffer
-> 
+Hi
+
+Am 14.07.20 um 10:41 schrieb Daniel Vetter:
+> On Tue, Jul 14, 2020 at 08:41:58AM +0200, Thomas Zimmermann wrote:
+>> Hi
+>>
+>> Am 13.07.20 um 18:21 schrieb Daniel Vetter:
+>>> On Fri, Jul 10, 2020 at 08:28:16AM +0200, Thomas Zimmermann wrote:
+>>>> Hi
+>>>>
+>>>> Am 09.07.20 um 21:30 schrieb Sam Ravnborg:
+>>>>> Mark reported that sparc64 would panic while booting using qemu.
+>>>>> Mark bisected this to a patch that introduced generic fbdev emulati=
+on to
+>>>>> the bochs DRM driver.
+>>>>> Mark pointed out that a similar bug was fixed before where
+>>>>> the sys helpers was replaced by cfb helpers.
+>>>>>
+>>>>> The culprint here is that the framebuffer reside in IO memory which=
+
+>>>>> requires SPARC ASI_PHYS (physical) loads and stores.
+>>>>>
+>>>>> The current bohcs DRM driver uses a shadow buffer.
+>>>>> So all copying to the framebuffer happens in
+>>>>> drm_fb_helper_dirty_blit_real().
+>>>>>
+>>>>> The fix is to replace the memcpy with memcpy_toio() from io.h.
+>>>>>
+>>>>> memcpy_toio() uses writeb() where the original fbdev code
+>>>>> used sbus_memcpy_toio(). The latter uses sbus_writeb().
+>>>>>
+>>>>> The difference between writeb() and sbus_memcpy_toio() is
+>>>>> that writeb() writes bytes in little-endian, where sbus_writeb() wr=
+ites
+>>>>> bytes in big-endian. As endian does not matter for byte writes they=
+ are
+>>>>> the same. So we can safely use memcpy_toio() here.
+>>>>>
+>>>>> For many architectures memcpy_toio() is a simple memcpy().
+>>>>> One sideeffect that is unknow is if this has any impact on other
+>>>>> architectures.
+>>>>> So far the analysis tells that this change is OK for other arch's.
+>>>>> but testing would be good.
+>>>>>
+>>>>> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+>>>>> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>>> Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>>> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>>>>> Cc: Gerd Hoffmann <kraxel@redhat.com>
+>>>>> Cc: "David S. Miller" <davem@davemloft.net>
+>>>>> Cc: sparclinux@vger.kernel.org
+>>>>
+>>>> So this actually is a problem in practice. Do you know how userspace=
+
+>>>> handles this?
+>>>>
+>>>> For this patch
+>>>>
+>>>> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>>>
+>>>> but I'd like to have someone with more architecture expertise ack th=
+is
+>>>> as well.
+>>>>
+>>>> Best regards
+>>>> Thomas
+>>>>
+>>>>> ---
+>>>>>  drivers/gpu/drm/drm_fb_helper.c | 2 +-
+>>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_=
+fb_helper.c
+>>>>> index 5609e164805f..4d05b0ab1592 100644
+>>>>> --- a/drivers/gpu/drm/drm_fb_helper.c
+>>>>> +++ b/drivers/gpu/drm/drm_fb_helper.c
+>>>>> @@ -399,7 +399,7 @@ static void drm_fb_helper_dirty_blit_real(struc=
+t drm_fb_helper *fb_helper,
+>>>>>  	unsigned int y;
+>>>>> =20
+>>>>>  	for (y =3D clip->y1; y < clip->y2; y++) {
+>>>>> -		memcpy(dst, src, len);
+>>>>> +		memcpy_toio(dst, src, len);
+>>>
+>>> I don't think we can do this unconditionally, there's fbdev-helper dr=
+ivers
+>>> using shmem helpers, and for shmem memcpy_toio is wrong. We need a sw=
+itch
+>>> to fix this properly I think.
+>>
+>> I once has a patch set for this problem, but it didn't make it. [1]
+>>
+>> Buffers can move between I/O and system memory, so a simple flag would=
+
+>> not work. I'd propose this
+>>
+>> bool drm_gem_is_iomem(struct drm_gem_object *obj)
+>> {
+>> 	if (obj->funcs && obj->funcs->is_iomem)
+>> 		return obj->funcs->is_iomem(obj);
+>> 	return false;
+>> }
+>>
+>> Most GEM implmentations wouldn't bother, but VRAM helpers could set th=
+e
+>> is_iomem function and return the current state. Fbdev helpers can then=
+
+>> pick the correct memcpy_*() function.
+>=20
+> Hm wasn't the (long term at least) idea to add the is_iomem flag to the=
+
+> vmap functions? is_iomem is kinda only well-defined if there's a vmap o=
+f
+> the buffer around (which also pins it), or in general when the buffer i=
+s
+> pinned. Outside of that an ->is_iomem function doesn't make much sense.=
 
 
+Oh. From how I understood the original discussion, you shoot down the
+idea because sparse would not support it well?
+
+The other idea was to add an additional vmap_iomem() helper that returns
+an__iomem pointer. Can we try that?
+
+Best regards
+Thomas
+
+> -Daniel
+>=20
+>>
+>> Best regards
+>> Thomas
+>>
+>> [1]
+>> https://lore.kernel.org/dri-devel/20191106093121.21762-1-tzimmermann@s=
+use.de/
+>>
+>>>
+>>> What Dave Airlie mentioned is just about memcpy_toio vs the sparc bus=
+
+>>> version, for which we don't have any drivers really. But I do think w=
+e
+>>> need to differentiate between memcpy and memcpy_tio. That's what this=
+
+>>> entire annoying _cfb_ vs _sys_ business is all about, and also what g=
+em
+>>> vram helpers have to deal with.
+>>> -Daniel
+>>>
+>>>>>  		src +=3D fb->pitches[0];
+>>>>>  		dst +=3D fb->pitches[0];
+>>>>>  	}
+>>>>>
+>>>>
+>>>> --=20
+>>>> Thomas Zimmermann
+>>>> Graphics Driver Developer
+>>>> SUSE Software Solutions Germany GmbH
+>>>> Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+>>>> (HRB 36809, AG N=C3=BCrnberg)
+>>>> Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+>>>>
+>>>
+>>>
+>>>
+>>>
+>>>> _______________________________________________
+>>>> dri-devel mailing list
+>>>> dri-devel@lists.freedesktop.org
+>>>> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+>>>
+>>>
+>>
+>> --=20
+>> Thomas Zimmermann
+>> Graphics Driver Developer
+>> SUSE Software Solutions Germany GmbH
+>> Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+>> (HRB 36809, AG N=C3=BCrnberg)
+>> Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+>>
+>=20
+>=20
+>=20
+>=20
+
+--=20
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+(HRB 36809, AG N=C3=BCrnberg)
+Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
 
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+--Av61Xe9YVgK7F9axO7fShRrriOoR4kzoe--
+
+--BfWLemcF3LCGfD3X9opczAf63cnT4EjP6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFIBAEBCAAyFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl8NczUUHHR6aW1tZXJt
+YW5uQHN1c2UuZGUACgkQaA3BHVMLeiPnFQgAie4MjlLAelXMUbdneQZnHdLpBAVP
+7tEV+NqjNeF8o2NwOO+Fj0szZz2YoihtmUXlJxxKp3oSb9Ffz7jUPTGJO0eoGrs8
+KWEqaXVCGYRBR4Jq1pHufJ3QpVZ//POw1ZBOdv8N3q5/u2BwYng8hxbInv18onn6
+0ASkPsttsbwPgw+bgr0DM97mlnKCM8qUzTJ/9KWUe6iEJFLZ1LJM2NN1JF/ukLGG
+mzQgtrJhr8cKnTIrvq+JpDyOkn0qb3fkGNasg2V4glcGo+EZTsn9HHZC20wlki4G
+7RUSo2btZtQhQMpumQHNTBvSyFaFfYsiqWdazmsc82DWebrCvd0bGFZNvA==
+=+2fY
+-----END PGP SIGNATURE-----
+
+--BfWLemcF3LCGfD3X9opczAf63cnT4EjP6--
