@@ -2,60 +2,36 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 021EA21FF86
-	for <lists+sparclinux@lfdr.de>; Tue, 14 Jul 2020 23:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EA6122005C
+	for <lists+sparclinux@lfdr.de>; Wed, 15 Jul 2020 00:02:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727941AbgGNVCm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 14 Jul 2020 17:02:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59660 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727935AbgGNVCm (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 14 Jul 2020 17:02:42 -0400
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509C5C061755;
-        Tue, 14 Jul 2020 14:02:42 -0700 (PDT)
-Received: by mail-il1-x143.google.com with SMTP id r12so53018ilh.4;
-        Tue, 14 Jul 2020 14:02:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=2npQXh+dkmWmSHKIQodxnxIAaeJj1A/FFr2Ll6AD3Hs=;
-        b=cUVYKmbuMquj1tPPomJ3QAhJreggNlTpwsACBo1UIJy8ABrEJRvYcUBJ+BzMm+B8Pw
-         MqSqKdxiUZLp3/SF8aRm3MPFEOcuXTXzReaF83C04QfRQHgm5C83Tljo6P1xGnktBhzD
-         OT+ejuCCRxGNB8MkOVi2pHeVYazL4B1RPNhoCnI8kHFaP6uAtl1cDWerw9s1oH2TTw0B
-         LM7J/Ue++Hb1A6pAPvTDsxvbkSlC8xNFDSx4dnf7ckP1Hwf+uHJfUVUzdHq5jQZARzeY
-         kP3Kn/qUbeuD8v9JUHRLTRkHEjvJZJQ63Z+mmdiHUET6RLX7HxZvg2kwWAFQoo3rA3v3
-         6aTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=2npQXh+dkmWmSHKIQodxnxIAaeJj1A/FFr2Ll6AD3Hs=;
-        b=qwBz6cpTztDr+VsGfHlbeUB1eDw8ra2ncX7HmEGbwMpDo565vKQDn1MPAzT1am94md
-         LK0aVCDISIFjPj0yuE89IddNKThF9Fg+6bi0ubiqT2IID4+0SLTDdA2CopsNWR9e2jA/
-         um/tbkClS1JBWdMtQfdsxQGV+7VXkisi/7QMPcTGYnB/cw5T57y2VVQhs60rswriMXRs
-         lUDJ7rNe42+dcDkpGdh0WQMohRI48velBOYLyEUXhNFYz+1ErDHMEqgZ1Oj42wcJ6rM4
-         R7se7cqCgPVF6Q1enrZN1uBpA9FsYZoQO26Y4rTCpX4XvjeTdzV4mE+bb53JKUrEq+nf
-         zSng==
-X-Gm-Message-State: AOAM533mMYWOKUMz7bmVwC3qJr/yQHnFDBikiTIxepo8TP/t5Kn6z1vE
-        zkeOmrh60EoyH7PSDV+QogmQwxyd5E3EalmviHk=
-X-Google-Smtp-Source: ABdhPJwkddnl6FvRyOMdkmyyDRG9lWADdbl/Rct2E+/PQzsVJk9f8CH9Av6NUhTRswYDc3FssSb6pCSldchYVLW9F38=
-X-Received: by 2002:a92:9a4f:: with SMTP id t76mr6568425ili.174.1594760561627;
- Tue, 14 Jul 2020 14:02:41 -0700 (PDT)
+        id S1726446AbgGNWCR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 14 Jul 2020 18:02:17 -0400
+Received: from mout.kundenserver.de ([212.227.126.187]:36431 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726361AbgGNWCR (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 14 Jul 2020 18:02:17 -0400
+Received: from mail-qv1-f50.google.com ([209.85.219.50]) by
+ mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MkYkI-1kZiA41Kl4-00m0VJ; Wed, 15 Jul 2020 00:02:14 +0200
+Received: by mail-qv1-f50.google.com with SMTP id h18so23076qvl.3;
+        Tue, 14 Jul 2020 15:02:13 -0700 (PDT)
+X-Gm-Message-State: AOAM531ILk7S+60OO27o1mOL4kMgX72CRnxAc3k0w3hSiCJvbA2N0Bni
+        wu5G60RbnBrHP2QKq0vBsBZfyucnJ4BdR2theDw=
+X-Google-Smtp-Source: ABdhPJznSzLhDwcnDZmpeVRogK9o+2OI/Kw97MVSd98PzQaS/otI9FtvjiXpPZMRdXNdxDurpAOdHjSmk9v+bKI3/P4=
+X-Received: by 2002:a0c:f802:: with SMTP id r2mr6638892qvn.197.1594764132842;
+ Tue, 14 Jul 2020 15:02:12 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6602:21d8:0:0:0:0 with HTTP; Tue, 14 Jul 2020 14:02:40
- -0700 (PDT)
-In-Reply-To: <20200714184550.GA397277@bjorn-Precision-5520>
 References: <CAK8P3a3NWSZw6678k1O2eJ6-c5GuW7484PRvEzU9MEPPrCD-yw@mail.gmail.com>
  <20200714184550.GA397277@bjorn-Precision-5520>
-From:   Kjetil Oftedal <oftedal@gmail.com>
-Date:   Tue, 14 Jul 2020 23:02:40 +0200
-Message-ID: <CALMQjD9OVTbLVPGX-9+GDekZ02Wsqdz57-k1uCBMXC7cT3K_7w@mail.gmail.com>
+In-Reply-To: <20200714184550.GA397277@bjorn-Precision-5520>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 15 Jul 2020 00:01:56 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3EZX8=649R9cYF6_=ivh1Xyrgsc5mUtS=d5yvQ3doZaQ@mail.gmail.com>
+Message-ID: <CAK8P3a3EZX8=649R9cYF6_=ivh1Xyrgsc5mUtS=d5yvQ3doZaQ@mail.gmail.com>
 Subject: Re: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
 To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
+Cc:     "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
         bjorn@helgaas.com, Shuah Khan <skhan@linuxfoundation.org>,
         linux-pci <linux-pci@vger.kernel.org>,
         linux-kernel-mentees@lists.linuxfoundation.org,
@@ -95,28 +71,41 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Ley Foon Tan <ley.foon.tan@intel.com>,
         Marek Vasut <marek.vasut+renesas@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:htIIEHJ+2VRo89KGgM54VbdWzY1F+p4UyOUPMeF4OPh5z8bpbUB
+ sVv1cpiVoPWwICHEllgO0HS0l52ZbIaCDTXB27qFm+eZ9Yomzn6dGglu0GEDntD91Ws8O9f
+ gnoT+46mW7EFaZL1TnYcDKSuTb3IwxhZODjYXY4LFMYZYL+IvYR1F6Pssxt1jeklbUQFJwr
+ xQlo/x9romh/cGtYDM4DA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:gdfHMQ5pVVk=:AnH71DF6zO5WmImmh4KV8/
+ fgL/3Mb8jPf4tlByzGC7eAwL7drU7S9U7uVTqh0Wg85PEMDe60IDJnD9qpGbe6x3u5iz76CvH
+ e9TJQ3YDjnigJj/tZEV2/hsDxwsjS6lbXqrDLQkFi89rJuMlIlljApWmZSwtANDZrxqY5UfjH
+ TWYLBZfksBEq9UxTrW6r1Rch21YGvqGjJiP5JAtW3NeGiUA/B0516sSFM08wsRiHhQr3X+0it
+ kjVFNgiZVvXwb9xyA8lJjBJ9Fy2B85UPYLUUMbhRunzn7A6e8grmwCyLtmA/0gsf+azsZEhJv
+ pg8qaTAfJc9KLRyRZN0HAB1PGFdhmXGLYNn5qiswG8DwG+GxPiim1ZlsFvEjKuOLQqGvi/WSa
+ EzHPgN9UzeaKmiNRVXIJfcjRQWlrDn/Vm0uvVFcx1/aStiUC1q1WmTNwhVJrINFTHeQgMh2oz
+ B480IYi5J63gkhm279kA3Ep4bx7ED4/YoY7GnZYxxzsFxuXD9D4ur02Nv555BdKc/7n3nRwCI
+ GtUajzqELc8S3cGPknxX0/w+zumNQJrek67uwoiR6QIlnUU48sqxhk23VNPia+pi8OmBWwTaI
+ OAPiFAleHr42OFbv1dAK3lT4XpWHlIcqq7TPy3CO/bGYOIGGqJtAWdF9eawyAgL8qOim+xuAy
+ MPCAXLtwFEErucsFzeIei3ZWAWwt217rNsoOW4CEEWBc/OX3i4abwVXrdstYeE1zuMFC20MkU
+ UtUf1j63XE7KCkAAqM5cFzfnv4gAc57xtp2J94/WuDXY7hGz8BLNimh1+znE8YefWF3+2Sfie
+ EhWHGBzZ5sCGCrHM+feK60kGX76xSuvhng5wws072WTqrjSngTRa52U3X9bq+hlszxsEAO9CB
+ sgBBcYPGFn4L6CRaS/RnAIGZYPjebFrNCh+AXGsDYzemxapy9BlCsqhVer85s7kNrfhl2GALp
+ BkdE/jOBbwR28ylZCpVvBLZLGebmHI+dsb1cA5O1dtzTJCjALqM0G
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 14/07/2020, Bjorn Helgaas <helgaas@kernel.org> wrote:
-
->>
->> a) callers of the high-level config space accessors
->>    pci_{write,read}_config_{byte,word,dword}, mostly in device
->>    drivers.
->> b) low-level implementation of the config space accessors
->>     through struct pci_ops
->> c) all other occurrences of these constants
->>
->> Starting with a), my first question is whether any high-level
->> drivers even need to care about errors from these functions. I see
->> 4913 callers that ignore the return code, and 576 that actually
->> check it, and almost none care about the specific error (as you
->> found as well). Unless we conclude that most PCI drivers are wrong,
->> could we just change the return type to 'void' and assume they never
->> fail for valid arguments on a valid pci_device* ?
+On Tue, Jul 14, 2020 at 8:45 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> On Mon, Jul 13, 2020 at 05:08:10PM +0200, Arnd Bergmann wrote:
+> > On Mon, Jul 13, 2020 at 3:22 PM Saheed O. Bolarinwa
+> > Starting with a), my first question is whether any high-level
+> > drivers even need to care about errors from these functions. I see
+> > 4913 callers that ignore the return code, and 576 that actually
+> > check it, and almost none care about the specific error (as you
+> > found as well). Unless we conclude that most PCI drivers are wrong,
+> > could we just change the return type to 'void' and assume they never
+> > fail for valid arguments on a valid pci_device* ?
 >
 > I really like this idea.
 >
@@ -137,7 +126,11 @@ On 14/07/2020, Bjorn Helgaas <helgaas@kernel.org> wrote:
 > Checking the function return value catches programming errors (bad
 > alignment, etc) but misses most of the interesting errors (device was
 > unplugged or reported a PCI error).
->
+
+My thinking was more that most of the time the error checking may
+be completely bogus to start with, and I would just not check for
+errors at all.
+
 > Checking the value returned from PCI is tricky because ~0 is a valid
 > value for some config registers, and only the driver knows for sure.
 > If the driver knows that ~0 is a possible value, it would have to do
@@ -181,40 +174,73 @@ On 14/07/2020, Bjorn Helgaas <helgaas@kernel.org> wrote:
 >
 > Am I understanding you correctly?
 
-Let us not do this. Reading config space is really expensive on some
-architectures. Requiring a driver to do it twice on some values does not
-improve upon that situation. And is quite redundant if the Root Complex
-driver already knows that the first access has failed.
+That would require changing all callers of the function, which
+I think would involve changing some 700 files. What I was
+suggesting was to only change the return type to void and
+categorize all drivers that today check it as either
 
-Additionally since multiple config accesses to the same devices is not
-allowed in the spec, the hardware must block and wait for a timeout if
-a config access does not get a response.
-(Can happen if a intermediate link between the RC and endpoint has to retrain)
-Having to block twice is very much not ideal. And in the case with
-retraining the secondary access might even succeed. As the link might
-recover between reading the first config word and reading PCI_VENDOR_ID.
-Thus allowing the driver to accept invalid data from the device.
+a) checking the return code is not helpful, or possibly even
+    wrong, so we just stop doing it. I expect those to be the
+    vast majority of callers, but that could be wrong.
 
->
->> For b), it might be nice to also change other aspects of the
->> interface, e.g. passing a pci_host_bridge pointer plus bus number
->> instead of a pci_bus pointer, or having the callback in the
->> pci_host_bridge structure.
->
-> I like this idea a lot, too.  I think the fact that
-> pci_bus_read_config_word() requires a pci_bus * complicates things in
-> a few places.
->
-> I think it's completely separate, as you say, and we should defer it
-> for now because even part a) is a lot of work.  I added it to my list
-> of possible future projects.
->
+b) Code that legitimately check the error code and need to
+   take an appropriate action. These could be changed to
+   calling a different interface such as 'pci_bus_read_config_word'
+   or a new 'pci_device_last_error()' function.
 
-What about strange PCI devices such as Non-Transparent bridges?
-They will require their own PCI Config space accessors that is not
-connected to a host bridge if one wants to do some sort of
-punch-through enumeration.
-I guess the kernel doesn't care much about them?
+The reasons I suspect that most callers don't actually need
+to check for errors are:
 
-Best regards,
-Kjetil Oftedal
+- Most error checking is static: PCIBIOS_BAD_REGISTER_NUMBER
+  only happens if you pass an invalid register number, but most
+  callers pass a compile-time constant register number that is
+  known to be correct, or the driver would never work. Similarly,
+  PCIBIOS_DEVICE_NOT_FOUND wouldn't normally happen
+  since you pass a valid pci_device pointer that was already
+  probed.
+
+- config space accesses are very rare compared to memory
+  space access and on the hardware side the error handling
+  would be similar, but readl/writel don't return errors, they just
+  access wrong registers or return 0xffffffff.
+  arch/powerpc/kernel/eeh.c has a ton extra code written to
+  deal with it, but no other architectures do.
+
+- If we add code to detect errors in pci_read_config_*
+  and do some of the stuff from powerpc's
+  eeh_dev_check_failure(), we are more likely to catch
+  intermittent failures when drivers don't check, or bugs
+  with invalid arguments in device drivers than relying on
+  drivers to get their error handling right when those code
+  paths don't ever get covered in normal testing.
+
+Looking at a couple of random drivers that do check the
+return codes, I find:
+
+drivers/edac/amd8131_edac.c: prints the register number,
+then keeps going. This is not useful
+
+drivers/net/ethernet/mellanox/mlx4/reset.c: error handling
+in mlx4_reset() seems reasonable, but it gets called
+from mlx4_pci_resume(), which has a 'void' return code and
+cannot propagate the error further. My guess is that it
+would try to keep going after a failed resume and run into
+random other problems then.
+
+drivers/ata/pata_cs5536.c: error code gets passed to
+caller and then always ignored. Can clearly be changed
+
+drivers/net/wireless/intersil/prism54/islpci_hotplug.c:
+Out of two calls, only one is checked, which seems bogus
+
+drivers/usb/host/pci-quirks.c: only one of many instances
+has a check, again this seems bogus.
+
+drivers/leds/leds-ss4200.c: called from probe(), which
+seems to correctly deal with errors by failing the probe.
+Not sure this can ever fail though, since the driver only does
+it after pci_enable_device() succeeds first. Note that
+pci_enable_device() ignores pci_read_config_byte()
+errors but sanity-checks the register contents/
+
+        Arnd
