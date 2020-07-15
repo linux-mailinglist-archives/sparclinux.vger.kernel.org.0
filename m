@@ -2,98 +2,119 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEE07221178
-	for <lists+sparclinux@lfdr.de>; Wed, 15 Jul 2020 17:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B60BA221794
+	for <lists+sparclinux@lfdr.de>; Thu, 16 Jul 2020 00:12:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726057AbgGOPpa (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 15 Jul 2020 11:45:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35032 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725798AbgGOPp3 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Jul 2020 11:45:29 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33127C061755
-        for <sparclinux@vger.kernel.org>; Wed, 15 Jul 2020 08:45:29 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id f12so2639367eja.9
-        for <sparclinux@vger.kernel.org>; Wed, 15 Jul 2020 08:45:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7pzm8h4G2HVfmQ+x8/lIJ98+FuZ32kUXjq+7iy9JYZM=;
-        b=So7ULcztBI5+vqcYHF6RInLzbtXnSMmxrLqAqPwLGTu5L0g2yYz1BJmBDfB4TwYaT3
-         OBauVu3bDax/nPYHvG7uOyCfYsSXp+Q/LXsb6/v7tRetKBwggjtXxkSNA6JhytPL4MkX
-         wa0ZwbDv017n75vldWdEsOJQJWpJ8NeJ/QS/6HQ6NdzUg4hQfWouAl1TBekg4y0IbUBe
-         T6u+apUhMG6Ia0Xrm+f0AvvKrZ2H/x5JMCZ6iAvjcQouDomgQRyhgPv9Z1L3KjRofbO+
-         jo4/FF5Ryd9T47l43IqcpR/t1NWQCjAd2WUn5UKQlWcrzXICB63D2kgH4YLhxcY1Tz94
-         yAAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7pzm8h4G2HVfmQ+x8/lIJ98+FuZ32kUXjq+7iy9JYZM=;
-        b=V4kjrvKIWW8XGTW6gtNUtovHkkd7qgJR9BKMbTbTQd8l3PtEsbK4IsOOkbUFF3HzT9
-         vokEWZwoaN1EDOogZ39w98boBV9LDUpocgH58/pMT5BGSab6J6398P1qq6n29/km44um
-         NH4a/okebcpKm0/nC1MfBL+FqYHhaRxe+U90yEjsQsasVdmJBcH/nn23hjpj7N/5GfuN
-         1bLykh+SPTgE7WEn1iD7XB4lNbXnnoDm/S21agBS0oQ9R+4VvWrpRWtSYKToEtYbNuO4
-         1mDseNERVcuphvGkHw/UDkypDjh3nRc1nKszoHpsNJUwSvd0sdbRQTHQZ4cRWuz+qih4
-         rGDw==
-X-Gm-Message-State: AOAM533iCb6/LPBYMzdi0G388dAlIyvltZhtaIRD5zoyYjC/nQ/9E8ze
-        gUIIrUaxUepYRqsDXnA02O5i362+avtBdSkk0As=
-X-Google-Smtp-Source: ABdhPJw6IpXoCm8UNVfRQ6SSrAvn8WRvezS5GWwUm1XesFvEw/mOnVzi4u6si83Sea+UOpJ9I3zIVvxZTMzNoBWuiqU=
-X-Received: by 2002:a17:906:7694:: with SMTP id o20mr9725541ejm.289.1594827927734;
- Wed, 15 Jul 2020 08:45:27 -0700 (PDT)
+        id S1727826AbgGOWMd (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 15 Jul 2020 18:12:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35126 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726660AbgGOWMd (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 15 Jul 2020 18:12:33 -0400
+Received: from localhost (mobile-166-175-191-139.mycingular.net [166.175.191.139])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3066F2065F;
+        Wed, 15 Jul 2020 22:12:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594851152;
+        bh=yiFReVioS6K+TBmJa6LKAY/XmzClp9+1AGEcxSQDlBk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=S/WhYifuBwhLApPX94Rc/0RHdh1EsD3Lsktt1aoGethpDycX9QnYAuXsckOndJhw5
+         n3QaIQohtvY8AFWnVXQuc092VZjXlIZnqtKtIWZvilP5gx9OzeqCMahn+95Usq7PJx
+         YtSiGFgryUo4JNKSiAdj114J+tlIwEPKap8PPewk=
+Date:   Wed, 15 Jul 2020 17:12:30 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     David Laight <David.Laight@ACULAB.COM>
+Cc:     'Oliver O'Halloran' <oohall@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Keith Busch <kbusch@kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Toan Le <toan@os.amperecomputing.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Marek Vasut <marek.vasut+renesas@gmail.com>,
+        Rob Herring <robh@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Russell King <linux@armlinux.org.uk>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matt Turner <mattst88@gmail.com>,
+        "linux-kernel-mentees@lists.linuxfoundation.org" 
+        <linux-kernel-mentees@lists.linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Ray Jui <rjui@broadcom.com>, Jens Axboe <axboe@fb.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        "bjorn@helgaas.com" <bjorn@helgaas.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Juergen Gross <jgross@suse.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Scott Branden <sbranden@broadcom.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Re: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
+Message-ID: <20200715221230.GA563957@bjorn-Precision-5520>
 MIME-Version: 1.0
-Received: by 2002:a50:ed0e:0:0:0:0:0 with HTTP; Wed, 15 Jul 2020 08:45:26
- -0700 (PDT)
-Reply-To: robertandersonhappy1@gmail.com
-From:   robert <nkeruoko@gmail.com>
-Date:   Wed, 15 Jul 2020 08:45:26 -0700
-Message-ID: <CAPyXva2ZPM=Mxx6R-+mmto9+n3-_SX=EkA56Hr+BL9Rmcp04AQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1e2ae69a55f542faa18988a49e9b9491@AcuMS.aculab.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Attention Please,
+On Wed, Jul 15, 2020 at 02:38:29PM +0000, David Laight wrote:
+> From: Oliver O'Halloran
+> > Sent: 15 July 2020 05:19
+> > 
+> > On Wed, Jul 15, 2020 at 8:03 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> ...
+> > > - config space accesses are very rare compared to memory
+> > >   space access and on the hardware side the error handling
+> > >   would be similar, but readl/writel don't return errors, they just
+> > >   access wrong registers or return 0xffffffff.
+> > >   arch/powerpc/kernel/eeh.c has a ton extra code written to
+> > >   deal with it, but no other architectures do.
+> > 
+> > TBH the EEH MMIO hooks were probably a mistake to begin with. Errors
+> > detected via MMIO are almost always asynchronous to the error itself
+> > so you usually just wind up with a misleading stack trace rather than
+> > any kind of useful synchronous error reporting. It seems like most
+> > drivers don't bother checking for 0xFFs either and rely on the
+> > asynchronous reporting via .error_detected() instead, so I have to
+> > wonder what the point is. I've been thinking of removing the MMIO
+> > hooks and using a background poller to check for errors on each PHB
+> > periodically (assuming we don't have an EEH interrupt) instead. That
+> > would remove the requirement for eeh_dev_check_failure() to be
+> > interrupt safe too, so it might even let us fix all the godawful races
+> > in EEH.
+> 
+> I've 'played' with PCIe error handling - without much success.
+> What might be useful is for a driver that has just read ~0u to
+> be able to ask 'has there been an error signalled for this device?'.
 
-I am Mr. robert anderson, How are you, I hope you are fine and
-healthy? This is to inform you that i have concluded the transaction
-successfully with the help of a new partner from Venezuela and now the
-fund has been transferred to Venezuela into the bank account of the
-new partner.
+In many cases a driver will know that ~0 is not a valid value for the
+register it's reading.  But if ~0 *could* be valid, an interface like
+you suggest could be useful.  I don't think we have anything like that
+today, but maybe we could.  It would certainly be nice if the PCI core
+noticed, logged, and cleared errors.  We have some of that for AER,
+but that's an optional feature, and support for the error bits in the
+garden-variety PCI_STATUS register is pretty haphazard.  As you note
+below, this sort of SERR/PERR reporting is frequently hard-wired in
+ways that takes it out of our purview.
 
-Meanwhile, I have decided to compensate you with the sum of
-US$350,000.00 (thiree Hundred and Fifty Thousand United States
-Dollars) due to your past effort, though you disappointed me along the
-line. But nevertheless I am very happy for the successful ending of
-the transaction without any problem and that is the reason why i have
-decided to compensate you with the sum of US$350,000.00 so that you
-will share the joy with me.
-
-I advise you to contact my secretary for Atm Card of US$350.000.00,
-which I kept for you. Contact him now without any delay.
-
-Name: solomon brandy
-
-Email:solomonbrand003@gmail.com
-
-Kindly reconfirm to him the following below information:
-
-Your full name_________________________
-Your address__________________________
-Your country___________________________
-Your age______________________________
-Your occupation________________________
-Your cell Phone number______________________
-
-Note that if you did not send him the above information complete, he
-will not release the Atm card to you because he has to be sure that it
-is you. Ask him to send you the total sum of ($350.000.00 ) Atm card,
-which I kept for you.
-
-Best regards,
-
-Mr. robert anderson
+Bjorn
