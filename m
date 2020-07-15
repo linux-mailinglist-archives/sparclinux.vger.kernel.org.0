@@ -2,138 +2,98 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B88220FA5
-	for <lists+sparclinux@lfdr.de>; Wed, 15 Jul 2020 16:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEE07221178
+	for <lists+sparclinux@lfdr.de>; Wed, 15 Jul 2020 17:45:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729330AbgGOOig (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 15 Jul 2020 10:38:36 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:33067 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729332AbgGOOie (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 15 Jul 2020 10:38:34 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-77-9crfze-iNZqlCsLzYG0IKA-1; Wed, 15 Jul 2020 15:38:30 +0100
-X-MC-Unique: 9crfze-iNZqlCsLzYG0IKA-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Wed, 15 Jul 2020 15:38:29 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Wed, 15 Jul 2020 15:38:29 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Oliver O'Halloran' <oohall@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>
-CC:     Bjorn Helgaas <helgaas@kernel.org>,
-        Keith Busch <kbusch@kernel.org>,
-        "Paul Mackerras" <paulus@samba.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        "Toan Le" <toan@os.amperecomputing.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        "Marek Vasut" <marek.vasut+renesas@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        "Lorenzo Pieralisi" <lorenzo.pieralisi@arm.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Russell King <linux@armlinux.org.uk>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matt Turner <mattst88@gmail.com>,
-        "linux-kernel-mentees@lists.linuxfoundation.org" 
-        <linux-kernel-mentees@lists.linuxfoundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ray Jui <rjui@broadcom.com>, Jens Axboe <axboe@fb.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        "bjorn@helgaas.com" <bjorn@helgaas.com>,
-        "Boris Ostrovsky" <boris.ostrovsky@oracle.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Juergen Gross <jgross@suse.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-        Scott Branden <sbranden@broadcom.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Subject: RE: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
-Thread-Topic: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
-Thread-Index: AQHWWl8Tn5bD1WsSsUK40p+tBVrtaakIsp9A
-Date:   Wed, 15 Jul 2020 14:38:29 +0000
-Message-ID: <1e2ae69a55f542faa18988a49e9b9491@AcuMS.aculab.com>
-References: <CAK8P3a3NWSZw6678k1O2eJ6-c5GuW7484PRvEzU9MEPPrCD-yw@mail.gmail.com>
- <20200714184550.GA397277@bjorn-Precision-5520>
- <CAK8P3a3EZX8=649R9cYF6_=ivh1Xyrgsc5mUtS=d5yvQ3doZaQ@mail.gmail.com>
- <CAOSf1CEviMYySQhyQGks8hHjST-85wGpxEBasuxwSX_homBJ2A@mail.gmail.com>
-In-Reply-To: <CAOSf1CEviMYySQhyQGks8hHjST-85wGpxEBasuxwSX_homBJ2A@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S1726057AbgGOPpa (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 15 Jul 2020 11:45:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35032 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725798AbgGOPp3 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Jul 2020 11:45:29 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33127C061755
+        for <sparclinux@vger.kernel.org>; Wed, 15 Jul 2020 08:45:29 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id f12so2639367eja.9
+        for <sparclinux@vger.kernel.org>; Wed, 15 Jul 2020 08:45:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=7pzm8h4G2HVfmQ+x8/lIJ98+FuZ32kUXjq+7iy9JYZM=;
+        b=So7ULcztBI5+vqcYHF6RInLzbtXnSMmxrLqAqPwLGTu5L0g2yYz1BJmBDfB4TwYaT3
+         OBauVu3bDax/nPYHvG7uOyCfYsSXp+Q/LXsb6/v7tRetKBwggjtXxkSNA6JhytPL4MkX
+         wa0ZwbDv017n75vldWdEsOJQJWpJ8NeJ/QS/6HQ6NdzUg4hQfWouAl1TBekg4y0IbUBe
+         T6u+apUhMG6Ia0Xrm+f0AvvKrZ2H/x5JMCZ6iAvjcQouDomgQRyhgPv9Z1L3KjRofbO+
+         jo4/FF5Ryd9T47l43IqcpR/t1NWQCjAd2WUn5UKQlWcrzXICB63D2kgH4YLhxcY1Tz94
+         yAAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=7pzm8h4G2HVfmQ+x8/lIJ98+FuZ32kUXjq+7iy9JYZM=;
+        b=V4kjrvKIWW8XGTW6gtNUtovHkkd7qgJR9BKMbTbTQd8l3PtEsbK4IsOOkbUFF3HzT9
+         vokEWZwoaN1EDOogZ39w98boBV9LDUpocgH58/pMT5BGSab6J6398P1qq6n29/km44um
+         NH4a/okebcpKm0/nC1MfBL+FqYHhaRxe+U90yEjsQsasVdmJBcH/nn23hjpj7N/5GfuN
+         1bLykh+SPTgE7WEn1iD7XB4lNbXnnoDm/S21agBS0oQ9R+4VvWrpRWtSYKToEtYbNuO4
+         1mDseNERVcuphvGkHw/UDkypDjh3nRc1nKszoHpsNJUwSvd0sdbRQTHQZ4cRWuz+qih4
+         rGDw==
+X-Gm-Message-State: AOAM533iCb6/LPBYMzdi0G388dAlIyvltZhtaIRD5zoyYjC/nQ/9E8ze
+        gUIIrUaxUepYRqsDXnA02O5i362+avtBdSkk0As=
+X-Google-Smtp-Source: ABdhPJw6IpXoCm8UNVfRQ6SSrAvn8WRvezS5GWwUm1XesFvEw/mOnVzi4u6si83Sea+UOpJ9I3zIVvxZTMzNoBWuiqU=
+X-Received: by 2002:a17:906:7694:: with SMTP id o20mr9725541ejm.289.1594827927734;
+ Wed, 15 Jul 2020 08:45:27 -0700 (PDT)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Received: by 2002:a50:ed0e:0:0:0:0:0 with HTTP; Wed, 15 Jul 2020 08:45:26
+ -0700 (PDT)
+Reply-To: robertandersonhappy1@gmail.com
+From:   robert <nkeruoko@gmail.com>
+Date:   Wed, 15 Jul 2020 08:45:26 -0700
+Message-ID: <CAPyXva2ZPM=Mxx6R-+mmto9+n3-_SX=EkA56Hr+BL9Rmcp04AQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-RnJvbTogT2xpdmVyIE8nSGFsbG9yYW4NCj4gU2VudDogMTUgSnVseSAyMDIwIDA1OjE5DQo+IA0K
-PiBPbiBXZWQsIEp1bCAxNSwgMjAyMCBhdCA4OjAzIEFNIEFybmQgQmVyZ21hbm4gPGFybmRAYXJu
-ZGIuZGU+IHdyb3RlOg0KLi4uDQo+ID4gLSBjb25maWcgc3BhY2UgYWNjZXNzZXMgYXJlIHZlcnkg
-cmFyZSBjb21wYXJlZCB0byBtZW1vcnkNCj4gPiAgIHNwYWNlIGFjY2VzcyBhbmQgb24gdGhlIGhh
-cmR3YXJlIHNpZGUgdGhlIGVycm9yIGhhbmRsaW5nDQo+ID4gICB3b3VsZCBiZSBzaW1pbGFyLCBi
-dXQgcmVhZGwvd3JpdGVsIGRvbid0IHJldHVybiBlcnJvcnMsIHRoZXkganVzdA0KPiA+ICAgYWNj
-ZXNzIHdyb25nIHJlZ2lzdGVycyBvciByZXR1cm4gMHhmZmZmZmZmZi4NCj4gPiAgIGFyY2gvcG93
-ZXJwYy9rZXJuZWwvZWVoLmMgaGFzIGEgdG9uIGV4dHJhIGNvZGUgd3JpdHRlbiB0bw0KPiA+ICAg
-ZGVhbCB3aXRoIGl0LCBidXQgbm8gb3RoZXIgYXJjaGl0ZWN0dXJlcyBkby4NCj4gDQo+IFRCSCB0
-aGUgRUVIIE1NSU8gaG9va3Mgd2VyZSBwcm9iYWJseSBhIG1pc3Rha2UgdG8gYmVnaW4gd2l0aC4g
-RXJyb3JzDQo+IGRldGVjdGVkIHZpYSBNTUlPIGFyZSBhbG1vc3QgYWx3YXlzIGFzeW5jaHJvbm91
-cyB0byB0aGUgZXJyb3IgaXRzZWxmDQo+IHNvIHlvdSB1c3VhbGx5IGp1c3Qgd2luZCB1cCB3aXRo
-IGEgbWlzbGVhZGluZyBzdGFjayB0cmFjZSByYXRoZXIgdGhhbg0KPiBhbnkga2luZCBvZiB1c2Vm
-dWwgc3luY2hyb25vdXMgZXJyb3IgcmVwb3J0aW5nLiBJdCBzZWVtcyBsaWtlIG1vc3QNCj4gZHJp
-dmVycyBkb24ndCBib3RoZXIgY2hlY2tpbmcgZm9yIDB4RkZzIGVpdGhlciBhbmQgcmVseSBvbiB0
-aGUNCj4gYXN5bmNocm9ub3VzIHJlcG9ydGluZyB2aWEgLmVycm9yX2RldGVjdGVkKCkgaW5zdGVh
-ZCwgc28gSSBoYXZlIHRvDQo+IHdvbmRlciB3aGF0IHRoZSBwb2ludCBpcy4gSSd2ZSBiZWVuIHRo
-aW5raW5nIG9mIHJlbW92aW5nIHRoZSBNTUlPDQo+IGhvb2tzIGFuZCB1c2luZyBhIGJhY2tncm91
-bmQgcG9sbGVyIHRvIGNoZWNrIGZvciBlcnJvcnMgb24gZWFjaCBQSEINCj4gcGVyaW9kaWNhbGx5
-IChhc3N1bWluZyB3ZSBkb24ndCBoYXZlIGFuIEVFSCBpbnRlcnJ1cHQpIGluc3RlYWQuIFRoYXQN
-Cj4gd291bGQgcmVtb3ZlIHRoZSByZXF1aXJlbWVudCBmb3IgZWVoX2Rldl9jaGVja19mYWlsdXJl
-KCkgdG8gYmUNCj4gaW50ZXJydXB0IHNhZmUgdG9vLCBzbyBpdCBtaWdodCBldmVuIGxldCB1cyBm
-aXggYWxsIHRoZSBnb2Rhd2Z1bCByYWNlcw0KPiBpbiBFRUguDQoNCkkndmUgJ3BsYXllZCcgd2l0
-aCBQQ0llIGVycm9yIGhhbmRsaW5nIC0gd2l0aG91dCBtdWNoIHN1Y2Nlc3MuDQpXaGF0IG1pZ2h0
-IGJlIHVzZWZ1bCBpcyBmb3IgYSBkcml2ZXIgdGhhdCBoYXMganVzdCByZWFkIH4wdSB0bw0KYmUg
-YWJsZSB0byBhc2sgJ2hhcyB0aGVyZSBiZWVuIGFuIGVycm9yIHNpZ25hbGxlZCBmb3IgdGhpcyBk
-ZXZpY2U/Jy4NCg0KSSBnb3QgYW4gZXJyb3IgZ2VuZXJhdGVkIGJ5IGRvaW5nIGFuIE1NSU8gYWNj
-ZXNzIHRoYXQgd2FzIGluc2lkZQ0KdGhlIGFkZHJlc3MgcmFuZ2UgZm9yd2FyZGVkIHRvIHRoZSBz
-bGF2ZSwgYnV0IG91dHNpZGUgYW55IG9mIGl0cyBCQVJzLg0KKFR3byBCQVJzIG9mIGRpZmZlcmVu
-dCBzaXplcyBsZWF2ZXMgYSBuaWNlIGdhcC4pDQpUaGlzIGdvdCByZXBvcnRlZCB1cCB0byB0aGUg
-YnJpZGdlIG5lYXJlc3QgdGhlIHNsYXZlICh3aGljaCBzdXBwb3J0ZWQNCmVycm9yIGhhbmRsaW5n
-KSwgYnV0IG5vdCB0byB0aGUgcm9vdCBicmlkZ2UgKHdoaWNoIEkgZG9uJ3QgdGhpbmsgZG9lcyku
-DQpJU1RSIGEgbWVzc2FnZSBhYm91dCBFRUggYmVpbmcgaGFuZGxlZCBieSB0aGUgaGFyZHdhcmUg
-KHRoZSBtYWNoaW5lDQppcyB1cCBidXQgZG1lc2cgaXMgZnVsbCBvZiBtZXNzYWdlcyBmcm9tIGEg
-Ym91bmNpbmcgVVNCIG1vdXNlKS4NCg0KV2l0aCBzdWNoIHBhcnRpYWwgZXJyb3IgcmVwb3J0aW5n
-IHVzZWZ1bCBpbmZvIGNhbiBzdGlsbCBiZSBleHRyYWN0ZWQuDQoNCk9mIGNvdXJzZSwgd2hhdCBh
-Y3R1YWxseSBoYXBwZW5zIG9uIGEgUENJZSBlcnJvciBpcyB0aGF0IHRoZSBzaWduYWwNCmdldHMg
-cm91dGVkIHRvIHNvbWUgJ2JvYXJkIHN1cHBvcnQgbG9naWMnIGFuZCB0aGVuIHBhc3NlZCBiYWNr
-IGludG8NCnRoZSBrZXJuZWwgYXMgYW4gTk1JIC0gd2hpY2ggdGhlbiBjcmFzaGVzIHRoZSBrZXJu
-ZWwhDQpUaGlzIGV2ZW4gaGFwcGVucyB3aGVuIHRoZSBQQ0llIGxpbmsgZ29lcyBkb3duIGFmdGVy
-IHdlJ3ZlIGRvbmUgYQ0Kc29mdC1yZW1vdmUgb2YgdGhlIGRldmljZSBpdHNlbGYhDQpSYXRoZXIg
-bWFrZXMgdXBkYXRpbmcgdGhlIGJvYXJkJ3MgRlBHQSB3aXRob3V0IGEgcmVib290IHRyaWNreS4N
-Cg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2Fk
-LCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5v
-OiAxMzk3Mzg2IChXYWxlcykNCg==
+Attention Please,
 
+I am Mr. robert anderson, How are you, I hope you are fine and
+healthy? This is to inform you that i have concluded the transaction
+successfully with the help of a new partner from Venezuela and now the
+fund has been transferred to Venezuela into the bank account of the
+new partner.
+
+Meanwhile, I have decided to compensate you with the sum of
+US$350,000.00 (thiree Hundred and Fifty Thousand United States
+Dollars) due to your past effort, though you disappointed me along the
+line. But nevertheless I am very happy for the successful ending of
+the transaction without any problem and that is the reason why i have
+decided to compensate you with the sum of US$350,000.00 so that you
+will share the joy with me.
+
+I advise you to contact my secretary for Atm Card of US$350.000.00,
+which I kept for you. Contact him now without any delay.
+
+Name: solomon brandy
+
+Email:solomonbrand003@gmail.com
+
+Kindly reconfirm to him the following below information:
+
+Your full name_________________________
+Your address__________________________
+Your country___________________________
+Your age______________________________
+Your occupation________________________
+Your cell Phone number______________________
+
+Note that if you did not send him the above information complete, he
+will not release the Atm card to you because he has to be sure that it
+is you. Ask him to send you the total sum of ($350.000.00 ) Atm card,
+which I kept for you.
+
+Best regards,
+
+Mr. robert anderson
