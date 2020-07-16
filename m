@@ -2,125 +2,74 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E3A2221DD8
-	for <lists+sparclinux@lfdr.de>; Thu, 16 Jul 2020 10:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE7452221BD
+	for <lists+sparclinux@lfdr.de>; Thu, 16 Jul 2020 13:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726514AbgGPIHo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 16 Jul 2020 04:07:44 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:33618 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726411AbgGPIHn (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 16 Jul 2020 04:07:43 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-256-PplaHSnfMy-vJii-bmgfqA-1; Thu, 16 Jul 2020 09:07:38 +0100
-X-MC-Unique: PplaHSnfMy-vJii-bmgfqA-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Thu, 16 Jul 2020 09:07:37 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Thu, 16 Jul 2020 09:07:37 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Benjamin Herrenschmidt' <benh@kernel.crashing.org>,
-        Bjorn Helgaas <helgaas@kernel.org>
-CC:     'Oliver O'Halloran' <oohall@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Keith Busch <kbusch@kernel.org>,
-        Paul Mackerras <paulus@samba.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Toan Le <toan@os.amperecomputing.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        "Marek Vasut" <marek.vasut+renesas@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        "Lorenzo Pieralisi" <lorenzo.pieralisi@arm.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Russell King <linux@armlinux.org.uk>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matt Turner <mattst88@gmail.com>,
-        "linux-kernel-mentees@lists.linuxfoundation.org" 
-        <linux-kernel-mentees@lists.linuxfoundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ray Jui <rjui@broadcom.com>, Jens Axboe <axboe@fb.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        "bjorn@helgaas.com" <bjorn@helgaas.com>,
-        "Boris Ostrovsky" <boris.ostrovsky@oracle.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Juergen Gross <jgross@suse.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-        Scott Branden <sbranden@broadcom.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Subject: RE: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
-Thread-Topic: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
-Thread-Index: AQHWWvotn5bD1WsSsUK40p+tBVrtaakJ2CmQ
-Date:   Thu, 16 Jul 2020 08:07:37 +0000
-Message-ID: <5a7574c0efc1475a89f84c6393e598d6@AcuMS.aculab.com>
-References: <20200715221230.GA563957@bjorn-Precision-5520>
- <5d4b3a716f85017c17c52a85915fba9e19509e81.camel@kernel.crashing.org>
-In-Reply-To: <5d4b3a716f85017c17c52a85915fba9e19509e81.camel@kernel.crashing.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S1728321AbgGPLyf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 16 Jul 2020 07:54:35 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:40074 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726383AbgGPLye (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 16 Jul 2020 07:54:34 -0400
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+        id 1jw2T4-0008MI-6D; Thu, 16 Jul 2020 21:54:27 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Thu, 16 Jul 2020 21:54:26 +1000
+Date:   Thu, 16 Jul 2020 21:54:26 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Eric Biggers <ebiggers@kernel.org>
+Cc:     linux-crypto@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>, mptcp@lists.01.org,
+        Mat Martineau <mathew.j.martineau@linux.intel.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        alsa-devel@alsa-project.org,
+        Cheng-Yi Chiang <cychiang@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Tzung-Bi Shih <tzungbi@google.com>
+Subject: Re: [PATCH v2 0/5] crypto: add sha256() function
+Message-ID: <20200716115426.GD31166@gondor.apana.org.au>
+References: <20200708163943.52071-1-ebiggers@kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200708163943.52071-1-ebiggers@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-RnJvbTogQmVuamFtaW4gSGVycmVuc2NobWlkdA0KPiBTZW50OiAxNSBKdWx5IDIwMjAgMjM6NDkN
-Cj4gT24gV2VkLCAyMDIwLTA3LTE1IGF0IDE3OjEyIC0wNTAwLCBCam9ybiBIZWxnYWFzIHdyb3Rl
-Og0KPiA+ID4gSSd2ZSAncGxheWVkJyB3aXRoIFBDSWUgZXJyb3IgaGFuZGxpbmcgLSB3aXRob3V0
-IG11Y2ggc3VjY2Vzcy4NCj4gPiA+IFdoYXQgbWlnaHQgYmUgdXNlZnVsIGlzIGZvciBhIGRyaXZl
-ciB0aGF0IGhhcyBqdXN0IHJlYWQgfjB1IHRvDQo+ID4gPiBiZSBhYmxlIHRvIGFzayAnaGFzIHRo
-ZXJlIGJlZW4gYW4gZXJyb3Igc2lnbmFsbGVkIGZvciB0aGlzIGRldmljZT8nLg0KPiA+DQo+ID4g
-SW4gbWFueSBjYXNlcyBhIGRyaXZlciB3aWxsIGtub3cgdGhhdCB+MCBpcyBub3QgYSB2YWxpZCB2
-YWx1ZSBmb3IgdGhlDQo+ID4gcmVnaXN0ZXIgaXQncyByZWFkaW5nLiAgQnV0IGlmIH4wICpjb3Vs
-ZCogYmUgdmFsaWQsIGFuIGludGVyZmFjZSBsaWtlDQo+ID4geW91IHN1Z2dlc3QgY291bGQgYmUg
-dXNlZnVsLiAgSSBkb24ndCB0aGluayB3ZSBoYXZlIGFueXRoaW5nIGxpa2UgdGhhdA0KPiA+IHRv
-ZGF5LCBidXQgbWF5YmUgd2UgY291bGQuICBJdCB3b3VsZCBjZXJ0YWlubHkgYmUgbmljZSBpZiB0
-aGUgUENJIGNvcmUNCj4gPiBub3RpY2VkLCBsb2dnZWQsIGFuZCBjbGVhcmVkIGVycm9ycy4gIFdl
-IGhhdmUgc29tZSBvZiB0aGF0IGZvciBBRVIsDQo+ID4gYnV0IHRoYXQncyBhbiBvcHRpb25hbCBm
-ZWF0dXJlLCBhbmQgc3VwcG9ydCBmb3IgdGhlIGVycm9yIGJpdHMgaW4gdGhlDQo+ID4gZ2FyZGVu
-LXZhcmlldHkgUENJX1NUQVRVUyByZWdpc3RlciBpcyBwcmV0dHkgaGFwaGF6YXJkLiAgQXMgeW91
-IG5vdGUNCj4gPiBiZWxvdywgdGhpcyBzb3J0IG9mIFNFUlIvUEVSUiByZXBvcnRpbmcgaXMgZnJl
-cXVlbnRseSBoYXJkLXdpcmVkIGluDQo+ID4gd2F5cyB0aGF0IHRha2VzIGl0IG91dCBvZiBvdXIg
-cHVydmlldy4NCj4gDQo+IFdlIGRvIGhhdmUgcGNpX2NoYW5uZWxfc3RhdGUgKHZpYSBwY2lfY2hh
-bm5lbF9vZmZsaW5lKCkpIHdoaWNoIGNvdmVycw0KPiB0aGUgY2FzZXMgd2hlcmUgdGhlIHVuZGVy
-bHlpbmcgZXJyb3IgaGFuZGxpbmcgKHN1Y2ggYXMgRUVIIG9yIHVucGx1ZykNCj4gcmVzdWx0cyBp
-biB0aGUgZGV2aWNlIGJlaW5nIG9mZmxpbmVkIHRob3VnaCB0aGlzIHRlbmQgdG8gYmUNCj4gYXN5
-bmNocm9ub3VzIHNvIGl0IG1pZ2h0IHRha2UgYSBmZXcgfjAncyBiZWZvcmUgeW91IGdldCBpdC4N
-Cg0KT24gb25lIG9mIG15IHN5c3RlbXMgSSBkb24ndCB0aGluayB0aGUgZXJyb3IgVExQIGZyb20g
-dGhlIHRhcmdldA0KbWFkZSBpdHMgd2F5IHBhc3QgdGhlIGZpcnN0IGJyaWRnZSAtIEkgY291bGQg
-c2VlIHRoZSBlcnJvciBpbiBpdCdzDQpzdGF0dXMgcmVnaXN0ZXJzLg0KQnV0IEkgY291bGRuJ3Qg
-ZmluZCBhbnkgb2YgdGhlIEFFUiBzdGF0dXMgcmVnaXN0ZXJzIGluIHRoZSByb290IGJyaWRnZS4N
-ClNvIEkgdGhpbmsgeW91J2QgbmVlZCBhIHNvZnR3YXJlIHBvbGwgb2YgdGhlIGJyaWRnZSByZWdp
-c3RlcnMgdG8NCmZpbmQgb3V0IChhbmQgY2xlYXIpIHRoZSBlcnJvci4NCg0KVGhlIE5NSSBvbiB0
-aGUgZGVsbCBzeXN0ZW0gKHdoaWNoIGlzIHN1cHBvc2VkIHRvIG1lZXQgc29tZSBzcGVjaWFsDQpO
-RUJTPyBzZXJ2ZXIgcmVxdWlyZW1lbnRzKSBpcyBqdXN0IHN0dXBpZC4NClRvbyBsYXRlIHRvIGJl
-IHN5bmNocm9ub3VzIGFuZCBpbXBvc3NpYmxlIGZvciB0aGUgT1MgdG8gaGFuZGxlLg0KDQoJRGF2
-aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50
-IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTcz
-ODYgKFdhbGVzKQ0K
+On Wed, Jul 08, 2020 at 09:39:38AM -0700, Eric Biggers wrote:
+> This series adds a function sha256() to the sha256 library so that users
+> who want to compute a hash in one step can just call sha256() instead of
+> sha256_init() + sha256_update() + sha256_final().
+> 
+> Patches 3-5 then convert some users to use it.
+> 
+> Changed v1 => v2:
+>   - Added sparc patch to fix a build breakage caused by a
+>     static variable already named "sha256".
+>   - Added Reviewed-by, Acked-by, and Tested-by tags.
+> 
+> Eric Biggers (5):
+>   crypto: sparc - rename sha256 to sha256_alg
+>   crypto: lib/sha256 - add sha256() function
+>   efi: use sha256() instead of open coding
+>   mptcp: use sha256() instead of open coding
+>   ASoC: cros_ec_codec: use sha256() instead of open coding
+> 
+>  arch/sparc/crypto/sha256_glue.c          | 14 ++++++------
+>  drivers/firmware/efi/embedded-firmware.c |  9 +++-----
+>  include/crypto/sha.h                     |  1 +
+>  lib/crypto/sha256.c                      | 10 +++++++++
+>  net/mptcp/crypto.c                       | 15 +++----------
+>  sound/soc/codecs/cros_ec_codec.c         | 27 ++----------------------
+>  6 files changed, 26 insertions(+), 50 deletions(-)
 
+All applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
