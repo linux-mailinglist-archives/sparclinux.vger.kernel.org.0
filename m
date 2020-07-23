@@ -2,51 +2,74 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1610E22913B
-	for <lists+sparclinux@lfdr.de>; Wed, 22 Jul 2020 08:47:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 704A022BA11
+	for <lists+sparclinux@lfdr.de>; Fri, 24 Jul 2020 01:15:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728497AbgGVGrX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Wed, 22 Jul 2020 02:47:23 -0400
-Received: from smtp.utu.edu.uy ([190.0.150.6]:35772 "EHLO delta45.utu.edu.uy"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728049AbgGVGrX (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 22 Jul 2020 02:47:23 -0400
-X-Greylist: delayed 572 seconds by postgrey-1.27 at vger.kernel.org; Wed, 22 Jul 2020 02:47:22 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by delta45.utu.edu.uy (Postfix) with ESMTP id 86D1F1D11835;
-        Wed, 22 Jul 2020 03:37:17 -0300 (GMT+3)
-Received: from delta45.utu.edu.uy ([127.0.0.1])
-        by localhost (delta45.utu.edu.uy [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Bp0535Zqu9FN; Wed, 22 Jul 2020 03:37:17 -0300 (GMT+3)
-Received: from localhost (localhost [127.0.0.1])
-        by delta45.utu.edu.uy (Postfix) with ESMTP id AF93E1D11832;
-        Wed, 22 Jul 2020 03:37:15 -0300 (GMT+3)
-X-Virus-Scanned: amavisd-new at delta45.utu.edu.uy
-Received: from delta45.utu.edu.uy ([127.0.0.1])
-        by localhost (delta45.utu.edu.uy [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id PtujON85xK9O; Wed, 22 Jul 2020 03:37:15 -0300 (GMT+3)
-Received: from delta45.utu.edu.uy (delta45 [172.17.1.45])
-        by delta45.utu.edu.uy (Postfix) with ESMTP id 53A0D1D11823;
-        Wed, 22 Jul 2020 03:37:14 -0300 (GMT+3)
-Date:   Wed, 22 Jul 2020 03:37:14 -0300 (GMT-03:00)
-From:   Darlehen Bedienung <aemartinez@utu.edu.uy>
-Reply-To: info_innoxcapitalservicesolution@aol.com
-Message-ID: <1911444872.140838.1595399834330.JavaMail.zimbra@utu.edu.uy>
-Subject: 
+        id S1726855AbgGWXPs (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 23 Jul 2020 19:15:48 -0400
+Received: from mail-qk1-f175.google.com ([209.85.222.175]:40982 "EHLO
+        mail-qk1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726657AbgGWXPr (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 23 Jul 2020 19:15:47 -0400
+Received: by mail-qk1-f175.google.com with SMTP id l64so293797qkb.8;
+        Thu, 23 Jul 2020 16:15:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HCK5IhOfeHrsKWvFWWJWPxRK1T7/lPw/Gt6N/NVxpu0=;
+        b=PgmIm9Svm2BYGOnCuvYaWzp/R/JXQKQIUR5/dvI/GLsT/0iQgHylozKaY7i0klgdjC
+         9coawWyhd0qnjZV/UBH37yZ/FH8X1YlA6eTqvDOafpn+o5DUFl1dD3WURQUC1ZslR6EE
+         i9j00+zhEYdC0cVt7gRpLcrS6zSuQiOZ8/g+S0qvExE81dNhF7rxayWXePx8zfpEbbP1
+         E36PHZvLvOGRuI/24BGfTyZwH4RJ1MfOK90JRc8Pkji4DNbNdH2l+S3Ap9HetaahCEtx
+         yUwmVe59/8pBeLsXIjGviQihUlLfyfCnrI/Ou9IV3fiDbKLSjxy1XsIFfQa1fmJ1pPY2
+         famQ==
+X-Gm-Message-State: AOAM5301icxmh5cNnrOInGjTN/urlYqxLRnit9QT/eQJC7zTy9f9O3ns
+        w3mwK9JRsojwXi8yIOrYXDKYnVIy
+X-Google-Smtp-Source: ABdhPJxGjhsHQ6lCTM9N6P84KeI8k5panpNx/IPPwLe6F0Umvuiw61o3taxh3m4DMff3eT2Ts8Npuw==
+X-Received: by 2002:a37:4289:: with SMTP id p131mr7802401qka.28.1595546146808;
+        Thu, 23 Jul 2020 16:15:46 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id u58sm4196610qth.77.2020.07.23.16.15.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2020 16:15:46 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+To:     x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-sh@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, sparclinux@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] Drop unused MAX_PHYSADDR_BITS
+Date:   Thu, 23 Jul 2020 19:15:41 -0400
+Message-Id: <20200723231544.17274-1-nivedita@alum.mit.edu>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [172.17.1.45]
-X-Mailer: Zimbra 8.8.12_GA_3866 (zclient/8.8.12_GA_3866)
-X-Authenticated-User: aemartinez@utu.edu.uy
-Thread-Index: r6xDogD7JI3d/I1eKowYarIMX8tOZw==
-Thread-Topic: 
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+This #define is not used anywhere, and has the wrong value on x86_64.
 
+I tried digging into the history a bit, but it seems to have been unused
+even in the initial merge of sparsemem in v2.6.13, when it was first
+defined.
 
-Schönen Tag,Wir sind zuverlässige, vertrauenswürdige Kreditgeber, Wir bieten Darlehen an Unternehmen und Privatpersonen zu niedrigen und günstigen Zinssatz von 2%. Sind Sie auf der Suche nach einem Business-Darlehen, persönliche Darlehen, Schuldenkonsolidierung, unbesicherte Darlehen, Venture Capital. Kontaktieren Sie uns mit Name, Land, Darlehensbetrag, Dauer und Telefonnummer.GrüßeHerr DA COSTA DARREN FAY
+Arvind Sankar (3):
+  x86/mm: Drop unused MAX_PHYSADDR_BITS
+  sh/mm: Drop unused MAX_PHYSADDR_BITS
+  sparc: Drop unused MAX_PHYSADDR_BITS
+
+ arch/sh/include/asm/sparsemem.h    | 4 +---
+ arch/sparc/include/asm/sparsemem.h | 1 -
+ arch/x86/include/asm/sparsemem.h   | 6 +-----
+ 3 files changed, 2 insertions(+), 9 deletions(-)
+
+-- 
+2.26.2
+
