@@ -2,211 +2,159 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFB6222C074
-	for <lists+sparclinux@lfdr.de>; Fri, 24 Jul 2020 10:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1FAB22C093
+	for <lists+sparclinux@lfdr.de>; Fri, 24 Jul 2020 10:22:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726572AbgGXIJn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 24 Jul 2020 04:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44158 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726437AbgGXIJn (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 24 Jul 2020 04:09:43 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E406CC0619D3
-        for <sparclinux@vger.kernel.org>; Fri, 24 Jul 2020 01:09:42 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id d4so6390434otk.2
-        for <sparclinux@vger.kernel.org>; Fri, 24 Jul 2020 01:09:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=u5WUEiZQnTzlqtDgNNXx/FqFurAeXgz8pOyQpPHE4t8=;
-        b=SDXPTA/HGCTJKrnaW1Xrtkxowy+uFFdQ7usysrz++2vNgGJD3FtsH+BOFxh5ZvHkR6
-         HWxX+uTvJz59xyS1wxWEqPWBeJUufj6WObvLKi1Uv2xl3Ji+2p7Hh7Dd3pqxF9FX3IT1
-         hH6h4tF+4WZk6YefOCSvdp0jD0op5IwhHp4Oo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=u5WUEiZQnTzlqtDgNNXx/FqFurAeXgz8pOyQpPHE4t8=;
-        b=goJZtjjKJe5k1B1tSHyYY/QXHGEzwZEDarUfDu7oM8mIyq2jKo/GnH7VlqvMB6LxAl
-         sBfxzNOvorhAMN1YCAihIEUnmfWjl/FiAVgI4AzkEbCO80km8M5zxi9j5LcZ+60rymMM
-         0xyr10fSjVaZiLFEib8yxjVc9GPNqXgh9mywUeues6m6UmXv6AZmPJ959Y+XNGwMcs8S
-         ZTaQjfVwrbiOmAleltpeoaoBnmnjBNaKs8ZZr0tmnp7RgmgNMbr5EmWB6iwN881zwx1I
-         Mg9VypXxnAXuizaSL0TIgXgTkVbra//X3I/dYTzt25knGwk7PYBcFGPdZ+7J1T1Qhflr
-         eSTw==
-X-Gm-Message-State: AOAM531TN173Nnic43+Uk0xV3kpNRnDkadY0i7ETbkER3SgAzpsfqYKl
-        48lYwRh8X714YrbFqyJb04k5DJs6I9dJRUbPuOUSYg==
-X-Google-Smtp-Source: ABdhPJxrcn73s+oeNAhDxP1Hfx1gAd9s6xWRszh9+1yFGeaWJuXHIZfHeiyh/Fi8iVbRRSALUJpKIUV88cYAQs2eDqM=
-X-Received: by 2002:a05:6830:1613:: with SMTP id g19mr7466756otr.303.1595578181467;
- Fri, 24 Jul 2020 01:09:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200709193016.291267-1-sam@ravnborg.org> <14ce41c4-d683-1551-9f21-37b054f5752c@suse.de>
- <20200713162159.GR3278063@phenom.ffwll.local> <1ed6bd2a-6f8f-ca69-3244-03402874d5a3@suse.de>
- <20200714084141.GW3278063@phenom.ffwll.local> <a3fdd8b9-bf2b-dcd7-63b7-91f379865a6c@suse.de>
- <CAPM=9tyoJhvudNake+w=e4S9dQ8MT_bQEF9USuj=_vHBRLzA8Q@mail.gmail.com> <20200724062359.GA612640@ravnborg.org>
-In-Reply-To: <20200724062359.GA612640@ravnborg.org>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Fri, 24 Jul 2020 10:09:30 +0200
-Message-ID: <CAKMK7uHRxXeduoQHs-FmX2nZp966fUs6h8-+ecJjiPm4E6ARwQ@mail.gmail.com>
-Subject: Re: [PATCH] drm/drm_fb_helper: fix fbdev with sparc64
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Dave Airlie <airlied@gmail.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Gerd Hoffmann <kraxel@redhat.com>, sparclinux@vger.kernel.org,
+        id S1726573AbgGXIWr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 24 Jul 2020 04:22:47 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:33448 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726554AbgGXIWq (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 24 Jul 2020 04:22:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1595578965;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+        bh=2BOOxIHXiCunKOxphpa2rn7Yn8nix/g65BxOHIKcfXc=;
+        b=ig7s0bDmGTkzYVhT05ZmIcyKmOtUsbtBUXe8vZwd+gzO8YVaFEdbnXazDTTvc7cPdtEfqK
+        fiMQRnpWsPtu0vKXhl8PSQLZbhFRE6hjztVgWNxwl48J4JHqoN5A249of/tTXFUtREC3ad
+        DZrbgiW3Xfw+JPoO5vYK8sqiIoDKQK4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-476-9V5aJZXlPUuo2RDLsNh7WQ-1; Fri, 24 Jul 2020 04:22:42 -0400
+X-MC-Unique: 9V5aJZXlPUuo2RDLsNh7WQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B141957;
+        Fri, 24 Jul 2020 08:22:40 +0000 (UTC)
+Received: from [10.36.113.94] (ovpn-113-94.ams2.redhat.com [10.36.113.94])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D34CB6FEFE;
+        Fri, 24 Jul 2020 08:22:37 +0000 (UTC)
+Subject: Re: [PATCH 1/3] x86/mm: Drop unused MAX_PHYSADDR_BITS
+To:     Arvind Sankar <nivedita@alum.mit.edu>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-sh@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, sparclinux@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+References: <20200723231544.17274-1-nivedita@alum.mit.edu>
+ <20200723231544.17274-2-nivedita@alum.mit.edu>
+From:   David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat GmbH
+Message-ID: <45ec14e7-fd5b-f4f9-6f61-94a9159ec3ad@redhat.com>
+Date:   Fri, 24 Jul 2020 10:22:36 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <20200723231544.17274-2-nivedita@alum.mit.edu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Jul 24, 2020 at 8:24 AM Sam Ravnborg <sam@ravnborg.org> wrote:
->
->  Hi Dave.
->  On Fri, Jul 24, 2020 at 02:53:30PM +1000, Dave Airlie wrote:
-> > On Tue, 14 Jul 2020 at 18:56, Thomas Zimmermann <tzimmermann@suse.de> wrote:
-> > >
-> > > Hi
-> > >
-> > > Am 14.07.20 um 10:41 schrieb Daniel Vetter:
-> > > > On Tue, Jul 14, 2020 at 08:41:58AM +0200, Thomas Zimmermann wrote:
-> > > >> Hi
-> > > >>
-> > > >> Am 13.07.20 um 18:21 schrieb Daniel Vetter:
-> > > >>> On Fri, Jul 10, 2020 at 08:28:16AM +0200, Thomas Zimmermann wrote:
-> > > >>>> Hi
-> > > >>>>
-> > > >>>> Am 09.07.20 um 21:30 schrieb Sam Ravnborg:
-> > > >>>>> Mark reported that sparc64 would panic while booting using qemu.
-> > > >>>>> Mark bisected this to a patch that introduced generic fbdev emulation to
-> > > >>>>> the bochs DRM driver.
-> > > >>>>> Mark pointed out that a similar bug was fixed before where
-> > > >>>>> the sys helpers was replaced by cfb helpers.
-> > > >>>>>
-> > > >>>>> The culprint here is that the framebuffer reside in IO memory which
-> > > >>>>> requires SPARC ASI_PHYS (physical) loads and stores.
-> > > >>>>>
-> > > >>>>> The current bohcs DRM driver uses a shadow buffer.
-> > > >>>>> So all copying to the framebuffer happens in
-> > > >>>>> drm_fb_helper_dirty_blit_real().
-> > > >>>>>
-> > > >>>>> The fix is to replace the memcpy with memcpy_toio() from io.h.
-> > > >>>>>
-> > > >>>>> memcpy_toio() uses writeb() where the original fbdev code
-> > > >>>>> used sbus_memcpy_toio(). The latter uses sbus_writeb().
-> > > >>>>>
-> > > >>>>> The difference between writeb() and sbus_memcpy_toio() is
-> > > >>>>> that writeb() writes bytes in little-endian, where sbus_writeb() writes
-> > > >>>>> bytes in big-endian. As endian does not matter for byte writes they are
-> > > >>>>> the same. So we can safely use memcpy_toio() here.
-> > > >>>>>
-> > > >>>>> For many architectures memcpy_toio() is a simple memcpy().
-> > > >>>>> One sideeffect that is unknow is if this has any impact on other
-> > > >>>>> architectures.
-> > > >>>>> So far the analysis tells that this change is OK for other arch's.
-> > > >>>>> but testing would be good.
-> > > >>>>>
-> > > >>>>> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> > > >>>>> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> > > >>>>> Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> > > >>>>> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> > > >>>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > > >>>>> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> > > >>>>> Cc: "David S. Miller" <davem@davemloft.net>
-> > > >>>>> Cc: sparclinux@vger.kernel.org
-> > > >>>>
-> > > >>>> So this actually is a problem in practice. Do you know how userspace
-> > > >>>> handles this?
-> > > >>>>
-> > > >>>> For this patch
-> > > >>>>
-> > > >>>> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-> > > >>>>
-> > > >>>> but I'd like to have someone with more architecture expertise ack this
-> > > >>>> as well.
-> > > >>>>
-> > > >>>> Best regards
-> > > >>>> Thomas
-> > > >>>>
-> > > >>>>> ---
-> > > >>>>>  drivers/gpu/drm/drm_fb_helper.c | 2 +-
-> > > >>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >>>>>
-> > > >>>>> diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-> > > >>>>> index 5609e164805f..4d05b0ab1592 100644
-> > > >>>>> --- a/drivers/gpu/drm/drm_fb_helper.c
-> > > >>>>> +++ b/drivers/gpu/drm/drm_fb_helper.c
-> > > >>>>> @@ -399,7 +399,7 @@ static void drm_fb_helper_dirty_blit_real(struct drm_fb_helper *fb_helper,
-> > > >>>>>   unsigned int y;
-> > > >>>>>
-> > > >>>>>   for (y = clip->y1; y < clip->y2; y++) {
-> > > >>>>> -         memcpy(dst, src, len);
-> > > >>>>> +         memcpy_toio(dst, src, len);
-> > > >>>
-> > > >>> I don't think we can do this unconditionally, there's fbdev-helper drivers
-> > > >>> using shmem helpers, and for shmem memcpy_toio is wrong. We need a switch
-> > > >>> to fix this properly I think.
-> > > >>
-> > > >> I once has a patch set for this problem, but it didn't make it. [1]
-> > > >>
-> > > >> Buffers can move between I/O and system memory, so a simple flag would
-> > > >> not work. I'd propose this
-> > > >>
-> > > >> bool drm_gem_is_iomem(struct drm_gem_object *obj)
-> > > >> {
-> > > >>      if (obj->funcs && obj->funcs->is_iomem)
-> > > >>              return obj->funcs->is_iomem(obj);
-> > > >>      return false;
-> > > >> }
-> > > >>
-> > > >> Most GEM implmentations wouldn't bother, but VRAM helpers could set the
-> > > >> is_iomem function and return the current state. Fbdev helpers can then
-> > > >> pick the correct memcpy_*() function.
-> > > >
-> > > > Hm wasn't the (long term at least) idea to add the is_iomem flag to the
-> > > > vmap functions? is_iomem is kinda only well-defined if there's a vmap of
-> > > > the buffer around (which also pins it), or in general when the buffer is
-> > > > pinned. Outside of that an ->is_iomem function doesn't make much sense.
-> > >
-> > > Oh. From how I understood the original discussion, you shoot down the
-> > > idea because sparse would not support it well?
-> > >
-> > > The other idea was to add an additional vmap_iomem() helper that returns
-> > > an__iomem pointer. Can we try that?
-> > >
-> > Did we get anywhere with this yet?
->
-> A few on the work I did so far.
-> Using qemu the original reported bug was fixed only be replacing a
-> memcpy with memcpy_toio.
-> But this looks like only a half solution as we would still use the sys_*
-> variants to copy data to the framebuffer, and tye do not cope with
-> frambuffer in dedicated IO memory.
->
-> But I have not managed to get it work wiht qemu when using the cfb_*
-> variants. I end up in a deadlock waiting for the console lock.
-> So far my debuggin have not told me why I lock up the boot waiting for
-> the console lock and I am stuck on that.
->
-> I could send the patch memcpy => memcpy_toio but I am afraid it may not
-> work on real HW as we do not cover the sys_* => cfb_*
+On 24.07.20 01:15, Arvind Sankar wrote:
+> The macro is not used anywhere, and has an incorrect value (going by the
+> comment) on x86_64 since commit
+>   c898faf91b3e ("x86: 46 bit physical address support on 64 bits")
+> 
+> To avoid confusion, just remove the definition.
+> 
+> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+> ---
+>  arch/x86/include/asm/sparsemem.h | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
+> index 199218719a86..6bfc878f6771 100644
+> --- a/arch/x86/include/asm/sparsemem.h
+> +++ b/arch/x86/include/asm/sparsemem.h
+> @@ -10,24 +10,20 @@
+>   *    field of the struct page
+>   *
+>   * SECTION_SIZE_BITS		2^n: size of each section
+> - * MAX_PHYSADDR_BITS		2^n: max size of physical address space
+> - * MAX_PHYSMEM_BITS		2^n: how much memory we can have in that space
+> + * MAX_PHYSMEM_BITS		2^n: max size of physical address space
+>   *
+>   */
+>  
+>  #ifdef CONFIG_X86_32
+>  # ifdef CONFIG_X86_PAE
+>  #  define SECTION_SIZE_BITS	29
+> -#  define MAX_PHYSADDR_BITS	36
+>  #  define MAX_PHYSMEM_BITS	36
+>  # else
+>  #  define SECTION_SIZE_BITS	26
+> -#  define MAX_PHYSADDR_BITS	32
+>  #  define MAX_PHYSMEM_BITS	32
+>  # endif
+>  #else /* CONFIG_X86_32 */
+>  # define SECTION_SIZE_BITS	27 /* matt - 128 is convenient right now */
+> -# define MAX_PHYSADDR_BITS	(pgtable_l5_enabled() ? 52 : 44)
+>  # define MAX_PHYSMEM_BITS	(pgtable_l5_enabled() ? 52 : 46)
+>  #endif
+>  
+> 
 
-Let's focus on the single memcpy_toio for the regression fix only for
-now, that seems to be enough to get the system back to booting. Note
-that we don't want the cfb helpers for the case where fbdev emulation
-has a staging buffer in system memory, i.e. when the memcpy_toio
-matters. So fixing that really should be all that's needed.
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-Fixing sys vs cfb is more a case of making it possible of other
-drivers to also use the generic fbdev support, so that we can support
-the case of framebuffer in io space without the dirtyfb staging upload
-buffer. So minimal regression fix, more feature work (like the sys vs
-cfb stuff) goes into -next.
--Daniel
 -- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Thanks,
+
+David / dhildenb
+
