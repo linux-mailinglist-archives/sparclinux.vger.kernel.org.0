@@ -2,52 +2,165 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E03A22D23C
-	for <lists+sparclinux@lfdr.de>; Sat, 25 Jul 2020 01:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A320E22D986
+	for <lists+sparclinux@lfdr.de>; Sat, 25 Jul 2020 21:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726562AbgGXXh0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 24 Jul 2020 19:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48322 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726552AbgGXXhZ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 24 Jul 2020 19:37:25 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4648C0619D3;
-        Fri, 24 Jul 2020 16:37:25 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 083CE12753F96;
-        Fri, 24 Jul 2020 16:20:37 -0700 (PDT)
-Date:   Fri, 24 Jul 2020 16:37:19 -0700 (PDT)
-Message-Id: <20200724.163719.765874169250237597.davem@davemloft.net>
-To:     nivedita@alum.mit.edu
-Cc:     x86@kernel.org, dave.hansen@linux.intel.com, luto@kernel.org,
-        peterz@infradead.org, linux-sh@vger.kernel.org,
-        ysato@users.sourceforge.jp, dalias@libc.org,
-        sparclinux@vger.kernel.org, akpm@linux-foundation.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] sparc: Drop unused MAX_PHYSADDR_BITS
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200723231544.17274-4-nivedita@alum.mit.edu>
-References: <20200723231544.17274-1-nivedita@alum.mit.edu>
-        <20200723231544.17274-4-nivedita@alum.mit.edu>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 24 Jul 2020 16:20:38 -0700 (PDT)
+        id S1726565AbgGYTKT (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 25 Jul 2020 15:10:19 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:60372 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726381AbgGYTKT (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 25 Jul 2020 15:10:19 -0400
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 8F02C20028;
+        Sat, 25 Jul 2020 21:10:14 +0200 (CEST)
+Date:   Sat, 25 Jul 2020 21:10:12 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     dri-devel@lists.freedesktop.org, Dave Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Sam Ravnborg <sam@ravnborg.org>,
+        Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: [PATCH v2] drm/drm_fb_helper: fix fbdev with sparc64
+Message-ID: <20200725191012.GA434957@ravnborg.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=f+hm+t6M c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=7gkXJVJtAAAA:8 a=pcZqCyVeAAAA:8 a=QyXUC8HyAAAA:8
+        a=20KFwNOVAAAA:8 a=J1Y8HTJGAAAA:8 a=VwQbUJbxAAAA:8 a=e5mUnYsNAAAA:8
+        a=X86rTowx3Nat8lXJRjwA:9 a=xmRN5Wt8QP5Y1GuR:21 a=po6XuuqY1lXjsTWi:21
+        a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22 a=SGy6VSG0Ue1xmPAwIFl9:22
+        a=y1Q9-5lHfBjTkpIzbSAN:22 a=AjGcO6oz07-iQ99wixmX:22
+        a=Vxmtnl_E_bksehYqCbjh:22
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Arvind Sankar <nivedita@alum.mit.edu>
-Date: Thu, 23 Jul 2020 19:15:44 -0400
+From 1323a7433691aee112a9b2df8041b5024895a77e Mon Sep 17 00:00:00 2001
+From: Sam Ravnborg <sam@ravnborg.org>
+Date: Thu, 9 Jul 2020 21:30:16 +0200
+Subject: [PATCH v2 1/1] drm/drm_fb_helper: fix fbdev with sparc64
 
-> The macro is not used anywhere, so remove the definition.
-> 
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Recent kernels have been reported to panic using the bochs_drm framebuffer under
+qemu-system-sparc64 which was bisected to commit 7a0483ac4ffc "drm/bochs: switch to
+generic drm fbdev emulation". The backtrace indicates that the shadow framebuffer
+copy in drm_fb_helper_dirty_blit_real() is trying to access the real framebuffer
+using a virtual address rather than use an IO access typically implemented using a
+physical (ASI_PHYS) access on SPARC.
 
-Acked-by: David S. Miller <davem@davemloft.net>
+The fix is to replace the memcpy with memcpy_toio() from io.h.
+
+memcpy_toio() uses writeb() where the original fbdev code
+used sbus_memcpy_toio(). The latter uses sbus_writeb().
+
+The difference between writeb() and sbus_memcpy_toio() is
+that writeb() writes bytes in little-endian, where sbus_writeb() writes
+bytes in big-endian. As endian does not matter for byte writes they are
+the same. So we can safely use memcpy_toio() here.
+
+For many architectures memcpy_toio() is a simple memcpy().
+One side-effect that is unknown is if this has any impact on other
+architectures.
+So far the analysis tells that this change is OK for other arch's.
+but testing would be good.
+
+v2:
+  - Added missing __iomem cast (kernel test robot)
+  - Made changelog readable and fix typos (Mark)
+  - Add flag to select iomem - and set it in the bochs driver
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reported-by: kernel test robot <lkp@intel.com>
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20200709193016.291267-1-sam@ravnborg.org
+---
+
+This fix introducing a flag in mode_config is at best a band-aid
+solution until we have a proper fix.
+We need to propagate the info about iomem so it is not a driver flag
+thing.
+
+There is also the issue with sys* versus cfb* functions, where cfb*
+functions are used for iomem.
+I did not manage to make the bochs driver work with the cfb* functions,
+for some unknown reason booting would be stuck waiting for the console
+mutex when usign the cfb* functions.
+
+I consider this fix OK to get the kernel working for sparc64 with the
+bochs driver for now. And with the fbdev_uses_iomem flag no other
+drivers will see any changes.
+
+	Sam
+
+ drivers/gpu/drm/bochs/bochs_kms.c | 1 +
+ drivers/gpu/drm/drm_fb_helper.c   | 6 +++++-
+ include/drm/drm_mode_config.h     | 9 +++++++++
+ 3 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/bochs/bochs_kms.c b/drivers/gpu/drm/bochs/bochs_kms.c
+index 05d8373888e8..079f46f5cdb6 100644
+--- a/drivers/gpu/drm/bochs/bochs_kms.c
++++ b/drivers/gpu/drm/bochs/bochs_kms.c
+@@ -146,6 +146,7 @@ int bochs_kms_init(struct bochs_device *bochs)
+ 	bochs->dev->mode_config.preferred_depth = 24;
+ 	bochs->dev->mode_config.prefer_shadow = 0;
+ 	bochs->dev->mode_config.prefer_shadow_fbdev = 1;
++	bochs->dev->mode_config.fbdev_use_iomem = true;
+ 	bochs->dev->mode_config.quirk_addfb_prefer_host_byte_order = true;
+ 
+ 	bochs->dev->mode_config.funcs = &bochs_mode_funcs;
+diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+index 5609e164805f..89cfd68ef400 100644
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -399,7 +399,11 @@ static void drm_fb_helper_dirty_blit_real(struct drm_fb_helper *fb_helper,
+ 	unsigned int y;
+ 
+ 	for (y = clip->y1; y < clip->y2; y++) {
+-		memcpy(dst, src, len);
++		if (!fb_helper->dev->mode_config.fbdev_use_iomem)
++			memcpy(dst, src, len);
++		else
++			memcpy_toio((void __iomem *)dst, src, len);
++
+ 		src += fb->pitches[0];
+ 		dst += fb->pitches[0];
+ 	}
+diff --git a/include/drm/drm_mode_config.h b/include/drm/drm_mode_config.h
+index 6c3ef49b46b3..c24c066bdd9c 100644
+--- a/include/drm/drm_mode_config.h
++++ b/include/drm/drm_mode_config.h
+@@ -865,6 +865,15 @@ struct drm_mode_config {
+ 	 */
+ 	bool prefer_shadow_fbdev;
+ 
++	/**
++	 * @fbdev_use_iomem:
++	 *
++	 * Set to true if framebuffer reside in iomem.
++	 * When set to true memcpy_toio() is used when copying the framebuffer in
++	 * drm_fb_helper.drm_fb_helper_dirty_blit_real()
++	 */
++	bool fbdev_use_iomem;
++
+ 	/**
+ 	 * @quirk_addfb_prefer_xbgr_30bpp:
+ 	 *
+-- 
+2.25.1
+
