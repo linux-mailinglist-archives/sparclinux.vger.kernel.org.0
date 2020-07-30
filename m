@@ -2,243 +2,81 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF2552329E2
-	for <lists+sparclinux@lfdr.de>; Thu, 30 Jul 2020 04:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26DD323314C
+	for <lists+sparclinux@lfdr.de>; Thu, 30 Jul 2020 13:54:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726341AbgG3CW1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 29 Jul 2020 22:22:27 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:21517 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726367AbgG3CW1 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 29 Jul 2020 22:22:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1596075745;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=KXlCZQMZEmyQ5Mo2+6vJS9lY2Q4U/rCj7yYVDEkdTyE=;
-        b=GpU16cbj1ulweW3uhJocIvnHV/zEkOb39waeKExdYR/yiwBf9tnPnCuYFwaKeKyZ1IUyLJ
-        bRSb2Q8PpL6y9KOcMVvs5ndvWh7d5RJOB/iG3mgN0eoKggMh/F0uCdI+pg3D/6xYBg9kSC
-        uaWryy7sQ7suVULWi20Z987wQnsNPcs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-450-x5Uy2qT2P5q-DIcPrk6VSQ-1; Wed, 29 Jul 2020 22:22:21 -0400
-X-MC-Unique: x5Uy2qT2P5q-DIcPrk6VSQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 90479801504;
-        Thu, 30 Jul 2020 02:22:16 +0000 (UTC)
-Received: from localhost (ovpn-13-67.pek2.redhat.com [10.72.13.67])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 62E1519D82;
-        Thu, 30 Jul 2020 02:22:15 +0000 (UTC)
-Date:   Thu, 30 Jul 2020 10:22:09 +0800
-From:   Baoquan He <bhe@redhat.com>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Simek <monstr@monstr.eu>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        clang-built-linux@googlegroups.com,
-        iommu@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
-        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
-        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org
-Subject: Re: [PATCH 11/15] memblock: reduce number of parameters in
- for_each_mem_range()
-Message-ID: <20200730022209.GK14854@MiWiFi-R3L-srv>
-References: <20200728051153.1590-1-rppt@kernel.org>
- <20200728051153.1590-12-rppt@kernel.org>
+        id S1726967AbgG3Lyk (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 30 Jul 2020 07:54:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59556 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726794AbgG3Lyi (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 30 Jul 2020 07:54:38 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71DEFC061794
+        for <sparclinux@vger.kernel.org>; Thu, 30 Jul 2020 04:54:38 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id g6so15929474ljn.11
+        for <sparclinux@vger.kernel.org>; Thu, 30 Jul 2020 04:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=WqK9heUZNwFsVivkMNschUuELgvSitClorN8AbOlaS8=;
+        b=LueseDjZWyRBW8vxqA1/ma0bN6NfY6GTi5Nu4vg2Li59GEcSYUQz5qyQ8HLv6yC4rk
+         I1qE+wOUOv3JARCbJMaloqBZuArKUJH2QPm6VRDtF8UWXUlXAlS1axgdL5Sm02qk7vYV
+         aE9ZY0yf4nU1sMyy48vE3ugPA0rTbulXwhAkRuFvT/5XLCHIrqx4dYPChGQzG2Yfyzib
+         DAR7nX0t3SnKc5Ri1KmCFO1SFs50Py/3hGh3uKVH9c+hvVeM5LbtllB3ogIUg7DETbw4
+         DNowcv7Pt/vj2uGxSSk6Z1hJN+JWRODv1uGjL9SXCdx92hxwOo5KFEs7iLontA52/QX1
+         Fb6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=WqK9heUZNwFsVivkMNschUuELgvSitClorN8AbOlaS8=;
+        b=YBpaHzdT2USadOUIjQQhZn9GxPKppckMVVp26SCxnSA13ao6JWoiLItbg+jrlcnwp+
+         Svpojn59nuwxQXA2CWGhR/0GCiEhDlAk+YD9fAnBXG1DM8EdIqruAgnfPZyCJflShlqM
+         duMUbwY6slL2CYzYMTkzuteDIYmJkW2BzPkSIJSPs97HwuBh7lXXjPIzCfgGIUhNaMsJ
+         EJXly35m6BnDYHyYvtK2OrsudAUy4XeL4QoVLJ4X55ikRaCubNfCIKHb14WNbjzH/Zw0
+         E3A6kLFIvZWQyUAEJR8cpQUZMouo6xrBnAP3ABUG4nbJ6Imgf5xSX/el+T1meHICrKtS
+         GinQ==
+X-Gm-Message-State: AOAM533kiW1vu6JhCmkUECdFUXZ1KzQNA9Q2qYskIvjz37LynczYL0k4
+        mU4OLaDc35t7Bw8Lfhi0msV88NelF3lBnHmyahQ=
+X-Google-Smtp-Source: ABdhPJzjksmbc/Vyn+La3o0i1Q3hgFjT0qzdaCQlYxoHLPj/SHSx8qibaNQYesUJ2KKAvgd4oNiEg7gD+BbyfQTuQWU=
+X-Received: by 2002:a2e:302:: with SMTP id 2mr1329653ljd.156.1596110076765;
+ Thu, 30 Jul 2020 04:54:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200728051153.1590-12-rppt@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Reply-To: maliksanfo1@daum.net
+Received: by 2002:a19:4c82:0:0:0:0:0 with HTTP; Thu, 30 Jul 2020 04:54:35
+ -0700 (PDT)
+From:   Malik Sanfo <maliksanfo1@gmail.com>
+Date:   Thu, 30 Jul 2020 04:54:35 -0700
+X-Google-Sender-Auth: mwNU9wDUV5dONQ_tDHtDmqlRxGo
+Message-ID: <CAMOqPkngf0tqJf3M8YipRNg4EXkd36dHMkK2pU++K4xjvO5jjA@mail.gmail.com>
+Subject: YOUR REPLY IS NEEDED
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 07/28/20 at 08:11am, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> Currently for_each_mem_range() iterator is the most generic way to traverse
-> memblock regions. As such, it has 8 parameters and it is hardly convenient
-> to users. Most users choose to utilize one of its wrappers and the only
-> user that actually needs most of the parameters outside memblock is s390
-> crash dump implementation.
-> 
-> To avoid yet another naming for memblock iterators, rename the existing
-> for_each_mem_range() to __for_each_mem_range() and add a new
-> for_each_mem_range() wrapper with only index, start and end parameters.
-> 
-> The new wrapper nicely fits into init_unavailable_mem() and will be used in
-> upcoming changes to simplify memblock traversals.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  .clang-format                          |  1 +
->  arch/arm64/kernel/machine_kexec_file.c |  6 ++----
->  arch/s390/kernel/crash_dump.c          |  8 ++++----
->  include/linux/memblock.h               | 18 ++++++++++++++----
->  mm/page_alloc.c                        |  3 +--
->  5 files changed, 22 insertions(+), 14 deletions(-)
+Greetings,
 
-Reviewed-by: Baoquan He <bhe@redhat.com>
+I know that this mail will come to you as a surprise as we have never
+met before, but need not to worry as I am contacting you independently
+of my investigation and no one is informed of this communication. I
+need your urgent assistance in transferring the sum of $12,300,000.00
+USD immediately to your private account.The money has been here in our
+Bank lying dormant for years now without anybody coming for the claim
+of it.
 
-> 
-> diff --git a/.clang-format b/.clang-format
-> index a0a96088c74f..52ededab25ce 100644
-> --- a/.clang-format
-> +++ b/.clang-format
-> @@ -205,6 +205,7 @@ ForEachMacros:
->    - 'for_each_memblock_type'
->    - 'for_each_memcg_cache_index'
->    - 'for_each_mem_pfn_range'
-> +  - '__for_each_mem_range'
->    - 'for_each_mem_range'
->    - 'for_each_mem_range_rev'
->    - 'for_each_migratetype_order'
-> diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
-> index 361a1143e09e..5b0e67b93cdc 100644
-> --- a/arch/arm64/kernel/machine_kexec_file.c
-> +++ b/arch/arm64/kernel/machine_kexec_file.c
-> @@ -215,8 +215,7 @@ static int prepare_elf_headers(void **addr, unsigned long *sz)
->  	phys_addr_t start, end;
->  
->  	nr_ranges = 1; /* for exclusion of crashkernel region */
-> -	for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> -					MEMBLOCK_NONE, &start, &end, NULL)
-> +	for_each_mem_range(i, &start, &end)
->  		nr_ranges++;
->  
->  	cmem = kmalloc(struct_size(cmem, ranges, nr_ranges), GFP_KERNEL);
-> @@ -225,8 +224,7 @@ static int prepare_elf_headers(void **addr, unsigned long *sz)
->  
->  	cmem->max_nr_ranges = nr_ranges;
->  	cmem->nr_ranges = 0;
-> -	for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> -					MEMBLOCK_NONE, &start, &end, NULL) {
-> +	for_each_mem_range(i, &start, &end) {
->  		cmem->ranges[cmem->nr_ranges].start = start;
->  		cmem->ranges[cmem->nr_ranges].end = end - 1;
->  		cmem->nr_ranges++;
-> diff --git a/arch/s390/kernel/crash_dump.c b/arch/s390/kernel/crash_dump.c
-> index f96a5857bbfd..e28085c725ff 100644
-> --- a/arch/s390/kernel/crash_dump.c
-> +++ b/arch/s390/kernel/crash_dump.c
-> @@ -549,8 +549,8 @@ static int get_mem_chunk_cnt(void)
->  	int cnt = 0;
->  	u64 idx;
->  
-> -	for_each_mem_range(idx, &memblock.physmem, &oldmem_type, NUMA_NO_NODE,
-> -			   MEMBLOCK_NONE, NULL, NULL, NULL)
-> +	__for_each_mem_range(idx, &memblock.physmem, &oldmem_type, NUMA_NO_NODE,
-> +			     MEMBLOCK_NONE, NULL, NULL, NULL)
->  		cnt++;
->  	return cnt;
->  }
-> @@ -563,8 +563,8 @@ static void loads_init(Elf64_Phdr *phdr, u64 loads_offset)
->  	phys_addr_t start, end;
->  	u64 idx;
->  
-> -	for_each_mem_range(idx, &memblock.physmem, &oldmem_type, NUMA_NO_NODE,
-> -			   MEMBLOCK_NONE, &start, &end, NULL) {
-> +	__for_each_mem_range(idx, &memblock.physmem, &oldmem_type, NUMA_NO_NODE,
-> +			     MEMBLOCK_NONE, &start, &end, NULL) {
->  		phdr->p_filesz = end - start;
->  		phdr->p_type = PT_LOAD;
->  		phdr->p_offset = start;
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index e6a23b3db696..d70c2835e913 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -142,7 +142,7 @@ void __next_reserved_mem_region(u64 *idx, phys_addr_t *out_start,
->  void __memblock_free_late(phys_addr_t base, phys_addr_t size);
->  
->  /**
-> - * for_each_mem_range - iterate through memblock areas from type_a and not
-> + * __for_each_mem_range - iterate through memblock areas from type_a and not
->   * included in type_b. Or just type_a if type_b is NULL.
->   * @i: u64 used as loop variable
->   * @type_a: ptr to memblock_type to iterate
-> @@ -153,7 +153,7 @@ void __memblock_free_late(phys_addr_t base, phys_addr_t size);
->   * @p_end: ptr to phys_addr_t for end address of the range, can be %NULL
->   * @p_nid: ptr to int for nid of the range, can be %NULL
->   */
-> -#define for_each_mem_range(i, type_a, type_b, nid, flags,		\
-> +#define __for_each_mem_range(i, type_a, type_b, nid, flags,		\
->  			   p_start, p_end, p_nid)			\
->  	for (i = 0, __next_mem_range(&i, nid, flags, type_a, type_b,	\
->  				     p_start, p_end, p_nid);		\
-> @@ -182,6 +182,16 @@ void __memblock_free_late(phys_addr_t base, phys_addr_t size);
->  	     __next_mem_range_rev(&i, nid, flags, type_a, type_b,	\
->  				  p_start, p_end, p_nid))
->  
-> +/**
-> + * for_each_mem_range - iterate through memory areas.
-> + * @i: u64 used as loop variable
-> + * @p_start: ptr to phys_addr_t for start address of the range, can be %NULL
-> + * @p_end: ptr to phys_addr_t for end address of the range, can be %NULL
-> + */
-> +#define for_each_mem_range(i, p_start, p_end) \
-> +	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,	\
-> +			     MEMBLOCK_NONE, p_start, p_end, NULL)
-> +
->  /**
->   * for_each_reserved_mem_region - iterate over all reserved memblock areas
->   * @i: u64 used as loop variable
-> @@ -287,8 +297,8 @@ int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask);
->   * soon as memblock is initialized.
->   */
->  #define for_each_free_mem_range(i, nid, flags, p_start, p_end, p_nid)	\
-> -	for_each_mem_range(i, &memblock.memory, &memblock.reserved,	\
-> -			   nid, flags, p_start, p_end, p_nid)
-> +	__for_each_mem_range(i, &memblock.memory, &memblock.reserved,	\
-> +			     nid, flags, p_start, p_end, p_nid)
->  
->  /**
->   * for_each_free_mem_range_reverse - rev-iterate through free memblock areas
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index e028b87ce294..95af111d69d3 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6972,8 +6972,7 @@ static void __init init_unavailable_mem(void)
->  	 * Loop through unavailable ranges not covered by memblock.memory.
->  	 */
->  	pgcnt = 0;
-> -	for_each_mem_range(i, &memblock.memory, NULL,
-> -			NUMA_NO_NODE, MEMBLOCK_NONE, &start, &end, NULL) {
-> +	for_each_mem_range(i, &start, &end) {
->  		if (next < start)
->  			pgcnt += init_unavailable_range(PFN_DOWN(next),
->  							PFN_UP(start));
-> -- 
-> 2.26.2
-> 
-> 
+I want to release the money to you as the relative to our deceased
+customer the account owner who died a long with his supposed NEXT OF
+KIN since 16th October 2005. The Banking laws here does not allow such
+money to stay more than 15 years, because the money will be recalled
+to the Bank treasury account as unclaimed fund.
 
+By indicating your interest I will send you the full details on how
+the business will be executed.Please respond urgently and delete if
+you are not interested.
+
+Best Regards,
+Mr. Malik Sanfo
