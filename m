@@ -2,38 +2,32 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E252331D0
-	for <lists+sparclinux@lfdr.de>; Thu, 30 Jul 2020 14:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D55F32351A4
+	for <lists+sparclinux@lfdr.de>; Sat,  1 Aug 2020 12:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727976AbgG3MPY (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 30 Jul 2020 08:15:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34536 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727852AbgG3MPX (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 30 Jul 2020 08:15:23 -0400
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54853C061794;
-        Thu, 30 Jul 2020 05:15:23 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        id S1728826AbgHAKTL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 1 Aug 2020 06:19:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43666 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726888AbgHAKTL (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sat, 1 Aug 2020 06:19:11 -0400
+Received: from kernel.org (unknown [87.70.91.42])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4BHTrL6Fgfz9sRN;
-        Thu, 30 Jul 2020 22:15:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1596111321;
-        bh=YNSVJAmG6iTLprr4AXeykiRRbuPWau8/ePuc4CoRMGM=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=dDG2HeGveH8jvsO0a3nV+Tp8BcGIZDu65BOPDvIIBo9wVTyiHzeoVy9VEea0rigvp
-         Y31hCYMQ/HUQJyt9f4Ns+ZWd4J0yauoOrKc1q24QkaP65G5RtKXvj8BnxizCtGPCIs
-         4Qc5Gy9BbRkYcfHS9FaL2IesmCw9kHwdS0i+jJ5INj6RLnsR8z4hMy+N03Q+rveLd0
-         2v5hfX/mFHnRdxjBR0pUmOS4LXqz54J4KK7TRfoGZVmsUzhhMnBhUvMn3FR8lvfRl/
-         Ax9t5/4az9jOznaLXvwqANu/Zl8pK6CgRrdLYmMHTgYkBan25IQFsKLy25EXJBUiYn
-         TCPH/khAUMFFQ==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Andy Lutomirski <luto@kernel.org>,
+        by mail.kernel.org (Postfix) with ESMTPSA id 5ED692087C;
+        Sat,  1 Aug 2020 10:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596277150;
+        bh=jQD0i2dEJRPR8dDJK6vZOAFdpUe2Ho5YLvcSFtENhXg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BOX5CM31age4ZqR8WpA9Tu6Sib3TWB8q0axiVZJ9476Af21jQMyZgnRXNsbolGSGn
+         pWpwQlO3I1Ym/ZhVqWnuEZ70zJ8p8UgBgfsl0uitfuYMEFBB9GFeRHX0dU8VC7876G
+         1GC7zC28lCBEAGXT18VZfRnXSGNcrY6WFAZx7Yv0=
+Date:   Sat, 1 Aug 2020 13:18:54 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Andy Lutomirski <luto@kernel.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Borislav Petkov <bp@alien8.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -44,7 +38,6 @@ Cc:     Andy Lutomirski <luto@kernel.org>,
         Max Filippov <jcmvbkbc@gmail.com>,
         Michal Simek <monstr@monstr.eu>,
         Mike Rapoport <rppt@linux.ibm.com>,
-        Mike Rapoport <rppt@kernel.org>,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Paul Mackerras <paulus@samba.org>,
         Paul Walmsley <paul.walmsley@sifive.com>,
@@ -64,73 +57,87 @@ Cc:     Andy Lutomirski <luto@kernel.org>,
         openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
         uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
         Hari Bathini <hbathini@in.ibm.com>
-Subject: Re: [PATCH 06/15] powerpc: fadamp: simplify fadump_reserve_crash_area()
-In-Reply-To: <20200728051153.1590-7-rppt@kernel.org>
-References: <20200728051153.1590-1-rppt@kernel.org> <20200728051153.1590-7-rppt@kernel.org>
-Date:   Thu, 30 Jul 2020 22:15:13 +1000
-Message-ID: <87d04d5hda.fsf@mpe.ellerman.id.au>
+Subject: Re: [PATCH 06/15] powerpc: fadamp: simplify
+ fadump_reserve_crash_area()
+Message-ID: <20200801101854.GD534153@kernel.org>
+References: <20200728051153.1590-1-rppt@kernel.org>
+ <20200728051153.1590-7-rppt@kernel.org>
+ <87d04d5hda.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87d04d5hda.fsf@mpe.ellerman.id.au>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Mike Rapoport <rppt@kernel.org> writes:
-> From: Mike Rapoport <rppt@linux.ibm.com>
->
-> fadump_reserve_crash_area() reserves memory from a specified base address
-> till the end of the RAM.
->
-> Replace iteration through the memblock.memory with a single call to
-> memblock_reserve() with appropriate  that will take care of proper memory
-                                     ^
-                                     parameters?
-> reservation.
->
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/fadump.c | 20 +-------------------
->  1 file changed, 1 insertion(+), 19 deletions(-)
+On Thu, Jul 30, 2020 at 10:15:13PM +1000, Michael Ellerman wrote:
+> Mike Rapoport <rppt@kernel.org> writes:
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> >
+> > fadump_reserve_crash_area() reserves memory from a specified base address
+> > till the end of the RAM.
+> >
+> > Replace iteration through the memblock.memory with a single call to
+> > memblock_reserve() with appropriate  that will take care of proper memory
+>                                      ^
+>                                      parameters?
+> > reservation.
+> >
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> > ---
+> >  arch/powerpc/kernel/fadump.c | 20 +-------------------
+> >  1 file changed, 1 insertion(+), 19 deletions(-)
+> 
+> I think this looks OK to me, but I don't have a setup to test it easily.
+> I've added Hari to Cc who might be able to.
+> 
+> But I'll give you an ack in the hope that it works :)
 
-I think this looks OK to me, but I don't have a setup to test it easily.
-I've added Hari to Cc who might be able to.
+Actually, I did some digging in the git log and the traversal was added
+there on purpose by the commit b71a693d3db3 ("powerpc/fadump: exclude
+memory holes while reserving memory in second kernel")
+Presuming this is still reqruired I'm going to drop this patch and will
+simply replace for_each_memblock() with for_each_mem_range() in v2.
+ 
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+> 
+> 
+> > diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> > index 78ab9a6ee6ac..2446a61e3c25 100644
+> > --- a/arch/powerpc/kernel/fadump.c
+> > +++ b/arch/powerpc/kernel/fadump.c
+> > @@ -1658,25 +1658,7 @@ int __init fadump_reserve_mem(void)
+> >  /* Preserve everything above the base address */
+> >  static void __init fadump_reserve_crash_area(u64 base)
+> >  {
+> > -	struct memblock_region *reg;
+> > -	u64 mstart, msize;
+> > -
+> > -	for_each_memblock(memory, reg) {
+> > -		mstart = reg->base;
+> > -		msize  = reg->size;
+> > -
+> > -		if ((mstart + msize) < base)
+> > -			continue;
+> > -
+> > -		if (mstart < base) {
+> > -			msize -= (base - mstart);
+> > -			mstart = base;
+> > -		}
+> > -
+> > -		pr_info("Reserving %lluMB of memory at %#016llx for preserving crash data",
+> > -			(msize >> 20), mstart);
+> > -		memblock_reserve(mstart, msize);
+> > -	}
+> > +	memblock_reserve(base, memblock_end_of_DRAM() - base);
+> >  }
+> >  
+> >  unsigned long __init arch_reserved_kernel_pages(void)
+> > -- 
+> > 2.26.2
 
-But I'll give you an ack in the hope that it works :)
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-
-
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index 78ab9a6ee6ac..2446a61e3c25 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -1658,25 +1658,7 @@ int __init fadump_reserve_mem(void)
->  /* Preserve everything above the base address */
->  static void __init fadump_reserve_crash_area(u64 base)
->  {
-> -	struct memblock_region *reg;
-> -	u64 mstart, msize;
-> -
-> -	for_each_memblock(memory, reg) {
-> -		mstart = reg->base;
-> -		msize  = reg->size;
-> -
-> -		if ((mstart + msize) < base)
-> -			continue;
-> -
-> -		if (mstart < base) {
-> -			msize -= (base - mstart);
-> -			mstart = base;
-> -		}
-> -
-> -		pr_info("Reserving %lluMB of memory at %#016llx for preserving crash data",
-> -			(msize >> 20), mstart);
-> -		memblock_reserve(mstart, msize);
-> -	}
-> +	memblock_reserve(base, memblock_end_of_DRAM() - base);
->  }
->  
->  unsigned long __init arch_reserved_kernel_pages(void)
-> -- 
-> 2.26.2
+-- 
+Sincerely yours,
+Mike.
