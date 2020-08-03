@@ -2,129 +2,111 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A1092359AF
-	for <lists+sparclinux@lfdr.de>; Sun,  2 Aug 2020 20:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91A8323A1AD
+	for <lists+sparclinux@lfdr.de>; Mon,  3 Aug 2020 11:18:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727915AbgHBSDL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 2 Aug 2020 14:03:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42298 "EHLO
+        id S1726276AbgHCJSg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 3 Aug 2020 05:18:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725906AbgHBSDK (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 2 Aug 2020 14:03:10 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D827FC06174A;
-        Sun,  2 Aug 2020 11:03:09 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id jp10so9776333ejb.0;
-        Sun, 02 Aug 2020 11:03:09 -0700 (PDT)
+        with ESMTP id S1726130AbgHCJSf (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 3 Aug 2020 05:18:35 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62F59C06174A;
+        Mon,  3 Aug 2020 02:18:35 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id i6so1063668edy.5;
+        Mon, 03 Aug 2020 02:18:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=fQZKbY0rONiHjM83HibQy63AEJaxpKeGQhQtY04gDSU=;
-        b=NClt20d7Ft+K6FkgUCUu4JaE3tIZQCut3LntjJUJhXUsmJc9/hAN8f1uhRfdf1xDS4
-         v+mVxDX9o4kozVR+Ah8Xum0mBupoLJJ8sGRFuq+zGUPap92vHCw3QWRVbrRdpExOLg1f
-         PfYSYoa+08lkV+ejUHsbzm11vb6ZXDx9wG5OH/PIC6kGD+/IwmcMBK0f+S9Q47Ilfp0r
-         CnDK0w5UJZcBtyEbi0uelKFQBUpbqi9svF4nCggxxWbCeGrL/RSClOw7dY42O+RKurT4
-         SeQmDc1qACQRwd/qkF4Bl6+EBF1g484NpzCeNGAZebTMM88+MrzhcW/7+ogo+dclYvqf
-         xJRA==
+        h=mime-version:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=46M9GTuupRoqORbP6h7ufZ9lnCPLcka6ykEe3C8miaE=;
+        b=K58RlRZDzEJdyNlkLyQ5zWl16F8RtVjEGm6rvkJV5sjSQY/5XkkadLKujpSWVvKrO/
+         ckzqiGQTKNGQD4pFRPoRcB9WOO4KBIsO1bXCo0chKtZCYa65Q/ogBqccdco5DaW5ZMwk
+         7NM1VMr/SDRjK+UrQe4uMJ2Y4DeyLxoZyCYygG050QWFXIPzwCNFGhZuY1osORHmhIGl
+         VZPMs26Pnmz8jhJUgWvSpOLGLPDMRPUPemXzpeYbBpevNcvrmEWSt2hKM3DpRct9jyzd
+         yPlRFLQKwk5egQf25jaqiu0AEFGQG4JQYkIrZvAQb+GB91O6poCUejzt8NvZlS2H0eJi
+         Qniw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=fQZKbY0rONiHjM83HibQy63AEJaxpKeGQhQtY04gDSU=;
-        b=J9bfHA8A/41k+4z40K5dbRSczRTSYHZP8ZoibcIi2PXvAxiaaeAmJp6DZE/v8M0BOe
-         +QYeM8sVKSd0L60ZkDl/QPn8RuUfORZWZeVbXco++sid8s3oCHuNO/rzDH9/vZf9WRpU
-         pA3rfwxFjT1bkLIOmsfckW6sE7x/c1yX0vFqSjxtrHQ2S9fOxBSTn26MUdEqZYntKtLR
-         rUrndwmo0gDqQT/e8/7ua3It6PWAzCKsewbzvpQ0sWlkfUQIjtnjTCmACoGAxE9YU6+c
-         LyWgHOLDlmBe6/plUiXUyUsPzoBfXbCe8EW7ShjPkd63cyNJqlAYogmzOAq2OPWunHI7
-         Ejng==
-X-Gm-Message-State: AOAM533GptcbZRwGUbnFs+LWlYZQkw7CO/XrElRuad6u7ky210BMVb5o
-        G2J19gMCX4Dj5/wG4dcaJ/iJ2Cl1
-X-Google-Smtp-Source: ABdhPJwRVVa9oTHFz53Gep6kufj7aL7kFTxC9FLC9t+X6tOc6fXoy+b82cv+AC/Z1BhRkxvbjIG1Og==
-X-Received: by 2002:a17:907:94ce:: with SMTP id dn14mr12944760ejc.351.1596391388538;
-        Sun, 02 Aug 2020 11:03:08 -0700 (PDT)
-Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
-        by smtp.gmail.com with ESMTPSA id x1sm13599477ejc.119.2020.08.02.11.03.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2020 11:03:07 -0700 (PDT)
-Date:   Sun, 2 Aug 2020 20:03:04 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Andy Lutomirski <luto@kernel.org>, Baoquan He <bhe@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Ingo Molnar <mingo@redhat.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Simek <monstr@monstr.eu>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        clang-built-linux@googlegroups.com,
-        iommu@lists.linux-foundation.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
-        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
-        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org
-Subject: Re: [PATCH v2 17/17] memblock: use separate iterators for memory and
- reserved regions
-Message-ID: <20200802180304.GC86614@gmail.com>
-References: <20200802163601.8189-1-rppt@kernel.org>
- <20200802163601.8189-18-rppt@kernel.org>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=46M9GTuupRoqORbP6h7ufZ9lnCPLcka6ykEe3C8miaE=;
+        b=Cey5jNOtyq//Finpao2jfi3G2JJQw66jROvABqjYoOpj3YczNWC2sXSHlt1xJB5KNf
+         kFWkom/J537C+9WeqK+25r0vGZNxeliK5rHgf1MCQlQ1yeKAi+v3Ygqrcf11/huA9sBm
+         xwtg/UIovUHG5zff0uYskFTRxU0DU/LFdAtKdlXwqJvgqRqBEa2Z/nP0I1SDSlzDlU4J
+         Vh+YHAhCqcKaY96hyFj6gyn0ofqn14HCPujh3eKDI99zmQ8z7dfCcnirfkWDyilR3juH
+         ha06sxR+FghQxyEbOBjRt3te1J+RExbcI3gdGPTPSMKREIMRoitXN//+isJdnWaZgWxi
+         jg6A==
+X-Gm-Message-State: AOAM5300v1tdM1bjWi9bKs6qlmYBD9nfUFPFUiecyCcmvloLTfz+OrwP
+        V3TD10PW50yb7OgZIuT12IWK29XRBUpj5ETSNQkW5XYG
+X-Google-Smtp-Source: ABdhPJyyHfbD61tN/3AhYPMubo/h0lYN4jLerOOjrTGcwVq91nJgb/vCJdEHEsn+B+d3ZW/9ZCz+P3Rz+GNPWQd8ZtY=
+X-Received: by 2002:aa7:d1cc:: with SMTP id g12mr15296352edp.385.1596446313888;
+ Mon, 03 Aug 2020 02:18:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200802163601.8189-18-rppt@kernel.org>
+From:   Anatoly Pugachev <matorola@gmail.com>
+Date:   Mon, 3 Aug 2020 12:18:23 +0300
+Message-ID: <CADxRZqzyxzN9yC79kjhtdpL9QT6ybgTsSCb3G1U8zJHZy-W_9w@mail.gmail.com>
+Subject: [sparc64] unable to build v5.8 / master on sparc64 , bisect attached
+To:     Sparc kernel list <sparclinux@vger.kernel.org>
+Cc:     Linux Kernel list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hello!
 
-* Mike Rapoport <rppt@kernel.org> wrote:
+I'm unable to build kernel (master git) with the following messages:
 
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> for_each_memblock() is used to iterate over memblock.memory in
-> a few places that use data from memblock_region rather than the memory
-> ranges.
-> 
-> Introduce separate for_each_mem_region() and for_each_reserved_mem_region()
-> to improve encapsulation of memblock internals from its users.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  .clang-format                  |  3 ++-
->  arch/arm64/kernel/setup.c      |  2 +-
->  arch/arm64/mm/numa.c           |  2 +-
->  arch/mips/netlogic/xlp/setup.c |  2 +-
->  arch/x86/mm/numa.c             |  2 +-
->  include/linux/memblock.h       | 19 ++++++++++++++++---
->  mm/memblock.c                  |  4 ++--
->  mm/page_alloc.c                |  8 ++++----
->  8 files changed, 28 insertions(+), 14 deletions(-)
+linux-2.6$ make
+...
+  CC      crypto/drbg.o
+In file included from ./arch/sparc/include/asm/percpu_64.h:11,
+                 from ./arch/sparc/include/asm/percpu.h:5,
+                 from ./include/linux/random.h:14,
+                 from ./include/crypto/drbg.h:43,
+                 from crypto/drbg.c:100:
+./arch/sparc/include/asm/trap_block.h:54:39: error: =E2=80=98NR_CPUS=E2=80=
+=99
+undeclared here (not in a function)
+   54 | extern struct trap_per_cpu trap_block[NR_CPUS];
+      |                                       ^~~~~~~
+make[1]: *** [scripts/Makefile.build:281: crypto/drbg.o] Error 1
+make: *** [Makefile:1756: crypto] Error 2
 
-The x86 part:
+can someone help me please? Thanks.
 
-Acked-by: Ingo Molnar <mingo@kernel.org>
+git bisect log:
 
-Thanks,
-
-	Ingo
+git bisect start
+# bad: [bcf876870b95592b52519ed4aafcf9d95999bc9c] Linux 5.8
+git bisect bad bcf876870b95592b52519ed4aafcf9d95999bc9c
+# good: [92ed301919932f777713b9172e525674157e983d] Linux 5.8-rc7
+git bisect good 92ed301919932f777713b9172e525674157e983d
+# bad: [0ae3495b6502cf93634cbd027cb2f6f9f83a406f] Merge tag
+'for-linus-2020-08-01' of
+git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux
+git bisect bad 0ae3495b6502cf93634cbd027cb2f6f9f83a406f
+# bad: [aa54ea903abb02303bf55855fb51e3fcee135d70] ARM: percpu.h: fix build =
+error
+git bisect bad aa54ea903abb02303bf55855fb51e3fcee135d70
+# good: [c2f3850df7f95537e79c561f7be49df2e4ad8060] Merge tag
+'drm-fixes-2020-07-29' of git://anongit.freedesktop.org/drm/drm into
+master
+git bisect good c2f3850df7f95537e79c561f7be49df2e4ad8060
+# bad: [0513b9d75c07cbcdfda3778b636d3d131d679eb1] Merge tag
+'io_uring-5.8-2020-07-30' of git://git.kernel.dk/linux-block
+git bisect bad 0513b9d75c07cbcdfda3778b636d3d131d679eb1
+# good: [d3590ebf6f91350192737dd1d1b219c05277f067] Merge tag
+'audit-pr-20200729' of
+git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/audit
+git bisect good d3590ebf6f91350192737dd1d1b219c05277f067
+# good: [4ae6dbd683860b9edc254ea8acf5e04b5ae242e5] io_uring: fix
+lockup in io_fail_links()
+git bisect good 4ae6dbd683860b9edc254ea8acf5e04b5ae242e5
+# bad: [1c9df907da83812e4f33b59d3d142c864d9da57f] random: fix circular
+include dependency on arm64 after addition of percpu.h
+git bisect bad 1c9df907da83812e4f33b59d3d142c864d9da57f
