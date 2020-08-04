@@ -2,289 +2,621 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F19623BB16
-	for <lists+sparclinux@lfdr.de>; Tue,  4 Aug 2020 15:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFDF123BB32
+	for <lists+sparclinux@lfdr.de>; Tue,  4 Aug 2020 15:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728516AbgHDNVq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 4 Aug 2020 09:21:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46274 "EHLO
+        id S1725921AbgHDNer (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 4 Aug 2020 09:34:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728409AbgHDNSU (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 4 Aug 2020 09:18:20 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F1D8C06174A;
-        Tue,  4 Aug 2020 06:17:29 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id d6so28528215ejr.5;
-        Tue, 04 Aug 2020 06:17:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=Sl+XnH6r6B+TcXL1LhDcBYyJ7Wtt7he4wW3Nd0xqduU=;
-        b=I0LX6W4631iOB9FrEWWgSmo6tnHLCE4WzNsDIAG126jwHQXCC05Eq/OpEKFBgCipWv
-         GzuoKZfT8Pn5OIJnboP5oS4OQY4UKbe0o6hvBph22CKxzLpzC6e68TfCanB3KmE3Ad4I
-         W7YAdAnky/a/FPbaQZop1blyw2vx4UAMmUZUQvqXMeZRtiNx16gM+gcYJ494rtwQTyqo
-         fFfKZIuMbF3kPHwFfrczmh4miyvEE9/fSB9Tu0QzJadZ17eyLUDbSolSAy9ZvFC6KakP
-         VYwwzyVUolZxhu+KtxT4s4iBQOA9DiImZivucnatjzqcwlX638fXkgpuzWmqQtjrIVED
-         PpnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=Sl+XnH6r6B+TcXL1LhDcBYyJ7Wtt7he4wW3Nd0xqduU=;
-        b=ItTupEYUyr03+xpghOz7w/j5p7c8y8GOLVO5uNTPz1rqToCak8V7gvVFkxhoM6vIm6
-         v4TkHattRUjrSMrFPDfnOVMdYvwkO3p8h+DFG1exgj3hKb98I9UhKmPaqLHVkZ1IGVnc
-         wZj7mTBq/lB4JRWkh143ZvM8IcHNNRlQVKInMQTacCVGhCCherUHG9XcITEVwwaIEwxq
-         lQVuYsW8T0dX9djGuNziTcqYIWOhaq4GMqzPI/LVt1eF4o7XnoMwopOCrANnLRB7obJo
-         XENXYW16eujUrH5Vj+NTBfOT9yyQqTq5RjJaAVrTzdsLNw2bqc1OGI4ycyGdLVVn4K58
-         kHMA==
-X-Gm-Message-State: AOAM5325irEgLYrwFl3MkvZBAQnvylcs/3MICPuCvS22NcR/BviMXZsN
-        SksBA9xQ/3LD49MHbB4pPYIhifI8nkhFGCEQIHNEvb1i
-X-Google-Smtp-Source: ABdhPJzyAN9Tav5aYUu2wKYqokVwh3hpbBMhOon9lDoajpCGWuc3ccJ6MkQTJ0jD+Gm8IKyDmTsJvhJYAPOxLU8g4/E=
-X-Received: by 2002:a17:906:ce59:: with SMTP id se25mr4375633ejb.359.1596547047506;
- Tue, 04 Aug 2020 06:17:27 -0700 (PDT)
+        with ESMTP id S1725830AbgHDNeq (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 4 Aug 2020 09:34:46 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 370EAC06174A;
+        Tue,  4 Aug 2020 06:34:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=TP1yuY+J7KEmkgmTgxCb3upBLyUkHbc2Ou8BpzfNTZM=; b=tjtrdh+EyWiwEBWCkdYds0zxgn
+        zJqVMhVaCZrwcNSCeN97hqjzeyE15DtZXwkgpvoWd//FFTu3cXVlPfH9uyQBvV9Q45faQpwjCZJ3e
+        u0W9OeqoouYaFAjQdA8pA7RKZSnD2sV2QxzzHB7ZQedK5xKXsfv8l1clCZWO8y9Fv9nA298Y7zyB0
+        UXYZdf1v/nZXS0CemnZ41WrIMIpMGeZe9YNe1wnMvaBxVWzkm21zdA/YGOd0wwGvpGzjcpMeP8d0B
+        a3SyplAbBknFMeLqZ/ZD0VZVWCygkrX3fUhsLZro54/9+KuwPOGY8EzLhVRx0xF7glrxzGpWrb9hZ
+        0FNkuaHQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1k2x5V-0002dO-V9; Tue, 04 Aug 2020 13:34:42 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 63CAB301E02;
+        Tue,  4 Aug 2020 15:34:38 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 43FB02B622ED0; Tue,  4 Aug 2020 15:34:38 +0200 (CEST)
+Date:   Tue, 4 Aug 2020 15:34:38 +0200
+From:   peterz@infradead.org
+To:     Anatoly Pugachev <matorola@gmail.com>
+Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
+        Linux Kernel list <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: Re: [sparc64] enabling CONFIG_PROVE_LOCKING makes kernel unable to
+ build
+Message-ID: <20200804133438.GK2674@hirez.programming.kicks-ass.net>
+References: <CADxRZqybxFr5reVmYM2_h+KUzqL3PU5Qo9nrZSieQPYq+gWWCg@mail.gmail.com>
 MIME-Version: 1.0
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Tue, 4 Aug 2020 16:17:16 +0300
-Message-ID: <CADxRZqybxFr5reVmYM2_h+KUzqL3PU5Qo9nrZSieQPYq+gWWCg@mail.gmail.com>
-Subject: [sparc64] enabling CONFIG_PROVE_LOCKING makes kernel unable to build
-To:     Sparc kernel list <sparclinux@vger.kernel.org>
-Cc:     Linux Kernel list <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADxRZqybxFr5reVmYM2_h+KUzqL3PU5Qo9nrZSieQPYq+gWWCg@mail.gmail.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello!
+On Tue, Aug 04, 2020 at 04:17:16PM +0300, Anatoly Pugachev wrote:
+> Hello!
+> 
+> Linus git master sources:
+> 
+> $ git desc
+> v5.8-2483-gc0842fbc1b18
+> 
 
-Linus git master sources:
+Ooh, it looks like that series wasn't cut back far enough :/
 
-$ git desc
-v5.8-2483-gc0842fbc1b18
+859247d39fb0 ("seqlock: lockdep assert non-preemptibility on seqcount_t
+write") does indeed also introduce problems.
 
-If built without "kernel debugging" option CONFIG_PROVE_LOCKING
-enabled, builds successfully.
+I've been working on untangling the header mess for the full series and
+the below patch is what I currently have.
 
-If I enable
-CONFIG_PROVE_LOCKING=3Dy
+---
+Subject: seqlock,headers: Untangle the spaghetti monster
+From: Peter Zijlstra <peterz@infradead.org>
+Date: Thu Jul 30 13:20:47 CEST 2020
 
-it does not build:
+By using lockdep_assert_*() from seqlock.h, the spaghetti monster
+attacked.
 
-linux-2.6$ make  arch/sparc
-scripts/kconfig/conf  --syncconfig Kconfig
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+---
+ arch/ia64/include/asm/smp.h          |   35 --------------------------
+ arch/ia64/include/asm/xtp.h          |   46 +++++++++++++++++++++++++++++++++++
+ arch/ia64/kernel/iosapic.c           |    1 
+ arch/ia64/kernel/irq.c               |    1 
+ arch/ia64/kernel/process.c           |    1 
+ arch/ia64/kernel/sal.c               |    1 
+ arch/ia64/kernel/setup.c             |    1 
+ arch/ia64/kernel/smp.c               |    1 
+ arch/parisc/include/asm/timex.h      |    1 
+ arch/sh/include/asm/io.h             |    1 
+ arch/sh/kernel/machvec.c             |    1 
+ arch/sparc/include/asm/timer_64.h    |    1 
+ arch/sparc/include/asm/vvar.h        |    3 +-
+ arch/sparc/kernel/vdso.c             |    1 
+ arch/x86/include/asm/fixmap.h        |    2 -
+ arch/x86/kernel/apic/apic_noop.c     |    1 
+ arch/x86/kernel/apic/hw_nmi.c        |    1 
+ arch/x86/kernel/apic/probe_64.c      |    1 
+ arch/x86/kernel/cpu/amd.c            |    1 
+ arch/x86/kernel/cpu/common.c         |    1 
+ arch/x86/kernel/cpu/hygon.c          |    1 
+ arch/x86/kernel/cpu/intel.c          |    1 
+ arch/x86/kernel/jailhouse.c          |    1 
+ arch/x86/kernel/tsc_msr.c            |    1 
+ arch/x86/mm/init_32.c                |    1 
+ arch/x86/xen/apic.c                  |    1 
+ arch/x86/xen/smp_hvm.c               |    1 
+ arch/x86/xen/suspend_pv.c            |    4 +--
+ include/linux/dynamic_queue_limits.h |    2 +
+ include/linux/hrtimer.h              |    1 
+ include/linux/ktime.h                |    1 
+ include/linux/lockdep.h              |    1 
+ include/linux/mutex.h                |   11 ++++++++
+ include/linux/sched.h                |    1 
+ include/linux/seqlock.h              |    1 
+ include/linux/time.h                 |    1 
+ include/linux/videodev2.h            |    1 
+ include/linux/ww_mutex.h             |    8 ------
+ 38 files changed, 91 insertions(+), 50 deletions(-)
 
-WARNING: unmet direct dependencies detected for FRAME_POINTER
-  Depends on [n]: DEBUG_KERNEL [=3Dy] && (M68K || UML || SUPERH) ||
-ARCH_WANT_FRAME_POINTERS [=3Dn] || MCOUNT [=3Dn]
-  Selected by [y]:
-  - LOCKDEP [=3Dy] && DEBUG_KERNEL [=3Dy] && LOCK_DEBUGGING_SUPPORT [=3Dy]
-&& !MIPS && !PPC && !ARM && !S390 && !MICROBLAZE && !ARC && !X86
-
-WARNING: unmet direct dependencies detected for FRAME_POINTER
-  Depends on [n]: DEBUG_KERNEL [=3Dy] && (M68K || UML || SUPERH) ||
-ARCH_WANT_FRAME_POINTERS [=3Dn] || MCOUNT [=3Dn]
-  Selected by [y]:
-  - LOCKDEP [=3Dy] && DEBUG_KERNEL [=3Dy] && LOCK_DEBUGGING_SUPPORT [=3Dy]
-&& !MIPS && !PPC && !ARM && !S390 && !MICROBLAZE && !ARC && !X86
-
-WARNING: unmet direct dependencies detected for FRAME_POINTER
-  Depends on [n]: DEBUG_KERNEL [=3Dy] && (M68K || UML || SUPERH) ||
-ARCH_WANT_FRAME_POINTERS [=3Dn] || MCOUNT [=3Dn]
-  Selected by [y]:
-  - LOCKDEP [=3Dy] && DEBUG_KERNEL [=3Dy] && LOCK_DEBUGGING_SUPPORT [=3Dy]
-&& !MIPS && !PPC && !ARM && !S390 && !MICROBLAZE && !ARC && !X86
-
-  CALL    scripts/checksyscalls.sh
-<stdin>:1511:2: warning: #warning syscall clone3 not implemented [-Wcpp]
-  CALL    scripts/atomic/check-atomics.sh
-  CC      arch/sparc/vdso/vclock_gettime.o
-In file included from ./arch/sparc/include/asm/bug.h:25,
-                 from ./include/linux/bug.h:5,
-                 from ./include/linux/thread_info.h:12,
-                 from ./include/asm-generic/preempt.h:5,
-                 from ./arch/sparc/include/generated/asm/preempt.h:1,
-                 from ./include/linux/preempt.h:78,
-                 from ./include/linux/spinlock.h:51,
-                 from ./include/linux/seqlock.h:15,
-                 from ./include/linux/time.h:6,
-                 from arch/sparc/vdso/vclock_gettime.c:16:
-./include/linux/seqlock.h: In function =E2=80=98write_seqcount_begin_nested=
-=E2=80=99:
-./arch/sparc/include/asm/percpu_64.h:19:25: error:
-=E2=80=98__local_per_cpu_offset=E2=80=99 undeclared (first use in this func=
-tion); did
-you mean =E2=80=98per_cpu_offset=E2=80=99?
-   19 | #define __my_cpu_offset __local_per_cpu_offset
-      |                         ^~~~~~~~~~~~~~~~~~~~~~
-./include/asm-generic/bug.h:145:27: note: in definition of macro =E2=80=98W=
-ARN_ON_ONCE=E2=80=99
-  145 |  int __ret_warn_once =3D !!(condition);   \
-      |                           ^~~~~~~~~
-././include/linux/compiler_types.h:301:2: note: in expansion of macro
-=E2=80=98__compiletime_assert=E2=80=99
-  301 |  __compiletime_assert(condition, msg, prefix, suffix)
-      |  ^~~~~~~~~~~~~~~~~~~~
-././include/linux/compiler_types.h:313:2: note: in expansion of macro
-=E2=80=98_compiletime_assert=E2=80=99
-  313 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNT=
-ER__)
-      |  ^~~~~~~~~~~~~~~~~~~
-./include/asm-generic/rwonce.h:36:2: note: in expansion of macro
-=E2=80=98compiletime_assert=E2=80=99
-   36 |  compiletime_assert(__native_word(t) || sizeof(t) =3D=3D
-sizeof(long long), \
-      |  ^~~~~~~~~~~~~~~~~~
-./include/asm-generic/rwonce.h:36:21: note: in expansion of macro
-=E2=80=98__native_word=E2=80=99
-   36 |  compiletime_assert(__native_word(t) || sizeof(t) =3D=3D
-sizeof(long long), \
-      |                     ^~~~~~~~~~~~~
-./include/asm-generic/rwonce.h:49:2: note: in expansion of macro
-=E2=80=98compiletime_assert_rwonce_type=E2=80=99
-   49 |  compiletime_assert_rwonce_type(x);    \
-      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/asm-generic/percpu.h:119:10: note: in expansion of macro =E2=80=
-=98READ_ONCE=E2=80=99
-  119 |  __ret =3D READ_ONCE(*raw_cpu_ptr(&(pcp)));   \
-      |          ^~~~~~~~~
-./include/linux/percpu-defs.h:231:2: note: in expansion of macro =E2=80=98R=
-ELOC_HIDE=E2=80=99
-  231 |  RELOC_HIDE((typeof(*(__p)) __kernel __force *)(__p), (__offset))
-      |  ^~~~~~~~~~
-./include/asm-generic/percpu.h:44:31: note: in expansion of macro
-=E2=80=98SHIFT_PERCPU_PTR=E2=80=99
-   44 | #define arch_raw_cpu_ptr(ptr) SHIFT_PERCPU_PTR(ptr, __my_cpu_offset=
-)
-      |                               ^~~~~~~~~~~~~~~~
-./include/asm-generic/percpu.h:44:53: note: in expansion of macro
-=E2=80=98__my_cpu_offset=E2=80=99
-   44 | #define arch_raw_cpu_ptr(ptr) SHIFT_PERCPU_PTR(ptr, __my_cpu_offset=
-)
-      |                                                     ^~~~~~~~~~~~~~~
-./include/linux/percpu-defs.h:242:2: note: in expansion of macro
-=E2=80=98arch_raw_cpu_ptr=E2=80=99
-  242 |  arch_raw_cpu_ptr(ptr);      \
-      |  ^~~~~~~~~~~~~~~~
-./include/asm-generic/percpu.h:119:21: note: in expansion of macro =E2=80=
-=98raw_cpu_ptr=E2=80=99
-  119 |  __ret =3D READ_ONCE(*raw_cpu_ptr(&(pcp)));   \
-      |                     ^~~~~~~~~~~
-./include/asm-generic/percpu.h:138:11: note: in expansion of macro
-=E2=80=98__this_cpu_generic_read_nopreempt=E2=80=99
-  138 |   __ret =3D __this_cpu_generic_read_nopreempt(pcp);  \
-      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/asm-generic/percpu.h:320:31: note: in expansion of macro
-=E2=80=98this_cpu_generic_read=E2=80=99
-  320 | #define this_cpu_read_1(pcp)  this_cpu_generic_read(pcp)
-      |                               ^~~~~~~~~~~~~~~~~~~~~
-./include/linux/percpu-defs.h:321:23: note: in expansion of macro
-=E2=80=98this_cpu_read_1=E2=80=99
-  321 |  case 1: pscr_ret__ =3D stem##1(variable); break;   \
-      |                       ^~~~
-./include/linux/percpu-defs.h:507:29: note: in expansion of macro
-=E2=80=98__pcpu_size_call_return=E2=80=99
-  507 | #define this_cpu_read(pcp)  __pcpu_size_call_return(this_cpu_read_,=
- pcp)
-      |                             ^~~~~~~~~~~~~~~~~~~~~~~
-./include/linux/lockdep.h:565:9: note: in expansion of macro =E2=80=98this_=
-cpu_read=E2=80=99
-  565 |         this_cpu_read(hardirqs_enabled)));  \
-      |         ^~~~~~~~~~~~~
-./include/linux/seqlock.h:285:2: note: in expansion of macro
-=E2=80=98lockdep_assert_preemption_disabled=E2=80=99
-  285 |  lockdep_assert_preemption_disabled();
-      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./arch/sparc/include/asm/percpu_64.h:19:25: note: each undeclared
-identifier is reported only once for each function it appears in
-   19 | #define __my_cpu_offset __local_per_cpu_offset
-      |                         ^~~~~~~~~~~~~~~~~~~~~~
-./include/asm-generic/bug.h:145:27: note: in definition of macro =E2=80=98W=
-ARN_ON_ONCE=E2=80=99
-  145 |  int __ret_warn_once =3D !!(condition);   \
-      |                           ^~~~~~~~~
-././include/linux/compiler_types.h:301:2: note: in expansion of macro
-=E2=80=98__compiletime_assert=E2=80=99
-  301 |  __compiletime_assert(condition, msg, prefix, suffix)
-      |  ^~~~~~~~~~~~~~~~~~~~
-././include/linux/compiler_types.h:313:2: note: in expansion of macro
-=E2=80=98_compiletime_assert=E2=80=99
-  313 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNT=
-ER__)
-      |  ^~~~~~~~~~~~~~~~~~~
-./include/asm-generic/rwonce.h:36:2: note: in expansion of macro
-=E2=80=98compiletime_assert=E2=80=99
-   36 |  compiletime_assert(__native_word(t) || sizeof(t) =3D=3D
-sizeof(long long), \
-      |  ^~~~~~~~~~~~~~~~~~
-./include/asm-generic/rwonce.h:36:21: note: in expansion of macro
-=E2=80=98__native_word=E2=80=99
-   36 |  compiletime_assert(__native_word(t) || sizeof(t) =3D=3D
-sizeof(long long), \
-      |                     ^~~~~~~~~~~~~
-./include/asm-generic/rwonce.h:49:2: note: in expansion of macro
-=E2=80=98compiletime_assert_rwonce_type=E2=80=99
-   49 |  compiletime_assert_rwonce_type(x);    \
-      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/asm-generic/percpu.h:119:10: note: in expansion of macro =E2=80=
-=98READ_ONCE=E2=80=99
-  119 |  __ret =3D READ_ONCE(*raw_cpu_ptr(&(pcp)));   \
-      |          ^~~~~~~~~
-./include/linux/percpu-defs.h:231:2: note: in expansion of macro =E2=80=98R=
-ELOC_HIDE=E2=80=99
-  231 |  RELOC_HIDE((typeof(*(__p)) __kernel __force *)(__p), (__offset))
-      |  ^~~~~~~~~~
-./include/asm-generic/percpu.h:44:31: note: in expansion of macro
-=E2=80=98SHIFT_PERCPU_PTR=E2=80=99
-   44 | #define arch_raw_cpu_ptr(ptr) SHIFT_PERCPU_PTR(ptr, __my_cpu_offset=
-)
-      |                               ^~~~~~~~~~~~~~~~
-./include/asm-generic/percpu.h:44:53: note: in expansion of macro
-=E2=80=98__my_cpu_offset=E2=80=99
-   44 | #define arch_raw_cpu_ptr(ptr) SHIFT_PERCPU_PTR(ptr, __my_cpu_offset=
-)
-      |                                                     ^~~~~~~~~~~~~~~
-./include/linux/percpu-defs.h:242:2: note: in expansion of macro
-=E2=80=98arch_raw_cpu_ptr=E2=80=99
-  242 |  arch_raw_cpu_ptr(ptr);      \
-      |  ^~~~~~~~~~~~~~~~
-./include/asm-generic/percpu.h:119:21: note: in expansion of macro =E2=80=
-=98raw_cpu_ptr=E2=80=99
-  119 |  __ret =3D READ_ONCE(*raw_cpu_ptr(&(pcp)));   \
-      |                     ^~~~~~~~~~~
-./include/asm-generic/percpu.h:138:11: note: in expansion of macro
-=E2=80=98__this_cpu_generic_read_nopreempt=E2=80=99
-  138 |   __ret =3D __this_cpu_generic_read_nopreempt(pcp);  \
-      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/asm-generic/percpu.h:320:31: note: in expansion of macro
-=E2=80=98this_cpu_generic_read=E2=80=99
-  320 | #define this_cpu_read_1(pcp)  this_cpu_generic_read(pcp)
-      |                               ^~~~~~~~~~~~~~~~~~~~~
-./include/linux/percpu-defs.h:321:23: note: in expansion of macro
-=E2=80=98this_cpu_read_1=E2=80=99
-  321 |  case 1: pscr_ret__ =3D stem##1(variable); break;   \
-      |                       ^~~~
-./include/linux/percpu-defs.h:507:29: note: in expansion of macro
-=E2=80=98__pcpu_size_call_return=E2=80=99
-  507 | #define this_cpu_read(pcp)  __pcpu_size_call_return(this_cpu_read_,=
- pcp)
-      |                             ^~~~~~~~~~~~~~~~~~~~~~~
-./include/linux/lockdep.h:565:9: note: in expansion of macro =E2=80=98this_=
-cpu_read=E2=80=99
-  565 |         this_cpu_read(hardirqs_enabled)));  \
-      |         ^~~~~~~~~~~~~
-./include/linux/seqlock.h:285:2: note: in expansion of macro
-=E2=80=98lockdep_assert_preemption_disabled=E2=80=99
-  285 |  lockdep_assert_preemption_disabled();
-      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-make[2]: *** [scripts/Makefile.build:281:
-arch/sparc/vdso/vclock_gettime.o] Error 1
-make[1]: *** [scripts/Makefile.build:497: arch/sparc/vdso] Error 2
-make: *** [Makefile:1757: arch/sparc] Error 2
-
-
-PS: previously reported build error with v5.8 (
-https://lkml.org/lkml/2020/8/3/222 ) is fixed with
-48017e5481ce85ba52c4cff082cad5f021c4b413
+--- a/arch/ia64/include/asm/smp.h
++++ b/arch/ia64/include/asm/smp.h
+@@ -18,7 +18,6 @@
+ #include <linux/bitops.h>
+ #include <linux/irqreturn.h>
+ 
+-#include <asm/io.h>
+ #include <asm/param.h>
+ #include <asm/processor.h>
+ #include <asm/ptrace.h>
+@@ -44,11 +43,6 @@ ia64_get_lid (void)
+ 
+ #ifdef CONFIG_SMP
+ 
+-#define XTP_OFFSET		0x1e0008
+-
+-#define SMP_IRQ_REDIRECTION	(1 << 0)
+-#define SMP_IPI_REDIRECTION	(1 << 1)
+-
+ #define raw_smp_processor_id() (current_thread_info()->cpu)
+ 
+ extern struct smp_boot_data {
+@@ -62,7 +56,6 @@ extern cpumask_t cpu_core_map[NR_CPUS];
+ DECLARE_PER_CPU_SHARED_ALIGNED(cpumask_t, cpu_sibling_map);
+ extern int smp_num_siblings;
+ extern void __iomem *ipi_base_addr;
+-extern unsigned char smp_int_redirect;
+ 
+ extern volatile int ia64_cpu_to_sapicid[];
+ #define cpu_physical_id(i)	ia64_cpu_to_sapicid[i]
+@@ -84,34 +77,6 @@ cpu_logical_id (int cpuid)
+ 	return i;
+ }
+ 
+-/*
+- * XTP control functions:
+- *	min_xtp   : route all interrupts to this CPU
+- *	normal_xtp: nominal XTP value
+- *	max_xtp   : never deliver interrupts to this CPU.
+- */
+-
+-static inline void
+-min_xtp (void)
+-{
+-	if (smp_int_redirect & SMP_IRQ_REDIRECTION)
+-		writeb(0x00, ipi_base_addr + XTP_OFFSET); /* XTP to min */
+-}
+-
+-static inline void
+-normal_xtp (void)
+-{
+-	if (smp_int_redirect & SMP_IRQ_REDIRECTION)
+-		writeb(0x08, ipi_base_addr + XTP_OFFSET); /* XTP normal */
+-}
+-
+-static inline void
+-max_xtp (void)
+-{
+-	if (smp_int_redirect & SMP_IRQ_REDIRECTION)
+-		writeb(0x0f, ipi_base_addr + XTP_OFFSET); /* Set XTP to max */
+-}
+-
+ /* Upping and downing of CPUs */
+ extern int __cpu_disable (void);
+ extern void __cpu_die (unsigned int cpu);
+--- /dev/null
++++ b/arch/ia64/include/asm/xtp.h
+@@ -0,0 +1,46 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_IA64_XTP_H
++#define _ASM_IA64_XTP_H
++
++#include <asm/io.h>
++
++#ifdef CONFIG_SMP
++
++#define XTP_OFFSET		0x1e0008
++
++#define SMP_IRQ_REDIRECTION	(1 << 0)
++#define SMP_IPI_REDIRECTION	(1 << 1)
++
++extern unsigned char smp_int_redirect;
++
++/*
++ * XTP control functions:
++ *	min_xtp   : route all interrupts to this CPU
++ *	normal_xtp: nominal XTP value
++ *	max_xtp   : never deliver interrupts to this CPU.
++ */
++
++static inline void
++min_xtp (void)
++{
++	if (smp_int_redirect & SMP_IRQ_REDIRECTION)
++		writeb(0x00, ipi_base_addr + XTP_OFFSET); /* XTP to min */
++}
++
++static inline void
++normal_xtp (void)
++{
++	if (smp_int_redirect & SMP_IRQ_REDIRECTION)
++		writeb(0x08, ipi_base_addr + XTP_OFFSET); /* XTP normal */
++}
++
++static inline void
++max_xtp (void)
++{
++	if (smp_int_redirect & SMP_IRQ_REDIRECTION)
++		writeb(0x0f, ipi_base_addr + XTP_OFFSET); /* Set XTP to max */
++}
++
++#endif /* CONFIG_SMP */
++
++#endif /* _ASM_IA64_XTP_Hy */
+--- a/arch/ia64/kernel/iosapic.c
++++ b/arch/ia64/kernel/iosapic.c
+@@ -95,6 +95,7 @@
+ #include <asm/iosapic.h>
+ #include <asm/processor.h>
+ #include <asm/ptrace.h>
++#include <asm/xtp.h>
+ 
+ #undef DEBUG_INTERRUPT_ROUTING
+ 
+--- a/arch/ia64/kernel/irq.c
++++ b/arch/ia64/kernel/irq.c
+@@ -25,6 +25,7 @@
+ #include <linux/kernel_stat.h>
+ 
+ #include <asm/mca.h>
++#include <asm/xtp.h>
+ 
+ /*
+  * 'what should we do if we get a hw irq event on an illegal vector'.
+--- a/arch/ia64/kernel/process.c
++++ b/arch/ia64/kernel/process.c
+@@ -48,6 +48,7 @@
+ #include <linux/uaccess.h>
+ #include <asm/unwind.h>
+ #include <asm/user.h>
++#include <asm/xtp.h>
+ 
+ #include "entry.h"
+ 
+--- a/arch/ia64/kernel/sal.c
++++ b/arch/ia64/kernel/sal.c
+@@ -18,6 +18,7 @@
+ #include <asm/page.h>
+ #include <asm/sal.h>
+ #include <asm/pal.h>
++#include <asm/xtp.h>
+ 
+  __cacheline_aligned DEFINE_SPINLOCK(sal_lock);
+ unsigned long sal_platform_features;
+--- a/arch/ia64/kernel/setup.c
++++ b/arch/ia64/kernel/setup.c
+@@ -65,6 +65,7 @@
+ #include <asm/tlbflush.h>
+ #include <asm/unistd.h>
+ #include <asm/uv/uv.h>
++#include <asm/xtp.h>
+ 
+ #if defined(CONFIG_SMP) && (IA64_CPU_SIZE > PAGE_SIZE)
+ # error "struct cpuinfo_ia64 too big!"
+--- a/arch/ia64/kernel/smp.c
++++ b/arch/ia64/kernel/smp.c
+@@ -46,6 +46,7 @@
+ #include <asm/tlbflush.h>
+ #include <asm/unistd.h>
+ #include <asm/mca.h>
++#include <asm/xtp.h>
+ 
+ /*
+  * Note: alignment of 4 entries/cacheline was empirically determined
+--- a/arch/parisc/include/asm/timex.h
++++ b/arch/parisc/include/asm/timex.h
+@@ -7,6 +7,7 @@
+ #ifndef _ASMPARISC_TIMEX_H
+ #define _ASMPARISC_TIMEX_H
+ 
++#include <asm/special_insns.h>
+ 
+ #define CLOCK_TICK_RATE	1193180 /* Underlying HZ */
+ 
+--- a/arch/sh/include/asm/io.h
++++ b/arch/sh/include/asm/io.h
+@@ -17,6 +17,7 @@
+ #include <asm/cache.h>
+ #include <asm/addrspace.h>
+ #include <asm/machvec.h>
++#include <asm/page.h>
+ #include <linux/pgtable.h>
+ #include <asm-generic/iomap.h>
+ 
+--- a/arch/sh/kernel/machvec.c
++++ b/arch/sh/kernel/machvec.c
+@@ -15,6 +15,7 @@
+ #include <asm/setup.h>
+ #include <asm/io.h>
+ #include <asm/irq.h>
++#include <asm/processor.h>
+ 
+ #define MV_NAME_SIZE 32
+ 
+--- a/arch/sparc/include/asm/timer_64.h
++++ b/arch/sparc/include/asm/timer_64.h
+@@ -7,6 +7,7 @@
+ #ifndef _SPARC64_TIMER_H
+ #define _SPARC64_TIMER_H
+ 
++#include <uapi/asm/asi.h>
+ #include <linux/types.h>
+ #include <linux/init.h>
+ 
+--- a/arch/sparc/include/asm/vvar.h
++++ b/arch/sparc/include/asm/vvar.h
+@@ -6,7 +6,8 @@
+ #define _ASM_SPARC_VVAR_DATA_H
+ 
+ #include <asm/clocksource.h>
+-#include <linux/seqlock.h>
++#include <asm/processor.h>
++#include <asm/barrier.h>
+ #include <linux/time.h>
+ #include <linux/types.h>
+ 
+--- a/arch/sparc/kernel/vdso.c
++++ b/arch/sparc/kernel/vdso.c
+@@ -7,7 +7,6 @@
+  *  a different vsyscall implementation for Linux/IA32 and for the name.
+  */
+ 
+-#include <linux/seqlock.h>
+ #include <linux/time.h>
+ #include <linux/timekeeper_internal.h>
+ 
+--- a/arch/x86/include/asm/fixmap.h
++++ b/arch/x86/include/asm/fixmap.h
+@@ -26,9 +26,9 @@
+ 
+ #ifndef __ASSEMBLY__
+ #include <linux/kernel.h>
+-#include <asm/acpi.h>
+ #include <asm/apicdef.h>
+ #include <asm/page.h>
++#include <asm/pgtable_types.h>
+ #ifdef CONFIG_X86_32
+ #include <linux/threads.h>
+ #include <asm/kmap_types.h>
+--- a/arch/x86/kernel/apic/apic_noop.c
++++ b/arch/x86/kernel/apic/apic_noop.c
+@@ -10,6 +10,7 @@
+  * like self-ipi, etc...
+  */
+ #include <linux/cpumask.h>
++#include <linux/thread_info.h>
+ 
+ #include <asm/apic.h>
+ 
+--- a/arch/x86/kernel/apic/hw_nmi.c
++++ b/arch/x86/kernel/apic/hw_nmi.c
+@@ -9,6 +9,7 @@
+  *  Bits copied from original nmi.c file
+  *
+  */
++#include <linux/thread_info.h>
+ #include <asm/apic.h>
+ #include <asm/nmi.h>
+ 
+--- a/arch/x86/kernel/apic/probe_64.c
++++ b/arch/x86/kernel/apic/probe_64.c
+@@ -8,6 +8,7 @@
+  * Martin Bligh, Andi Kleen, James Bottomley, John Stultz, and
+  * James Cleverdon.
+  */
++#include <linux/thread_info.h>
+ #include <asm/apic.h>
+ 
+ #include "local.h"
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -15,6 +15,7 @@
+ #include <asm/cpu.h>
+ #include <asm/spec-ctrl.h>
+ #include <asm/smp.h>
++#include <asm/numa.h>
+ #include <asm/pci-direct.h>
+ #include <asm/delay.h>
+ #include <asm/debugreg.h>
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -45,6 +45,7 @@
+ #include <asm/mtrr.h>
+ #include <asm/hwcap2.h>
+ #include <linux/numa.h>
++#include <asm/numa.h>
+ #include <asm/asm.h>
+ #include <asm/bugs.h>
+ #include <asm/cpu.h>
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -10,6 +10,7 @@
+ 
+ #include <asm/cpu.h>
+ #include <asm/smp.h>
++#include <asm/numa.h>
+ #include <asm/cacheinfo.h>
+ #include <asm/spec-ctrl.h>
+ #include <asm/delay.h>
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -23,6 +23,7 @@
+ #include <asm/cmdline.h>
+ #include <asm/traps.h>
+ #include <asm/resctrl.h>
++#include <asm/numa.h>
+ 
+ #ifdef CONFIG_X86_64
+ #include <linux/topology.h>
+--- a/arch/x86/kernel/jailhouse.c
++++ b/arch/x86/kernel/jailhouse.c
+@@ -13,6 +13,7 @@
+ #include <linux/reboot.h>
+ #include <linux/serial_8250.h>
+ #include <asm/apic.h>
++#include <asm/acpi.h>
+ #include <asm/cpu.h>
+ #include <asm/hypervisor.h>
+ #include <asm/i8259.h>
+--- a/arch/x86/kernel/tsc_msr.c
++++ b/arch/x86/kernel/tsc_msr.c
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include <linux/kernel.h>
++#include <linux/thread_info.h>
+ 
+ #include <asm/apic.h>
+ #include <asm/cpu_device_id.h>
+--- a/arch/x86/mm/init_32.c
++++ b/arch/x86/mm/init_32.c
+@@ -52,6 +52,7 @@
+ #include <asm/cpu_entry_area.h>
+ #include <asm/init.h>
+ #include <asm/pgtable_areas.h>
++#include <asm/numa.h>
+ 
+ #include "mm_internal.h"
+ 
+--- a/arch/x86/xen/apic.c
++++ b/arch/x86/xen/apic.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/init.h>
++#include <linux/thread_info.h>
+ 
+ #include <asm/x86_init.h>
+ #include <asm/apic.h>
+--- a/arch/x86/xen/smp_hvm.c
++++ b/arch/x86/xen/smp_hvm.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#include <linux/thread_info.h>
+ #include <asm/smp.h>
+ 
+ #include <xen/events.h>
+--- a/arch/x86/xen/suspend_pv.c
++++ b/arch/x86/xen/suspend_pv.c
+@@ -1,11 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/types.h>
+ 
+-#include <asm/fixmap.h>
+-
+ #include <asm/xen/hypercall.h>
+ #include <asm/xen/page.h>
+ 
++#include <asm/fixmap.h>
++
+ #include "xen-ops.h"
+ 
+ void xen_pv_pre_suspend(void)
+--- a/include/linux/dynamic_queue_limits.h
++++ b/include/linux/dynamic_queue_limits.h
+@@ -38,6 +38,8 @@
+ 
+ #ifdef __KERNEL__
+ 
++#include <asm/bug.h>
++
+ struct dql {
+ 	/* Fields accessed in enqueue path (dql_queued) */
+ 	unsigned int	num_queued;		/* Total ever queued */
+--- a/include/linux/hrtimer.h
++++ b/include/linux/hrtimer.h
+@@ -17,6 +17,7 @@
+ #include <linux/init.h>
+ #include <linux/list.h>
+ #include <linux/percpu.h>
++#include <linux/seqlock.h>
+ #include <linux/timer.h>
+ #include <linux/timerqueue.h>
+ 
+--- a/include/linux/ktime.h
++++ b/include/linux/ktime.h
+@@ -23,6 +23,7 @@
+ 
+ #include <linux/time.h>
+ #include <linux/jiffies.h>
++#include <asm/bug.h>
+ 
+ /* Nanosecond scalar representation for kernel time values */
+ typedef s64	ktime_t;
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -11,6 +11,7 @@
+ #define __LINUX_LOCKDEP_H
+ 
+ #include <linux/lockdep_types.h>
++#include <linux/smp.h>
+ #include <asm/percpu.h>
+ 
+ struct task_struct;
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -65,6 +65,17 @@ struct mutex {
+ #endif
+ };
+ 
++struct ww_class;
++struct ww_acquire_ctx;
++
++struct ww_mutex {
++	struct mutex base;
++	struct ww_acquire_ctx *ctx;
++#ifdef CONFIG_DEBUG_MUTEXES
++	struct ww_class *ww_class;
++#endif
++};
++
+ /*
+  * This is the control structure for tasks blocked on mutex,
+  * which resides on the blocked task's kernel stack:
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -32,6 +32,7 @@
+ #include <linux/task_io_accounting.h>
+ #include <linux/posix-timers.h>
+ #include <linux/rseq.h>
++#include <linux/seqlock.h>
+ #include <linux/kcsan.h>
+ 
+ /* task_struct member predeclarations (sorted alphabetically): */
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -19,7 +19,6 @@
+ #include <linux/mutex.h>
+ #include <linux/preempt.h>
+ #include <linux/spinlock.h>
+-#include <linux/ww_mutex.h>
+ 
+ #include <asm/processor.h>
+ 
+--- a/include/linux/time.h
++++ b/include/linux/time.h
+@@ -3,7 +3,6 @@
+ #define _LINUX_TIME_H
+ 
+ # include <linux/cache.h>
+-# include <linux/seqlock.h>
+ # include <linux/math64.h>
+ # include <linux/time64.h>
+ 
+--- a/include/linux/videodev2.h
++++ b/include/linux/videodev2.h
+@@ -57,6 +57,7 @@
+ #define __LINUX_VIDEODEV2_H
+ 
+ #include <linux/time.h>     /* need struct timeval */
++#include <linux/kernel.h>
+ #include <uapi/linux/videodev2.h>
+ 
+ #endif /* __LINUX_VIDEODEV2_H */
+--- a/include/linux/ww_mutex.h
++++ b/include/linux/ww_mutex.h
+@@ -48,14 +48,6 @@ struct ww_acquire_ctx {
+ #endif
+ };
+ 
+-struct ww_mutex {
+-	struct mutex base;
+-	struct ww_acquire_ctx *ctx;
+-#ifdef CONFIG_DEBUG_MUTEXES
+-	struct ww_class *ww_class;
+-#endif
+-};
+-
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ # define __WW_CLASS_MUTEX_INITIALIZER(lockname, class) \
+ 		, .ww_class = class
