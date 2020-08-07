@@ -2,19 +2,18 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5894123EFA3
-	for <lists+sparclinux@lfdr.de>; Fri,  7 Aug 2020 16:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1872E23F0B8
+	for <lists+sparclinux@lfdr.de>; Fri,  7 Aug 2020 18:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726076AbgHGOxx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Fri, 7 Aug 2020 10:53:53 -0400
-Received: from mail.furshetcrimea.ru ([193.27.243.220]:51882 "EHLO
+        id S1725993AbgHGQLE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Fri, 7 Aug 2020 12:11:04 -0400
+Received: from mail.furshetcrimea.ru ([193.27.243.220]:40572 "EHLO
         furshetcrimea.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727030AbgHGOxk (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 7 Aug 2020 10:53:40 -0400
-X-Greylist: delayed 5015 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Aug 2020 10:51:24 EDT
+        with ESMTP id S1726015AbgHGQLE (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 7 Aug 2020 12:11:04 -0400
 Received: from [154.118.61.214] (account info@furshetcrimea.ru HELO [192.168.8.100])
   by furshetcrimea.ru (CommuniGate Pro SMTP 6.1.10)
-  with ESMTPA id 11133008; Fri, 07 Aug 2020 17:58:16 +0300
+  with ESMTPA id 11168890; Fri, 07 Aug 2020 19:21:54 +0300
 Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
@@ -22,11 +21,11 @@ Content-Description: Mail message body
 Subject: Bei Interesse antworten.
 To:     Recipients <info@furshetcrimea.ru>
 From:   info@furshetcrimea.ru
-Date:   Fri, 07 Aug 2020 15:45:40 +0100
+Date:   Fri, 07 Aug 2020 17:09:17 +0100
 Reply-To: mattiassjoborg751@gmail.com
 X-Antivirus: Avast (VPS 200807-2, 08/07/2020), Outbound message
 X-Antivirus-Status: Clean
-Message-ID: <auto-000011133008@furshetcrimea.ru>
+Message-ID: <auto-000011168890@furshetcrimea.ru>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
