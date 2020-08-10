@@ -2,27 +2,27 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E5A92408CB
-	for <lists+sparclinux@lfdr.de>; Mon, 10 Aug 2020 17:25:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81CF62409E2
+	for <lists+sparclinux@lfdr.de>; Mon, 10 Aug 2020 17:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728509AbgHJPZT (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 10 Aug 2020 11:25:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58874 "EHLO mail.kernel.org"
+        id S1728738AbgHJPgj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 10 Aug 2020 11:36:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33172 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728288AbgHJPZM (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 10 Aug 2020 11:25:12 -0400
+        id S1728718AbgHJP1S (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 10 Aug 2020 11:27:18 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A5D0C20855;
-        Mon, 10 Aug 2020 15:25:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7E49722BF3;
+        Mon, 10 Aug 2020 15:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597073111;
-        bh=YSH/bpx9+Ia/FvcIrMSyFTGULwWNGzSoizt2cetwk30=;
+        s=default; t=1597073238;
+        bh=OEBUnwPDQFvaeUZp01qeNkT2HHlvDwLzUY81pbDigtg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dv2KR7rJO0Wr/W5TzRBh6zDxcqkJME3R5/iNDY9MvGisY37q1C+uQHaACXDqiuqwE
-         PAXH7j8tLw1eKQ1Vq6FkKuRRppbplixjlgEg72wfCRgzKwv+lpTyzy0MycGqwPV3yt
-         xHM+RT8Q0YtVpRt0WTtZUw1jN384XahM4mfBT2Hw=
+        b=TmKUCHCm5Yhu2wXcr/88E8oK7WdGJYnulrGeWDM9FQag66gGBKlEIe1v7o3luRgtE
+         YJmkPUzk45cl+xgOe/N9pH1Z/dqR2ooeUMLLNzSA9V5s74F0TZyPVoN5D8RmrCQREV
+         L2wqltEOz6pa4dPlqd2R/acycIvgVwUUmilNasAg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -34,12 +34,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Gerd Hoffmann <kraxel@redhat.com>,
         "David S. Miller" <davem@davemloft.net>,
         sparclinux@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.7 40/79] drm/drm_fb_helper: fix fbdev with sparc64
-Date:   Mon, 10 Aug 2020 17:20:59 +0200
-Message-Id: <20200810151814.251818975@linuxfoundation.org>
+Subject: [PATCH 5.4 35/67] drm/drm_fb_helper: fix fbdev with sparc64
+Date:   Mon, 10 Aug 2020 17:21:22 +0200
+Message-Id: <20200810151811.171538668@linuxfoundation.org>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200810151812.114485777@linuxfoundation.org>
-References: <20200810151812.114485777@linuxfoundation.org>
+In-Reply-To: <20200810151809.438685785@linuxfoundation.org>
+References: <20200810151809.438685785@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -105,10 +105,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/bochs/bochs_kms.c b/drivers/gpu/drm/bochs/bochs_kms.c
-index 8066d7d370d5b..200d55fa97656 100644
+index 02a9c1ed165bb..fa50ab2523d4b 100644
 --- a/drivers/gpu/drm/bochs/bochs_kms.c
 +++ b/drivers/gpu/drm/bochs/bochs_kms.c
-@@ -143,6 +143,7 @@ int bochs_kms_init(struct bochs_device *bochs)
+@@ -194,6 +194,7 @@ int bochs_kms_init(struct bochs_device *bochs)
  	bochs->dev->mode_config.preferred_depth = 24;
  	bochs->dev->mode_config.prefer_shadow = 0;
  	bochs->dev->mode_config.prefer_shadow_fbdev = 1;
@@ -117,10 +117,10 @@ index 8066d7d370d5b..200d55fa97656 100644
  
  	bochs->dev->mode_config.funcs = &bochs_mode_funcs;
 diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-index c7be39a00d437..4dd12a069474a 100644
+index 8d193a58363d4..6b8502bcf0fd3 100644
 --- a/drivers/gpu/drm/drm_fb_helper.c
 +++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -399,7 +399,11 @@ static void drm_fb_helper_dirty_blit_real(struct drm_fb_helper *fb_helper,
+@@ -390,7 +390,11 @@ static void drm_fb_helper_dirty_blit_real(struct drm_fb_helper *fb_helper,
  	unsigned int y;
  
  	for (y = clip->y1; y < clip->y2; y++) {
