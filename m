@@ -2,162 +2,61 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81CF62409E2
-	for <lists+sparclinux@lfdr.de>; Mon, 10 Aug 2020 17:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 475FD241DF7
+	for <lists+sparclinux@lfdr.de>; Tue, 11 Aug 2020 18:15:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728738AbgHJPgj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 10 Aug 2020 11:36:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33172 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728718AbgHJP1S (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 10 Aug 2020 11:27:18 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7E49722BF3;
-        Mon, 10 Aug 2020 15:27:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597073238;
-        bh=OEBUnwPDQFvaeUZp01qeNkT2HHlvDwLzUY81pbDigtg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TmKUCHCm5Yhu2wXcr/88E8oK7WdGJYnulrGeWDM9FQag66gGBKlEIe1v7o3luRgtE
-         YJmkPUzk45cl+xgOe/N9pH1Z/dqR2ooeUMLLNzSA9V5s74F0TZyPVoN5D8RmrCQREV
-         L2wqltEOz6pa4dPlqd2R/acycIvgVwUUmilNasAg=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
-        Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
-        kernel test robot <lkp@intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 35/67] drm/drm_fb_helper: fix fbdev with sparc64
-Date:   Mon, 10 Aug 2020 17:21:22 +0200
-Message-Id: <20200810151811.171538668@linuxfoundation.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200810151809.438685785@linuxfoundation.org>
-References: <20200810151809.438685785@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S1728906AbgHKQPl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Tue, 11 Aug 2020 12:15:41 -0400
+Received: from mx01.imigrasi.go.id ([36.91.73.239]:55482 "EHLO
+        pfp2-psdkmjkt.imigrasi.go.id" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728797AbgHKQPl (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 11 Aug 2020 12:15:41 -0400
+X-Greylist: delayed 2395 seconds by postgrey-1.27 at vger.kernel.org; Tue, 11 Aug 2020 12:15:39 EDT
+Received: from pps.filterd (pfp2-psdkmjkt.imigrasi.go.id [127.0.0.1])
+        by pfp2-psdkmjkt.imigrasi.go.id (8.16.0.27/8.16.0.27) with SMTP id 07BFW28k006077;
+        Tue, 11 Aug 2020 22:33:03 +0700
+Received: from mta02.imigrasi.go.id ([10.0.49.130])
+        by pfp2-psdkmjkt.imigrasi.go.id with ESMTP id 32uur18yja-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Tue, 11 Aug 2020 22:33:03 +0700
+Received: from localhost (localhost [127.0.0.1])
+        by mta02.imigrasi.go.id (Postfix) with ESMTP id 1436D3006D2DB;
+        Tue, 11 Aug 2020 22:32:55 +0700 (WIB)
+Received: from mta02.imigrasi.go.id ([127.0.0.1])
+        by localhost (mta02.imigrasi.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ufh_PoWqHejP; Tue, 11 Aug 2020 22:32:55 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by mta02.imigrasi.go.id (Postfix) with ESMTP id DD7193006D2D9;
+        Tue, 11 Aug 2020 22:32:54 +0700 (WIB)
+X-Virus-Scanned: amavisd-new at 
+Received: from mta02.imigrasi.go.id ([127.0.0.1])
+        by localhost (mta02.imigrasi.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Q6eSvKD4zQsg; Tue, 11 Aug 2020 22:32:54 +0700 (WIB)
+Received: from [192.168.100.12] (unknown [175.100.60.226])
+        by mta02.imigrasi.go.id (Postfix) with ESMTPSA id 747FC3006D2E5;
+        Tue, 11 Aug 2020 22:32:42 +0700 (WIB)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Business Proposal 
+To:     Recipients <portal@imigrasi.go.id>
+From:   Maggie Wang <portal@imigrasi.go.id>
+Date:   Tue, 11 Aug 2020 22:32:31 +0700
+Reply-To: wangmaggiem07@gmail.com
+Message-Id: <20200811153243.747FC3006D2E5@mta02.imigrasi.go.id>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2020-01-03_04:,,
+ signatures=0
+X-Proofpoint-Spam-Reason: safe
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Sam Ravnborg <sam@ravnborg.org>
+Greetings My Dear Friend,
 
-[ Upstream commit 2a1658bf922ffd9b7907e270a7d9cdc9643fc45d ]
+I have a business proposal to share with you. 
 
-Recent kernels have been reported to panic using the bochs_drm
-framebuffer under qemu-system-sparc64 which was bisected to
-commit 7a0483ac4ffc ("drm/bochs: switch to generic drm fbdev emulation").
-
-The backtrace indicates that the shadow framebuffer copy in
-drm_fb_helper_dirty_blit_real() is trying to access the real
-framebuffer using a virtual address rather than use an IO access
-typically implemented using a physical (ASI_PHYS) access on SPARC.
-
-The fix is to replace the memcpy with memcpy_toio() from io.h.
-
-memcpy_toio() uses writeb() where the original fbdev code
-used sbus_memcpy_toio(). The latter uses sbus_writeb().
-
-The difference between writeb() and sbus_memcpy_toio() is
-that writeb() writes bytes in little-endian, where sbus_writeb() writes
-bytes in big-endian. As endian does not matter for byte writes they are
-the same. So we can safely use memcpy_toio() here.
-
-Note that this only fixes bochs, in general fbdev helpers still have
-issues with mixing up system memory and __iomem space. Fixing that will
-require a lot more work.
-
-v3:
-  - Improved changelog (Daniel)
-  - Added FIXME to fbdev_use_iomem (Daniel)
-
-v2:
-  - Added missing __iomem cast (kernel test robot)
-  - Made changelog readable and fix typos (Mark)
-  - Add flag to select iomem - and set it in the bochs driver
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reported-by: kernel test robot <lkp@intel.com>
-Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Link: https://patchwork.freedesktop.org/patch/msgid/20200709193016.291267-1-sam@ravnborg.org
-Link: https://patchwork.freedesktop.org/patch/msgid/20200725191012.GA434957@ravnborg.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/bochs/bochs_kms.c |  1 +
- drivers/gpu/drm/drm_fb_helper.c   |  6 +++++-
- include/drm/drm_mode_config.h     | 12 ++++++++++++
- 3 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/bochs/bochs_kms.c b/drivers/gpu/drm/bochs/bochs_kms.c
-index 02a9c1ed165bb..fa50ab2523d4b 100644
---- a/drivers/gpu/drm/bochs/bochs_kms.c
-+++ b/drivers/gpu/drm/bochs/bochs_kms.c
-@@ -194,6 +194,7 @@ int bochs_kms_init(struct bochs_device *bochs)
- 	bochs->dev->mode_config.preferred_depth = 24;
- 	bochs->dev->mode_config.prefer_shadow = 0;
- 	bochs->dev->mode_config.prefer_shadow_fbdev = 1;
-+	bochs->dev->mode_config.fbdev_use_iomem = true;
- 	bochs->dev->mode_config.quirk_addfb_prefer_host_byte_order = true;
- 
- 	bochs->dev->mode_config.funcs = &bochs_mode_funcs;
-diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-index 8d193a58363d4..6b8502bcf0fd3 100644
---- a/drivers/gpu/drm/drm_fb_helper.c
-+++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -390,7 +390,11 @@ static void drm_fb_helper_dirty_blit_real(struct drm_fb_helper *fb_helper,
- 	unsigned int y;
- 
- 	for (y = clip->y1; y < clip->y2; y++) {
--		memcpy(dst, src, len);
-+		if (!fb_helper->dev->mode_config.fbdev_use_iomem)
-+			memcpy(dst, src, len);
-+		else
-+			memcpy_toio((void __iomem *)dst, src, len);
-+
- 		src += fb->pitches[0];
- 		dst += fb->pitches[0];
- 	}
-diff --git a/include/drm/drm_mode_config.h b/include/drm/drm_mode_config.h
-index 3bcbe30339f04..198b9d0600081 100644
---- a/include/drm/drm_mode_config.h
-+++ b/include/drm/drm_mode_config.h
-@@ -865,6 +865,18 @@ struct drm_mode_config {
- 	 */
- 	bool prefer_shadow_fbdev;
- 
-+	/**
-+	 * @fbdev_use_iomem:
-+	 *
-+	 * Set to true if framebuffer reside in iomem.
-+	 * When set to true memcpy_toio() is used when copying the framebuffer in
-+	 * drm_fb_helper.drm_fb_helper_dirty_blit_real().
-+	 *
-+	 * FIXME: This should be replaced with a per-mapping is_iomem
-+	 * flag (like ttm does), and then used everywhere in fbdev code.
-+	 */
-+	bool fbdev_use_iomem;
-+
- 	/**
- 	 * @quirk_addfb_prefer_xbgr_30bpp:
- 	 *
--- 
-2.25.1
-
-
-
+Kind Regards,
+Maggie Wang
