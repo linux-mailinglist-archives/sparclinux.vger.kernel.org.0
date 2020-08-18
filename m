@@ -2,166 +2,156 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9228F247CE7
-	for <lists+sparclinux@lfdr.de>; Tue, 18 Aug 2020 05:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C93DB2488B2
+	for <lists+sparclinux@lfdr.de>; Tue, 18 Aug 2020 17:07:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726370AbgHRDe2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 17 Aug 2020 23:34:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33472 "EHLO
+        id S1726873AbgHRPHp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 18 Aug 2020 11:07:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726451AbgHRDeT (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 17 Aug 2020 23:34:19 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10551C061344;
-        Mon, 17 Aug 2020 20:34:19 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id y10so7002157plr.11;
-        Mon, 17 Aug 2020 20:34:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=t5NIMSla2q4H4CYrgEoypiSInrv82zNsRbmwKfnLv98=;
-        b=uRdD8KLtueArRi5YgefMeJDNmk3262hrEcmU4d2F6wq++v7Ma9rUefUixF2COxCtLc
-         td5Rwz0puO391VwBccL0iLXviBugIL3u84rPg8rn+K+h4YofYGJhIsC8G6APa8gVgzX5
-         2APhZ1DyLJRboh/HWU4dTWnJYXK0nLTNC8tH9fSFizTp9Ip7QLOgDFv0zUDT46SeFoAc
-         yQStkqIILuLhbKNuf8KDIetfzrKboLdpW02QzOvqhM0RvSPIi0r7Wmlh/Nq4Q+AJ0A6q
-         Tfg69C3isdqL8HsOzA8eHcZZF6FPHrfmwUviJRUc1g0N2OtBxFLf7tCrbRwIxKg42dX/
-         ZzJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=t5NIMSla2q4H4CYrgEoypiSInrv82zNsRbmwKfnLv98=;
-        b=JIZirNFWDNdYyY/srWP/jddhfF28drnY0IBBMa790y6U/Zdg8XAn3Wl8hiCh5KYU1w
-         5r+P8BNdpTCMmEbPcl1O0x2auLN7rrBMlcFX76dg52/nHF73PfM/MpUWLTWXiVxoUeKi
-         Y3cMS8aLktm6hezIB8YIAJXW/sfEs2DOTkIVvV58kiejmr9O8OSjvIwN8YP1W3G2KyU1
-         t3Jp4/CjQPLN+HHIQUNpL7VkWv9oATJ7m6uxaSIsT3OYUtybNXPXhxQ9G7CbaSxi9Ba1
-         X/Boezno7uIyoyy/Df1Bqq23M7lHqiECUye9+A6qwrdrE67YagZw2c1x+1i4KZ8056jM
-         FVkA==
-X-Gm-Message-State: AOAM533D9ebrMnbOMNTKbtdI2gMANWgFMkaTQ0ir62xbzEnH7KK8kJTA
-        +AdX6t64ndLLcjntHGDQL+M=
-X-Google-Smtp-Source: ABdhPJy6d0Cu933mn+84pD243uhmVtbLS27aP0ei6qwpVknrf2wE9OmynUNrAFXe9REc+s5VjsOUuA==
-X-Received: by 2002:a17:90a:4214:: with SMTP id o20mr4177105pjg.232.1597721658610;
-        Mon, 17 Aug 2020 20:34:18 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (193-116-193-175.tpgi.com.au. [193.116.193.175])
-        by smtp.gmail.com with ESMTPSA id b18sm19823352pgj.12.2020.08.17.20.34.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2020 20:34:18 -0700 (PDT)
-From:   Nicholas Piggin <npiggin@gmail.com>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     Nicholas Piggin <npiggin@gmail.com>, Jens Axboe <axboe@kernel.dk>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: [RFC PATCH 2/2] powerpc/64s/radix: Fix mm_cpumask trimming race vs kthread_use_mm
-Date:   Tue, 18 Aug 2020 13:34:05 +1000
-Message-Id: <20200818033405.170457-2-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200818033405.170457-1-npiggin@gmail.com>
-References: <20200818033405.170457-1-npiggin@gmail.com>
+        with ESMTP id S1726539AbgHRPHo (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 18 Aug 2020 11:07:44 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C262C061389;
+        Tue, 18 Aug 2020 08:07:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=TYCkUvvfwzERhSHuzl+o/xwRoFEE9UiQMu2LCKTxT2c=; b=rAKScTQoURfEN9R47mu2vwzvW1
+        Qr92K5z88B2fMLXzcVaHIjsutHu31n+1t6NktU6dXrpb6qBvKGewRdDEu9YWxyaqPT3MGP2+amFeq
+        030HybeiDQAp9K8oNMiWpdSSP2KjuUDNq6z3GwFS1zWlgIdpB/YsfFYankS6FDpHeKTdEQUybqx+Y
+        WGyBZ4JzG9qSrcJJ5B1ZsacnV/Rsd2fIh9tQQ/re1f3qLvOpy3/D0PzzsiObpvCEz2QxnrYV91fdU
+        rklPsQUsoTct720dBy8ejRuBWjm4jiJMHilAS7Xntlh81xlBZYvhwK858mixM81kNlULt4cBAKwWb
+        WxUXdk+w==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1k83D6-00020t-48; Tue, 18 Aug 2020 15:07:36 +0000
+Date:   Tue, 18 Aug 2020 16:07:36 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     linux-arch@vger.kernel.org
+Cc:     Vineet Gupta <vgupta@synopsys.com>,
+        linux-snps-arc@lists.infradead.org,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org
+Subject: Flushing transparent hugepages
+Message-ID: <20200818150736.GQ17456@casper.infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Commit 0cef77c7798a7 ("powerpc/64s/radix: flush remote CPUs out of
-single-threaded mm_cpumask") added a mechanism to trim the mm_cpumask of
-a process under certain conditions. One of the assumptions is that
-mm_users would not be incremented via a reference outside the process
-context with mmget_not_zero() then go on to kthread_use_mm() via that
-reference.
+If your arch does not support HAVE_ARCH_TRANSPARENT_HUGEPAGE, you can
+stop reading now.  Although maybe you're curious about adding support.
 
-That invariant was broken by io_uring code (see previous sparc64 fix),
-but I'll point Fixes: to the original powerpc commit because we are
-changing that assumption going forward, so this will make backports
-match up.
+$ git grep -w HAVE_ARCH_TRANSPARENT_HUGEPAGE arch
+arch/Kconfig:config HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/arc/Kconfig:config HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/arm/Kconfig:config HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/arm64/Kconfig:     select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/mips/Kconfig:      select HAVE_ARCH_TRANSPARENT_HUGEPAGE if CPU_SUPPORTS_HUGEPAGES
+arch/powerpc/platforms/Kconfig.cputype: select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/s390/Kconfig:      select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/sparc/Kconfig:     select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/x86/Kconfig:       select HAVE_ARCH_TRANSPARENT_HUGEPAGE
 
-Fix this by no longer relying on that assumption, but by having each CPU
-check the mm is not being used, and clearing their own bit from the mask
-if it's okay. This relies on commit 38cf307c1f20 ("mm: fix
-kthread_use_mm() vs TLB invalidate") to disable irqs over the mm switch.
+If your arch does not implement flush_dcache_page(), you can also
+stop reading.
 
-Fixes: 0cef77c7798a7 ("powerpc/64s/radix: flush remote CPUs out of single-threaded mm_cpumask")
-not-yet-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/tlb.h       | 13 -------------
- arch/powerpc/mm/book3s64/radix_tlb.c | 23 ++++++++++++++++-------
- 2 files changed, 16 insertions(+), 20 deletions(-)
+$ for i in arc arm arm64 mips powerpc s390 sparc x86; do git grep -l flush_dcache_page arch/$i/include; done
+arch/arc/include/asm/cacheflush.h
+arch/arm/include/asm/cacheflush.h
+arch/arm64/include/asm/cacheflush.h
+arch/mips/include/asm/cacheflush.h
+arch/powerpc/include/asm/cacheflush.h
+arch/sparc/include/asm/cacheflush_32.h
+arch/sparc/include/asm/cacheflush_64.h
+arch/sparc/include/asm/pgtable_64.h
 
-diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/asm/tlb.h
-index fbc6f3002f23..d97f061fecac 100644
---- a/arch/powerpc/include/asm/tlb.h
-+++ b/arch/powerpc/include/asm/tlb.h
-@@ -66,19 +66,6 @@ static inline int mm_is_thread_local(struct mm_struct *mm)
- 		return false;
- 	return cpumask_test_cpu(smp_processor_id(), mm_cpumask(mm));
- }
--static inline void mm_reset_thread_local(struct mm_struct *mm)
--{
--	WARN_ON(atomic_read(&mm->context.copros) > 0);
--	/*
--	 * It's possible for mm_access to take a reference on mm_users to
--	 * access the remote mm from another thread, but it's not allowed
--	 * to set mm_cpumask, so mm_users may be > 1 here.
--	 */
--	WARN_ON(current->mm != mm);
--	atomic_set(&mm->context.active_cpus, 1);
--	cpumask_clear(mm_cpumask(mm));
--	cpumask_set_cpu(smp_processor_id(), mm_cpumask(mm));
--}
- #else /* CONFIG_PPC_BOOK3S_64 */
- static inline int mm_is_thread_local(struct mm_struct *mm)
- {
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 0d233763441f..a421a0e3f930 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -645,19 +645,29 @@ static void do_exit_flush_lazy_tlb(void *arg)
- 	struct mm_struct *mm = arg;
- 	unsigned long pid = mm->context.id;
- 
-+	/*
-+	 * A kthread could have done a mmget_not_zero() after the flushing CPU
-+	 * checked mm_users == 1, and be in the process of kthread_use_mm when
-+	 * interrupted here. In that case, current->mm will be set to mm,
-+	 * because kthread_use_mm() setting ->mm and switching to the mm is
-+	 * done with interrupts off.
-+	 */
- 	if (current->mm == mm)
--		return; /* Local CPU */
-+		goto out_flush;
- 
- 	if (current->active_mm == mm) {
--		/*
--		 * Must be a kernel thread because sender is single-threaded.
--		 */
--		BUG_ON(current->mm);
-+		WARN_ON_ONCE(current->mm != NULL);
-+		/* Is a kernel thread and is using mm as the lazy tlb */
- 		mmgrab(&init_mm);
--		switch_mm(mm, &init_mm, current);
- 		current->active_mm = &init_mm;
-+		switch_mm_irqs_off(mm, &init_mm, current);
- 		mmdrop(mm);
- 	}
-+
-+	atomic_dec(&mm->context.active_cpus);
-+	cpumask_clear_cpu(smp_processor_id(), mm_cpumask(mm));
-+
-+out_flush:
- 	_tlbiel_pid(pid, RIC_FLUSH_ALL);
- }
- 
-@@ -672,7 +682,6 @@ static void exit_flush_lazy_tlbs(struct mm_struct *mm)
- 	 */
- 	smp_call_function_many(mm_cpumask(mm), do_exit_flush_lazy_tlb,
- 				(void *)mm, 1);
--	mm_reset_thread_local(mm);
- }
- 
- void radix__flush_tlb_mm(struct mm_struct *mm)
--- 
-2.23.0
+OK, so we're down to arc, arm, arm64, mips, powerpc & sparc.  Hi!  ;-)
 
+I'm working on adding THP support for filesystems with storage backing
+and part of that is expanding the definition of THP to be any order
+(ie any power of two of PAGE_SIZE).  Now, shmem already has some calls
+to flush_dcache_page() for THPs, for example:
+
+        if (sgp != SGP_WRITE && !PageUptodate(page)) {
+                struct page *head = compound_head(page);
+                int i;
+
+                for (i = 0; i < compound_nr(head); i++) {
+                        clear_highpage(head + i);
+                        flush_dcache_page(head + i);
+                }
+                SetPageUptodate(head);
+        }
+
+where you'll be called once for each subpage.  But ... these are error
+paths, and I'm sure you all diligently test cache coherency scenarios
+of error paths in shmem ... right?
+
+For example, arm64 seems confused in this scenario:
+
+void flush_dcache_page(struct page *page)
+{
+        if (test_bit(PG_dcache_clean, &page->flags))
+                clear_bit(PG_dcache_clean, &page->flags);
+}
+
+...
+
+void __sync_icache_dcache(pte_t pte)
+{
+        struct page *page = pte_page(pte);
+
+        if (!test_and_set_bit(PG_dcache_clean, &page->flags))
+                sync_icache_aliases(page_address(page), page_size(page));
+}
+
+So arm64 keeps track on a per-page basis which ones have been flushed.
+page_size() will return PAGE_SIZE if called on a tail page or regular
+page, but will return PAGE_SIZE << compound_order if called on a head
+page.  So this will either over-flush, or it's missing the opportunity
+to clear the bits on all the subpages which have now been flushed.
+
+PowerPC has special handling of hugetlbfs pages.  Well, that's what
+the config option says, but actually it handles THP as well.  If
+the config option is enabled.
+
+#ifdef CONFIG_HUGETLB_PAGE
+        if (PageCompound(page)) {
+                flush_dcache_icache_hugepage(page);
+                return;
+        }
+#endif
+
+By the way, THPs can be mapped askew -- that is, at an offset which
+means you can't use a PMD to map a PMD sized page.
+
+Anyway, we don't really have consensus between the various architectures
+on how to handle either THPs or hugetlb pages.  It's not contemplated
+in Documentation/core-api/cachetlb.rst so there's no real surprise
+we've diverged.
+
+What would you _like_ to see?  Would you rather flush_dcache_page()
+were called once for each subpage, or would you rather maintain
+the page-needs-flushing state once per compound page?  We could also
+introduce flush_dcache_thp() if some architectures would prefer it one
+way and one the other, although that brings into question what to do
+for hugetlbfs pages.
+
+It might not be a bad idea to centralise the handling of all this stuff
+somewhere.  Sounds like the kind of thing Arnd would like to do ;-) I'll
+settle for getting enough clear feedback about what the various arch
+maintainers want that I can write a documentation update for cachetlb.rst.
