@@ -2,55 +2,50 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20EAE3D4C4C
-	for <lists+sparclinux@lfdr.de>; Sun, 25 Jul 2021 08:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 404233DEA8A
+	for <lists+sparclinux@lfdr.de>; Tue,  3 Aug 2021 12:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230010AbhGYF1V (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 25 Jul 2021 01:27:21 -0400
-Received: from verein.lst.de ([213.95.11.211]:41944 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229460AbhGYF1V (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 25 Jul 2021 01:27:21 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 0DC2267373; Sun, 25 Jul 2021 08:07:48 +0200 (CEST)
-Date:   Sun, 25 Jul 2021 08:07:47 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Logan Gunthorpe <logang@deltatee.com>
-Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linux-parisc@vger.kernel.org,
-        xen-devel@lists.xenproject.org, Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Stephen Bates <sbates@raithlin.com>,
-        Martin Oliveira <martin.oliveira@eideticom.com>
-Subject: Re: [PATCH v2 01/21] dma-mapping: Allow map_sg() ops to return
- negative error codes
-Message-ID: <20210725060747.GA10852@lst.de>
-References: <20210723175008.22410-1-logang@deltatee.com> <20210723175008.22410-2-logang@deltatee.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210723175008.22410-2-logang@deltatee.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+        id S234998AbhHCKLy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 3 Aug 2021 06:11:54 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:36080 "EHLO
+        mail.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234506AbhHCKLw (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 3 Aug 2021 06:11:52 -0400
+Received: from localhost (unknown [149.11.102.75])
+        by mail.monkeyblade.net (Postfix) with ESMTPSA id 2E1124D9F6213;
+        Tue,  3 Aug 2021 03:11:35 -0700 (PDT)
+Date:   Thu, 20 Aug 2020 17:19:47 -0700 (PDT)
+Message-Id: <20200820.171947.876981661045565142.davem@davemloft.net>
+To:     viro@zeniv.linux.org.uk
+Cc:     sparclinux@vger.kernel.org
+Subject: Re: [sparc32] userland unaligned access
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200821000002.GI1236603@ZenIV.linux.org.uk>
+References: <20200820233730.GH1236603@ZenIV.linux.org.uk>
+        <20200820.164708.2016059081784711542.davem@davemloft.net>
+        <20200821000002.GI1236603@ZenIV.linux.org.uk>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail.monkeyblade.net [0.0.0.0]); Tue, 03 Aug 2021 03:11:36 -0700 (PDT)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-> +int dma_map_sgtable(struct device *dev, struct sg_table *sgt,
-> +		    enum dma_data_direction dir, unsigned long attrs)
-> +{
-> +	int nents;
-> +
-> +	nents = __dma_map_sg_attrs(dev, sgt->sgl, sgt->orig_nents, dir, attrs);
-> +	if (nents == 0)
-> +		return -EIO;
-> +	else if (nents < 0) {
-> +		if (WARN_ON_ONCE(nents != -EINVAL && nents != -ENOMEM &&
-> +				 nents != -EIO))
-> +			return -EIO;
+From: Al Viro <viro@zeniv.linux.org.uk>
+Date: Fri, 21 Aug 2020 01:00:02 +0100
 
-I think this validation of the errnos needs to go into __dma_map_sg_attrs,
-so that we catch it for the classic dma_map_sg callers as well.
+> On Thu, Aug 20, 2020 at 04:47:08PM -0700, David Miller wrote:
+> 
+>> > I don't have sunos toolchain to try and build such a binary and test it on
+>> > a 2.2 kernel, but I would be rather surprised if that had been it.
+>> > 
+>> > Anyway, it really looks like that's dead code these days...
+>> 
+>> %100 it is dead code.
+> 
+> 	Could you check if you are OK with
+> git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #work.sparc?
+
+Looks good to me.
