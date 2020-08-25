@@ -2,165 +2,133 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C7BA251670
-	for <lists+sparclinux@lfdr.de>; Tue, 25 Aug 2020 12:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47F11252408
+	for <lists+sparclinux@lfdr.de>; Wed, 26 Aug 2020 01:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729762AbgHYKRh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 25 Aug 2020 06:17:37 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:16426 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728117AbgHYKRf (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 25 Aug 2020 06:17:35 -0400
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07PA4pWp154169;
-        Tue, 25 Aug 2020 06:16:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=EOBUoNumc+lfxeSxOyM8nxTJchcZ8SasJG/UKpKCePc=;
- b=FLMfaI34xTiJCIrm5uFNqbuk0uT2DGykGFonCKV9ValbKJI3Gb8aJ1pjUCvH1rBMViHH
- a+46qMxkOoSEKYil9BF1E0fCNjqHrqN02uE3u63nGbSY/ajxgIwKwmxxu46FESXlA2nM
- CSrGWVcVfhlmX34vqVger2iojhSeXB+dFv+4FsmjCV6iJGBcX6jS2sIknOsTSUArI8jv
- pWnbWazaY41s/AVuWDg2oC/WN57VTsUafbWj+P2oGiWZap4gTf8wGpUUY7J7pjuNx8tf
- G6kTrWxeMCgWUXkLDaUJi/CEnjLBtbu0oz+Lo59EIPqzoCxSQsIPS9X7KAhGXPUvR8Iv 7g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 334yc52e4u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 25 Aug 2020 06:16:35 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07PA7kP9161517;
-        Tue, 25 Aug 2020 06:16:34 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 334yc52e43-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 25 Aug 2020 06:16:34 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07PAFFq5019135;
-        Tue, 25 Aug 2020 10:16:32 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma04ams.nl.ibm.com with ESMTP id 33498u97t7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 25 Aug 2020 10:16:32 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07PAGT9N24445372
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 25 Aug 2020 10:16:29 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6B3F1A4054;
-        Tue, 25 Aug 2020 10:16:29 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C6052A4062;
-        Tue, 25 Aug 2020 10:16:27 +0000 (GMT)
-Received: from oc5500677777.ibm.com (unknown [9.145.83.242])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 25 Aug 2020 10:16:27 +0000 (GMT)
+        id S1726706AbgHYXTO (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 25 Aug 2020 19:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59270 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726483AbgHYXTN (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 25 Aug 2020 19:19:13 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C00C061574;
+        Tue, 25 Aug 2020 16:19:12 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id 31so64876pgy.13;
+        Tue, 25 Aug 2020 16:19:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=nzT4cIv5aZloZUa85ooGLcuJKku+lTzXEIFwdhhhrM4=;
+        b=g17iV+Lc6aSBOLe+PXWahWJW6Y2WovRbdTAFwXkgWGEBHeis8BwaGJ1/CrBTJ6wOxj
+         UKRTRHo+JKIkjHdtn9pMcUYhCibnMervY6vIJWwS4RQlE3LSjVqmLUTaL39UbAGj4g6L
+         0j0826j4CHEZnT2exq6W7xhcrJUuL+xeGwEr2VpfFjtGbo9lANRsknS4EVWyKfxKl7Il
+         /yIG9aDg8s8XYB33HFnAKY/2MhxQ2vY2S/m+geHEPThOE90LQ6W/H7XBdg78bySpsa/G
+         t/9acHQaOTqhr0MpHdKlJO7fxd8cXHOELXVJXXUfDBije2GdrgU/aZZQogR8XNVpmWFo
+         c4uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=nzT4cIv5aZloZUa85ooGLcuJKku+lTzXEIFwdhhhrM4=;
+        b=UH/AJUyQZxDqGfdAJrvy99L/wXSWNJqoMJeRcOnBBVJkiv0FnY3SySyXVH/LTKr60j
+         oMvu9nv0sFDYhJGzELcZ3RObUu37x69fdGcXhnuzNpOqe6MNKC7y+Fn7gv64q8XuMMJg
+         Fl/eP0aSuFiu5pTmLOrzpLx8br1sQTZlQyXUhzOSibkUz4oxHdSfWryc4Mc3Ow+lQf8E
+         kXR5NI9FQOkmvVvLv3n6ToXl9kjbhk8F9gnPIuR0Y24DQJNCdYMdb/zSgrZW+vXqnDjT
+         1raRdZuevUW5Y4ua4eq/gaf4K5OnDme1ys2qxDCmhnOMw7tV2rXShWxAGLpeAT/rDtzH
+         8pFg==
+X-Gm-Message-State: AOAM531RQ2CB+J5qzUPdxAeAslK88XaaXW/rHNA4fX23yd1QFCE7iQE3
+        XhNF4EW1mA0cye4p0n3KMpM=
+X-Google-Smtp-Source: ABdhPJyK06Dvh5ZLh8ZEvQMG4jqMYYcFE+LKTmieWcScqEbOmexcuH0IBvKor0u/mjocM4FCOCK/kw==
+X-Received: by 2002:a63:4545:: with SMTP id u5mr8237031pgk.229.1598397551754;
+        Tue, 25 Aug 2020 16:19:11 -0700 (PDT)
+Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
+        by smtp.gmail.com with ESMTPSA id v78sm344700pfc.121.2020.08.25.16.19.10
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 25 Aug 2020 16:19:11 -0700 (PDT)
+Date:   Tue, 25 Aug 2020 16:19:00 -0700
+From:   Nicolin Chen <nicoleotsuka@gmail.com>
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+Cc:     mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        tony.luck@intel.com, fenghua.yu@intel.com,
+        gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, borntraeger@de.ibm.com, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+        hpa@zytor.com, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, sfr@canb.auug.org.au, hch@lst.de,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-parisc@vger.kernel.org
 Subject: Re: [RFT][PATCH 0/7] Avoid overflow at boundary_size
-To:     Nicolin Chen <nicoleotsuka@gmail.com>, mpe@ellerman.id.au,
-        benh@kernel.crashing.org, paulus@samba.org, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com, tony.luck@intel.com,
-        fenghua.yu@intel.com, gerald.schaefer@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@de.ibm.com,
-        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, x86@kernel.org, hpa@zytor.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de
-Cc:     sfr@canb.auug.org.au, hch@lst.de, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org
+Message-ID: <20200825231900.GA4726@Asurada-Nvidia>
 References: <20200820231923.23678-1-nicoleotsuka@gmail.com>
-From:   Niklas Schnelle <schnelle@linux.ibm.com>
-Message-ID: <4321af30-9554-6897-5281-05afd88f2631@linux.ibm.com>
-Date:   Tue, 25 Aug 2020 12:16:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <4321af30-9554-6897-5281-05afd88f2631@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200820231923.23678-1-nicoleotsuka@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-25_02:2020-08-24,2020-08-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- spamscore=0 impostorscore=0 priorityscore=1501 clxscore=1011
- mlxlogscore=999 malwarescore=0 suspectscore=2 adultscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008250073
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4321af30-9554-6897-5281-05afd88f2631@linux.ibm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hi Niklas,
 
+On Tue, Aug 25, 2020 at 12:16:27PM +0200, Niklas Schnelle wrote:
+> On 8/21/20 1:19 AM, Nicolin Chen wrote:
+> > We are expending the default DMA segmentation boundary to its
+> > possible maximum value (ULONG_MAX) to indicate that a device
+> > doesn't specify a boundary limit. So all dma_get_seg_boundary
+> > callers should take a precaution with the return values since
+> > it would easily get overflowed.
+> > 
+> > I scanned the entire kernel tree for all the existing callers
+> > and found that most of callers may get overflowed in two ways:
+> > either "+ 1" or passing it to ALIGN() that does "+ mask".
+> > 
+> > According to kernel defines:
+> >     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
+> >     #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
+> > 
+> > We can simplify the logic here:
+> >   ALIGN(boundary + 1, 1 << shift) >> shift
+> > = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
+> > = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
+> > = [b + 1 + (1 << s) - 1] >> s
+> > = [b + (1 << s)] >> s
+> > = (b >> s) + 1
+> > 
+> > So this series of patches fix the potential overflow with this
+> > overflow-free shortcut.
+ 
+> haven't seen any other feedback from other maintainers,
 
-On 8/21/20 1:19 AM, Nicolin Chen wrote:
-> We are expending the default DMA segmentation boundary to its
-> possible maximum value (ULONG_MAX) to indicate that a device
-> doesn't specify a boundary limit. So all dma_get_seg_boundary
-> callers should take a precaution with the return values since
-> it would easily get overflowed.
-> 
-> I scanned the entire kernel tree for all the existing callers
-> and found that most of callers may get overflowed in two ways:
-> either "+ 1" or passing it to ALIGN() that does "+ mask".
-> 
-> According to kernel defines:
->     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
->     #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
-> 
-> We can simplify the logic here:
->   ALIGN(boundary + 1, 1 << shift) >> shift
-> = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
-> = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
-> = [b + 1 + (1 << s) - 1] >> s
-> = [b + (1 << s)] >> s
-> = (b >> s) + 1
-> 
-> So this series of patches fix the potential overflow with this
-> overflow-free shortcut.
+I am wondering this too...whether I sent correctly or not.
 
-Hi Nicolin,
+> so I guess you will resend this?
 
-haven't seen any other feedback from other maintainers,
-so I guess you will resend this?
-On first glance it seems to make sense.
-I'm a little confused why it is only a "potential overflow"
-while this part
+Do I need to? Though I won't mind doing so if it's necessary..
 
-"We are expending the default DMA segmentation boundary to its
- possible maximum value (ULONG_MAX) to indicate that a device
- doesn't specify a boundary limit"
+> On first glance it seems to make sense.
+> I'm a little confused why it is only a "potential overflow"
+> while this part
+> 
+> "We are expending the default DMA segmentation boundary to its
+>  possible maximum value (ULONG_MAX) to indicate that a device
+>  doesn't specify a boundary limit"
+> 
+> sounds to me like ULONG_MAX is actually used, does that
+> mean there are currently no devices which do not specify a
+> boundary limit?
 
-sounds to me like ULONG_MAX is actually used, does that
-mean there are currently no devices which do not specify a
-boundary limit?
+Sorry for the confusion. We actually applied ULONG_MAX change
+last week but reverted it right after, due to a bug report at
+one of these "potential" overflows. So at this moment the top
+of the tree doesn't set default boundary to ULONG_MAX yet.
 
-
-> 
-> As I don't think that I have these platforms, marking RFT.
-> 
-> Thanks
-> Nic
-> 
-> Nicolin Chen (7):
->   powerpc/iommu: Avoid overflow at boundary_size
->   alpha: Avoid overflow at boundary_size
->   ia64/sba_iommu: Avoid overflow at boundary_size
->   s390/pci_dma: Avoid overflow at boundary_size
->   sparc: Avoid overflow at boundary_size
->   x86/amd_gart: Avoid overflow at boundary_size
->   parisc: Avoid overflow at boundary_size
-> 
->  arch/alpha/kernel/pci_iommu.c    | 10 ++++------
->  arch/ia64/hp/common/sba_iommu.c  |  4 ++--
->  arch/powerpc/kernel/iommu.c      | 11 +++++------
->  arch/s390/pci/pci_dma.c          |  4 ++--
->  arch/sparc/kernel/iommu-common.c |  9 +++------
->  arch/sparc/kernel/iommu.c        |  4 ++--
->  arch/sparc/kernel/pci_sun4v.c    |  4 ++--
->  arch/x86/kernel/amd_gart_64.c    |  4 ++--
->  drivers/parisc/ccio-dma.c        |  4 ++--
->  drivers/parisc/sba_iommu.c       |  4 ++--
->  10 files changed, 26 insertions(+), 32 deletions(-)
-> 
+Thanks
+Nic
