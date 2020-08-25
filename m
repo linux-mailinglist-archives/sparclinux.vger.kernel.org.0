@@ -2,72 +2,103 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F14125113D
-	for <lists+sparclinux@lfdr.de>; Tue, 25 Aug 2020 07:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D697325142F
+	for <lists+sparclinux@lfdr.de>; Tue, 25 Aug 2020 10:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728386AbgHYFDA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 25 Aug 2020 01:03:00 -0400
-Received: from smtprelay0254.hostedemail.com ([216.40.44.254]:45454 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725287AbgHYFC7 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 25 Aug 2020 01:02:59 -0400
-X-Greylist: delayed 372 seconds by postgrey-1.27 at vger.kernel.org; Tue, 25 Aug 2020 01:02:58 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave01.hostedemail.com (Postfix) with ESMTP id 772DF18024CFC
-        for <sparclinux@vger.kernel.org>; Tue, 25 Aug 2020 04:56:51 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 57793180A9F4D;
-        Tue, 25 Aug 2020 04:56:49 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:541:800:960:973:988:989:1260:1311:1314:1345:1359:1515:1534:1539:1711:1714:1730:1747:1777:1792:2194:2199:2393:2559:2562:3138:3139:3140:3141:3142:3351:3868:5007:6261:7875:10004:10848:11658:11914:12296:12297:12555:12895:13069:13311:13357:13894:14181:14384:14394:14721:21080:21627:30054,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: deer93_0c0f71527059
-X-Filterd-Recvd-Size: 1473
-Received: from joe-laptop.perches.com (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf08.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 25 Aug 2020 04:56:48 +0000 (UTC)
-From:   Joe Perches <joe@perches.com>
-To:     Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: [PATCH 04/29] sparc: Avoid comma separated statements
-Date:   Mon, 24 Aug 2020 21:56:01 -0700
-Message-Id: <9dade53620b9532ff76a726320a497c67138264c.1598331148.git.joe@perches.com>
-X-Mailer: git-send-email 2.26.0
-In-Reply-To: <cover.1598331148.git.joe@perches.com>
-References: <cover.1598331148.git.joe@perches.com>
+        id S1729066AbgHYI1s (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 25 Aug 2020 04:27:48 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:46972 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728694AbgHYI1p (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 25 Aug 2020 04:27:45 -0400
+Received: by mail-ot1-f66.google.com with SMTP id f42so4627101otf.13;
+        Tue, 25 Aug 2020 01:27:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3hxg7mNwlR3vuscL5TlgoioLVulJhR5tUG0gm7sNHuU=;
+        b=RRrHLe0ECpE4rwnNUsYJDpdJv6peBfaUw4DBnTtIBp5lD+e/dlAtHYyHN7qBA8odcd
+         Ct3PbYGo7kKmPia3tohF0MK6nPwW1GfHjbEIp7RolzMH81S/F0Fu1hLLmCVF5TRWCEuy
+         ebVRr8/p3LiOgTEjkeOpR1h0XlrJDGMQx4ACvBa8V4GAZjDelCHxvrBzoYXV12tOxH0z
+         7TcbStwKGhsisAYARUrhFE8JFLaGUAq1TEQ2ApPi8cL9yU7yoH4O5qctX5fcP9hZgc8r
+         bHO/Wfzbqfrqbz3eGUjukZTM/QDk+oc6VYVtHwsFFnyVrzq+csY2i3NXmLmp4V4XxJBV
+         ANYw==
+X-Gm-Message-State: AOAM531ftUNIL/tL3PoQrzInT0ZupDMQhXJAHZiD43AZkZIjJxP0+2+f
+        p9l0MZC+a+vhCsFh+swr624E+Dbe2PGxbc/hJnlSjYaS
+X-Google-Smtp-Source: ABdhPJx0zXPstCnHnri8lFi7O8MyFA9EVV1YuGVzMSeMep6iCVN61tQvMEWQU45MOEt5Xh8X+3G5H74q0zQlBpGScQA=
+X-Received: by 2002:a9d:7d8c:: with SMTP id j12mr6283711otn.250.1598344064333;
+ Tue, 25 Aug 2020 01:27:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200825081909.2797-1-geert@linux-m68k.org>
+In-Reply-To: <20200825081909.2797-1-geert@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 25 Aug 2020 10:27:32 +0200
+Message-ID: <CAMuHMdUZgx51cFuJdeKo57pmRX+NB+OBxsCv1sg46=MLxouN7w@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.9-rc2
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-um <linux-um@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Use semicolons and braces.
+On Tue, Aug 25, 2020 at 10:23 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> JFYI, when comparing v5.9-rc2[1] to v5.9-rc1[3], the summaries are:
+>   - build errors: +12/-0
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- arch/sparc/kernel/smp_64.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+  + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:
+error: implicit declaration of function 'disable_kernel_vsx'
+[-Werror=implicit-function-declaration]:  => 676:2
+  + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:
+error: implicit declaration of function 'enable_kernel_vsx'
+[-Werror=implicit-function-declaration]:  => 640:2
 
-diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
-index e286e2badc8a..28c11f7871cd 100644
---- a/arch/sparc/kernel/smp_64.c
-+++ b/arch/sparc/kernel/smp_64.c
-@@ -186,8 +186,11 @@ static inline long get_delta (long *rt, long *master)
- 		wmb();
- 		t1 = tick_ops->get_tick();
- 
--		if (t1 - t0 < best_t1 - best_t0)
--			best_t0 = t0, best_t1 = t1, best_tm = tm;
-+		if (t1 - t0 < best_t1 - best_t0) {
-+			best_t0 = t0;
-+			best_t1 = t1;
-+			best_tm = tm;
-+		}
- 	}
- 
- 	*rt = best_t1 - best_t0;
--- 
-2.26.0
+powerpc-gcc4.9/ppc64_book3e_allmodconfig
 
+  + error: arch/sparc/kernel/head_32.o: relocation truncated to fit:
+R_SPARC_WDISP22 against `.init.text':  => (.head.text+0x5040),
+(.head.text+0x5100)
+  + error: arch/sparc/kernel/head_32.o: relocation truncated to fit:
+R_SPARC_WDISP22 against symbol `leon_smp_cpu_startup' defined in .text
+section in arch/sparc/kernel/trampoline_32.o:  => (.init.text+0xa4)
+  + error: arch/sparc/kernel/process_32.o: relocation truncated to
+fit: R_SPARC_WDISP22 against `.text':  => (.fixup+0x4), (.fixup+0xc)
+  + error: arch/sparc/kernel/signal_32.o: relocation truncated to fit:
+R_SPARC_WDISP22 against `.text':  => (.fixup+0x28), (.fixup+0x1c),
+(.fixup+0x34), (.fixup+0x10), (.fixup+0x4)
+
+sparc64/sparc-allmodconfig
+
+  + error: modpost: "devm_ioremap"
+[drivers/net/ethernet/xilinx/ll_temac.ko] undefined!:  => N/A
+  + error: modpost: "devm_ioremap_resource"
+[drivers/net/ethernet/xilinx/xilinx_emac.ko] undefined!:  => N/A
+  + error: modpost: "devm_of_iomap"
+[drivers/net/ethernet/xilinx/ll_temac.ko] undefined!:  => N/A
+  + error: modpost: "devm_platform_ioremap_resource"
+[drivers/iio/adc/adi-axi-adc.ko] undefined!:  => N/A
+  + error: modpost: "devm_platform_ioremap_resource"
+[drivers/ptp/ptp_ines.ko] undefined!:  => N/A
+  + error: modpost: "devm_platform_ioremap_resource_byname"
+[drivers/net/ethernet/xilinx/ll_temac.ko] undefined!:  => N/A
+
+um-x86_64/um-all{mod,yes}config
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/d012a7190fc1fd72ed48911e77ca97ba4521bccd/ (all 192 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/9123e3a74ec7b934a4a099e98af6a61c2f80bbf5/ (all 192 configs)
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
