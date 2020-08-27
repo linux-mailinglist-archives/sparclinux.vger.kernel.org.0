@@ -2,159 +2,97 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAA1325324D
-	for <lists+sparclinux@lfdr.de>; Wed, 26 Aug 2020 16:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2E3D254B16
+	for <lists+sparclinux@lfdr.de>; Thu, 27 Aug 2020 18:47:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728357AbgHZOyR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 26 Aug 2020 10:54:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34180 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728367AbgHZOyP (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 26 Aug 2020 10:54:15 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0733FC061574;
-        Wed, 26 Aug 2020 07:54:15 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id y6so1007249plt.3;
-        Wed, 26 Aug 2020 07:54:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ejVWa9IRIyyHORgldOpUlCO0QqVKUsW+6Dc4qu3Phn0=;
-        b=XctVkfwPbzGaK7VRZL/4atAP0TrD6yIr3b8N2BYQysAvG8Evv8vLIeE6wz4aaKAC/+
-         dCAhy3KAzDaKCwAlQEs74i6Dued0wLVAeqaZbvf7zr1QqFZ9jE4mqivQXj9GbmE0qacI
-         D6fc03sz5hTua9fLgGFAQ0nZq88zel22ju6hK3pBOpS454ABHuqePzYSjrOciQqHjIR+
-         Omv9QRuZDuIoOxu0Q7HhhjGUUsIMKy06oD3vJ9xXW8L9Zr6bDkttwxxROFdMXxmX5e+O
-         dCThA7KfzOzcdeY+hZq1XOdjCHTPxdOcg41xGTaYfNu7hToOV7/G1pKX153nuQzpfbC1
-         DY8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ejVWa9IRIyyHORgldOpUlCO0QqVKUsW+6Dc4qu3Phn0=;
-        b=ZH5rY+WMyXZvAqHEH3sudOu5yMgNM6XyG0nGR3OX4IgPR8aV3QB6SL9WjOd/+QDpSP
-         eLIKwf99JNIFHyb4Knf4HV/zcbEP1FUXnPG0KVDjlYQPVzXgtMYrT7stIETIufSrjY3+
-         GPbeUKflRVGBQxDu4dyNYwACxfZYzxN9Ia+3paYSz8d7CGLK8JXmLofYPzetKfO0Y+MG
-         Og1UdFRHDeD3PQ4cdmZmwU3dsJJOf/lHUzO+oZ9S2pLTvNoIKOliC0VjcvIFhna9o1xz
-         iC/vIE6J4sFvZIv1u5Tq/z1V3W2kc1Fy54zQxxgVUzgXsXTc9spZfrILN8zxpu+/VzUc
-         5UDA==
-X-Gm-Message-State: AOAM533tlc1r5Ly8TyKqSLYDEcU1X8ikmdaqmYuHX9PyPy10QJm9RD0z
-        CKaRPCZnZ3KVjrS6+aNjOgEud7x7zd0=
-X-Google-Smtp-Source: ABdhPJyBgv/WEt2SrS3kDrcVAYUSyhmTQdBkkzA+ev3h62om/fVzWgc43FoGxDMbX9eroQbEAoI4fQ==
-X-Received: by 2002:a17:90a:6881:: with SMTP id a1mr6346313pjd.208.1598453654312;
-        Wed, 26 Aug 2020 07:54:14 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (61-68-212-105.tpgi.com.au. [61.68.212.105])
-        by smtp.gmail.com with ESMTPSA id r7sm3327140pfl.186.2020.08.26.07.54.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 07:54:13 -0700 (PDT)
-From:   Nicholas Piggin <npiggin@gmail.com>
-To:     linux-arch@vger.kernel.org
-Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: [PATCH v2 20/23] sparc: use asm-generic/mmu_context.h for no-op implementations
-Date:   Thu, 27 Aug 2020 00:52:46 +1000
-Message-Id: <20200826145249.745432-21-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200826145249.745432-1-npiggin@gmail.com>
-References: <20200826145249.745432-1-npiggin@gmail.com>
+        id S1727024AbgH0Qrj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 27 Aug 2020 12:47:39 -0400
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:55578 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726946AbgH0Qri (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 27 Aug 2020 12:47:38 -0400
+Received: from [192.168.4.242] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1kBL3o-0005UM-VE; Thu, 27 Aug 2020 17:47:37 +0100
+Received: from ben by deadeye with local (Exim 4.94)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1kBL3o-00DOg2-Dj; Thu, 27 Aug 2020 17:47:36 +0100
+Date:   Thu, 27 Aug 2020 17:47:36 +0100
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     "David S. Miller" <davem@davemloft.net>
+Cc:     sparclinux@vger.kernel.org
+Subject: [PATCH] sparc32: signal: Fix stack trampoline for RT signals
+Message-ID: <20200827164736.GA3193046@decadent.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="45Z9DzgjV8m4Oswq"
+Content-Disposition: inline
+X-SA-Exim-Connect-IP: 192.168.4.242
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+
+--45Z9DzgjV8m4Oswq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+The stack trampoline generated by the sparc32 native version of
+setup_rt_frame() calls sigreturn(), not rt_sigreturn().  This will
+crash the task if it's ever used.  (glibc sets its own restorer, so
+was not affected.)
+
+The sparc64 compat implementation has the right syscall number.
+
+This is untested; I have no way to run a sparc32 kernel.
+
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/sparc/include/asm/mmu_context_32.h | 10 ++++------
- arch/sparc/include/asm/mmu_context_64.h | 10 +++++-----
- 2 files changed, 9 insertions(+), 11 deletions(-)
+ arch/sparc/kernel/signal_32.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sparc/include/asm/mmu_context_32.h b/arch/sparc/include/asm/mmu_context_32.h
-index 7ddcb8badf70..509043f81560 100644
---- a/arch/sparc/include/asm/mmu_context_32.h
-+++ b/arch/sparc/include/asm/mmu_context_32.h
-@@ -6,13 +6,10 @@
- 
- #include <asm-generic/mm_hooks.h>
- 
--static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
--{
--}
--
- /* Initialize a new mmu context.  This is invoked when a new
-  * address space instance (unique or shared) is instantiated.
-  */
-+#define init_new_context init_new_context
- int init_new_context(struct task_struct *tsk, struct mm_struct *mm);
- 
- /* Destroy a dead context.  This occurs when mmput drops the
-@@ -20,17 +17,18 @@ int init_new_context(struct task_struct *tsk, struct mm_struct *mm);
-  * all the page tables have been flushed.  Our job is to destroy
-  * any remaining processor-specific state.
-  */
-+#define destroy_context destroy_context
- void destroy_context(struct mm_struct *mm);
- 
- /* Switch the current MM context. */
- void switch_mm(struct mm_struct *old_mm, struct mm_struct *mm,
- 	       struct task_struct *tsk);
- 
--#define deactivate_mm(tsk,mm)	do { } while (0)
--
- /* Activate a new MM instance for the current task. */
- #define activate_mm(active_mm, mm) switch_mm((active_mm), (mm), NULL)
- 
-+#include <asm-generic/mmu_context.h>
-+
- #endif /* !(__ASSEMBLY__) */
- 
- #endif /* !(__SPARC_MMU_CONTEXT_H) */
-diff --git a/arch/sparc/include/asm/mmu_context_64.h b/arch/sparc/include/asm/mmu_context_64.h
-index 312fcee8df2b..7a8380c63aab 100644
---- a/arch/sparc/include/asm/mmu_context_64.h
-+++ b/arch/sparc/include/asm/mmu_context_64.h
-@@ -16,17 +16,16 @@
- #include <asm-generic/mm_hooks.h>
- #include <asm/percpu.h>
- 
--static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
--{
--}
--
- extern spinlock_t ctx_alloc_lock;
- extern unsigned long tlb_context_cache;
- extern unsigned long mmu_context_bmap[];
- 
- DECLARE_PER_CPU(struct mm_struct *, per_cpu_secondary_mm);
- void get_new_mmu_context(struct mm_struct *mm);
-+
-+#define init_new_context init_new_context
- int init_new_context(struct task_struct *tsk, struct mm_struct *mm);
-+#define destroy_context destroy_context
- void destroy_context(struct mm_struct *mm);
- 
- void __tsb_context_switch(unsigned long pgd_pa,
-@@ -136,7 +135,6 @@ static inline void switch_mm(struct mm_struct *old_mm, struct mm_struct *mm, str
- 	spin_unlock_irqrestore(&mm->context.lock, flags);
- }
- 
--#define deactivate_mm(tsk,mm)	do { } while (0)
- #define activate_mm(active_mm, mm) switch_mm(active_mm, mm, NULL)
- 
- #define  __HAVE_ARCH_START_CONTEXT_SWITCH
-@@ -187,6 +185,8 @@ static inline void finish_arch_post_lock_switch(void)
- 	}
- }
- 
-+#include <asm-generic/mmu_context.h>
-+
- #endif /* !(__ASSEMBLY__) */
- 
- #endif /* !(__SPARC64_MMU_CONTEXT_H) */
--- 
-2.23.0
+diff --git a/arch/sparc/kernel/signal_32.c b/arch/sparc/kernel/signal_32.c
+index 3b005b6c3e0f..c85654cdc2c5 100644
+--- a/arch/sparc/kernel/signal_32.c
++++ b/arch/sparc/kernel/signal_32.c
+@@ -401,8 +401,8 @@ static int setup_rt_frame(struct ksignal *ksig, struct =
+pt_regs *regs,
+ 	else {
+ 		regs->u_regs[UREG_I7] =3D (unsigned long)(&(sf->insns[0]) - 2);
+=20
+-		/* mov __NR_sigreturn, %g1 */
+-		err |=3D __put_user(0x821020d8, &sf->insns[0]);
++		/* mov __NR_rt_sigreturn, %g1 */
++		err |=3D __put_user(0x82102065, &sf->insns[0]);
+=20
+ 		/* t 0x10 */
+ 		err |=3D __put_user(0x91d02010, &sf->insns[1]);
 
+--45Z9DzgjV8m4Oswq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAl9H46MACgkQ57/I7JWG
+EQnaYw//WB04G2UJ78nGVx0JKfeySRcWvm0tAUL2WsQpr4PLSk5JKQfwqrBtcjds
+R8c17/rMyP99xrYFcndH8raqJVRxxhRxd5sIDI8I+jXOh3UGXmEs7arBR9m0k071
+pNcRQCiZW75l/cCxZH1y8lHl5JGP98FvXS6GO0VyjhdOUYJvv1ipGwU+7FqTYCyF
+UDvYvIOomofLTBQQtZim5ncn3IbjVWigjhM/QB4t4+3WBtE52tE35BeN0/xKz6vo
+R0EvGAmKyVbWChlcHFS5Lon5m3wNdXMjyaGOgRvbcGua6E4oSahdO7Fm4qFKBNyi
+f36vCDibGrL6YkxLBOnuCbIEA4PNo1bjdqbLdDCg2YxsjAUENd7ALFXca4MFYKa+
+RFBpceI7LCgJibRIqRrOjKs5RZNFwzR3TDvKgoEsMM3k/kQzs9NeTVIFvfMoBDTM
+ik7YCUSJghTGbwcSR3pTcSa3wlKssdc3x7A6MhHQPAccrhsxlcnUwS+sAel0FY/n
+7AymVdc6ZZvXWyuNB4RlR0gpUUw42ltmXg0ypdKYzX4RIhru1zIUgORRBRve/beZ
+yW5hDO2R/di6ZDcXLaf0KsBPSckvhkW5sPPx83iH8yMYHaw1RMJbloSxXH4bLuFv
+swXVSzj3pDF2MGlYXp4FTjylFUBE6rVha0MCVHYa1vIoRgba9ug=
+=FEtO
+-----END PGP SIGNATURE-----
+
+--45Z9DzgjV8m4Oswq--
