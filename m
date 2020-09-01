@@ -2,125 +2,163 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29888258F17
-	for <lists+sparclinux@lfdr.de>; Tue,  1 Sep 2020 15:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92A242590E6
+	for <lists+sparclinux@lfdr.de>; Tue,  1 Sep 2020 16:41:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728172AbgIAN2m (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 1 Sep 2020 09:28:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35202 "EHLO
+        id S1728535AbgIAOje (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 1 Sep 2020 10:39:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728047AbgIAN1x (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 1 Sep 2020 09:27:53 -0400
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD23C061245;
-        Tue,  1 Sep 2020 06:27:52 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bgntf72DLz9sTN;
-        Tue,  1 Sep 2020 23:27:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1598966866;
-        bh=b8fBMPirmgEDaVPbjXdRIYPwIrTUtQaTXRmfGBF/egk=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=pXwfFcp7DEZhdSaVT5PD8DrmDNJcZnA4u3LePXbs+Xb49cAmRXaxJrmXg/VJlWIzR
-         Q9Z+EfZBm7r6mhEVXxyXQhUmW0fa5OWGfrmOVAZI3itGQAU61ebluXbCJK+AIc60vF
-         1lpEQtozskWFVBMd7eJLB6Kr3ed2+dixG5IYLvugFo8ywj0S6XpgkfnAthm3BhrzXv
-         8D0og0Lq9pFYRuwgHyCnfhfBZXrYFBGSojjeGeHhiOdKVVtQpLLH9UWs9qF4OuV5Cr
-         KzxdsR4L7qCBMFnd1HxBtLQKZU2Du8AyMTHI6pRxfwvNsOSSUSd9mxXbEuet6K+c7h
-         OfGS3/kjMeThw==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Nicolin Chen <nicoleotsuka@gmail.com>, benh@kernel.crashing.org,
-        paulus@samba.org, rth@twiddle.net, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, tony.luck@intel.com, fenghua.yu@intel.com,
-        schnelle@linux.ibm.com, gerald.schaefer@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@de.ibm.com,
-        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, x86@kernel.org, hpa@zytor.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de
-Cc:     sfr@canb.auug.org.au, hch@lst.de, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: Re: [RESEND][PATCH 1/7] powerpc/iommu: Avoid overflow at boundary_size
-In-Reply-To: <20200831203811.8494-2-nicoleotsuka@gmail.com>
-References: <20200831203811.8494-1-nicoleotsuka@gmail.com> <20200831203811.8494-2-nicoleotsuka@gmail.com>
-Date:   Tue, 01 Sep 2020 23:27:36 +1000
-Message-ID: <87lfht1vav.fsf@mpe.ellerman.id.au>
+        with ESMTP id S1727872AbgIAORm (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 1 Sep 2020 10:17:42 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6789CC06121A;
+        Tue,  1 Sep 2020 07:17:08 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id j11so594120plk.9;
+        Tue, 01 Sep 2020 07:17:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=logZjoG5Aka5uBmK80AuCdh5o6UuSDKs79nfaNTTOaw=;
+        b=HQu5Fv4C4UoSmrbjuziOapFF10KA+RQNesnat24CDhKtp+EaxHPoL0yaABBLA4VseX
+         WaGqI8GcgcXCoIDq3vY4fY1Tr/76AO3buT3pnHIj/lLEG73T2kwzVJtocvLsVUK2H91d
+         Y7162dEqcfij+2mP32Ljy4N36bqL372dR/9rzzVuK5U2E0QOUIpOe+CyTkM4SD6u+X6/
+         2OUaHe9MCdh/nvcKwlIoSCxuZHpgspfPTirZPdD1RjiFJLh7aHhWtwxnes3A8PcdSsbf
+         uyWUmDMHGoiYM0j5QcJn7PIaMHP0BdPA+wGfOkFex1Gb/6I6VKURNeCtSJNonR0uqvbo
+         j8IA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=logZjoG5Aka5uBmK80AuCdh5o6UuSDKs79nfaNTTOaw=;
+        b=VOCizEKBwqiYmJdr8wVdw/2xl7NC5PJUVGxBtrclmoQDfqxEKTRboZP2Q9J6UDSLoj
+         vTeOVVkZeZXPeDUDLt1cWVrq3G7+e0Aya77FdItAdLwyfPVKtbZVdC8KnmFplbg14ko/
+         e5XsVxVJVHMdAblcHTMP2R3WBItCBcmbwISGTVYn/1xr5VlK9o8NPX5AJou2VOPzXymI
+         lUGbbXh2KR8VdjLPrd5LaA7Jc6vg4Au44Mmko01m5OX2Ef9HBX9anEqHhnA43yxXPzja
+         U09eqJSevm/nVmFw2uiXJBWXE2Zm7xs8SwBbAlFLvAqj75Q836imTAOyN/B8SHSK3+Dl
+         I26g==
+X-Gm-Message-State: AOAM533JZDQBgckWhmJibzMkcCfID2J2XfkzoLQ0BloeNtGsz+JRhGlh
+        TGsBzd0H2tDiGCnbBRXDDdDqeh0OPTo=
+X-Google-Smtp-Source: ABdhPJzQTGwzDyOFh9C1LgX+8EX+CeYkOkzlMY/Z9U1HiGXP7P3RibIekHepWjyHD++l0OigZGr5aQ==
+X-Received: by 2002:a17:902:b20e:: with SMTP id t14mr1622424plr.58.1598969827058;
+        Tue, 01 Sep 2020 07:17:07 -0700 (PDT)
+Received: from bobo.ibm.com ([203.185.249.227])
+        by smtp.gmail.com with ESMTPSA id w9sm2212816pgg.76.2020.09.01.07.17.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2020 07:17:06 -0700 (PDT)
+From:   Nicholas Piggin <npiggin@gmail.com>
+To:     linux-arch@vger.kernel.org
+Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: [PATCH v3 20/23] sparc: use asm-generic/mmu_context.h for no-op implementations
+Date:   Wed,  2 Sep 2020 00:15:36 +1000
+Message-Id: <20200901141539.1757549-21-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20200901141539.1757549-1-npiggin@gmail.com>
+References: <20200901141539.1757549-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Nicolin Chen <nicoleotsuka@gmail.com> writes:
-> The boundary_size might be as large as ULONG_MAX, which means
-> that a device has no specific boundary limit. So either "+ 1"
-> or passing it to ALIGN() would potentially overflow.
->
-> According to kernel defines:
->     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
->     #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
->
-> We can simplify the logic here:
->   ALIGN(boundary + 1, 1 << shift) >> shift
-> = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
-> = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
-> = [b + 1 + (1 << s) - 1] >> s
-> = [b + (1 << s)] >> s
-> = (b >> s) + 1
->
-> So fixing a potential overflow with the safer shortcut.
->
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
-> Cc: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/powerpc/kernel/iommu.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
 
-Are you asking for acks, or for maintainers to merge the patches
-individually?
+Please ack or nack if you object to this being mered via
+Arnd's tree.
 
-> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-> index 9704f3f76e63..c01ccbf8afdd 100644
-> --- a/arch/powerpc/kernel/iommu.c
-> +++ b/arch/powerpc/kernel/iommu.c
-> @@ -236,15 +236,14 @@ static unsigned long iommu_range_alloc(struct device *dev,
->  		}
->  	}
->  
-> -	if (dev)
-> -		boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
-> -				      1 << tbl->it_page_shift);
-> -	else
-> -		boundary_size = ALIGN(1UL << 32, 1 << tbl->it_page_shift);
->  	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
-> +	boundary_size = dev ? dma_get_seg_boundary(dev) : U32_MAX;
+ arch/sparc/include/asm/mmu_context_32.h | 10 ++++------
+ arch/sparc/include/asm/mmu_context_64.h | 10 +++++-----
+ 2 files changed, 9 insertions(+), 11 deletions(-)
 
-Is there any path that passes a NULL dev anymore?
+diff --git a/arch/sparc/include/asm/mmu_context_32.h b/arch/sparc/include/asm/mmu_context_32.h
+index 7ddcb8badf70..509043f81560 100644
+--- a/arch/sparc/include/asm/mmu_context_32.h
++++ b/arch/sparc/include/asm/mmu_context_32.h
+@@ -6,13 +6,10 @@
+ 
+ #include <asm-generic/mm_hooks.h>
+ 
+-static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
+-{
+-}
+-
+ /* Initialize a new mmu context.  This is invoked when a new
+  * address space instance (unique or shared) is instantiated.
+  */
++#define init_new_context init_new_context
+ int init_new_context(struct task_struct *tsk, struct mm_struct *mm);
+ 
+ /* Destroy a dead context.  This occurs when mmput drops the
+@@ -20,17 +17,18 @@ int init_new_context(struct task_struct *tsk, struct mm_struct *mm);
+  * all the page tables have been flushed.  Our job is to destroy
+  * any remaining processor-specific state.
+  */
++#define destroy_context destroy_context
+ void destroy_context(struct mm_struct *mm);
+ 
+ /* Switch the current MM context. */
+ void switch_mm(struct mm_struct *old_mm, struct mm_struct *mm,
+ 	       struct task_struct *tsk);
+ 
+-#define deactivate_mm(tsk,mm)	do { } while (0)
+-
+ /* Activate a new MM instance for the current task. */
+ #define activate_mm(active_mm, mm) switch_mm((active_mm), (mm), NULL)
+ 
++#include <asm-generic/mmu_context.h>
++
+ #endif /* !(__ASSEMBLY__) */
+ 
+ #endif /* !(__SPARC_MMU_CONTEXT_H) */
+diff --git a/arch/sparc/include/asm/mmu_context_64.h b/arch/sparc/include/asm/mmu_context_64.h
+index 312fcee8df2b..7a8380c63aab 100644
+--- a/arch/sparc/include/asm/mmu_context_64.h
++++ b/arch/sparc/include/asm/mmu_context_64.h
+@@ -16,17 +16,16 @@
+ #include <asm-generic/mm_hooks.h>
+ #include <asm/percpu.h>
+ 
+-static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
+-{
+-}
+-
+ extern spinlock_t ctx_alloc_lock;
+ extern unsigned long tlb_context_cache;
+ extern unsigned long mmu_context_bmap[];
+ 
+ DECLARE_PER_CPU(struct mm_struct *, per_cpu_secondary_mm);
+ void get_new_mmu_context(struct mm_struct *mm);
++
++#define init_new_context init_new_context
+ int init_new_context(struct task_struct *tsk, struct mm_struct *mm);
++#define destroy_context destroy_context
+ void destroy_context(struct mm_struct *mm);
+ 
+ void __tsb_context_switch(unsigned long pgd_pa,
+@@ -136,7 +135,6 @@ static inline void switch_mm(struct mm_struct *old_mm, struct mm_struct *mm, str
+ 	spin_unlock_irqrestore(&mm->context.lock, flags);
+ }
+ 
+-#define deactivate_mm(tsk,mm)	do { } while (0)
+ #define activate_mm(active_mm, mm) switch_mm(active_mm, mm, NULL)
+ 
+ #define  __HAVE_ARCH_START_CONTEXT_SWITCH
+@@ -187,6 +185,8 @@ static inline void finish_arch_post_lock_switch(void)
+ 	}
+ }
+ 
++#include <asm-generic/mmu_context.h>
++
+ #endif /* !(__ASSEMBLY__) */
+ 
+ #endif /* !(__SPARC64_MMU_CONTEXT_H) */
+-- 
+2.23.0
 
-Both iseries_hv_alloc() and iseries_hv_map() were removed years ago.
-See:
-  8ee3e0d69623 ("powerpc: Remove the main legacy iSerie platform code")
-
-
-So maybe we should do a lead-up patch that drops the NULL dev support,
-which will then make this patch simpler.
-
-cheers
-
-
-> +	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> +	boundary_size = (boundary_size >> tbl->it_page_shift) + 1;
->  
->  	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
-> -			     boundary_size >> tbl->it_page_shift, align_mask);
-> +			     boundary_size, align_mask);
->  	if (n == -1) {
->  		if (likely(pass == 0)) {
->  			/* First try the pool from the start */
-> -- 
-> 2.17.1
