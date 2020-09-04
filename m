@@ -2,476 +2,687 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76E3725D251
-	for <lists+sparclinux@lfdr.de>; Fri,  4 Sep 2020 09:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1537925E209
+	for <lists+sparclinux@lfdr.de>; Fri,  4 Sep 2020 21:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728293AbgIDH2S (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 4 Sep 2020 03:28:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38796 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726089AbgIDH2P (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 4 Sep 2020 03:28:15 -0400
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 37B36206D4;
-        Fri,  4 Sep 2020 07:28:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599204493;
-        bh=s3hZXjb6C0V1tGt1Af2B5F4+dHP0ZvfaNuHdQEGrHY4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=yY1mrgU3TKXXWChgJws0RZjdyfJDRr/qwOcv8RuqeyGq+s+hirwia+hfTNT4AEnlY
-         pkh47wnHz4EgyIo7l2jkp5I5FmT+fpgCT9UpudRBYAWDliJES1RBtxfZkiWreYmm5u
-         JzwaF0S5lsqtjBKuM4tABpcip7XkUCRCv96RAtoY=
-Date:   Fri, 4 Sep 2020 16:28:03 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Christian Brauner <christian.brauner@ubuntu.com>
-Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Stafford Horne <shorne@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Kars de Jong <jongk@linux-m68k.org>,
-        Kees Cook <keescook@chromium.org>,
-        Greentime Hu <green.hu@gmail.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Tom Zanussi <zanussi@kernel.org>,
-        Xiao Yang <yangx.jy@cn.fujitsu.com>, linux-doc@vger.kernel.org,
-        uclinux-h8-devel@lists.sourceforge.jp, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org,
-        kgdb-bugreport@lists.sourceforge.net,
-        linux-kselftest@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Christoph Hewllig <hch@infradead.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH v2 10/11] tracing: switch to kernel_clone()
-Message-Id: <20200904162803.d17810b79a335d90440bef69@kernel.org>
-In-Reply-To: <20200819104655.436656-11-christian.brauner@ubuntu.com>
-References: <20200819104655.436656-1-christian.brauner@ubuntu.com>
-        <20200819104655.436656-11-christian.brauner@ubuntu.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S1726265AbgIDTka (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 4 Sep 2020 15:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51822 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726221AbgIDTka (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 4 Sep 2020 15:40:30 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC492C061244;
+        Fri,  4 Sep 2020 12:40:29 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id e23so10097688eja.3;
+        Fri, 04 Sep 2020 12:40:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:date:from:to:message-id;
+        bh=YDpvI+E0cXOgckTHy9aJmMvLX1eIuAAIFypiyBK6y9g=;
+        b=DOgGEm0ibUDVucPZpCSyVP27DZScdmLzl5W7EfZWQ1IlcHmFY15Fb+iCRPxvZnIzAa
+         wZZ5TGqQmw0q7PkZlucUnV1hghtjm4ZwbKcuEm9Fu8Ou+NOerMbQ5sqnRntgmP98taUV
+         7eEHunAHagDeyhrQlGXRCqgukUCTrTQ3KicKBS2+STYLkS5rGFr6MGM3yJC+lViygwsu
+         vfoDH730blZPujtYl1eNuaXWas6KGsPwcJhsDC0YWbMyz/0LbDh26VRG5uOah3VncVMR
+         Ry8LuPsMlVCyFlEphtXiQoGWKnfdrgZ2NZbixMilfWyJmn/Dn8iREFbaa7p2PrwI21SM
+         O9RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:date:from:to:message-id;
+        bh=YDpvI+E0cXOgckTHy9aJmMvLX1eIuAAIFypiyBK6y9g=;
+        b=VFWBnQwiWeVXGJFLe0Mr80d47O06vfc5EFt80CIj66NmqCRm6yn+HT3r8FTVeVR8nR
+         3wLk2Pk+KbYkNcpHG7hsk5oGpdyGOEG+O/NCm2D1CfaOEjc0Zg8FAVhSl8WgDwh5HGlo
+         aNY6v4lY8lVYRmfC1s3qrTRj1t1FilHXqT1YVNaLFWvbVUv3S3sE5u7rZOqTsv8FbkaS
+         dEnAi9MHTO0rHy0qDoFaffL8uZAxh9lsRkHX2Uy8Er3jHWxesqCihDO5pIg37fkuhMqv
+         fxO0BVNX/tzT9X2mha0aeeLjXHIAtM91NDLykOYlOBT9a2AmUKIm2SDCtu2EdnFHsjjk
+         fLcw==
+X-Gm-Message-State: AOAM533TkBV83cV1VtmFN5zhnh5Igpi05ilvaIjaqSMwL7KEgCDF7Xjp
+        SjWXgscSwsOu9tToUh9TWuCPuDA3TNA/hQ==
+X-Google-Smtp-Source: ABdhPJw33rf1f2cDXBPDwFyt8YG4sApHoDH+YRpy6NoOUxrpqQkzesBpS0PcO8KD4xG6td2YZ0dhvg==
+X-Received: by 2002:a17:907:40c1:: with SMTP id nv1mr2173389ejb.318.1599248427332;
+        Fri, 04 Sep 2020 12:40:27 -0700 (PDT)
+Received: from gmail.com (tor-exit-15.zbau.f3netze.de. [185.220.100.242])
+        by smtp.gmail.com with ESMTPSA id i35sm6924825edi.41.2020.09.04.12.40.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2020 12:40:26 -0700 (PDT)
+Subject: [RFC] openprom: Fix 'opiocnextprop'; ensure integer conversions; use string size
+Date:   Fri, 04 Sep 2020 19:40:00 -0000
+From:   Michael Witten <mfwitten@gmail.com>
+To:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <a5515efeaad94666a87f264dbf65bdbd@gmail.com>
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, 19 Aug 2020 12:46:54 +0200
-Christian Brauner <christian.brauner@ubuntu.com> wrote:
+The following patch improves the quality and correctness of the openprom code.
 
-> The old _do_fork() helper is removed in favor of the new kernel_clone() helper.
-> The latter adheres to naming conventions for kernel internal syscall helpers.
-> 
+I have neither a machine to test the result nor a toolchain to compile it, and
+that is why it is listed currently as an "RFC". Nonetheless, I believe those
+who do have these tools will find the proposed changes useful; I hope you will
+help me iterate this patch into something worthy of merging (or use it as the
+basis for your own changes).
 
-This looks good to me.
+Sincerely,
+Michael Witten
 
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+--8<----8<----8<----8<----8<----8<----8<----8<----8<----8<----8<----8<----8<--
 
-Thank you,
+This commit fixes or improves a conglomeration of related issues:
 
-> Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Cc: Alexandre Chartre <alexandre.chartre@oracle.com>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Shuah Khan <shuah@kernel.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Xiao Yang <yangx.jy@cn.fujitsu.com>
-> Cc: Tom Zanussi <zanussi@kernel.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-kselftest@vger.kernel.org
-> Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
-> ---
-> /* v2 */
-> unchanged
-> ---
->  Documentation/trace/histogram.rst                  |  4 ++--
->  samples/kprobes/kretprobe_example.c                |  4 ++--
->  .../ftrace/test.d/dynevent/add_remove_kprobe.tc    |  2 +-
->  .../ftrace/test.d/dynevent/clear_select_events.tc  |  2 +-
->  .../ftrace/test.d/dynevent/generic_clear_event.tc  |  2 +-
->  .../ftrace/test.d/ftrace/func-filter-stacktrace.tc |  4 ++--
->  .../ftrace/test.d/kprobe/add_and_remove.tc         |  2 +-
->  .../selftests/ftrace/test.d/kprobe/busy_check.tc   |  2 +-
->  .../selftests/ftrace/test.d/kprobe/kprobe_args.tc  |  4 ++--
->  .../ftrace/test.d/kprobe/kprobe_args_comm.tc       |  2 +-
->  .../ftrace/test.d/kprobe/kprobe_args_string.tc     |  4 ++--
->  .../ftrace/test.d/kprobe/kprobe_args_symbol.tc     | 10 +++++-----
->  .../ftrace/test.d/kprobe/kprobe_args_type.tc       |  2 +-
->  .../ftrace/test.d/kprobe/kprobe_ftrace.tc          | 14 +++++++-------
->  .../ftrace/test.d/kprobe/kprobe_multiprobe.tc      |  2 +-
->  .../ftrace/test.d/kprobe/kprobe_syntax_errors.tc   | 12 ++++++------
->  .../ftrace/test.d/kprobe/kretprobe_args.tc         |  4 ++--
->  .../selftests/ftrace/test.d/kprobe/profile.tc      |  2 +-
->  18 files changed, 39 insertions(+), 39 deletions(-)
-> 
-> diff --git a/Documentation/trace/histogram.rst b/Documentation/trace/histogram.rst
-> index 8408670d0328..f93333524a44 100644
-> --- a/Documentation/trace/histogram.rst
-> +++ b/Documentation/trace/histogram.rst
-> @@ -1495,7 +1495,7 @@ Extended error information
->      #
->  
->      { stacktrace:
-> -             _do_fork+0x18e/0x330
-> +             kernel_clone+0x18e/0x330
->               kernel_thread+0x29/0x30
->               kthreadd+0x154/0x1b0
->               ret_from_fork+0x3f/0x70
-> @@ -1588,7 +1588,7 @@ Extended error information
->               SYSC_sendto+0xef/0x170
->      } hitcount:         88
->      { stacktrace:
-> -             _do_fork+0x18e/0x330
-> +             kernel_clone+0x18e/0x330
->               SyS_clone+0x19/0x20
->               entry_SYSCALL_64_fastpath+0x12/0x6a
->      } hitcount:        244
-> diff --git a/samples/kprobes/kretprobe_example.c b/samples/kprobes/kretprobe_example.c
-> index 78a2da6fb3cd..0c40f7236989 100644
-> --- a/samples/kprobes/kretprobe_example.c
-> +++ b/samples/kprobes/kretprobe_example.c
-> @@ -8,7 +8,7 @@
->   *
->   * usage: insmod kretprobe_example.ko func=<func_name>
->   *
-> - * If no func_name is specified, _do_fork is instrumented
-> + * If no func_name is specified, kernel_clone is instrumented
->   *
->   * For more information on theory of operation of kretprobes, see
->   * Documentation/staging/kprobes.rst
-> @@ -26,7 +26,7 @@
->  #include <linux/limits.h>
->  #include <linux/sched.h>
->  
-> -static char func_name[NAME_MAX] = "_do_fork";
-> +static char func_name[NAME_MAX] = "kernel_clone";
->  module_param_string(func, func_name, NAME_MAX, S_IRUGO);
->  MODULE_PARM_DESC(func, "Function to kretprobe; this module will report the"
->  			" function's execution time");
-> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_kprobe.tc b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_kprobe.tc
-> index 68550f97d3c3..3bcd4c3624ee 100644
-> --- a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_kprobe.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_kprobe.tc
-> @@ -6,7 +6,7 @@
->  echo 0 > events/enable
->  echo > dynamic_events
->  
-> -PLACE=_do_fork
-> +PLACE=kernel_clone
->  
->  echo "p:myevent1 $PLACE" >> dynamic_events
->  echo "r:myevent2 $PLACE" >> dynamic_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/clear_select_events.tc b/tools/testing/selftests/ftrace/test.d/dynevent/clear_select_events.tc
-> index c969be9eb7de..438961971b7e 100644
-> --- a/tools/testing/selftests/ftrace/test.d/dynevent/clear_select_events.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/clear_select_events.tc
-> @@ -6,7 +6,7 @@
->  echo 0 > events/enable
->  echo > dynamic_events
->  
-> -PLACE=_do_fork
-> +PLACE=kernel_clone
->  
->  setup_events() {
->  echo "p:myevent1 $PLACE" >> dynamic_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/generic_clear_event.tc b/tools/testing/selftests/ftrace/test.d/dynevent/generic_clear_event.tc
-> index 16d543eaac88..a8603bd23e0d 100644
-> --- a/tools/testing/selftests/ftrace/test.d/dynevent/generic_clear_event.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/generic_clear_event.tc
-> @@ -6,7 +6,7 @@
->  echo 0 > events/enable
->  echo > dynamic_events
->  
-> -PLACE=_do_fork
-> +PLACE=kernel_clone
->  
->  setup_events() {
->  echo "p:myevent1 $PLACE" >> dynamic_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-stacktrace.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-stacktrace.tc
-> index 0f41e441c203..98305d76bd04 100644
-> --- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-stacktrace.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-stacktrace.tc
-> @@ -4,9 +4,9 @@
->  # requires: set_ftrace_filter
->  # flags: instance
->  
-> -echo _do_fork:stacktrace >> set_ftrace_filter
-> +echo kernel_clone:stacktrace >> set_ftrace_filter
->  
-> -grep -q "_do_fork:stacktrace:unlimited" set_ftrace_filter
-> +grep -q "kernel_clone:stacktrace:unlimited" set_ftrace_filter
->  
->  (echo "forked"; sleep 1)
->  
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/add_and_remove.tc b/tools/testing/selftests/ftrace/test.d/kprobe/add_and_remove.tc
-> index eba858c21815..9737cd0578a7 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/add_and_remove.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/add_and_remove.tc
-> @@ -3,7 +3,7 @@
->  # description: Kprobe dynamic event - adding and removing
->  # requires: kprobe_events
->  
-> -echo p:myevent _do_fork > kprobe_events
-> +echo p:myevent kernel_clone > kprobe_events
->  grep myevent kprobe_events
->  test -d events/kprobes/myevent
->  echo > kprobe_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/busy_check.tc b/tools/testing/selftests/ftrace/test.d/kprobe/busy_check.tc
-> index d10bf4f05bc8..f9a40af76888 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/busy_check.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/busy_check.tc
-> @@ -3,7 +3,7 @@
->  # description: Kprobe dynamic event - busy event check
->  # requires: kprobe_events
->  
-> -echo p:myevent _do_fork > kprobe_events
-> +echo p:myevent kernel_clone > kprobe_events
->  test -d events/kprobes/myevent
->  echo 1 > events/kprobes/myevent/enable
->  echo > kprobe_events && exit_fail # this must fail
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args.tc
-> index 61f2ac441aec..eb543d3cfe5f 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args.tc
-> @@ -3,13 +3,13 @@
->  # description: Kprobe dynamic event with arguments
->  # requires: kprobe_events
->  
-> -echo 'p:testprobe _do_fork $stack $stack0 +0($stack)' > kprobe_events
-> +echo 'p:testprobe kernel_clone $stack $stack0 +0($stack)' > kprobe_events
->  grep testprobe kprobe_events | grep -q 'arg1=\$stack arg2=\$stack0 arg3=+0(\$stack)'
->  test -d events/kprobes/testprobe
->  
->  echo 1 > events/kprobes/testprobe/enable
->  ( echo "forked")
-> -grep testprobe trace | grep '_do_fork' | \
-> +grep testprobe trace | grep 'kernel_clone' | \
->    grep -q 'arg1=0x[[:xdigit:]]* arg2=0x[[:xdigit:]]* arg3=0x[[:xdigit:]]*$'
->  
->  echo 0 > events/kprobes/testprobe/enable
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_comm.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_comm.tc
-> index 05aaeed6987f..4e5b63be51c9 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_comm.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_comm.tc
-> @@ -5,7 +5,7 @@
->  
->  grep -A1 "fetcharg:" README | grep -q "\$comm" || exit_unsupported # this is too old
->  
-> -echo 'p:testprobe _do_fork comm=$comm ' > kprobe_events
-> +echo 'p:testprobe kernel_clone comm=$comm ' > kprobe_events
->  grep testprobe kprobe_events | grep -q 'comm=$comm'
->  test -d events/kprobes/testprobe
->  
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-> index b5fa05443b39..a1d70588ab21 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-> @@ -30,13 +30,13 @@ esac
->  : "Test get argument (1)"
->  echo "p:testprobe tracefs_create_dir arg1=+0(${ARG1}):string" > kprobe_events
->  echo 1 > events/kprobes/testprobe/enable
-> -echo "p:test _do_fork" >> kprobe_events
-> +echo "p:test kernel_clone" >> kprobe_events
->  grep -qe "testprobe.* arg1=\"test\"" trace
->  
->  echo 0 > events/kprobes/testprobe/enable
->  : "Test get argument (2)"
->  echo "p:testprobe tracefs_create_dir arg1=+0(${ARG1}):string arg2=+0(${ARG1}):string" > kprobe_events
->  echo 1 > events/kprobes/testprobe/enable
-> -echo "p:test _do_fork" >> kprobe_events
-> +echo "p:test kernel_clone" >> kprobe_events
->  grep -qe "testprobe.* arg1=\"test\" arg2=\"test\"" trace
->  
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_symbol.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_symbol.tc
-> index b8c75a3d003c..bd25dd0ba0d0 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_symbol.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_symbol.tc
-> @@ -14,12 +14,12 @@ elif ! grep "$SYMBOL\$" /proc/kallsyms; then
->  fi
->  
->  : "Test get basic types symbol argument"
-> -echo "p:testprobe_u _do_fork arg1=@linux_proc_banner:u64 arg2=@linux_proc_banner:u32 arg3=@linux_proc_banner:u16 arg4=@linux_proc_banner:u8" > kprobe_events
-> -echo "p:testprobe_s _do_fork arg1=@linux_proc_banner:s64 arg2=@linux_proc_banner:s32 arg3=@linux_proc_banner:s16 arg4=@linux_proc_banner:s8" >> kprobe_events
-> +echo "p:testprobe_u kernel_clone arg1=@linux_proc_banner:u64 arg2=@linux_proc_banner:u32 arg3=@linux_proc_banner:u16 arg4=@linux_proc_banner:u8" > kprobe_events
-> +echo "p:testprobe_s kernel_clone arg1=@linux_proc_banner:s64 arg2=@linux_proc_banner:s32 arg3=@linux_proc_banner:s16 arg4=@linux_proc_banner:s8" >> kprobe_events
->  if grep -q "x8/16/32/64" README; then
-> -  echo "p:testprobe_x _do_fork arg1=@linux_proc_banner:x64 arg2=@linux_proc_banner:x32 arg3=@linux_proc_banner:x16 arg4=@linux_proc_banner:x8" >> kprobe_events
-> +  echo "p:testprobe_x kernel_clone arg1=@linux_proc_banner:x64 arg2=@linux_proc_banner:x32 arg3=@linux_proc_banner:x16 arg4=@linux_proc_banner:x8" >> kprobe_events
->  fi
-> -echo "p:testprobe_bf _do_fork arg1=@linux_proc_banner:b8@4/32" >> kprobe_events
-> +echo "p:testprobe_bf kernel_clone arg1=@linux_proc_banner:b8@4/32" >> kprobe_events
->  echo 1 > events/kprobes/enable
->  (echo "forked")
->  echo 0 > events/kprobes/enable
-> @@ -27,7 +27,7 @@ grep "testprobe_[usx]:.* arg1=.* arg2=.* arg3=.* arg4=.*" trace
->  grep "testprobe_bf:.* arg1=.*" trace
->  
->  : "Test get string symbol argument"
-> -echo "p:testprobe_str _do_fork arg1=@linux_proc_banner:string" > kprobe_events
-> +echo "p:testprobe_str kernel_clone arg1=@linux_proc_banner:string" > kprobe_events
->  echo 1 > events/kprobes/enable
->  (echo "forked")
->  echo 0 > events/kprobes/enable
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_type.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_type.tc
-> index 0610e0b5587c..91fcce1c241c 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_type.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_type.tc
-> @@ -4,7 +4,7 @@
->  # requires: kprobe_events "x8/16/32/64":README
->  
->  gen_event() { # Bitsize
-> -  echo "p:testprobe _do_fork \$stack0:s$1 \$stack0:u$1 \$stack0:x$1 \$stack0:b4@4/$1"
-> +  echo "p:testprobe kernel_clone \$stack0:s$1 \$stack0:u$1 \$stack0:x$1 \$stack0:b4@4/$1"
->  }
->  
->  check_types() { # s-type u-type x-type bf-type width
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_ftrace.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_ftrace.tc
-> index 81d8b58c03bc..0d179094191f 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_ftrace.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_ftrace.tc
-> @@ -5,29 +5,29 @@
->  
->  # prepare
->  echo nop > current_tracer
-> -echo _do_fork > set_ftrace_filter
-> -echo 'p:testprobe _do_fork' > kprobe_events
-> +echo kernel_clone > set_ftrace_filter
-> +echo 'p:testprobe kernel_clone' > kprobe_events
->  
->  # kprobe on / ftrace off
->  echo 1 > events/kprobes/testprobe/enable
->  echo > trace
->  ( echo "forked")
->  grep testprobe trace
-> -! grep '_do_fork <-' trace
-> +! grep 'kernel_clone <-' trace
->  
->  # kprobe on / ftrace on
->  echo function > current_tracer
->  echo > trace
->  ( echo "forked")
->  grep testprobe trace
-> -grep '_do_fork <-' trace
-> +grep 'kernel_clone <-' trace
->  
->  # kprobe off / ftrace on
->  echo 0 > events/kprobes/testprobe/enable
->  echo > trace
->  ( echo "forked")
->  ! grep testprobe trace
-> -grep '_do_fork <-' trace
-> +grep 'kernel_clone <-' trace
->  
->  # kprobe on / ftrace on
->  echo 1 > events/kprobes/testprobe/enable
-> @@ -35,11 +35,11 @@ echo function > current_tracer
->  echo > trace
->  ( echo "forked")
->  grep testprobe trace
-> -grep '_do_fork <-' trace
-> +grep 'kernel_clone <-' trace
->  
->  # kprobe on / ftrace off
->  echo nop > current_tracer
->  echo > trace
->  ( echo "forked")
->  grep testprobe trace
-> -! grep '_do_fork <-' trace
-> +! grep 'kernel_clone <-' trace
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
-> index 366b7e1b6718..45d90b6c763d 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
-> @@ -4,7 +4,7 @@
->  # requires: kprobe_events "Create/append/":README
->  
->  # Choose 2 symbols for target
-> -SYM1=_do_fork
-> +SYM1=kernel_clone
->  SYM2=do_exit
->  EVENT_NAME=kprobes/testevent
->  
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-> index b4d834675e59..c02ea50d63ea 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-> @@ -86,15 +86,15 @@ esac
->  
->  # multiprobe errors
->  if grep -q "Create/append/" README && grep -q "imm-value" README; then
-> -echo 'p:kprobes/testevent _do_fork' > kprobe_events
-> +echo 'p:kprobes/testevent kernel_clone' > kprobe_events
->  check_error '^r:kprobes/testevent do_exit'	# DIFF_PROBE_TYPE
->  
->  # Explicitly use printf "%s" to not interpret \1
-> -printf "%s" 'p:kprobes/testevent _do_fork abcd=\1' > kprobe_events
-> -check_error 'p:kprobes/testevent _do_fork ^bcd=\1'	# DIFF_ARG_TYPE
-> -check_error 'p:kprobes/testevent _do_fork ^abcd=\1:u8'	# DIFF_ARG_TYPE
-> -check_error 'p:kprobes/testevent _do_fork ^abcd=\"foo"'	# DIFF_ARG_TYPE
-> -check_error '^p:kprobes/testevent _do_fork abcd=\1'	# SAME_PROBE
-> +printf "%s" 'p:kprobes/testevent kernel_clone abcd=\1' > kprobe_events
-> +check_error 'p:kprobes/testevent kernel_clone ^bcd=\1'	# DIFF_ARG_TYPE
-> +check_error 'p:kprobes/testevent kernel_clone ^abcd=\1:u8'	# DIFF_ARG_TYPE
-> +check_error 'p:kprobes/testevent kernel_clone ^abcd=\"foo"'	# DIFF_ARG_TYPE
-> +check_error '^p:kprobes/testevent kernel_clone abcd=\1'	# SAME_PROBE
->  fi
->  
->  exit 0
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_args.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_args.tc
-> index 523fde6d1aa5..7ae492c204a4 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_args.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_args.tc
-> @@ -4,14 +4,14 @@
->  # requires: kprobe_events
->  
->  # Add new kretprobe event
-> -echo 'r:testprobe2 _do_fork $retval' > kprobe_events
-> +echo 'r:testprobe2 kernel_clone $retval' > kprobe_events
->  grep testprobe2 kprobe_events | grep -q 'arg1=\$retval'
->  test -d events/kprobes/testprobe2
->  
->  echo 1 > events/kprobes/testprobe2/enable
->  ( echo "forked")
->  
-> -cat trace | grep testprobe2 | grep -q '<- _do_fork'
-> +cat trace | grep testprobe2 | grep -q '<- kernel_clone'
->  
->  echo 0 > events/kprobes/testprobe2/enable
->  echo '-:testprobe2' >> kprobe_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/profile.tc b/tools/testing/selftests/ftrace/test.d/kprobe/profile.tc
-> index ff6c44adc8a0..c4093fc1a773 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/profile.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/profile.tc
-> @@ -4,7 +4,7 @@
->  # requires: kprobe_events
->  
->  ! grep -q 'myevent' kprobe_profile
-> -echo p:myevent _do_fork > kprobe_events
-> +echo p:myevent kernel_clone > kprobe_events
->  grep -q 'myevent[[:space:]]*0[[:space:]]*0$' kprobe_profile
->  echo 1 > events/kprobes/myevent/enable
->  ( echo "forked" )
-> -- 
-> 2.28.0
-> 
+  * 'opiocnextprop()' was incorrectly implemented.
+  * Integer conversions were not checked.
+  * Faulty PROMs and users can leave out nul-termination
+  * The confusion of string lengths for string sizes.
 
+OPIOCNEXTPROP
+=============
 
+According to NetBSD's documentation, this ioctl is supposed to
+return a property's *name*. However, until this commit, it has
+returned a property's *value*; this commit implements the return
+of the name.
+
+In addition, the 'op_buflen' field is now also updated, whereas
+before it was not.
+
+Conversions
+===========
+
+There are a number of different integer types used throughout this
+code to represent the size of some buffer; this commit introduces
+some checks to help ensure that these conversions will succeed, or
+at least to help ensure that bad conversions will be handled in a
+meaningful way.
+
+Nul-Termination
+===============
+
+Faulty PROMs
+------------
+
+The Sun/Oracle documentation says that when returning data via the
+user-supplied buffers, the data should be explicitly nul-terminated
+if the buffer size is larger than the size of the data, just in case
+a faulty PROM fails to include nul-termination properly.
+
+In the "Sun" ioctls, this should already be handled, because the data
+structure in question is zeroed when allocated, but this commit also
+introduces some checks for this when the following kernel config is
+defined:
+
+  CONFIG_DEBUG_KERNEL
+
+One BSD ioctl was amended to include this automatic nul-termination:
+
+  OPIOCGET
+
+User Error
+----------
+
+It is perhaps worth noting that the following helper function
+was already being used to append a nul character to user data
+provided to the BSD ioctl implementations:
+
+  copyin_string()
+
+The BSD documentation for those ioctl functions does indeed
+refer to "counted" strings, which may mean that nul-termination
+is not required, so the behavior of copyin_string() is merely
+a defensive way to handle input that is not nul-terminated.
+Such defensive programming is maintained by this commit; in
+addition, where applicable, strlen() is used to determine a
+length, rather than relying on a user-supplied value.
+
+String Size
+===========
+
+There is an important distinction to be made between the following:
+
+  * A nul-terminated string's size
+  * A nul-terminated string's length
+
+This commit tries to make this distinction as much as possible,
+and assumes that all strings are intended to be nul-terminated.
+The result is the following:
+
+  * Sometimes a variable's name is simply changed (e.g., from
+    'len' to 'size').
+
+  * Sometimes 'strlen()' is called rather than relying on
+    some buffer size.
+
+  * Sometimes, there is the replacement of code that erroneously
+    uses string length rather than string size.
+
+All together, these changes make the code more robust and correct.
+
+Signed-off-by: Michael Witten <mfwitten@gmail.com>
+---
+ arch/sparc/include/asm/prom.h   |   2 +-
+ arch/sparc/kernel/prom_common.c |  14 +--
+ drivers/sbus/char/openprom.c    | 263 ++++++++++++++++++++++++++++------------
+ 3 files changed, 194 insertions(+), 85 deletions(-)
+
+diff --git a/arch/sparc/include/asm/prom.h b/arch/sparc/include/asm/prom.h
+index 587edb8b5a65..b523dab16877 100644
+--- a/arch/sparc/include/asm/prom.h
++++ b/arch/sparc/include/asm/prom.h
+@@ -30,7 +30,7 @@ struct of_irq_controller {
+ };
+ 
+ struct device_node *of_find_node_by_cpuid(int cpuid);
+-int of_set_property(struct device_node *node, const char *name, void *val, int len);
++int of_set_property(struct device_node *node, const char *name, void *val, int size);
+ extern struct mutex of_set_property_mutex;
+ int of_getintprop_default(struct device_node *np,
+ 			  const char *name,
+diff --git a/arch/sparc/kernel/prom_common.c b/arch/sparc/kernel/prom_common.c
+index c9ec70888a39..fbc96c6e554c 100644
+--- a/arch/sparc/kernel/prom_common.c
++++ b/arch/sparc/kernel/prom_common.c
+@@ -34,10 +34,10 @@ EXPORT_SYMBOL(of_console_options);
+ int of_getintprop_default(struct device_node *np, const char *name, int def)
+ {
+ 	struct property *prop;
+-	int len;
++	int size;
+ 
+-	prop = of_find_property(np, name, &len);
+-	if (!prop || len != 4)
++	prop = of_find_property(np, name, &size);
++	if (!prop || size != 4)
+ 		return def;
+ 
+ 	return *(int *) prop->value;
+@@ -47,14 +47,14 @@ EXPORT_SYMBOL(of_getintprop_default);
+ DEFINE_MUTEX(of_set_property_mutex);
+ EXPORT_SYMBOL(of_set_property_mutex);
+ 
+-int of_set_property(struct device_node *dp, const char *name, void *val, int len)
++int of_set_property(struct device_node *dp, const char *name, void *val, int size)
+ {
+ 	struct property **prevp;
+ 	unsigned long flags;
+ 	void *new_val;
+ 	int err;
+ 
+-	new_val = kmemdup(val, len, GFP_KERNEL);
++	new_val = kmemdup(val, size, GFP_KERNEL);
+ 	if (!new_val)
+ 		return -ENOMEM;
+ 
+@@ -70,12 +70,12 @@ int of_set_property(struct device_node *dp, const char *name, void *val, int len
+ 			void *old_val = prop->value;
+ 			int ret;
+ 
+-			ret = prom_setprop(dp->phandle, name, val, len);
++			ret = prom_setprop(dp->phandle, name, val, size);
+ 
+ 			err = -EINVAL;
+ 			if (ret >= 0) {
+ 				prop->value = new_val;
+-				prop->length = len;
++				prop->length = size;
+ 
+ 				if (OF_IS_DYNAMIC(prop))
+ 					kfree(old_val);
+diff --git a/drivers/sbus/char/openprom.c b/drivers/sbus/char/openprom.c
+index 30b9751aad30..9bc2877aa09a 100644
+--- a/drivers/sbus/char/openprom.c
++++ b/drivers/sbus/char/openprom.c
+@@ -16,6 +16,7 @@
+  */
+ 
+ 
++#include <linux/limits.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/errno.h>
+@@ -54,42 +55,76 @@ static struct device_node *options_node;
+  * Copy an openpromio structure into kernel space from user space.
+  * This routine does error checking to make sure that all memory
+  * accesses are within bounds. A pointer to the allocated openpromio
+- * structure will be placed in "*opp_p". Return value is the length
+- * of the user supplied buffer.
++ * structure will be placed in "*opp_p". The return value is the size
++ * of the user supplied buffer; the return value is negative on error.
+  */
+-static int copyin(struct openpromio __user *info, struct openpromio **opp_p)
++static ssize_t copyin(struct openpromio __user *info, struct openpromio **opp_p)
+ {
+-	unsigned int bufsize;
++	unsigned int oprom_size;
++	size_t bufsize;
++	ssize_t result;
+ 
+ 	if (!info || !opp_p)
+ 		return -EFAULT;
+ 
+-	if (get_user(bufsize, &info->oprom_size))
++	if (get_user(oprom_size, &info->oprom_size))
+ 		return -EFAULT;
+ 
+-	if (bufsize == 0)
++	if (oprom_size == 0)
+ 		return -EINVAL;
+ 
++	static_assert(SIZE_MAX >= UINT_MAX);
++
+ 	/* If the bufsize is too large, just limit it.
+ 	 * Fix from Jason Rappleye.
+ 	 */
+-	if (bufsize > OPROMMAXPARAM)
+-		bufsize = OPROMMAXPARAM;
++	#if UINT_MAX <= OPROMMAXPARAM
++		bufsize = oprom_size;
++	#else
++		if (oprom_size <= OPROMMAXPARAM)
++			bufsize =  oprom_size;
++		else
++			bufsize = OPROMMAXPARAM;
++	#endif
++
++	#if CONFIG_DEBUG_KERNEL
++		if (WARN_ON(bufsize > OPROMMAXPARAM))
++			bufsize = OPROMMAXPARAM;
++	#endif
++
++	#if OPROMMAXPARAM > SIZE_MAX/2
++		if (bufsize > SIZE_MAX/2)
++			return -EFAULT;
++	#endif
++
++	result = (ssize_t)bufsize;
+ 
++	/* The buffer 'oprom_array' is often supposed to contain a
++	 * nul-terminated string, but the user may have erroneously
++	 * set 'oprom_size' to the length of that string rather than
++	 * the size of that string; therefore, the '+ 1' essentially
++	 * appends a nul character. Any code that expects a string
++	 * to be nul-terminated must not trust the size returned by
++	 * this function.
++	 */
++	static_assert(OPROMMAXPARAM <= SIZE_MAX - sizeof(int) - 1);
+ 	if (!(*opp_p = kzalloc(sizeof(int) + bufsize + 1, GFP_KERNEL)))
+ 		return -ENOMEM;
+ 
++	static_assert(ULONG_MAX >= SIZE_MAX);
+ 	if (copy_from_user(&(*opp_p)->oprom_array,
+ 			   &info->oprom_array, bufsize)) {
+ 		kfree(*opp_p);
+ 		return -EFAULT;
+ 	}
+-	return bufsize;
++
++	return result;
+ }
+ 
+-static int getstrings(struct openpromio __user *info, struct openpromio **opp_p)
++static ssize_t getstrings(struct openpromio __user *info, struct openpromio **opp_p)
+ {
+-	int n, bufsize;
++	int n;
++	ssize_t bufsize;
+ 	char c;
+ 
+ 	if (!info || !opp_p)
+@@ -98,9 +133,8 @@ static int getstrings(struct openpromio __user *info, struct openpromio **opp_p)
+ 	if (!(*opp_p = kzalloc(sizeof(int) + OPROMMAXPARAM + 1, GFP_KERNEL)))
+ 		return -ENOMEM;
+ 
+-	(*opp_p)->oprom_size = 0;
+-
+-	n = bufsize = 0;
++	bufsize = n = 0;
++	static_assert((SIZE_MAX/2) >= OPROMMAXPARAM);
+ 	while ((n < 2) && (bufsize < OPROMMAXPARAM)) {
+ 		if (get_user(c, &info->oprom_array[bufsize])) {
+ 			kfree(*opp_p);
+@@ -120,69 +154,109 @@ static int getstrings(struct openpromio __user *info, struct openpromio **opp_p)
+ /*
+  * Copy an openpromio structure in kernel space back to user space.
+  */
+-static int copyout(void __user *info, struct openpromio *opp, int len)
++static int copyout(void __user *info, struct openpromio *opp, const size_t size)
+ {
+-	if (copy_to_user(info, opp, len))
++	static_assert(ULONG_MAX >= SIZE_MAX);
++	if (copy_to_user(info, opp, size))
+ 		return -EFAULT;
+ 	return 0;
+ }
+ 
+-static int opromgetprop(void __user *argp, struct device_node *dp, struct openpromio *op, int bufsize)
++static int opromgetprop(void __user *argp, struct device_node *dp, struct openpromio *op, const size_t bufsize)
+ {
+ 	const void *pval;
+-	int len;
++	int pval_size;
+ 
+ 	if (!dp ||
+-	    !(pval = of_get_property(dp, op->oprom_array, &len)) ||
+-	    len <= 0 || len > bufsize)
++	    !(pval = of_get_property(dp, op->oprom_array, &pval_size)) ||
++	    pval_size <= 0 || pval_size > bufsize) {
++		#ifdef CONFIG_DEBUG_KERNEL
++			if (WARN_ON(op->oprom_size))
++				op->oprom_size = 0;
++		#endif
+ 		return copyout(argp, op, sizeof(int));
++	}
++
++	op->oprom_size = pval_size;
++	memcpy(op->oprom_array, pval, pval_size);
+ 
+-	memcpy(op->oprom_array, pval, len);
+-	op->oprom_array[len] = '\0';
+-	op->oprom_size = len;
++	#ifdef CONFIG_DEBUG_KERNEL
++		// If the buffer is larger than needed, then
++		// the contents should be nul-terminated in
++		// case the PROM erroneously produces a string
++		// that is not nul-terminated.
++		if (pval_size < bufsize)
++			char *const end = op->oprom_array + pval_size;
++			if (WARN_ON(*end))
++				*end = 0;
++	#endif
+ 
+ 	return copyout(argp, op, sizeof(int) + bufsize);
+ }
+ 
+-static int opromnxtprop(void __user *argp, struct device_node *dp, struct openpromio *op, int bufsize)
++static int opromnxtprop(void __user *argp, struct device_node *dp, struct openpromio *op, const size_t bufsize)
+ {
+ 	struct property *prop;
+-	int len;
++	size_t name_size;
++	unsigned int uint_name_size;
+ 
+ 	if (!dp)
+-		return copyout(argp, op, sizeof(int));
++		goto nothing;
++
+ 	if (op->oprom_array[0] == '\0') {
+ 		prop = dp->properties;
+-		if (!prop)
+-			return copyout(argp, op, sizeof(int));
+-		len = strlen(prop->name);
+ 	} else {
+ 		prop = of_find_property(dp, op->oprom_array, NULL);
++		if (prop)
++			prop = prop->next;
++	}
+ 
+-		if (!prop ||
+-		    !prop->next ||
+-		    (len = strlen(prop->next->name)) + 1 > bufsize)
+-			return copyout(argp, op, sizeof(int));
++	if (!prop)
++		goto nothing;
+ 
+-		prop = prop->next;
+-	}
++	name_size = 1 + strlen(prop->name);
++
++	uint_name_size = name_size;
++	if (unlikely(uint_name_size != name_size))
++		goto nothing; // overflow
++
++	if (name_size > bufsize)
++		goto nothing;
+ 
+-	memcpy(op->oprom_array, prop->name, len);
+-	op->oprom_array[len] = '\0';
+-	op->oprom_size = ++len;
++	memcpy(op->oprom_array, prop->name, name_size);
++	op->oprom_size = uint_name_size;
+ 
+ 	return copyout(argp, op, sizeof(int) + bufsize);
++
++nothing:
++	#ifdef CONFIG_DEBUG_KERNEL
++		if (WARN_ON(op->oprom_size))
++			op-oprom_size = 0;
++	#endif
++	return copyout(argp, op, sizeof(int));
+ }
+ 
+-static int opromsetopt(struct device_node *dp, struct openpromio *op, int bufsize)
++static int opromsetopt(struct device_node *dp, struct openpromio *op, const size_t name_value_size)
+ {
+-	char *buf = op->oprom_array + strlen(op->oprom_array) + 1;
+-	int len = op->oprom_array + bufsize - buf;
++	const char *const name = op->oprom_array;
++	const size_t name_size = 1 + strlen(name);
++	char *const value = op->oprom_array + name_size;
++	const size_t value_size = name_value_size - name_size;
++	int int_value_size;
++
++	#if CONFIG_DEBUG_KERNEL
++		if (WARN_ON(name_value_size <= name_size))
++			return -EFAULT;
++	#endif
+ 
+-	return of_set_property(options_node, op->oprom_array, buf, len);
++	if (unlikely(value_size > INT_MAX))
++		return -EINVAL;
++	int_value_size = (int)value_size;
++
++	return of_set_property(options_node, name, value, int_value_size);
+ }
+ 
+-static int opromnext(void __user *argp, unsigned int cmd, struct device_node *dp, struct openpromio *op, int bufsize, DATA *data)
++static int opromnext(void __user *argp, unsigned int cmd, struct device_node *dp, struct openpromio *op, const size_t bufsize, DATA *data)
+ {
+ 	phandle ph;
+ 
+@@ -229,7 +303,7 @@ static int opromnext(void __user *argp, unsigned int cmd, struct device_node *dp
+ 	return copyout(argp, op, bufsize + sizeof(int));
+ }
+ 
+-static int oprompci2node(void __user *argp, struct device_node *dp, struct openpromio *op, int bufsize, DATA *data)
++static int oprompci2node(void __user *argp, struct device_node *dp, struct openpromio *op, const size_t bufsize, DATA *data)
+ {
+ 	int err = -EINVAL;
+ 
+@@ -255,7 +329,7 @@ static int oprompci2node(void __user *argp, struct device_node *dp, struct openp
+ 	return err;
+ }
+ 
+-static int oprompath2node(void __user *argp, struct device_node *dp, struct openpromio *op, int bufsize, DATA *data)
++static int oprompath2node(void __user *argp, struct device_node *dp, struct openpromio *op, const size_t bufsize, DATA *data)
+ {
+ 	phandle ph = 0;
+ 
+@@ -269,16 +343,24 @@ static int oprompath2node(void __user *argp, struct device_node *dp, struct open
+ 	return copyout(argp, op, bufsize + sizeof(int));
+ }
+ 
+-static int opromgetbootargs(void __user *argp, struct openpromio *op, int bufsize)
++static int opromgetbootargs(void __user *argp, struct openpromio *op, const size_t bufsize)
+ {
+-	char *buf = saved_command_line;
+-	int len = strlen(buf);
++	const char *const buf = saved_command_line;
++	const size_t size = 1 + strlen(buf);
++	unsigned int uint_size;
++
++	if (unlikely(size == 0))
++		return -EFAULT; // overflow
+ 
+-	if (len > bufsize)
++	if (size > bufsize)
+ 		return -EINVAL;
+ 
+-	strcpy(op->oprom_array, buf);
+-	op->oprom_size = len;
++	if (unlikely(size > UINT_MAX))
++		return -EFAULT;
++	uint_size = (unsigned int)size;
++
++	memcpy(op->oprom_array, buf, size);
++	op->oprom_size = uint_size;
+ 
+ 	return copyout(argp, op, bufsize + sizeof(int));
+ }
+@@ -292,7 +374,8 @@ static long openprom_sunos_ioctl(struct file * file,
+ {
+ 	DATA *data = file->private_data;
+ 	struct openpromio *opp = NULL;
+-	int bufsize, error = 0;
++	ssize_t bufsize;
++	int error = 0;
+ 	static int cnt;
+ 	void __user *argp = (void __user *)arg;
+ 
+@@ -301,6 +384,12 @@ static long openprom_sunos_ioctl(struct file * file,
+ 	else
+ 		bufsize = copyin(argp, &opp);
+ 
++	#ifdef CONFIG_DEBUG_KERNEL
++		if (WARN_ON(bufsize == 0))
++			bufsize = -EFAULT;
++	#enif
++
++	static_assert(LONG_MIN <= -(SIZE_MAX/2)-1);
+ 	if (bufsize < 0)
+ 		return bufsize;
+ 
+@@ -373,7 +462,9 @@ static struct device_node *get_node(phandle n, DATA *data)
+ /* Copy in a whole string from userspace into kernelspace. */
+ static char * copyin_string(char __user *user, size_t len)
+ {
+-	if ((ssize_t)len < 0 || (ssize_t)(len + 1) < 0)
++	// Is this test even necessary? Surely, memdup_user_nul()
++	// will fail to allocate space in this condition.
++	if (len == SIZE_MAX)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	return memdup_user_nul(user, len);
+@@ -388,7 +479,7 @@ static int opiocget(void __user *argp, DATA *data)
+ 	struct device_node *dp;
+ 	char *str;
+ 	const void *pval;
+-	int err, len;
++	int err, size;
+ 
+ 	if (copy_from_user(&op, argp, sizeof(op)))
+ 		return -EFAULT;
+@@ -399,15 +490,21 @@ static int opiocget(void __user *argp, DATA *data)
+ 	if (IS_ERR(str))
+ 		return PTR_ERR(str);
+ 
+-	pval = of_get_property(dp, str, &len);
++	pval = of_get_property(dp, str, &size);
+ 	err = 0;
+-	if (!pval || len > op.op_buflen) {
++	if (!pval || size > op.op_buflen) {
+ 		err = -EINVAL;
+ 	} else {
+-		op.op_buflen = len;
++		const int buflen = op.op_buflen;
++		op.op_buflen = size;
+ 		if (copy_to_user(argp, &op, sizeof(op)) ||
+-		    copy_to_user(op.op_buf, pval, len))
++		    copy_to_user(op.op_buf, pval, size))
+ 			err = -EFAULT;
++		if (size < buflen) {
++			const char c = 0;
++			if (copy_to_user(op.op_buf + size, &c, 1)) // To correct faulty PROMs
++				err = -EFAULT;
++		}
+ 	}
+ 	kfree(str);
+ 
+@@ -420,7 +517,7 @@ static int opiocnextprop(void __user *argp, DATA *data)
+ 	struct device_node *dp;
+ 	struct property *prop;
+ 	char *str;
+-	int len;
++	size_t name_size;
+ 
+ 	if (copy_from_user(&op, argp, sizeof(op)))
+ 		return -EFAULT;
+@@ -443,18 +540,28 @@ static int opiocnextprop(void __user *argp, DATA *data)
+ 	kfree(str);
+ 
+ 	if (!prop)
+-		len = 0;
+-	else
+-		len = prop->length;
++		name_size = 0;
++	else {
++		name_size = 1 + strlen(prop->name);
++		if (unlikely(name_size == 0))
++			return -EFAULT; // overflow
++	}
++
++	if (op.op_buflen <= 0)
++		op.op_buflen = 0;
++
++	if (name_size > op.op_buflen)
++		name_size = op.op_buflen;
++
++	if (unlikely(name_size > INT_MAX))
++		name_size = INT_MAX;
+ 
+-	if (len > op.op_buflen)
+-		len = op.op_buflen;
++	op.op_buflen = (int)name_size;
+ 
+ 	if (copy_to_user(argp, &op, sizeof(op)))
+ 		return -EFAULT;
+ 
+-	if (len &&
+-	    copy_to_user(op.op_buf, prop->value, len))
++	if (name_size && copy_to_user(op.op_buf, prop->name, name_size))
+ 		return -EFAULT;
+ 
+ 	return 0;
+@@ -464,7 +571,7 @@ static int opiocset(void __user *argp, DATA *data)
+ {
+ 	struct opiocdesc op;
+ 	struct device_node *dp;
+-	char *str, *tmp;
++	char *name, *value;
+ 	int err;
+ 
+ 	if (copy_from_user(&op, argp, sizeof(op)))
+@@ -474,20 +581,22 @@ static int opiocset(void __user *argp, DATA *data)
+ 	if (!dp)
+ 		return -EINVAL;
+ 
+-	str = copyin_string(op.op_name, op.op_namelen);
+-	if (IS_ERR(str))
+-		return PTR_ERR(str);
++	name = copyin_string(op.op_name, op.op_namelen);
++	if (IS_ERR(name))
++		return PTR_ERR(name);
+ 
+-	tmp = copyin_string(op.op_buf, op.op_buflen);
+-	if (IS_ERR(tmp)) {
+-		kfree(str);
+-		return PTR_ERR(tmp);
++	value = copyin_string(op.op_buf, op.op_buflen);
++	if (IS_ERR(value)) {
++		kfree(name);
++		return PTR_ERR(value);
+ 	}
+ 
+-	err = of_set_property(dp, str, tmp, op.op_buflen);
++	// Note that op.op_buflen is not trusted; strlen() is
++	// used instead to calculate the proper size.
++	err = of_set_property(dp, name, value, 1 + strlen(value));
+ 
+-	kfree(str);
+-	kfree(tmp);
++	kfree(name);
++	kfree(value);
+ 
+ 	return err;
+ }
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+2.22.0
+
