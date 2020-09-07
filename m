@@ -2,134 +2,174 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A707425F15E
-	for <lists+sparclinux@lfdr.de>; Mon,  7 Sep 2020 03:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5A61260425
+	for <lists+sparclinux@lfdr.de>; Mon,  7 Sep 2020 20:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726577AbgIGBMj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 6 Sep 2020 21:12:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33570 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726564AbgIGBMh (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 6 Sep 2020 21:12:37 -0400
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A6EA82080A;
-        Mon,  7 Sep 2020 01:12:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599441156;
-        bh=xyTSMPG3pyBCZv5zMohBYPXtrUS10O0YxLED9qNXz1I=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=z4ctw8TGu/NMj1f6Hv2KXkrBHHa+hL7RZJDYAkBwkP7Zi0ELinKFYmIOB4m2bj+Br
-         REdUI3oczw2sfJo0SbI9XIY3sEtUK+33VKxfvPvGwHzxwMucx5Nbb4xzObhrn0k+Zq
-         pn0XJDjrIvvplQXYJSINInsZBA/KoOuJSe+bM3zE=
-Date:   Mon, 7 Sep 2020 10:12:26 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Christian Brauner <christian.brauner@ubuntu.com>
-Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        id S1728846AbgIGSFE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 7 Sep 2020 14:05:04 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:25598 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729659AbgIGSEx (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 7 Sep 2020 14:04:53 -0400
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 087I2giF154827;
+        Mon, 7 Sep 2020 14:03:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id; s=pp1;
+ bh=8rnGmMRkvkgX5N8u5JthtpfXJszyHTkxMnCJPQcMOTk=;
+ b=oNHElOGvXv7QXaLspNhgBWGRiX738kpCkhlwlGjGhW6WQSn4ILECsFVDKMAVhX3jycTY
+ 38iL6cj6qt5KHOA5IKdtBFd56Jm5DiojDCi8u4JNsJ+HFhE+hC5bhGO63+ArV7j3jjMB
+ KteVXwVtQZJeib4KCJ6hc5VnJQKdQAat7P3f72FdC1i36tpErUh8TqRfKmZRP2QuGoGY
+ Pdy7bDmtvf4/HMsucF8Kje/WAlqFgobYWiWEi2jGt+lFsg/ZnhW1xFMmUJcOHEMHPa6V
+ 8pQIR5nOC70xYKb0WzbXHw2pq5dWHFQN75UtWq9ix/i7BtYF2GrVUkK8+Ie/tMW96IYy wQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 33dspe85a1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 07 Sep 2020 14:03:10 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 087I39BQ157737;
+        Mon, 7 Sep 2020 14:03:09 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 33dspe858x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 07 Sep 2020 14:03:09 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 087I2pTg014263;
+        Mon, 7 Sep 2020 18:03:07 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma03fra.de.ibm.com with ESMTP id 33c2a89kw2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 07 Sep 2020 18:03:06 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 087I33R861538636
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 7 Sep 2020 18:03:03 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C035B42045;
+        Mon,  7 Sep 2020 18:03:03 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A4C4C4203F;
+        Mon,  7 Sep 2020 18:03:02 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Mon,  7 Sep 2020 18:03:02 +0000 (GMT)
+From:   Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+To:     Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Mike Rapoport <rppt@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Stafford Horne <shorne@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Kars de Jong <jongk@linux-m68k.org>,
-        Kees Cook <keescook@chromium.org>,
-        Greentime Hu <green.hu@gmail.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Tom Zanussi <zanussi@kernel.org>,
-        Xiao Yang <yangx.jy@cn.fujitsu.com>, linux-doc@vger.kernel.org,
-        uclinux-h8-devel@lists.sourceforge.jp, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org,
-        kgdb-bugreport@lists.sourceforge.net,
-        linux-kselftest@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Christoph Hewllig <hch@infradead.org>,
-        Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v2 08/11] kprobes: switch to kernel_clone()
-Message-Id: <20200907101226.ab0d00639be953e81d4576c2@kernel.org>
-In-Reply-To: <20200819104655.436656-9-christian.brauner@ubuntu.com>
-References: <20200819104655.436656-1-christian.brauner@ubuntu.com>
-        <20200819104655.436656-9-christian.brauner@ubuntu.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        linux-x86 <x86@kernel.org>,
+        linux-arm <linux-arm-kernel@lists.infradead.org>,
+        linux-power <linuxppc-dev@lists.ozlabs.org>,
+        linux-sparc <sparclinux@vger.kernel.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Subject: [RFC PATCH v2 0/3] mm/gup: fix gup_fast with dynamic page table folding
+Date:   Mon,  7 Sep 2020 20:00:55 +0200
+Message-Id: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-07_11:2020-09-07,2020-09-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 spamscore=0 clxscore=1011 mlxlogscore=914
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009070173
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi,
+This is v2 of an RFC previously discussed here:
+https://lore.kernel.org/lkml/20200828140314.8556-1-gerald.schaefer@linux.ibm.com/
 
-On Wed, 19 Aug 2020 12:46:52 +0200
-Christian Brauner <christian.brauner@ubuntu.com> wrote:
+Patch 1 is a fix for a regression in gup_fast on s390, after our conversion
+to common gup_fast code. It will introduce special helper functions
+pXd_addr_end_folded(), which have to be used in places where pagetable walk
+is done w/o lock and with READ_ONCE, so currently only in gup_fast.
 
-> The old _do_fork() helper is removed in favor of the new kernel_clone() helper.
-> The latter adheres to naming conventions for kernel internal syscall helpers.
+Patch 2 is an attempt to make that more generic, i.e. change pXd_addr_end()
+themselves by adding an extra pXd value parameter. That was suggested by
+Jason during v1 discussion, because he is already thinking of some other
+places where he might want to switch to the READ_ONCE logic for pagetable
+walks. In general, that would be the cleanest / safest solution, but there
+is some impact on other architectures and common code, hence the new and
+greatly enlarged recipient list.
 
-This looks good to me.
+Patch 3 is a "nice to have" add-on, which makes pXd_addr_end() inline
+functions instead of #defines, so that we get some type checking for the
+new pXd value parameter.
 
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+Not sure about Fixes/stable tags for the generic solution. Only patch 1
+fixes a real bug on s390, and has Fixes/stable tags. Patches 2 + 3 might
+still be nice to have in stable, to ease future backports, but I guess
+"nice to have" does not really qualify for stable backports.
 
-Thank you!
+Changes in v2:
+- Pick option 2 from v1 discussion (pXd_addr_end_folded helpers)
+- Add patch 2 + 3 for more generic approach
 
-> 
-> Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Cc: Alexandre Chartre <alexandre.chartre@oracle.com>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
-> ---
-> /* v2 */
-> unchanged
-> ---
->  samples/kprobes/kprobe_example.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/samples/kprobes/kprobe_example.c b/samples/kprobes/kprobe_example.c
-> index 240f2435ce6f..a02f53836ee1 100644
-> --- a/samples/kprobes/kprobe_example.c
-> +++ b/samples/kprobes/kprobe_example.c
-> @@ -2,13 +2,13 @@
->  /*
->   * NOTE: This example is works on x86 and powerpc.
->   * Here's a sample kernel module showing the use of kprobes to dump a
-> - * stack trace and selected registers when _do_fork() is called.
-> + * stack trace and selected registers when kernel_clone() is called.
->   *
->   * For more information on theory of operation of kprobes, see
->   * Documentation/staging/kprobes.rst
->   *
->   * You will see the trace data in /var/log/messages and on the console
-> - * whenever _do_fork() is invoked to create a new process.
-> + * whenever kernel_clone() is invoked to create a new process.
->   */
->  
->  #include <linux/kernel.h>
-> @@ -16,7 +16,7 @@
->  #include <linux/kprobes.h>
->  
->  #define MAX_SYMBOL_LEN	64
-> -static char symbol[MAX_SYMBOL_LEN] = "_do_fork";
-> +static char symbol[MAX_SYMBOL_LEN] = "kernel_clone";
->  module_param_string(symbol, symbol, sizeof(symbol), 0644);
->  
->  /* For each probe you need to allocate a kprobe structure */
-> -- 
-> 2.28.0
-> 
+Alexander Gordeev (3):
+  mm/gup: fix gup_fast with dynamic page table folding
+  mm: make pXd_addr_end() functions page-table entry aware
+  mm: make generic pXd_addr_end() macros inline functions
 
+ arch/arm/include/asm/pgtable-2level.h    |  2 +-
+ arch/arm/mm/idmap.c                      |  6 ++--
+ arch/arm/mm/mmu.c                        |  8 ++---
+ arch/arm64/kernel/hibernate.c            | 16 +++++----
+ arch/arm64/kvm/mmu.c                     | 16 ++++-----
+ arch/arm64/mm/kasan_init.c               |  8 ++---
+ arch/arm64/mm/mmu.c                      | 25 +++++++-------
+ arch/powerpc/mm/book3s64/radix_pgtable.c |  7 ++--
+ arch/powerpc/mm/hugetlbpage.c            |  6 ++--
+ arch/s390/include/asm/pgtable.h          | 42 ++++++++++++++++++++++++
+ arch/s390/mm/page-states.c               |  8 ++---
+ arch/s390/mm/pageattr.c                  |  8 ++---
+ arch/s390/mm/vmem.c                      |  8 ++---
+ arch/sparc/mm/hugetlbpage.c              |  6 ++--
+ arch/um/kernel/tlb.c                     |  8 ++---
+ arch/x86/mm/init_64.c                    | 15 ++++-----
+ arch/x86/mm/kasan_init_64.c              | 16 ++++-----
+ include/asm-generic/pgtable-nop4d.h      |  2 +-
+ include/asm-generic/pgtable-nopmd.h      |  2 +-
+ include/asm-generic/pgtable-nopud.h      |  2 +-
+ include/linux/pgtable.h                  | 38 ++++++++++++---------
+ mm/gup.c                                 |  8 ++---
+ mm/ioremap.c                             |  8 ++---
+ mm/kasan/init.c                          | 17 +++++-----
+ mm/madvise.c                             |  4 +--
+ mm/memory.c                              | 40 +++++++++++-----------
+ mm/mlock.c                               | 18 +++++++---
+ mm/mprotect.c                            |  8 ++---
+ mm/pagewalk.c                            |  8 ++---
+ mm/swapfile.c                            |  8 ++---
+ mm/vmalloc.c                             | 16 ++++-----
+ 31 files changed, 219 insertions(+), 165 deletions(-)
 
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+2.17.1
+
