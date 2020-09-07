@@ -2,61 +2,134 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4485C25ECED
-	for <lists+sparclinux@lfdr.de>; Sun,  6 Sep 2020 06:47:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A707425F15E
+	for <lists+sparclinux@lfdr.de>; Mon,  7 Sep 2020 03:12:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725283AbgIFErt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 6 Sep 2020 00:47:49 -0400
-Received: from rrcs-67-53-52-108.west.biz.rr.com ([67.53.52.108]:37650 "EHLO
-        thirdlane.local" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725280AbgIFErt (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 6 Sep 2020 00:47:49 -0400
-Received: from Shop01 (localhost [127.0.0.1])
-        by thirdlane.local (Postfix) with SMTP id DF18527F1D4;
-        Thu,  3 Sep 2020 10:05:22 -1000 (HST)
-Received: from [215.61.21.45] by Shop01 with ESMTP id <252775-67270>; Thu, 03 Sep 2020 22:20:32 +0200
-Message-ID: <6l--9-asiu-$53up4$11y8q0-3@i76.y.f4b>
-From:   "William Saha" <wils@send.com>
-Reply-To: "William Saha" <wils@send.com>
-To:     spamlist@us.net
-Subject: Greetings
-Date:   Thu, 03 Sep 20 22:20:32 GMT
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="F.13A3E_.5_.C5CD_6C_"
-X-Priority: 3
-X-MSMail-Priority: Normal
+        id S1726577AbgIGBMj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 6 Sep 2020 21:12:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33570 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726564AbgIGBMh (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 6 Sep 2020 21:12:37 -0400
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A6EA82080A;
+        Mon,  7 Sep 2020 01:12:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599441156;
+        bh=xyTSMPG3pyBCZv5zMohBYPXtrUS10O0YxLED9qNXz1I=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=z4ctw8TGu/NMj1f6Hv2KXkrBHHa+hL7RZJDYAkBwkP7Zi0ELinKFYmIOB4m2bj+Br
+         REdUI3oczw2sfJo0SbI9XIY3sEtUK+33VKxfvPvGwHzxwMucx5Nbb4xzObhrn0k+Zq
+         pn0XJDjrIvvplQXYJSINInsZBA/KoOuJSe+bM3zE=
+Date:   Mon, 7 Sep 2020 10:12:26 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Christian Brauner <christian.brauner@ubuntu.com>
+Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Stafford Horne <shorne@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Kars de Jong <jongk@linux-m68k.org>,
+        Kees Cook <keescook@chromium.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Tom Zanussi <zanussi@kernel.org>,
+        Xiao Yang <yangx.jy@cn.fujitsu.com>, linux-doc@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org,
+        kgdb-bugreport@lists.sourceforge.net,
+        linux-kselftest@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hewllig <hch@infradead.org>,
+        Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v2 08/11] kprobes: switch to kernel_clone()
+Message-Id: <20200907101226.ab0d00639be953e81d4576c2@kernel.org>
+In-Reply-To: <20200819104655.436656-9-christian.brauner@ubuntu.com>
+References: <20200819104655.436656-1-christian.brauner@ubuntu.com>
+        <20200819104655.436656-9-christian.brauner@ubuntu.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hi,
 
---F.13A3E_.5_.C5CD_6C_
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+On Wed, 19 Aug 2020 12:46:52 +0200
+Christian Brauner <christian.brauner@ubuntu.com> wrote:
 
-Send your reply to: fkinneyofd@tampabay.rr.com 
+> The old _do_fork() helper is removed in favor of the new kernel_clone() helper.
+> The latter adheres to naming conventions for kernel internal syscall helpers.
 
-Greetings
+This looks good to me.
 
-This notification memo has been sent to you three times without a response=
- from you and this will be the last time and I do hope you receive it.
-This inquiry is about an account holder, who died and has no successor ove=
-r his fund with the bank.
-The essence of this communication with you is to request your willingness =
-to accept this inheritance left behind by my client if you are legally and=
- legitimately appointed.
-You must appreciate that I am constrained from providing you with more det=
-ailed information at this point. Upon your response, I will give you more =
-detailed information on the deceased client and the process of nominating =
-you to inherit his wealth. Send your comments with your full names and you=
-r telephone number to enable us discuss .
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 
-Yours faithfully,
-William Saha.
-fkinneyofd@tampabay.rr.com
+Thank you!
 
---F.13A3E_.5_.C5CD_6C_--
+> 
+> Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> Cc: Alexandre Chartre <alexandre.chartre@oracle.com>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
+> ---
+> /* v2 */
+> unchanged
+> ---
+>  samples/kprobes/kprobe_example.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/samples/kprobes/kprobe_example.c b/samples/kprobes/kprobe_example.c
+> index 240f2435ce6f..a02f53836ee1 100644
+> --- a/samples/kprobes/kprobe_example.c
+> +++ b/samples/kprobes/kprobe_example.c
+> @@ -2,13 +2,13 @@
+>  /*
+>   * NOTE: This example is works on x86 and powerpc.
+>   * Here's a sample kernel module showing the use of kprobes to dump a
+> - * stack trace and selected registers when _do_fork() is called.
+> + * stack trace and selected registers when kernel_clone() is called.
+>   *
+>   * For more information on theory of operation of kprobes, see
+>   * Documentation/staging/kprobes.rst
+>   *
+>   * You will see the trace data in /var/log/messages and on the console
+> - * whenever _do_fork() is invoked to create a new process.
+> + * whenever kernel_clone() is invoked to create a new process.
+>   */
+>  
+>  #include <linux/kernel.h>
+> @@ -16,7 +16,7 @@
+>  #include <linux/kprobes.h>
+>  
+>  #define MAX_SYMBOL_LEN	64
+> -static char symbol[MAX_SYMBOL_LEN] = "_do_fork";
+> +static char symbol[MAX_SYMBOL_LEN] = "kernel_clone";
+>  module_param_string(symbol, symbol, sizeof(symbol), 0644);
+>  
+>  /* For each probe you need to allocate a kprobe structure */
+> -- 
+> 2.28.0
+> 
 
+
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
