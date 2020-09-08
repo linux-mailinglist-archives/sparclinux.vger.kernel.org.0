@@ -2,59 +2,78 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B610B2609EF
-	for <lists+sparclinux@lfdr.de>; Tue,  8 Sep 2020 07:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DEFA260C5E
+	for <lists+sparclinux@lfdr.de>; Tue,  8 Sep 2020 09:48:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728565AbgIHFWw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 8 Sep 2020 01:22:52 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:65048 "EHLO pegase1.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726387AbgIHFWu (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 8 Sep 2020 01:22:50 -0400
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 4Bltny2bk8z9tyfS;
-        Tue,  8 Sep 2020 07:22:46 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id zhKYZbflWiU8; Tue,  8 Sep 2020 07:22:46 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 4Bltny1W9Lz9tyfR;
-        Tue,  8 Sep 2020 07:22:46 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 073A98B793;
-        Tue,  8 Sep 2020 07:22:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id 5cxa6T4RQxxI; Tue,  8 Sep 2020 07:22:46 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id BACC88B768;
-        Tue,  8 Sep 2020 07:22:44 +0200 (CEST)
-Subject: Re: [RFC PATCH v2 0/3] mm/gup: fix gup_fast with dynamic page table
- folding
-To:     Mike Rapoport <rppt@kernel.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
+        id S1729339AbgIHHr7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 8 Sep 2020 03:47:59 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:7650 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728786AbgIHHr5 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 8 Sep 2020 03:47:57 -0400
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0887WvWo103539;
+        Tue, 8 Sep 2020 03:46:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=7Wyqh7MeIDjAi+eJ5NjBqYqiJMPciT86nd2J6e9RnVc=;
+ b=Js9F8PhV3ve4wSZgPSOWcU4+eeye6MkHg/szXsay/J6iuPgAhdofffSX07lx5D0GB0MR
+ aF3AWsVsPiNuALSZ2Ww/0ODHXvdsSuWL2ppLGknUwxHOojMVlJKQWQ34+3Z4zGHemuf/
+ CG+DBQmn90MfyDRP9EFKac+an9e+LBFMUCrkGiSHfzLuAdo5+lU362NCriWYQIykpxcL
+ nTkdHznuDua9GcQmyPXh+3kC0kqSDkEpsTsJH/nm3C7tr5g+T4aKtUwaNYqIXkBH3INy
+ MxdZyJfAA/AsR3Auowrl4nya8/gDktt2AioTDodBt0qKN6TD7l4QjnGSkQ6rUS8oadYV QQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 33e4x71s09-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 08 Sep 2020 03:46:46 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0887Xmoc107206;
+        Tue, 8 Sep 2020 03:46:46 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 33e4x71rye-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 08 Sep 2020 03:46:46 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+        by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0887g14q000548;
+        Tue, 8 Sep 2020 07:46:44 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+        by ppma04fra.de.ibm.com with ESMTP id 33cm5hhgv4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 08 Sep 2020 07:46:44 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0887kfuH31916436
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 8 Sep 2020 07:46:41 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7F7D15204E;
+        Tue,  8 Sep 2020 07:46:41 +0000 (GMT)
+Received: from oc3871087118.ibm.com (unknown [9.145.35.55])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id E6CF352050;
+        Tue,  8 Sep 2020 07:46:39 +0000 (GMT)
+Date:   Tue, 8 Sep 2020 09:46:38 +0200
+From:   Alexander Gordeev <agordeev@linux.ibm.com>
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         linux-mm <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
         linux-sparc <sparclinux@vger.kernel.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
         Claudio Imbrenda <imbrenda@linux.ibm.com>,
         Will Deacon <will@kernel.org>,
         linux-arch <linux-arch@vger.kernel.org>,
         linux-s390 <linux-s390@vger.kernel.org>,
         Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
         Richard Weinberger <richard@nod.at>,
         linux-x86 <x86@kernel.org>, Russell King <linux@armlinux.org.uk>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Andrey Ryabinin <aryabinin@virtuozzo.com>,
         Heiko Carstens <hca@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Jeff Dike <jdike@addtoit.com>,
+        Arnd Bergmann <arnd@arndb.de>, Jeff Dike <jdike@addtoit.com>,
         linux-um <linux-um@lists.infradead.org>,
         Borislav Petkov <bp@alien8.de>,
         Andy Lutomirski <luto@kernel.org>,
@@ -63,59 +82,79 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         linux-power <linuxppc-dev@lists.ozlabs.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>
+Subject: Re: [RFC PATCH v2 2/3] mm: make pXd_addr_end() functions page-table
+ entry aware
+Message-ID: <20200908074638.GA19099@oc3871087118.ibm.com>
 References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
- <20200907201256.GC1976319@kernel.org>
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <9bde9857-fdfd-e384-ea27-a14e5a06f1e6@csgroup.eu>
-Date:   Tue, 8 Sep 2020 07:22:39 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ <20200907180058.64880-3-gerald.schaefer@linux.ibm.com>
+ <31dfb3ed-a0cc-3024-d389-ab9bd19e881f@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <20200907201256.GC1976319@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <31dfb3ed-a0cc-3024-d389-ab9bd19e881f@csgroup.eu>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-08_03:2020-09-08,2020-09-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ clxscore=1011 malwarescore=0 mlxlogscore=999 adultscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009080066
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+On Tue, Sep 08, 2020 at 07:14:38AM +0200, Christophe Leroy wrote:
+> You forgot arch/powerpc/mm/book3s64/subpage_prot.c it seems.
+
+Yes, and also two more sources :/
+	arch/powerpc/mm/kasan/8xx.c
+	arch/powerpc/mm/kasan/kasan_init_32.c
+
+But these two are not quite obvious wrt pgd_addr_end() used
+while traversing pmds. Could you please clarify a bit?
 
 
-Le 07/09/2020 à 22:12, Mike Rapoport a écrit :
-> On Mon, Sep 07, 2020 at 08:00:55PM +0200, Gerald Schaefer wrote:
->> This is v2 of an RFC previously discussed here:
->> https://lore.kernel.org/lkml/20200828140314.8556-1-gerald.schaefer@linux.ibm.com/
->>
->> Patch 1 is a fix for a regression in gup_fast on s390, after our conversion
->> to common gup_fast code. It will introduce special helper functions
->> pXd_addr_end_folded(), which have to be used in places where pagetable walk
->> is done w/o lock and with READ_ONCE, so currently only in gup_fast.
->>
->> Patch 2 is an attempt to make that more generic, i.e. change pXd_addr_end()
->> themselves by adding an extra pXd value parameter. That was suggested by
->> Jason during v1 discussion, because he is already thinking of some other
->> places where he might want to switch to the READ_ONCE logic for pagetable
->> walks. In general, that would be the cleanest / safest solution, but there
->> is some impact on other architectures and common code, hence the new and
->> greatly enlarged recipient list.
->>
->> Patch 3 is a "nice to have" add-on, which makes pXd_addr_end() inline
->> functions instead of #defines, so that we get some type checking for the
->> new pXd value parameter.
->>
->> Not sure about Fixes/stable tags for the generic solution. Only patch 1
->> fixes a real bug on s390, and has Fixes/stable tags. Patches 2 + 3 might
->> still be nice to have in stable, to ease future backports, but I guess
->> "nice to have" does not really qualify for stable backports.
-> 
-> I also think that adding pXd parameter to pXd_addr_end() is a cleaner
-> way and with this patch 1 is not really required. I would even merge
-> patches 2 and 3 into a single patch and use only it as the fix.
+diff --git a/arch/powerpc/mm/kasan/8xx.c b/arch/powerpc/mm/kasan/8xx.c
+index 2784224..89c5053 100644
+--- a/arch/powerpc/mm/kasan/8xx.c
++++ b/arch/powerpc/mm/kasan/8xx.c
+@@ -15,8 +15,8 @@
+ 	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd += 2, block += SZ_8M) {
+ 		pte_basic_t *new;
+ 
+-		k_next = pgd_addr_end(k_cur, k_end);
+-		k_next = pgd_addr_end(k_next, k_end);
++		k_next = pmd_addr_end(k_cur, k_end);
++		k_next = pmd_addr_end(k_next, k_end);
+ 		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
+ 			continue;
+ 
+diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
+index fb29404..3f7d6dc6 100644
+--- a/arch/powerpc/mm/kasan/kasan_init_32.c
++++ b/arch/powerpc/mm/kasan/kasan_init_32.c
+@@ -38,7 +38,7 @@ int __init kasan_init_shadow_page_tables(unsigned long k_start, unsigned long k_
+ 	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd++) {
+ 		pte_t *new;
+ 
+-		k_next = pgd_addr_end(k_cur, k_end);
++		k_next = pmd_addr_end(k_cur, k_end);
+ 		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
+ 			continue;
+ 
+@@ -196,7 +196,7 @@ void __init kasan_early_init(void)
+ 	kasan_populate_pte(kasan_early_shadow_pte, PAGE_KERNEL);
+ 
+ 	do {
+-		next = pgd_addr_end(addr, end);
++		next = pmd_addr_end(addr, end);
+ 		pmd_populate_kernel(&init_mm, pmd, kasan_early_shadow_pte);
+ 	} while (pmd++, addr = next, addr != end);
+ 
 
-Why not merging patches 2 and 3, but I would keep patch 1 separate but 
-after the generic changes, so that we first do the generic changes, then 
-we do the specific S390 use of it.
-
-Christophe
+> Christophe
