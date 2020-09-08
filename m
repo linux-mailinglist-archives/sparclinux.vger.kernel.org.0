@@ -2,46 +2,46 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62EBE260D55
-	for <lists+sparclinux@lfdr.de>; Tue,  8 Sep 2020 10:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 153E62612AE
+	for <lists+sparclinux@lfdr.de>; Tue,  8 Sep 2020 16:27:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729844AbgIHIRc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 8 Sep 2020 04:17:32 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:20076 "EHLO pegase1.c-s.fr"
+        id S1729911AbgIHO0E (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 8 Sep 2020 10:26:04 -0400
+Received: from pegase1.c-s.fr ([93.17.236.30]:35692 "EHLO pegase1.c-s.fr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729432AbgIHIRb (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 8 Sep 2020 04:17:31 -0400
+        id S1729725AbgIHOY4 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 8 Sep 2020 10:24:56 -0400
 Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 4BlygQ2VM3z9tyfZ;
-        Tue,  8 Sep 2020 10:17:22 +0200 (CEST)
+        by localhost (Postfix) with ESMTP id 4Bm4Vr1mvXz9tysg;
+        Tue,  8 Sep 2020 14:40:20 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
         by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id 8E9ZAY1YbiyQ; Tue,  8 Sep 2020 10:17:22 +0200 (CEST)
+        with ESMTP id cIMhaNVcmlrN; Tue,  8 Sep 2020 14:40:20 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 4BlygQ1YKJz9tyfY;
-        Tue,  8 Sep 2020 10:17:22 +0200 (CEST)
+        by pegase1.c-s.fr (Postfix) with ESMTP id 4Bm4Vr0fBLz9tysZ;
+        Tue,  8 Sep 2020 14:40:20 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 2B1BE8B7A1;
-        Tue,  8 Sep 2020 10:17:23 +0200 (CEST)
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 5BBAE8B7C1;
+        Tue,  8 Sep 2020 14:40:21 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
         by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id k9FC2ZI-dL_g; Tue,  8 Sep 2020 10:17:23 +0200 (CEST)
+        with ESMTP id xwRqAZ7QC05H; Tue,  8 Sep 2020 14:40:21 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id D4E3E8B768;
-        Tue,  8 Sep 2020 10:17:20 +0200 (CEST)
-Subject: Re: [RFC PATCH v2 2/3] mm: make pXd_addr_end() functions page-table
- entry aware
-To:     Alexander Gordeev <agordeev@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id B7AA88B7BE;
+        Tue,  8 Sep 2020 14:40:18 +0200 (CEST)
+Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
+ folding
+To:     Christian Borntraeger <borntraeger@de.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
         Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+        John Hubbard <jhubbard@nvidia.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         linux-mm <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
         linux-sparc <sparclinux@vger.kernel.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
         Claudio Imbrenda <imbrenda@linux.ibm.com>,
         Will Deacon <will@kernel.org>,
         linux-arch <linux-arch@vger.kernel.org>,
@@ -49,7 +49,6 @@ Cc:     Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>,
         Richard Weinberger <richard@nod.at>,
         linux-x86 <x86@kernel.org>, Russell King <linux@armlinux.org.uk>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
         Ingo Molnar <mingo@redhat.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Andrey Ryabinin <aryabinin@virtuozzo.com>,
@@ -66,16 +65,16 @@ Cc:     Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Mike Rapoport <rppt@kernel.org>
 References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
- <20200907180058.64880-3-gerald.schaefer@linux.ibm.com>
- <31dfb3ed-a0cc-3024-d389-ab9bd19e881f@csgroup.eu>
- <20200908074638.GA19099@oc3871087118.ibm.com>
+ <20200907180058.64880-2-gerald.schaefer@linux.ibm.com>
+ <82fbe8f9-f199-5fc2-4168-eb43ad0b0346@csgroup.eu>
+ <70a3dcb5-5ed1-6efa-6158-d0573d6927da@de.ibm.com>
 From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <5d4f5546-afd0-0b8f-664d-700ae346b9ec@csgroup.eu>
-Date:   Tue, 8 Sep 2020 10:16:49 +0200
+Message-ID: <96b80926-cf5b-1afa-9b7a-949a2188e61f@csgroup.eu>
+Date:   Tue, 8 Sep 2020 14:40:10 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <20200908074638.GA19099@oc3871087118.ibm.com>
+In-Reply-To: <70a3dcb5-5ed1-6efa-6158-d0573d6927da@de.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -86,69 +85,61 @@ X-Mailing-List: sparclinux@vger.kernel.org
 
 
 
-Le 08/09/2020 à 09:46, Alexander Gordeev a écrit :
-> On Tue, Sep 08, 2020 at 07:14:38AM +0200, Christophe Leroy wrote:
->> You forgot arch/powerpc/mm/book3s64/subpage_prot.c it seems.
-> 
-> Yes, and also two more sources :/
-> 	arch/powerpc/mm/kasan/8xx.c
-> 	arch/powerpc/mm/kasan/kasan_init_32.c
-> 
-> But these two are not quite obvious wrt pgd_addr_end() used
-> while traversing pmds. Could you please clarify a bit?
+Le 08/09/2020 à 14:09, Christian Borntraeger a écrit :
 > 
 > 
-> diff --git a/arch/powerpc/mm/kasan/8xx.c b/arch/powerpc/mm/kasan/8xx.c
-> index 2784224..89c5053 100644
-> --- a/arch/powerpc/mm/kasan/8xx.c
-> +++ b/arch/powerpc/mm/kasan/8xx.c
-> @@ -15,8 +15,8 @@
->   	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd += 2, block += SZ_8M) {
->   		pte_basic_t *new;
->   
-> -		k_next = pgd_addr_end(k_cur, k_end);
-> -		k_next = pgd_addr_end(k_next, k_end);
-> +		k_next = pmd_addr_end(k_cur, k_end);
-> +		k_next = pmd_addr_end(k_next, k_end);
-
-No, I don't think so.
-On powerpc32 we have only two levels, so pgd and pmd are more or less 
-the same.
-But pmd_addr_end() as defined in include/asm-generic/pgtable-nopmd.h is 
-a no-op, so I don't think it will work.
-
-It is likely that this function should iterate on pgd, then you get pmd 
-= pmd_offset(pud_offset(p4d_offset(pgd)));
-
->   		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
->   			continue;
->   
-> diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
-> index fb29404..3f7d6dc6 100644
-> --- a/arch/powerpc/mm/kasan/kasan_init_32.c
-> +++ b/arch/powerpc/mm/kasan/kasan_init_32.c
-> @@ -38,7 +38,7 @@ int __init kasan_init_shadow_page_tables(unsigned long k_start, unsigned long k_
->   	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd++) {
->   		pte_t *new;
->   
-> -		k_next = pgd_addr_end(k_cur, k_end);
-> +		k_next = pmd_addr_end(k_cur, k_end);
-
-Same here I get, iterate on pgd then get pmd = 
-pmd_offset(pud_offset(p4d_offset(pgd)));
-
->   		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
->   			continue;
->   
-> @@ -196,7 +196,7 @@ void __init kasan_early_init(void)
->   	kasan_populate_pte(kasan_early_shadow_pte, PAGE_KERNEL);
->   
->   	do {
-> -		next = pgd_addr_end(addr, end);
-> +		next = pmd_addr_end(addr, end);
->   		pmd_populate_kernel(&init_mm, pmd, kasan_early_shadow_pte);
->   	} while (pmd++, addr = next, addr != end);
->   
+> On 08.09.20 07:06, Christophe Leroy wrote:
+>>
+>>
+>> Le 07/09/2020 à 20:00, Gerald Schaefer a écrit :
+>>> From: Alexander Gordeev <agordeev@linux.ibm.com>
+>>>
+>>> Commit 1a42010cdc26 ("s390/mm: convert to the generic get_user_pages_fast
+>>> code") introduced a subtle but severe bug on s390 with gup_fast, due to
+>>> dynamic page table folding.
+>>>
+>>> The question "What would it require for the generic code to work for s390"
+>>> has already been discussed here
+>>> https://lkml.kernel.org/r/20190418100218.0a4afd51@mschwideX1
+>>> and ended with a promising approach here
+>>> https://lkml.kernel.org/r/20190419153307.4f2911b5@mschwideX1
+>>> which in the end unfortunately didn't quite work completely.
+>>>
+>>> We tried to mimic static level folding by changing pgd_offset to always
+>>> calculate top level page table offset, and do nothing in folded pXd_offset.
+>>> What has been overlooked is that PxD_SIZE/MASK and thus pXd_addr_end do
+>>> not reflect this dynamic behaviour, and still act like static 5-level
+>>> page tables.
+>>>
+>>
+>> [...]
+>>
+>>>
+>>> Fix this by introducing new pXd_addr_end_folded helpers, which take an
+>>> additional pXd entry value parameter, that can be used on s390
+>>> to determine the correct page table level and return corresponding
+>>> end / boundary. With that, the pointer iteration will always
+>>> happen in gup_pgd_range for s390. No change for other architectures
+>>> introduced.
+>>
+>> Not sure pXd_addr_end_folded() is the best understandable name, allthough I don't have any alternative suggestion at the moment.
+>> Maybe could be something like pXd_addr_end_fixup() as it will disappear in the next patch, or pXd_addr_end_gup() ?
+>>
+>> Also, if it happens to be acceptable to get patch 2 in stable, I think you should switch patch 1 and patch 2 to avoid the step through pXd_addr_end_folded()
 > 
+> given that this fixes a data corruption issue, wouldnt it be the best to go forward
+> with this patch ASAP and then handle the other patches on top with all the time that
+> we need?
+
+I have no strong opinion on this, but I feel rather tricky to have to 
+change generic part of GUP to use a new fonction then revert that change 
+in the following patch, just because you want the first patch in stable 
+and not the second one.
+
+Regardless, I was wondering, why do we need a reference to the pXd at 
+all when calling pXd_addr_end() ?
+
+Couldn't S390 retrieve the pXd by using the pXd_offset() dance with the 
+passed addr ?
 
 Christophe
