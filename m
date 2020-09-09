@@ -2,160 +2,202 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F6852624F6
-	for <lists+sparclinux@lfdr.de>; Wed,  9 Sep 2020 04:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E8C6262A85
+	for <lists+sparclinux@lfdr.de>; Wed,  9 Sep 2020 10:38:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730083AbgIICMW (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 8 Sep 2020 22:12:22 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:43174 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727804AbgIICMS (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 8 Sep 2020 22:12:18 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0892AS5c094075;
-        Wed, 9 Sep 2020 02:11:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=vtum29krzlUsLIvRnyVxjLuvhWBtLTr/qnU9AvnGbCE=;
- b=xBu1bvtfDZ9503xniraz9muXI2Eg0qhYCYcOf6RobuyNUO3o1Po7XLCiySpH1j3NqLzx
- 2jgXXHktcetcwXVddyuNr8Y2tEFe3S1Fic84p/c7b/8cWZhzNvssHJn72rt+zNyDQI3g
- W6nGbDQrnBPjzFv3JHhmeBC2Lng7TyLH4twd3n8hvyY34Y8B6srBiufkC1dha4TbTt8U
- iYM7VJ+79F4uaHjvVJydS3mD7NcVtBky/+GEZFGwxEWNcRrsg0F0s6PbT0Xh+BU3JioS
- 8YO2a/M76MlnuYxeGIlhqTuBmwNwX5juOavRg+aCtHeGvwObjWNA43YKkCVKSbI3nWmM bw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 33c2mkxvtd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 09 Sep 2020 02:11:40 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 089252Ah095301;
-        Wed, 9 Sep 2020 02:09:40 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 33cmk53euj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Sep 2020 02:09:40 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08929Zlw022818;
-        Wed, 9 Sep 2020 02:09:35 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 08 Sep 2020 19:09:35 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
-        Joe Perches <joe@perches.com>, oprofile-list@lists.sf.net,
-        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
-        linaro-mm-sig@lists.linaro.org, drbd-dev@tron.linbit.com,
-        intel-gfx@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
-        reiserfs-devel@vger.kernel.org, linux-bcache@vger.kernel.org,
-        Jiri Kosina <trivial@kernel.org>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        sparclinux@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-scsi@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/29] treewide: Convert comma separated statements
-Date:   Tue,  8 Sep 2020 22:09:14 -0400
-Message-Id: <159961731707.5787.13988542229153933257.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <cover.1598331148.git.joe@perches.com>
-References: <cover.1598331148.git.joe@perches.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 phishscore=0
- mlxlogscore=999 bulkscore=0 adultscore=0 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009090018
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 priorityscore=1501
- phishscore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
- malwarescore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009090018
+        id S1729521AbgIIIix (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 9 Sep 2020 04:38:53 -0400
+Received: from pegase1.c-s.fr ([93.17.236.30]:13756 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725826AbgIIIio (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 9 Sep 2020 04:38:44 -0400
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 4Bmb5S0y0Yz9v0ZM;
+        Wed,  9 Sep 2020 10:38:36 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id AVJJBZqZz_Lj; Wed,  9 Sep 2020 10:38:36 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 4Bmb5R6sd6z9v0ZL;
+        Wed,  9 Sep 2020 10:38:35 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 1B5318B7DC;
+        Wed,  9 Sep 2020 10:38:37 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id c2KpwQPUfYWM; Wed,  9 Sep 2020 10:38:36 +0200 (CEST)
+Received: from [10.0.2.15] (unknown [192.168.4.90])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 5593A8B7D4;
+        Wed,  9 Sep 2020 10:38:35 +0200 (CEST)
+Subject: Re: [RFC PATCH v2 2/3] mm: make pXd_addr_end() functions
+ page-table entry aware
+From:   Christophe Leroy <christophe.leroy@csgroup.eu>
+To:     Alexander Gordeev <agordeev@linux.ibm.com>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        linux-mm <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+        linux-sparc <sparclinux@vger.kernel.org>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Richard Weinberger <richard@nod.at>,
+        linux-x86 <x86@kernel.org>, Russell King <linux@armlinux.org.uk>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>, Jeff Dike <jdike@addtoit.com>,
+        linux-um <linux-um@lists.infradead.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm <linux-arm-kernel@lists.infradead.org>,
+        linux-power <linuxppc-dev@lists.ozlabs.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>
+In-Reply-To: <20200908141554.GA20558@oc3871087118.ibm.com>
+References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
+         <20200907180058.64880-3-gerald.schaefer@linux.ibm.com>
+         <31dfb3ed-a0cc-3024-d389-ab9bd19e881f@csgroup.eu>
+         <20200908074638.GA19099@oc3871087118.ibm.com>
+         <5d4f5546-afd0-0b8f-664d-700ae346b9ec@csgroup.eu>
+         <20200908141554.GA20558@oc3871087118.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: CS Group France
+Date:   Wed, 09 Sep 2020 08:38:31 +0000
+Message-ID: <1599640711.14692.1.camel@po17688vm.idsi0.si.c-s.fr>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.32.3 (2.32.3-37.el6) 
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, 24 Aug 2020 21:55:57 -0700, Joe Perches wrote:
-
-> There are many comma separated statements in the kernel.
-> See:https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2008201856110.2524@hadrien/
+On Tue, 2020-09-08 at 16:15 +0200, Alexander Gordeev wrote:
+> On Tue, Sep 08, 2020 at 10:16:49AM +0200, Christophe Leroy wrote:
+> > >Yes, and also two more sources :/
+> > >	arch/powerpc/mm/kasan/8xx.c
+> > >	arch/powerpc/mm/kasan/kasan_init_32.c
+> > >
+> > >But these two are not quite obvious wrt pgd_addr_end() used
+> > >while traversing pmds. Could you please clarify a bit?
+> > >
+> > >
+> > >diff --git a/arch/powerpc/mm/kasan/8xx.c b/arch/powerpc/mm/kasan/8xx.c
+> > >index 2784224..89c5053 100644
+> > >--- a/arch/powerpc/mm/kasan/8xx.c
+> > >+++ b/arch/powerpc/mm/kasan/8xx.c
+> > >@@ -15,8 +15,8 @@
+> > >  	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd += 2, block += SZ_8M) {
+> > >  		pte_basic_t *new;
+> > >-		k_next = pgd_addr_end(k_cur, k_end);
+> > >-		k_next = pgd_addr_end(k_next, k_end);
+> > >+		k_next = pmd_addr_end(k_cur, k_end);
+> > >+		k_next = pmd_addr_end(k_next, k_end);
+> > 
+> > No, I don't think so.
+> > On powerpc32 we have only two levels, so pgd and pmd are more or
+> > less the same.
+> > But pmd_addr_end() as defined in include/asm-generic/pgtable-nopmd.h
+> > is a no-op, so I don't think it will work.
+> > 
+> > It is likely that this function should iterate on pgd, then you get
+> > pmd = pmd_offset(pud_offset(p4d_offset(pgd)));
 > 
-> Convert the comma separated statements that are in if/do/while blocks
-> to use braces and semicolons.
+> It looks like the code iterates over single pmd table while using
+> pgd_addr_end() only to skip all the middle levels and bail out
+> from the loop.
 > 
-> Many comma separated statements still exist but those are changes for
-> another day.
+> I would be wary for switching from pmds to pgds, since we are
+> trying to minimize impact (especially functional) and the
+> rework does not seem that obvious.
 > 
-> [...]
 
-Applied to 5.10/scsi-queue, thanks!
+I've just tested the following change, it works and should fix the
+oddity:
 
-[01/29] coding-style.rst: Avoid comma statements
-        (no commit info)
-[02/29] alpha: Avoid comma separated statements
-        (no commit info)
-[03/29] ia64: Avoid comma separated statements
-        (no commit info)
-[04/29] sparc: Avoid comma separated statements
-        (no commit info)
-[05/29] ata: Avoid comma separated statements
-        (no commit info)
-[06/29] drbd: Avoid comma separated statements
-        (no commit info)
-[07/29] lp: Avoid comma separated statements
-        (no commit info)
-[08/29] dma-buf: Avoid comma separated statements
-        (no commit info)
-[09/29] drm/gma500: Avoid comma separated statements
-        (no commit info)
-[10/29] drm/i915: Avoid comma separated statements
-        (no commit info)
-[11/29] hwmon: (scmi-hwmon): Avoid comma separated statements
-        (no commit info)
-[12/29] Input: MT - Avoid comma separated statements
-        (no commit info)
-[13/29] bcache: Avoid comma separated statements
-        (no commit info)
-[14/29] media: Avoid comma separated statements
-        (no commit info)
-[15/29] mtd: Avoid comma separated statements
-        (no commit info)
-[16/29] 8390: Avoid comma separated statements
-        (no commit info)
-[17/29] fs_enet: Avoid comma separated statements
-        (no commit info)
-[18/29] wan: sbni: Avoid comma separated statements
-        (no commit info)
-[19/29] s390/tty3270: Avoid comma separated statements
-        (no commit info)
-[20/29] scsi: arm: Avoid comma separated statements
-        https://git.kernel.org/mkp/scsi/c/a08a07326510
-[21/29] media: atomisp: Avoid comma separated statements
-        (no commit info)
-[22/29] video: fbdev: Avoid comma separated statements
-        (no commit info)
-[23/29] fuse: Avoid comma separated statements
-        (no commit info)
-[24/29] reiserfs: Avoid comma separated statements
-        (no commit info)
-[25/29] lib/zlib: Avoid comma separated statements
-        (no commit info)
-[26/29] lib: zstd: Avoid comma separated statements
-        (no commit info)
-[27/29] ipv6: fib6: Avoid comma separated statements
-        (no commit info)
-[28/29] sunrpc: Avoid comma separated statements
-        (no commit info)
-[29/29] tools: Avoid comma separated statements
-        (no commit info)
+diff --git a/arch/powerpc/mm/kasan/8xx.c b/arch/powerpc/mm/kasan/8xx.c
+index 2784224054f8..8e53ddf57b84 100644
+--- a/arch/powerpc/mm/kasan/8xx.c
++++ b/arch/powerpc/mm/kasan/8xx.c
+@@ -9,11 +9,12 @@
+ static int __init
+ kasan_init_shadow_8M(unsigned long k_start, unsigned long k_end, void
+*block)
+ {
+-	pmd_t *pmd = pmd_off_k(k_start);
++	pgd_t *pgd = pgd_offset_k(k_start);
+ 	unsigned long k_cur, k_next;
+ 
+-	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd += 2, block
++= SZ_8M) {
++	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pgd += 2, block
++= SZ_8M) {
+ 		pte_basic_t *new;
++		pmd_t *pmd = pmd_offset(pud_offset(p4d_offset(pgd, k_cur), k_cur),
+k_cur);
+ 
+ 		k_next = pgd_addr_end(k_cur, k_end);
+ 		k_next = pgd_addr_end(k_next, k_end);
+diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c
+b/arch/powerpc/mm/kasan/kasan_init_32.c
+index fb294046e00e..e5f524fa71a7 100644
+--- a/arch/powerpc/mm/kasan/kasan_init_32.c
++++ b/arch/powerpc/mm/kasan/kasan_init_32.c
+@@ -30,13 +30,12 @@ static void __init kasan_populate_pte(pte_t *ptep,
+pgprot_t prot)
+ 
+ int __init kasan_init_shadow_page_tables(unsigned long k_start,
+unsigned long k_end)
+ {
+-	pmd_t *pmd;
++	pgd_t *pgd = pgd_offset_k(k_start);
+ 	unsigned long k_cur, k_next;
+ 
+-	pmd = pmd_off_k(k_start);
+-
+-	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd++) {
++	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pgd++) {
+ 		pte_t *new;
++		pmd_t *pmd = pmd_offset(pud_offset(p4d_offset(pgd, k_cur), k_cur),
+k_cur);
+ 
+ 		k_next = pgd_addr_end(k_cur, k_end);
+ 		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
+@@ -189,16 +188,18 @@ void __init kasan_early_init(void)
+ 	unsigned long addr = KASAN_SHADOW_START;
+ 	unsigned long end = KASAN_SHADOW_END;
+ 	unsigned long next;
+-	pmd_t *pmd = pmd_off_k(addr);
++	pgd_t *pgd = pgd_offset_k(addr);
+ 
+ 	BUILD_BUG_ON(KASAN_SHADOW_START & ~PGDIR_MASK);
+ 
+ 	kasan_populate_pte(kasan_early_shadow_pte, PAGE_KERNEL);
+ 
+ 	do {
++		pmd_t *pmd = pmd_offset(pud_offset(p4d_offset(pgd, addr), addr),
+addr);
++
+ 		next = pgd_addr_end(addr, end);
+ 		pmd_populate_kernel(&init_mm, pmd, kasan_early_shadow_pte);
+-	} while (pmd++, addr = next, addr != end);
++	} while (pgd++, addr = next, addr != end);
+ 
+ 	if (early_mmu_has_feature(MMU_FTR_HPTE_TABLE))
+ 		kasan_early_hash_table();
+---
+Christophe
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
