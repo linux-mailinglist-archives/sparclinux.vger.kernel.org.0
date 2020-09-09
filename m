@@ -2,72 +2,79 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FAF0265A2C
-	for <lists+sparclinux@lfdr.de>; Fri, 11 Sep 2020 09:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A18E265ACB
+	for <lists+sparclinux@lfdr.de>; Fri, 11 Sep 2020 09:49:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725535AbgIKHNU (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 11 Sep 2020 03:13:20 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:38924 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725468AbgIKHNT (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 11 Sep 2020 03:13:19 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 1DF03501A4B223675124;
-        Fri, 11 Sep 2020 15:13:13 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.487.0; Fri, 11 Sep 2020 15:13:03 +0800
-From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
-To:     <davem@davemloft.net>, <dan.j.williams@intel.com>,
-        <dvhart@infradead.org>, <mchehab+samsung@kernel.org>,
-        <gregkh@linuxfoundation.org>, <dsterba@suse.com>, <arnd@arndb.de>
-CC:     <sparclinux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <jingxiangfeng@huawei.com>
-Subject: [PATCH] sbus: char: Remove meaningless jump label out_free
-Date:   Fri, 11 Sep 2020 15:13:41 +0800
-Message-ID: <20200911071341.101397-1-jingxiangfeng@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1725785AbgIKHt2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Fri, 11 Sep 2020 03:49:28 -0400
+Received: from mail.flex.co.jp ([211.8.82.123]:33105 "EHLO www.flex.co.jp"
+        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725782AbgIKHt2 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 11 Sep 2020 03:49:28 -0400
+Received: from live.com.mx ([103.89.89.225])
+        (authenticated bits=0)
+        by www.flex.co.jp (MTA) with ESMTP id 089AMmQT027937
+        for <sparclinux@vger.kernel.org>; Wed, 9 Sep 2020 19:23:34 +0900
+Reply-To: powerinthewords@yahoo.co.jp
+From:   piyin.crhe@live.com.mx
+To:     sparclinux@vger.kernel.org
+Subject: =?utf-8?Q?=5BSpam=5D?=
+ We are still waiting for your email...
+Date:   09 Sep 2020 03:23:29 -0700
+Message-ID: <20200909032329.138E5FF98A1B280B@live.com.mx>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-SpamInfo: FortiGuard-AntiSpam ip, connection black ip 103.89.89.225
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-After commit 57a4a3d7f756 ("display7seg: Introduce the use of the managed
-version of kzalloc"), The out_free jump label has nothing to do but goto
-out. So remove it.
+Dear Beneficiary,
 
-Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
----
- drivers/sbus/char/display7seg.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+We wish to inform you that a power of attorney was forwarded to 
+our office  by two gentlemen regarding your unclaimed fund of $56 
+Million Dollar. One of them is an American citizen named Mr. 
+Robert Porter and the other is Mr. Wilhelm Berg a Swedish 
+citizen.We have be waiting for you to contact us since last year.
 
-diff --git a/drivers/sbus/char/display7seg.c b/drivers/sbus/char/display7seg.c
-index fad936eb845f..00e72b97d0b6 100644
---- a/drivers/sbus/char/display7seg.c
-+++ b/drivers/sbus/char/display7seg.c
-@@ -186,7 +186,7 @@ static int d7s_probe(struct platform_device *op)
- 	p->regs = of_ioremap(&op->resource[0], 0, sizeof(u8), "d7s");
- 	if (!p->regs) {
- 		printk(KERN_ERR PFX "Cannot map chip registers\n");
--		goto out_free;
-+		goto out;
- 	}
- 
- 	err = misc_register(&d7s_miscdev);
-@@ -228,8 +228,6 @@ static int d7s_probe(struct platform_device *op)
- 
- out_iounmap:
- 	of_iounmap(&op->resource[0], p->regs, sizeof(u8));
--
--out_free:
- 	goto out;
- }
- 
--- 
-2.17.1
+The document claims these gentlemen to be your authorized 
+representatives, and the power of attorney states that you are 
+already deceased.  It further states that your death was due to 
+lung cancer, with your date of death being January 27th, 2020.
 
+They have now submitted a new account to replace the receiving 
+account that was in the original claim of funds. These funds have 
+remained unclaimed for quite some time and the need for 
+resolution is pressing. Below is the new account they have 
+submitted.
+
+Account Name's :  Robert Porter /Wilhelm Berg
+Account: 5007-29 438 66
+IBAN-nr: SE4150000000050072943866
+Bic-kod: ESSESESS
+Skandinaviska Enskilda Banken. (SEB :)
+SWEDEN .
+
+In the event that you are in fact still alive, we ask that you 
+confirm your existence by responding to this email. You are to 
+view this as a matter requiring immediate attention and response. 
+We have 48 hr monitoring of all activities within Federal Reserve 
+Bank.On this regard,you will be directed to any of our office 
+center that you will go in person to sign the final papers,
+because we have our payment center in Europe,Asia,America and 
+Canada.You will go to any of the office that you will be directed 
+to with the copy of the documents of your fund.
+
+We have contacted the bank in the Sweden asking them to wait for 
+further directives from Federal Reserve Bank, prior to 
+authorizing any withdrawals in any form.  Our request is based 
+entirely on our attempt to verify that you are in fact deceased, 
+before money is wrongly disbursed.
+
+Your in Service,
+
+Robert Steven Kaplan
+2200 N Pearl St, Dallas, TX 75201, United States
