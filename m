@@ -2,73 +2,107 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF47F263CC6
-	for <lists+sparclinux@lfdr.de>; Thu, 10 Sep 2020 07:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34C77263D55
+	for <lists+sparclinux@lfdr.de>; Thu, 10 Sep 2020 08:28:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727775AbgIJFxn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 10 Sep 2020 01:53:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60006 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726676AbgIJFve (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 10 Sep 2020 01:51:34 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB852C0613ED;
-        Wed,  9 Sep 2020 22:51:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=d/1oapeqMoUX4fyEWjc4oR9/HMmOIqyxIeXpBbH5I6g=; b=uOu1pQyJkN91O28k3NNeK+gmQF
-        hrvf0kLD+AJr/uyZi5OXbLR3iOtsmxbT10BEvJu+V0Qs0jVvBr/CTgD4ImAAG37J8q5aDlOh2nUlM
-        pliPvINsf86YsBNuz6MyTXIdXiVBn2zoy7xSuV/yvQzhG1sAqw3lvykveX+nL+Dvb4AwDkxCOBJIH
-        8pD7ovGBGDAYCzRlbRN3Z3axTJ3zvbIpOkVCnTgix8b8LiQ2wxfgeWX261plaiaAGclHU/2IpzWzB
-        5D+4jEUmv/3Yd5X9Ta1Sg5WDA32b142gJkiCRM9zlrkJKsL2h+6Cw8E9vVXC4Uy7TSedjMPaiL6bL
-        xv7eJNCw==;
-Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kGFUG-00036l-Oo; Thu, 10 Sep 2020 05:51:12 +0000
-Date:   Thu, 10 Sep 2020 06:51:12 +0100
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Alex Shi <alex.shi@linux.alibaba.com>
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Alexander Duyck <alexander.duyck@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 3/4] mm/pageblock: work around multiple arch's cmpxchg
- support issue
-Message-ID: <20200910055112.GA11727@infradead.org>
-References: <1599116482-7410-1-git-send-email-alex.shi@linux.alibaba.com>
- <1599116482-7410-3-git-send-email-alex.shi@linux.alibaba.com>
+        id S1730073AbgIJG2g (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 10 Sep 2020 02:28:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52524 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726440AbgIJG21 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 10 Sep 2020 02:28:27 -0400
+Received: from coco.lan (ip5f5ad5ac.dynamic.kabel-deutschland.de [95.90.213.172])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 79CF6206A1;
+        Thu, 10 Sep 2020 06:28:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599719306;
+        bh=DjrBPnz1BgCnBYG/64IiUxKEJrMJGKb1A3mRWVpncJk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=KppkCOGGex5Td4qsjLzCFk1NCf4XHbXpibLJsQYMVVaT0bkaAFQjn+ZuEeXf2o77m
+         UyE3jBNOXTpotfoeco2l+h7jkiCeDQm7I+A6v3H6sCfl0zDTboY8/bNQu+oaB5Un+6
+         r8LmWMYkPZepovOPOzqdHyn81ea3fXGQ2O9gVUL8=
+Date:   Thu, 10 Sep 2020 08:28:12 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Jiri Kosina <trivial@kernel.org>,
+        Kees Cook <kees.cook@canonical.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
+        linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        nouveau@lists.freedesktop.org, linux-input@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-rdma@vger.kernel.org,
+        iommu@lists.linux-foundation.org, dm-devel@redhat.com,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
+        oss-drivers@netronome.com, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-nvme@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        storagedev@microchip.com, sparclinux@vger.kernel.org,
+        linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, bpf@vger.kernel.org,
+        dccp@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, linux-sctp@vger.kernel.org,
+        alsa-devel <alsa-devel@alsa-project.org>
+Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
+ break;
+Message-ID: <20200910082812.057a04e6@coco.lan>
+In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1599116482-7410-3-git-send-email-alex.shi@linux.alibaba.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Sep 03, 2020 at 03:01:22PM +0800, Alex Shi wrote:
-> Armv6, sh2, sparc32 and xtensa can not do cmpxchg1, so we have to use
-> cmpxchg4 on it.
-> 
-> Here we mark above 4 arch's NO_CMPXCHG_BYTE, and would add more if we
-> found.
-> 
-> This is the first usages of cmpxchg flase sharing change. We'd better
-> check more cmpxchg usages in current kernel...
+Em Wed, 09 Sep 2020 13:06:39 -0700
+Joe Perches <joe@perches.com> escreveu:
 
-I think a positive symbol, e.g. HAVE_CMPXCHG_BYTE is a lot easier to
-understand, and also fool-proof.
+> fallthrough to a separate case/default label break; isn't very readable.
+> 
+> Convert pseudo-keyword fallthrough; statements to a simple break; when
+> the next label is case or default and the only statement in the next
+> label block is break;
+> 
+> Found using:
+> 
+> $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
+> 
+> Miscellanea:
+> 
+> o Move or coalesce a couple label blocks above a default: block.
+> 
+> Signed-off-by: Joe Perches <joe@perches.com>
+> ---
+> 
+> Compiled allyesconfig x86-64 only.
+> A few files for other arches were not compiled.
+> 
+
+
+>  drivers/media/dvb-frontends/drxd_hard.c                   |  2 +-
+>  drivers/media/i2c/ov5640.c                                |  2 +-
+>  drivers/media/i2c/ov6650.c                                |  5 ++---
+>  drivers/media/i2c/smiapp/smiapp-core.c                    |  2 +-
+>  drivers/media/i2c/tvp5150.c                               |  2 +-
+>  drivers/media/pci/ddbridge/ddbridge-core.c                |  2 +-
+>  drivers/media/usb/cpia2/cpia2_core.c                      |  2 +-
+
+For media drivers:
+
+Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+
+Thanks,
+Mauro
