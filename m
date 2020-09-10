@@ -2,66 +2,76 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9801264F16
-	for <lists+sparclinux@lfdr.de>; Thu, 10 Sep 2020 21:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7594F264F02
+	for <lists+sparclinux@lfdr.de>; Thu, 10 Sep 2020 21:32:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727791AbgIJTeS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 10 Sep 2020 15:34:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39980 "EHLO
+        id S1725983AbgIJTcx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 10 Sep 2020 15:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731406AbgIJPsN (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 10 Sep 2020 11:48:13 -0400
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99F2FC06135E
-        for <sparclinux@vger.kernel.org>; Thu, 10 Sep 2020 08:10:29 -0700 (PDT)
-Received: by mail-qk1-x743.google.com with SMTP id o16so6365423qkj.10
-        for <sparclinux@vger.kernel.org>; Thu, 10 Sep 2020 08:10:29 -0700 (PDT)
+        with ESMTP id S1727095AbgIJTcb (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 10 Sep 2020 15:32:31 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93856C061757
+        for <sparclinux@vger.kernel.org>; Thu, 10 Sep 2020 12:32:26 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id p9so10445064ejf.6
+        for <sparclinux@vger.kernel.org>; Thu, 10 Sep 2020 12:32:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=IGv0f01H1HhwMLTOhjZhfHu2g8LxVsJgV1pDEfYUgDw=;
-        b=OLk8h2bgkMx23a6lKAISLlfAQbxOdT1UvNWDM9Zk6DHatbSGVbAHhfj7/QkR54l1rm
-         7d91OLwa5I5BFDa46HUCe2u5YIKKF7iZkfQGVUZwXBkVLOtQU1rMTEuS2YOP/A4N28Nh
-         OaR3h6vYn2g6YHgjvbU6b6KqfQkKa4ZNKWFkzx5yRTFbAouWKSLG0Y+HJuXypLnRDO1C
-         /p+eopFDX9lOqXJ5iyilR1G0IS0msV2EgzUi/8XlGm0UwB0i+O4JYL5JY9QXWMDvYWiy
-         JaCFeMCQ8DYNgBrrdkRhDwMsvdOgF8w7kYFilEVYxP/+fBz702MoGQCz4e65/5fZS+Qk
-         h+2Q==
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=nTbGWidANXm2pjjCI9iaMQBY/df45EdumvXop+9a4ao=;
+        b=gkhGKJWFcLTHyB5x5aFfN6rnXH8dCRqQWjJKd9NZmHZK/NC/oX0q6HVDmBmeekhRv6
+         GTPYMsgUuX5KTeHU91CyIJtiMizZNYrRnX9QG0ENhdKweAOaB0W4mGxVSrji+PC28UP6
+         VshPJp7YLq+DwXcjz/A/kXWDuc/ae+MhCxRmA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=IGv0f01H1HhwMLTOhjZhfHu2g8LxVsJgV1pDEfYUgDw=;
-        b=s3Qj1xYktG0MoKgTIqaGfuISLjENOlnYI5t3r+SkmNbn8KngSdqNb7n4h4whV2WGrg
-         fYWB9zK9UJASltf3UHhMxPDMLhQaQQRTOhIrhkyC4zUuK+WAok81pzOnHgpeNM6jB1Ur
-         ikxCZDt99QQSE/9/W35y4ClnG3PySY9rlvQHj//2A8LJeTnXIweZktfI3s9A6aDAImF5
-         fLZL5Q+cqSpKg3HatC+csEbJH6tUH+K+kp3kr6p/TQ3Qe6/8U2VR5UmAi1Sz7Lsz8+f/
-         yTWe7csPMJlzeLiwOPvIR6sqMucv42t2WqrQzBztJjgRQsP6eH8SLAac4lEfVflk+dF0
-         YazQ==
-X-Gm-Message-State: AOAM530+ZZnEGCz8Ws+A8QLrL4kCerbs9Gb5dvowqP8zkx7OQps4KFs6
-        65h1S8ce7/OPE+PVzExHhjEziA==
-X-Google-Smtp-Source: ABdhPJykgWiu1zjU+K7XkGZJ7ie1IxH4yzDlIW/0m/WeyP2P7YrPQaO2mutyhA53lMDex0T4CRnGTg==
-X-Received: by 2002:a05:620a:141a:: with SMTP id d26mr7906055qkj.97.1599750628651;
-        Thu, 10 Sep 2020 08:10:28 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
-        by smtp.gmail.com with ESMTPSA id z74sm6914588qkb.11.2020.09.10.08.10.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 08:10:27 -0700 (PDT)
-Received: from jgg by mlx with local (Exim 4.94)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1kGODS-004MNk-Mg; Thu, 10 Sep 2020 12:10:26 -0300
-Date:   Thu, 10 Sep 2020 12:10:26 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     Alexander Gordeev <agordeev@linux.ibm.com>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nTbGWidANXm2pjjCI9iaMQBY/df45EdumvXop+9a4ao=;
+        b=nhG9KCTNc06AsPx8bTzWkVlmT/U1ANSU4NE7D0rCVz/4i6Y49EhMWGah25zjUyNFe1
+         aPRlcE+dMCGXgQpf58f1Lj04RTP9eaAm7mKuzckoRhC3z9tug1fDYCZFgbcSw7w7z+1l
+         ajmiCy2dUw7vhAXIQPCYbOyFxoFBNwI/DUfBXXNF+miCK5MbOy7UaYA+kNZZHdyN0D0U
+         2zCN0eK8qjg4Eb0NSVyzDohy7yBFj1kzair7OAoLpluIItgDQZLeEBqVjLtwBNwmAPXC
+         UbAtQcgw0fEiuWMez3+yYqXTVrL6eildws5hfTu8yCmWNn5hQOrLZSpe4l26xS3k0uo+
+         7LgQ==
+X-Gm-Message-State: AOAM531acyHwDLQkbtIl/xNEfiNTPwiJ6FzJkSwo07CYQvsMoQby+HPO
+        LuzJwycRCkmd0uzLXvbwFsjHPbycYckM5A==
+X-Google-Smtp-Source: ABdhPJytHnl+XyyyWg1RprX9nrs9MFYnR8jNAOIZHew2OpVJogZdeIqhIdNF2Rqm1kMuz/C8hGnt1w==
+X-Received: by 2002:a17:906:8143:: with SMTP id z3mr10217307ejw.323.1599766343931;
+        Thu, 10 Sep 2020 12:32:23 -0700 (PDT)
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com. [209.85.218.48])
+        by smtp.gmail.com with ESMTPSA id d24sm8307307edp.17.2020.09.10.12.32.22
+        for <sparclinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2020 12:32:23 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id e23so10450494eja.3
+        for <sparclinux@vger.kernel.org>; Thu, 10 Sep 2020 12:32:22 -0700 (PDT)
+X-Received: by 2002:a2e:7819:: with SMTP id t25mr5043564ljc.371.1599766341582;
+ Thu, 10 Sep 2020 12:32:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
+ <20200907180058.64880-2-gerald.schaefer@linux.ibm.com> <0dbc6ec8-45ea-0853-4856-2bc1e661a5a5@intel.com>
+ <20200909142904.00b72921@thinkpad> <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
+ <20200909192534.442f8984@thinkpad> <20200909180324.GI87483@ziepe.ca>
+ <20200910093925.GB29166@oc3871087118.ibm.com> <CAHk-=wh4SuNvThq1nBiqk0N-fW6NsY5w=VawC=rJs7ekmjAhjA@mail.gmail.com>
+ <20200910181319.GO87483@ziepe.ca> <CAHk-=wh3SjOE2r4WCfagL5Zq4Oj4Jsu1=1jTTi2GxGDTxP-J0Q@mail.gmail.com>
+ <20200910211010.46d064a7@thinkpad>
+In-Reply-To: <20200910211010.46d064a7@thinkpad>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 10 Sep 2020 12:32:05 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg3ggXU98Mnv-ss-hEcvUNc9vCtgSRc7GpcGfvyOw_h3g@mail.gmail.com>
+Message-ID: <CAHk-=wg3ggXU98Mnv-ss-hEcvUNc9vCtgSRc7GpcGfvyOw_h3g@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table folding
+To:     Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
         Dave Hansen <dave.hansen@intel.com>,
         John Hubbard <jhubbard@nvidia.com>,
         LKML <linux-kernel@vger.kernel.org>,
         linux-mm <linux-mm@kvack.org>,
         linux-arch <linux-arch@vger.kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
         Russell King <linux@armlinux.org.uk>,
         Mike Rapoport <rppt@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -88,84 +98,49 @@ Cc:     Alexander Gordeev <agordeev@linux.ibm.com>,
         Heiko Carstens <hca@linux.ibm.com>,
         Christian Borntraeger <borntraeger@de.ibm.com>,
         Claudio Imbrenda <imbrenda@linux.ibm.com>
-Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
- folding
-Message-ID: <20200910151026.GL87483@ziepe.ca>
-References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
- <20200907180058.64880-2-gerald.schaefer@linux.ibm.com>
- <0dbc6ec8-45ea-0853-4856-2bc1e661a5a5@intel.com>
- <20200909142904.00b72921@thinkpad>
- <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
- <20200909192534.442f8984@thinkpad>
- <20200909180324.GI87483@ziepe.ca>
- <20200910093925.GB29166@oc3871087118.ibm.com>
- <20200910130233.GK87483@ziepe.ca>
- <20200910152803.1a930afc@thinkpad>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200910152803.1a930afc@thinkpad>
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 03:28:03PM +0200, Gerald Schaefer wrote:
-> On Thu, 10 Sep 2020 10:02:33 -0300
-> Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> 
-> > On Thu, Sep 10, 2020 at 11:39:25AM +0200, Alexander Gordeev wrote:
-> > 
-> > > As Gerald mentioned, it is very difficult to explain in a clear way.
-> > > Hopefully, one could make sense ot of it.  
-> > 
-> > I would say the page table API requires this invariant:
-> > 
-> >         pud = pud_offset(p4d, addr);
-> >         do {
-> > 		WARN_ON(pud != pud_offset(p4d, addr);
-> >                 next = pud_addr_end(addr, end);
-> >         } while (pud++, addr = next, addr != end);
-> > 
-> > ie pud++ is supposed to be a shortcut for 
-> >   pud_offset(p4d, next)
-> > 
-> > While S390 does not follow this. Fixing addr_end brings it into
-> > alignment by preventing pud++ from happening.
-> > 
-> > The only currently known side effect is that gup_fast crashes, but it
-> > sure is an unexpected thing.
-> 
-> It only is unexpected in a "top-level folding" world, see my other reply.
-> Consider it an optimization, which was possible because of how our dynamic
-> folding works, and e.g. because we can determine the correct pagetable
-> level from a pXd value in pXd_offset.
+On Thu, Sep 10, 2020 at 12:11 PM Gerald Schaefer
+<gerald.schaefer@linux.ibm.com> wrote:
+>
+> That sounds a lot like the pXd_offset_orig() from Martins first approach
+> in this thread:
+> https://lore.kernel.org/linuxppc-dev/20190418100218.0a4afd51@mschwideX1/
 
-No, I disagree. The page walker API the arch presents has to have well
-defined semantics. For instance, there is an effort to define tests
-and invarients for the page table accesses to bring this understanding
-and uniformity:
+I have to admit to finding that name horrible, but aside from that, yes.
 
- mm/debug_vm_pgtable.c
+I don't think "pXd_offset_orig()" makes any sense as a name. Yes,
+"orig" may make sense as the variable name (as in "this was the
+original value we read"), but a function name should describe what it
+*does*, not what the arguments are.
 
-If we fix S390 using the pX_addr_end() change then the above should be
-updated with an invariant to check it. I've added Anshuman for some
-thoughts..
+Plus "original" doesn't make sense to me anyway, since we're not
+modifying it. To me, "original" means that there's a final version
+too, which this interface in no way implies. It's just "this is the
+value we already read".
 
-For better or worse, that invariant does exclude arches from using
-other folding techniques.
+("orig" does make some sense in that fault path - because by
+definition we *are* going to modify the page table entry, that's the
+whole point of the fault - we need to do something to not keep
+faulting. But here, we're not at all necessarily modifying the page
+table contents, we're just following them and readign the values once)
 
-The other solution would be to address the other side of != and adjust
-the pud++
+Of course, I don't know what a better name would be to describe what
+is actually going on, I'm just explaining why I hate that naming.
 
-eg replcae pud++ with something like:
-  pud = pud_next_entry(p4d, pud, next)
+*Maybe* something like just "pXd_offset_value()" together with a
+comment explaining that it's given the upper pXd pointer _and_ the
+value behind it, and it needs to return the next level offset? I
+dunno. "value" doesn't really seem horribly descriptive either, but at
+least it doesn't feel actively misleading to me.
 
-Such that:
-  pud_next_entry(p4d, pud, next) === pud_offset(p4d, next)
+Yeah, I get hung up on naming sometimes. I don't tend to care much
+about private local variables ("i" is a perfectly fine variable name),
+but these kinds of somewhat subtle cross-architecture definitions I
+feel matter.
 
-In which case the invarient changes to 'callers can never do pointer
-arithmetic on the result of pXX_offset()' which is a bit harder to
-enforce.
-
-Jason
+               Linus
