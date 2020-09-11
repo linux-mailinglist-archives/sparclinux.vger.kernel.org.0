@@ -2,144 +2,128 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F84265572
-	for <lists+sparclinux@lfdr.de>; Fri, 11 Sep 2020 01:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EAD426580B
+	for <lists+sparclinux@lfdr.de>; Fri, 11 Sep 2020 06:20:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725280AbgIJXVQ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 10 Sep 2020 19:21:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54520 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725379AbgIJXVK (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 10 Sep 2020 19:21:10 -0400
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFAF3C061757
-        for <sparclinux@vger.kernel.org>; Thu, 10 Sep 2020 16:21:09 -0700 (PDT)
-Received: by mail-qv1-xf44.google.com with SMTP id p15so3709736qvk.5
-        for <sparclinux@vger.kernel.org>; Thu, 10 Sep 2020 16:21:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=fIHL0Rq33O5ozDdBNb92cfl0GBqGdNKvR/YdlpxGcAc=;
-        b=ek3aEVh6EDZv0MY4CyKrIOtcGg9hcQrcK0LNTKZQKq5D36Q4OOful56d1fLsdvbySj
-         gIxGsvrf3KCS0cBe2Cddj6sjM6xxgr+gzrdl7qNDkNuApsUa7CiM5w7gHpJiiyXmHOM7
-         z0Fmkdon1hMn3l1idV0bhKgpCa6PUJSq4CW7y6g23Ml8DO+r/mDIQI9+zVDERUCtr5L5
-         WJuVfXkINtgWDQegahH+XHGH+cQJScV2EOHwfsx92Xl2/qRCRlsZDeCmHgB5ogwUgrhe
-         yUNj2pRXsNm4WiFcUh2LoLVRUAZ5EBB0j8EQP9F4uwiM1oP8TqSobCs8onyBplaZNq9X
-         j4og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=fIHL0Rq33O5ozDdBNb92cfl0GBqGdNKvR/YdlpxGcAc=;
-        b=dRwp0fZSYANFOLlMwSz4aBPRgdqpD0Xxdz8b2vr2j9TVuhB0cCx6uKNvaS1WzPiuyJ
-         qiqfNRwmky/Ezuz0TTl5ZzhJkqqIVEIQlwsJzpOfy/KGugO6HJn+o1uXknvUT9gOYMzh
-         JkeFkGMW5i3HTE3o3Fqn0YhQgRxr5wR934Z4V9dayjm00GcafVF7paK9dCaTa7SYoEAe
-         PDT/H4uVDd6skNbDjkf39BhPjum1jd7dSPNNqSobEfWRIgDhjIte+BHPYqOYVHm/hlwy
-         iI0UrhyOJ+tSBPzQxddwxExCBeDO71z871SFV93c8qT8QBN8DSOMEGi+f8qlh9xn/32+
-         JxCA==
-X-Gm-Message-State: AOAM533kcsUy9qmZbmLunYyLURcfLcUSLT9FIJfVn7/cJ8QowLKVv/r2
-        s6YtXuTafbjN6PbeaNoF2YNATQ==
-X-Google-Smtp-Source: ABdhPJwWb13ftCj9Nx7W+uTucDyXl8x3WeSQXroWv7fkEgHTFAhsxe/mYAzhjXYKGK+4OJt2xnAqTg==
-X-Received: by 2002:a05:6214:954:: with SMTP id dn20mr10867015qvb.122.1599780068776;
-        Thu, 10 Sep 2020 16:21:08 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
-        by smtp.gmail.com with ESMTPSA id m36sm289969qtd.10.2020.09.10.16.21.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 16:21:07 -0700 (PDT)
-Received: from jgg by mlx with local (Exim 4.94)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1kGVsI-004SPL-RD; Thu, 10 Sep 2020 20:21:06 -0300
-Date:   Thu, 10 Sep 2020 20:21:06 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc:     Alexander Gordeev <agordeev@linux.ibm.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        John Hubbard <jhubbard@nvidia.com>,
+        id S1725836AbgIKETy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 11 Sep 2020 00:19:54 -0400
+Received: from smtprelay0064.hostedemail.com ([216.40.44.64]:51536 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725283AbgIKETs (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 11 Sep 2020 00:19:48 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 12942837F24A;
+        Fri, 11 Sep 2020 04:19:43 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3872:3874:4321:5007:6742:6743:10004:10400:10848:11026:11232:11473:11657:11658:11914:12043:12297:12438:12555:12740:12760:12895:13153:13161:13228:13229:13439:14096:14097:14181:14659:14721:21080:21433:21627:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: seat91_4d0f80d270eb
+X-Filterd-Recvd-Size: 4376
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf19.hostedemail.com (Postfix) with ESMTPA;
+        Fri, 11 Sep 2020 04:19:36 +0000 (UTC)
+Message-ID: <f4ad706519917d493a0af32ea2da8565227cc74a.camel@perches.com>
+Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
+ break;
+From:   Joe Perches <joe@perches.com>
+To:     Robin Murphy <robin.murphy@arm.com>,
         LKML <linux-kernel@vger.kernel.org>,
-        linux-mm <linux-mm@kvack.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Mike Rapoport <rppt@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        linux-x86 <x86@kernel.org>,
-        linux-arm <linux-arm-kernel@lists.infradead.org>,
-        linux-power <linuxppc-dev@lists.ozlabs.org>,
-        linux-sparc <sparclinux@vger.kernel.org>,
-        linux-um <linux-um@lists.infradead.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
- folding
-Message-ID: <20200910232106.GR87483@ziepe.ca>
-References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
- <20200907180058.64880-2-gerald.schaefer@linux.ibm.com>
- <0dbc6ec8-45ea-0853-4856-2bc1e661a5a5@intel.com>
- <20200909142904.00b72921@thinkpad>
- <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
- <20200909192534.442f8984@thinkpad>
- <20200909180324.GI87483@ziepe.ca>
- <20200910093925.GB29166@oc3871087118.ibm.com>
- <20200910130233.GK87483@ziepe.ca>
- <20200910195749.795232d1@thinkpad>
+        Jiri Kosina <trivial@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        oss-drivers@netronome.com, nouveau@lists.freedesktop.org,
+        alsa-devel <alsa-devel@alsa-project.org>,
+        dri-devel@lists.freedesktop.org, linux-ide@vger.kernel.org,
+        dm-devel@redhat.com, linux-mtd@lists.infradead.org,
+        linux-i2c@vger.kernel.org, sparclinux@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-rtc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-afs@lists.infradead.org, coreteam@netfilter.org,
+        intel-wired-lan@lists.osuosl.org, linux-serial@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
+        Kees Cook <kees.cook@canonical.com>,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-sctp@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-nvme@lists.infradead.org,
+        storagedev@microchip.com, ceph-devel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
+        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Will Deacon <will@kernel.org>
+Date:   Thu, 10 Sep 2020 21:19:35 -0700
+In-Reply-To: <9372456a-8dcf-2735-57a4-e126aa5df3a6@arm.com>
+References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+         <9372456a-8dcf-2735-57a4-e126aa5df3a6@arm.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200910195749.795232d1@thinkpad>
+Content-Transfer-Encoding: 7bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 07:57:49PM +0200, Gerald Schaefer wrote:
-> On Thu, 10 Sep 2020 10:02:33 -0300
-> Jason Gunthorpe <jgg@ziepe.ca> wrote:
+On Thu, 2020-09-10 at 15:21 +0100, Robin Murphy wrote:
+> On 2020-09-09 21:06, Joe Perches wrote:
+> > fallthrough to a separate case/default label break; isn't very readable.
+> > 
+> > Convert pseudo-keyword fallthrough; statements to a simple break; when
+> > the next label is case or default and the only statement in the next
+> > label block is break;
+> > 
+> > Found using:
+> > 
+> > $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
+> > 
+> > Miscellanea:
+> > 
+> > o Move or coalesce a couple label blocks above a default: block.
+> > 
+> > Signed-off-by: Joe Perches <joe@perches.com>
+> > ---
+> > 
+> > Compiled allyesconfig x86-64 only.
+> > A few files for other arches were not compiled.
+> > 
 > 
-> > On Thu, Sep 10, 2020 at 11:39:25AM +0200, Alexander Gordeev wrote:
-> > 
-> > > As Gerald mentioned, it is very difficult to explain in a clear way.
-> > > Hopefully, one could make sense ot of it.
-> > 
-> > I would say the page table API requires this invariant:
-> > 
-> >         pud = pud_offset(p4d, addr);
-> >         do {
-> > 		WARN_ON(pud != pud_offset(p4d, addr);
-> >                 next = pud_addr_end(addr, end);
-> >         } while (pud++, addr = next, addr != end);
-> > 
-> > ie pud++ is supposed to be a shortcut for 
-> >   pud_offset(p4d, next)
-> > 
+> [...]
+> > diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> > index c192544e874b..743db1abec40 100644
+> > --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> > +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> > @@ -3777,7 +3777,7 @@ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
+> >   	switch (FIELD_GET(IDR0_TTF, reg)) {
+> >   	case IDR0_TTF_AARCH32_64:
+> >   		smmu->ias = 40;
+> > -		fallthrough;
+> > +		break;
+> >   	case IDR0_TTF_AARCH64:
+> >   		break;
+> >   	default:
 > 
-> Hmm, IIUC, all architectures with static folding will simply return
-> the passed-in p4d pointer for pud_offset(p4d, addr), for 3-level
-> pagetables.
+> I have to say I don't really agree with the readability argument for 
+> this one - a fallthrough is semantically correct here, since the first 
+> case is a superset of the second. It just happens that anything we would 
+> do for the common subset is implicitly assumed (there are other 
+> potential cases we simply haven't added support for at the moment), thus 
+> the second case is currently empty.
+> This change actively obfuscates that distinction.
 
-It is probably moot now, but since other arch's don't crash they also
-return pud_addr_end() == end so the loop only does one iteration.
+Then perhaps comments should be added to usefully
+describe the mechanisms.
 
-ie pud == pud_offset(p4d, addr) for all iterations as the pud++ never
-happens.
+	case IDR0_TTF_AARCH32_64:
+		smmu->ias = 40;
+		fallthrough;	/* and still do the 64 bit processing */
+	case IDR0_TTF_AARCH64:
+		/* Nothing specific yet */
+		break;
 
-Which is what this addr_end patch does for s390..
+> Robin.
 
-Jason
