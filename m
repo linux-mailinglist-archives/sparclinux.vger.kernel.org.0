@@ -2,102 +2,72 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD343265A24
-	for <lists+sparclinux@lfdr.de>; Fri, 11 Sep 2020 09:11:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FAF0265A2C
+	for <lists+sparclinux@lfdr.de>; Fri, 11 Sep 2020 09:13:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725765AbgIKHLN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 11 Sep 2020 03:11:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41776 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725468AbgIKHLK (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 11 Sep 2020 03:11:10 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD37C061573;
-        Fri, 11 Sep 2020 00:11:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=l8KDsrY39924ACHw1Sx+CBM/Dlp985coTimHrE9LjSo=; b=PPlUR0zbTWPpH3hH0mqS5h+JtM
-        R5WAVd9k68mxD195MB+izkmVzegbgPHsNwoqeWstbxpVQHOwYZt738fosFRddXnq7lM9LjNVOpgvf
-        aHBt9Xv5geb9jIoXqmdd2+LCOdR3Esazwp6p1vrYqwcM7XgZhLdCU6BK8TWb6jDTqASDjRgb+LMkw
-        DZdWCVrkMw1VSc3l/jkU1F4485cXb4zGr0GCfbJ1jWedoC3gMPDoeS5Iuj5/Hkwqs1iQJynSYBvtG
-        y2Ljxas1gnPytmadt8Wy0oXAjuDpumpxpJONTdFo6plfIvfIwYgF99B3FDj1nFhOuVH/V2PMbPGxF
-        mMa23LxQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kGdBn-00017e-8d; Fri, 11 Sep 2020 07:09:43 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E745E3003D8;
-        Fri, 11 Sep 2020 09:09:39 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id A72E82C2AEBC1; Fri, 11 Sep 2020 09:09:39 +0200 (CEST)
-Date:   Fri, 11 Sep 2020 09:09:39 +0200
-From:   peterz@infradead.org
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-mm <linux-mm@kvack.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Mike Rapoport <rppt@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        linux-x86 <x86@kernel.org>,
-        linux-arm <linux-arm-kernel@lists.infradead.org>,
-        linux-power <linuxppc-dev@lists.ozlabs.org>,
-        linux-sparc <sparclinux@vger.kernel.org>,
-        linux-um <linux-um@lists.infradead.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
- folding
-Message-ID: <20200911070939.GB1362448@hirez.programming.kicks-ass.net>
-References: <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
- <20200909192534.442f8984@thinkpad>
- <20200909180324.GI87483@ziepe.ca>
- <20200910093925.GB29166@oc3871087118.ibm.com>
- <CAHk-=wh4SuNvThq1nBiqk0N-fW6NsY5w=VawC=rJs7ekmjAhjA@mail.gmail.com>
- <20200910181319.GO87483@ziepe.ca>
- <CAHk-=wh3SjOE2r4WCfagL5Zq4Oj4Jsu1=1jTTi2GxGDTxP-J0Q@mail.gmail.com>
- <20200910211010.46d064a7@thinkpad>
- <CAHk-=wg3ggXU98Mnv-ss-hEcvUNc9vCtgSRc7GpcGfvyOw_h3g@mail.gmail.com>
- <20200910215921.GP87483@ziepe.ca>
+        id S1725535AbgIKHNU (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 11 Sep 2020 03:13:20 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:38924 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725468AbgIKHNT (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 11 Sep 2020 03:13:19 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 1DF03501A4B223675124;
+        Fri, 11 Sep 2020 15:13:13 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.487.0; Fri, 11 Sep 2020 15:13:03 +0800
+From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
+To:     <davem@davemloft.net>, <dan.j.williams@intel.com>,
+        <dvhart@infradead.org>, <mchehab+samsung@kernel.org>,
+        <gregkh@linuxfoundation.org>, <dsterba@suse.com>, <arnd@arndb.de>
+CC:     <sparclinux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <jingxiangfeng@huawei.com>
+Subject: [PATCH] sbus: char: Remove meaningless jump label out_free
+Date:   Fri, 11 Sep 2020 15:13:41 +0800
+Message-ID: <20200911071341.101397-1-jingxiangfeng@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200910215921.GP87483@ziepe.ca>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 06:59:21PM -0300, Jason Gunthorpe wrote:
-> So, I suggest pXX_offset_unlocked()
+After commit 57a4a3d7f756 ("display7seg: Introduce the use of the managed
+version of kzalloc"), The out_free jump label has nothing to do but goto
+out. So remove it.
 
-Urgh, no. Elsewhere in gup _unlocked() means it will take the lock
-itself (get_user_pages_unlocked()) -- although often it seems to mean
-the lock is already held (git grep _unlocked and marvel).
+Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
+---
+ drivers/sbus/char/display7seg.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-What we want is _lockless().
+diff --git a/drivers/sbus/char/display7seg.c b/drivers/sbus/char/display7seg.c
+index fad936eb845f..00e72b97d0b6 100644
+--- a/drivers/sbus/char/display7seg.c
++++ b/drivers/sbus/char/display7seg.c
+@@ -186,7 +186,7 @@ static int d7s_probe(struct platform_device *op)
+ 	p->regs = of_ioremap(&op->resource[0], 0, sizeof(u8), "d7s");
+ 	if (!p->regs) {
+ 		printk(KERN_ERR PFX "Cannot map chip registers\n");
+-		goto out_free;
++		goto out;
+ 	}
+ 
+ 	err = misc_register(&d7s_miscdev);
+@@ -228,8 +228,6 @@ static int d7s_probe(struct platform_device *op)
+ 
+ out_iounmap:
+ 	of_iounmap(&op->resource[0], p->regs, sizeof(u8));
+-
+-out_free:
+ 	goto out;
+ }
+ 
+-- 
+2.17.1
+
