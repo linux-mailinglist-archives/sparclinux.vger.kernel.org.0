@@ -2,60 +2,68 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 571B4265F85
-	for <lists+sparclinux@lfdr.de>; Fri, 11 Sep 2020 14:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9007266519
+	for <lists+sparclinux@lfdr.de>; Fri, 11 Sep 2020 18:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725894AbgIKM1r (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 11 Sep 2020 08:27:47 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:16210 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725898AbgIKMVF (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 11 Sep 2020 08:21:05 -0400
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08BCD1YB165620;
-        Fri, 11 Sep 2020 08:20:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=zdacK9mbo5spNdP46BQjABMYJwrXCJIDnRxfJoMcJ0g=;
- b=c7kD188Z/Z4gvIPcxs2/53B0y6s1z7VhRaAT0ErwVdvd138i/8bz0A8lemIpkNrMfEs3
- q5jr6rOT4C4c10eReNFGsDMU2GXrMcRpJcaXQlf4B6cejax3Gmr2BXysGWGgCzYA/3VO
- MBIpQtcXLb+e+HOhOUFJ9AdIH4DB033b/w9FMF/vIWMkQ6GBhu3vs7uxNNdh0mRAFIKq
- myJOwb6CaKZlbztnlr2vxb0VWmYVFXUfiMTdjOupJLJTHIgNHqqDRpPpTJeAZOAcVpyN
- 1bsjZXy0k97mfdz3cF+vsikucIjnhDCMIRd7Ev+khJpbI0j+zQCR+ordHQRlxjq6msW3 mg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 33g91v073v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Sep 2020 08:20:05 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08BCET1B169362;
-        Fri, 11 Sep 2020 08:20:05 -0400
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 33g91v072d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Sep 2020 08:20:04 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-        by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08BCCx1R020959;
-        Fri, 11 Sep 2020 12:20:02 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-        by ppma05fra.de.ibm.com with ESMTP id 33f3yrh5sp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Sep 2020 12:20:02 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08BCJxKU21627358
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 11 Sep 2020 12:19:59 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4811F52051;
-        Fri, 11 Sep 2020 12:19:59 +0000 (GMT)
-Received: from oc3871087118.ibm.com (unknown [9.145.1.245])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id A66A45204E;
-        Fri, 11 Sep 2020 12:19:57 +0000 (GMT)
-Date:   Fri, 11 Sep 2020 14:19:56 +0200
-From:   Alexander Gordeev <agordeev@linux.ibm.com>
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     John Hubbard <jhubbard@nvidia.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        id S1725875AbgIKQx0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 11 Sep 2020 12:53:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47226 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726260AbgIKQwO (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 11 Sep 2020 12:52:14 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DBCFC061573
+        for <sparclinux@vger.kernel.org>; Fri, 11 Sep 2020 09:52:14 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id y4so12968227ljk.8
+        for <sparclinux@vger.kernel.org>; Fri, 11 Sep 2020 09:52:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ymUunqCLw2vPuQ1VbXcUDi5LPgcqHOLwtMhV+h1hP00=;
+        b=LzixW8IE64pueJHPc4pkVfB4hu8uL7V9KR6+6qOQDiBrSui1M4vSI9xeqysgklBESL
+         0IQ4jxvW89dAuyt0txhLnLuupNLcl3TzUTNbKM8yk1mUHFyRH5GgOM7DPBaXlmnovHXl
+         RwxBgeTE5qnMUevVAeinQ8lEe8Rzs7ehh51xA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ymUunqCLw2vPuQ1VbXcUDi5LPgcqHOLwtMhV+h1hP00=;
+        b=RPuMiy3PGayWMzg7nsb96P/pbWhZ7jmhXkrkgi+VcCxcCuY/uslptyViC5byLQ02Xy
+         wS5GRW4xPt7+tIuxpjGfxlSvGBIgV8mfCNZWcV6Ax1cszv1abincdjn2Qzpj/qdJxR1G
+         Wr8hPC+Rf2StLYqGnt6wbLrDcjc+tp9thspNgjbjLhniJHM8vs1B3GZ7j5eEhm5MYL/4
+         tpJ6MGlnqgAum9smbMJS1gZXlPvkBNhl6AVWTQDzn0DUMU0KX3FLdnH3cxZpDJ4CvzDg
+         q5bboE/dicOzE+mpFW6JJoYb7v35M5lmRsolpGASFS89/dpfe+eR+EJcCljhc6jzMBl6
+         PZxw==
+X-Gm-Message-State: AOAM532w3VDgYntY9sMMmPO2+IsaKoCngZeVgNYwdkpUCCiFBmyYCkMM
+        a8KjP0/yCdR/ps+IpBkdsZPTUNhxHmXOwQ==
+X-Google-Smtp-Source: ABdhPJw36sv7PL5cacdv7doOczTXCenEylnV1cU/I3kyz+w+m+ewZ2vXwWIWouWVOo+DuWuwsHFvjQ==
+X-Received: by 2002:a2e:a175:: with SMTP id u21mr1059920ljl.7.1599843132522;
+        Fri, 11 Sep 2020 09:52:12 -0700 (PDT)
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com. [209.85.208.175])
+        by smtp.gmail.com with ESMTPSA id 8sm145866lfl.102.2020.09.11.09.52.12
+        for <sparclinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Sep 2020 09:52:12 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id v23so13056425ljd.1
+        for <sparclinux@vger.kernel.org>; Fri, 11 Sep 2020 09:52:12 -0700 (PDT)
+X-Received: by 2002:ac2:5594:: with SMTP id v20mr585120lfg.344.1599842749970;
+ Fri, 11 Sep 2020 09:45:49 -0700 (PDT)
+MIME-Version: 1.0
+References: <0dbc6ec8-45ea-0853-4856-2bc1e661a5a5@intel.com>
+ <20200909142904.00b72921@thinkpad> <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
+ <20200909192534.442f8984@thinkpad> <20200909180324.GI87483@ziepe.ca>
+ <20200910093925.GB29166@oc3871087118.ibm.com> <CAHk-=wh4SuNvThq1nBiqk0N-fW6NsY5w=VawC=rJs7ekmjAhjA@mail.gmail.com>
+ <20200910181319.GO87483@ziepe.ca> <0c9bcb54-914b-e582-dd6d-3861267b6c94@nvidia.com>
+ <20200910221116.GQ87483@ziepe.ca> <20200911121955.GA10250@oc3871087118.ibm.com>
+In-Reply-To: <20200911121955.GA10250@oc3871087118.ibm.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 11 Sep 2020 09:45:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiiEUD_XvNnXysYsKiT4B3SajWbZ4VKY3jYk-17EEaaiA@mail.gmail.com>
+Message-ID: <CAHk-=wiiEUD_XvNnXysYsKiT4B3SajWbZ4VKY3jYk-17EEaaiA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table folding
+To:     Alexander Gordeev <agordeev@linux.ibm.com>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
         Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
         Dave Hansen <dave.hansen@intel.com>,
         LKML <linux-kernel@vger.kernel.org>,
@@ -88,67 +96,29 @@ Cc:     John Hubbard <jhubbard@nvidia.com>,
         Heiko Carstens <hca@linux.ibm.com>,
         Christian Borntraeger <borntraeger@de.ibm.com>,
         Claudio Imbrenda <imbrenda@linux.ibm.com>
-Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
- folding
-Message-ID: <20200911121955.GA10250@oc3871087118.ibm.com>
-References: <0dbc6ec8-45ea-0853-4856-2bc1e661a5a5@intel.com>
- <20200909142904.00b72921@thinkpad>
- <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
- <20200909192534.442f8984@thinkpad>
- <20200909180324.GI87483@ziepe.ca>
- <20200910093925.GB29166@oc3871087118.ibm.com>
- <CAHk-=wh4SuNvThq1nBiqk0N-fW6NsY5w=VawC=rJs7ekmjAhjA@mail.gmail.com>
- <20200910181319.GO87483@ziepe.ca>
- <0c9bcb54-914b-e582-dd6d-3861267b6c94@nvidia.com>
- <20200910221116.GQ87483@ziepe.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200910221116.GQ87483@ziepe.ca>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-11_04:2020-09-10,2020-09-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 bulkscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999
- malwarescore=0 phishscore=0 priorityscore=1501 adultscore=0 spamscore=0
- suspectscore=2 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009110095
+Content-Type: text/plain; charset="UTF-8"
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 07:11:16PM -0300, Jason Gunthorpe wrote:
-> On Thu, Sep 10, 2020 at 02:22:37PM -0700, John Hubbard wrote:
-> 
-> > Or am I way off here, and it really is possible (aside from the current
-> > s390 situation) to observe something that "is no longer a page table"?
-> 
-> Yes, that is the issue. Remember there is no locking for GUP
-> fast. While a page table cannot be freed there is nothing preventing
-> the page table entry from being concurrently modified.
-> 
-> Without the stack variable it looks like this:
-> 
->        pud_t pud = READ_ONCE(*pudp);
->        if (!pud_present(pud))
->             return
->        pmd_offset(pudp, address);
-> 
-> And pmd_offset() expands to
-> 
->     return (pmd_t *)pud_page_vaddr(*pud) + pmd_index(address);
-> 
-> Between the READ_ONCE(*pudp) and (*pud) inside pmd_offset() the value
-> of *pud can change, eg to !pud_present.
-> 
-> Then pud_page_vaddr(*pud) will crash. It is not use after free, it
-> is using data that has not been validated.
+On Fri, Sep 11, 2020 at 5:20 AM Alexander Gordeev
+<agordeev@linux.ibm.com> wrote:
+>
+> What if the entry is still pud_present, but got remapped after
+> READ_ONCE(*pudp)? IOW, it is still valid, but points elsewhere?
 
-One thing I ask myself and it is probably a good moment to wonder.
+That can't happen.
 
-What if the entry is still pud_present, but got remapped after
-READ_ONCE(*pudp)? IOW, it is still valid, but points elsewhere?
+The GUP walk doesn't hold any locks, but it *is* done with interrupts
+disabled, and anybody who is modifying the page tables needs to do the
+TLB flush, and/or RCU-free them.
 
-> Jason
+The interrupt disable means that on architectures where the TLB flush
+involves an IPI, it will be delayed until afterwards, but it also acts
+as a big RCU read lock hammer.
+
+So the page tables can get modified under us, but the old pages won't
+be released and re-used.
+
+                Linus
