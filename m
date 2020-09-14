@@ -2,170 +2,105 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4848E2689A7
-	for <lists+sparclinux@lfdr.de>; Mon, 14 Sep 2020 12:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B28642689FE
+	for <lists+sparclinux@lfdr.de>; Mon, 14 Sep 2020 13:26:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725953AbgINK44 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 14 Sep 2020 06:56:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32980 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726035AbgINK4x (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 14 Sep 2020 06:56:53 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E257DC06174A;
-        Mon, 14 Sep 2020 03:56:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=12iDO9zK0M5MrFc9v9LnmYPbTArC0uf4AF99UCMX0/g=; b=MypNEzMCKsV0kDjFZpdYlzLbrc
-        6jVvG6vst2kP1TuKPU0RbKSwT4f5aXkemcmA++NmHlfjANB+KOIuYBTFK+U4dDrGkq08pVvTYuCGr
-        64XrtFpwD+zaYM0wPLqkolL1pXzmez6O2GauA4GZxoZWC2JUCo58zMGjmZ4KQyykyxoC3pE4HFsOV
-        wOdaJZ4wz5kYT0uT7MPzM6GQxyCQ6sVHR+Fiqkx1/HH5YcgPYsMoXksVoBOfa6PPoTtsC/17phU5P
-        0FBTRJC5a6qRi0OxEvGOoCLGZsWCVmH7DaTXnCWgOL7BmL6M13ECbEyckAnfF5siMO3wHN+5pxlQD
-        k7eINU4g==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kHm9l-0001Ya-CT; Mon, 14 Sep 2020 10:56:21 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8D20A30257C;
-        Mon, 14 Sep 2020 12:56:17 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 694F52CA75A81; Mon, 14 Sep 2020 12:56:17 +0200 (CEST)
-Date:   Mon, 14 Sep 2020 12:56:17 +0200
-From:   peterz@infradead.org
-To:     Nicholas Piggin <npiggin@gmail.com>
-Cc:     "linux-mm @ kvack . org" <linux-mm@kvack.org>,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        "David S . Miller" <davem@davemloft.net>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCH v2 1/4] mm: fix exec activate_mm vs TLB shootdown and
- lazy tlb switching race
-Message-ID: <20200914105617.GP1362448@hirez.programming.kicks-ass.net>
-References: <20200914045219.3736466-1-npiggin@gmail.com>
- <20200914045219.3736466-2-npiggin@gmail.com>
+        id S1726076AbgINL0x (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 14 Sep 2020 07:26:53 -0400
+Received: from mx2.suse.de ([195.135.220.15]:43092 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726057AbgINLZ1 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 14 Sep 2020 07:25:27 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 0E010B0EA;
+        Mon, 14 Sep 2020 11:25:41 +0000 (UTC)
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     sumit.semwal@linaro.org, christian.koenig@amd.com, daniel@ffwll.ch,
+        airlied@linux.ie, sam@ravnborg.org, mark.cave-ayland@ilande.co.uk,
+        kraxel@redhat.com, davem@davemloft.net,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        l.stach@pengutronix.de, linux+etnaviv@armlinux.org.uk,
+        christian.gmeiner@gmail.com, jani.nikula@linux.intel.com,
+        joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com,
+        thierry.reding@gmail.com, jonathanh@nvidia.com, pawel@osciak.com,
+        m.szyprowski@samsung.com, kyungmin.park@samsung.com,
+        tfiga@chromium.org, mchehab@kernel.org, chris@chris-wilson.co.uk,
+        matthew.auld@intel.com, thomas.hellstrom@intel.com
+Cc:     linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org, etnaviv@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+        sparclinux@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/3] dma-buf: Flag vmap'ed memory as system or I/O memory
+Date:   Mon, 14 Sep 2020 13:25:18 +0200
+Message-Id: <20200914112521.1327-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200914045219.3736466-2-npiggin@gmail.com>
+Content-Transfer-Encoding: 8bit
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Sep 14, 2020 at 02:52:16PM +1000, Nicholas Piggin wrote:
-> Reading and modifying current->mm and current->active_mm and switching
-> mm should be done with irqs off, to prevent races seeing an intermediate
-> state.
-> 
-> This is similar to commit 38cf307c1f20 ("mm: fix kthread_use_mm() vs TLB
-> invalidate"). At exec-time when the new mm is activated, the old one
-> should usually be single-threaded and no longer used, unless something
-> else is holding an mm_users reference (which may be possible).
-> 
-> Absent other mm_users, there is also a race with preemption and lazy tlb
-> switching. Consider the kernel_execve case where the current thread is
-> using a lazy tlb active mm:
-> 
->   call_usermodehelper()
->     kernel_execve()
->       old_mm = current->mm;
->       active_mm = current->active_mm;
->       *** preempt *** -------------------->  schedule()
->                                                prev->active_mm = NULL;
->                                                mmdrop(prev active_mm);
->                                              ...
->                       <--------------------  schedule()
->       current->mm = mm;
->       current->active_mm = mm;
->       if (!old_mm)
->           mmdrop(active_mm);
-> 
-> If we switch back to the kernel thread from a different mm, there is a
-> double free of the old active_mm, and a missing free of the new one.
-> 
-> Closing this race only requires interrupts to be disabled while ->mm
-> and ->active_mm are being switched, but the TLB problem requires also
-> holding interrupts off over activate_mm. Unfortunately not all archs
-> can do that yet, e.g., arm defers the switch if irqs are disabled and
-> expects finish_arch_post_lock_switch() to be called to complete the
-> flush; um takes a blocking lock in activate_mm().
-> 
-> So as a first step, disable interrupts across the mm/active_mm updates
-> to close the lazy tlb preempt race, and provide an arch option to
-> extend that to activate_mm which allows architectures doing IPI based
-> TLB shootdowns to close the second race.
-> 
-> This is a bit ugly, but in the interest of fixing the bug and backporting
-> before all architectures are converted this is a compromise.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Dma-buf provides vmap() and vunmap() for retrieving and releasing mappings
+of dma-buf memory in kernel address space. The functions operate with plain
+addresses and the assumption is that the memory can be accessed with load
+and store operations. This is not the case on some architectures (e.g.,
+sparc64) where I/O memory can only be accessed with dedicated instructions.
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+This patchset introduces struct dma_buf_map, which contains the address of
+a buffer and a flag that tells whether system- or I/O-memory instructions
+are required.
 
-I'm thinking we want this selected on x86 as well. Andy?
+Some background: updating the DRM framebuffer console on sparc64 makes the
+kernel panic. This is because the framebuffer memory cannot be accessed with
+system-memory instructions. We currently employ a workaround in DRM to
+address this specific problem. [1]
 
-> ---
->  arch/Kconfig |  7 +++++++
->  fs/exec.c    | 17 +++++++++++++++--
->  2 files changed, 22 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index af14a567b493..94821e3f94d1 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -414,6 +414,13 @@ config MMU_GATHER_NO_GATHER
->  	bool
->  	depends on MMU_GATHER_TABLE_FREE
->  
-> +config ARCH_WANT_IRQS_OFF_ACTIVATE_MM
-> +	bool
-> +	help
-> +	  Temporary select until all architectures can be converted to have
-> +	  irqs disabled over activate_mm. Architectures that do IPI based TLB
-> +	  shootdowns should enable this.
-> +
->  config ARCH_HAVE_NMI_SAFE_CMPXCHG
->  	bool
->  
-> diff --git a/fs/exec.c b/fs/exec.c
-> index a91003e28eaa..d4fb18baf1fb 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1130,11 +1130,24 @@ static int exec_mmap(struct mm_struct *mm)
->  	}
->  
->  	task_lock(tsk);
-> -	active_mm = tsk->active_mm;
->  	membarrier_exec_mmap(mm);
-> -	tsk->mm = mm;
-> +
-> +	local_irq_disable();
-> +	active_mm = tsk->active_mm;
->  	tsk->active_mm = mm;
-> +	tsk->mm = mm;
-> +	/*
-> +	 * This prevents preemption while active_mm is being loaded and
-> +	 * it and mm are being updated, which could cause problems for
-> +	 * lazy tlb mm refcounting when these are updated by context
-> +	 * switches. Not all architectures can handle irqs off over
-> +	 * activate_mm yet.
-> +	 */
-> +	if (!IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
-> +		local_irq_enable();
->  	activate_mm(active_mm, mm);
-> +	if (IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
-> +		local_irq_enable();
->  	tsk->mm->vmacache_seqnum = 0;
->  	vmacache_flush(tsk);
->  	task_unlock(tsk);
-> -- 
-> 2.23.0
-> 
+To resolve the problem, we'd like to address it at the most common point,
+which is the dma-buf framework. The dma-buf mapping ideally knows if I/O
+instructions are required and exports this information to it's users. The
+new structure struct dma_buf_map stores the buffer address and a flag that
+signals I/O memory. Affected users of the buffer (e.g., drivers, frameworks)
+can then access the memory accordingly.
+
+This patchset only introduces struct dma_buf_map, and updates struct dma_buf
+and it's interfaces. Further patches can update dma-buf users. For example,
+there's a prototype patchset for DRM that fixes the framebuffer problem. [2]
+
+Further work: TTM, one of DRM's memory managers, already exports an
+is_iomem flag of its own. It could later be switched over to exporting struct
+dma_buf_map, thus simplifying some code. Several DRM drivers expect their
+fbdev console to operate on I/O memory. These could possibly be switched over
+to the generic fbdev emulation, as soon as the generic code uses struct
+dma_buf_map.
+
+[1] https://lore.kernel.org/dri-devel/20200725191012.GA434957@ravnborg.org/
+[2] https://lore.kernel.org/dri-devel/20200806085239.4606-1-tzimmermann@suse.de/
+
+Thomas Zimmermann (3):
+  dma-buf: Add struct dma-buf-map for storing struct dma_buf.vaddr_ptr
+  dma-buf: Use struct dma_buf_map in dma_buf_vmap() interfaces
+  dma-buf: Use struct dma_buf_map in dma_buf_vunmap() interfaces
+
+ Documentation/driver-api/dma-buf.rst          |   3 +
+ drivers/dma-buf/dma-buf.c                     |  40 +++---
+ drivers/gpu/drm/drm_gem_cma_helper.c          |  16 ++-
+ drivers/gpu/drm/drm_gem_shmem_helper.c        |  17 ++-
+ drivers/gpu/drm/drm_prime.c                   |  14 +-
+ drivers/gpu/drm/etnaviv/etnaviv_gem_prime.c   |  13 +-
+ drivers/gpu/drm/i915/gem/i915_gem_dmabuf.c    |  13 +-
+ .../drm/i915/gem/selftests/i915_gem_dmabuf.c  |  18 ++-
+ drivers/gpu/drm/tegra/gem.c                   |  23 ++--
+ .../common/videobuf2/videobuf2-dma-contig.c   |  17 ++-
+ .../media/common/videobuf2/videobuf2-dma-sg.c |  19 ++-
+ .../common/videobuf2/videobuf2-vmalloc.c      |  21 ++-
+ include/drm/drm_prime.h                       |   5 +-
+ include/linux/dma-buf-map.h                   | 126 ++++++++++++++++++
+ include/linux/dma-buf.h                       |  11 +-
+ 15 files changed, 274 insertions(+), 82 deletions(-)
+ create mode 100644 include/linux/dma-buf-map.h
+
+--
+2.28.0
+
