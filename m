@@ -2,94 +2,93 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0DEB269C7D
-	for <lists+sparclinux@lfdr.de>; Tue, 15 Sep 2020 05:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA79226A195
+	for <lists+sparclinux@lfdr.de>; Tue, 15 Sep 2020 11:07:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726019AbgIODYP (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 14 Sep 2020 23:24:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44656 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725953AbgIODYO (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 14 Sep 2020 23:24:14 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47614C06174A;
-        Mon, 14 Sep 2020 20:24:13 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id bg9so607821plb.2;
-        Mon, 14 Sep 2020 20:24:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:subject:to:cc:references:in-reply-to:mime-version
-         :message-id:content-transfer-encoding;
-        bh=irbkPgnfVyWMQHxRCFB56no1LsWgtr4nyisml0hvN5M=;
-        b=czG0uxgtgmPzrOOxLt4QmLQjK9z2MyB/I3cVw41+bQI4inEF/0imI47qizBZzP9IGA
-         aBeVvkgZgvUlmGO2x8HpojXnjrb/SGdRb+rxGVk5Hi+J75XNmSIBsJm+ELSzvsps7+iM
-         PlzLu7vx2uxw8UhKzIJFQ0gG7dMa+Lrl/iexLy9ADk/w8PHdlJk55PaKztDmo2caxnDM
-         uuAx55TUPcqvnCij2WTA3qURpI03MY7RB1Kd4/9YOpa6Uu6mvRlmkJx4/oWQOQ08OxNN
-         pOQiS+d6LMOl95lawfzdaUZZiaSJmAfMgbX/vN6C0ESuYiXRkUOiP/GTSg15ZiE8vcuZ
-         0mXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
-         :mime-version:message-id:content-transfer-encoding;
-        bh=irbkPgnfVyWMQHxRCFB56no1LsWgtr4nyisml0hvN5M=;
-        b=IWOaZ0s227jiKdTjIymmzP23F5Itcmhl41V+M3PuGbBkjU3+VR6WyTxu5YUkqKcBXF
-         NfVkg3/zcH3jQ9kYvnsGE/xF3izg/LuFPeEw5YBn3B3kNpIQ99k0GPIBPaqCnspwipBF
-         vXPwC+0NYJ2TrBlo/OqpQkJr7Trv1nvHlEbwvqXCytuSMXROep9XY+eMe/E2V5COGdjb
-         eUqhOIv4p43z1qn5abqA0/gXS+ugxlEgsBVoavphNSbdAc+DlzwKEutELG8VwZGWoikh
-         QbzBYqFIPOXLtgUF/Z7SZRm7cdncei8JY+e7Zwd0F6+K87wFlOHiHTg2dau0WuhgXvsj
-         RHdw==
-X-Gm-Message-State: AOAM530WcFofn8CuQcNWI5lCX9ypwkUSAHkNyfdx5DpSUFCsZ3Vgno8r
-        6+BoDczhJ9RWG/qfAtWWqSU=
-X-Google-Smtp-Source: ABdhPJySSgYe8lF/6JDS960pKpGJxF72ZmNu6Ie+xgS/tQum+ZxCJr6+X0CzlaFCQ2vkb+wTaG3xAA==
-X-Received: by 2002:a17:90a:6e45:: with SMTP id s5mr2238591pjm.12.1600140252750;
-        Mon, 14 Sep 2020 20:24:12 -0700 (PDT)
-Received: from localhost ([203.185.249.227])
-        by smtp.gmail.com with ESMTPSA id b20sm12442113pfb.198.2020.09.14.20.24.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2020 20:24:12 -0700 (PDT)
-Date:   Tue, 15 Sep 2020 13:24:07 +1000
-From:   Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 3/4] sparc64: remove mm_cpumask clearing to fix
- kthread_use_mm race
-To:     David Miller <davem@davemloft.net>
-Cc:     akpm@linux-foundation.org, aneesh.kumar@linux.ibm.com,
-        axboe@kernel.dk, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org, peterz@infradead.org,
-        sparclinux@vger.kernel.org
-References: <20200914045219.3736466-1-npiggin@gmail.com>
-        <20200914045219.3736466-4-npiggin@gmail.com>
-        <20200914.125942.5644261129883859.davem@davemloft.net>
-In-Reply-To: <20200914.125942.5644261129883859.davem@davemloft.net>
+        id S1726450AbgIOJGn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 15 Sep 2020 05:06:43 -0400
+Received: from mga03.intel.com ([134.134.136.65]:35019 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726269AbgIOJGe (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 15 Sep 2020 05:06:34 -0400
+IronPort-SDR: RZD/fFWTjvWyaYIJCtNMDzEdl4brC47SlQmB8DC403Dr6vIA5u/jFu0AFJj/JoHYnbKKWwa4bw
+ iw1Jurkpfvfw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9744"; a="159272034"
+X-IronPort-AV: E=Sophos;i="5.76,429,1592895600"; 
+   d="scan'208";a="159272034"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 02:06:31 -0700
+IronPort-SDR: JN6muYTQqB3wm3kCXqk1xsORqKL94poqyPOQLwwV9SSOFBG1M/RLedvNq9ruyR1KSefDfAWvPJ
+ brvH/uTc728w==
+X-IronPort-AV: E=Sophos;i="5.76,429,1592895600"; 
+   d="scan'208";a="482690707"
+Received: from emoriart-mobl.ger.corp.intel.com (HELO localhost) ([10.252.7.208])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 02:06:16 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Joe Perches <joe@perches.com>, LKML <linux-kernel@vger.kernel.org>,
+        Jiri Kosina <trivial@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        oss-drivers@netronome.com, nouveau@lists.freedesktop.org,
+        alsa-devel <alsa-devel@alsa-project.org>,
+        dri-devel@lists.freedesktop.org, linux-ide@vger.kernel.org,
+        dm-devel@redhat.com, linux-mtd@lists.infradead.org,
+        linux-i2c@vger.kernel.org, sparclinux@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-rtc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-afs@lists.infradead.org, coreteam@netfilter.org,
+        intel-wired-lan@lists.osuosl.org, linux-serial@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
+        Kees Cook <kees.cook@canonical.com>,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-sctp@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-nvme@lists.infradead.org,
+        storagedev@microchip.com, ceph-devel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
+        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [Intel-gfx] [trivial PATCH] treewide: Convert switch/case fallthrough; to break;
+In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+Date:   Tue, 15 Sep 2020 12:06:21 +0300
+Message-ID: <87d02nxvci.fsf@intel.com>
 MIME-Version: 1.0
-Message-Id: <1600139445.qwycwjuwdq.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Excerpts from David Miller's message of September 15, 2020 5:59 am:
-> From: Nicholas Piggin <npiggin@gmail.com>
-> Date: Mon, 14 Sep 2020 14:52:18 +1000
->=20
->  ...
->> The basic fix for sparc64 is to remove its mm_cpumask clearing code. The
->> optimisation could be effectively restored by sending IPIs to mm_cpumask
->> members and having them remove themselves from mm_cpumask. This is more
->> tricky so I leave it as an exercise for someone with a sparc64 SMP.
->> powerpc has a (currently similarly broken) example.
->>=20
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->=20
-> Sad to see this optimization go away, but what can I do:
->=20
-> Acked-by: David S. Miller <davem@davemloft.net>
->=20
+On Wed, 09 Sep 2020, Joe Perches <joe@perches.com> wrote:
+> diff --git a/drivers/gpu/drm/i915/display/intel_sprite.c b/drivers/gpu/drm/i915/display/intel_sprite.c
+> index 5ac0dbf0e03d..35ac539cc2b1 100644
+> --- a/drivers/gpu/drm/i915/display/intel_sprite.c
+> +++ b/drivers/gpu/drm/i915/display/intel_sprite.c
+> @@ -2861,7 +2861,7 @@ static bool gen12_plane_format_mod_supported(struct drm_plane *_plane,
+>  	case I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS:
+>  		if (!gen12_plane_supports_mc_ccs(dev_priv, plane->id))
+>  			return false;
+> -		fallthrough;
+> +		break;
+>  	case DRM_FORMAT_MOD_LINEAR:
+>  	case I915_FORMAT_MOD_X_TILED:
+>  	case I915_FORMAT_MOD_Y_TILED:
 
-Thanks Dave, any objection if we merge this via the powerpc tree
-to keep the commits together?
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 
-Thanks,
-Nick
+for merging via whichever tree seems best.
+
+BR,
+Jani.
+
+
+-- 
+Jani Nikula, Intel Open Source Graphics Center
