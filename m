@@ -2,73 +2,78 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDC5F26A1F3
-	for <lists+sparclinux@lfdr.de>; Tue, 15 Sep 2020 11:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F58426A41E
+	for <lists+sparclinux@lfdr.de>; Tue, 15 Sep 2020 13:27:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726423AbgIOJTw convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Tue, 15 Sep 2020 05:19:52 -0400
-Received: from relay3-d.mail.gandi.net ([217.70.183.195]:59441 "EHLO
-        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726185AbgIOJTo (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 15 Sep 2020 05:19:44 -0400
-X-Originating-IP: 91.224.148.103
-Received: from xps13 (unknown [91.224.148.103])
-        (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id A7B9F60004;
-        Tue, 15 Sep 2020 09:19:26 +0000 (UTC)
-Date:   Tue, 15 Sep 2020 11:19:25 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Jiri Kosina <trivial@kernel.org>,
-        linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        oss-drivers@netronome.com, nouveau@lists.freedesktop.org,
-        alsa-devel <alsa-devel@alsa-project.org>,
-        dri-devel@lists.freedesktop.org, linux-ide@vger.kernel.org,
-        dm-devel@redhat.com, linux-mtd@lists.infradead.org,
-        linux-i2c@vger.kernel.org, sparclinux@vger.kernel.org,
-        kvmarm@lists.cs.columbia.edu, linux-rtc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
-        dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-afs@lists.infradead.org, coreteam@netfilter.org,
-        intel-wired-lan@lists.osuosl.org, linux-serial@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
-        Kees Cook <kees.cook@canonical.com>,
-        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, linux-sctp@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-nvme@lists.infradead.org,
-        storagedev@microchip.com, ceph-devel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
-        netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
- break;
-Message-ID: <20200915111925.475dd3f1@xps13>
-In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
-References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726156AbgIOL1l (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 15 Sep 2020 07:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34000 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726135AbgIOL10 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 15 Sep 2020 07:27:26 -0400
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB6EAC06174A;
+        Tue, 15 Sep 2020 04:26:39 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4BrLXQ46X3z9sTN;
+        Tue, 15 Sep 2020 21:26:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1600169192;
+        bh=4esK02AyElAnyDXkxcmOZ58SrlxD5sLeYfaYLnFksAA=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=EqW4ku7Y8V1CrYGyOReTmatCQO246pQi3XD9hK8QImXa+8kAvrroYZZVLIhB5Cv/L
+         1HEJZtQS+acKXCy5mMNetAonLI2gIKpEbZxxPKtbRyxAhp7DbXfXGjBEQew0/9IUzn
+         uRXbt4CCQ1FGVyJHUik+SPO4pM7Ori2zZ2q8Sd+rd7hSHtcrPmjcbc39dwb8ouGs30
+         Ogk0REO3vpcreFt7pS/TdkFGqXscY4gN+KJ+bOxq48bkRgo6e0daxPDJKsbboli0bK
+         vt48IMrpUsOzMpDaqIlp3QryBj7HBTRa4U3hJ9O+w+fwBRbfp40WWPlE48hxMPs7KN
+         n614Pr2VN9Jeg==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Nicholas Piggin <npiggin@gmail.com>, peterz@infradead.org
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-arch@vger.kernel.org,
+        "linux-mm \@ kvack . org" <linux-mm@kvack.org>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        linux-kernel@vger.kernel.org,
+        Andy Lutomirski <luto@amacapital.net>,
+        Dave Hansen <dave.hansen@intel.com>,
+        sparclinux@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v2 1/4] mm: fix exec activate_mm vs TLB shootdown and lazy tlb switching race
+In-Reply-To: <1600137586.nypnz3sbcl.astroid@bobo.none>
+References: <20200914045219.3736466-1-npiggin@gmail.com> <20200914045219.3736466-2-npiggin@gmail.com> <20200914105617.GP1362448@hirez.programming.kicks-ass.net> <1600137586.nypnz3sbcl.astroid@bobo.none>
+Date:   Tue, 15 Sep 2020 21:26:29 +1000
+Message-ID: <87lfhbp9ga.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Joe,
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Excerpts from peterz@infradead.org's message of September 14, 2020 8:56 pm:
+>> On Mon, Sep 14, 2020 at 02:52:16PM +1000, Nicholas Piggin wrote:
+>>> Reading and modifying current->mm and current->active_mm and switching
+>>> mm should be done with irqs off, to prevent races seeing an intermediate
+>>> state.
+...
+>>> 
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> 
+>> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>> 
+>> I'm thinking we want this selected on x86 as well. Andy?
+>
+> Thanks for the ack. The plan was to take it through the powerpc tree,
+> but if you'd want x86 to select it, maybe a topic branch? Although
+> Michael will be away during the next merge window so I don't want to
+> get too fancy. Would you mind doing it in a follow up merge after
+> powerpc, being that it's (I think) a small change?
 
-For MTD:
+Or get akpm to take the series, including the x86 change.
 
->  drivers/mtd/nand/raw/nandsim.c                            |  2 +-
-
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-
-
-Thanks,
-Miquèl
+cheers
