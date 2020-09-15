@@ -2,59 +2,67 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA3AF2695F1
-	for <lists+sparclinux@lfdr.de>; Mon, 14 Sep 2020 21:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19A7C269A0C
+	for <lists+sparclinux@lfdr.de>; Tue, 15 Sep 2020 02:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725979AbgINT7w (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 14 Sep 2020 15:59:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60850 "EHLO
+        id S1726130AbgIOADY (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 14 Sep 2020 20:03:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725964AbgINT7w (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 14 Sep 2020 15:59:52 -0400
+        with ESMTP id S1725997AbgIOADX (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 14 Sep 2020 20:03:23 -0400
 Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9910C06174A;
-        Mon, 14 Sep 2020 12:59:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E8E4C06174A;
+        Mon, 14 Sep 2020 17:03:23 -0700 (PDT)
 Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0A5F912354CAC;
-        Mon, 14 Sep 2020 12:42:57 -0700 (PDT)
-Date:   Mon, 14 Sep 2020 12:59:42 -0700 (PDT)
-Message-Id: <20200914.125942.5644261129883859.davem@davemloft.net>
-To:     npiggin@gmail.com
-Cc:     linux-mm@kvack.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, aneesh.kumar@linux.ibm.com,
-        akpm@linux-foundation.org, axboe@kernel.dk, peterz@infradead.org
-Subject: Re: [PATCH v2 3/4] sparc64: remove mm_cpumask clearing to fix
- kthread_use_mm race
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id C09C0128EC88D;
+        Mon, 14 Sep 2020 16:46:35 -0700 (PDT)
+Date:   Mon, 14 Sep 2020 17:03:21 -0700 (PDT)
+Message-Id: <20200914.170321.1710628974878239639.davem@davemloft.net>
+To:     mfwitten@gmail.com
+Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC] openprom: Fix 'opiocnextprop'; ensure integer
+ conversions; use string size
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200914045219.3736466-4-npiggin@gmail.com>
-References: <20200914045219.3736466-1-npiggin@gmail.com>
-        <20200914045219.3736466-4-npiggin@gmail.com>
+In-Reply-To: <a5515efeaad94666a87f264dbf65bdbd@gmail.com>
+References: <a5515efeaad94666a87f264dbf65bdbd@gmail.com>
 X-Mailer: Mew version 6.8 on Emacs 27.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [2620:137:e000::1:9]); Mon, 14 Sep 2020 12:42:58 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [2620:137:e000::1:9]); Mon, 14 Sep 2020 16:46:35 -0700 (PDT)
 Sender: sparclinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
-Date: Mon, 14 Sep 2020 14:52:18 +1000
+From: Michael Witten <mfwitten@gmail.com>
+Date: Fri, 04 Sep 2020 19:40:00 -0000
 
- ...
-> The basic fix for sparc64 is to remove its mm_cpumask clearing code. The
-> optimisation could be effectively restored by sending IPIs to mm_cpumask
-> members and having them remove themselves from mm_cpumask. This is more
-> tricky so I leave it as an exercise for someone with a sparc64 SMP.
-> powerpc has a (currently similarly broken) example.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> @@ -34,10 +34,10 @@ EXPORT_SYMBOL(of_console_options);
+>  int of_getintprop_default(struct device_node *np, const char *name, int def)
+>  {
+>  	struct property *prop;
+> -	int len;
+> +	int size;
+>  
+> -	prop = of_find_property(np, name, &len);
+> -	if (!prop || len != 4)
+> +	prop = of_find_property(np, name, &size);
+> +	if (!prop || size != 4)
+>  		return def;
 
-Sad to see this optimization go away, but what can I do:
+This is just changing the variable name and makes no functional change
+at all, and therefore is gratuitous.
 
-Acked-by: David S. Miller <davem@davemloft.net>
+Please only include pure functional changes that fix the bug(s) in
+question.
+
+If there are multiple bugs, please fix one bug per patch and include a
+detailed explanation of each bug fix in the body of the commit
+message.
+
+Thank you.
