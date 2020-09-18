@@ -2,82 +2,97 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7768C26FC5A
-	for <lists+sparclinux@lfdr.de>; Fri, 18 Sep 2020 14:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7009B26FCDB
+	for <lists+sparclinux@lfdr.de>; Fri, 18 Sep 2020 14:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726440AbgIRMS4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 18 Sep 2020 08:18:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35680 "EHLO
+        id S1726715AbgIRMpt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 18 Sep 2020 08:45:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726064AbgIRMS4 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 18 Sep 2020 08:18:56 -0400
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B08AC06174A
-        for <sparclinux@vger.kernel.org>; Fri, 18 Sep 2020 05:18:56 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4BtCYK40Jjz9sT5;
-        Fri, 18 Sep 2020 22:18:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1600431526;
-        bh=eZsLlZGMKeQkS+03FKo604w9V86XaFWLGzm8pTD5+uI=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=mDA5YloOUUj1YlrkqhB+NWmP7C+oK2/lEb51pnY0pmK1q+xi+YZdJF9hhzLw5ssGQ
-         5vsW8B/AbgZLkyYtLDnDusK8tTY7tnBUCe4RArSx6pTDEhm9wVpRd05HuuBAxdlGzv
-         q3xStD52WpU801nnx+2eiKW4wL9M2IuTDP8yKJJiHVgJnP29Wlvxjc2hG4FL9b8n+V
-         EQCPIKrQRI/VIOiFlLt9gv3zsRcuTbu8sqKgEppJ2TKcEsreQ6q172d2ktOnyrkxW7
-         JeHMrR3RHMLBvdj9QS6Ee3N4/3EwF9bulqzLN+rYEgbu8Mga9FBrr/HEdUT7ehUqmg
-         U/rIeVSqeMwbQ==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Nicholas Piggin <npiggin@gmail.com>, peterz@infradead.org
-Cc:     Jens Axboe <axboe@kernel.dk>, linux-arch@vger.kernel.org,
-        "linux-mm \@ kvack . org" <linux-mm@kvack.org>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        linux-kernel@vger.kernel.org,
-        Andy Lutomirski <luto@amacapital.net>,
-        Dave Hansen <dave.hansen@intel.com>,
-        sparclinux@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v2 1/4] mm: fix exec activate_mm vs TLB shootdown and lazy tlb switching race
-In-Reply-To: <1600137586.nypnz3sbcl.astroid@bobo.none>
-References: <20200914045219.3736466-1-npiggin@gmail.com> <20200914045219.3736466-2-npiggin@gmail.com> <20200914105617.GP1362448@hirez.programming.kicks-ass.net> <1600137586.nypnz3sbcl.astroid@bobo.none>
-Date:   Fri, 18 Sep 2020 22:18:44 +1000
-Message-ID: <87a6xn6zx7.fsf@mpe.ellerman.id.au>
+        with ESMTP id S1726518AbgIRMpr (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 18 Sep 2020 08:45:47 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36099C061756;
+        Fri, 18 Sep 2020 05:45:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=V3X+nIZPxUoB2BOajjqXji1hFeXgDyeXoEcOBeTEcjY=; b=vJlif4ODGlFSaA/X96y95TBxaJ
+        n1vQfWDy9aeQQz/QfN88AtyhJjnDQw4iBBxB3dOINUYSWIDVuarqzmR0pZ51u4RNdWq3xd56/l+oR
+        5GEDqjcn7bBB3CNVKgHN2a9wCcAG8SVe7T2vZu1M3dI0BtwzjwiuqLtNf9Jp3kLrAw46KAsyjal9/
+        QoDWN5trBS3vHnHgnjwv02AJsET1D7F4cR807vr6jIEUKZP+oBkLuggklbUB1OR5q/LzveCjsdCRd
+        XkzH7AWVhPje1BKWsGUA6phSyo6a5kaSlGjDsD4kHaEc69ADj0ykAyKUBp48wXzsnb2cVPD/Usdlf
+        ivQpFJ1w==;
+Received: from [80.122.85.238] (helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kJFle-0008SE-9Z; Fri, 18 Sep 2020 12:45:36 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
+        io-uring@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org, netdev@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: let import_iovec deal with compat_iovecs as well
+Date:   Fri, 18 Sep 2020 14:45:24 +0200
+Message-Id: <20200918124533.3487701-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Excerpts from peterz@infradead.org's message of September 14, 2020 8:56 pm:
->> On Mon, Sep 14, 2020 at 02:52:16PM +1000, Nicholas Piggin wrote:
->>> Reading and modifying current->mm and current->active_mm and switching
->>> mm should be done with irqs off, to prevent races seeing an intermediate
->>> state.
-...
->>> 
->>> This is a bit ugly, but in the interest of fixing the bug and backporting
->>> before all architectures are converted this is a compromise.
->>> 
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> 
->> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->> 
->> I'm thinking we want this selected on x86 as well. Andy?
->
-> Thanks for the ack. The plan was to take it through the powerpc tree,
-> but if you'd want x86 to select it, maybe a topic branch?
+Hi Al,
 
-I've put this series in a topic branch based on v5.9-rc2:
+this series changes import_iovec to transparently deal with comat iovec
+structures, and then cleanups up a lot of code dupliation.  But to get
+there it first has to fix the pre-existing bug that io_uring compat
+contexts don't trigger the in_compat_syscall() check.  This has so far
+been relatively harmless as very little code callable from io_uring used
+the check, and even that code that could be called usually wasn't.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?h=topic/irqs-off-activate-mm
-
-I plan to merge it into the powerpc/next tree for v5.10, but if anyone
-else wants to merge it that's fine too.
-
-cheers
+Diffstat
+ arch/arm64/include/asm/unistd32.h                  |   10 
+ arch/mips/kernel/syscalls/syscall_n32.tbl          |   10 
+ arch/mips/kernel/syscalls/syscall_o32.tbl          |   10 
+ arch/parisc/kernel/syscalls/syscall.tbl            |   10 
+ arch/powerpc/kernel/syscalls/syscall.tbl           |   10 
+ arch/s390/kernel/syscalls/syscall.tbl              |   10 
+ arch/sparc/include/asm/compat.h                    |    3 
+ arch/sparc/kernel/syscalls/syscall.tbl             |   10 
+ arch/x86/entry/syscall_x32.c                       |    5 
+ arch/x86/entry/syscalls/syscall_32.tbl             |   10 
+ arch/x86/entry/syscalls/syscall_64.tbl             |   10 
+ arch/x86/include/asm/compat.h                      |    2 
+ block/scsi_ioctl.c                                 |   12 
+ drivers/scsi/sg.c                                  |    9 
+ fs/aio.c                                           |   38 --
+ fs/io_uring.c                                      |   21 -
+ fs/read_write.c                                    |  307 ++++-----------------
+ fs/splice.c                                        |   57 ---
+ include/linux/compat.h                             |   29 -
+ include/linux/fs.h                                 |    7 
+ include/linux/sched.h                              |    1 
+ include/linux/uio.h                                |    7 
+ include/uapi/asm-generic/unistd.h                  |   12 
+ lib/iov_iter.c                                     |   30 --
+ mm/process_vm_access.c                             |   69 ----
+ net/compat.c                                       |    4 
+ security/keys/compat.c                             |   37 --
+ security/keys/internal.h                           |    5 
+ security/keys/keyctl.c                             |    2 
+ tools/include/uapi/asm-generic/unistd.h            |   12 
+ tools/perf/arch/powerpc/entry/syscalls/syscall.tbl |   10 
+ tools/perf/arch/s390/entry/syscalls/syscall.tbl    |   10 
+ tools/perf/arch/x86/entry/syscalls/syscall_64.tbl  |   10 
+ 33 files changed, 207 insertions(+), 582 deletions(-)
