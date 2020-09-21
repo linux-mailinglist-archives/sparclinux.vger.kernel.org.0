@@ -2,122 +2,89 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19DFD271C2E
-	for <lists+sparclinux@lfdr.de>; Mon, 21 Sep 2020 09:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31A672721EA
+	for <lists+sparclinux@lfdr.de>; Mon, 21 Sep 2020 13:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726406AbgIUHjr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 21 Sep 2020 03:39:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34154 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726244AbgIUHjo (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 21 Sep 2020 03:39:44 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ECCAC061755;
-        Mon, 21 Sep 2020 00:39:44 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1600673980;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=wvyp0RounB/4LwU0Wfnprorn1wbUFCaaQDFAPWZa1lY=;
-        b=gMaSuZ51Lbc6QPkc00DoVI0ZeYFw1anwmwmCpCgA9mSAGscjICMP76VBc9c5LYYHJhtr1V
-        szZo7+Ww9dytWz1dbrc8RA2obQDOH1QUnyfZvjgPqxmDJsiP27s/hsVMbOD0Zjwlv+ber/
-        qWGRVkhYTPW2tTmS4pYTCoYSiT9DI/ZTsnsQ80U+VCocs0lPSE8nq5758cGblIbk8SVdnx
-        hPCPSLtdjkL9+573S5HhFCgk6FFXO/026nXOGnu4ti8sxk/fC+L2RQhONm/U5tVeg66C+O
-        R0NLgGerMKEFgnb0uRm7Ot+c09xW+a47s/CiEhYERktxgUfSN56PQvvbENyzPg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1600673980;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=wvyp0RounB/4LwU0Wfnprorn1wbUFCaaQDFAPWZa1lY=;
-        b=xr4r44czYL0yv7MaHM0svfQR/cc+aXpFFvMpVd1kcucOlLs0NXid+7U1RRYcOhbAYMYtxi
-        ganiHIU1DBLF2YCA==
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Will Deacon <will@kernel.org>,
+        id S1726355AbgIULL1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Mon, 21 Sep 2020 07:11:27 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:41132 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726384AbgIULL0 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 21 Sep 2020 07:11:26 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-233-9UYq0ao9O6ejB4ujVxtO9g-1; Mon, 21 Sep 2020 12:11:22 +0100
+X-MC-Unique: 9UYq0ao9O6ejB4ujVxtO9g-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Mon, 21 Sep 2020 12:11:21 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Mon, 21 Sep 2020 12:11:21 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Christoph Hellwig' <hch@lst.de>
+CC:     Alexander Viro <viro@zeniv.linux.org.uk>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "open list\:SYNOPSYS ARC ARCHITECTURE" 
-        <linux-snps-arc@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-sparc <sparclinux@vger.kernel.org>
-Subject: Re: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of kmap_atomic & friends
-In-Reply-To: <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
-References: <20200919091751.011116649@linutronix.de> <CAHk-=wiYGyrFRbA1cc71D2-nc5U9LM9jUJesXGqpPnB7E4X1YQ@mail.gmail.com> <87mu1lc5mp.fsf@nanos.tec.linutronix.de> <87k0wode9a.fsf@nanos.tec.linutronix.de> <CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com> <87eemwcpnq.fsf@nanos.tec.linutronix.de> <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
-Date:   Mon, 21 Sep 2020 09:39:39 +0200
-Message-ID: <87a6xjd1dw.fsf@nanos.tec.linutronix.de>
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-aio@kvack.org" <linux-aio@kvack.org>,
+        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+Subject: RE: let import_iovec deal with compat_iovecs as well
+Thread-Topic: let import_iovec deal with compat_iovecs as well
+Thread-Index: AQHWjbnKEn35LxofhEeT1lmdzdUiWqlwBNiwgAJx3YCAAH2K4A==
+Date:   Mon, 21 Sep 2020 11:11:21 +0000
+Message-ID: <ac8a3691c4f5442f908c51298260ca0e@AcuMS.aculab.com>
+References: <20200918124533.3487701-1-hch@lst.de>
+ <2c7bf42ee4314484ae0177280cd8f5f3@AcuMS.aculab.com>
+ <20200921044125.GA16522@lst.de>
+In-Reply-To: <20200921044125.GA16522@lst.de>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Content-Language: en-US
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun, Sep 20 2020 at 10:42, Linus Torvalds wrote:
-> On Sun, Sep 20, 2020 at 10:40 AM Thomas Gleixner <tglx@linutronix.de> wrote:
->>
->> I think the more obvious solution is to split the whole exercise:
->>
->>   schedule()
->>      prepare_switch()
->>         unmap()
->>
->>     switch_to()
->>
->>     finish_switch()
->>         map()
->
-> Yeah, that looks much easier to explain. Ack.
+> On Sat, Sep 19, 2020 at 02:24:10PM +0000, David Laight wrote:
+> > I thought about that change while writing my import_iovec() => iovec_import()
+> > patch - and thought that the io_uring code would (as usual) cause grief.
+> >
+> > Christoph - did you see those patches?
 
-So far so good, but Peter Z. just pointed out to me that I completely
-missed the fact that this cannot work.
+Link to cover email.
 
-If a task is migrated to a different CPU then the mapping address will
-change which will explode in colourful ways.
+https://lkml.org/lkml/2020/9/15/661
 
-On RT kernels this works because we ping the task to the CPU via
-migrate_disable(). On a !RT kernel migrate_disable() maps to
-preempt_disable() which brings us back to square one.
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
-/me goes back to the drawing board.
-
-Thanks,
-
-        tglx
