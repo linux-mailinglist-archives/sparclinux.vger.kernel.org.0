@@ -2,142 +2,105 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4232277975
-	for <lists+sparclinux@lfdr.de>; Thu, 24 Sep 2020 21:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19774277F68
+	for <lists+sparclinux@lfdr.de>; Fri, 25 Sep 2020 06:52:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728217AbgIXThB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 24 Sep 2020 15:37:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:42827 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728794AbgIXThA (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 24 Sep 2020 15:37:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600976218;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=twNrygaxLsVZPNKYCHY3ZfHX7UvhS+LdDIfmkCz5FTg=;
-        b=Kr4u0+wKDT4eE4Ovfk8dVq+zwEnG3+m9nBXV98aP7EduhHCHW16A+CAkoAsez2npbw8dyM
-        F42oliu8ePZ+iErn6O4Kku3QUN9ZIpqaI29BaqqCM/MwyQAJ1jE7qUu8VTcTnyor0Tjv1G
-        AGafI+2TkSoImau4U/fywK786XFkk6M=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-103-qIKXCD1nPoG4xIP6gYHJzQ-1; Thu, 24 Sep 2020 15:36:57 -0400
-X-MC-Unique: qIKXCD1nPoG4xIP6gYHJzQ-1
-Received: by mail-wm1-f69.google.com with SMTP id 23so121840wmk.8
-        for <sparclinux@vger.kernel.org>; Thu, 24 Sep 2020 12:36:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=twNrygaxLsVZPNKYCHY3ZfHX7UvhS+LdDIfmkCz5FTg=;
-        b=fl5ufj+DGOMBiCvlD2ofUTJnsEQh8uVf3BXX/rYYOXpjYQx5YxHZe7X2l8+Q0gN48t
-         OCyJGKfDBPVhpUgY/OV+yJEOtJ1GJ49k8XBm6ruOhK0CwvQmVb5GCjgblUTGnNWF+9FD
-         rgaZhiUSRROMXR8BZszEY4EsTT/mJ/0pEvzBIyvCaroaZ/XrN++aqAXoUbT6HiiAS9hv
-         H99neoSbZ2+8Y7xAecseL5oVqcz0Sg4gTNFo7WtDbHhwSsP2EqpWgC+2xuyrMngo7w9N
-         UZxwVXFt+MgOBXrhDA9uvLvnVjIpRqEZ1XkPz2HaLVRzG4twNIbuSIQBus16KTia8F2k
-         XyVg==
-X-Gm-Message-State: AOAM530l/F5HcuZbTFJ3U/PLR5aJO8WtYYI6uVkxJlU8BMvQMdSeaelR
-        uSs8e9jVlTeuoR2cMGuZuicSq4BOgGiUTdwwYwPAJx0o0VtWSM3JYn852kELslb7IZQgpuQJ8V6
-        nWG1B+VUXucK9bMsWNxxG8Q==
-X-Received: by 2002:adf:f34a:: with SMTP id e10mr491650wrp.91.1600976215161;
-        Thu, 24 Sep 2020 12:36:55 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJynpHjsvPmbyspQelrDSoXiAKotSicrrWAZZ3D0g/KyVrY5rzQz/w0XAUEKgRr9DXJGglK1Gg==
-X-Received: by 2002:adf:f34a:: with SMTP id e10mr491615wrp.91.1600976214950;
-        Thu, 24 Sep 2020 12:36:54 -0700 (PDT)
-Received: from x1.bristot.me (host-87-17-196-109.retail.telecomitalia.it. [87.17.196.109])
-        by smtp.gmail.com with ESMTPSA id h204sm302746wmf.35.2020.09.24.12.36.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2020 12:36:54 -0700 (PDT)
-Subject: Re: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of
- kmap_atomic & friends
-To:     peterz@infradead.org, Steven Rostedt <rostedt@goodmis.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Will Deacon <will@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "open list:SYNOPSYS ARC ARCHITECTURE" 
-        <linux-snps-arc@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        linux-csky@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-sparc <sparclinux@vger.kernel.org>
-References: <87mu1lc5mp.fsf@nanos.tec.linutronix.de>
- <87k0wode9a.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com>
- <87eemwcpnq.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
- <87a6xjd1dw.fsf@nanos.tec.linutronix.de>
- <CAHk-=wjhxzx3KHHOMvdDj3Aw-_Mk5eRiNTUBB=tFf=vTkw1FeA@mail.gmail.com>
- <87sgbbaq0y.fsf@nanos.tec.linutronix.de>
- <20200923084032.GU1362448@hirez.programming.kicks-ass.net>
- <20200923115251.7cc63a7e@oasis.local.home>
- <20200924082717.GA1362448@hirez.programming.kicks-ass.net>
-From:   Daniel Bristot de Oliveira <bristot@redhat.com>
-Message-ID: <7541acd1-65a0-0d55-4028-71cab544e90d@redhat.com>
-Date:   Thu, 24 Sep 2020 21:36:51 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1727237AbgIYEwI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 25 Sep 2020 00:52:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49406 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727044AbgIYEwB (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 25 Sep 2020 00:52:01 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA23C0613D5;
+        Thu, 24 Sep 2020 21:52:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=A+T/x3ppYi6QNsP2t+QiJ1AjmOgx9xWo2H6NAG0/aPM=; b=k9BJO212aIGjTM67lCOkTpCrht
+        B20Wf2zjNYR87uLFP2BRrzt5cCrEk0KFpOMk3+io62CblpW7Y77IqzHPhNFZqwDnVNpJgjcOWkhrs
+        Z8GRxpu7FjGxV+hNEbHeKyL912gkvTLvP4DBne8Te3c43Bttle2gfOVWfy6MwqIsof1MCTX4rxO24
+        Kx+lnKnrKhrsYvG/2XpbtSvE8DYXDyXxSwaM81JHTOVvJu9V5Jarcs/1LeXw6G549Mxci7m54zzCp
+        f1etRanliNQK8rGzJ9PmD1VPBy0Rci2ZVjpscKDGnzDGoBasw11g0MfksMIslOR+W3JyKfkaf/KsM
+        BhKY/8wQ==;
+Received: from p4fdb0c34.dip0.t-ipconnect.de ([79.219.12.52] helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kLfi0-0002pf-1s; Fri, 25 Sep 2020 04:51:48 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        David Laight <David.Laight@aculab.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-aio@kvack.org, io-uring@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        netdev@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: let import_iovec deal with compat_iovecs as well v4
+Date:   Fri, 25 Sep 2020 06:51:37 +0200
+Message-Id: <20200925045146.1283714-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <20200924082717.GA1362448@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 9/24/20 10:27 AM, peterz@infradead.org wrote:
-> So my current todo list is:
-> 
->  - Change RT PULL
->  - Change DL PULL
->  - Add migrate_disable() tracer; exactly like preempt/irqoff, except
->    measuring task-runtime instead of cpu-time.
->  - Add a mode that measures actual interference.
->  - Add a traceevent to detect preemption in migrate_disable().
-> 
-> 
-> And then I suppose I should twist Daniel's arm to update his model to
-> include these scenarios and numbers.
+Hi Al,
 
-Challenge accepted :-)
+this series changes import_iovec to transparently deal with compat iovec
+structures, and then cleanups up a lot of code dupliation.
 
--- Daniel
+Changes since v3:
+ - fix up changed prototypes in compat.h as well
 
+Changes since v2:
+ - revert the switch of the access process vm sysclls to iov_iter
+ - refactor the import_iovec internals differently
+ - switch aio to use __import_iovec
+
+Changes since v1:
+ - improve a commit message
+ - drop a pointless unlikely
+ - drop the PF_FORCE_COMPAT flag
+ - add a few more cleanups (including two from David Laight)
+
+Diffstat:
+ arch/arm64/include/asm/unistd32.h                  |   10 
+ arch/mips/kernel/syscalls/syscall_n32.tbl          |   10 
+ arch/mips/kernel/syscalls/syscall_o32.tbl          |   10 
+ arch/parisc/kernel/syscalls/syscall.tbl            |   10 
+ arch/powerpc/kernel/syscalls/syscall.tbl           |   10 
+ arch/s390/kernel/syscalls/syscall.tbl              |   10 
+ arch/sparc/kernel/syscalls/syscall.tbl             |   10 
+ arch/x86/entry/syscall_x32.c                       |    5 
+ arch/x86/entry/syscalls/syscall_32.tbl             |   10 
+ arch/x86/entry/syscalls/syscall_64.tbl             |   10 
+ block/scsi_ioctl.c                                 |   12 
+ drivers/scsi/sg.c                                  |    9 
+ fs/aio.c                                           |   38 --
+ fs/io_uring.c                                      |   20 -
+ fs/read_write.c                                    |  362 +--------------------
+ fs/splice.c                                        |   57 ---
+ include/linux/compat.h                             |   24 -
+ include/linux/fs.h                                 |   11 
+ include/linux/uio.h                                |   10 
+ include/uapi/asm-generic/unistd.h                  |   12 
+ lib/iov_iter.c                                     |  161 +++++++--
+ mm/process_vm_access.c                             |   85 ----
+ net/compat.c                                       |    4 
+ security/keys/compat.c                             |   37 --
+ security/keys/internal.h                           |    5 
+ security/keys/keyctl.c                             |    2 
+ tools/include/uapi/asm-generic/unistd.h            |   12 
+ tools/perf/arch/powerpc/entry/syscalls/syscall.tbl |   10 
+ tools/perf/arch/s390/entry/syscalls/syscall.tbl    |   10 
+ tools/perf/arch/x86/entry/syscalls/syscall_64.tbl  |   10 
+ 30 files changed, 280 insertions(+), 706 deletions(-)
