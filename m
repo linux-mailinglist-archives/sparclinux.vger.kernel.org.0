@@ -2,60 +2,40 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB9CB27FD7D
-	for <lists+sparclinux@lfdr.de>; Thu,  1 Oct 2020 12:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 797B8281A16
+	for <lists+sparclinux@lfdr.de>; Fri,  2 Oct 2020 19:49:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731890AbgJAKfh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 1 Oct 2020 06:35:37 -0400
-Received: from ftender.ru ([178.218.214.211]:55825 "HELO ftender2.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with SMTP
-        id S1731884AbgJAKfh (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 1 Oct 2020 06:35:37 -0400
-X-Greylist: delayed 79987 seconds by postgrey-1.27 at vger.kernel.org; Thu, 01 Oct 2020 06:35:36 EDT
-dkim-signature: v=1; a=rsa-sha256; d=ftender2.ru; s=ke1;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=m3pASy53GgfFwHppvIPHJghbzAHQviKN6bgk+M/PrtE=;
-        b=Af6xTkNKHGzAmLwVpHgcsNxPKVr1qYQ5k2BsMPyC69BzVbvLcuV2kkTgZqMFjbUPkzjGuyvf8YlJWX2z+nDOzQ5XHwuyo2iLJ3mZ2vkFcIjZJka2alEYh67PCMOo58XDFFQkQxCbnXov522eWf4e7ElVpAVJJVxFk53aZgOXaR0=
-Received: from User (Unknown [176.32.20.25])
-        by ftender2.ru
-        ; Tue, 29 Sep 2020 16:56:03 +0300
-Message-ID: <63A43237-C1CB-456E-ABF7-8963DBFFAEA8@ftender2.ru>
-Reply-To: <maviswanczyko@aol.com>
-From:   "L.  Wanczyk." <billing@ftender2.ru>
-Subject: DONATION .....                       211
-Date:   Tue, 29 Sep 2020 15:55:05 -0700
+        id S2387602AbgJBRtR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Fri, 2 Oct 2020 13:49:17 -0400
+Received: from mail3.lapompeya.com.ar ([190.189.89.7]:47773 "EHLO
+        mail3.lapompeya.com.ar" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726224AbgJBRtR (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 2 Oct 2020 13:49:17 -0400
+X-Greylist: delayed 2536 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 13:49:17 EDT
+Received: from [192.168.2.241] (80.106.241.112) by mail3.lapompeya.com.ar
+ (192.168.11.16) with Microsoft SMTP Server id 14.3.468.0; Fri, 2 Oct 2020
+ 14:06:38 -0300
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1081
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Gute Nachrichten !
+To:     Recipients <chi1grant22@gmail.com>
+From:   "Mr. Marvin" <chi1grant22@gmail.com>
+Date:   Fri, 2 Oct 2020 20:06:15 +0300
+Reply-To: <marvinsims00@gmail.com>
+Message-ID: <274d2685-668c-4238-9c38-5e7c25764722@VMMAIL2010.pompeya.local>
+Received-SPF: SoftFail (vmmail2010.pompeya.local: domain of transitioning
+ chi1grant22@gmail.com discourages use of 80.106.241.112 as permitted sender)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello,
+Die letzten Monate waren nicht gut für Unternehmen, Institutionen und Einzelpersonen auf der ganzen Welt. Die globale Epidemie (Covid-19) hat alle finanziell erschöpft und Sie wurden nicht freigestellt. Ihr Hilferuf wurde gehört und wir sind bereit, Ihnen unsere freundliche Geste anzubieten. Sie gehören zu den 3. Chargen, die von unserem Fondsprogramm profitieren, und ich muss aufrichtig sagen, dass die 1. und 2. Charge für die von uns geleistete Hilfe dankbar ist. Sie haben erfolgreich die kumulierte Gesamtsumme von (50.000,00 USD) als Gemeinschaftsspende von Oxfam Aid erhalten. Antworten Sie zurück, um weitere Informationen und Anweisungen zur Beantragung Ihres Zuschusses zu erhalten.
 
-I'm Mrs. Mavis Wanczyk, the mega winner of $758 Million in Mega Millions
-Jackpot, I am donating to 5 random individuals if you get this email then
-your email was selected after a spin ball. I have spread most of my wealth
-over a number of charities and organizations. I have voluntarily decided to
-donate the sum of $ 10 Million USD to you as one of the selected , to verify
-my
-winnings via YouTube page below.
+Denken Sie daran, immer in Sicherheit zu bleiben und soziale Distanzierung zu üben. Befolgen Sie immer die Anweisungen der örtlichen Behörden.
 
-WATCH ME HERE: https://www.youtube.com/watch?v=7kWnqvJM1mM
+Herr Marvin Sims,
 
-THIS IS YOUR DONATION CODE: F207162
-Kindly send your direct telephone and fax number to enable me to reach you
-
-Reply with the DONATION CODE to this email: maviswanczykoo@aol.com
-
-Hope to make you and your family happy.
-
-Regards,
-Mrs. Mavis L. Wanczyk.
-
+Supervisor (Oxfam Finanzabteilung)
+Oxfam International Inc
