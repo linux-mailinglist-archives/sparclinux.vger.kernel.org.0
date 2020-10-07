@@ -2,47 +2,67 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A344B285D0F
-	for <lists+sparclinux@lfdr.de>; Wed,  7 Oct 2020 12:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FAEE285D91
+	for <lists+sparclinux@lfdr.de>; Wed,  7 Oct 2020 12:52:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727845AbgJGKkw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 7 Oct 2020 06:40:52 -0400
-Received: from verein.lst.de ([213.95.11.211]:36924 "EHLO verein.lst.de"
+        id S1728179AbgJGKwe convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Wed, 7 Oct 2020 06:52:34 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:61424 "EHLO mx.metalurgs.lv"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727767AbgJGKkt (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 7 Oct 2020 06:40:49 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id E47C86736F; Wed,  7 Oct 2020 12:40:46 +0200 (CEST)
-Date:   Wed, 7 Oct 2020 12:40:46 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: Re: [PATCH 1/3] fbdev/sbuslib: remove FBIOSCURSOR/FBIOGCURSOR
- leftovers
-Message-ID: <20201007104046.GB24327@lst.de>
-References: <20201007074447.797968-1-hch@lst.de> <20201007074447.797968-2-hch@lst.de> <CAK8P3a0UHEsND+vJjhtj2GKQpMjMCqD55vQ9+2u-SCrThe3wTw@mail.gmail.com> <20201007085911.GA17356@lst.de> <CAK8P3a2w1Q4coFLnW4sDQEC_01uwWWUkuGyqj=r=x3jtB8uhNA@mail.gmail.com>
+        id S1726597AbgJGKwe (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 7 Oct 2020 06:52:34 -0400
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 516CA66BCA
+        for <sparclinux@vger.kernel.org>; Wed,  7 Oct 2020 13:52:16 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 2EA9566BBF
+        for <sparclinux@vger.kernel.org>; Wed,  7 Oct 2020 13:52:16 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id 5FDBF669DC; Wed,  7 Oct 2020 13:52:12 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.55])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id 16EB862D81;
+        Wed,  7 Oct 2020 13:52:04 +0300 (EEST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a2w1Q4coFLnW4sDQEC_01uwWWUkuGyqj=r=x3jtB8uhNA@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Wed, 07 Oct 2020 07:51:57 -0300
+Reply-To: hmurrah39@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201007105212.5FDBF669DC@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan./mmm,
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201007 notchecked
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Oct 07, 2020 at 11:28:58AM +0200, Arnd Bergmann wrote:
-> The only one I have actually given up on is the atomisp staging driver,
-> which uses an awful hack, copying the x86 implementation of
-> copy_in_user()/compat_alloc_user_space() into the driver.
+Hello Dear,
 
-That is gross.  Just mark the driver as broken for now.  Linus agreed
-years ago that we don't need to work around staging drivers.  But
-it would still be nice to ping the mainainers, as they often have
-better ideas how to solve the problem.
+
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+
+
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+
+
+Please get back to me if you are interested for more
+
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah
