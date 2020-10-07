@@ -2,105 +2,218 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4803A2858B2
-	for <lists+sparclinux@lfdr.de>; Wed,  7 Oct 2020 08:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 968112859AD
+	for <lists+sparclinux@lfdr.de>; Wed,  7 Oct 2020 09:39:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727398AbgJGGbh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 7 Oct 2020 02:31:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42494 "EHLO
+        id S1727757AbgJGHjp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 7 Oct 2020 03:39:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727033AbgJGGbh (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 7 Oct 2020 02:31:37 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B26B5C0613D2
-        for <sparclinux@vger.kernel.org>; Tue,  6 Oct 2020 23:31:36 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id l24so932736edj.8
-        for <sparclinux@vger.kernel.org>; Tue, 06 Oct 2020 23:31:36 -0700 (PDT)
+        with ESMTP id S1727647AbgJGHjo (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 7 Oct 2020 03:39:44 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5846DC0613D2
+        for <sparclinux@vger.kernel.org>; Wed,  7 Oct 2020 00:39:44 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id z1so960509wrt.3
+        for <sparclinux@vger.kernel.org>; Wed, 07 Oct 2020 00:39:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dC3PZSlkcJ0dFT0SKLSrvJ3nzCII9YDRrt3iNoXhzDA=;
-        b=bQ9SYdOa3CZxR358nnaIyBpVeWAq8dWQLwY8bXMYb+QLUXbn4Z+cq1/NJgj87h8XlM
-         Ppe8gPbnxBrkC3e9QcCZSmSbmsbDfszXvx7hlupUzv8ejtCe50yXx1hKUHKyo3OTAWjr
-         +rWx0luG6oWF0Sq2iYtOA8ktsKXEm5NczU1PuEoh9e6cF8z2XBKOdB1F2cw3oywjHDpH
-         aqh0S4HYqswYIL5q3EDrcWxYBITzMVtzP/ZLpBChw1+ZexMwjMdmXZLAJKoWfr45sM8c
-         H9Xxs3j2Mm+lkLzcHZxP+LNJpm/jObhXnnZSuP0ShAc2hMMeTmrHrvDTJVO23/zbIKcK
-         gmJw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RYwEGS7gOxFlwuQRTr7QM+pg66rzdyTCfIUfekhpUBo=;
+        b=ruoXB4q0W4dOYr0HkGK3Qg2MUNaxXi9Tfm5XoN+wJuao1gaRUueT0KcnNUVdAc6i7R
+         ad7CYmcCeYVK++bMrK+3TtUU+XRMTKATzz4A0NJN3o7RmWQUbCtCU/k7VX8UmjxZCcLx
+         90FV/U6rqDEoHznYihJVKIjTp59Cgm6dxLKO0y4kB8P9aqgDO09c+9jYYxfNjQeQwLeT
+         0iJgvI4hvfuLW4QF6oH+DgdLqWEER3NlD8sgZ8ZestVegmAZlB3/yPVxiKvaoeSu1NTg
+         gTBMILXz/Q4NZ/g/+Fxx+UK5QvpWKKFVUDzwBk6TTlfiUYgu85IgWeCGYmrwbyzcKAGT
+         TBSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dC3PZSlkcJ0dFT0SKLSrvJ3nzCII9YDRrt3iNoXhzDA=;
-        b=M7rbLsXCzdQGrOByb5Hi+oHvELdqFfXsw9tmtVjxNdYfy0Sq61Zd7mgYCp6nqJu9Nv
-         FhtQ2JlwAQjopC9EYjxJxe97mP0n9k1ZtCr2PvaehmtoloFKhfx4dIHDxka8NbUn6hDb
-         UkEjfrDDOHAc+y0ohBwp7IHjzWSd9mMg9o4aTg919gGxssnFS0cuuFkhekupOUikofW7
-         Kl6O7GGJuJxKtlbuxU5NDSdxncWs6FSOUXXKm8t4DFJOqGbgyQ9BGZKMMogbpbIND5rA
-         /HjwCmEZZFZIBqZcD2tNWUSzy3+DdWXrkfS2N4IjlK12LwSo4WKdZfyPhDDGy5ef6BiG
-         JZcw==
-X-Gm-Message-State: AOAM533MZPj6ialAJ4XSesr5JtZjRrDAW3qTs1WTBs+z0Uy7imTNpnC1
-        lGDja8L/b79y9HKfVBF8Ux1MXqp+7xGu2AXmZL1G8g==
-X-Google-Smtp-Source: ABdhPJyF8NfAjL1Cbi5pv/Pd1HHkioaL79QB5pL7lyeQNrVFB2Xx456ps1w6Z7PK3swGrITqTcVQRGonfrViPF0gjS8=
-X-Received: by 2002:a05:6402:7d2:: with SMTP id u18mr1914452edy.69.1602052295019;
- Tue, 06 Oct 2020 23:31:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAG48ez3YsfTfOFKa-Po58e4PNp7FK54MFbkK3aUPSRt3LWtxQA@mail.gmail.com>
- <0fb905cc-77a2-4beb-dc9c-0c2849a6f0ae@oracle.com> <CAG48ez3istGAOA=G8fvrQkbMs4MroT8bj=Z=Wmnj0k73K0AFRA@mail.gmail.com>
- <20201007061659.GA21685@infradead.org>
-In-Reply-To: <20201007061659.GA21685@infradead.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RYwEGS7gOxFlwuQRTr7QM+pg66rzdyTCfIUfekhpUBo=;
+        b=P63254MDO4x3lLaplfaJiXszajYpGisee96gypfHr//8agIjo1XQ7zksoysy80RHyH
+         H3y+mAkw1LcMy+8Qu2flFjMFbbcIvaFGB0gOp1TfM33rzsmV2PsjyeVqUdADredAIpc0
+         l0pB+zGkK3qaq8VE2u0vMpK+EFySQLv05Pvd3G21xJCd6gjTd3UCSSANU1mlhhfkXUv9
+         o7UR0/i4WuS4jJz92prAtzkzxVH8QlmW5iFLMcYF/F0KuV7q3k7Col7knDC9II6cTMDB
+         nqI0c6b095+r8A2baq56CHHErEj3bML6DsNBy5iDCwFPBQeImcDw6sa6/6MY183dVcTI
+         OQSQ==
+X-Gm-Message-State: AOAM530zBqwEazjNIuiACCfH8Q1Pb+5gVn6fZchpedjK40I1bk+gF/zk
+        7qJrCzKWww1EY9eJgHWjQ0HaBg==
+X-Google-Smtp-Source: ABdhPJx+7ke9fEecAqH/fAr9lPYggeTnVTs2kZ4YZOSai+UmsGlcT1A4NpyX9005g+lQnoEoGseTpw==
+X-Received: by 2002:adf:e88a:: with SMTP id d10mr2072440wrm.247.1602056382670;
+        Wed, 07 Oct 2020 00:39:42 -0700 (PDT)
+Received: from localhost ([2a02:168:96c5:1:55ed:514f:6ad7:5bcc])
+        by smtp.gmail.com with ESMTPSA id r3sm1639024wrm.51.2020.10.07.00.39.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2020 00:39:41 -0700 (PDT)
 From:   Jann Horn <jannh@google.com>
-Date:   Wed, 7 Oct 2020 08:31:08 +0200
-Message-ID: <CAG48ez3pwkpoeHTSSuRHpmdn7X5AVuGjw5n3VhD88S1p0cjsUg@mail.gmail.com>
-Subject: Re: SPARC version of arch_validate_prot() looks broken (UAF read)
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Khalid Aziz <khalid.aziz@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
-        Khalid Aziz <khalid@gonehiking.org>,
-        kernel list <linux-kernel@vger.kernel.org>,
+To:     "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc:     linux-kernel@vger.kernel.org, Khalid Aziz <khalid.aziz@oracle.com>,
+        Christoph Hellwig <hch@infradead.org>,
         Anthony Yznaga <anthony.yznaga@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock and with length
+Date:   Wed,  7 Oct 2020 09:39:31 +0200
+Message-Id: <20201007073932.865218-1-jannh@google.com>
+X-Mailer: git-send-email 2.28.0.806.g8561365e88-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Oct 7, 2020 at 8:17 AM Christoph Hellwig <hch@infradead.org> wrote:
-> On Wed, Oct 07, 2020 at 02:45:39AM +0200, Jann Horn wrote:
-> > > I think arch_validate_prot() is still the right hook to validate the
-> > > protection bits. sparc_validate_prot() can iterate over VMAs with read
-> > > lock. This will, of course, require range as well to be passed to
-> > > arch_validate_prot().
-> >
-> > In that case, do you want to implement this?
->
-> Any reason to not just call arch_validate_prot after taking the mmap
-> lock?
+arch_validate_prot() is a hook that can validate whether a given set of
+protection flags is valid in an mprotect() operation. It is given the set
+of protection flags and the address being modified.
 
-Then the next easy steps are:
+However, the address being modified can currently not actually be used in
+a meaningful way because:
 
- - change the signature of arch_validate_prot() to also accept a
-length or end parameter (because a start address without an end
-address is completely useless)
- - add a loop over the VMAs in that range in SPARC's arch_validate_prot()
+1. Only the address is given, but not the length, and the operation can
+   span multiple VMAs. Therefore, the callee can't actually tell which
+   virtual address range, or which VMAs, are being targeted.
+2. The mmap_lock is not held, meaning that if the callee were to check
+   the VMA at @addr, that VMA would be unrelated to the one the
+   operation is performed on.
 
-And then comes the annoying part: figure out what to do in that loop
-if the range is not fully covered by VMAs. To fully avoid changing the
-normal mprotect() ABI, you'd have to accept cases where parts of the
-range are unmapped - but hopefully nobody relies on that particular
-weirdness, so maybe you can just throw an error in that case? Even so,
-the normal error code for that is -ENOMEM, but arch_validate_prot()
-has a boolean return, so for that, you'd have to change the return
-type, too. I guess the cleanest approach might be to just validate up
-to the first gap and then return "everything's good" and rely on
-mprotect() bailing out on its own?
+Currently, custom arch_validate_prot() handlers are defined by
+arm64, powerpc and sparc.
+arm64 and powerpc don't care about the address range, they just check the
+flags against CPU support masks.
+sparc's arch_validate_prot() attempts to look at the VMA, but doesn't take
+the mmap_lock.
 
-Ah - at first I thought that you'd also have to deal with concurrent
-stack VMA expansion from find_expand_vma() (which we really should get
-rid of somehow sometime), but luckily that still at least holds the
-mmap lock in read mode, and here we hold it in write mode, so we don't
-have to worry about that. So I guess that'd be the way to go for this
-approach?
+Change the function signature to also take a length, and move the
+arch_validate_prot() call in mm/mprotect.c down into the locked region.
 
-Alright, I guess I'll send patches after all, hopefully after at least
-compile-testing them...
+Cc: stable@vger.kernel.org
+Fixes: 9035cf9a97e4 ("mm: Add address parameter to arch_validate_prot()")
+Suggested-by: Khalid Aziz <khalid.aziz@oracle.com>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+ arch/arm64/include/asm/mman.h   | 4 ++--
+ arch/powerpc/include/asm/mman.h | 3 ++-
+ arch/powerpc/kernel/syscalls.c  | 2 +-
+ arch/sparc/include/asm/mman.h   | 6 ++++--
+ include/linux/mman.h            | 3 ++-
+ mm/mprotect.c                   | 6 ++++--
+ 6 files changed, 15 insertions(+), 9 deletions(-)
+
+diff --git a/arch/arm64/include/asm/mman.h b/arch/arm64/include/asm/mman.h
+index 081ec8de9ea6..0876a87986dc 100644
+--- a/arch/arm64/include/asm/mman.h
++++ b/arch/arm64/include/asm/mman.h
+@@ -23,7 +23,7 @@ static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
+ #define arch_vm_get_page_prot(vm_flags) arch_vm_get_page_prot(vm_flags)
+ 
+ static inline bool arch_validate_prot(unsigned long prot,
+-	unsigned long addr __always_unused)
++	unsigned long addr __always_unused, unsigned long len __always_unused)
+ {
+ 	unsigned long supported = PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM;
+ 
+@@ -32,6 +32,6 @@ static inline bool arch_validate_prot(unsigned long prot,
+ 
+ 	return (prot & ~supported) == 0;
+ }
+-#define arch_validate_prot(prot, addr) arch_validate_prot(prot, addr)
++#define arch_validate_prot(prot, addr, len) arch_validate_prot(prot, addr, len)
+ 
+ #endif /* ! __ASM_MMAN_H__ */
+diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/mman.h
+index 7cb6d18f5cd6..65dd9b594985 100644
+--- a/arch/powerpc/include/asm/mman.h
++++ b/arch/powerpc/include/asm/mman.h
+@@ -36,7 +36,8 @@ static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
+ }
+ #define arch_vm_get_page_prot(vm_flags) arch_vm_get_page_prot(vm_flags)
+ 
+-static inline bool arch_validate_prot(unsigned long prot, unsigned long addr)
++static inline bool arch_validate_prot(unsigned long prot, unsigned long addr,
++				      unsigned long len)
+ {
+ 	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_SAO))
+ 		return false;
+diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscalls.c
+index 078608ec2e92..b1fabb97d138 100644
+--- a/arch/powerpc/kernel/syscalls.c
++++ b/arch/powerpc/kernel/syscalls.c
+@@ -43,7 +43,7 @@ static inline long do_mmap2(unsigned long addr, size_t len,
+ {
+ 	long ret = -EINVAL;
+ 
+-	if (!arch_validate_prot(prot, addr))
++	if (!arch_validate_prot(prot, addr, len))
+ 		goto out;
+ 
+ 	if (shift) {
+diff --git a/arch/sparc/include/asm/mman.h b/arch/sparc/include/asm/mman.h
+index f94532f25db1..e85222c76585 100644
+--- a/arch/sparc/include/asm/mman.h
++++ b/arch/sparc/include/asm/mman.h
+@@ -52,9 +52,11 @@ static inline pgprot_t sparc_vm_get_page_prot(unsigned long vm_flags)
+ 	return (vm_flags & VM_SPARC_ADI) ? __pgprot(_PAGE_MCD_4V) : __pgprot(0);
+ }
+ 
+-#define arch_validate_prot(prot, addr) sparc_validate_prot(prot, addr)
+-static inline int sparc_validate_prot(unsigned long prot, unsigned long addr)
++#define arch_validate_prot(prot, addr, len) sparc_validate_prot(prot, addr, len)
++static inline int sparc_validate_prot(unsigned long prot, unsigned long addr,
++				      unsigned long len)
+ {
++	mmap_assert_write_locked(current->mm);
+ 	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_ADI))
+ 		return 0;
+ 	if (prot & PROT_ADI) {
+diff --git a/include/linux/mman.h b/include/linux/mman.h
+index 6f34c33075f9..5b4d554d3189 100644
+--- a/include/linux/mman.h
++++ b/include/linux/mman.h
+@@ -96,7 +96,8 @@ static inline void vm_unacct_memory(long pages)
+  *
+  * Returns true if the prot flags are valid
+  */
+-static inline bool arch_validate_prot(unsigned long prot, unsigned long addr)
++static inline bool arch_validate_prot(unsigned long prot, unsigned long addr,
++				      unsigned long len)
+ {
+ 	return (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM)) == 0;
+ }
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index ce8b8a5eacbb..e2d6b51acbf8 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -533,14 +533,16 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+ 	end = start + len;
+ 	if (end <= start)
+ 		return -ENOMEM;
+-	if (!arch_validate_prot(prot, start))
+-		return -EINVAL;
+ 
+ 	reqprot = prot;
+ 
+ 	if (mmap_write_lock_killable(current->mm))
+ 		return -EINTR;
+ 
++	error = -EINVAL;
++	if (!arch_validate_prot(prot, start, len))
++		goto out;
++
+ 	/*
+ 	 * If userspace did not allocate the pkey, do not let
+ 	 * them use it here.
+
+base-commit: c85fb28b6f999db9928b841f63f1beeb3074eeca
+-- 
+2.28.0.806.g8561365e88-goog
+
