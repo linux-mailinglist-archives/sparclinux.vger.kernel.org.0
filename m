@@ -2,79 +2,74 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28A54287312
-	for <lists+sparclinux@lfdr.de>; Thu,  8 Oct 2020 13:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55C93287CA9
+	for <lists+sparclinux@lfdr.de>; Thu,  8 Oct 2020 21:54:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728945AbgJHLDO (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 8 Oct 2020 07:03:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37620 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725852AbgJHLDO (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 8 Oct 2020 07:03:14 -0400
-Received: from gaia (unknown [95.149.105.49])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C9362215A4;
-        Thu,  8 Oct 2020 11:03:10 +0000 (UTC)
-Date:   Thu, 8 Oct 2020 12:03:07 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Jann Horn <jannh@google.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org,
+        id S1729258AbgJHTyI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 8 Oct 2020 15:54:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50596 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728538AbgJHTyI (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 8 Oct 2020 15:54:08 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E8D6C0613D2
+        for <sparclinux@vger.kernel.org>; Thu,  8 Oct 2020 12:54:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=4EhDrMA1vgac7xlPvTmCJbH2gHcwRUoU9DKu4x1ExBE=; b=kZFsNrRGH9dfq/VDmbQIcaofOv
+        QXXz7oc+pZjOPvSC8WXnRZsufXq7B9MdONHcr9Unu73n1axYCyGCFEPXKYhujWy+VJAnAvrqAzDRv
+        2uvjtMdsO9pcVb9ghJMHA4PuNHIO0bvoaBLugqr4VSapXjj8IIfLq6JCBvIqU2iBCMHJMTj9bIzZi
+        28nnTkhhJdlT1gvxanJdUdSril4wArFt5QfqtzBmehl6l5FVYax1OfA+CVOGMYzw0cxLMuvqxNFdD
+        5k2gbhq+yrClwkmOcuY2ezp0SW9eYoglvB/oHzyxcEzzs7Lf75qkvVPx/gnP0owucywDOaN21J4qn
+        Q2YK5jwg==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kQbzB-0000fO-4Z; Thu, 08 Oct 2020 19:53:58 +0000
+Date:   Thu, 8 Oct 2020 20:53:57 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     "David S. Miller" <davem@davemloft.net>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
-        Anthony Yznaga <anthony.yznaga@oracle.com>,
-        Will Deacon <will@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Dave Kleikamp <shaggy@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
- and with length
-Message-ID: <20201008110307.GH7661@gaia>
-References: <20201007073932.865218-1-jannh@google.com>
- <20201007123544.GA11433@infradead.org>
- <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
- <87o8ld0zwt.fsf@mpe.ellerman.id.au>
+        Mike Rapoport <rppt@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH] sparc: Fix handling of page table constructor failure
+Message-ID: <20201008195357.GO20115@casper.infradead.org>
+References: <20200927151950.32725-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87o8ld0zwt.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200927151950.32725-1-willy@infradead.org>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Oct 08, 2020 at 09:34:26PM +1100, Michael Ellerman wrote:
-> Jann Horn <jannh@google.com> writes:
-> > So while the mprotect() case
-> > checks the flags and refuses unknown values, the mmap() code just lets
-> > the architecture figure out which bits are actually valid to set (via
-> > arch_calc_vm_prot_bits()) and silently ignores the rest?
-> >
-> > And powerpc apparently decided that they do want to error out on bogus
-> > prot values passed to their version of mmap(), and in exchange, assume
-> > in arch_calc_vm_prot_bits() that the protection bits are valid?
+ping
+
+On Sun, Sep 27, 2020 at 04:19:50PM +0100, Matthew Wilcox (Oracle) wrote:
+> The page has just been allocated, so its refcount is 1.  free_unref_page()
+> is for use on pages which have a zero refcount.  Use __free_page()
+> like the other implementations of pte_alloc_one().
 > 
-> I don't think we really decided that, it just happened by accident and
-> no one noticed/complained.
+> Fixes: 1ae9ae5f7df7 ("sparc: handle pgtable_page_ctor() fail")
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+>  arch/sparc/mm/init_64.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Seems userspace is pretty well behaved when it comes to passing prot
-> values to mmap().
-
-It's not necessarily about well behaved but whether it can have security
-implications. On arm64, if the underlying memory does not support MTE
-(say some DAX mmap) but we still allow PROT_MTE driven by user, it will
-lead to an SError which brings the whole machine down.
-
-Not sure whether ADI has similar requirements but at least for arm64 we
-addressed the mmap() case as well (see my other email on the details; I
-think the approach would work on SPARC as well).
-
--- 
-Catalin
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index fad6d3129904..4288f08a5736 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -2898,7 +2898,7 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
+>  	if (!page)
+>  		return NULL;
+>  	if (!pgtable_pte_page_ctor(page)) {
+> -		free_unref_page(page);
+> +		__free_page(page);
+>  		return NULL;
+>  	}
+>  	return (pte_t *) page_address(page);
+> -- 
+> 2.28.0
+> 
