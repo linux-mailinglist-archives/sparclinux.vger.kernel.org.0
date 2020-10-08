@@ -2,74 +2,53 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55C93287CA9
-	for <lists+sparclinux@lfdr.de>; Thu,  8 Oct 2020 21:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD750287EB0
+	for <lists+sparclinux@lfdr.de>; Fri,  9 Oct 2020 00:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729258AbgJHTyI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 8 Oct 2020 15:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50596 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728538AbgJHTyI (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 8 Oct 2020 15:54:08 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E8D6C0613D2
-        for <sparclinux@vger.kernel.org>; Thu,  8 Oct 2020 12:54:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=4EhDrMA1vgac7xlPvTmCJbH2gHcwRUoU9DKu4x1ExBE=; b=kZFsNrRGH9dfq/VDmbQIcaofOv
-        QXXz7oc+pZjOPvSC8WXnRZsufXq7B9MdONHcr9Unu73n1axYCyGCFEPXKYhujWy+VJAnAvrqAzDRv
-        2uvjtMdsO9pcVb9ghJMHA4PuNHIO0bvoaBLugqr4VSapXjj8IIfLq6JCBvIqU2iBCMHJMTj9bIzZi
-        28nnTkhhJdlT1gvxanJdUdSril4wArFt5QfqtzBmehl6l5FVYax1OfA+CVOGMYzw0cxLMuvqxNFdD
-        5k2gbhq+yrClwkmOcuY2ezp0SW9eYoglvB/oHzyxcEzzs7Lf75qkvVPx/gnP0owucywDOaN21J4qn
-        Q2YK5jwg==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kQbzB-0000fO-4Z; Thu, 08 Oct 2020 19:53:58 +0000
-Date:   Thu, 8 Oct 2020 20:53:57 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH] sparc: Fix handling of page table constructor failure
-Message-ID: <20201008195357.GO20115@casper.infradead.org>
-References: <20200927151950.32725-1-willy@infradead.org>
+        id S1725997AbgJHW2s (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 8 Oct 2020 18:28:48 -0400
+Received: from [58.87.100.240] ([58.87.100.240]:52668 "EHLO
+        mail.hebei-kuixing.com" rhost-flags-FAIL-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S1725941AbgJHW2s (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 8 Oct 2020 18:28:48 -0400
+X-Greylist: delayed 500 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Oct 2020 18:28:47 EDT
+Received: from localhost (unknown [127.0.0.1])
+        by mail.hebei-kuixing.com (Postfix) with ESMTP id 0D1C361133;
+        Thu,  8 Oct 2020 22:20:18 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at hebei-kuixing.com
+Received: from mail.hebei-kuixing.com ([127.0.0.1])
+        by localhost (mail.hebei-kuixing.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id hqVZWSgY9YHp; Fri,  9 Oct 2020 06:20:17 +0800 (CST)
+Received: from User (unknown [185.248.12.71])
+        by mail.hebei-kuixing.com (Postfix) with ESMTPA id DC84960FBF;
+        Fri,  9 Oct 2020 06:19:59 +0800 (CST)
+Reply-To: <kim.leang2011@yahoo.com>
+From:   " Kim Leang" <sales@hebei-kuixing.com>
+Subject: Greeting!
+Date:   Fri, 9 Oct 2020 01:20:15 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200927151950.32725-1-willy@infradead.org>
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20201008222018.0D1C361133@mail.hebei-kuixing.com>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-ping
+Greeting!
 
-On Sun, Sep 27, 2020 at 04:19:50PM +0100, Matthew Wilcox (Oracle) wrote:
-> The page has just been allocated, so its refcount is 1.  free_unref_page()
-> is for use on pages which have a zero refcount.  Use __free_page()
-> like the other implementations of pte_alloc_one().
-> 
-> Fixes: 1ae9ae5f7df7 ("sparc: handle pgtable_page_ctor() fail")
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  arch/sparc/mm/init_64.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index fad6d3129904..4288f08a5736 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -2898,7 +2898,7 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
->  	if (!page)
->  		return NULL;
->  	if (!pgtable_pte_page_ctor(page)) {
-> -		free_unref_page(page);
-> +		__free_page(page);
->  		return NULL;
->  	}
->  	return (pte_t *) page_address(page);
-> -- 
-> 2.28.0
-> 
+I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
+
+I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
+
+The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
+
+Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
+
+Thanks and have a nice day,
+Mr. Kim Leang.
