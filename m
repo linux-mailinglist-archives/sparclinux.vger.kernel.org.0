@@ -2,105 +2,93 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6725F286E9E
-	for <lists+sparclinux@lfdr.de>; Thu,  8 Oct 2020 08:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50D36287248
+	for <lists+sparclinux@lfdr.de>; Thu,  8 Oct 2020 12:12:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727828AbgJHGWO (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 8 Oct 2020 02:22:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37712 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726301AbgJHGWO (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 8 Oct 2020 02:22:14 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71BEDC061755;
-        Wed,  7 Oct 2020 23:22:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=yUoIc9I8zBFW1l1RUkMTpa9dMjCgFjwiUO5I2agyv3s=; b=hdRv5sr7QtXVOGXnAnhUe3FNGb
-        SRotAyEmN3rCMEJEhz3DikQcIqwCTG7CrAXiGiJWRUiku6BDUa42w6DZZiCTkfkbxFoXIe7hgn76r
-        +C3TZkRE3oivb3DH5SBC/7jmkOXuTxXsYCUrSeefXQOupAXXmHcOAHPsplH9Um35Qqw3L/7lh0c2R
-        i2QFfuqlGN1tfs6y+SyuJJCpyrrrN502ektDR3lor/9mvl6TtW94LyJ01rK7Nbdg2H7PMHKQIP93E
-        NeJhUT3dXGmvhbe8Yp0AXOEET4abmXiWKvn13m9skKm3U05B8wtsNCsN+hd1Ih2h7T+f9vwrEqpAW
-        cwLC1J/Q==;
-Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kQPJ6-00070T-71; Thu, 08 Oct 2020 06:21:40 +0000
-Date:   Thu, 8 Oct 2020 07:21:40 +0100
-From:   Christoph Hellwig <hch@infradead.org>
+        id S1729344AbgJHKMQ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 8 Oct 2020 06:12:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48694 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729132AbgJHKMQ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 8 Oct 2020 06:12:16 -0400
+Received: from gaia (unknown [95.149.105.49])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AE8312145D;
+        Thu,  8 Oct 2020 10:12:12 +0000 (UTC)
+Date:   Thu, 8 Oct 2020 11:12:10 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
 To:     Jann Horn <jannh@google.com>
-Cc:     Christoph Hellwig <hch@infradead.org>,
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Khalid Aziz <khalid.aziz@oracle.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Anthony Yznaga <anthony.yznaga@oracle.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
         Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Dave Kleikamp <shaggy@linux.vnet.ibm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
-        sparclinux@vger.kernel.org,
-        Anthony Yznaga <anthony.yznaga@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Will Deacon <will@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+        linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
  and with length
-Message-ID: <20201008062140.GA24315@infradead.org>
+Message-ID: <20201008101209.GD7661@gaia>
 References: <20201007073932.865218-1-jannh@google.com>
- <20201007123544.GA11433@infradead.org>
- <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20201007073932.865218-1-jannh@google.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Oct 07, 2020 at 04:42:55PM +0200, Jann Horn wrote:
-> > > @@ -43,7 +43,7 @@ static inline long do_mmap2(unsigned long addr, size_t len,
-> > >  {
-> > >       long ret = -EINVAL;
-> > >
-> > > -     if (!arch_validate_prot(prot, addr))
-> > > +     if (!arch_validate_prot(prot, addr, len))
-> >
-> > This call isn't under mmap lock.  I also find it rather weird as the
-> > generic code only calls arch_validate_prot from mprotect, only powerpc
-> > also calls it from mmap.
-> >
-> > This seems to go back to commit ef3d3246a0d0
-> > ("powerpc/mm: Add Strong Access Ordering support")
+On Wed, Oct 07, 2020 at 09:39:31AM +0200, Jann Horn wrote:
+> arch_validate_prot() is a hook that can validate whether a given set of
+> protection flags is valid in an mprotect() operation. It is given the set
+> of protection flags and the address being modified.
 > 
-> I'm _guessing_ the idea in the generic case might be that mmap()
-> doesn't check unknown bits in the protection flags, and therefore
-> maybe people wanted to avoid adding new error cases that could be
-> caused by random high bits being set? So while the mprotect() case
-> checks the flags and refuses unknown values, the mmap() code just lets
-> the architecture figure out which bits are actually valid to set (via
-> arch_calc_vm_prot_bits()) and silently ignores the rest?
+> However, the address being modified can currently not actually be used in
+> a meaningful way because:
 > 
-> And powerpc apparently decided that they do want to error out on bogus
-> prot values passed to their version of mmap(), and in exchange, assume
-> in arch_calc_vm_prot_bits() that the protection bits are valid?
+> 1. Only the address is given, but not the length, and the operation can
+>    span multiple VMAs. Therefore, the callee can't actually tell which
+>    virtual address range, or which VMAs, are being targeted.
+> 2. The mmap_lock is not held, meaning that if the callee were to check
+>    the VMA at @addr, that VMA would be unrelated to the one the
+>    operation is performed on.
+> 
+> Currently, custom arch_validate_prot() handlers are defined by
+> arm64, powerpc and sparc.
+> arm64 and powerpc don't care about the address range, they just check the
+> flags against CPU support masks.
+> sparc's arch_validate_prot() attempts to look at the VMA, but doesn't take
+> the mmap_lock.
+> 
+> Change the function signature to also take a length, and move the
+> arch_validate_prot() call in mm/mprotect.c down into the locked region.
 
-The problem really is that now programs behave different on powerpc
-compared to all other architectures.
+For arm64 mte, I noticed the arch_validate_prot() issue with multiple
+vmas and addressed this in a different way:
 
-> powerpc's arch_validate_prot() doesn't actually need the mmap lock, so
-> I think this is fine-ish for now (as in, while the code is a bit
-> unclean, I don't think I'm making it worse, and I don't think it's
-> actually buggy). In theory, we could move the arch_validate_prot()
-> call over into the mmap guts, where we're holding the lock, and gate
-> it on the architecture or on some feature CONFIG that powerpc can
-> activate in its Kconfig. But I'm not sure whether that'd be helping or
-> making things worse, so when I sent this patch, I deliberately left
-> the powerpc stuff as-is.
+https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/?h=for-next/mte&id=c462ac288f2c97e0c1d9ff6a65955317e799f958
+https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/?h=for-next/mte&id=0042090548740921951f31fc0c20dcdb96638cb0
 
-For now I'd just duplicate the trivial logic from arch_validate_prot
-in the powerpc version of do_mmap2 and add a comment that this check
-causes a gratious incompatibility to all other architectures.  And then
-hope that the powerpc maintainers fix it up :)
+Both patches queued for 5.10.
+
+Basically, arch_calc_vm_prot_bits() returns a VM_MTE if PROT_MTE has
+been requested. The newly introduced arch_validate_flags() will check
+the VM_MTE flag against what the system supports and this covers both
+mmap() and mprotect(). Note that arch_validate_prot() only handles the
+latter and I don't think it's sufficient for SPARC ADI. For arm64 MTE we
+definitely wanted mmap() flags to be validated.
+
+In addition, there's a new arch_calc_vm_flag_bits() which allows us to
+set a VM_MTE_ALLOWED on a vma if the conditions are right (MAP_ANONYMOUS
+or shmem_mmap():
+
+https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/?h=for-next/mte&id=b3fbbea4c00220f62e6f7e2514466e6ee81f7f60
+
+-- 
+Catalin
