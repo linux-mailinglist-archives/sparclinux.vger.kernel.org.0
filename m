@@ -2,197 +2,105 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C47032868DF
-	for <lists+sparclinux@lfdr.de>; Wed,  7 Oct 2020 22:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6725F286E9E
+	for <lists+sparclinux@lfdr.de>; Thu,  8 Oct 2020 08:22:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727827AbgJGUP6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 7 Oct 2020 16:15:58 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:41394 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726041AbgJGUP6 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 7 Oct 2020 16:15:58 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 097K9k4Z155286;
-        Wed, 7 Oct 2020 20:15:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=sEc3+JOY4GEUw7wZjFGU94rrw05aoMQl93fhhWlYcUM=;
- b=gmE2LdZ8E+KF4wjs2C0rOpLG6fnheNQFNiI5jZsAgeMD20tsilNtf+YluYt5qq/uALMI
- +hk9rjugah/1hM1Hjxlr/7pNRCkpKXS4EcgOw8ZH1ZeNcG3lPp8GXOqnwtGgGttnjdIk
- 8tkD7VyFl2EqivTy3StxYDikwthvfNjAjGvMbVBEGFxv7E44K0SAiBVmin2r9y4lp+Fm
- GEW/1V1JdfDAdmGxLr+o5Mb0BkbTbR9Cnaafsuf95itcPPqRm8WHm0Lbv2Y2aRcZwxc5
- NQ0HZarITCobHJ6IkCkyVwQeAp5pTucJq9OEM7ujHIHO0D4wls+zDlJCeRif1yEg22L+ LQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 33xhxn41kf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 07 Oct 2020 20:15:31 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 097KBCu4119070;
-        Wed, 7 Oct 2020 20:15:31 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 33yyjhnk1c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 07 Oct 2020 20:15:31 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 097KFUlB031996;
-        Wed, 7 Oct 2020 20:15:30 GMT
-Received: from [10.65.129.34] (/10.65.129.34)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 07 Oct 2020 13:15:29 -0700
-Subject: Re: [PATCH 2/2] sparc: Check VMA range in sparc_validate_prot()
-To:     Jann Horn <jannh@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc:     linux-kernel@vger.kernel.org,
-        Christoph Hellwig <hch@infradead.org>,
-        Anthony Yznaga <anthony.yznaga@oracle.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
+        id S1727828AbgJHGWO (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 8 Oct 2020 02:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37712 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726301AbgJHGWO (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 8 Oct 2020 02:22:14 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71BEDC061755;
+        Wed,  7 Oct 2020 23:22:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=yUoIc9I8zBFW1l1RUkMTpa9dMjCgFjwiUO5I2agyv3s=; b=hdRv5sr7QtXVOGXnAnhUe3FNGb
+        SRotAyEmN3rCMEJEhz3DikQcIqwCTG7CrAXiGiJWRUiku6BDUa42w6DZZiCTkfkbxFoXIe7hgn76r
+        +C3TZkRE3oivb3DH5SBC/7jmkOXuTxXsYCUrSeefXQOupAXXmHcOAHPsplH9Um35Qqw3L/7lh0c2R
+        i2QFfuqlGN1tfs6y+SyuJJCpyrrrN502ektDR3lor/9mvl6TtW94LyJ01rK7Nbdg2H7PMHKQIP93E
+        NeJhUT3dXGmvhbe8Yp0AXOEET4abmXiWKvn13m9skKm3U05B8wtsNCsN+hd1Ih2h7T+f9vwrEqpAW
+        cwLC1J/Q==;
+Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kQPJ6-00070T-71; Thu, 08 Oct 2020 06:21:40 +0000
+Date:   Thu, 8 Oct 2020 07:21:40 +0100
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Jann Horn <jannh@google.com>
+Cc:     Christoph Hellwig <hch@infradead.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
+        linuxppc-dev@lists.ozlabs.org,
+        Dave Kleikamp <shaggy@linux.vnet.ibm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>,
+        Khalid Aziz <khalid.aziz@oracle.com>,
+        sparclinux@vger.kernel.org,
+        Anthony Yznaga <anthony.yznaga@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Will Deacon <will@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
+ and with length
+Message-ID: <20201008062140.GA24315@infradead.org>
 References: <20201007073932.865218-1-jannh@google.com>
- <20201007073932.865218-2-jannh@google.com>
-From:   Khalid Aziz <khalid.aziz@oracle.com>
-X-Pep-Version: 2.0
-Organization: Oracle Corp
-Message-ID: <230d612d-75e8-34e0-00d6-b0f7274e692c@oracle.com>
-Date:   Wed, 7 Oct 2020 14:15:28 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <20201007123544.GA11433@infradead.org>
+ <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20201007073932.865218-2-jannh@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9767 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2010070128
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9767 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 bulkscore=0
- impostorscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
- mlxlogscore=999 adultscore=0 clxscore=1015 spamscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2010070128
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 10/7/20 1:39 AM, Jann Horn wrote:
-> sparc_validate_prot() is called from do_mprotect_pkey() as
-> arch_validate_prot(); it tries to ensure that an mprotect() call can't
-> enable ADI on incompatible VMAs.
-> The current implementation only checks that the VMA at the start addres=
-s
-> matches the rules for ADI mappings; instead, check all VMAs that will b=
-e
-> affected by mprotect().
->=20
-> (This hook is called before mprotect() makes sure that the specified ra=
-nge
-> is actually covered by VMAs, and mprotect() returns specific error code=
-s
-> when that's not the case. In order for mprotect() to still generate the=
+On Wed, Oct 07, 2020 at 04:42:55PM +0200, Jann Horn wrote:
+> > > @@ -43,7 +43,7 @@ static inline long do_mmap2(unsigned long addr, size_t len,
+> > >  {
+> > >       long ret = -EINVAL;
+> > >
+> > > -     if (!arch_validate_prot(prot, addr))
+> > > +     if (!arch_validate_prot(prot, addr, len))
+> >
+> > This call isn't under mmap lock.  I also find it rather weird as the
+> > generic code only calls arch_validate_prot from mprotect, only powerpc
+> > also calls it from mmap.
+> >
+> > This seems to go back to commit ef3d3246a0d0
+> > ("powerpc/mm: Add Strong Access Ordering support")
+> 
+> I'm _guessing_ the idea in the generic case might be that mmap()
+> doesn't check unknown bits in the protection flags, and therefore
+> maybe people wanted to avoid adding new error cases that could be
+> caused by random high bits being set? So while the mprotect() case
+> checks the flags and refuses unknown values, the mmap() code just lets
+> the architecture figure out which bits are actually valid to set (via
+> arch_calc_vm_prot_bits()) and silently ignores the rest?
+> 
+> And powerpc apparently decided that they do want to error out on bogus
+> prot values passed to their version of mmap(), and in exchange, assume
+> in arch_calc_vm_prot_bits() that the protection bits are valid?
 
-> same error codes for mprotect(<unmapped_ptr>, <len>, ...|PROT_ADI), we =
-need
-> to *accept* cases where the range is not fully covered by VMAs.)
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 74a04967482f ("sparc64: Add support for ADI (Application Data In=
-tegrity)")
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
-> compile-tested only, I don't have a Sparc ADI setup - might be nice if =
-some
-> Sparc person could test this?
->=20
->  arch/sparc/include/asm/mman.h | 50 +++++++++++++++++++++--------------=
+The problem really is that now programs behave different on powerpc
+compared to all other architectures.
 
->  1 file changed, 30 insertions(+), 20 deletions(-)
+> powerpc's arch_validate_prot() doesn't actually need the mmap lock, so
+> I think this is fine-ish for now (as in, while the code is a bit
+> unclean, I don't think I'm making it worse, and I don't think it's
+> actually buggy). In theory, we could move the arch_validate_prot()
+> call over into the mmap guts, where we're holding the lock, and gate
+> it on the architecture or on some feature CONFIG that powerpc can
+> activate in its Kconfig. But I'm not sure whether that'd be helping or
+> making things worse, so when I sent this patch, I deliberately left
+> the powerpc stuff as-is.
 
-
-Looks good to me.
-
-Reviewed-by: Khalid Aziz <khalid.aziz@oracle.com>
-
-
->=20
-> diff --git a/arch/sparc/include/asm/mman.h b/arch/sparc/include/asm/mma=
-n.h
-> index e85222c76585..6dced75567c3 100644
-> --- a/arch/sparc/include/asm/mman.h
-> +++ b/arch/sparc/include/asm/mman.h
-> @@ -60,31 +60,41 @@ static inline int sparc_validate_prot(unsigned long=
- prot, unsigned long addr,
->  	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_ADI=
-))
->  		return 0;
->  	if (prot & PROT_ADI) {
-> +		struct vm_area_struct *vma, *next;
-> +
->  		if (!adi_capable())
->  			return 0;
-> =20
-> -		if (addr) {
-> -			struct vm_area_struct *vma;
-> +		vma =3D find_vma(current->mm, addr);
-> +		/* if @addr is unmapped, let mprotect() deal with it */
-> +		if (!vma || vma->vm_start > addr)
-> +			return 1;
-> +		while (1) {
-> +			/* ADI can not be enabled on PFN
-> +			 * mapped pages
-> +			 */
-> +			if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
-> +				return 0;
-> =20
-> -			vma =3D find_vma(current->mm, addr);
-> -			if (vma) {
-> -				/* ADI can not be enabled on PFN
-> -				 * mapped pages
-> -				 */
-> -				if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
-> -					return 0;
-> +			/* Mergeable pages can become unmergeable
-> +			 * if ADI is enabled on them even if they
-> +			 * have identical data on them. This can be
-> +			 * because ADI enabled pages with identical
-> +			 * data may still not have identical ADI
-> +			 * tags on them. Disallow ADI on mergeable
-> +			 * pages.
-> +			 */
-> +			if (vma->vm_flags & VM_MERGEABLE)
-> +				return 0;
-> =20
-> -				/* Mergeable pages can become unmergeable
-> -				 * if ADI is enabled on them even if they
-> -				 * have identical data on them. This can be
-> -				 * because ADI enabled pages with identical
-> -				 * data may still not have identical ADI
-> -				 * tags on them. Disallow ADI on mergeable
-> -				 * pages.
-> -				 */
-> -				if (vma->vm_flags & VM_MERGEABLE)
-> -					return 0;
-> -			}
-> +			/* reached the end of the range without errors? */
-> +			if (addr+len <=3D vma->vm_end)
-> +				return 1;
-> +			next =3D vma->vm_next;
-> +			/* if a VMA hole follows, let mprotect() deal with it */
-> +			if (!next || next->vm_start !=3D vma->vm_end)
-> +				return 1;
-> +			vma =3D next;
->  		}
->  	}
->  	return 1;
->=20
-
-
+For now I'd just duplicate the trivial logic from arch_validate_prot
+in the powerpc version of do_mmap2 and add a comment that this check
+causes a gratious incompatibility to all other architectures.  And then
+hope that the powerpc maintainers fix it up :)
