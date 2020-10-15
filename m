@@ -2,52 +2,121 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36B6028F0F1
-	for <lists+sparclinux@lfdr.de>; Thu, 15 Oct 2020 13:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D622928F559
+	for <lists+sparclinux@lfdr.de>; Thu, 15 Oct 2020 16:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729208AbgJOL0h (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 15 Oct 2020 07:26:37 -0400
-Received: from edge.kilargo.pl ([77.252.52.110]:20270 "EHLO edge.kilargo.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728111AbgJOL0e (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 15 Oct 2020 07:26:34 -0400
-X-Greylist: delayed 333 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Oct 2020 07:26:33 EDT
-Received: from mail.kilargo.pl (77.252.52.107) by edge.kilargo.pl
- (77.252.52.109) with Microsoft SMTP Server (TLS) id 8.3.485.1; Thu, 15 Oct
- 2020 13:20:59 +0200
-Received: from User (185.248.12.71) by MAIL.kilargo.pl (172.22.0.36) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 15 Oct 2020 13:20:54 +0200
-Reply-To: <kim.leang2011@yahoo.com>
-From:   Kim Leang <mechanik@kilargo.pl>
-Subject: Greeting! !!
-Date:   Thu, 15 Oct 2020 14:20:57 +0300
+        id S2389479AbgJOOzh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 15 Oct 2020 10:55:37 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:53864 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389416AbgJOOzh (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 15 Oct 2020 10:55:37 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09FEhrZB052451;
+        Thu, 15 Oct 2020 14:54:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=ueK+5z08xx09zYAdi9VimFxxn1I5v3nWGR96uKYJNFM=;
+ b=kaDhG2k74OiAbUFy7+baU2RnCsv0qY5hkd+J6ISe3wwppx0JwAw5X/xQm6L+Bf+FmzEQ
+ 0V/Wh5IUgVavHCqYBDjypsA4GV4lO2kDUP9JOlC3cigQOoQM8SsN8W39IjyUxOoFNEdn
+ TMutc8TBvAQgJjl5oprrpzoFRTMhLOlZxMHMaOMHMPwxWVL3w5VLv2fMq/3UGDp7JjWV
+ uwjaxMhA4+QNnXnZzieerA6sSVdIjQRWhf86YlX4fbeQIBEpAWtG0rDd2eXuGSmWFfJG
+ jMObM+6fcAlF4uosfUpdmizujuHqPAmLAuQx+vtDASBWcZiIVLDgWrMaOOkkM5p8KJCm vg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 343vaekf7n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 15 Oct 2020 14:54:58 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09FEjd1J027747;
+        Thu, 15 Oct 2020 14:54:57 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 344by5a1nn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 15 Oct 2020 14:54:57 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09FEsrOX006866;
+        Thu, 15 Oct 2020 14:54:53 GMT
+Received: from [10.154.134.81] (/10.154.134.81)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 15 Oct 2020 07:54:52 -0700
+Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
+ and with length
+To:     Catalin Marinas <catalin.marinas@arm.com>
+Cc:     Jann Horn <jannh@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Christoph Hellwig <hch@infradead.org>,
+        Anthony Yznaga <anthony.yznaga@oracle.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org
+References: <20201007073932.865218-1-jannh@google.com>
+ <d5332a7b-c300-6d28-18b9-4b7d4110ef86@oracle.com>
+ <20201010110949.GA32545@gaia>
+ <af207cf8-3049-85eb-349d-5fed6b9be49c@oracle.com>
+ <20201012172218.GE6493@gaia>
+ <20c85633-b559-c299-3e57-ae136b201526@oracle.com>
+ <20201013091638.GA10778@gaia>
+ <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
+ <20201015084936.GC20197@gaia>
+From:   Khalid Aziz <khalid.aziz@oracle.com>
+X-Pep-Version: 2.0
+Organization: Oracle Corp
+Message-ID: <09d9cb95-3414-ef29-de08-f4f2b22b7f77@oracle.com>
+Date:   Thu, 15 Oct 2020 08:53:59 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <f0cb03c542b34506930f40d96b791657@mail.kilargo.pl>
-To:     Undisclosed recipients:;
-X-Originating-IP: [185.248.12.71]
-X-ClientProxiedBy: mail.kilargo.pl (172.22.0.36) To MAIL.kilargo.pl
- (172.22.0.36)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A295AAB9B6B64766B
+In-Reply-To: <20201015084936.GC20197@gaia>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9774 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
+ suspectscore=0 mlxscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010150102
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9774 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 clxscore=1015
+ impostorscore=0 phishscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
+ mlxscore=0 suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010150102
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Greeting!
+On 10/15/20 3:05 AM, Catalin Marinas wrote:
+> On Wed, Oct 14, 2020 at 03:21:16PM -0600, Khalid Aziz wrote:
+>> What FreeBSD does seems like a reasonable thing to do. Any way first
+>> thing to do is to update sparc to use arch_validate_flags() and update=
 
-I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
+>> sparc_validate_prot() to not peek into vma without lock.
+>=20
+> If you go for arch_validate_flags(), I think sparc_validate_prot()
+> doesn't need the vma at all.
 
-I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
+Yes, the plan is to move vma flag check from sparc_validate_prot() to
+arch_validate_flags()..
 
-The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
+>=20
+> BTW, on the ADI topic, I think you have a race in do_swap_page() since
+> set_pte_at() is called before arch_do_swap_page(). So a thread in the
+> same process would see the new mapping but the tags have not been
+> updated yet. Unless sparc relies on the new user pte to be set, I think=
 
-Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
+> you can just swap the two calls.
+>=20
 
-Thanks and have a nice day,
-Mr. Kim Leang.
+Thanks for pointing that out. I will take a look at it.
+
+--
+Khalid
+
+
