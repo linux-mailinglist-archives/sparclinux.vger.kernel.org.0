@@ -2,84 +2,92 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4870428EAF2
-	for <lists+sparclinux@lfdr.de>; Thu, 15 Oct 2020 04:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C18B928F8D4
+	for <lists+sparclinux@lfdr.de>; Thu, 15 Oct 2020 20:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732584AbgJOCJu (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 14 Oct 2020 22:09:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55614 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729842AbgJOCJh (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 14 Oct 2020 22:09:37 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F12F8C05BD11
-        for <sparclinux@vger.kernel.org>; Wed, 14 Oct 2020 15:30:10 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id a5so1054622ljj.11
-        for <sparclinux@vger.kernel.org>; Wed, 14 Oct 2020 15:30:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jjl4waKkIn07fAHZxpQYfL1cJey++l2ULCvo+NpmtTI=;
-        b=AoTo3+pYyDr0w6VWhfEzWtgMAa6u5EqUtIbZQ2wdSG8KrCn9aVrqk/7yhPB35QnD2m
-         JalK+SeaQ3hXLo+S8bYDoNpWfnWxpQB/o00c26w91a14/A6mI5fG/jqus5sDeNFJLDuf
-         BsNxJpUzCDXQHeObfZmnVJDuNlP1hv7yxDec4f6BOhh0CaTaty/5CVDrrONvhaHafpy3
-         WWTj3p+df5fee81/4WgRdKVsueCgR7C+1tyNM57ZEFJuZcNf1kD37XwCnPAbjSh/vXPz
-         6/Tp/AIlfr9HFwxC0w941Ocrco7hY/ksvJfhYETS8inE9HqwSVgikBfXguqBqfsPqKay
-         3D5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jjl4waKkIn07fAHZxpQYfL1cJey++l2ULCvo+NpmtTI=;
-        b=sExsNV9ujmRyTFMEsNRVK+p/QVu8dKc6TSAt0eEY3TIvP0V+0LiCX0WpqFHBrUENUe
-         zlFQVjBVTDcySbO+9Q9sHumc/0hxOODSzlq4WX1q5KMbFShujLhVvqo6/Wm1GeMKlDmp
-         UBUtn2owQ3Gt/KxC6hBFEVf73YwHPzg/jzm1N9sF8lczca6519JeQxofGnlXzZzds2kN
-         Ach+6H6j79KQy4E0nDNpzeiT0sRsPoe7wjt5GPuk+tM0d7bZ7JQp4Q8FaOZoZa1nzuDN
-         fyKI8KOX81ilzQd8jtPRBHo6eTa56O90EEkgE8fyD/pYju7YGeTpO7CzxvQvjkVG1YDr
-         YWAA==
-X-Gm-Message-State: AOAM5323jt0z3683Gp4GwAfoAX/MfTsw2GfWVlldQgxFTDUf+iNF8/GK
-        /uT4xYNiUVrPefgppUJ1ktjltxJn6cAG9n/1U+b57w==
-X-Google-Smtp-Source: ABdhPJzccfdlAK+SRaf7zIcMIaXsyDc7g+LulQbCIaLDti9pJSokw7/xfAWa5vfRRrUMlssMAS3ed5P4pPE1EvYM4fA=
-X-Received: by 2002:a2e:9f13:: with SMTP id u19mr119925ljk.160.1602714609293;
- Wed, 14 Oct 2020 15:30:09 -0700 (PDT)
+        id S2389655AbgJOSo3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 15 Oct 2020 14:44:29 -0400
+Received: from mx1.s-word.biz ([203.118.10.223]:49774 "EHLO ms1.s-word.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731154AbgJOSo3 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 15 Oct 2020 14:44:29 -0400
+X-Greylist: delayed 22706 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Oct 2020 14:44:28 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by ms1.s-word.net (Postfix) with ESMTP id 7CABF12D95EA;
+        Thu, 15 Oct 2020 06:27:43 +0000 (UTC)
+Received: from ms1.s-word.net ([127.0.0.1])
+        by localhost (ms1.s-word.net [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id kcJqmJTOlQi3; Thu, 15 Oct 2020 06:27:43 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+        by ms1.s-word.net (Postfix) with ESMTP id 369AD12DA2B1;
+        Thu, 15 Oct 2020 06:27:43 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at ms1.s-word.net
+Received: from ms1.s-word.net ([127.0.0.1])
+        by localhost (ms1.s-word.net [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Cyny9oN3CaiV; Thu, 15 Oct 2020 06:27:43 +0000 (UTC)
+Received: from User (localhost [127.0.0.1])
+        by ms1.s-word.net (Postfix) with SMTP id A3EF912D9261;
+        Thu, 15 Oct 2020 06:27:31 +0000 (UTC)
+Reply-To: <uekunio3@gmail.com>
+From:   "Kunio Uematsu" <admin@flexfilm.com>
+Subject: Dearest Beloved !!!   
+Date:   Wed, 14 Oct 2020 23:27:31 -0700
 MIME-Version: 1.0
-References: <20201007073932.865218-1-jannh@google.com> <d5332a7b-c300-6d28-18b9-4b7d4110ef86@oracle.com>
- <20201010110949.GA32545@gaia> <af207cf8-3049-85eb-349d-5fed6b9be49c@oracle.com>
- <20201012172218.GE6493@gaia> <20c85633-b559-c299-3e57-ae136b201526@oracle.com>
- <20201013091638.GA10778@gaia> <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
-In-Reply-To: <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
-From:   Jann Horn <jannh@google.com>
-Date:   Thu, 15 Oct 2020 00:29:42 +0200
-Message-ID: <CAG48ez0hoNb+DsMtzanGMXWdU63GwSvpzFCx5CkQa3Xxxo+Abg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
- and with length
-To:     Khalid Aziz <khalid.aziz@oracle.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Anthony Yznaga <anthony.yznaga@oracle.com>,
-        Will Deacon <will@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20201015062731.A3EF912D9261@ms1.s-word.net>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Oct 14, 2020 at 11:24 PM Khalid Aziz <khalid.aziz@oracle.com> wrote:
-[...]
-> current code? What FreeBSD does seems like a reasonable thing to do. Any
-> way first thing to do is to update sparc to use arch_validate_flags()
-> and update sparc_validate_prot() to not peek into vma without lock. I
-> can do that unless Jann wants to rework this 2 patch series with these
-> changes.
+Dearest Beloved,
 
-Ah, if you're willing to take care of that, that'd be nice, please do. :)
+As you read this, I don't want you to feel sorry for
+me.......because......I believe everyone will die someday. I have been
+diagnosed with esophageal cancer. It has defiled all forms of medical
+treatment, and right now I have only about a few months to live,
+according to medical experts. The situation has gotten complicated
+recently with my inability to hear or speak (being deaf and dump now).
+I have not particularly lived my life so well, as I never really cared
+for anyone (not even myself) but my business. Though I am very rich, I
+was never generous, I was always hostile to people and only focused on
+my business as that was the only thing I cared for. But now I regret
+all this as I now know that there is more to life than just wanting to
+have or make all the money in the world.
+
+I have willed and given most of my property and assets to my immediate
+and extended family members as well as a few close friends. I have
+decided to give also to charity organizations, as I want this to be
+one of the last good deeds I do on earth.
+
+So far, I have distributed money to some charity organizations in the U.A.E, Algeria, Malaysia
+and some countries in Africa. Now that my health has deteriorated so
+badly, I cannot do this myself anymore. I once asked members of my
+family to close one of my accounts and distribute the money which I
+have there to charity organization in Europe; they refused and kept
+the money to themselves. Hence, I do not trust them anymore, as they
+seem not to be contended with what I have left for them. The last of
+my money which no one knows of is the huge cash sum of Forty-Five
+Million US Dollars (US$45,000,000.00) that I deposited sometime ago in
+an offshore account as I operated my business there before my
+sickness. I will want you to help me collect these deposited funds and
+use the funds to help the orphans, less privileged, handicapped
+persons, homeless, refugees, other charity organizations and do other
+good humanitarian works.  You shall only collect 25% of the funds for
+your reward for your time and also any expenses that you might incur
+during this great task.
+
+PLEASE SEND YOUR RESPONSE TO ME WITH YOUR
+DETAILED INFORMATION AND IDENTIFICATION SO THAT I CAN FORWARD TO THE
+BANK WHERE FUND IS DEPOSITED.
+
+Regards,
+Kunio Uematsu
+(Japan)
+Email:uekunio3@gmail.com
