@@ -2,92 +2,123 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C18B928F8D4
-	for <lists+sparclinux@lfdr.de>; Thu, 15 Oct 2020 20:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE89E28EF0A
+	for <lists+sparclinux@lfdr.de>; Thu, 15 Oct 2020 11:05:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389655AbgJOSo3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 15 Oct 2020 14:44:29 -0400
-Received: from mx1.s-word.biz ([203.118.10.223]:49774 "EHLO ms1.s-word.net"
+        id S1726575AbgJOJFS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 15 Oct 2020 05:05:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37616 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731154AbgJOSo3 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 15 Oct 2020 14:44:29 -0400
-X-Greylist: delayed 22706 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Oct 2020 14:44:28 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by ms1.s-word.net (Postfix) with ESMTP id 7CABF12D95EA;
-        Thu, 15 Oct 2020 06:27:43 +0000 (UTC)
-Received: from ms1.s-word.net ([127.0.0.1])
-        by localhost (ms1.s-word.net [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id kcJqmJTOlQi3; Thu, 15 Oct 2020 06:27:43 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by ms1.s-word.net (Postfix) with ESMTP id 369AD12DA2B1;
-        Thu, 15 Oct 2020 06:27:43 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at ms1.s-word.net
-Received: from ms1.s-word.net ([127.0.0.1])
-        by localhost (ms1.s-word.net [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Cyny9oN3CaiV; Thu, 15 Oct 2020 06:27:43 +0000 (UTC)
-Received: from User (localhost [127.0.0.1])
-        by ms1.s-word.net (Postfix) with SMTP id A3EF912D9261;
-        Thu, 15 Oct 2020 06:27:31 +0000 (UTC)
-Reply-To: <uekunio3@gmail.com>
-From:   "Kunio Uematsu" <admin@flexfilm.com>
-Subject: Dearest Beloved !!!   
-Date:   Wed, 14 Oct 2020 23:27:31 -0700
+        id S1726329AbgJOJFS (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 15 Oct 2020 05:05:18 -0400
+Received: from gaia (unknown [95.149.105.49])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9F9102145D;
+        Thu, 15 Oct 2020 09:05:14 +0000 (UTC)
+Date:   Thu, 15 Oct 2020 10:05:12 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Khalid Aziz <khalid.aziz@oracle.com>
+Cc:     Jann Horn <jannh@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Christoph Hellwig <hch@infradead.org>,
+        Anthony Yznaga <anthony.yznaga@oracle.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
+ and with length
+Message-ID: <20201015084936.GC20197@gaia>
+References: <20201007073932.865218-1-jannh@google.com>
+ <d5332a7b-c300-6d28-18b9-4b7d4110ef86@oracle.com>
+ <20201010110949.GA32545@gaia>
+ <af207cf8-3049-85eb-349d-5fed6b9be49c@oracle.com>
+ <20201012172218.GE6493@gaia>
+ <20c85633-b559-c299-3e57-ae136b201526@oracle.com>
+ <20201013091638.GA10778@gaia>
+ <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20201015062731.A3EF912D9261@ms1.s-word.net>
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dearest Beloved,
+On Wed, Oct 14, 2020 at 03:21:16PM -0600, Khalid Aziz wrote:
+> On 10/13/20 3:16 AM, Catalin Marinas wrote:
+> > On Mon, Oct 12, 2020 at 01:14:50PM -0600, Khalid Aziz wrote:
+> >> On 10/12/20 11:22 AM, Catalin Marinas wrote:
+> >>> On Mon, Oct 12, 2020 at 11:03:33AM -0600, Khalid Aziz wrote:
+> >>>> On 10/10/20 5:09 AM, Catalin Marinas wrote:
+> >>>>> I still think sparc should avoid walking the vmas in
+> >>>>> arch_validate_prot(). The core code already has the vmas, though not
+> >>>>> when calling arch_validate_prot(). That's one of the reasons I added
+> >>>>> arch_validate_flags() with the MTE patches. For sparc, this could be
+> >>>>> (untested, just copied the arch_validate_prot() code):
+> >>>>
+> >>>> I am little uncomfortable with the idea of validating protection bits
+> >>>> inside the VMA walk loop in do_mprotect_pkey(). When ADI is being
+> >>>> enabled across multiple VMAs and arch_validate_flags() fails on a VMA
+> >>>> later, do_mprotect_pkey() will bail out with error leaving ADI enabled
+> >>>> on earlier VMAs. This will apply to protection bits other than ADI as
+> >>>> well of course. This becomes a partial failure of mprotect() call. I
+> >>>> think it should be all or nothing with mprotect() - when one calls
+> >>>> mprotect() from userspace, either the entire address range passed in
+> >>>> gets its protection bits updated or none of it does. That requires
+> >>>> validating protection bits upfront or undoing what earlier iterations of
+> >>>> VMA walk loop might have done.
+> >>>
+> >>> I thought the same initially but mprotect() already does this with the
+> >>> VM_MAY* flag checking. If you ask it for an mprotect() that crosses
+> >>> multiple vmas and one of them fails, it doesn't roll back the changes to
+> >>> the prior ones. I considered that a similar approach is fine for MTE
+> >>> (it's most likely a user error).
+> >>
+> >> You are right about the current behavior with VM_MAY* flags, but that is
+> >> not the right behavior. Adding more cases to this just perpetuates
+> >> incorrect behavior. It is not easy to roll back changes after VMAs have
+> >> potentially been split/merged which is probably why the current code
+> >> simply throws in the towel and returns with partially modified address
+> >> space. It is lot easier to do all the checks upfront and then proceed or
+> >> not proceed with modifying VMAs. One approach might be to call
+> >> arch_validate_flags() in a loop before modifying VMAs and walk all VMAs
+> >> with a read lock held. Current code also bails out with ENOMEM if it
+> >> finds a hole in the address range and leaves any modifications already
+> >> made in place. This is another case where a hole could have been
+> >> detected earlier.
+> > 
+> > This should be ideal indeed though with the risk of breaking the current
+> > ABI (FWIW, FreeBSD seems to do a first pass to check for violations:
+> > https://github.com/freebsd/freebsd/blob/master/sys/vm/vm_map.c#L2630).
+> 
+> I am not sure I understand where the ABI breakage would be. Are we aware
+> of apps that intentionally modify address space partially using the
+> current code?
 
-As you read this, I don't want you to feel sorry for
-me.......because......I believe everyone will die someday. I have been
-diagnosed with esophageal cancer. It has defiled all forms of medical
-treatment, and right now I have only about a few months to live,
-according to medical experts. The situation has gotten complicated
-recently with my inability to hear or speak (being deaf and dump now).
-I have not particularly lived my life so well, as I never really cared
-for anyone (not even myself) but my business. Though I am very rich, I
-was never generous, I was always hostile to people and only focused on
-my business as that was the only thing I cared for. But now I regret
-all this as I now know that there is more to life than just wanting to
-have or make all the money in the world.
+I hope there aren't any but you never know until you make the change and
+someone complains. Arguably, such user code is already broken since
+mprotect() doesn't even tell where the failure occurred.
 
-I have willed and given most of my property and assets to my immediate
-and extended family members as well as a few close friends. I have
-decided to give also to charity organizations, as I want this to be
-one of the last good deeds I do on earth.
+> What FreeBSD does seems like a reasonable thing to do. Any way first
+> thing to do is to update sparc to use arch_validate_flags() and update
+> sparc_validate_prot() to not peek into vma without lock.
 
-So far, I have distributed money to some charity organizations in the U.A.E, Algeria, Malaysia
-and some countries in Africa. Now that my health has deteriorated so
-badly, I cannot do this myself anymore. I once asked members of my
-family to close one of my accounts and distribute the money which I
-have there to charity organization in Europe; they refused and kept
-the money to themselves. Hence, I do not trust them anymore, as they
-seem not to be contended with what I have left for them. The last of
-my money which no one knows of is the huge cash sum of Forty-Five
-Million US Dollars (US$45,000,000.00) that I deposited sometime ago in
-an offshore account as I operated my business there before my
-sickness. I will want you to help me collect these deposited funds and
-use the funds to help the orphans, less privileged, handicapped
-persons, homeless, refugees, other charity organizations and do other
-good humanitarian works.  You shall only collect 25% of the funds for
-your reward for your time and also any expenses that you might incur
-during this great task.
+If you go for arch_validate_flags(), I think sparc_validate_prot()
+doesn't need the vma at all.
 
-PLEASE SEND YOUR RESPONSE TO ME WITH YOUR
-DETAILED INFORMATION AND IDENTIFICATION SO THAT I CAN FORWARD TO THE
-BANK WHERE FUND IS DEPOSITED.
+BTW, on the ADI topic, I think you have a race in do_swap_page() since
+set_pte_at() is called before arch_do_swap_page(). So a thread in the
+same process would see the new mapping but the tags have not been
+updated yet. Unless sparc relies on the new user pte to be set, I think
+you can just swap the two calls.
 
-Regards,
-Kunio Uematsu
-(Japan)
-Email:uekunio3@gmail.com
+-- 
+Catalin
