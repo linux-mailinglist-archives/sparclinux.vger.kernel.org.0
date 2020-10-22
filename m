@@ -2,123 +2,81 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60FDB295CF0
-	for <lists+sparclinux@lfdr.de>; Thu, 22 Oct 2020 12:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63CA5295D17
+	for <lists+sparclinux@lfdr.de>; Thu, 22 Oct 2020 13:00:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2896701AbgJVKrl (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 22 Oct 2020 06:47:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56268 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2896574AbgJVKr3 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 22 Oct 2020 06:47:29 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        id S2437777AbgJVLAW (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 22 Oct 2020 07:00:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57390 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437752AbgJVLAW (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 22 Oct 2020 07:00:22 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9687AC0613CE;
+        Thu, 22 Oct 2020 04:00:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=tklRJM55A606e8BmYLgHJwN5p3mhmxAvMtLfd57Ar3Y=; b=vqgRtRCAN+1Az/C7xci1AaHn6K
+        g9Io4i53lsfH2Xu5DAFJzb8S7GtgAvhrARjoaeiP5dQhrzcNVmSUryVCGKegIOvEavvNSaVDvsth1
+        cURfh9wo7Os8hf7NXXGOuidqv232CJen4FxPdBYNhEfyj/m3KEUcQzufwMSs37pLm2kUW1DQ4KlgD
+        J04YDIjtVjtsrqYy9TT9OKFnafsItsVSUUyjydLGHlDcgWmUGATpEYSi86uPbsxdndkPZ6B3xHIlJ
+        a8KK7wsXgXolQ5BN8N9cVExif++0W3E7wIvNtylzlSrKGIv6PoCKqBjnQ7cSLJ7Vw/thyaN8G+b41
+        7KsXH1IQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kVYKQ-000321-21; Thu, 22 Oct 2020 11:00:18 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8BA392177B;
-        Thu, 22 Oct 2020 10:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603363648;
-        bh=xBsbKD5SBQCcLeBR2tpUTrjFtW93i8KwvEiKlew6y/M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=feiTNY176OhJVWL6CnkF4kiU6NigFm/VD3Ui4E+wpATVknPWx7I4BQqdiJv/sMgNJ
-         H4Eb2Bc9W6InfW+morvNSQUtX8ZVPuBvKSpQrb3i+BcForuB10ZbuKl1VEpEEP0vUn
-         prey8EZuMSul8lL3YVDZeBuHUKxl2I6g/LFzXfXQ=
-Date:   Thu, 22 Oct 2020 12:48:05 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     David Laight <David.Laight@aculab.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Message-ID: <20201022104805.GA1503673@kroah.com>
-References: <20201021233914.GR3576660@ZenIV.linux.org.uk>
- <20201022082654.GA1477657@kroah.com>
- <80a2e5fa-718a-8433-1ab0-dd5b3e3b5416@redhat.com>
- <5d2ecb24db1e415b8ff88261435386ec@AcuMS.aculab.com>
- <df2e0758-b8ed-5aec-6adc-a18f499c0179@redhat.com>
- <20201022090155.GA1483166@kroah.com>
- <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
- <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
- <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
- <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 160873010D2;
+        Thu, 22 Oct 2020 13:00:16 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 0395F203CC4B2; Thu, 22 Oct 2020 13:00:15 +0200 (CEST)
+Date:   Thu, 22 Oct 2020 13:00:15 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Anatoly Pugachev <matorola@gmail.com>
+Cc:     Linux Kernel list <linux-kernel@vger.kernel.org>,
+        Sparc kernel list <sparclinux@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: Re: [sparc64] lockdep: Fix lockdep recursion - call trace
+Message-ID: <20201022110015.GJ2594@hirez.programming.kicks-ass.net>
+References: <CADxRZqwQ_nvbGrzDzOjzt=R5x6yvsU4AujhpxXYs8cHFwoCjmA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
+In-Reply-To: <CADxRZqwQ_nvbGrzDzOjzt=R5x6yvsU4AujhpxXYs8cHFwoCjmA@mail.gmail.com>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Oct 22, 2020 at 11:36:40AM +0200, David Hildenbrand wrote:
-> On 22.10.20 11:32, David Laight wrote:
-> > From: David Hildenbrand
-> >> Sent: 22 October 2020 10:25
-> > ...
-> >> ... especially because I recall that clang and gcc behave slightly
-> >> differently:
-> >>
-> >> https://github.com/hjl-tools/x86-psABI/issues/2
-> >>
-> >> "Function args are different: narrow types are sign or zero extended to
-> >> 32 bits, depending on their type. clang depends on this for incoming
-> >> args, but gcc doesn't make that assumption. But both compilers do it
-> >> when calling, so gcc code can call clang code.
-> > 
-> > It really is best to use 'int' (or even 'long') for all numeric
-> > arguments (and results) regardless of the domain of the value.
-> > 
-> > Related, I've always worried about 'bool'....
-> > 
-> >> The upper 32 bits of registers are always undefined garbage for types
-> >> smaller than 64 bits."
-> > 
-> > On x86-64 the high bits are zeroed by all 32bit loads.
+On Thu, Oct 22, 2020 at 12:21:55PM +0300, Anatoly Pugachev wrote:
+> Hello!
 > 
-> Yeah, but does not help here.
+> Bisected the following linux calltrace after v5.9 :
 > 
-> 
-> My thinking: if the compiler that calls import_iovec() has garbage in
-> the upper 32 bit
-> 
-> a) gcc will zero it out and not rely on it being zero.
-> b) clang will not zero it out, assuming it is zero.
-> 
-> But
-> 
-> a) will zero it out when calling the !inlined variant
-> b) clang will zero it out when calling the !inlined variant
-> 
-> When inlining, b) strikes. We access garbage. That would mean that we
-> have calling code that's not generated by clang/gcc IIUC.
-> 
-> We can test easily by changing the parameters instead of adding an "inline".
+> [    8.650198] systemd[1]: Started Journal Service.
+> [    9.028125] ------------[ cut here ]------------
+> [    9.028171] WARNING: CPU: 11 PID: 499 at
+> net/netfilter/nf_tables_api.c:622 nft_chain_parse_hook+0x7c/0x360
+> [nf_tables]
+> [    9.028185] Modules linked in: nf_tables nfnetlink sunrpc ip_tables
+> x_tables ipv6 crc_ccitt autofs4 ext4 crc16 mbcache jbd2 raid10 raid456
+> async_raid6_recov async_mem
+> cpy async_pq async_xor xor async_tx raid6_pq raid1 raid0 multipath
+> linear md_mod crc32c_sparc64
+> [    9.028243] CPU: 11 PID: 499 Comm: nft Tainted: G        W
+> 5.9.0-rc8-00209-gbaffd723e44d #111
+> [    9.028255] Call Trace:
+> [    9.028269] [<00000000004727e8>] __warn+0xa8/0x120
+> [    9.028278] [<0000000000472c20>] warn_slowpath_fmt+0x34/0x74
+> [    9.028291] [<00000000100c19fc>] nft_chain_parse_hook+0x7c/0x360 [nf_tables]
 
-Let me try that as well, as I seem to have a good reproducer, but it
-takes a while to run...
+> commit 4d004099a668c41522242aa146a38cc4eb59cb1e
 
-greg k-h
+What's unexpected.. while I just queued a another fix for that commit:
+
+  https://lkml.kernel.org/r/20201022103028.GC2611@hirez.programming.kicks-ass.net
+
+I don't think that explains this WARN. Let me go prod at it.
