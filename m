@@ -2,138 +2,163 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B54A2973FA
-	for <lists+sparclinux@lfdr.de>; Fri, 23 Oct 2020 18:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B079C297641
+	for <lists+sparclinux@lfdr.de>; Fri, 23 Oct 2020 19:57:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1751803AbgJWQdR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 23 Oct 2020 12:33:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:35058 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1751787AbgJWQdQ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 23 Oct 2020 12:33:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603470795;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qFpT9rw9kU+fUUj5fb7jig81eZVzobxvui7gAjawuH0=;
-        b=jCYqKvBkG2GdjY1DUZF5NWtsiGLJ9YC9z4syTQqWdOsQP24r17aal+fMLECtc6M16OeA+H
-        sJO1g/XAwINGnDOdywtyqoFs750it4J40vpWJkXU1aCWX1qtF/ZzR2f9esOsXxjH+N2ZKl
-        6mB4s7bi6imBga23sFFsjcyTuCrAh2s=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-42-mE4iRpoaPm6zGEfodl9TZg-1; Fri, 23 Oct 2020 12:33:11 -0400
-X-MC-Unique: mE4iRpoaPm6zGEfodl9TZg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 47449108E1B2;
-        Fri, 23 Oct 2020 16:33:07 +0000 (UTC)
-Received: from [10.36.114.18] (ovpn-114-18.ams2.redhat.com [10.36.114.18])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 139D160BFA;
-        Fri, 23 Oct 2020 16:33:00 +0000 (UTC)
-Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-To:     'Greg KH' <gregkh@linuxfoundation.org>,
-        David Laight <David.Laight@aculab.com>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-References: <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
- <20201022104805.GA1503673@kroah.com> <20201022121849.GA1664412@kroah.com>
- <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
- <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com>
- <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
- <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com>
- <999e2926-9a75-72fd-007a-1de0af341292@redhat.com>
- <35d0ec90ef4f4a35a75b9df7d791f719@AcuMS.aculab.com>
- <20201023144718.GA2525489@kroah.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <52fe0398-02be-33fb-3a64-e394cc819b60@redhat.com>
-Date:   Fri, 23 Oct 2020 18:33:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        id S1754023AbgJWR5C (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 23 Oct 2020 13:57:02 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:43244 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1754021AbgJWR5C (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 23 Oct 2020 13:57:02 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NHtQfR016737;
+        Fri, 23 Oct 2020 17:56:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2020-01-29; bh=4zxd3ptZdEcqBmIGvpJr2OlJGLs4SbYdy4/wlWqVbZs=;
+ b=S98QTqRCOxVIj3y5/hYWqGZ+hW7k0txwjW/FYlyGPD3Co6um7sp9UpMQZE7HWSYvMCSY
+ chCYH/YtcuqcNQ9/7CzmNqDswtR93x0nVU4YxXIVrJUOI2kgLN5PzcSICkIS82xgzwEw
+ 5eaTNAVXTVbs+fjqebVvjFADFFxKs4qOX9+A9AfR+0FUSgJxNdsZ8kChE7AMGiJFU9rD
+ zM1YaCbNfKKy/TkWGCUzGI5qDYsIQlA3bNHpBDYzy/iQHGVdaKNWBCCy2YtpJbwhSj5V
+ FTa2E9bnKZlC6YkZvajQMvAmYclGGkxJXcAoBRXT93j0Uup34UfQQHuAC5PrOOVKI0Rj tw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2130.oracle.com with ESMTP id 347p4bcgvq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 23 Oct 2020 17:56:42 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09NHeBNu044162;
+        Fri, 23 Oct 2020 17:56:41 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 34ak1babg4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 23 Oct 2020 17:56:41 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09NHudhe005487;
+        Fri, 23 Oct 2020 17:56:39 GMT
+Received: from concerto.us.oracle.com (/10.65.191.104)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 23 Oct 2020 10:56:38 -0700
+From:   Khalid Aziz <khalid.aziz@oracle.com>
+To:     jannh@google.com, hch@infradead.org, catalin.marinas@arm.com,
+        davem@davemloft.net, akpm@linux-foundation.org
+Cc:     Khalid Aziz <khalid.aziz@oracle.com>, anthony.yznaga@oracle.com,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Subject: [PATCH] sparc64: Use arch_validate_flags() to validate ADI flag
+Date:   Fri, 23 Oct 2020 11:56:11 -0600
+Message-Id: <20201023175611.12819-1-khalid.aziz@oracle.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20201023144718.GA2525489@kroah.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9783 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 phishscore=0
+ spamscore=0 adultscore=0 mlxlogscore=912 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010230110
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9783 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 priorityscore=1501
+ clxscore=1015 malwarescore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0
+ phishscore=0 adultscore=0 mlxlogscore=911 impostorscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010230110
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 23.10.20 16:47, 'Greg KH' wrote:
-> On Fri, Oct 23, 2020 at 02:39:24PM +0000, David Laight wrote:
->> From: David Hildenbrand
->>> Sent: 23 October 2020 15:33
->> ...
->>> I just checked against upstream code generated by clang 10 and it
->>> properly discards the upper 32bit via a mov w23 w2.
->>>
->>> So at least clang 10 indeed properly assumes we could have garbage and
->>> masks it off.
->>>
->>> Maybe the issue is somewhere else, unrelated to nr_pages ... or clang 11
->>> behaves differently.
->>
->> We'll need the disassembly from a failing kernel image.
->> It isn't that big to hand annotate.
-> 
-> I've worked around the merge at the moment in the android tree, but it
-> is still quite reproducable, and will try to get a .o file to
-> disassemble on Monday or so...
+When userspace calls mprotect() to enable ADI on an address range,
+do_mprotect_pkey() calls arch_validate_prot() to validate new
+protection flags. arch_validate_prot() for sparc looks at the first
+VMA associated with address range to verify if ADI can indeed be
+enabled on this address range. This has two issues - (1) Address
+range might cover multiple VMAs while arch_validate_prot() looks at
+only the first VMA, (2) arch_validate_prot() peeks at VMA without
+holding mmap lock which can result in race condition.
 
-I just compiled pre and post fb041b598997d63c0f7d7305dfae70046bf66fe1 with
+arch_validate_flags() from commit c462ac288f2c ("mm: Introduce
+arch_validate_flags()") allows for VMA flags to be validated for all
+VMAs that cover the address range given by user while holding mmap
+lock. This patch updates sparc code to move the VMA check from
+arch_validate_prot() to arch_validate_flags() to fix above two
+issues.
 
-clang version 11.0.0 (Fedora 11.0.0-0.2.rc1.fc33)
+Suggested-by: Jann Horn <jannh@google.com>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Khalid Aziz <khalid.aziz@oracle.com>
+---
+ arch/sparc/include/asm/mman.h | 54 +++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 25 deletions(-)
 
-for aarch64 with defconfig and extracted import_iovec and
-rw_copy_check_uvector (skipping the compat things)
-
-Pre fb041b598997d63c0f7d7305dfae70046bf66fe1 import_iovec
--> https://pastebin.com/LtnYMLJt
-Post fb041b598997d63c0f7d7305dfae70046bf66fe1 import_iovec
--> https://pastebin.com/BWPmXrAf
-Pre fb041b598997d63c0f7d7305dfae70046bf66fe1 rw_copy_check_uvector
--> https://pastebin.com/4nSBYRbf
-Post fb041b598997d63c0f7d7305dfae70046bf66fe1 rw_copy_check_uvector
--> https://pastebin.com/hPtEgaEW
-
-I'm only able to spot minor differences ... less gets inlined than I
-would have expected. But there are some smaller differences.
-
-Maybe someone wants to have a look before we have object files as used
-by Greg ...
-
+diff --git a/arch/sparc/include/asm/mman.h b/arch/sparc/include/asm/mman.h
+index f94532f25db1..274217e7ed70 100644
+--- a/arch/sparc/include/asm/mman.h
++++ b/arch/sparc/include/asm/mman.h
+@@ -57,35 +57,39 @@ static inline int sparc_validate_prot(unsigned long prot, unsigned long addr)
+ {
+ 	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_ADI))
+ 		return 0;
+-	if (prot & PROT_ADI) {
+-		if (!adi_capable())
+-			return 0;
++	return 1;
++}
+ 
+-		if (addr) {
+-			struct vm_area_struct *vma;
++#define arch_validate_flags(vm_flags) arch_validate_flags(vm_flags)
++/* arch_validate_flags() - Ensure combination of flags is valid for a
++ *	VMA.
++ */
++static inline bool arch_validate_flags(unsigned long vm_flags)
++{
++	/* If ADI is being enabled on this VMA, check for ADI
++	 * capability on the platform and ensure VMA is suitable
++	 * for ADI
++	 */
++	if (vm_flags & VM_SPARC_ADI) {
++		if (!adi_capable())
++			return false;
+ 
+-			vma = find_vma(current->mm, addr);
+-			if (vma) {
+-				/* ADI can not be enabled on PFN
+-				 * mapped pages
+-				 */
+-				if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
+-					return 0;
++		/* ADI can not be enabled on PFN mapped pages */
++		if (vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
++			return false;
+ 
+-				/* Mergeable pages can become unmergeable
+-				 * if ADI is enabled on them even if they
+-				 * have identical data on them. This can be
+-				 * because ADI enabled pages with identical
+-				 * data may still not have identical ADI
+-				 * tags on them. Disallow ADI on mergeable
+-				 * pages.
+-				 */
+-				if (vma->vm_flags & VM_MERGEABLE)
+-					return 0;
+-			}
+-		}
++		/* Mergeable pages can become unmergeable
++		 * if ADI is enabled on them even if they
++		 * have identical data on them. This can be
++		 * because ADI enabled pages with identical
++		 * data may still not have identical ADI
++		 * tags on them. Disallow ADI on mergeable
++		 * pages.
++		 */
++		if (vm_flags & VM_MERGEABLE)
++			return false;
+ 	}
+-	return 1;
++	return true;
+ }
+ #endif /* CONFIG_SPARC64 */
+ 
 -- 
-Thanks,
-
-David / dhildenb
+2.25.1
 
