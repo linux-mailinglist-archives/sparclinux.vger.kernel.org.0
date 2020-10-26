@@ -2,218 +2,113 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5F20299F65
-	for <lists+sparclinux@lfdr.de>; Tue, 27 Oct 2020 01:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9284299CEE
+	for <lists+sparclinux@lfdr.de>; Tue, 27 Oct 2020 01:02:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2410947AbgJZXzo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 26 Oct 2020 19:55:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33450 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2410899AbgJZXzY (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 26 Oct 2020 19:55:24 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E2A7A20770;
-        Mon, 26 Oct 2020 23:55:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603756522;
-        bh=IXKvZ8ptF2r5eLQzATs9X+yzaoFinvLNNofxFDrLHCo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GJj0jOnee5fjWpVuXoKEHifqg1vsgxQmdvQXkBqQd+mzjh2NwlzL/RT+wxameyEyN
-         TqH+yXsX33+yUZaShgOHUFWh+6U/Zyo13YKS9Uo6a64qNISSvKRtSgM0tyaC2EyQLW
-         bgkzt7GW/MSzBzmMMs4JamjpcQfkaw89fj8NrNuQ=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nicholas Piggin <npiggin@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 04/80] sparc64: remove mm_cpumask clearing to fix kthread_use_mm race
-Date:   Mon, 26 Oct 2020 19:54:00 -0400
-Message-Id: <20201026235516.1025100-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201026235516.1025100-1-sashal@kernel.org>
-References: <20201026235516.1025100-1-sashal@kernel.org>
+        id S2389166AbgJ0ACp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 26 Oct 2020 20:02:45 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:34810 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2411074AbgJZX4P (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 26 Oct 2020 19:56:15 -0400
+Received: by mail-pg1-f193.google.com with SMTP id t14so6991012pgg.1
+        for <sparclinux@vger.kernel.org>; Mon, 26 Oct 2020 16:56:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=wqqvkA3oKUwkO5eXRPOBy8lXyQg0CiUtokie2wwagwI=;
+        b=ZWDgA8+yUlKx2dZgiyZDe66Bv6aQYo4o4sBrgULvsJ7L1mqryuSoN/tRsTLtRNf5gl
+         QA5GzgrsJ4IIXk6KefYiWNloPp5dTgRya5PAi5H2X1Ck5liCNMZ9plZFbXAFJkRhGENX
+         zRADl3Fzwzqt5UTeMExAEl9+J6C00UJYGVeM9r+kQpMj10I4tNzbDp+KUhpG26z8ohQ5
+         u9LGW1VxEtuEY5uYo6W0qmYrYYX9WPLdyfh3K/l7hHXtbXds+UPAtJe/6QdzpKUrKNEa
+         IHnev7OPcOoKpcEMuZBXfSj3e5H/bPp0SHxbMGuGbkkGN2ORlWbNlGQCKJOUg6Ub1kcx
+         WOrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=wqqvkA3oKUwkO5eXRPOBy8lXyQg0CiUtokie2wwagwI=;
+        b=iiOJ43uu5UjqpW6X6FRGK4/9DeSgw5mFX2kw6gQJVBoUyY10+UxdW8axviuoEvpRAx
+         GO3ceGqgHvsjr+TEKf/X9595Ms6PX5dhS6Ed88JKuddWLqRfE4RtbIH5xIgu4zI1I0d5
+         eqH+rLCBDQMb9o9cxBa24AaK9xdYNO577V3nYXuC4vYyYyyIYETNsGv0+1zSOVwI6EYk
+         rzi5L0qxhvNfXV8zJrwNzUraXPBoINX+nUqX6L11A8JCq2CBHNsh2loVRn14/i6A1TvV
+         K26Yi5vxvBbrlHsAJ24wHLi6DGmUiH1cwDXuQkEsTMRa6pGEb3EU6VQajikN3V4U5aJm
+         xgQw==
+X-Gm-Message-State: AOAM531EFYbn2RIYkoBrpQHaPMVlMYLKFLJDT3b3zh4zZpPQKvRWIAJD
+        sg8X5XgCtaVlUS0geIo26QkscA==
+X-Google-Smtp-Source: ABdhPJzXWytxnG400Dp//klgHvFRu6jftuSrTTs7sW7oWyETnW8LM2mlLlQ2a53Jfzf5mLG9B/rX/w==
+X-Received: by 2002:a63:5f42:: with SMTP id t63mr569296pgb.0.1603756574857;
+        Mon, 26 Oct 2020 16:56:14 -0700 (PDT)
+Received: from [192.168.1.134] ([66.219.217.173])
+        by smtp.gmail.com with ESMTPSA id s38sm3637009pgm.62.2020.10.26.16.56.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Oct 2020 16:56:14 -0700 (PDT)
+Subject: Re: [REGRESSION] mm: process_vm_readv testcase no longer works after
+ compat_prcoess_vm_readv removed
+To:     Kyle Huey <me@kylehuey.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        Christoph Hellwig <hch@lst.de>
+Cc:     Robert O'Callahan <robert@ocallahan.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-scsi@vger.kernel.org,
+        "open list:FILESYSTEMS (VFS and infrastructure)" 
+        <linux-fsdevel@vger.kernel.org>, linux-aio@kvack.org,
+        io-uring@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org, netdev@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+References: <CAP045Aqrsb=CXHDHx4nS-pgg+MUDj14r-kN8_Jcbn-NAUziVag@mail.gmail.com>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <70d5569e-4ad6-988a-e047-5d12d298684c@kernel.dk>
+Date:   Mon, 26 Oct 2020 17:56:11 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAP045Aqrsb=CXHDHx4nS-pgg+MUDj14r-kN8_Jcbn-NAUziVag@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+On 10/26/20 4:55 PM, Kyle Huey wrote:
+> A test program from the rr[0] test suite, vm_readv_writev[1], no
+> longer works on 5.10-rc1 when compiled as a 32 bit binary and executed
+> on a 64 bit kernel. The first process_vm_readv call (on line 35) now
+> fails with EFAULT. I have bisected this to
+> c3973b401ef2b0b8005f8074a10e96e3ea093823.
+> 
+> It should be fairly straightforward to extract the test case from our
+> repository into a standalone program.
 
-[ Upstream commit bafb056ce27940c9994ea905336aa8f27b4f7275 ]
+Can you check with this applied?
 
-The de facto (and apparently uncommented) standard for using an mm had,
-thanks to this code in sparc if nothing else, been that you must have a
-reference on mm_users *and that reference must have been obtained with
-mmget()*, i.e., from a thread with a reference to mm_users that had used
-the mm.
+diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
+index fd12da80b6f2..05676722d9cd 100644
+--- a/mm/process_vm_access.c
++++ b/mm/process_vm_access.c
+@@ -273,7 +273,8 @@ static ssize_t process_vm_rw(pid_t pid,
+ 		return rc;
+ 	if (!iov_iter_count(&iter))
+ 		goto free_iov_l;
+-	iov_r = iovec_from_user(rvec, riovcnt, UIO_FASTIOV, iovstack_r, false);
++	iov_r = iovec_from_user(rvec, riovcnt, UIO_FASTIOV, iovstack_r,
++				in_compat_syscall());
+ 	if (IS_ERR(iov_r)) {
+ 		rc = PTR_ERR(iov_r);
+ 		goto free_iov_l;
 
-The introduction of mmget_not_zero() in commit d2005e3f41d4
-("userfaultfd: don't pin the user memory in userfaultfd_file_create()")
-allowed mm_count holders to aoperate on user mappings asynchronously
-from the actual threads using the mm, but they were not to load those
-mappings into their TLB (i.e., walking vmas and page tables is okay,
-kthread_use_mm() is not).
-
-io_uring 2b188cc1bb857 ("Add io_uring IO interface") added code which
-does a kthread_use_mm() from a mmget_not_zero() refcount.
-
-The problem with this is code which previously assumed mm == current->mm
-and mm->mm_users == 1 implies the mm will remain single-threaded at
-least until this thread creates another mm_users reference, has now
-broken.
-
-arch/sparc/kernel/smp_64.c:
-
-    if (atomic_read(&mm->mm_users) == 1) {
-        cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
-        goto local_flush_and_out;
-    }
-
-vs fs/io_uring.c
-
-    if (unlikely(!(ctx->flags & IORING_SETUP_SQPOLL) ||
-                 !mmget_not_zero(ctx->sqo_mm)))
-        return -EFAULT;
-    kthread_use_mm(ctx->sqo_mm);
-
-mmget_not_zero() could come in right after the mm_users == 1 test, then
-kthread_use_mm() which sets its CPU in the mm_cpumask. That update could
-be lost if cpumask_copy() occurs afterward.
-
-I propose we fix this by allowing mmget_not_zero() to be a first-class
-reference, and not have this obscure undocumented and unchecked
-restriction.
-
-The basic fix for sparc64 is to remove its mm_cpumask clearing code. The
-optimisation could be effectively restored by sending IPIs to mm_cpumask
-members and having them remove themselves from mm_cpumask. This is more
-tricky so I leave it as an exercise for someone with a sparc64 SMP.
-powerpc has a (currently similarly broken) example.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Acked-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20200914045219.3736466-4-npiggin@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/sparc/kernel/smp_64.c | 65 ++++++++------------------------------
- 1 file changed, 14 insertions(+), 51 deletions(-)
-
-diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
-index a8275fea4b70c..aa81c25b44cf3 100644
---- a/arch/sparc/kernel/smp_64.c
-+++ b/arch/sparc/kernel/smp_64.c
-@@ -1039,38 +1039,9 @@ void smp_fetch_global_pmu(void)
-  * are flush_tlb_*() routines, and these run after flush_cache_*()
-  * which performs the flushw.
-  *
-- * The SMP TLB coherency scheme we use works as follows:
-- *
-- * 1) mm->cpu_vm_mask is a bit mask of which cpus an address
-- *    space has (potentially) executed on, this is the heuristic
-- *    we use to avoid doing cross calls.
-- *
-- *    Also, for flushing from kswapd and also for clones, we
-- *    use cpu_vm_mask as the list of cpus to make run the TLB.
-- *
-- * 2) TLB context numbers are shared globally across all processors
-- *    in the system, this allows us to play several games to avoid
-- *    cross calls.
-- *
-- *    One invariant is that when a cpu switches to a process, and
-- *    that processes tsk->active_mm->cpu_vm_mask does not have the
-- *    current cpu's bit set, that tlb context is flushed locally.
-- *
-- *    If the address space is non-shared (ie. mm->count == 1) we avoid
-- *    cross calls when we want to flush the currently running process's
-- *    tlb state.  This is done by clearing all cpu bits except the current
-- *    processor's in current->mm->cpu_vm_mask and performing the
-- *    flush locally only.  This will force any subsequent cpus which run
-- *    this task to flush the context from the local tlb if the process
-- *    migrates to another cpu (again).
-- *
-- * 3) For shared address spaces (threads) and swapping we bite the
-- *    bullet for most cases and perform the cross call (but only to
-- *    the cpus listed in cpu_vm_mask).
-- *
-- *    The performance gain from "optimizing" away the cross call for threads is
-- *    questionable (in theory the big win for threads is the massive sharing of
-- *    address space state across processors).
-+ * mm->cpu_vm_mask is a bit mask of which cpus an address
-+ * space has (potentially) executed on, this is the heuristic
-+ * we use to limit cross calls.
-  */
- 
- /* This currently is only used by the hugetlb arch pre-fault
-@@ -1080,18 +1051,13 @@ void smp_fetch_global_pmu(void)
- void smp_flush_tlb_mm(struct mm_struct *mm)
- {
- 	u32 ctx = CTX_HWBITS(mm->context);
--	int cpu = get_cpu();
- 
--	if (atomic_read(&mm->mm_users) == 1) {
--		cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
--		goto local_flush_and_out;
--	}
-+	get_cpu();
- 
- 	smp_cross_call_masked(&xcall_flush_tlb_mm,
- 			      ctx, 0, 0,
- 			      mm_cpumask(mm));
- 
--local_flush_and_out:
- 	__flush_tlb_mm(ctx, SECONDARY_CONTEXT);
- 
- 	put_cpu();
-@@ -1114,17 +1080,15 @@ void smp_flush_tlb_pending(struct mm_struct *mm, unsigned long nr, unsigned long
- {
- 	u32 ctx = CTX_HWBITS(mm->context);
- 	struct tlb_pending_info info;
--	int cpu = get_cpu();
-+
-+	get_cpu();
- 
- 	info.ctx = ctx;
- 	info.nr = nr;
- 	info.vaddrs = vaddrs;
- 
--	if (mm == current->mm && atomic_read(&mm->mm_users) == 1)
--		cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
--	else
--		smp_call_function_many(mm_cpumask(mm), tlb_pending_func,
--				       &info, 1);
-+	smp_call_function_many(mm_cpumask(mm), tlb_pending_func,
-+			       &info, 1);
- 
- 	__flush_tlb_pending(ctx, nr, vaddrs);
- 
-@@ -1134,14 +1098,13 @@ void smp_flush_tlb_pending(struct mm_struct *mm, unsigned long nr, unsigned long
- void smp_flush_tlb_page(struct mm_struct *mm, unsigned long vaddr)
- {
- 	unsigned long context = CTX_HWBITS(mm->context);
--	int cpu = get_cpu();
- 
--	if (mm == current->mm && atomic_read(&mm->mm_users) == 1)
--		cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
--	else
--		smp_cross_call_masked(&xcall_flush_tlb_page,
--				      context, vaddr, 0,
--				      mm_cpumask(mm));
-+	get_cpu();
-+
-+	smp_cross_call_masked(&xcall_flush_tlb_page,
-+			      context, vaddr, 0,
-+			      mm_cpumask(mm));
-+
- 	__flush_tlb_page(context, vaddr);
- 
- 	put_cpu();
 -- 
-2.25.1
+Jens Axboe
 
