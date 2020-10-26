@@ -2,82 +2,218 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 150202999FC
-	for <lists+sparclinux@lfdr.de>; Mon, 26 Oct 2020 23:55:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5F20299F65
+	for <lists+sparclinux@lfdr.de>; Tue, 27 Oct 2020 01:22:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394903AbgJZWz1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 26 Oct 2020 18:55:27 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:37658 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394907AbgJZWz1 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 26 Oct 2020 18:55:27 -0400
-Received: by mail-ed1-f65.google.com with SMTP id o18so11434606edq.4
-        for <sparclinux@vger.kernel.org>; Mon, 26 Oct 2020 15:55:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kylehuey.com; s=google;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=J/+n1x0TPOHJCTfSVoXlG/q+OLrGnnNxrysZ0ZyIy+Y=;
-        b=JQw5fA5cqXZCTLCd2xkURV07bnYrA8gTT/8l9H7r6P+PgM37GQ7tblZcETghImepsU
-         AcI0oUILLNpw7+Lob5wOxm8oxXKZgdxlvk1iOdkoLk31eLVc1crb3sEhxCSb6bD2V31l
-         b7OGa6zHv0zDl28Z8OMcIxY0WvmVK7pWJSrW3Zs4sWifuxNiQ2iEW7pkdOAgHIEek3Fp
-         L3yESbOX+0gb8ueK46K6rtDj34b55Vtmz8U4fPoQ/Dv2vqBsFOJNMTpbG7mznOfR5TaL
-         kpOlREDICaBo0Xi3+x/a4pHYfGgO73EI5dQFmBZNKgKh2ry9/Y+FL54IAgbsbpnA0Xzm
-         BeOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=J/+n1x0TPOHJCTfSVoXlG/q+OLrGnnNxrysZ0ZyIy+Y=;
-        b=GlBk3PuWUh6jbeDAS51WTNKsa9L0Ne0k2S7sUxoV4q0J+micNz/6O8bIuID849aW5Z
-         ey9cbqQypXcheAP9Iw9hEobYfySuNHSDhdjENjs4w4gJKi3UZgOvbqHZbRn5Xd+3Tror
-         SjDRyADh3KQcbqUHtIa4xLFTgUO7mZntIlhfuDHDXLy7JXGfjLtmk6wbj1s8gJcNz+TE
-         G5B75kJZY07M05LWTK2ii/dhD1KeD2Li+7nq79tzAgaDIhcXzGsOQGLomhC5roVD7PpI
-         qB5yJtnoUeXZQy0Vg8oqQkqiItfupnOQFatJZgVjrMV73IOVo4prSIifx7ADPf8sPUUi
-         Bmcg==
-X-Gm-Message-State: AOAM531xGCYVnPOGiZmYB9klHwMiaSj6NA3dcZRKsO39nJAlW/0RHOjF
-        Fh7Nl+ocBBRw33cHI3cfOJsA7SyxcsRfObD/LY6w/g==
-X-Google-Smtp-Source: ABdhPJyAci+5cM2zXs7C2dh5O8VDIKXSp+LVa6rVM/MPlgy6tZLvyXi43c6iWM9w5BW9l3CIsdr5O5Od75OK4rN9ByQ=
-X-Received: by 2002:aa7:d9ce:: with SMTP id v14mr12828586eds.203.1603752924617;
- Mon, 26 Oct 2020 15:55:24 -0700 (PDT)
+        id S2410947AbgJZXzo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 26 Oct 2020 19:55:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33450 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2410899AbgJZXzY (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:55:24 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E2A7A20770;
+        Mon, 26 Oct 2020 23:55:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603756522;
+        bh=IXKvZ8ptF2r5eLQzATs9X+yzaoFinvLNNofxFDrLHCo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=GJj0jOnee5fjWpVuXoKEHifqg1vsgxQmdvQXkBqQd+mzjh2NwlzL/RT+wxameyEyN
+         TqH+yXsX33+yUZaShgOHUFWh+6U/Zyo13YKS9Uo6a64qNISSvKRtSgM0tyaC2EyQLW
+         bgkzt7GW/MSzBzmMMs4JamjpcQfkaw89fj8NrNuQ=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Nicholas Piggin <npiggin@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 04/80] sparc64: remove mm_cpumask clearing to fix kthread_use_mm race
+Date:   Mon, 26 Oct 2020 19:54:00 -0400
+Message-Id: <20201026235516.1025100-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20201026235516.1025100-1-sashal@kernel.org>
+References: <20201026235516.1025100-1-sashal@kernel.org>
 MIME-Version: 1.0
-From:   Kyle Huey <me@kylehuey.com>
-Date:   Mon, 26 Oct 2020 15:55:13 -0700
-Message-ID: <CAP045Aqrsb=CXHDHx4nS-pgg+MUDj14r-kN8_Jcbn-NAUziVag@mail.gmail.com>
-Subject: [REGRESSION] mm: process_vm_readv testcase no longer works after
- compat_prcoess_vm_readv removed
-To:     open list <linux-kernel@vger.kernel.org>,
-        Christoph Hellwig <hch@lst.de>
-Cc:     "Robert O'Callahan" <robert@ocallahan.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-scsi@vger.kernel.org,
-        "open list:FILESYSTEMS (VFS and infrastructure)" 
-        <linux-fsdevel@vger.kernel.org>, linux-aio@kvack.org,
-        io-uring@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, netdev@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-A test program from the rr[0] test suite, vm_readv_writev[1], no
-longer works on 5.10-rc1 when compiled as a 32 bit binary and executed
-on a 64 bit kernel. The first process_vm_readv call (on line 35) now
-fails with EFAULT. I have bisected this to
-c3973b401ef2b0b8005f8074a10e96e3ea093823.
+From: Nicholas Piggin <npiggin@gmail.com>
 
-It should be fairly straightforward to extract the test case from our
-repository into a standalone program.
+[ Upstream commit bafb056ce27940c9994ea905336aa8f27b4f7275 ]
 
-- Kyle
+The de facto (and apparently uncommented) standard for using an mm had,
+thanks to this code in sparc if nothing else, been that you must have a
+reference on mm_users *and that reference must have been obtained with
+mmget()*, i.e., from a thread with a reference to mm_users that had used
+the mm.
 
-[0] https://rr-project.org/
-[1] https://github.com/mozilla/rr/blob/master/src/test/vm_readv_writev.c
+The introduction of mmget_not_zero() in commit d2005e3f41d4
+("userfaultfd: don't pin the user memory in userfaultfd_file_create()")
+allowed mm_count holders to aoperate on user mappings asynchronously
+from the actual threads using the mm, but they were not to load those
+mappings into their TLB (i.e., walking vmas and page tables is okay,
+kthread_use_mm() is not).
+
+io_uring 2b188cc1bb857 ("Add io_uring IO interface") added code which
+does a kthread_use_mm() from a mmget_not_zero() refcount.
+
+The problem with this is code which previously assumed mm == current->mm
+and mm->mm_users == 1 implies the mm will remain single-threaded at
+least until this thread creates another mm_users reference, has now
+broken.
+
+arch/sparc/kernel/smp_64.c:
+
+    if (atomic_read(&mm->mm_users) == 1) {
+        cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
+        goto local_flush_and_out;
+    }
+
+vs fs/io_uring.c
+
+    if (unlikely(!(ctx->flags & IORING_SETUP_SQPOLL) ||
+                 !mmget_not_zero(ctx->sqo_mm)))
+        return -EFAULT;
+    kthread_use_mm(ctx->sqo_mm);
+
+mmget_not_zero() could come in right after the mm_users == 1 test, then
+kthread_use_mm() which sets its CPU in the mm_cpumask. That update could
+be lost if cpumask_copy() occurs afterward.
+
+I propose we fix this by allowing mmget_not_zero() to be a first-class
+reference, and not have this obscure undocumented and unchecked
+restriction.
+
+The basic fix for sparc64 is to remove its mm_cpumask clearing code. The
+optimisation could be effectively restored by sending IPIs to mm_cpumask
+members and having them remove themselves from mm_cpumask. This is more
+tricky so I leave it as an exercise for someone with a sparc64 SMP.
+powerpc has a (currently similarly broken) example.
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Acked-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20200914045219.3736466-4-npiggin@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/sparc/kernel/smp_64.c | 65 ++++++++------------------------------
+ 1 file changed, 14 insertions(+), 51 deletions(-)
+
+diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
+index a8275fea4b70c..aa81c25b44cf3 100644
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -1039,38 +1039,9 @@ void smp_fetch_global_pmu(void)
+  * are flush_tlb_*() routines, and these run after flush_cache_*()
+  * which performs the flushw.
+  *
+- * The SMP TLB coherency scheme we use works as follows:
+- *
+- * 1) mm->cpu_vm_mask is a bit mask of which cpus an address
+- *    space has (potentially) executed on, this is the heuristic
+- *    we use to avoid doing cross calls.
+- *
+- *    Also, for flushing from kswapd and also for clones, we
+- *    use cpu_vm_mask as the list of cpus to make run the TLB.
+- *
+- * 2) TLB context numbers are shared globally across all processors
+- *    in the system, this allows us to play several games to avoid
+- *    cross calls.
+- *
+- *    One invariant is that when a cpu switches to a process, and
+- *    that processes tsk->active_mm->cpu_vm_mask does not have the
+- *    current cpu's bit set, that tlb context is flushed locally.
+- *
+- *    If the address space is non-shared (ie. mm->count == 1) we avoid
+- *    cross calls when we want to flush the currently running process's
+- *    tlb state.  This is done by clearing all cpu bits except the current
+- *    processor's in current->mm->cpu_vm_mask and performing the
+- *    flush locally only.  This will force any subsequent cpus which run
+- *    this task to flush the context from the local tlb if the process
+- *    migrates to another cpu (again).
+- *
+- * 3) For shared address spaces (threads) and swapping we bite the
+- *    bullet for most cases and perform the cross call (but only to
+- *    the cpus listed in cpu_vm_mask).
+- *
+- *    The performance gain from "optimizing" away the cross call for threads is
+- *    questionable (in theory the big win for threads is the massive sharing of
+- *    address space state across processors).
++ * mm->cpu_vm_mask is a bit mask of which cpus an address
++ * space has (potentially) executed on, this is the heuristic
++ * we use to limit cross calls.
+  */
+ 
+ /* This currently is only used by the hugetlb arch pre-fault
+@@ -1080,18 +1051,13 @@ void smp_fetch_global_pmu(void)
+ void smp_flush_tlb_mm(struct mm_struct *mm)
+ {
+ 	u32 ctx = CTX_HWBITS(mm->context);
+-	int cpu = get_cpu();
+ 
+-	if (atomic_read(&mm->mm_users) == 1) {
+-		cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
+-		goto local_flush_and_out;
+-	}
++	get_cpu();
+ 
+ 	smp_cross_call_masked(&xcall_flush_tlb_mm,
+ 			      ctx, 0, 0,
+ 			      mm_cpumask(mm));
+ 
+-local_flush_and_out:
+ 	__flush_tlb_mm(ctx, SECONDARY_CONTEXT);
+ 
+ 	put_cpu();
+@@ -1114,17 +1080,15 @@ void smp_flush_tlb_pending(struct mm_struct *mm, unsigned long nr, unsigned long
+ {
+ 	u32 ctx = CTX_HWBITS(mm->context);
+ 	struct tlb_pending_info info;
+-	int cpu = get_cpu();
++
++	get_cpu();
+ 
+ 	info.ctx = ctx;
+ 	info.nr = nr;
+ 	info.vaddrs = vaddrs;
+ 
+-	if (mm == current->mm && atomic_read(&mm->mm_users) == 1)
+-		cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
+-	else
+-		smp_call_function_many(mm_cpumask(mm), tlb_pending_func,
+-				       &info, 1);
++	smp_call_function_many(mm_cpumask(mm), tlb_pending_func,
++			       &info, 1);
+ 
+ 	__flush_tlb_pending(ctx, nr, vaddrs);
+ 
+@@ -1134,14 +1098,13 @@ void smp_flush_tlb_pending(struct mm_struct *mm, unsigned long nr, unsigned long
+ void smp_flush_tlb_page(struct mm_struct *mm, unsigned long vaddr)
+ {
+ 	unsigned long context = CTX_HWBITS(mm->context);
+-	int cpu = get_cpu();
+ 
+-	if (mm == current->mm && atomic_read(&mm->mm_users) == 1)
+-		cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
+-	else
+-		smp_cross_call_masked(&xcall_flush_tlb_page,
+-				      context, vaddr, 0,
+-				      mm_cpumask(mm));
++	get_cpu();
++
++	smp_cross_call_masked(&xcall_flush_tlb_page,
++			      context, vaddr, 0,
++			      mm_cpumask(mm));
++
+ 	__flush_tlb_page(context, vaddr);
+ 
+ 	put_cpu();
+-- 
+2.25.1
+
