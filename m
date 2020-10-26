@@ -2,39 +2,39 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79D7829A16A
-	for <lists+sparclinux@lfdr.de>; Tue, 27 Oct 2020 01:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F391629A084
+	for <lists+sparclinux@lfdr.de>; Tue, 27 Oct 2020 01:32:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731049AbgJ0AlK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 26 Oct 2020 20:41:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47104 "EHLO mail.kernel.org"
+        id S2439545AbgJ0AbC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 26 Oct 2020 20:31:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54338 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2408639AbgJZXtQ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 26 Oct 2020 19:49:16 -0400
+        id S2409666AbgJZXwP (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:52:15 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 12C2120878;
-        Mon, 26 Oct 2020 23:49:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 54B8C21BE5;
+        Mon, 26 Oct 2020 23:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603756155;
-        bh=7B31aG+vMsVDfvKsLvJ0rsYKOR/ysA20jG8WhjCGSoQ=;
+        s=default; t=1603756334;
+        bh=IDcaushz+RU4d/trbv+CeTcDgzgPJ+elbC9UsdFz0P4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0LeN4yKgZNvEzZNVnc/pM91sFfw1YUs2ZM1bV7S5ctt8iUt3tSmIQlz/+svMWBrUV
-         NoneqAEWewJDkQgZ3mUflzftkSGuipMF3Oyz7lbHUNT95vm5F3EbGLaJkpmcBziZdH
-         I4qpER9xeEHw2lrslNt9APswDGn9g6NAtDWqqaIQ=
+        b=T0XfPkNIyoSQibpweSMdw2298wVLHqKF0HuO+74kpej19r9xmSR9G0IIXOKIlbuCH
+         DFuuFob52r+KAMaBFZUuJ77kDXIIbzRL++TympuWjHrRWr/KaRc/vux7edMkIWxeMI
+         1VKFyxlq4LnYaPk3BaGpT3r8u3vrXhMf+2riVjcQ=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Nicholas Piggin <npiggin@gmail.com>,
         "David S . Miller" <davem@davemloft.net>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.9 008/147] sparc64: remove mm_cpumask clearing to fix kthread_use_mm race
-Date:   Mon, 26 Oct 2020 19:46:46 -0400
-Message-Id: <20201026234905.1022767-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.8 007/132] sparc64: remove mm_cpumask clearing to fix kthread_use_mm race
+Date:   Mon, 26 Oct 2020 19:49:59 -0400
+Message-Id: <20201026235205.1023962-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201026234905.1022767-1-sashal@kernel.org>
-References: <20201026234905.1022767-1-sashal@kernel.org>
+In-Reply-To: <20201026235205.1023962-1-sashal@kernel.org>
+References: <20201026235205.1023962-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -106,10 +106,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 14 insertions(+), 51 deletions(-)
 
 diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
-index e286e2badc8a4..e38d8bf454e86 100644
+index 0085e28bf019a..d88467758ee87 100644
 --- a/arch/sparc/kernel/smp_64.c
 +++ b/arch/sparc/kernel/smp_64.c
-@@ -1039,38 +1039,9 @@ void smp_fetch_global_pmu(void)
+@@ -1038,38 +1038,9 @@ void smp_fetch_global_pmu(void)
   * are flush_tlb_*() routines, and these run after flush_cache_*()
   * which performs the flushw.
   *
@@ -151,7 +151,7 @@ index e286e2badc8a4..e38d8bf454e86 100644
   */
  
  /* This currently is only used by the hugetlb arch pre-fault
-@@ -1080,18 +1051,13 @@ void smp_fetch_global_pmu(void)
+@@ -1079,18 +1050,13 @@ void smp_fetch_global_pmu(void)
  void smp_flush_tlb_mm(struct mm_struct *mm)
  {
  	u32 ctx = CTX_HWBITS(mm->context);
@@ -171,7 +171,7 @@ index e286e2badc8a4..e38d8bf454e86 100644
  	__flush_tlb_mm(ctx, SECONDARY_CONTEXT);
  
  	put_cpu();
-@@ -1114,17 +1080,15 @@ void smp_flush_tlb_pending(struct mm_struct *mm, unsigned long nr, unsigned long
+@@ -1113,17 +1079,15 @@ void smp_flush_tlb_pending(struct mm_struct *mm, unsigned long nr, unsigned long
  {
  	u32 ctx = CTX_HWBITS(mm->context);
  	struct tlb_pending_info info;
@@ -193,7 +193,7 @@ index e286e2badc8a4..e38d8bf454e86 100644
  
  	__flush_tlb_pending(ctx, nr, vaddrs);
  
-@@ -1134,14 +1098,13 @@ void smp_flush_tlb_pending(struct mm_struct *mm, unsigned long nr, unsigned long
+@@ -1133,14 +1097,13 @@ void smp_flush_tlb_pending(struct mm_struct *mm, unsigned long nr, unsigned long
  void smp_flush_tlb_page(struct mm_struct *mm, unsigned long vaddr)
  {
  	unsigned long context = CTX_HWBITS(mm->context);
