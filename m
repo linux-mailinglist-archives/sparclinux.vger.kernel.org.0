@@ -2,70 +2,31 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B8729A20F
-	for <lists+sparclinux@lfdr.de>; Tue, 27 Oct 2020 02:12:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6EC829A6B8
+	for <lists+sparclinux@lfdr.de>; Tue, 27 Oct 2020 09:38:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2411049AbgJ0BKQ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 26 Oct 2020 21:10:16 -0400
-Received: from mga07.intel.com ([134.134.136.100]:36613 "EHLO mga07.intel.com"
+        id S2895035AbgJ0Iid (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 27 Oct 2020 04:38:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45784 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730316AbgJ0BKQ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 26 Oct 2020 21:10:16 -0400
-IronPort-SDR: 4NvYQTOHHQVrtwTVHUFnBnxuv0AKumlyELkrTahpN9j/D4rEqXLPS1E0fh2Mr2glqDIiwnbV4q
- 44CweOZtv3/g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9786"; a="232198887"
-X-IronPort-AV: E=Sophos;i="5.77,421,1596524400"; 
-   d="scan'208";a="232198887"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2020 18:10:14 -0700
-IronPort-SDR: WRLGEyye8GXNMU4+58poBfahyGzPWLiQ7DALjAphRQGpgrRz5GdM0ORU/MXMkfx1mOtY4qOlmM
- hmGS0Znt8rcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,421,1596524400"; 
-   d="scan'208";a="535583959"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orsmga005.jf.intel.com with ESMTP; 26 Oct 2020 18:10:13 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 26 Oct 2020 18:10:13 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
- via Frontend Transport; Mon, 26 Oct 2020 18:10:13 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.176)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.1713.5; Mon, 26 Oct 2020 18:10:13 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DrcVbDpz2WXFitAC8lvG5fHiYTHgqrPOA+rtVboDu0jw/N16ZN7jRjR8CZYvGAvBVLXoaTYP/LSoQCY8TPnqEHqNiw0NZbrWtyF27BoB+04hbxESvsC6Md6LEFgUQk2o1RVVB/4C5E/1IN6gG2sdIHWArF6UvOdv37KbicsNwMLCoFIxXbRBvNmWNI4/Zan8BK+l02J9FWDnTVhixuiDE8t5iEmzS8ukIFryQP8PR8rxUBAHOJvxwviFAesoPTGye3akoEGFNp5cPvAlJ5Ah/HLdL1hwF/oyqj1c2quAdxo8LvIdHbcxXcUJb5G9ToPiR6e7Hp5vaXNK6jx5k/X0/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ih1tvWmhfrkBZo7MJW7d95569Y2IjWWrKu98dvfFJoc=;
- b=Lcxh/4PgqYtODBWmcJBYJRrMSpNrz68zjiruAotwuKchZLpr+smK9EqzWn48vcizanImmNPCxa0P0syH5A5nQsw9Fxo/6YBnMD8cBMNnLt981KOWCQC3g9oGEw1GHrgsQbPlhuGeaH4oKr0AArGftWV9bsY8CVpw/XNddLZG0CREwOfcl/6IfEKUHj7e0PepyPK/JKR+BayPx44GhPKd9vNcAZrTwkMXa81nlB+ozuTnCTKDOLRtKUluTtc98j+A1m//gQ2YTv73Fm6qGzZKRgQKhsIxT6WFhCGb+uV/2+e48b1cjugBqganez00Z3rd8QrPn+eX912fA0MZJMbALA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ih1tvWmhfrkBZo7MJW7d95569Y2IjWWrKu98dvfFJoc=;
- b=nnrcytRsAPLZ9AAk4XQ90i7NnR0JKNS4DRJloWbUfVKqvVIBS8GPxNGRIbwBl1R/cdSOIMZKebLUBQvr8dqrTWkZcc83G81pJu4K/+QWZNfhaHi0JkOiE70EhbjbjI/vKGMc2JS0W3pC6mKOb5C2Q1ga7XbDhDqXTkShtNRgbSc=
-Received: from SN6PR11MB3184.namprd11.prod.outlook.com (2603:10b6:805:bd::17)
- by SA0PR11MB4768.namprd11.prod.outlook.com (2603:10b6:806:71::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.22; Tue, 27 Oct
- 2020 01:10:12 +0000
-Received: from SN6PR11MB3184.namprd11.prod.outlook.com
- ([fe80::b901:8e07:4340:6704]) by SN6PR11MB3184.namprd11.prod.outlook.com
- ([fe80::b901:8e07:4340:6704%7]) with mapi id 15.20.3477.028; Tue, 27 Oct 2020
- 01:10:12 +0000
-From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To:     "rppt@kernel.org" <rppt@kernel.org>
-CC:     "david@redhat.com" <david@redhat.com>,
+        id S2895032AbgJ0Iid (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 27 Oct 2020 04:38:33 -0400
+Received: from kernel.org (unknown [87.70.96.83])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8C11822202;
+        Tue, 27 Oct 2020 08:38:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603787912;
+        bh=+dg6y245gJ/L/iVvDw0zsMRT1YcHeax7uEbyu/BJ1vU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=vvKAPuYKxTdVNDwya4r3iDVjxe8A/dfT1KkHWZ2jber7PIqFofblUr/spVu5jBkBm
+         MQdFvQl0xxFyWw19nhjLmQKrxETaTmSPzdpKryLQfRCY42kv1ouILXBiwwp7JDzj+f
+         1m13PYW49F1mKn6btDBt0MyRnWGW82tINBD33+oE=
+Date:   Tue, 27 Oct 2020 10:38:16 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc:     "david@redhat.com" <david@redhat.com>,
         "cl@linux.com" <cl@linux.com>,
         "gor@linux.ibm.com" <gor@linux.ibm.com>,
         "hpa@zytor.com" <hpa@zytor.com>,
@@ -104,62 +65,106 @@ CC:     "david@redhat.com" <david@redhat.com>,
         "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>
-Subject: Re: [PATCH 2/4] PM: hibernate: improve robustness of mapping pages in
- the direct map
-Thread-Topic: [PATCH 2/4] PM: hibernate: improve robustness of mapping pages
- in the direct map
-Thread-Index: AQHWqrf6LRJhAvsqzE2DP+hB1ynbOKmpCzYAgACQkACAAQqeAA==
-Date:   Tue, 27 Oct 2020 01:10:11 +0000
-Message-ID: <3568e23fb551ae4b8d583c3e6bfdbed505e460e9.camel@intel.com>
+Subject: Re: [PATCH 0/4] arch, mm: improve robustness of direct map
+ manipulation
+Message-ID: <20201027083816.GG1154158@kernel.org>
 References: <20201025101555.3057-1-rppt@kernel.org>
-         <20201025101555.3057-3-rppt@kernel.org>
-         <f20900a403bea9eb3f0814128e5ea46f6580f5a5.camel@intel.com>
-         <20201026091554.GB1154158@kernel.org>
-In-Reply-To: <20201026091554.GB1154158@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=intel.com;
-x-originating-ip: [134.134.137.79]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2d78955d-bfd4-4206-891c-08d87a150e12
-x-ms-traffictypediagnostic: SA0PR11MB4768:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SA0PR11MB476872441823E8BD7F7754C4C9160@SA0PR11MB4768.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: etpjFjmNlhD5NPu8Lr9UaB2xe1ARUSY2KosIpK2nRC29xn9qw7OigPgNq4YGFm3pHAFAjBnZW4fHzPmmFG+PNhVNc4yftnZy3A8I1kq5+TPpJgzPXdlj4UDNFWHtrg5EJv9UOsSkgU7d3+h220YWHFohxYjxEqFG58kuyrRUCGGOV3S1cLjih1DkLsdXySQ/coNPfUlHe2gScJqawc79ORZq8Xwlxa8mrC9e+cF7XRMberTq1bpo8ceiiSbsr3LqwFnHuGrBYfInR82DPgu/xEMvsmZBRmq1xF0R/FqG72UsbX1sGAujBxH6Vbp+Fo5m
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB3184.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(346002)(366004)(136003)(39860400002)(396003)(91956017)(8936002)(4744005)(54906003)(6916009)(2616005)(6506007)(2906002)(4001150100001)(26005)(86362001)(71200400001)(83380400001)(7406005)(186003)(6486002)(64756008)(66446008)(8676002)(66556008)(66476007)(36756003)(76116006)(66946007)(6512007)(5660300002)(4326008)(478600001)(316002)(7416002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: wEIFVyWFEQt2Phq1p3KXHe0P5Ion8FTuCwyO4PlkuXkF9faRg4VwqvJZlaS7EZrBdiYurTwEppG8KXSVeNrgt8OkBYrysaaAEc+jpuoIvikkP/K6AANHbQUR4BakrCNpccIORD/3imjZlunW3qreLUUIwTgnVuR2zMTWQprAGwD+2YCIv7exgMsRKzXDOmziopRaHnKP/1aQFL/KtQI1daxULS3x/xDAQFLCbsBBF52cw45ge1KRSFdgi70IisLvxtn0oIa0nNGRFcJLG28+M94U5Fqxq0xKzS8hn1G8ipk5ZyG2XkHLJcpbIhzvuvAV/bBFKuw8uuCtJDPbuqrx4BPR9TnsHoB/6XjaEr/kFvdT/yaxj8Q81n2DNCSov61CLzFIwWAcMCSIxJA+d0aZMfMIkYVlW4UnvVFVcMR20XTdLnr4BX6cUUQKmV07KHldzGtiyQ2rECddAX5iExbJKTncImp6QiqO+DE2cJEtZ+ScwVgdwASHhFl353OMhlyPhj8TyoMdLXkdMLqlqjMu5ghO5aQBg5RvuNfx+ydqmcuKNZutOkSFCK4iDCZX3asoSL4aCrStoPEBsgWmwc1WYQWA5HCd4E1Nb/eZAVleqeZe0RVqavNbdpNgUUARHfch5YZ7tf6RX4l+qBvGZtQzAg==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E3779E710F79FF429E5DF57F8CC012D2@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <ae82f905a0092adb7e0f0ac206335c1883b3170f.camel@intel.com>
+ <20201026090526.GA1154158@kernel.org>
+ <a0212b073b3b2f62c3dbf1bf398f03fa402997be.camel@intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB3184.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d78955d-bfd4-4206-891c-08d87a150e12
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Oct 2020 01:10:12.0243
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: otiJMahpdVYKdYd3f33b3xjCQYQ9IMUcS5XNV7Nbj+AjWdhXoHGKDTd/aYVIW8hfej1+KONuubl9stQp4W0yRnYpCjdEY3/lMeK1D0w4x6A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4768
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a0212b073b3b2f62c3dbf1bf398f03fa402997be.camel@intel.com>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-T24gTW9uLCAyMDIwLTEwLTI2IGF0IDExOjE1ICswMjAwLCBNaWtlIFJhcG9wb3J0IHdyb3RlOg0K
-PiBUaGUgaW50ZW50aW9uIG9mIHRoaXMgc2VyaWVzIGlzIHRvIGRpc2FsbG93IHVzYWdlIG9mDQo+
-IF9fa2VybmVsX21hcF9wYWdlcygpIHdoZW4gREVCVUdfUEFHRUFMTE9DPW4uIEknbGwgdXBkYXRl
-IHRoaXMgcGF0Y2gNCj4gdG8NCj4gYmV0dGVyIGhhbmRsZSBwb3NzaWJsZSBlcnJvcnMsIGJ1dCBJ
-IHN0aWxsIHdhbnQgdG8ga2VlcCBXQVJOIGluIHRoZQ0KPiBjYWxsZXIuDQoNClNvcnJ5LCBJIG1p
-c3NlZCB0aGlzIHNuaXBwZXQgYXQgdGhlIGJvdHRvbSwgdGhhdCB5b3VyIGludGVudGlvbiB3YXMg
-dG8NCmFjdHVhbGx5IGhhbmRsZSBlcnJvcnMgc29tZWhvdyBpbiB0aGUgaGliZXJuYXRlIGNvZGUu
-IFBsZWFzZSBpZ25vcmUgbXkNCm90aGVyIGNvbW1lbnQgdGhhdCBhc3N1bWVkIHlvdSB3YW50ZWQg
-dG8ganVzdCBhZGQgYSB3YXJuLg0K
+On Mon, Oct 26, 2020 at 06:05:30PM +0000, Edgecombe, Rick P wrote:
+> On Mon, 2020-10-26 at 11:05 +0200, Mike Rapoport wrote:
+> > On Mon, Oct 26, 2020 at 01:13:52AM +0000, Edgecombe, Rick P wrote:
+> > > On Sun, 2020-10-25 at 12:15 +0200, Mike Rapoport wrote:
+> > > > Indeed, for architectures that define
+> > > > CONFIG_ARCH_HAS_SET_DIRECT_MAP
+> > > > it is
+> > > > possible that __kernel_map_pages() would fail, but since this
+> > > > function is
+> > > > void, the failure will go unnoticed.
+> > > 
+> > > Could you elaborate on how this could happen? Do you mean during
+> > > runtime today or if something new was introduced?
+> > 
+> > A failure in__kernel_map_pages() may happen today. For instance, on
+> > x86
+> > if the kernel is built with DEBUG_PAGEALLOC.
+> > 
+> >         __kernel_map_pages(page, 1, 0);
+> > 
+> > will need to split, say, 2M page and during the split an allocation
+> > of
+> > page table could fail.
+> 
+> On x86 at least, DEBUG_PAGEALLOC expects to never have to break a page
+> on the direct map and even disables locking in cpa because it assumes
+> this. If this is happening somehow anyway then we should probably fix
+> that. Even if it's a debug feature, it will not be as useful if it is
+> causing its own crashes.
+> 
+> I'm still wondering if there is something I'm missing here. It seems
+> like you are saying there is a bug in some arch's, so let's add a WARN
+> in cross-arch code to log it as it crashes. A warn and making things
+> clearer seem like good ideas, but if there is a bug we should fix it.
+> The code around the callers still functionally assume re-mapping can't
+> fail.
+
+Oh, I've meant x86 kernel *without* DEBUG_PAGEALLOC, and indeed the call
+that unmaps pages back in safe_copy_page will just reset a 4K page to
+NP because whatever made it NP at the first place already did the split.
+
+Still, on arm64 with DEBUG_PAGEALLOC=n there is a possibility of a race
+between map/unmap dance in __vunmap() and safe_copy_page() that may
+cause access to unmapped memory:
+
+__vunmap()
+    vm_remove_mappings()
+        set_direct_map_invalid()
+					safe_copy_page()	
+					    __kernel_map_pages()
+					    	return
+					    do_copy_page() -> fault
+					   	
+This is a theoretical bug, but it is still not nice :) 							
+
+> > Currently, the only user of __kernel_map_pages() outside
+> > DEBUG_PAGEALLOC
+> > is hibernation, but I think it would be safer to entirely prevent
+> > usage
+> > of __kernel_map_pages() when DEBUG_PAGEALLOC=n.
+> 
+> I totally agree it's error prone FWIW. On x86, my mental model of how
+> it is supposed to work is: If a page is 4k and NP it cannot fail to be
+> remapped. set_direct_map_invalid_noflush() should result in 4k NP
+> pages, and DEBUG_PAGEALLOC should result in all 4k pages on the direct
+> map. Are you seeing this violated or do I have wrong assumptions?
+
+You are right, there is a set of assumptions about the remapping of the
+direct map pages that make it all work, at least on x86.
+But this is very subtle and it's not easy to wrap one's head around
+this.
+
+That's why putting __kernel_map_pages() out of "common" use and
+keep it only for DEBUG_PAGEALLOC would make things clearer.
+
+> Beyond whatever you are seeing, for the latter case of new things
+> getting introduced to an interface with hidden dependencies... Another
+> edge case could be a new caller to set_memory_np() could result in
+> large NP pages. None of the callers today should cause this AFAICT, but
+> it's not great to rely on the callers to know these details.
+ 
+A caller of set_memory_*() or set_direct_map_*() should expect a failure
+and be ready for that. So adding a WARN to safe_copy_page() is the first
+step in that direction :)
+
+-- 
+Sincerely yours,
+Mike.
