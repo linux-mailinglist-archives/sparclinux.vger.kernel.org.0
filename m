@@ -2,32 +2,31 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 083A329D6E6
-	for <lists+sparclinux@lfdr.de>; Wed, 28 Oct 2020 23:19:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F44429DEB0
+	for <lists+sparclinux@lfdr.de>; Thu, 29 Oct 2020 01:56:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732288AbgJ1WTI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 28 Oct 2020 18:19:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60522 "EHLO mail.kernel.org"
+        id S2390969AbgJ2A4E (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 28 Oct 2020 20:56:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60532 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731776AbgJ1WRp (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:17:45 -0400
+        id S1731637AbgJ1WRh (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:17:37 -0400
 Received: from kernel.org (unknown [87.70.96.83])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E6741246C3;
-        Wed, 28 Oct 2020 11:31:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 51BD32469B;
+        Wed, 28 Oct 2020 09:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603884674;
-        bh=gjv0U3NBKOnTNW44zMRkwPjIj1Z7l37xu//HQaF8TcY=;
+        s=default; t=1603878129;
+        bh=TeNt5NA/mgWkbLu1J6Mmn4AZrBqZNOgXaAyr5KmIXdc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cUnXipj6SCyD+eplDp9tJgGGwn2XxiBxnaCPOYRKRcF6AcrwUEHeSRRr9vZ0ie5Ek
-         O9QqqyW5F35vu7he5aXY8rhMDZYP4dyGxJF4jP4TGOEc1CbbkAGYzd/w5djNh6qS70
-         Sw2BJFOdgVYfPE9KAiE15TI5bQsRgWsjOYlHfBMk=
-Date:   Wed, 28 Oct 2020 13:30:59 +0200
+        b=BAxhPNm00YmUvqZ3itxYhYio6fYAnJQ499wadwVQA1K0WvG4XS19jLvpQ8+eKhIIU
+         s5CNhtP486uh5zhqaz0QS5SyAvIRcDNWo3SzSu4cxxTrXJkuMWq5HghyPFcy1dXFKg
+         Hhf6FJq+WSim8L2T+mmNr/hWPUmxbWsHsyI76+WI=
+Date:   Wed, 28 Oct 2020 11:41:56 +0200
 From:   Mike Rapoport <rppt@kernel.org>
-To:     Will Deacon <will@kernel.org>
-Cc:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-        "david@redhat.com" <david@redhat.com>,
+To:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc:     "david@redhat.com" <david@redhat.com>,
         "cl@linux.com" <cl@linux.com>,
         "gor@linux.ibm.com" <gor@linux.ibm.com>,
         "hpa@zytor.com" <hpa@zytor.com>,
@@ -38,6 +37,7 @@ Cc:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
         "penberg@kernel.org" <penberg@kernel.org>,
         "linux-mm@kvack.org" <linux-mm@kvack.org>,
         "iamjoonsoo.kim@lge.com" <iamjoonsoo.kim@lge.com>,
+        "will@kernel.org" <will@kernel.org>,
         "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
         "kirill@shutemov.name" <kirill@shutemov.name>,
         "rientjes@google.com" <rientjes@google.com>,
@@ -52,9 +52,9 @@ Cc:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
         "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
         "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
         "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
         "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
         "x86@kernel.org" <x86@kernel.org>,
         "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
         "linux-arm-kernel@lists.infradead.org" 
@@ -65,85 +65,124 @@ Cc:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
         "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>
-Subject: Re: [PATCH 0/4] arch, mm: improve robustness of direct map
- manipulation
-Message-ID: <20201028113059.GG1428094@kernel.org>
+Subject: Re: [PATCH 2/4] PM: hibernate: improve robustness of mapping pages
+ in the direct map
+Message-ID: <20201028094156.GD1428094@kernel.org>
 References: <20201025101555.3057-1-rppt@kernel.org>
- <ae82f905a0092adb7e0f0ac206335c1883b3170f.camel@intel.com>
- <20201026090526.GA1154158@kernel.org>
- <a0212b073b3b2f62c3dbf1bf398f03fa402997be.camel@intel.com>
- <20201027083816.GG1154158@kernel.org>
- <20201028112011.GB27927@willie-the-truck>
+ <20201025101555.3057-3-rppt@kernel.org>
+ <f20900a403bea9eb3f0814128e5ea46f6580f5a5.camel@intel.com>
+ <20201026091554.GB1154158@kernel.org>
+ <a28d8248057e7dc01716764da9edfd666722ff62.camel@intel.com>
+ <20201027084902.GH1154158@kernel.org>
+ <ce66dcf2bbc17d40bcbe752868edb13976b3f1bb.camel@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201028112011.GB27927@willie-the-truck>
+In-Reply-To: <ce66dcf2bbc17d40bcbe752868edb13976b3f1bb.camel@intel.com>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Oct 28, 2020 at 11:20:12AM +0000, Will Deacon wrote:
-> On Tue, Oct 27, 2020 at 10:38:16AM +0200, Mike Rapoport wrote:
-> > On Mon, Oct 26, 2020 at 06:05:30PM +0000, Edgecombe, Rick P wrote:
-> > > On Mon, 2020-10-26 at 11:05 +0200, Mike Rapoport wrote:
-> > > > On Mon, Oct 26, 2020 at 01:13:52AM +0000, Edgecombe, Rick P wrote:
+On Tue, Oct 27, 2020 at 10:44:21PM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2020-10-27 at 10:49 +0200, Mike Rapoport wrote:
+> > On Mon, Oct 26, 2020 at 06:57:32PM +0000, Edgecombe, Rick P wrote:
+> > > On Mon, 2020-10-26 at 11:15 +0200, Mike Rapoport wrote:
+> > > > On Mon, Oct 26, 2020 at 12:38:32AM +0000, Edgecombe, Rick P
+> > > > wrote:
 > > > > > On Sun, 2020-10-25 at 12:15 +0200, Mike Rapoport wrote:
-> > > > > > Indeed, for architectures that define
-> > > > > > CONFIG_ARCH_HAS_SET_DIRECT_MAP
-> > > > > > it is
-> > > > > > possible that __kernel_map_pages() would fail, but since this
-> > > > > > function is
-> > > > > > void, the failure will go unnoticed.
+> > > > > > From: Mike Rapoport <rppt@linux.ibm.com>
+> > > > > > 
+> > > > > > When DEBUG_PAGEALLOC or ARCH_HAS_SET_DIRECT_MAP is enabled a
+> > > > > > page
+> > > > > > may
+> > > > > > be
+> > > > > > not present in the direct map and has to be explicitly mapped
+> > > > > > before
+> > > > > > it
+> > > > > > could be copied.
+> > > > > > 
+> > > > > > On arm64 it is possible that a page would be removed from the
+> > > > > > direct
+> > > > > > map
+> > > > > > using set_direct_map_invalid_noflush() but
+> > > > > > __kernel_map_pages()
+> > > > > > will
+> > > > > > refuse
+> > > > > > to map this page back if DEBUG_PAGEALLOC is disabled.
 > > > > > 
-> > > > > Could you elaborate on how this could happen? Do you mean during
-> > > > > runtime today or if something new was introduced?
+> > > > > It looks to me that arm64 __kernel_map_pages() will still
+> > > > > attempt
+> > > > > to
+> > > > > map it if rodata_full is true, how does this happen?
 > > > > 
-> > > > A failure in__kernel_map_pages() may happen today. For instance, on
-> > > > x86
-> > > > if the kernel is built with DEBUG_PAGEALLOC.
-> > > > 
-> > > >         __kernel_map_pages(page, 1, 0);
-> > > > 
-> > > > will need to split, say, 2M page and during the split an allocation
-> > > > of
-> > > > page table could fail.
+> > > > Unless I misread the code, arm64 requires both rodata_full and
+> > > > debug_pagealloc_enabled() to be true for __kernel_map_pages() to
+> > > > do
+> > > > anything.
+> > > > But rodata_full condition applies to set_direct_map_*_noflush()
+> > > > as
+> > > > well,
+> > > > so with !rodata_full the linear map won't be ever changed.
 > > > 
-> > > On x86 at least, DEBUG_PAGEALLOC expects to never have to break a page
-> > > on the direct map and even disables locking in cpa because it assumes
-> > > this. If this is happening somehow anyway then we should probably fix
-> > > that. Even if it's a debug feature, it will not be as useful if it is
-> > > causing its own crashes.
+> > > Hmm, looks to me that __kernel_map_pages() will only skip it if
+> > > both
+> > > debug pagealloc and rodata_full are false.
 > > > 
-> > > I'm still wondering if there is something I'm missing here. It seems
-> > > like you are saying there is a bug in some arch's, so let's add a WARN
-> > > in cross-arch code to log it as it crashes. A warn and making things
-> > > clearer seem like good ideas, but if there is a bug we should fix it.
-> > > The code around the callers still functionally assume re-mapping can't
-> > > fail.
+> > > But now I'm wondering if maybe we could simplify things by just
+> > > moving
+> > > the hibernate unmapped page logic off of the direct map. On x86,
+> > > text_poke() used to use this reserved fixmap pte thing that it
+> > > could
+> > > rely on to remap memory with. If hibernate had some separate pte
+> > > for
+> > > remapping like that, then we could not have any direct map
+> > > restrictions
+> > > caused by it/kernel_map_pages(), and it wouldn't have to worry
+> > > about
+> > > relying on anything else.
 > > 
-> > Oh, I've meant x86 kernel *without* DEBUG_PAGEALLOC, and indeed the call
-> > that unmaps pages back in safe_copy_page will just reset a 4K page to
-> > NP because whatever made it NP at the first place already did the split.
+> > Well, there is map_kernel_range() that can be used by hibernation as
+> > there is no requirement for particular virtual address, but that
+> > would
+> > be quite costly if done for every page.
 > > 
-> > Still, on arm64 with DEBUG_PAGEALLOC=n there is a possibility of a race
-> > between map/unmap dance in __vunmap() and safe_copy_page() that may
-> > cause access to unmapped memory:
+> > Maybe we can do somthing like
 > > 
-> > __vunmap()
-> >     vm_remove_mappings()
-> >         set_direct_map_invalid()
-> > 					safe_copy_page()	
-> > 					    __kernel_map_pages()
-> > 					    	return
-> > 					    do_copy_page() -> fault
-> > 					   	
-> > This is a theoretical bug, but it is still not nice :) 							
+> > 	if (kernel_page_present(s_page)) {
+> > 		do_copy_page(dst, page_address(s_page));
+> > 	} else {
+> > 		map_kernel_range_noflush(page_address(page), PAGE_SIZE,
+> > 					 PROT_READ, &page);
+> > 		do_copy_page(dst, page_address(s_page));
+> > 		unmap_kernel_range_noflush(page_address(page),
+> > PAGE_SIZE);
+> > 	}
+> > 
+> > But it seems that a prerequisite for changing the way a page is
+> > mapped
+> > in safe_copy_page() would be to teach hibernation that a mapping here
+> > may fail.
+> > 
+> Yea that is what I meant, the direct map could still be used for mapped
+> pages.
 > 
-> Just to clarify: this patch series fixes this problem, right?
+> But for the unmapped case it could have a pre-setup 4k pte for some non
+> direct map address. Then just change the pte to point to any unmapped
+> direct map page that was encountered. The point would be to give
+> hibernate some 4k pte of its own to manipulate so that it can't fail.
+> 
+> Yet another option would be have hibernate_map_page() just map large
+> pages if it finds them.
+> 
+> So we could teach hibernate to handle mapping failures, OR we could
+> change it so it doesn't rely on direct map page sizes in order to
+> succeed. The latter seems better to me since there isn't a reason why
+> it should have to fail and the resulting logic might be simpler. Both
+> seem like improvements in robustness though.
 
-Yes.
-
-> Will
+That's correct, but as the purpose of this series is to prevent usage of
+__kernel_map_pages() outside DEBUG_PAGALLOC, for now I'm going to update this
+patch changelog and add a comment to hibernate_map_page().
 
 -- 
 Sincerely yours,
