@@ -2,42 +2,29 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E223F29E626
-	for <lists+sparclinux@lfdr.de>; Thu, 29 Oct 2020 09:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C329229F120
+	for <lists+sparclinux@lfdr.de>; Thu, 29 Oct 2020 17:19:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728523AbgJ2IQN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 29 Oct 2020 04:16:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:45595 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728552AbgJ2IQJ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 29 Oct 2020 04:16:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603959367;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2gRwEwp+09CxPY3cDDGs5AqZnz2L4R+qK1xrKBZP/ZQ=;
-        b=ay06rFUMq495NziQvvXEmjfl27QqLzDhX+fa4jGpMV7iYUr5G+e63O1tBDFA9Ul5oLop5C
-        a8/TWffcMSMt6xjNKzy/qVY40B4oOUr4YUDs597pgypjwNsoZinHd7ELIVZ9qacTMV1TPn
-        dllYntmtt8eAzvq8drrXaCf8X0MpNOc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-521-GwWoSv2-OMqDqihE-45P3g-1; Thu, 29 Oct 2020 04:16:02 -0400
-X-MC-Unique: GwWoSv2-OMqDqihE-45P3g-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1726370AbgJ2QT3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 29 Oct 2020 12:19:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42058 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725764AbgJ2QT3 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 29 Oct 2020 12:19:29 -0400
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5ED20809DC9;
-        Thu, 29 Oct 2020 08:15:57 +0000 (UTC)
-Received: from [10.36.112.181] (ovpn-112-181.ams2.redhat.com [10.36.112.181])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3EBE05D9CC;
-        Thu, 29 Oct 2020 08:15:48 +0000 (UTC)
-Subject: Re: [PATCH 0/4] arch, mm: improve robustness of direct map
- manipulation
-To:     Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id CABCB206FB;
+        Thu, 29 Oct 2020 16:19:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603988368;
+        bh=2JTyiuhHlVkYEp7vxXi6FfQYN8dW7lOInW1H++QF+hs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=niaN+8JAS/4W9JHksJm0Q47SN+sHL1+VOaj2NJjOvyy7ijmitrj/o/I742YBGzdgm
+         RYf21PgV+5zFn96YUbLlJ0Sm8wW5GsFIcfLtN818zpU8fifkY4xz/A49MdemMhRkE2
+         Y7tJjHsmXKkJ4YxbW7vNBYXxmEywtkArNYd8+PAQ=
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     Albert Ou <aou@eecs.berkeley.edu>,
         Andy Lutomirski <luto@kernel.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -47,6 +34,7 @@ Cc:     Albert Ou <aou@eecs.berkeley.edu>,
         Christoph Lameter <cl@linux.com>,
         "David S. Miller" <davem@davemloft.net>,
         Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
         David Rientjes <rientjes@google.com>,
         "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
         "H. Peter Anvin" <hpa@zytor.com>,
@@ -56,6 +44,7 @@ Cc:     Albert Ou <aou@eecs.berkeley.edu>,
         "Kirill A. Shutemov" <kirill@shutemov.name>,
         Len Brown <len.brown@intel.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
+        Mike Rapoport <rppt@kernel.org>,
         Mike Rapoport <rppt@linux.ibm.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Paul Mackerras <paulus@samba.org>,
@@ -71,54 +60,79 @@ Cc:     Albert Ou <aou@eecs.berkeley.edu>,
         linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
         x86@kernel.org
-References: <20201025101555.3057-1-rppt@kernel.org>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <30075bb8-caed-c4de-c09e-e0f6fb964a8d@redhat.com>
-Date:   Thu, 29 Oct 2020 09:15:47 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+Subject: [PATCH v2 0/4] arch, mm: improve robustness of direct map manipulation
+Date:   Thu, 29 Oct 2020 18:18:58 +0200
+Message-Id: <20201029161902.19272-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <20201025101555.3057-1-rppt@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 25.10.20 11:15, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> Hi,
-> 
-> During recent discussion about KVM protected memory, David raised a concern
-> about usage of __kernel_map_pages() outside of DEBUG_PAGEALLOC scope [1].
-> 
-> Indeed, for architectures that define CONFIG_ARCH_HAS_SET_DIRECT_MAP it is
-> possible that __kernel_map_pages() would fail, but since this function is
-> void, the failure will go unnoticed.
-> 
-> Moreover, there's lack of consistency of __kernel_map_pages() semantics
-> across architectures as some guard this function with
-> #ifdef DEBUG_PAGEALLOC, some refuse to update the direct map if page
-> allocation debugging is disabled at run time and some allow modifying the
-> direct map regardless of DEBUG_PAGEALLOC settings.
-> 
-> This set straightens this out by restoring dependency of
-> __kernel_map_pages() on DEBUG_PAGEALLOC and updating the call sites
-> accordingly.
-> 
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-So, I was primarily wondering if we really have to touch direct mappings 
-in hibernation code, or if we can avoid doing that. I was wondering if 
-we cannot simply do something like kmap() when trying to access a 
-!mapped page. Similar to reading old-os memory after kexec when in 
-kdump. Just a thought.
+Hi,
+
+During recent discussion about KVM protected memory, David raised a concern
+about usage of __kernel_map_pages() outside of DEBUG_PAGEALLOC scope [1].
+
+Indeed, for architectures that define CONFIG_ARCH_HAS_SET_DIRECT_MAP it is
+possible that __kernel_map_pages() would fail, but since this function is
+void, the failure will go unnoticed.
+
+Moreover, there's lack of consistency of __kernel_map_pages() semantics
+across architectures as some guard this function with
+#ifdef DEBUG_PAGEALLOC, some refuse to update the direct map if page
+allocation debugging is disabled at run time and some allow modifying the
+direct map regardless of DEBUG_PAGEALLOC settings.
+
+This set straightens this out by restoring dependency of
+__kernel_map_pages() on DEBUG_PAGEALLOC and updating the call sites
+accordingly. 
+
+Since currently the only user of __kernel_map_pages() outside
+DEBUG_PAGEALLOC, it is updated to make direct map accesses there more
+explicit.
+
+[1] https://lore.kernel.org/lkml/2759b4bf-e1e3-d006-7d86-78a40348269d@redhat.com
+
+v2 changes:
+* Rephrase patch 2 changelog to better describe the change intentions and
+implications
+* Move removal of kernel_map_pages() from patch 1 to patch 2, per David
+
+v1:
+https://lore.kernel.org/lkml/20201025101555.3057-1-rppt@kernel.org
+
+Mike Rapoport (4):
+  mm: introduce debug_pagealloc_map_pages() helper
+  PM: hibernate: make direct map manipulations more explicit
+  arch, mm: restore dependency of __kernel_map_pages() of DEBUG_PAGEALLOC
+  arch, mm: make kernel_page_present() always available
+
+ arch/Kconfig                        |  3 +++
+ arch/arm64/Kconfig                  |  4 +---
+ arch/arm64/include/asm/cacheflush.h |  1 +
+ arch/arm64/mm/pageattr.c            |  6 +++--
+ arch/powerpc/Kconfig                |  5 +----
+ arch/riscv/Kconfig                  |  4 +---
+ arch/riscv/include/asm/pgtable.h    |  2 --
+ arch/riscv/include/asm/set_memory.h |  1 +
+ arch/riscv/mm/pageattr.c            | 31 +++++++++++++++++++++++++
+ arch/s390/Kconfig                   |  4 +---
+ arch/sparc/Kconfig                  |  4 +---
+ arch/x86/Kconfig                    |  4 +---
+ arch/x86/include/asm/set_memory.h   |  1 +
+ arch/x86/mm/pat/set_memory.c        |  4 ++--
+ include/linux/mm.h                  | 35 +++++++++++++----------------
+ include/linux/set_memory.h          |  5 +++++
+ kernel/power/snapshot.c             | 30 +++++++++++++++++++++++--
+ mm/memory_hotplug.c                 |  3 +--
+ mm/page_alloc.c                     |  6 ++---
+ mm/slab.c                           |  8 +++----
+ 20 files changed, 103 insertions(+), 58 deletions(-)
 
 -- 
-Thanks,
-
-David / dhildenb
+2.28.0
 
