@@ -2,175 +2,197 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DDE229F149
-	for <lists+sparclinux@lfdr.de>; Thu, 29 Oct 2020 17:22:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C49BB29F187
+	for <lists+sparclinux@lfdr.de>; Thu, 29 Oct 2020 17:32:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726790AbgJ2QWq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 29 Oct 2020 12:22:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54560 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725965AbgJ2QWn (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 29 Oct 2020 12:22:43 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8046CC0613D2
-        for <sparclinux@vger.kernel.org>; Thu, 29 Oct 2020 09:22:43 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id u19so4150247ion.3
-        for <sparclinux@vger.kernel.org>; Thu, 29 Oct 2020 09:22:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=to:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=KxyZTABZaXKhoQYm430CZEoZnSMrL+rt39jxjcYyNjA=;
-        b=UZDeiSpNGW8EPteZo7zwd8smPkCE3RnbaUBralJIfzwjYYOJCBe+WnuOd0tuWkPMRj
-         f2/kS0nta3Fk8NSogkQMweCKaI7+Gkm05s9CkuVjr9toI9XynNtu7E+jtV1A7OXOmCLZ
-         uDAPvwkfkG5p8bPDfI5qvMPQRgHIdw9Af03ZIzKTRYIHo+tssLp0iS7wesQPATwo/jmG
-         hUtQnCJMM9rsBFO/GxWRjjewCqG69M6Lqj02m1RgZ9G7Oa+TEu0FSvXyxjtw8kPcxgEi
-         QyjBPMbxxvswnKnDGNLg1UrErhW/joRSZRUB6dMqXEL53dRiPgNPoOzrUzazgG9KdybW
-         9wjw==
+        id S1727112AbgJ2Qb4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 29 Oct 2020 12:31:56 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:40396 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726643AbgJ2QaT (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 29 Oct 2020 12:30:19 -0400
+Received: by mail-ot1-f65.google.com with SMTP id f97so2874920otb.7;
+        Thu, 29 Oct 2020 09:30:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=KxyZTABZaXKhoQYm430CZEoZnSMrL+rt39jxjcYyNjA=;
-        b=AfXikx0TYih2m5W6H4W2M9OXHnLaPkD00cYe7R+M5+MqWx8j0U2YTTATvqD4r3ql/M
-         0hIDhYdJQzjlYh9N+o4eiMDKAoBUMZ2zN/u/surpkg7shI692YuQ3zQOnrHyZXerUlHS
-         hSx9igwkyXmZKbdDjiZInl83gLKi/NI+C8hEJTkRza1pq2ZZnFUHh/ody8TBNUvBh8Uv
-         tCMk0mzF8olh2UBCLowvl9IaF2YoJnrjw8IiwcZcCP/MxE4UFWqg4qL7dSiIah3h+zex
-         yyRF962Wcip9Dt1CcdUkfOgWZ1f1oBzgCba8IqVK97Ch43Yds+7xZXK61hkst7AxnQ0N
-         SlLQ==
-X-Gm-Message-State: AOAM531VLCJBNJxLbb15e1JI36WX1doacBmolSIUd7rDJcw5GugvzZiz
-        y0x6IFeUCyEv5Aj8drRz7z20UfEtpPlL+w==
-X-Google-Smtp-Source: ABdhPJzqUrROKgNrLPf9wY6I5MRZvu/iac/u1z7IWuhLBVaRd5Jsslv4j4HFwcA/8epMKmk41U7I6g==
-X-Received: by 2002:a6b:c9c9:: with SMTP id z192mr3971542iof.175.1603988562877;
-        Thu, 29 Oct 2020 09:22:42 -0700 (PDT)
-Received: from [192.168.1.30] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id c1sm2788414ile.0.2020.10.29.09.22.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2020 09:22:42 -0700 (PDT)
-To:     Sparc kernel list <sparclinux@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-From:   Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH] sparc: add support for TIF_NOTIFY_SIGNAL
-Message-ID: <c2ddcd10-55ba-dad9-c9c5-02a8bd2aa3f6@kernel.dk>
-Date:   Thu, 29 Oct 2020 10:22:41 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZB07qrLbOJe5x8k5kgwlwyYgrU0au+3LEdR9BcQ+dAw=;
+        b=TdqNwgwd6SEmWeBIsgrmnnAhJcU1jR6JkgBXiYPNceJPDCmy/xRRyCtChqC9pcSHG+
+         hUy4qHfYMjsSoG3GDSKCNV/BVIKYQVWNkOCV5leODPiWi4k5SPXg/yR5hU8z5iUiQg6w
+         +Q9Pq5tbrMKcaCKHwJjhaU5UmDlZZ/qvXKarY1By/Y1dFpyrVAhefM3pNiRiqTWLesMz
+         BvH2fLJOJ7Tzu69ejkZE4ett12upvcK7nPktjMHkYdGTlui9zw7FngwQoZlpcv2g/XDG
+         muLlmY5TvAxnXX2Mwkq27PaNIMb+1fcBFmPe52w5fWOs9lLSGOmHCKSo8QdzV4JxOfxy
+         Dscw==
+X-Gm-Message-State: AOAM530ebeZR5+DLUOxvAV+RYa330DUZGdnq3RB7IOz6iFpQhv8yINaD
+        rJI64p/v5bRE5oFs0EoJ3cctV/gpObj5LSNn1RM=
+X-Google-Smtp-Source: ABdhPJy2gnJASZanadb1mOz1tbg80ys3NM2aGYdvcYIISMX2t1bfCDW4CoQJSVVkimsx+nxAWLJibjXQBAg79vyeqWE=
+X-Received: by 2002:a9d:734f:: with SMTP id l15mr4119563otk.260.1603989017370;
+ Thu, 29 Oct 2020 09:30:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20201029161902.19272-1-rppt@kernel.org> <20201029161902.19272-3-rppt@kernel.org>
+In-Reply-To: <20201029161902.19272-3-rppt@kernel.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 29 Oct 2020 17:30:06 +0100
+Message-ID: <CAJZ5v0jY2vqZxdD7CaGUsCb2ePodamDnneOLHZcagCODn5kmrQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] PM: hibernate: make direct map manipulations more explicit
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Andy Lutomirski <luto@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Christoph Lameter <cl@linux.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Len Brown <len.brown@intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Pavel Machek <pavel@ucw.cz>, Pekka Enberg <penberg@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Will Deacon <will@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        sparclinux@vger.kernel.org,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Wire up TIF_NOTIFY_SIGNAL handling for sparc.
+On Thu, Oct 29, 2020 at 5:19 PM Mike Rapoport <rppt@kernel.org> wrote:
+>
+> From: Mike Rapoport <rppt@linux.ibm.com>
+>
+> When DEBUG_PAGEALLOC or ARCH_HAS_SET_DIRECT_MAP is enabled a page may be
+> not present in the direct map and has to be explicitly mapped before it
+> could be copied.
+>
+> On arm64 it is possible that a page would be removed from the direct map
+> using set_direct_map_invalid_noflush() but __kernel_map_pages() will refuse
+> to map this page back if DEBUG_PAGEALLOC is disabled.
+>
+> Introduce hibernate_map_page() that will explicitly use
+> set_direct_map_{default,invalid}_noflush() for ARCH_HAS_SET_DIRECT_MAP case
+> and debug_pagealloc_map_pages() for DEBUG_PAGEALLOC case.
+>
+> The remapping of the pages in safe_copy_page() presumes that it only
+> changes protection bits in an existing PTE and so it is safe to ignore
+> return value of set_direct_map_{default,invalid}_noflush().
+>
+> Still, add a WARN_ON() so that future changes in set_memory APIs will not
+> silently break hibernation.
+>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 
-Cc: sparclinux@vger.kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
----
+From the hibernation support perspective:
 
-5.11 has support queued up for TIF_NOTIFY_SIGNAL, see this posting
-for details:
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-https://lore.kernel.org/io-uring/20201026203230.386348-1-axboe@kernel.dk/
-
-As part of that work, I'm adding TIF_NOTIFY_SIGNAL support to all archs,
-as that will enable a set of cleanups once all of them support it. I'm
-happy carrying this patch if need be, or it can be funelled through the
-arch tree. Let me know.
-
- arch/sparc/include/asm/thread_info_32.h | 4 +++-
- arch/sparc/include/asm/thread_info_64.h | 6 ++++--
- arch/sparc/kernel/signal_32.c           | 2 +-
- arch/sparc/kernel/signal_64.c           | 2 +-
- 4 files changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/arch/sparc/include/asm/thread_info_32.h b/arch/sparc/include/asm/thread_info_32.h
-index 548b366165dd..45b4955b253f 100644
---- a/arch/sparc/include/asm/thread_info_32.h
-+++ b/arch/sparc/include/asm/thread_info_32.h
-@@ -104,6 +104,7 @@ register struct thread_info *current_thread_info_reg asm("g6");
- #define TIF_SIGPENDING		2	/* signal pending */
- #define TIF_NEED_RESCHED	3	/* rescheduling necessary */
- #define TIF_RESTORE_SIGMASK	4	/* restore signal mask in do_signal() */
-+#define TIF_NOTIFY_SIGNAL	5	/* signal notifications exist */
- #define TIF_USEDFPU		8	/* FPU was used by this task
- 					 * this quantum (SMP) */
- #define TIF_POLLING_NRFLAG	9	/* true if poll_idle() is polling
-@@ -115,11 +116,12 @@ register struct thread_info *current_thread_info_reg asm("g6");
- #define _TIF_NOTIFY_RESUME	(1<<TIF_NOTIFY_RESUME)
- #define _TIF_SIGPENDING		(1<<TIF_SIGPENDING)
- #define _TIF_NEED_RESCHED	(1<<TIF_NEED_RESCHED)
-+#define _TIF_NOTIFY_SIGNAL	(1<<TIF_NOTIFY_SIGNAL)
- #define _TIF_USEDFPU		(1<<TIF_USEDFPU)
- #define _TIF_POLLING_NRFLAG	(1<<TIF_POLLING_NRFLAG)
- 
- #define _TIF_DO_NOTIFY_RESUME_MASK	(_TIF_NOTIFY_RESUME | \
--					 _TIF_SIGPENDING)
-+					 _TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL)
- 
- #define is_32bit_task()	(1)
- 
-diff --git a/arch/sparc/include/asm/thread_info_64.h b/arch/sparc/include/asm/thread_info_64.h
-index 20255471e653..42cd4cd3892e 100644
---- a/arch/sparc/include/asm/thread_info_64.h
-+++ b/arch/sparc/include/asm/thread_info_64.h
-@@ -180,7 +180,7 @@ extern struct thread_info *current_thread_info(void);
- #define TIF_NOTIFY_RESUME	1	/* callback before returning to user */
- #define TIF_SIGPENDING		2	/* signal pending */
- #define TIF_NEED_RESCHED	3	/* rescheduling necessary */
--/* flag bit 4 is available */
-+#define TIF_NOTIFY_SIGNAL	4	/* signal notifications exist */
- #define TIF_UNALIGNED		5	/* allowed to do unaligned accesses */
- #define TIF_UPROBE		6	/* breakpointed or singlestepped */
- #define TIF_32BIT		7	/* 32-bit binary */
-@@ -200,6 +200,7 @@ extern struct thread_info *current_thread_info(void);
- #define _TIF_NOTIFY_RESUME	(1<<TIF_NOTIFY_RESUME)
- #define _TIF_SIGPENDING		(1<<TIF_SIGPENDING)
- #define _TIF_NEED_RESCHED	(1<<TIF_NEED_RESCHED)
-+#define _TIF_NOTIFY_SIGNAL	(1<<TIF_NOTIFY_SIGNAL)
- #define _TIF_UNALIGNED		(1<<TIF_UNALIGNED)
- #define _TIF_UPROBE		(1<<TIF_UPROBE)
- #define _TIF_32BIT		(1<<TIF_32BIT)
-@@ -213,7 +214,8 @@ extern struct thread_info *current_thread_info(void);
- 				 _TIF_DO_NOTIFY_RESUME_MASK | \
- 				 _TIF_NEED_RESCHED)
- #define _TIF_DO_NOTIFY_RESUME_MASK	(_TIF_NOTIFY_RESUME | \
--					 _TIF_SIGPENDING | _TIF_UPROBE)
-+					 _TIF_SIGPENDING | _TIF_UPROBE | \
-+					 _TIF_NOTIFY_SIGNAL)
- 
- #define is_32bit_task()	(test_thread_flag(TIF_32BIT))
- 
-diff --git a/arch/sparc/kernel/signal_32.c b/arch/sparc/kernel/signal_32.c
-index 741d0701003a..11cf2281b581 100644
---- a/arch/sparc/kernel/signal_32.c
-+++ b/arch/sparc/kernel/signal_32.c
-@@ -521,7 +521,7 @@ static void do_signal(struct pt_regs *regs, unsigned long orig_i0)
- void do_notify_resume(struct pt_regs *regs, unsigned long orig_i0,
- 		      unsigned long thread_info_flags)
- {
--	if (thread_info_flags & _TIF_SIGPENDING)
-+	if (thread_info_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL))
- 		do_signal(regs, orig_i0);
- 	if (thread_info_flags & _TIF_NOTIFY_RESUME)
- 		tracehook_notify_resume(regs);
-diff --git a/arch/sparc/kernel/signal_64.c b/arch/sparc/kernel/signal_64.c
-index f7ef7edcd5c1..a0eec62c825d 100644
---- a/arch/sparc/kernel/signal_64.c
-+++ b/arch/sparc/kernel/signal_64.c
-@@ -549,7 +549,7 @@ void do_notify_resume(struct pt_regs *regs, unsigned long orig_i0, unsigned long
- 	user_exit();
- 	if (thread_info_flags & _TIF_UPROBE)
- 		uprobe_notify_resume(regs);
--	if (thread_info_flags & _TIF_SIGPENDING)
-+	if (thread_info_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL))
- 		do_signal(regs, orig_i0);
- 	if (thread_info_flags & _TIF_NOTIFY_RESUME)
- 		tracehook_notify_resume(regs);
--- 
-2.29.0
-
--- 
-Jens Axboe
-
+> ---
+>  include/linux/mm.h      | 12 ------------
+>  kernel/power/snapshot.c | 30 ++++++++++++++++++++++++++++--
+>  2 files changed, 28 insertions(+), 14 deletions(-)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 1fc0609056dc..14e397f3752c 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2927,16 +2927,6 @@ static inline bool debug_pagealloc_enabled_static(void)
+>  #if defined(CONFIG_DEBUG_PAGEALLOC) || defined(CONFIG_ARCH_HAS_SET_DIRECT_MAP)
+>  extern void __kernel_map_pages(struct page *page, int numpages, int enable);
+>
+> -/*
+> - * When called in DEBUG_PAGEALLOC context, the call should most likely be
+> - * guarded by debug_pagealloc_enabled() or debug_pagealloc_enabled_static()
+> - */
+> -static inline void
+> -kernel_map_pages(struct page *page, int numpages, int enable)
+> -{
+> -       __kernel_map_pages(page, numpages, enable);
+> -}
+> -
+>  static inline void debug_pagealloc_map_pages(struct page *page,
+>                                              int numpages, int enable)
+>  {
+> @@ -2948,8 +2938,6 @@ static inline void debug_pagealloc_map_pages(struct page *page,
+>  extern bool kernel_page_present(struct page *page);
+>  #endif /* CONFIG_HIBERNATION */
+>  #else  /* CONFIG_DEBUG_PAGEALLOC || CONFIG_ARCH_HAS_SET_DIRECT_MAP */
+> -static inline void
+> -kernel_map_pages(struct page *page, int numpages, int enable) {}
+>  static inline void debug_pagealloc_map_pages(struct page *page,
+>                                              int numpages, int enable) {}
+>  #ifdef CONFIG_HIBERNATION
+> diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+> index 46b1804c1ddf..054c8cce4236 100644
+> --- a/kernel/power/snapshot.c
+> +++ b/kernel/power/snapshot.c
+> @@ -76,6 +76,32 @@ static inline void hibernate_restore_protect_page(void *page_address) {}
+>  static inline void hibernate_restore_unprotect_page(void *page_address) {}
+>  #endif /* CONFIG_STRICT_KERNEL_RWX  && CONFIG_ARCH_HAS_SET_MEMORY */
+>
+> +static inline void hibernate_map_page(struct page *page, int enable)
+> +{
+> +       if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
+> +               unsigned long addr = (unsigned long)page_address(page);
+> +               int ret;
+> +
+> +               /*
+> +                * This should not fail because remapping a page here means
+> +                * that we only update protection bits in an existing PTE.
+> +                * It is still worth to have WARN_ON() here if something
+> +                * changes and this will no longer be the case.
+> +                */
+> +               if (enable)
+> +                       ret = set_direct_map_default_noflush(page);
+> +               else
+> +                       ret = set_direct_map_invalid_noflush(page);
+> +
+> +               if (WARN_ON(ret))
+> +                       return;
+> +
+> +               flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> +       } else {
+> +               debug_pagealloc_map_pages(page, 1, enable);
+> +       }
+> +}
+> +
+>  static int swsusp_page_is_free(struct page *);
+>  static void swsusp_set_page_forbidden(struct page *);
+>  static void swsusp_unset_page_forbidden(struct page *);
+> @@ -1355,9 +1381,9 @@ static void safe_copy_page(void *dst, struct page *s_page)
+>         if (kernel_page_present(s_page)) {
+>                 do_copy_page(dst, page_address(s_page));
+>         } else {
+> -               kernel_map_pages(s_page, 1, 1);
+> +               hibernate_map_page(s_page, 1);
+>                 do_copy_page(dst, page_address(s_page));
+> -               kernel_map_pages(s_page, 1, 0);
+> +               hibernate_map_page(s_page, 0);
+>         }
+>  }
+>
+> --
+> 2.28.0
+>
