@@ -2,126 +2,131 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8034D2A1AC0
-	for <lists+sparclinux@lfdr.de>; Sat, 31 Oct 2020 22:33:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7E192A1FCA
+	for <lists+sparclinux@lfdr.de>; Sun,  1 Nov 2020 18:02:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726187AbgJaVdw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 31 Oct 2020 17:33:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57510 "EHLO mail.kernel.org"
+        id S1726902AbgKARCc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 1 Nov 2020 12:02:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37840 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725937AbgJaVdw (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Sat, 31 Oct 2020 17:33:52 -0400
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726790AbgKARCb (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 1 Nov 2020 12:02:31 -0500
+Received: from kernel.org (unknown [87.71.17.26])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DC6B720853;
-        Sat, 31 Oct 2020 21:33:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 420992074F;
+        Sun,  1 Nov 2020 17:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604180031;
-        bh=a949fi3JWCiOsIfB/oXLlGSJaTnnNYCIyox+iEaG/3k=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=FmxLv/JX6BAYBbl58Wkol2prTj8sKl9cvxus7OmDo+6URnNTLmGqZ06GE9zo4BHaB
-         iXhqDXTppGvvGbmmfODkn8e10A9CmYm2o8DPHq6nDPdkB1ghH/QP2hswGJSP45Izjn
-         hBxXJsrdmGoAujywpsoLUpU9+3792RN4eIWY5h0o=
-Received: by mail-qt1-f173.google.com with SMTP id p45so6745899qtb.5;
-        Sat, 31 Oct 2020 14:33:50 -0700 (PDT)
-X-Gm-Message-State: AOAM530phMDMs7NbEYVeHpjHR6yY98D7PX3+9oSP8hR7TfnJ5xD76Ar9
-        SbKny+x4Qac9cu0BnDzo+1WVOf3QO+ljyuylyeA=
-X-Google-Smtp-Source: ABdhPJyD/4AcE03j7HIaN207+kO4IYyQ0WkWkrWDUSbNUToIdPZlRv7YWwHuIabdMaXmtCngmEmV1ORQEwrjBUGk+Sk=
-X-Received: by 2002:ac8:4808:: with SMTP id g8mr8036830qtq.18.1604180029997;
- Sat, 31 Oct 2020 14:33:49 -0700 (PDT)
+        s=default; t=1604250150;
+        bh=HP+ZQ6Ps8oAsoYLOvWAk4ExSXyhayG0jX2yWoBMUttE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bxsex5hsLdBiTg92b0MNJxCbBPD+lO6NtdRjasPNMfUBXD6k5B0KcdxvFVYiQIEmX
+         Bjfz+dfRQJnD6lyaCaBO97eSNhn6o7BX84zyBBhpcPltXScqdjcB1tCqstPvndRKPK
+         MacevoYxMeN6oYR+VtqyVfF6MF53cPKygLmGPOBs=
+Date:   Sun, 1 Nov 2020 19:02:17 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc:     "david@redhat.com" <david@redhat.com>,
+        "cl@linux.com" <cl@linux.com>,
+        "gor@linux.ibm.com" <gor@linux.ibm.com>,
+        "hpa@zytor.com" <hpa@zytor.com>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "borntraeger@de.ibm.com" <borntraeger@de.ibm.com>,
+        "penberg@kernel.org" <penberg@kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "iamjoonsoo.kim@lge.com" <iamjoonsoo.kim@lge.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+        "kirill@shutemov.name" <kirill@shutemov.name>,
+        "rientjes@google.com" <rientjes@google.com>,
+        "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
+        "paulus@samba.org" <paulus@samba.org>,
+        "hca@linux.ibm.com" <hca@linux.ibm.com>,
+        "bp@alien8.de" <bp@alien8.de>, "pavel@ucw.cz" <pavel@ucw.cz>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "luto@kernel.org" <luto@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "palmer@dabbelt.com" <palmer@dabbelt.com>,
+        "Brown, Len" <len.brown@intel.com>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>
+Subject: Re: [PATCH 2/4] PM: hibernate: improve robustness of mapping pages
+ in the direct map
+Message-ID: <20201101170217.GD14628@kernel.org>
+References: <20201025101555.3057-1-rppt@kernel.org>
+ <20201025101555.3057-3-rppt@kernel.org>
+ <3b4b2b3559bd3dc68adcddf99415bae57152cb6b.camel@intel.com>
+ <20201029075416.GJ1428094@kernel.org>
+ <604554805defb03d158c09aba4b5cced3416a7fb.camel@intel.com>
 MIME-Version: 1.0
-References: <20201029221806.189523375@linutronix.de> <CAHk-=wiFxxGapdOyZHE-7LbFPk+jdfoqdeeJg0zWNQ86WvJGXg@mail.gmail.com>
- <87pn50ob0s.fsf@nanos.tec.linutronix.de> <87blgknjcw.fsf@nanos.tec.linutronix.de>
- <CAHk-=whsJv0bwWRVZHsLoSe48ykAea6T7Oi=G+r8ckLrZ0YUpg@mail.gmail.com>
- <87sg9vl59i.fsf@nanos.tec.linutronix.de> <CAHk-=wjjO9BtTUAsLraqZqdzaPGJ-qvubZfwUsmRUX896eHcGw@mail.gmail.com>
- <CAK8P3a3FyKTHDSAPCyP8e7UA0LN3OvAatNK_vQ3tnBsdbou4sA@mail.gmail.com> <20201031160539.Horde.n5yNbG9LoUSWqtuPQW_h3w1@messagerie.c-s.fr>
-In-Reply-To: <20201031160539.Horde.n5yNbG9LoUSWqtuPQW_h3w1@messagerie.c-s.fr>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Sat, 31 Oct 2020 22:33:33 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3uY0ASRGcPi-OZdRyL_xLY81nJfu+O6z-Ovxu9YCR4dQ@mail.gmail.com>
-Message-ID: <CAK8P3a3uY0ASRGcPi-OZdRyL_xLY81nJfu+O6z-Ovxu9YCR4dQ@mail.gmail.com>
-Subject: Re: [patch V2 00/18] mm/highmem: Preemptible variant of kmap_atomic & friends
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Daniel Vetter <daniel@ffwll.ch>, Arnd Bergmann <arnd@arndb.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Michal Simek <monstr@monstr.eu>,
-        Chris Zankel <chris@zankel.net>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "open list:SYNOPSYS ARC ARCHITECTURE" 
-        <linux-snps-arc@lists.infradead.org>, Mel Gorman <mgorman@suse.de>,
-        David Airlie <airlied@linux.ie>,
-        Christoph Hellwig <hch@lst.de>, linux-csky@vger.kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Vincent Chen <deanbo422@gmail.com>,
-        linux-sparc <sparclinux@vger.kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Guo Ren <guoren@kernel.org>, Linux-MM <linux-mm@kvack.org>,
-        Ben Segall <bsegall@google.com>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-xtensa@linux-xtensa.org, Juri Lelli <juri.lelli@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <604554805defb03d158c09aba4b5cced3416a7fb.camel@intel.com>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 4:04 PM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> > There are also some users on 10+ year old 32-bit netbooks or
-> > business laptops, both x86 and Apple G4.
-> > The longest-lived 32-bit embedded systems with large memory
-> > (other than Arm) are probably NXP QorIQ P20xx/P40xx used in
-> > military VME bus systems, and low-end embedded systems based
-> > on Vortex86.
-> > I'm less worried about all of these because upstream kernel
-> > support for ppc32 and x86-32 is already bitrotting and they will
-> > likely get stuck on the last working kernel before the
-> > TI/Renesas/NXP Arm systems do.
-> >
->
-> Upstream kernel support for ppc32 is bitrotting, seriously ? What do
-> you mean exactly ?
+On Thu, Oct 29, 2020 at 11:19:18PM +0000, Edgecombe, Rick P wrote:
+> On Thu, 2020-10-29 at 09:54 +0200, Mike Rapoport wrote:
+> > __kernel_map_pages() on arm64 will also bail out if rodata_full is
+> > false:
+> > void __kernel_map_pages(struct page *page, int numpages, int enable)
+> > {
+> >         if (!debug_pagealloc_enabled() && !rodata_full)
+> >                 return;
+> > 
+> >         set_memory_valid((unsigned long)page_address(page), numpages,
+> > enable);
+> > }
+> > 
+> > So using set_direct_map() to map back pages removed from the direct
+> > map
+> > with __kernel_map_pages() seems safe to me.
+> 
+> Heh, one of us must have some simple boolean error in our head. I hope
+> its not me! :) I'll try on more time.
 
-I was thinking more of the platform support: out of the twelve
-32-bit platforms in arch/powerpc/platforms/, your 8xx is the only
-one listed as 'maintained' or 'supported' in the maintainers list,
-and that seems to accurately describe the current state.
+Well, then it's me :)
+You are right, I misread this and I could not understand why
+!rodata_full bothers you.
 
-Freescale seems to have practically stopped contributing to any of
-their 32-bit platforms in 2016 after the NXP acquisition and no longer
-employing either of the maintainers. Similarly, Ben seems to have
-stopped working on powermac in 2016, which was ten years after
-the last 32-bit hardware shipped for that platform.
+> __kernel_map_pages() will bail out if rodata_full is false **AND**
+> debug page alloc is off. So it will only bail under conditions where
+> there could be nothing unmapped on the direct map.
+> 
+> Equivalent logic would be:
+> 	if (!(debug_pagealloc_enabled() || rodata_full))
+> 		return;
+> 
+> Or:
+> 	if (debug_pagealloc_enabled() || rodata_full)
+> 		set_memory_valid(blah)
+> 
+> So if either is on, the existing code will try to re-map. But the
+> set_direct_map_()'s will only work if rodata_full is on. So switching
+> hibernate to set_direct_map() will cause the remap to be missed for the
+> debug page alloc case, with !rodata_full.
+> 
+> It also breaks normal debug page alloc usage with !rodata_full for
+> similar reasons after patch 3. The pages would never get unmapped.
 
-> ppc32 is actively supported, with recent addition of support of
-> hugepages, kasan, uaccess protection, VMAP stack, etc ...
+I've updated the patches, there should be no regression now.
 
-That is good to hear, I didn't know about these additions.
-What platforms are people using to develop these? Is this
-mainly your 8xx work, or is there ongoing development for
-platforms that need highmem?
-
-         Arnd
+-- 
+Sincerely yours,
+Mike.
