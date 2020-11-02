@@ -2,135 +2,99 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A2572A32DE
-	for <lists+sparclinux@lfdr.de>; Mon,  2 Nov 2020 19:23:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DA1C2A36EA
+	for <lists+sparclinux@lfdr.de>; Tue,  3 Nov 2020 00:06:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726380AbgKBSX0 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Mon, 2 Nov 2020 13:23:26 -0500
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:58340 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726348AbgKBSXR (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 2 Nov 2020 13:23:17 -0500
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-221-3eybHYmXNVuuSrMONPCpiQ-1; Mon, 02 Nov 2020 18:23:12 +0000
-X-MC-Unique: 3eybHYmXNVuuSrMONPCpiQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 2 Nov 2020 18:23:11 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Mon, 2 Nov 2020 18:23:11 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Greg KH' <gregkh@linuxfoundation.org>
-CC:     'David Hildenbrand' <david@redhat.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>
-Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Index: AQHWqE5GNDfnH4y9nkGWtfqJueR1KKmjTCJQgAAN4UiAAAD2IIAASOeCgAF+12CAAB+UKYAAAQNg///yIQCAD2i/YIAAT+MAgABLYlA=
-Date:   Mon, 2 Nov 2020 18:23:11 +0000
-Message-ID: <c751d3a7796e45a8a2640e2ded59d708@AcuMS.aculab.com>
-References: <20201022121849.GA1664412@kroah.com>
- <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
- <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com>
- <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
- <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com>
- <999e2926-9a75-72fd-007a-1de0af341292@redhat.com>
- <35d0ec90ef4f4a35a75b9df7d791f719@AcuMS.aculab.com>
- <20201023144718.GA2525489@kroah.com>
- <0ab5ac71f28d459db2f350c2e07b88ca@AcuMS.aculab.com>
- <20201102135202.GA1016272@kroah.com>
-In-Reply-To: <20201102135202.GA1016272@kroah.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S1726114AbgKBXGR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 2 Nov 2020 18:06:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45230 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725829AbgKBXGQ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 2 Nov 2020 18:06:16 -0500
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C24EC0617A6;
+        Mon,  2 Nov 2020 15:06:15 -0800 (PST)
+Received: by mail-ej1-x644.google.com with SMTP id oq3so19367645ejb.7;
+        Mon, 02 Nov 2020 15:06:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2EKPuLB9qVPZGLQktABXmMbo9rPSG0cnyuFoqhjoQVI=;
+        b=j1wXeFEXGLam5I1JsoCNmhBnfjjTtNDmH6v6SxX5Yp/UWWCqXhrAw9wQcS5b4XGNXn
+         Av+YeQk5G2I1BDq8YUpHhxxbF1ruIhbgv6rtgDjGUloBH440id8pqM5G53YlnIZGGvDy
+         FrYAppEQ09r2Wrq1/HIyP208pGis24JuoTb/RDqXMdMB5rUXm/nXD6XrBUsxapm82Z1J
+         jE+qAFRYa53YgRrooJlrwGbQPTmYJICpWxeIZGEfnOHeST6TWykX+GtJ4oFnwLbwlKR1
+         7Dx2pVRbkmD42kdk8EqNqZchF46VJIoOVef4WCj6EvjH7OysNW+t+60mo+TZp/oJEpK0
+         pC5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2EKPuLB9qVPZGLQktABXmMbo9rPSG0cnyuFoqhjoQVI=;
+        b=hgz7ONbhPmfP1j8tfZvaOqssifFa7Zvk20Sf34WhE2MJhJM4ph9IUcztyStUTY3QHl
+         R1h1zNbtkTvvbvoxUQjoCPZH/oyimHQ2bFR7XzFqyKtqL7hNyXLOOEVs9I0MsEZ3H0gW
+         dV0+BzXdV/5S7nkB/vHuSSc816QDqcNxa9fbTtU7smSQNo+TLCAyAC8DIfreCWCwOerg
+         oojk6DONXQpQniQmeOXpLpHWx90QYOotf5ZAHjo8bZ8e85RuR5XkzsIFYXWLbZjgupsL
+         iaZIiEaSLLWKfF2U7BYbd8BUTiuppfCj42vOmyKlTsYHuMr9eurq/h+ikqto7CZr5T0K
+         1hHg==
+X-Gm-Message-State: AOAM532aP/Hb0Nx8itX+Wp1nKKBHHx4m+txfI6zebiNxChg57z4Fr79I
+        JXkqaf9UBen5v11DL/CeecxaQjov7tUx7g==
+X-Google-Smtp-Source: ABdhPJxAsId4qp8rqrVzKbSp0NmcNVTx82XF2It0zP846UpH58AagQ5qUtkK6j4zZwTAJ4SeV7ZlYw==
+X-Received: by 2002:a17:906:6453:: with SMTP id l19mr17493281ejn.366.1604358373937;
+        Mon, 02 Nov 2020 15:06:13 -0800 (PST)
+Received: from necip-pc.vpn.ucf.edu ([85.153.224.24])
+        by smtp.gmail.com with ESMTPSA id zm12sm8412701ejb.62.2020.11.02.15.06.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2020 15:06:13 -0800 (PST)
+From:   Necip Fazil Yildiran <fazilyildiran@gmail.com>
+To:     davem@davemloft.net
+Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        paul@pgazz.com, jeho@cs.utexas.edu,
+        Necip Fazil Yildiran <fazilyildiran@gmail.com>
+Subject: [PATCH] sparc64: fix kconfig dependency bug for COMPAT
+Date:   Tue,  3 Nov 2020 02:06:02 +0300
+Message-Id: <20201102230601.644472-1-fazilyildiran@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: 'Greg KH'
-> Sent: 02 November 2020 13:52
-> 
-> On Mon, Nov 02, 2020 at 09:06:38AM +0000, David Laight wrote:
-> > From: 'Greg KH'
-> > > Sent: 23 October 2020 15:47
-> > >
-> > > On Fri, Oct 23, 2020 at 02:39:24PM +0000, David Laight wrote:
-> > > > From: David Hildenbrand
-> > > > > Sent: 23 October 2020 15:33
-> > > > ...
-> > > > > I just checked against upstream code generated by clang 10 and it
-> > > > > properly discards the upper 32bit via a mov w23 w2.
-> > > > >
-> > > > > So at least clang 10 indeed properly assumes we could have garbage and
-> > > > > masks it off.
-> > > > >
-> > > > > Maybe the issue is somewhere else, unrelated to nr_pages ... or clang 11
-> > > > > behaves differently.
-> > > >
-> > > > We'll need the disassembly from a failing kernel image.
-> > > > It isn't that big to hand annotate.
-> > >
-> > > I've worked around the merge at the moment in the android tree, but it
-> > > is still quite reproducable, and will try to get a .o file to
-> > > disassemble on Monday or so...
-> >
-> > Did this get properly resolved?
-> 
-> For some reason, 5.10-rc2 fixed all of this up.  I backed out all of the
-> patches I had to revert to get 5.10-rc1 to work properly, and then did
-> the merge and all is well.
-> 
-> It must have been something to do with the compat changes in this same
-> area that went in after 5.10-rc1, and something got reorganized in the
-> files somehow.  I really do not know, and at the moment, don't have the
-> time to track it down anymore.  So for now, I'd say it's all good, sorry
-> for the noise.
+When COMPAT is enabled and BINFMT_ELF is disabled, it results in the
+following Kbuild warning:
 
-Hopefully it won't appear again.
+WARNING: unmet direct dependencies detected for COMPAT_BINFMT_ELF
+  Depends on [n]: COMPAT [=y] && BINFMT_ELF [=n]
+  Selected by [y]:
+  - COMPAT [=y] && SPARC64 [=y]
 
-Saved me spending a day off reading arm64 assembler.
+The reason is that COMPAT selects COMPAT_BINFMT_ELF without depending on
+or selecting BINFMT_ELF while COMPAT_BINFMT_ELF depends on BINFMT_ELF.
+This can also fail building the kernel as demonstrated in a bug report.
 
-	David
+Honor the kconfig dependency to remove unmet direct dependency warnings
+and avoid any potential build failures.
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=209885
+Signed-off-by: Necip Fazil Yildiran <fazilyildiran@gmail.com>
+---
+ arch/sparc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index a6ca135442f9..22df5f0beed5 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -496,6 +496,7 @@ config COMPAT
+ 	bool
+ 	depends on SPARC64
+ 	default y
++	select BINFMT_ELF
+ 	select COMPAT_BINFMT_ELF
+ 	select HAVE_UID16
+ 	select ARCH_WANT_OLD_COMPAT_IPC
+-- 
+2.25.1
 
