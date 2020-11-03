@@ -2,56 +2,30 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 861642A4866
-	for <lists+sparclinux@lfdr.de>; Tue,  3 Nov 2020 15:39:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B86492A4A74
+	for <lists+sparclinux@lfdr.de>; Tue,  3 Nov 2020 16:56:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727895AbgKCOje (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 3 Nov 2020 09:39:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48778 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727883AbgKCOjS (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 3 Nov 2020 09:39:18 -0500
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADFC8C0613D1
-        for <sparclinux@vger.kernel.org>; Tue,  3 Nov 2020 06:39:17 -0800 (PST)
-Received: by mail-lj1-x242.google.com with SMTP id m8so13248164ljj.0
-        for <sparclinux@vger.kernel.org>; Tue, 03 Nov 2020 06:39:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=M/CcLnAggfPJTPHCvJqAFAyQXrrFbGX8RqEWGTOIlRk=;
-        b=tYRtCsCJ97u7yAlrOFN203Mpt9jz/EvbuW4V+3hipSUNsR5M8ZDqWsq7efoMiN9R5c
-         nhVCnARjFr5alomHWUrG2S/QRxbOVwaEaiSQTgeF0uEgCJ7a2rbupEC/g2AUeshC9i6C
-         wIKR126viYncqhHiZROMnSmO9imaid0rNJepyxM6rr8Apn+RPbJ3qWs7P+ZnHrSgvOWA
-         QcXHZrEHzXM4SVCDzBK7zqXcUTu3T+G1dUvHRbLGUKs/I2DIfrL0bitkL+B4SCLYpFfX
-         lHpCGqsodauH4LxSQSOtDBLKGW1a7DHfcCp5nbfeol5ZCBBoivuqpYvLjRQisIJ68BoF
-         UMSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=M/CcLnAggfPJTPHCvJqAFAyQXrrFbGX8RqEWGTOIlRk=;
-        b=NayphAdnoTCiZOKofXy5YvbrAiB72tRXy3IVgV+S27KQOK2tjqzOVsUv71H/rLYa/q
-         YyvJl+aWMiMEp3fJHb5xhIzb4L3tChqLYlVMqaCgmASDqtNL9QUXQKOfSL/GuwZQYvu5
-         qAHCQcEFUhQ8YjexplvrB1SDWHMbvjkrmqs5FYzI7lyb3lrD5se8bPSa+X7zlb6jRmFj
-         zvoc2DH4A1vtRYBafLF3BsJoCB1vKSfs/aWOd8BUSLl59VbYhTlagpx2TP2hghkliA0z
-         rrheVprSY7h1kqkZm5lt5m0nuG3q0xoCywzQv8aHnJ8yxbr+F7arARP77I14mxHFFhnl
-         fOIA==
-X-Gm-Message-State: AOAM532U4ZZAXVDnaaQZQ/YgDIZ+rIKSdYILCQWk3WqGSjOAsdVyqOFY
-        Zm28yzxw+Cdg/RZImOAEP0vWeg==
-X-Google-Smtp-Source: ABdhPJz+L8qrHCJkzOuQS8/wvO1dQM/ksNE/UzgTA6Cx0Ac2GRFSZ5fX6eoakfcdH0CZnI4/h7s3ng==
-X-Received: by 2002:a2e:879a:: with SMTP id n26mr9115208lji.347.1604414356208;
-        Tue, 03 Nov 2020 06:39:16 -0800 (PST)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id g27sm4334360ljl.91.2020.11.03.06.39.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2020 06:39:15 -0800 (PST)
-Received: by box.localdomain (Postfix, from userid 1000)
-        id 65F1510231C; Tue,  3 Nov 2020 17:39:16 +0300 (+03)
-Date:   Tue, 3 Nov 2020 17:39:16 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Mike Rapoport <rppt@kernel.org>
+        id S1728106AbgKCP4v (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 3 Nov 2020 10:56:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41772 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726312AbgKCP4v (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 3 Nov 2020 10:56:51 -0500
+Received: from kernel.org (unknown [87.71.17.26])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7B47820870;
+        Tue,  3 Nov 2020 15:56:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604419010;
+        bh=PdZbTZgg1JmpGp2bwjsENk8fgDYDWqJbhtmXs83/fs4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=U5lRRB1N1MmXeOH2myvsU+QScNFs2bqbrupv/pQ4irlpmZwooHX8QWAG7Auq1KyAR
+         BKUUy9aydAOF9vLJs/4y281FnWsGIjtK6pWCGXyL7y2ETSAe5RqnViQPWzk/w9t3W5
+         2kvBIUagkYLvCz/jLs5zwUcf94hBrrkoIybAauvg=
+Date:   Tue, 3 Nov 2020 17:56:36 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Albert Ou <aou@eecs.berkeley.edu>,
         Andy Lutomirski <luto@kernel.org>,
@@ -88,55 +62,34 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         x86@kernel.org, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
 Subject: Re: [PATCH v3 2/4] PM: hibernate: make direct map manipulations more
  explicit
-Message-ID: <20201103143916.otz2o4h2dlmewn3h@box>
+Message-ID: <20201103155636.GJ4879@kernel.org>
 References: <20201101170815.9795-1-rppt@kernel.org>
  <20201101170815.9795-3-rppt@kernel.org>
  <20201103110816.t6a3ebtgcm7mfogy@box>
  <20201103121350.GI4879@kernel.org>
+ <20201103143916.otz2o4h2dlmewn3h@box>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201103121350.GI4879@kernel.org>
+In-Reply-To: <20201103143916.otz2o4h2dlmewn3h@box>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Nov 03, 2020 at 02:13:50PM +0200, Mike Rapoport wrote:
-> On Tue, Nov 03, 2020 at 02:08:16PM +0300, Kirill A. Shutemov wrote:
-> > On Sun, Nov 01, 2020 at 07:08:13PM +0200, Mike Rapoport wrote:
-> > > diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-> > > index 46b1804c1ddf..054c8cce4236 100644
-> > > --- a/kernel/power/snapshot.c
-> > > +++ b/kernel/power/snapshot.c
-> > > @@ -76,6 +76,32 @@ static inline void hibernate_restore_protect_page(void *page_address) {}
-> > >  static inline void hibernate_restore_unprotect_page(void *page_address) {}
-> > >  #endif /* CONFIG_STRICT_KERNEL_RWX  && CONFIG_ARCH_HAS_SET_MEMORY */
-> > >  
-> > > +static inline void hibernate_map_page(struct page *page, int enable)
-> > > +{
-> > > +	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
-> > > +		unsigned long addr = (unsigned long)page_address(page);
-> > > +		int ret;
-> > > +
-> > > +		/*
-> > > +		 * This should not fail because remapping a page here means
-> > > +		 * that we only update protection bits in an existing PTE.
-> > > +		 * It is still worth to have WARN_ON() here if something
-> > > +		 * changes and this will no longer be the case.
-> > > +		 */
-> > > +		if (enable)
-> > > +			ret = set_direct_map_default_noflush(page);
-> > > +		else
-> > > +			ret = set_direct_map_invalid_noflush(page);
-> > > +
-> > > +		if (WARN_ON(ret))
+On Tue, Nov 03, 2020 at 05:39:16PM +0300, Kirill A. Shutemov wrote:
+> On Tue, Nov 03, 2020 at 02:13:50PM +0200, Mike Rapoport wrote:
+> > > > +
+> > > > +		if (WARN_ON(ret))
+> > > 
+> > > _ONCE?
 > > 
-> > _ONCE?
+> > I've changed it to pr_warn() after David said people enable panic on
+> > warn in production kernels.
 > 
-> I've changed it to pr_warn() after David said people enable panic on
-> warn in production kernels.
+> pr_warn_once()? :P
 
-pr_warn_once()? :P
+Sure :)
 
 -- 
- Kirill A. Shutemov
+Sincerely yours,
+Mike.
