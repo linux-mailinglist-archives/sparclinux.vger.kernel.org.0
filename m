@@ -2,56 +2,30 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ECDD2A43D9
-	for <lists+sparclinux@lfdr.de>; Tue,  3 Nov 2020 12:15:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D03912A44D8
+	for <lists+sparclinux@lfdr.de>; Tue,  3 Nov 2020 13:14:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728366AbgKCLP0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 3 Nov 2020 06:15:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45444 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728350AbgKCLPZ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 3 Nov 2020 06:15:25 -0500
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41698C061A48
-        for <sparclinux@vger.kernel.org>; Tue,  3 Nov 2020 03:15:25 -0800 (PST)
-Received: by mail-lj1-x241.google.com with SMTP id y16so18632164ljk.1
-        for <sparclinux@vger.kernel.org>; Tue, 03 Nov 2020 03:15:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ncuj71puAub1y9k++6jjBlDK0kArgOgR8TXfNbxvsd8=;
-        b=izMTq7qxXBvApfWEFsxvjdUJPgrZuhTimURmEAxHbNo4gFnz/aLq2b7VWGISw5z4df
-         T4qAkIJ/wVC4TwenAjvns/G4eV3KtASB7SoA8G7okZ0DlaEStNAMb73QDSEutPwz7Cxr
-         9dwIgPWHz7UWHdA9P9qEfMywjEVY/N8zUXbSYG6q36rmSFiE581fBMYfvokjD/8gAh06
-         qYdTpEzw9QcJY1be9GP/o6iEFZwXPue/WXhcJtWuRvtKWCdMX7XpnZXp5E2hc11zR/K7
-         2suAPN+eebeKUXh9rBamFs3h05hvuWg15bi4K5NGwazMJ1rOL7mta6TyCdehAzblBry8
-         3fFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ncuj71puAub1y9k++6jjBlDK0kArgOgR8TXfNbxvsd8=;
-        b=QyO7BWAc51a6Fb8os2Wm3PKMxJW6rmn/Z6UlYPueYDL6c4AapCA3TR6fB9HlGdHVCN
-         iuVEICGbo0OWWYiIGA6AvpckWKPsh5cmoDfQn/FU3BGFrP4snQMAtf0eJV1HcILs+iGI
-         jB+QxNeb0xuRK0Y+4zEu3MpZvZ2fiZX/inSz/av2r9NyGoPAW7iUBLRogExiEklHolM0
-         PaxCVTNtDGPpp/V8yhypkVWFInSsuDf93Flbr5IfAr0qxDMfBMYXTN0MmhpT6uGk3PCZ
-         oMlmxwsykaKLB9vwsxG6/ASxlrCG2Y8wARCQGmGGFhHKkA9KbK65jgAmh6JgIVLzYhmB
-         JnUA==
-X-Gm-Message-State: AOAM532A8HOAV7kE9g24x4NL1HBlvf+Qf7KXyMMVVLwwFTw2sFYAM1OB
-        N5l0YAXNK4vyOEkE+RzIt0NGYQ==
-X-Google-Smtp-Source: ABdhPJxjF5BnQdEHGsyL0gaT34gDeSETHtrYJVXOHHeYBc231eIiqfI8v+rYFTL2Y/vLhKT27dJQgw==
-X-Received: by 2002:a2e:b60e:: with SMTP id r14mr8731933ljn.77.1604402123506;
-        Tue, 03 Nov 2020 03:15:23 -0800 (PST)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id q22sm3657427lfj.145.2020.11.03.03.15.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2020 03:15:22 -0800 (PST)
-Received: by box.localdomain (Postfix, from userid 1000)
-        id D700710231C; Tue,  3 Nov 2020 14:15:23 +0300 (+03)
-Date:   Tue, 3 Nov 2020 14:15:23 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Mike Rapoport <rppt@kernel.org>
+        id S1728422AbgKCMOG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 3 Nov 2020 07:14:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37128 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728354AbgKCMOF (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 3 Nov 2020 07:14:05 -0500
+Received: from kernel.org (unknown [87.71.17.26])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7A5E021D40;
+        Tue,  3 Nov 2020 12:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604405644;
+        bh=rLf9yomATEx+srpgZeJ+KGPkFKfQ91E1jTn5i//k+v4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=g6hnGexdu0W8O3pdlTR5aEzs0r2kP0xaYSrsTT9GezuIkJBm3EQGnE9HC9/i0y14W
+         KQUMLf4/1ekMps9SlVeB61DMUq0iGCpQKrc0qBQk9l3Egw36MfVD4m724myMj1mv1P
+         DJcwnqhwNdB7eOcGdB3ofp3gW4GGQabL04rnh6Gk=
+Date:   Tue, 3 Nov 2020 14:13:50 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Albert Ou <aou@eecs.berkeley.edu>,
         Andy Lutomirski <luto@kernel.org>,
@@ -85,29 +59,70 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-mm@kvack.org, linux-pm@vger.kernel.org,
         linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH v3 0/4] arch, mm: improve robustness of direct map
- manipulation
-Message-ID: <20201103111523.zt5q5ypnnccdlque@box>
+        x86@kernel.org, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH v3 2/4] PM: hibernate: make direct map manipulations more
+ explicit
+Message-ID: <20201103121350.GI4879@kernel.org>
 References: <20201101170815.9795-1-rppt@kernel.org>
+ <20201101170815.9795-3-rppt@kernel.org>
+ <20201103110816.t6a3ebtgcm7mfogy@box>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201101170815.9795-1-rppt@kernel.org>
+In-Reply-To: <20201103110816.t6a3ebtgcm7mfogy@box>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun, Nov 01, 2020 at 07:08:11PM +0200, Mike Rapoport wrote:
-> Mike Rapoport (4):
->   mm: introduce debug_pagealloc_map_pages() helper
->   PM: hibernate: make direct map manipulations more explicit
->   arch, mm: restore dependency of __kernel_map_pages() of DEBUG_PAGEALLOC
->   arch, mm: make kernel_page_present() always available
+On Tue, Nov 03, 2020 at 02:08:16PM +0300, Kirill A. Shutemov wrote:
+> On Sun, Nov 01, 2020 at 07:08:13PM +0200, Mike Rapoport wrote:
+> > diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+> > index 46b1804c1ddf..054c8cce4236 100644
+> > --- a/kernel/power/snapshot.c
+> > +++ b/kernel/power/snapshot.c
+> > @@ -76,6 +76,32 @@ static inline void hibernate_restore_protect_page(void *page_address) {}
+> >  static inline void hibernate_restore_unprotect_page(void *page_address) {}
+> >  #endif /* CONFIG_STRICT_KERNEL_RWX  && CONFIG_ARCH_HAS_SET_MEMORY */
+> >  
+> > +static inline void hibernate_map_page(struct page *page, int enable)
+> > +{
+> > +	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
+> > +		unsigned long addr = (unsigned long)page_address(page);
+> > +		int ret;
+> > +
+> > +		/*
+> > +		 * This should not fail because remapping a page here means
+> > +		 * that we only update protection bits in an existing PTE.
+> > +		 * It is still worth to have WARN_ON() here if something
+> > +		 * changes and this will no longer be the case.
+> > +		 */
+> > +		if (enable)
+> > +			ret = set_direct_map_default_noflush(page);
+> > +		else
+> > +			ret = set_direct_map_invalid_noflush(page);
+> > +
+> > +		if (WARN_ON(ret))
+> 
+> _ONCE?
 
-The series looks good to me (apart from the minor nit):
+I've changed it to pr_warn() after David said people enable panic on
+warn in production kernels.
 
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > +			return;
+> > +
+> > +		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> > +	} else {
+> > +		debug_pagealloc_map_pages(page, 1, enable);
+> > +	}
+> > +}
+> > +
+> >  static int swsusp_page_is_free(struct page *);
+> >  static void swsusp_set_page_forbidden(struct page *);
+> >  static void swsusp_unset_page_forbidden(struct page *);
+> 
+> -- 
+>  Kirill A. Shutemov
 
 -- 
- Kirill A. Shutemov
+Sincerely yours,
+Mike.
