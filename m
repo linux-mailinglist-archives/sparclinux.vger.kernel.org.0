@@ -2,160 +2,112 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD92B2A43D3
-	for <lists+sparclinux@lfdr.de>; Tue,  3 Nov 2020 12:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ECDD2A43D9
+	for <lists+sparclinux@lfdr.de>; Tue,  3 Nov 2020 12:15:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728307AbgKCLNu (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 3 Nov 2020 06:13:50 -0500
-Received: from mx2.suse.de ([195.135.220.15]:52838 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725988AbgKCLNt (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 3 Nov 2020 06:13:49 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id D6E17ACC6;
-        Tue,  3 Nov 2020 11:13:46 +0000 (UTC)
-Received: by ds.suse.cz (Postfix, from userid 10065)
-        id D95E0DA7D2; Tue,  3 Nov 2020 12:12:08 +0100 (CET)
-Date:   Tue, 3 Nov 2020 12:12:08 +0100
-From:   David Sterba <dsterba@suse.cz>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linus Torvalds <torvalds@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Benjamin LaHaise <bcrl@kvack.org>,
-        linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
-        Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        x86@kernel.org, Vineet Gupta <vgupta@synopsys.com>,
-        linux-snps-arc@lists.infradead.org,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        id S1728366AbgKCLP0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 3 Nov 2020 06:15:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45444 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728350AbgKCLPZ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 3 Nov 2020 06:15:25 -0500
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41698C061A48
+        for <sparclinux@vger.kernel.org>; Tue,  3 Nov 2020 03:15:25 -0800 (PST)
+Received: by mail-lj1-x241.google.com with SMTP id y16so18632164ljk.1
+        for <sparclinux@vger.kernel.org>; Tue, 03 Nov 2020 03:15:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=ncuj71puAub1y9k++6jjBlDK0kArgOgR8TXfNbxvsd8=;
+        b=izMTq7qxXBvApfWEFsxvjdUJPgrZuhTimURmEAxHbNo4gFnz/aLq2b7VWGISw5z4df
+         T4qAkIJ/wVC4TwenAjvns/G4eV3KtASB7SoA8G7okZ0DlaEStNAMb73QDSEutPwz7Cxr
+         9dwIgPWHz7UWHdA9P9qEfMywjEVY/N8zUXbSYG6q36rmSFiE581fBMYfvokjD/8gAh06
+         qYdTpEzw9QcJY1be9GP/o6iEFZwXPue/WXhcJtWuRvtKWCdMX7XpnZXp5E2hc11zR/K7
+         2suAPN+eebeKUXh9rBamFs3h05hvuWg15bi4K5NGwazMJ1rOL7mta6TyCdehAzblBry8
+         3fFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ncuj71puAub1y9k++6jjBlDK0kArgOgR8TXfNbxvsd8=;
+        b=QyO7BWAc51a6Fb8os2Wm3PKMxJW6rmn/Z6UlYPueYDL6c4AapCA3TR6fB9HlGdHVCN
+         iuVEICGbo0OWWYiIGA6AvpckWKPsh5cmoDfQn/FU3BGFrP4snQMAtf0eJV1HcILs+iGI
+         jB+QxNeb0xuRK0Y+4zEu3MpZvZ2fiZX/inSz/av2r9NyGoPAW7iUBLRogExiEklHolM0
+         PaxCVTNtDGPpp/V8yhypkVWFInSsuDf93Flbr5IfAr0qxDMfBMYXTN0MmhpT6uGk3PCZ
+         oMlmxwsykaKLB9vwsxG6/ASxlrCG2Y8wARCQGmGGFhHKkA9KbK65jgAmh6JgIVLzYhmB
+         JnUA==
+X-Gm-Message-State: AOAM532A8HOAV7kE9g24x4NL1HBlvf+Qf7KXyMMVVLwwFTw2sFYAM1OB
+        N5l0YAXNK4vyOEkE+RzIt0NGYQ==
+X-Google-Smtp-Source: ABdhPJxjF5BnQdEHGsyL0gaT34gDeSETHtrYJVXOHHeYBc231eIiqfI8v+rYFTL2Y/vLhKT27dJQgw==
+X-Received: by 2002:a2e:b60e:: with SMTP id r14mr8731933ljn.77.1604402123506;
+        Tue, 03 Nov 2020 03:15:23 -0800 (PST)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id q22sm3657427lfj.145.2020.11.03.03.15.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2020 03:15:22 -0800 (PST)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id D700710231C; Tue,  3 Nov 2020 14:15:23 +0300 (+03)
+Date:   Tue, 3 Nov 2020 14:15:23 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Andy Lutomirski <luto@kernel.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Christoph Lameter <cl@linux.com>,
         "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Ingo Molnar <mingo@kernel.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org,
-        VMware Graphics <linux-graphics-maintainer@vmware.com>,
-        Roland Scheidegger <sroland@vmware.com>,
-        Dave Airlie <airlied@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        virtualization@lists.linux-foundation.org,
-        spice-devel@lists.freedesktop.org, Ben Skeggs <bskeggs@redhat.com>,
-        nouveau@lists.freedesktop.org,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        intel-gfx@lists.freedesktop.org
-Subject: Re: [patch V3 03/37] fs: Remove asm/kmap_types.h includes
-Message-ID: <20201103111208.GL6756@suse.cz>
-Reply-To: dsterba@suse.cz
-Mail-Followup-To: dsterba@suse.cz, Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linus Torvalds <torvalds@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paul McKenney <paulmck@kernel.org>, Christoph Hellwig <hch@lst.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Benjamin LaHaise <bcrl@kvack.org>, linux-fsdevel@vger.kernel.org,
-        linux-aio@kvack.org, Chris Mason <clm@fb.com>,
-        Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
-        linux-btrfs@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        x86@kernel.org, Vineet Gupta <vgupta@synopsys.com>,
-        linux-snps-arc@lists.infradead.org,
-        Russell King <linux@armlinux.org.uk>, Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Len Brown <len.brown@intel.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org,
-        Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Ingo Molnar <mingo@kernel.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, dri-devel@lists.freedesktop.org,
-        VMware Graphics <linux-graphics-maintainer@vmware.com>,
-        Roland Scheidegger <sroland@vmware.com>,
-        Dave Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
-        virtualization@lists.linux-foundation.org,
-        spice-devel@lists.freedesktop.org, Ben Skeggs <bskeggs@redhat.com>,
-        nouveau@lists.freedesktop.org,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        intel-gfx@lists.freedesktop.org
-References: <20201103092712.714480842@linutronix.de>
- <20201103095856.870272797@linutronix.de>
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Pavel Machek <pavel@ucw.cz>, Pekka Enberg <penberg@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-pm@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH v3 0/4] arch, mm: improve robustness of direct map
+ manipulation
+Message-ID: <20201103111523.zt5q5ypnnccdlque@box>
+References: <20201101170815.9795-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201103095856.870272797@linutronix.de>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+In-Reply-To: <20201101170815.9795-1-rppt@kernel.org>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Nov 03, 2020 at 10:27:15AM +0100, Thomas Gleixner wrote:
-> Historical leftovers from the time where kmap() had fixed slots.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> Cc: Benjamin LaHaise <bcrl@kvack.org>
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-aio@kvack.org
-> Cc: Chris Mason <clm@fb.com>
-> Cc: Josef Bacik <josef@toxicpanda.com>
-> Cc: David Sterba <dsterba@suse.com>
+On Sun, Nov 01, 2020 at 07:08:11PM +0200, Mike Rapoport wrote:
+> Mike Rapoport (4):
+>   mm: introduce debug_pagealloc_map_pages() helper
+>   PM: hibernate: make direct map manipulations more explicit
+>   arch, mm: restore dependency of __kernel_map_pages() of DEBUG_PAGEALLOC
+>   arch, mm: make kernel_page_present() always available
 
-Acked-by: David Sterba <dsterba@suse.com>
+The series looks good to me (apart from the minor nit):
 
-For the btrfs bits
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
->  fs/btrfs/ctree.h |    1 -
-
-> --- a/fs/btrfs/ctree.h
-> +++ b/fs/btrfs/ctree.h
-> @@ -17,7 +17,6 @@
->  #include <linux/wait.h>
->  #include <linux/slab.h>
->  #include <trace/events/btrfs.h>
-> -#include <asm/kmap_types.h>
->  #include <asm/unaligned.h>
->  #include <linux/pagemap.h>
->  #include <linux/btrfs.h>
+-- 
+ Kirill A. Shutemov
