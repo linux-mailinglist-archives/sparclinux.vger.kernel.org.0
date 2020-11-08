@@ -2,191 +2,233 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB3CB2A7D61
-	for <lists+sparclinux@lfdr.de>; Thu,  5 Nov 2020 12:42:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BF982AA93B
+	for <lists+sparclinux@lfdr.de>; Sun,  8 Nov 2020 06:18:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730200AbgKELmY (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 5 Nov 2020 06:42:24 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56768 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730124AbgKELmY (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 5 Nov 2020 06:42:24 -0500
-Received: from kernel.org (unknown [2.55.183.164])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2AF252071A;
-        Thu,  5 Nov 2020 11:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604576542;
-        bh=wBBJASevkpsRXZMXJL2OiMK6CtZhq8iWhEgufgr/S4E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HHJruZEGepbkqow1qhwuCKDkVoe/lpKxogvFghtL/5RowA6qyrxSq531Gliqcbzyu
-         tDTgfPvrJ9vN7jvSKObEIq9kiRh1xeaKbxhp+zX6zw46ZOu6eW7fSqiBEMlywA8zjt
-         Ph/W2QEvA7Z47iM8NgnnYxvGybdML21CtLacZNig=
-Date:   Thu, 5 Nov 2020 13:42:00 +0200
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Vlastimil Babka <vbabka@suse.cz>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
+        id S1727950AbgKHFRh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 8 Nov 2020 00:17:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37728 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727908AbgKHFRg (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 8 Nov 2020 00:17:36 -0500
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F90AC0613D4
+        for <sparclinux@vger.kernel.org>; Sat,  7 Nov 2020 21:17:34 -0800 (PST)
+Received: by mail-wm1-x341.google.com with SMTP id v5so5099934wmh.1
+        for <sparclinux@vger.kernel.org>; Sat, 07 Nov 2020 21:17:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=arista.com; s=googlenew;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=r9aT3RV5iTBLi6xVKvy9ESdq01vAtIRf9u+RQFLMlk8=;
+        b=ic6PU7pbuoktFwoy5T07opHN2Jhn3G4P+CLIrkN5Iot7hSjoBM4MbhzKWBtuEw0l8J
+         tOGbKQrRQpjrr1WB/I5DSPP844qlDzNTeEFmrps1rOVMS/7qM+s1ufALAo/IyPNjZISR
+         f3dDMTZxdlB2e1a74qz66cT8JvsZi4s6ow7emxlPuEPruAV3/pWTOOiFeuGr78tKOp5D
+         tdL8doiIiYVeM3UeiL6McDVHcYHRq/yvxPeWkP5AY2A5VoV7bubq9cBcyuk0wicvK7Ko
+         6oacU0dqbRoEFt3o/6G5eo+c54ghGy/F7/n0WLFMbXMoFzXjJOIE7WzAyFnaEBYMaXCi
+         nuFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=r9aT3RV5iTBLi6xVKvy9ESdq01vAtIRf9u+RQFLMlk8=;
+        b=br6VPodGZnh9k0EGHenb7NWb6enR7mYI+hwclag0OUjiL8AgS45OEWl5+ZPD3AB6k+
+         zu5lrus8CPDsymSgjApo/HXVV3voh8C6qO7CohekI6xFOD6quw9Teqe0FaLXo0NbsAk1
+         AdxgQLhFFp6yHbl87tPWOdGr2rvaytFwdkSYCcAKB76mj3PiMvejGBe9m30QLQhtM4JZ
+         j5CJmhen6pzK9vO3uxpaxqUVKyzxSoSDUJzPcSz/fD8bF7hW4bCkBLPREd+tN7g5xnY7
+         +PtPb0ndJDZwPyG8CFhW1s+Lm4O56oAi4Uuqslod4KNUEq48jjzg3KTDbzwIG31n4Pqe
+         rYPw==
+X-Gm-Message-State: AOAM533grZneWFDqgHLfl4FcV3zwNEkzuc7nLuB5Pa2yCndPYMmQIy/a
+        W6ezMt4IUPe//Wxwt82wl3ftNg==
+X-Google-Smtp-Source: ABdhPJx8kgDcsXzU1GSdZh7iKVRn9ukLbAjTByACEbWQF3Xw3UdIdVxLmbR7qMp+g037hB0U7FwKjQ==
+X-Received: by 2002:a1c:81c9:: with SMTP id c192mr7530377wmd.1.1604812652574;
+        Sat, 07 Nov 2020 21:17:32 -0800 (PST)
+Received: from localhost.localdomain ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
+        by smtp.gmail.com with ESMTPSA id r10sm8378462wmg.16.2020.11.07.21.17.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2020 21:17:31 -0800 (PST)
+From:   Dmitry Safonov <dima@arista.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
+        Dmitry Safonov <dima@arista.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Andy Lutomirski <luto@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Borislav Petkov <bp@alien8.de>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Christoph Lameter <cl@linux.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        David Rientjes <rientjes@google.com>,
-        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
         Ingo Molnar <mingo@redhat.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>,
-        Len Brown <len.brown@intel.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Pavel Machek <pavel@ucw.cz>, Pekka Enberg <penberg@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Will Deacon <will@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-pm@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH v4 3/4] arch, mm: restore dependency of
- __kernel_map_pages() of DEBUG_PAGEALLOC
-Message-ID: <20201105114200.GZ4879@kernel.org>
-References: <20201103162057.22916-1-rppt@kernel.org>
- <20201103162057.22916-4-rppt@kernel.org>
- <f9c1dc66-fc60-db4d-9670-0271adb2ed07@suse.cz>
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        linux-fsdevel@vger.kernel.org,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mips@vger.kernel.org
+Subject: [PATCH 00/19] Add generic user_landing tracking
+Date:   Sun,  8 Nov 2020 05:17:10 +0000
+Message-Id: <20201108051730.2042693-1-dima@arista.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f9c1dc66-fc60-db4d-9670-0271adb2ed07@suse.cz>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Nov 04, 2020 at 07:02:20PM +0100, Vlastimil Babka wrote:
-> On 11/3/20 5:20 PM, Mike Rapoport wrote:
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> Subject should have "on DEBUG_PAGEALLOC" ?
-> 
-> > The design of DEBUG_PAGEALLOC presumes that __kernel_map_pages() must never
-> > fail. With this assumption is wouldn't be safe to allow general usage of
-> > this function.
-> > 
-> > Moreover, some architectures that implement __kernel_map_pages() have this
-> > function guarded by #ifdef DEBUG_PAGEALLOC and some refuse to map/unmap
-> > pages when page allocation debugging is disabled at runtime.
-> > 
-> > As all the users of __kernel_map_pages() were converted to use
-> > debug_pagealloc_map_pages() it is safe to make it available only when
-> > DEBUG_PAGEALLOC is set.
-> > 
-> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > Acked-by: David Hildenbrand <david@redhat.com>
-> > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > ---
-> >   arch/Kconfig                     |  3 +++
-> >   arch/arm64/Kconfig               |  4 +---
-> >   arch/arm64/mm/pageattr.c         |  8 ++++++--
-> >   arch/powerpc/Kconfig             |  5 +----
-> >   arch/riscv/Kconfig               |  4 +---
-> >   arch/riscv/include/asm/pgtable.h |  2 --
-> >   arch/riscv/mm/pageattr.c         |  2 ++
-> >   arch/s390/Kconfig                |  4 +---
-> >   arch/sparc/Kconfig               |  4 +---
-> >   arch/x86/Kconfig                 |  4 +---
-> >   arch/x86/mm/pat/set_memory.c     |  2 ++
-> >   include/linux/mm.h               | 10 +++++++---
-> >   12 files changed, 26 insertions(+), 26 deletions(-)
-> > 
-> > diff --git a/arch/Kconfig b/arch/Kconfig
-> > index 56b6ccc0e32d..56d4752b6db6 100644
-> > --- a/arch/Kconfig
-> > +++ b/arch/Kconfig
-> > @@ -1028,6 +1028,9 @@ config HAVE_STATIC_CALL_INLINE
-> >   	bool
-> >   	depends on HAVE_STATIC_CALL
-> > +config ARCH_SUPPORTS_DEBUG_PAGEALLOC
-> > +	bool
-> > +
-> >   source "kernel/gcov/Kconfig"
-> >   source "scripts/gcc-plugins/Kconfig"
-> > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> > index 1d466addb078..a932810cfd90 100644
-> > --- a/arch/arm64/Kconfig
-> > +++ b/arch/arm64/Kconfig
-> > @@ -71,6 +71,7 @@ config ARM64
-> >   	select ARCH_USE_QUEUED_RWLOCKS
-> >   	select ARCH_USE_QUEUED_SPINLOCKS
-> >   	select ARCH_USE_SYM_ANNOTATIONS
-> > +	select ARCH_SUPPORTS_DEBUG_PAGEALLOC
-> >   	select ARCH_SUPPORTS_MEMORY_FAILURE
-> >   	select ARCH_SUPPORTS_SHADOW_CALL_STACK if CC_HAVE_SHADOW_CALL_STACK
-> >   	select ARCH_SUPPORTS_ATOMIC_RMW
-> > @@ -1025,9 +1026,6 @@ config HOLES_IN_ZONE
-> >   source "kernel/Kconfig.hz"
-> > -config ARCH_SUPPORTS_DEBUG_PAGEALLOC
-> > -	def_bool y
-> > -
-> >   config ARCH_SPARSEMEM_ENABLE
-> >   	def_bool y
-> >   	select SPARSEMEM_VMEMMAP_ENABLE
-> > diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-> > index 1b94f5b82654..439325532be1 100644
-> > --- a/arch/arm64/mm/pageattr.c
-> > +++ b/arch/arm64/mm/pageattr.c
-> > @@ -155,7 +155,7 @@ int set_direct_map_invalid_noflush(struct page *page)
-> >   		.clear_mask = __pgprot(PTE_VALID),
-> >   	};
-> > -	if (!rodata_full)
-> > +	if (!debug_pagealloc_enabled() && !rodata_full)
-> >   		return 0;
-> >   	return apply_to_page_range(&init_mm,
-> > @@ -170,7 +170,7 @@ int set_direct_map_default_noflush(struct page *page)
-> >   		.clear_mask = __pgprot(PTE_RDONLY),
-> >   	};
-> > -	if (!rodata_full)
-> > +	if (!debug_pagealloc_enabled() && !rodata_full)
-> >   		return 0;
-> >   	return apply_to_page_range(&init_mm,
-> 
-> I don't understand these two hunks. Previous patch calls this for
-> hibernation when CONFIG_ARCH_HAS_SET_DIRECT_MAP, which is true for arm64.
-> Why suddenly this starts to depend on debug_pagealloc_enabled()?
+Started from discussion [1], where was noted that currently a couple of
+architectures support mremap() for vdso/sigpage, but not munmap().
+If an application maps something on the ex-place of vdso/sigpage,
+later after processing signal it will land there (good luck!)
 
-I was confused about this for quite a long :)
+Patches set is based on linux-next (next-20201106) and it depends on
+changes in x86/cleanups (those reclaim TIF_IA32/TIF_X32) and also
+on my changes in akpm (fixing several mremap() issues).
 
-On arm64 the changes to direct^w linear map are allowed when 
+Logically, the patches set divides on:
+- patch       1: cleanup for patches in x86/cleanups
+- patches  2-11: cleanups for arch_setup_additional_pages()
+- patches 12-13: x86 signal changes for unmapped vdso
+- patches 14-19: provide generic user_landing in mm_struct
 
-	debug_page_alloc() || rodata_full
+In the end, besides cleanups, it's now more predictable what happens for
+applications with unmapped vdso on architectures those support .mremap()
+for vdso/sigpage.
 
-In hibernation we essentially have now
+I'm aware of only one user that unmaps vdso - Valgrind [2].
+(there possibly are more, but this one is "special", it unmaps vdso, but
+ not vvar, which confuses CRIU [Checkpoint Restore In Userspace], that's
+ why I'm aware of it)
 
-	if (1)
-		set_direct_map(something)
-	else
-		debug_page_alloc_map()
+Patches as a .git branch:
+https://github.com/0x7f454c46/linux/tree/setup_additional_pages
 
-With debug_pagealloc enabled but with rodata_full disabled arm64
-versions of set_direct_map_*() will become a nop, so a page that was
-unmapped by debug_pagealloc() will not be mapped back.
+[1]: https://lore.kernel.org/linux-arch/CAJwJo6ZANqYkSHbQ+3b+Fi_VT80MtrzEV5yreQAWx-L8j8x2zA@mail.gmail.com/
+[2]: https://github.com/checkpoint-restore/criu/issues/488
 
-I'm still puzzled how hibernation might ever need to save a free page,
-but that's another story.
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Guo Ren <guoren@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: x86@kernel.org
 
+Dmitry Safonov (19):
+  x86/elf: Check in_x32_syscall() in compat_arch_setup_additional_pages()
+  elf: Move arch_setup_additional_pages() to generic elf.h
+  arm64: Use in_compat_task() in arch_setup_additional_pages()
+  x86: Remove compat_arch_setup_additional_pages()
+  elf: Remove compat_arch_setup_additional_pages()
+  elf/vdso: Reuse arch_setup_additional_pages() parameters
+  elf: Use sysinfo_ehdr in ARCH_DLINFO()
+  arm/vdso: Remove vdso pointer from mm->context
+  s390/vdso: Remove vdso_base pointer from mm->context
+  sparc/vdso: Remove vdso pointer from mm->context
+  mm/mmap: Make vm_special_mapping::mremap return void
+  x86/signal: Land on &frame->retcode when vdso isn't mapped
+  x86/signal: Check if vdso_image_32 is mapped before trying to land on it
+  mm: Add user_landing in mm_struct
+  x86/vdso: Migrate to user_landing
+  arm/vdso: Migrate to user_landing
+  arm64/vdso: Migrate compat signals to user_landing
+  arm64/vdso: Migrate native signals to user_landing
+  mips/vdso: Migrate to user_landing
+
+ arch/alpha/include/asm/elf.h              |  2 +-
+ arch/arm/Kconfig                          |  2 +
+ arch/arm/include/asm/elf.h                | 10 +---
+ arch/arm/include/asm/mmu.h                |  3 -
+ arch/arm/include/asm/vdso.h               |  6 +-
+ arch/arm/kernel/process.c                 | 14 +----
+ arch/arm/kernel/signal.c                  |  6 +-
+ arch/arm/kernel/vdso.c                    | 20 ++-----
+ arch/arm64/Kconfig                        |  2 +
+ arch/arm64/include/asm/elf.h              | 27 ++-------
+ arch/arm64/kernel/signal.c                | 10 +++-
+ arch/arm64/kernel/signal32.c              | 17 ++++--
+ arch/arm64/kernel/vdso.c                  | 47 ++++++---------
+ arch/csky/Kconfig                         |  1 +
+ arch/csky/include/asm/elf.h               |  4 --
+ arch/csky/kernel/vdso.c                   |  3 +-
+ arch/hexagon/Kconfig                      |  1 +
+ arch/hexagon/include/asm/elf.h            |  6 --
+ arch/hexagon/kernel/vdso.c                |  3 +-
+ arch/ia64/include/asm/elf.h               |  2 +-
+ arch/mips/Kconfig                         |  2 +
+ arch/mips/include/asm/elf.h               | 10 +---
+ arch/mips/kernel/signal.c                 | 11 ++--
+ arch/mips/kernel/vdso.c                   |  5 +-
+ arch/mips/vdso/genvdso.c                  |  9 ---
+ arch/nds32/Kconfig                        |  1 +
+ arch/nds32/include/asm/elf.h              |  8 +--
+ arch/nds32/kernel/vdso.c                  |  3 +-
+ arch/nios2/Kconfig                        |  1 +
+ arch/nios2/include/asm/elf.h              |  4 --
+ arch/nios2/mm/init.c                      |  2 +-
+ arch/powerpc/Kconfig                      |  1 +
+ arch/powerpc/include/asm/elf.h            |  9 +--
+ arch/powerpc/kernel/vdso.c                |  3 +-
+ arch/riscv/Kconfig                        |  1 +
+ arch/riscv/include/asm/elf.h              | 10 +---
+ arch/riscv/kernel/vdso.c                  |  9 +--
+ arch/s390/Kconfig                         |  1 +
+ arch/s390/include/asm/elf.h               | 10 +---
+ arch/s390/include/asm/mmu.h               |  1 -
+ arch/s390/kernel/vdso.c                   | 13 +---
+ arch/sh/Kconfig                           |  1 +
+ arch/sh/include/asm/elf.h                 | 16 ++---
+ arch/sh/kernel/vsyscall/vsyscall.c        |  3 +-
+ arch/sparc/Kconfig                        |  1 +
+ arch/sparc/include/asm/elf_64.h           | 11 +---
+ arch/sparc/include/asm/mmu_64.h           |  1 -
+ arch/sparc/vdso/vma.c                     | 18 +++---
+ arch/x86/Kconfig                          |  2 +
+ arch/x86/entry/common.c                   |  8 ++-
+ arch/x86/entry/vdso/vma.c                 | 72 ++++++++++++-----------
+ arch/x86/ia32/ia32_signal.c               | 18 +++---
+ arch/x86/include/asm/compat.h             |  6 ++
+ arch/x86/include/asm/elf.h                | 44 +++++---------
+ arch/x86/include/asm/mmu.h                |  1 -
+ arch/x86/include/asm/vdso.h               |  4 ++
+ arch/x86/kernel/cpu/resctrl/pseudo_lock.c |  3 +-
+ arch/x86/kernel/signal.c                  | 25 ++++----
+ arch/x86/um/asm/elf.h                     |  9 +--
+ arch/x86/um/vdso/vma.c                    |  2 +-
+ fs/Kconfig.binfmt                         |  3 +
+ fs/aio.c                                  |  3 +-
+ fs/binfmt_elf.c                           | 19 +++---
+ fs/binfmt_elf_fdpic.c                     | 17 +++---
+ fs/compat_binfmt_elf.c                    | 12 ----
+ include/linux/elf.h                       | 24 ++++++--
+ include/linux/mm.h                        |  3 +-
+ include/linux/mm_types.h                  | 12 +++-
+ mm/Kconfig                                |  3 +
+ mm/mmap.c                                 | 21 ++++++-
+ mm/mremap.c                               |  2 +-
+ 71 files changed, 308 insertions(+), 356 deletions(-)
+
+
+base-commit: c34f157421f6905e6b4a79a312e9175dce2bc607
 -- 
-Sincerely yours,
-Mike.
+2.28.0
+
