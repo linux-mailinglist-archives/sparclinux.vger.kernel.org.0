@@ -2,127 +2,156 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB6C02AA929
-	for <lists+sparclinux@lfdr.de>; Sun,  8 Nov 2020 06:17:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 076832AA9D3
+	for <lists+sparclinux@lfdr.de>; Sun,  8 Nov 2020 07:58:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728218AbgKHFRt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 8 Nov 2020 00:17:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37788 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728411AbgKHFRs (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 8 Nov 2020 00:17:48 -0500
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1AA2C0613D3
-        for <sparclinux@vger.kernel.org>; Sat,  7 Nov 2020 21:17:47 -0800 (PST)
-Received: by mail-wr1-x443.google.com with SMTP id c17so5321573wrc.11
-        for <sparclinux@vger.kernel.org>; Sat, 07 Nov 2020 21:17:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arista.com; s=googlenew;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=tkLh0FZVC1l01ZndeEmge2GbTRSpNuP7ms2slDapalo=;
-        b=neMv9FZ7D6zt5fes0a16Lk4hMho8WCoK8l+WcdffETz5c0j5ZG8syOrjzH8cV23RXP
-         qvHZnkmd5WTWFRrMrtdjdnpitUGm0OOcg7H198zTVfORxTaGbjFi+AsumFU0kBMezyf8
-         I6/N3hIhnlOIKeiR1VUuaF95iAUaWk//cmA+gbkzYVwGStcN53lIdcnRg9rnH1Tvn8Hz
-         6DzsmP4v1neIqKZaVa0Wt0LRSjAMl+LB8/RdB2N0/PvLECLqGNhOzhO3T6GhfpVAbo0f
-         OadJ0iojj6wykJg/XzRYK3n18upfh0JKQfbXH0ymyBucZxr8wBK+xBvIgI4dWTRwdnD9
-         oPqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=tkLh0FZVC1l01ZndeEmge2GbTRSpNuP7ms2slDapalo=;
-        b=HVnJMtx5GoVr1YzYRMGHKqqxTnkxLaN1pc/VPTDk0N4PbdoW3U9NI+/4DxKaRy9BeY
-         9DRaEhO7naf0W6laDz8ZrRtz1NSldhJJpLF49RPdOBTA7CBICLWtiET+KKJ1Sb8Mjiyw
-         r9EI6E0M1tbTnhmNXis4gz12MxQhteGFOf0WuYDryHIofs/NlPKhkP16R38i8lnE+8Pu
-         MOSdRjSvdf5jOJwltfzI7GWLA+s6biNuAHl9AYUjn1MptXPKd0ikQRWlfR5nCR00XSn6
-         Nx5cibzOD8lChJL0t4AF+bUewygrNS9ik2/gqnGH1StDOHzPThdtmkc4mg7X+BxsLSUs
-         cLaw==
-X-Gm-Message-State: AOAM533/jUEAnJYs9PgFgSTfa6sWBEAubgeQR5VY/IisvX7YaVJk+7uT
-        +7ftxhq4vxZGY/p7Dcxz9v/nvQ==
-X-Google-Smtp-Source: ABdhPJyLRPHCshJLZDhJvG2kojOfYyN7kR7raWFHc4iZlAx4PxbkKSV9ueJ4U5EVYtnnfQGWnHxnVQ==
-X-Received: by 2002:adf:f0c2:: with SMTP id x2mr4509381wro.184.1604812666569;
-        Sat, 07 Nov 2020 21:17:46 -0800 (PST)
-Received: from localhost.localdomain ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
-        by smtp.gmail.com with ESMTPSA id r10sm8378462wmg.16.2020.11.07.21.17.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2020 21:17:46 -0800 (PST)
-From:   Dmitry Safonov <dima@arista.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
-        Dmitry Safonov <dima@arista.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S1726206AbgKHG6N (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 8 Nov 2020 01:58:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36144 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726014AbgKHG6N (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 8 Nov 2020 01:58:13 -0500
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9FA2C20719;
+        Sun,  8 Nov 2020 06:58:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604818692;
+        bh=wFNXZxJs2g5BcW3aCm2TF4VcMb1iBggKCmWf8Xc7OXQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=vEcjSbJxV1osIHprGn0uUivu2ID8+CzSj4Gez7BD1cn8ZWSCusNjvXx7R84zomGgH
+         TCfOcB3essBAWR2sfg4dWEIKILFOIgLaYZaPcH8bFTlWeVokIFRf7C18MtlyF9fZa7
+         wnZ5i133kJilecrWVEAX6ixDBBd41cTdQGyorHrk=
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Albert Ou <aou@eecs.berkeley.edu>,
         Andy Lutomirski <luto@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Christoph Lameter <cl@linux.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
         Ingo Molnar <mingo@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Len Brown <len.brown@intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mike Rapoport <rppt@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Pavel Machek <pavel@ucw.cz>, Pekka Enberg <penberg@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
-        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: [PATCH 10/19] sparc/vdso: Remove vdso pointer from mm->context
-Date:   Sun,  8 Nov 2020 05:17:20 +0000
-Message-Id: <20201108051730.2042693-11-dima@arista.com>
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-pm@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        x86@kernel.org
+Subject: [PATCH v5 0/5] arch, mm: improve robustness of direct map manipulation
+Date:   Sun,  8 Nov 2020 08:57:53 +0200
+Message-Id: <20201108065758.1815-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201108051730.2042693-1-dima@arista.com>
-References: <20201108051730.2042693-1-dima@arista.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Not used any more.
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Signed-off-by: Dmitry Safonov <dima@arista.com>
----
- arch/sparc/include/asm/mmu_64.h | 1 -
- arch/sparc/vdso/vma.c           | 5 +----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+Hi,
 
-diff --git a/arch/sparc/include/asm/mmu_64.h b/arch/sparc/include/asm/mmu_64.h
-index 7e2704c770e9..8e7892890d14 100644
---- a/arch/sparc/include/asm/mmu_64.h
-+++ b/arch/sparc/include/asm/mmu_64.h
-@@ -111,7 +111,6 @@ typedef struct {
- 	unsigned long		thp_pte_count;
- 	struct tsb_config	tsb_block[MM_NUM_TSBS];
- 	struct hv_tsb_descr	tsb_descr[MM_NUM_TSBS];
--	void			*vdso;
- 	bool			adi;
- 	tag_storage_desc_t	*tag_store;
- 	spinlock_t		tag_lock;
-diff --git a/arch/sparc/vdso/vma.c b/arch/sparc/vdso/vma.c
-index bf9195fe9bcc..255e052223ca 100644
---- a/arch/sparc/vdso/vma.c
-+++ b/arch/sparc/vdso/vma.c
-@@ -389,7 +389,6 @@ static int map_vdso(const struct vdso_image *image,
- 	}
- 
- 	text_start = addr - image->sym_vvar_start;
--	current->mm->context.vdso = (void __user *)text_start;
- 
- 	/*
- 	 * MAYWRITE to allow gdb to COW and set breakpoints
-@@ -418,9 +417,7 @@ static int map_vdso(const struct vdso_image *image,
- 	}
- 
- up_fail:
--	if (ret)
--		current->mm->context.vdso = NULL;
--	else
-+	if (!ret)
- 		*sysinfo_ehdr = text_start;
- 
- 	mmap_write_unlock(mm);
+During recent discussion about KVM protected memory, David raised a concern
+about usage of __kernel_map_pages() outside of DEBUG_PAGEALLOC scope [1].
+
+Indeed, for architectures that define CONFIG_ARCH_HAS_SET_DIRECT_MAP it is
+possible that __kernel_map_pages() would fail, but since this function is
+void, the failure will go unnoticed.
+
+Moreover, there's lack of consistency of __kernel_map_pages() semantics
+across architectures as some guard this function with
+#ifdef DEBUG_PAGEALLOC, some refuse to update the direct map if page
+allocation debugging is disabled at run time and some allow modifying the
+direct map regardless of DEBUG_PAGEALLOC settings.
+
+This set straightens this out by restoring dependency of
+__kernel_map_pages() on DEBUG_PAGEALLOC and updating the call sites
+accordingly. 
+
+Since currently the only user of __kernel_map_pages() outside
+DEBUG_PAGEALLOC is hibernation, it is updated to make direct map accesses
+there more explicit.
+
+[1] https://lore.kernel.org/lkml/2759b4bf-e1e3-d006-7d86-78a40348269d@redhat.com
+
+v5 changes:
+* use pairs of _map()/_unmap() functions instead of _map(..., int enable) as
+  Vlastimil suggested
+
+v4 changes:
+* s/WARN_ON/pr_warn_once/ per David and Kirill
+* rebase on v5.10-rc2
+* add Acked/Reviewed tags
+https://lore.kernel.org/lkml/20201103162057.22916-1-rppt@kernel.org
+
+v3 changes:
+* update arm64 changes to avoid regression, per Rick's comments
+* fix bisectability
+https://lore.kernel.org/lkml/20201101170815.9795-1-rppt@kernel.org
+
+v2 changes:
+* Rephrase patch 2 changelog to better describe the change intentions and
+implications
+* Move removal of kernel_map_pages() from patch 1 to patch 2, per David
+https://lore.kernel.org/lkml/20201029161902.19272-1-rppt@kernel.org
+
+v1:
+https://lore.kernel.org/lkml/20201025101555.3057-1-rppt@kernel.org
+
+Mike Rapoport (5):
+  mm: introduce debug_pagealloc_{map,unmap}_pages() helpers
+  slab: debug: split slab_kernel_map() to map and unmap variants
+  PM: hibernate: make direct map manipulations more explicit
+  arch, mm: restore dependency of __kernel_map_pages() on DEBUG_PAGEALLOC
+  arch, mm: make kernel_page_present() always available
+
+ arch/Kconfig                        |  3 +++
+ arch/arm64/Kconfig                  |  4 +--
+ arch/arm64/include/asm/cacheflush.h |  1 +
+ arch/arm64/mm/pageattr.c            |  6 +++--
+ arch/powerpc/Kconfig                |  5 +---
+ arch/riscv/Kconfig                  |  4 +--
+ arch/riscv/include/asm/pgtable.h    |  2 --
+ arch/riscv/include/asm/set_memory.h |  1 +
+ arch/riscv/mm/pageattr.c            | 31 ++++++++++++++++++++++
+ arch/s390/Kconfig                   |  4 +--
+ arch/sparc/Kconfig                  |  4 +--
+ arch/x86/Kconfig                    |  4 +--
+ arch/x86/include/asm/set_memory.h   |  1 +
+ arch/x86/mm/pat/set_memory.c        |  4 +--
+ include/linux/mm.h                  | 40 ++++++++++++++---------------
+ include/linux/set_memory.h          |  5 ++++
+ kernel/power/snapshot.c             | 38 +++++++++++++++++++++++++--
+ mm/memory_hotplug.c                 |  3 +--
+ mm/page_alloc.c                     |  6 ++---
+ mm/slab.c                           | 26 ++++++++++---------
+ 20 files changed, 127 insertions(+), 65 deletions(-)
+
 -- 
 2.28.0
 
