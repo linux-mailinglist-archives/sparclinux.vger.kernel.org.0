@@ -2,89 +2,120 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 346252AB22A
-	for <lists+sparclinux@lfdr.de>; Mon,  9 Nov 2020 09:07:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 644E22AB730
+	for <lists+sparclinux@lfdr.de>; Mon,  9 Nov 2020 12:36:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729647AbgKIIHC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 9 Nov 2020 03:07:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59794 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728951AbgKIIHC (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 9 Nov 2020 03:07:02 -0500
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08776C0613CF;
-        Mon,  9 Nov 2020 00:07:02 -0800 (PST)
-Received: by mail-pg1-x544.google.com with SMTP id h6so6477747pgk.4;
-        Mon, 09 Nov 2020 00:07:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=tdJdOvUDP6y6X9SlPMAqs3qJ1Y16ycODxrmLOvFtfbo=;
-        b=johfybRxzOKso37oy4MEZ3SUY12hPQjBv5T/yRYoiy1QYgFrkptXd78rFmmAS1AU8K
-         8p5YcLdbxJpd/mgPcRbfarMFZqY6mMe24P7ZJR9Zn3S5ubkjr6vfj/oscdB+3wP72r7N
-         SPLVxYxFDXXUqQRLhEwyeWLTibfk9wXGafHJ5kkPi/KQZQNu+1rik2RXmMFxCNKDy4H4
-         Pm+3sfVaO+LrjF3F9flUOIXUqcivvSmM1c70riulGNJQx28oP18tzg+dBe39mkYiPxrI
-         PK12a+XCh44a2sGfOOkYW9ygoWkD0itL9l4+0FNM+N0/Kcgd1L1cYb4qqb0tevMiu+P2
-         x6DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=tdJdOvUDP6y6X9SlPMAqs3qJ1Y16ycODxrmLOvFtfbo=;
-        b=ImfixwmnF/V90Jq148uujca64Rp07vMZufbCd0poZ1exVmQb9vmP4pVHHrGoHtNJUA
-         wNzXFhaWITwBfQ8qDHBpB+zuAeqRyY3sU9FnsRLk5jRI6M6seXC7MED5K+1uQp2Kl/AC
-         Zjrhu3gBTV1WUa2+FZHzADQWBgV4A1cgeCEeTkQxV7YoVQhq6Ag7nGHnfqx3psfLKhWc
-         7DcsLnOnjxIda0UCYSK8or2Pz8YEfqJKF6aKZx+VphRYWT3Ch7X55ULqeMGCpTnBd/L6
-         m6PhisuAZR+FL1ukUTPRp7tj8WWh18e4+5xjr1iT45fa8/ODPGw0d7OhGLUqy4zG6dDM
-         9Wmw==
-X-Gm-Message-State: AOAM533VEkppnYRMUrXzEa5k9uqyv7WsRPtFnnpJSWYxRifNpK/DcPth
-        uELPk0KJa/UTeZtBoyp8lQ==
-X-Google-Smtp-Source: ABdhPJyoYoL0Vm+aqhGo9MTk6wLVKwPVDQYJQqI25+85Zv6YuKGNudFyH1WyhbxX6Xx4bD8McDgq6A==
-X-Received: by 2002:a63:6386:: with SMTP id x128mr11713012pgb.148.1604909221650;
-        Mon, 09 Nov 2020 00:07:01 -0800 (PST)
-Received: from he-cluster.localdomain (67.216.221.250.16clouds.com. [67.216.221.250])
-        by smtp.gmail.com with ESMTPSA id gb17sm7522311pjb.21.2020.11.09.00.07.00
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 09 Nov 2020 00:07:01 -0800 (PST)
-From:   xiakaixu1987@gmail.com
-X-Google-Original-From: kaixuxia@tencent.com
-To:     davem@davemloft.net
-Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kaixu Xia <kaixuxia@tencent.com>
-Subject: [PATCH] sparc32: Fix comparing pointer to 0 coccicheck warning
-Date:   Mon,  9 Nov 2020 16:06:56 +0800
-Message-Id: <1604909216-16572-1-git-send-email-kaixuxia@tencent.com>
-X-Mailer: git-send-email 1.8.3.1
+        id S1729899AbgKILdy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 9 Nov 2020 06:33:54 -0500
+Received: from mx2.suse.de ([195.135.220.15]:54204 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729891AbgKILdy (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 9 Nov 2020 06:33:54 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 2BA62ABF4;
+        Mon,  9 Nov 2020 11:33:51 +0000 (UTC)
+Subject: Re: [PATCH v5 1/5] mm: introduce debug_pagealloc_{map,unmap}_pages()
+ helpers
+To:     Mike Rapoport <rppt@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Albert Ou <aou@eecs.berkeley.edu>,
+        Andy Lutomirski <luto@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Christoph Lameter <cl@linux.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Len Brown <len.brown@intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Pavel Machek <pavel@ucw.cz>, Pekka Enberg <penberg@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-pm@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        x86@kernel.org
+References: <20201108065758.1815-1-rppt@kernel.org>
+ <20201108065758.1815-2-rppt@kernel.org>
+From:   Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <4bd5ae2b-4fc6-73dc-b83b-e71826990946@suse.cz>
+Date:   Mon, 9 Nov 2020 12:33:46 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
+MIME-Version: 1.0
+In-Reply-To: <20201108065758.1815-2-rppt@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Kaixu Xia <kaixuxia@tencent.com>
+On 11/8/20 7:57 AM, Mike Rapoport wrote:
+> --- a/mm/slab.c
+> +++ b/mm/slab.c
+> @@ -1428,21 +1428,19 @@ static bool is_debug_pagealloc_cache(struct kmem_cache *cachep)
+>   	return false;
+>   }
+>   
+> -#ifdef CONFIG_DEBUG_PAGEALLOC
+>   static void slab_kernel_map(struct kmem_cache *cachep, void *objp, int map)
+>   {
+>   	if (!is_debug_pagealloc_cache(cachep))
+>   		return;
 
-Fixes coccicheck warning:
+Hmm, I didn't notice earlier, sorry.
+The is_debug_pagealloc_cache() above includes a debug_pagealloc_enabled_static() 
+check, so it should be fine to use
+__kernel_map_pages() directly below. Otherwise we generate two static key checks 
+for the same key needlessly.
 
-/arch/sparc/mm/srmmu.c:354:42-43: WARNING comparing pointer to 0
-
-Avoid pointer type value compared to 0.
-
-Reported-by: Tosk Robot <tencent_os_robot@tencent.com>
-Signed-off-by: Kaixu Xia <kaixuxia@tencent.com>
----
- arch/sparc/mm/srmmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
-index 0070f8b9a753..26d444223ab1 100644
---- a/arch/sparc/mm/srmmu.c
-+++ b/arch/sparc/mm/srmmu.c
-@@ -351,7 +351,7 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
- 	pte_t *ptep;
- 	struct page *page;
- 
--	if ((ptep = pte_alloc_one_kernel(mm)) == 0)
-+	if (!(ptep = pte_alloc_one_kernel(mm)))
- 		return NULL;
- 	page = pfn_to_page(__nocache_pa((unsigned long)ptep) >> PAGE_SHIFT);
- 	spin_lock(&mm->page_table_lock);
--- 
-2.20.0
+>   
+> -	kernel_map_pages(virt_to_page(objp), cachep->size / PAGE_SIZE, map);
+> +	if (map)
+> +		debug_pagealloc_map_pages(virt_to_page(objp),
+> +					  cachep->size / PAGE_SIZE);
+> +	else
+> +		debug_pagealloc_unmap_pages(virt_to_page(objp),
+> +					    cachep->size / PAGE_SIZE);
+>   }
+>   
+> -#else
+> -static inline void slab_kernel_map(struct kmem_cache *cachep, void *objp,
+> -				int map) {}
+> -
+> -#endif
+> -
+>   static void poison_obj(struct kmem_cache *cachep, void *addr, unsigned char val)
+>   {
+>   	int size = cachep->object_size;
+> @@ -2062,7 +2060,7 @@ int __kmem_cache_create(struct kmem_cache *cachep, slab_flags_t flags)
+>   
+>   #if DEBUG
+>   	/*
+> -	 * If we're going to use the generic kernel_map_pages()
+> +	 * If we're going to use the generic debug_pagealloc_map_pages()
+>   	 * poisoning, then it's going to smash the contents of
+>   	 * the redzone and userword anyhow, so switch them off.
+>   	 */
+> 
 
