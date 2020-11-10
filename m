@@ -2,102 +2,56 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E83F22B1C06
-	for <lists+sparclinux@lfdr.de>; Fri, 13 Nov 2020 14:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2736D2B350B
+	for <lists+sparclinux@lfdr.de>; Sun, 15 Nov 2020 14:22:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726324AbgKMNor (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 13 Nov 2020 08:44:47 -0500
-Received: from pegase1.c-s.fr ([93.17.236.30]:45528 "EHLO pegase1.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726160AbgKMNoq (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 13 Nov 2020 08:44:46 -0500
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 4CXfpY4r2szB09Zx;
-        Fri, 13 Nov 2020 14:44:37 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id SG5tmC5mOILx; Fri, 13 Nov 2020 14:44:37 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 4CXfpY3PwpzB09Zp;
-        Fri, 13 Nov 2020 14:44:37 +0100 (CET)
+        id S1726605AbgKONV7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Sun, 15 Nov 2020 08:21:59 -0500
+Received: from tigeramira.ro ([88.158.78.30]:33468 "EHLO mail.tigeramira.ro"
+        rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S1726438AbgKONV7 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 15 Nov 2020 08:21:59 -0500
 Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id C54B68B859;
-        Fri, 13 Nov 2020 14:44:38 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id GK4SN1t9uBy5; Fri, 13 Nov 2020 14:44:38 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 5912A8B857;
-        Fri, 13 Nov 2020 14:44:37 +0100 (CET)
-Subject: Re: [PATCH 0/5] perf/mm: Fix PERF_SAMPLE_*_PAGE_SIZE
-To:     Peter Zijlstra <peterz@infradead.org>, kan.liang@linux.intel.com,
-        mingo@kernel.org, acme@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
-        eranian@google.com
-Cc:     npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org,
-        mpe@ellerman.id.au, will@kernel.org, willy@infradead.org,
-        aneesh.kumar@linux.ibm.com, sparclinux@vger.kernel.org,
-        davem@davemloft.net, catalin.marinas@arm.com,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ak@linux.intel.com, dave.hansen@intel.com,
-        kirill.shutemov@linux.intel.com
-References: <20201113111901.743573013@infradead.org>
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <16ad8cab-08e2-27a7-6803-baadc6b8721b@csgroup.eu>
-Date:   Fri, 13 Nov 2020 14:44:37 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.3
+        by mail.tigeramira.ro (Postfix) with ESMTP id F3A76C05D8B
+        for <sparclinux@vger.kernel.org>; Sat, 14 Nov 2020 17:25:55 +0200 (EET)
+Received: from mail.tigeramira.ro ([127.0.0.1])
+        by localhost (mail.tigeramira.ro [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id dRCMlIPKyLco for <sparclinux@vger.kernel.org>;
+        Sat, 14 Nov 2020 17:25:54 +0200 (EET)
+Received: from mail.tigeramira.ro (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 6A998773449
+        for <sparclinux@vger.kernel.org>; Wed, 11 Nov 2020 13:51:17 +0200 (EET)
+Received: from [156.96.44.214] (unknown [192.168.12.254])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 1E3ABD401BC
+        for <sparclinux@vger.kernel.org>; Tue, 10 Nov 2020 17:10:41 +0200 (EET)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <20201113111901.743573013@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Corporate and Personal Loan/
+To:     sparclinux@vger.kernel.org
+From:   "Investment  Corporate" <financialcapability6@gmail.com>
+Date:   Tue, 10 Nov 2020 06:11:10 -0800
+Reply-To: hmurrah39@gmail.com
+Message-Id: <20201110151043.1E3ABD401BC@mail.tigeramira.ro>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi
+Hello sparclinux@vger.kernel.org
 
-Le 13/11/2020 à 12:19, Peter Zijlstra a écrit :
-> Hi,
-> 
-> These patches provide generic infrastructure to determine TLB page size from
-> page table entries alone. Perf will use this (for either data or code address)
-> to aid in profiling TLB issues.
-> 
-> While most architectures only have page table aligned large pages, some
-> (notably ARM64, Sparc64 and Power) provide non page table aligned large pages
-> and need to provide their own implementation of these functions.
-> 
-> I've provided (completely untested) implementations for ARM64 and Sparc64, but
-> failed to penetrate the _many_ Power MMUs. I'm hoping Nick or Aneesh can help
-> me out there.
-> 
 
-I can help with powerpc 8xx. It is a 32 bits powerpc. The PGD has 1024 entries, that means each 
-entry maps 4M.
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
 
-Page sizes are 4k, 16k, 512k and 8M.
 
-For the 8M pages we use hugepd with a single entry. The two related PGD entries point to the same 
-hugepd.
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
 
-For the other sizes, they are in standard page tables. 16k pages appear 4 times in the page table. 
-512k entries appear 128 times in the page table.
 
-When the PGD entry has _PMD_PAGE_8M bits, the PMD entry points to a hugepd with holds the single 8M 
-entry.
+Please get back to me if you are interested for more
 
-In the PTE, we have two bits: _PAGE_SPS and _PAGE_HUGE
+details.
 
-_PAGE_HUGE means it is a 512k page
-_PAGE_SPS means it is not a 4k page
 
-The kernel can by build either with 4k pages as standard page size, or 16k pages. It doesn't change 
-the page table layout though.
+Yours faithfully,
 
-Hope this is clear. Now I don't really know to wire that up to your series.
-
-Christophe
+Hashim Murrah
