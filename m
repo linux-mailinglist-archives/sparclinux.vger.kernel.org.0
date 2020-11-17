@@ -2,84 +2,88 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E6D62B4BD6
-	for <lists+sparclinux@lfdr.de>; Mon, 16 Nov 2020 17:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC5602B55D8
+	for <lists+sparclinux@lfdr.de>; Tue, 17 Nov 2020 01:48:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730634AbgKPQ5Y (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 16 Nov 2020 11:57:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39442 "EHLO
+        id S1729367AbgKQAsL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 16 Nov 2020 19:48:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729629AbgKPQ5Y (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 16 Nov 2020 11:57:24 -0500
+        with ESMTP id S1726523AbgKQAsK (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 16 Nov 2020 19:48:10 -0500
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D122BC0613CF;
-        Mon, 16 Nov 2020 08:57:23 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B288EC0613CF;
+        Mon, 16 Nov 2020 16:48:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=vVmVS+ZLD4y6jfU+uTyXnLUroIERo1h2ZpfnRA9jMKc=; b=lEeB7IzByDr301YPeJ40VBxNvA
-        CtrkOR9QCt3ARajDnOfqwNHdM5ieJEShyAB05oqrbEOfSoQmGLpyInWcjIUwCdHS+CqhwQNX5AFwq
-        sJM6ZL685xdaGd3dj8fB3568d9YRcoWUa2yyw1rxpN0qQZlcPqAPr9p1DaHZEuYsUN/0onJJ8g5/p
-        zviV3Oo9s73aXyrWzOa2FmL8zFShtC7st/xxEwPa1/MTcren+Z34TdPqL+13orQGhyGCwwxNuiPA7
-        HCZiTKZh+47wdY6GZ+pKgqrivXu3IKb6KDlxju1SqLdbkEsg+QyQv1NVGga/0MnXPI52fdzgXIK4Q
-        qZRj+aSA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=uUIXCUNr7RNJdZ9HoYd/HshSNPt0vV3H87AKi8GmjxY=; b=Vxicb8OXX/0PSxT4jPinQITdcT
+        5Q8lujGw9QEmpVbUhTtxfQcfraqZiSooPyzDMFe82qlxC65AL31064VdGg4UfrRi/HAbTFS/Lz2fX
+        PKt1j6DFZAkoohtd6R8eRwGQGNH5UnYl+X/Cp/orxOolrVUOnGWJ6xhPkzek9m3Ce7b8IpGj5GF34
+        vW4HrFrZqwKrIub7OytGN+3cFLbc5Tuh14ut2/CQ7Ht+duQ+tAxGPA0Pk8jLd//ULCCamSTx1+EW9
+        cy5YBsxLfd+3+RYFAtklw/BJbLHCK/M2QBSOvXWFtg1E8f234s4+eupary1jKt3Bfa0WCEQL4PZJK
+        KZkdOGaA==;
+Received: from [2601:1c0:6280:3f0::990e] (helo=smtpauth.infradead.org)
         by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kehoS-0006Im-E5; Mon, 16 Nov 2020 16:57:08 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 6DF3F301959;
-        Mon, 16 Nov 2020 17:57:07 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 5976F20282DFC; Mon, 16 Nov 2020 17:57:07 +0100 (CET)
-Date:   Mon, 16 Nov 2020 17:57:07 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     Matthew Wilcox <willy@infradead.org>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>,
-        kan.liang@linux.intel.com, mingo@kernel.org, acme@kernel.org,
-        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, eranian@google.com, christophe.leroy@csgroup.eu,
-        npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org,
-        mpe@ellerman.id.au, will@kernel.org, aneesh.kumar@linux.ibm.com,
-        sparclinux@vger.kernel.org, davem@davemloft.net,
-        catalin.marinas@arm.com, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ak@linux.intel.com,
-        kirill.shutemov@linux.intel.com
-Subject: Re: [PATCH 0/5] perf/mm: Fix PERF_SAMPLE_*_PAGE_SIZE
-Message-ID: <20201116165707.GI3121392@hirez.programming.kicks-ass.net>
-References: <20201113111901.743573013@infradead.org>
- <20201116154357.bw64c5ie2kiu5l4x@box>
- <20201116155404.GD29991@casper.infradead.org>
- <eeec67f6-ea05-1115-f249-b6cdcf2c5e2c@intel.com>
- <20201116163213.GG29991@casper.infradead.org>
- <3f2239fe-367a-16de-fcb5-543d39f34c22@intel.com>
+        id 1kepAD-0001P8-15; Tue, 17 Nov 2020 00:48:05 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Lars Kotthoff <metalhead@metalhead.ws>,
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: [PATCH] sparc: fix led.c driver when PROC_FS is not enabled
+Date:   Mon, 16 Nov 2020 16:48:00 -0800
+Message-Id: <20201117004800.16734-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3f2239fe-367a-16de-fcb5-543d39f34c22@intel.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Nov 16, 2020 at 08:36:36AM -0800, Dave Hansen wrote:
-> On 11/16/20 8:32 AM, Matthew Wilcox wrote:
-> >>
-> >> That's really the best we can do from software without digging into
-> >> microarchitecture-specific events.
-> > I mean this is perf.  Digging into microarch specific events is what it
-> > does ;-)
-> 
-> Yeah, totally.
+Fix Sparc build when CONFIG_PROC_FS is not enabled.
 
-Sure, but the automatic promotion/demotion of TLB sizes is not visible
-if you don't know what you startd out with.
+Fixes this build error:
+arch/sparc/kernel/led.c:107:30: error: 'led_proc_ops' defined but not used [-Werror=unused-const-variable=]
+     107 | static const struct proc_ops led_proc_ops = {
+         |                              ^~~~~~~~~~~~
+   cc1: all warnings being treated as errors
 
-> But, if we see a bunch of 4k TLB hit events, it's still handy to know
-> that those 4k TLB hits originated from a 2M page table entry.  This
-> series just makes sure that perf has the data about the page table
-> mapping sizes regardless of what the microarchitecture does with it.
+Fixes: 97a32539b956 ("proc: convert everything to "struct proc_ops"")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lars Kotthoff <metalhead@metalhead.ws>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org
+---
+This driver is mostly useless without CONFIG_PROC_FS.
+I think it would be just as satisfactory to make it depend on
+PROC_FS.  Eh?
 
-This. 
+ arch/sparc/kernel/led.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- linux-next-20201116.orig/arch/sparc/kernel/led.c
++++ linux-next-20201116/arch/sparc/kernel/led.c
+@@ -50,6 +50,7 @@ static void led_blink(struct timer_list
+ 	add_timer(&led_blink_timer);
+ }
+ 
++#ifdef CONFIG_PROC_FS
+ static int led_proc_show(struct seq_file *m, void *v)
+ {
+ 	if (get_auxio() & AUXIO_LED)
+@@ -111,6 +112,7 @@ static const struct proc_ops led_proc_op
+ 	.proc_release	= single_release,
+ 	.proc_write	= led_proc_write,
+ };
++#endif
+ 
+ static struct proc_dir_entry *led;
+ 
