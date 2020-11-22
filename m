@@ -2,126 +2,68 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B3212BB1E7
-	for <lists+sparclinux@lfdr.de>; Fri, 20 Nov 2020 19:02:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C00CC2BFB18
+	for <lists+sparclinux@lfdr.de>; Sun, 22 Nov 2020 22:53:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729164AbgKTSBZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 20 Nov 2020 13:01:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39668 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729059AbgKTSBZ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 20 Nov 2020 13:01:25 -0500
-Received: from gaia (unknown [2.26.170.190])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E163F2240B;
-        Fri, 20 Nov 2020 18:01:22 +0000 (UTC)
-Date:   Fri, 20 Nov 2020 18:01:20 +0000
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Khalid Aziz <khalid.aziz@oracle.com>
-Cc:     jannh@google.com, hch@infradead.org, davem@davemloft.net,
-        akpm@linux-foundation.org, anthony.yznaga@oracle.com,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH] sparc64: Use arch_validate_flags() to validate ADI flag
-Message-ID: <20201120180119.GM24344@gaia>
-References: <20201023175611.12819-1-khalid.aziz@oracle.com>
+        id S1726189AbgKVVxZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 22 Nov 2020 16:53:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34294 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726198AbgKVVxY (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 22 Nov 2020 16:53:24 -0500
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F6F3C0613CF;
+        Sun, 22 Nov 2020 13:53:24 -0800 (PST)
+Received: by mail-ej1-x644.google.com with SMTP id f23so20642486ejk.2;
+        Sun, 22 Nov 2020 13:53:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:sender:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
+        b=iutiWdq2WEjwKxpj8Fj5ahz8hqWjUs7Yyrav4s8v1k/mqlVuPY9u57EzWlP9gcSGF3
+         nLPs3vWt6eDKjUyAyzDGiJ/Jqa6RkJ5llsp5y6nXt5CRLAeylDPQrz1F5tCNE07lhUsZ
+         DefBtleWej9MfIIZM1hvRfm3Ux1i6AHKnLbmdGLiWiJ7WMsEiW61w/i27REGObWCmji7
+         OLu/Eb0Q23U40EbXyc8XsITGej90V/vfvMX8AT3gy2Qnun5LqUzBKJ/YGUAiwGtQ7kav
+         nRVnTGlzCZAcjS7hE4ZjsYjkDdGfC4z4F3916iAOaXxz+uSVIJ3Vvfkcf1PsaCQCmNM1
+         6Dcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:sender:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
+        b=IXt6I+J7Nc0vLKPNaI0weg1X1ZvCZSazbJWw5GbnLOG92hZfp+CyWTY+/ffRZyLI6s
+         0otC80EhLlGeqDkyASwaaamGTrYGUE0TzH19+GlBFAiwWgBBSnIilJG1iuo4Ng0rXAqI
+         wGaojDxp3Bhp0GhwLRKiBpWo2RaWyBAJI4ztLJbKkwI+cjTYGOyEEcBBRhrkXJn7itwQ
+         I1gZENULfYjPExrf3l8ftqY2w22DsYIvg4isZMw/Whv+PrByFY4jXwMfD5RjHXecvUNd
+         c54Tm1b7TzON8sPrxWVHeHaW0gPxF1L9Zcml/uZOOwmzz2/K30vYKmiT0azeGkT4tALU
+         i88g==
+X-Gm-Message-State: AOAM532o9qGsRf3McRo6WQc1pPDBiKpTe7IEKuCKXXGgr/E9PkAeP5Oc
+        flzCu8FEZcUv+c0wGsde58I=
+X-Google-Smtp-Source: ABdhPJyxEK8hZKHZP/gou5hSHEaspqwGg9FseK29uxduiuNlVG9PatLaZ6TFK8Vy9vnnMcZXOfFZXA==
+X-Received: by 2002:a17:906:a194:: with SMTP id s20mr39026886ejy.95.1606082003350;
+        Sun, 22 Nov 2020 13:53:23 -0800 (PST)
+Received: from [192.168.43.48] ([197.210.35.67])
+        by smtp.gmail.com with ESMTPSA id i19sm3978482ejz.71.2020.11.22.13.53.17
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Sun, 22 Nov 2020 13:53:22 -0800 (PST)
+Message-ID: <5fbaddd2.1c69fb81.9b3f2.1045@mx.google.com>
+Sender: Lena Torres <ad482289@gmail.com>
+From:   Adelina Zeuki <anglicaramose@gmail.com>
+X-Google-Original-From: "Adelina Zeuki" <  adelinazeuki@gmail.comm >
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201023175611.12819-1-khalid.aziz@oracle.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Hello !!
+To:     Recipients <adelinazeuki@gmail.comm>
+Date:   Sun, 22 Nov 2020 21:53:11 +0000
+Reply-To: adelinazeuki@gmail.com
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Khalid,
+Hi dear,
 
-On Fri, Oct 23, 2020 at 11:56:11AM -0600, Khalid Aziz wrote:
-> diff --git a/arch/sparc/include/asm/mman.h b/arch/sparc/include/asm/mman.h
-> index f94532f25db1..274217e7ed70 100644
-> --- a/arch/sparc/include/asm/mman.h
-> +++ b/arch/sparc/include/asm/mman.h
-> @@ -57,35 +57,39 @@ static inline int sparc_validate_prot(unsigned long prot, unsigned long addr)
->  {
->  	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_ADI))
->  		return 0;
-> -	if (prot & PROT_ADI) {
-> -		if (!adi_capable())
-> -			return 0;
-> +	return 1;
-> +}
-
-We kept the equivalent of !adi_capable() check in the arm64
-arch_validate_prot() and left arch_validate_flags() more relaxed. I.e.
-you can pass PROT_MTE to mmap() even if the hardware doesn't support
-MTE. This is in line with the pre-MTE ABI where unknown mmap() flags
-would be ignored while mprotect() would reject them. This discrepancy
-isn't nice but we decided to preserve the pre-MTE mmap ABI behaviour.
-Anyway, it's up to you if you want to change the sparc behaviour, I
-don't think it matters in practice.
-
-I think with this patch, arch_validate_prot() no longer needs the 'addr'
-argument. Maybe you can submit an additional patch to remove them (not
-urgent, the compiler should get rid of them).
-
->  
-> -		if (addr) {
-> -			struct vm_area_struct *vma;
-> +#define arch_validate_flags(vm_flags) arch_validate_flags(vm_flags)
-> +/* arch_validate_flags() - Ensure combination of flags is valid for a
-> + *	VMA.
-> + */
-> +static inline bool arch_validate_flags(unsigned long vm_flags)
-> +{
-> +	/* If ADI is being enabled on this VMA, check for ADI
-> +	 * capability on the platform and ensure VMA is suitable
-> +	 * for ADI
-> +	 */
-> +	if (vm_flags & VM_SPARC_ADI) {
-> +		if (!adi_capable())
-> +			return false;
->  
-> -			vma = find_vma(current->mm, addr);
-> -			if (vma) {
-> -				/* ADI can not be enabled on PFN
-> -				 * mapped pages
-> -				 */
-> -				if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
-> -					return 0;
-> +		/* ADI can not be enabled on PFN mapped pages */
-> +		if (vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
-> +			return false;
->  
-> -				/* Mergeable pages can become unmergeable
-> -				 * if ADI is enabled on them even if they
-> -				 * have identical data on them. This can be
-> -				 * because ADI enabled pages with identical
-> -				 * data may still not have identical ADI
-> -				 * tags on them. Disallow ADI on mergeable
-> -				 * pages.
-> -				 */
-> -				if (vma->vm_flags & VM_MERGEABLE)
-> -					return 0;
-> -			}
-> -		}
-> +		/* Mergeable pages can become unmergeable
-> +		 * if ADI is enabled on them even if they
-> +		 * have identical data on them. This can be
-> +		 * because ADI enabled pages with identical
-> +		 * data may still not have identical ADI
-> +		 * tags on them. Disallow ADI on mergeable
-> +		 * pages.
-> +		 */
-> +		if (vm_flags & VM_MERGEABLE)
-> +			return false;
-
-Ah, you added a check to the madvise(MADV_MERGEABLE) path to ignore the
-flag if VM_SPARC_ADI. On arm64 we intercept memcmp_pages() but we have a
-PG_arch_2 flag to mark a page as containing tags. Either way should
-work.
-
-FWIW, if you are happy with the mmap() rejecting PROT_ADI on
-!adi_capable() hardware:
-
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Can i talk with you ?
