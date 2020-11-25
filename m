@@ -2,104 +2,75 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1C2B2C3B48
-	for <lists+sparclinux@lfdr.de>; Wed, 25 Nov 2020 09:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BAF22C3B74
+	for <lists+sparclinux@lfdr.de>; Wed, 25 Nov 2020 09:58:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726827AbgKYInr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 25 Nov 2020 03:43:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:45938 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726515AbgKYInr (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 25 Nov 2020 03:43:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606293825;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=iCA0NoplkuY0wv1lgLVwIs8tVQk43X2rCmw/7XtS8LM=;
-        b=NHVoplUi3w5klNDG1abIEaNTNRuGlB73Av6H2nUSq84FoYJuwbNNFovKeOXnE+qHMYdP2C
-        0M24w9vzzZKCivYIqIrOJl5M5ggP5sCEa3XiEQ7yTg5+yX9LvFrtEn/MBCC0TmqKxAtLvV
-        1n5oL2Z3s1z8p8ul2GpVwaRfLIrk3pw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-495-9f3Pk5vpMMCdH6epfp_sSA-1; Wed, 25 Nov 2020 03:43:41 -0500
-X-MC-Unique: 9f3Pk5vpMMCdH6epfp_sSA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1727022AbgKYI56 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 25 Nov 2020 03:57:58 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34306 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726103AbgKYI55 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 25 Nov 2020 03:57:57 -0500
+Received: from kernel.org (unknown [77.125.7.142])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4BBA2180E46E;
-        Wed, 25 Nov 2020 08:43:40 +0000 (UTC)
-Received: from [10.36.112.131] (ovpn-112-131.ams2.redhat.com [10.36.112.131])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id DF88060BE5;
-        Wed, 25 Nov 2020 08:43:38 +0000 (UTC)
-Subject: Re: [PATCH 2/2] mm: Move free_unref_page to mm/internal.h
-To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        akpm@linux-foundation.org
-Cc:     davem@davemloft.net, rppt@kernel.org, sparclinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+        by mail.kernel.org (Postfix) with ESMTPSA id 3423D206F7;
+        Wed, 25 Nov 2020 08:57:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606294677;
+        bh=i6ZqGfCBVCuxgZ+sLcYeDYGjVzau4pyveyA9EW2XQmU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hC8B3Ccs+kPWQSCAuObmGCUqJwnHPLg3/Eb2K1mwXPFxCHmnx2dd3d6NkE2uLvXXO
+         FyUeHZWO9xdfoZxM1DtxtH5OXu3Omc1SV0S/JRxN6VYfmBm6JpS4i0jzfl7KDfDW3K
+         G710+LPLNzVGqhrIKAkBDAl5WCEkk6Eeu9komIuY=
+Date:   Wed, 25 Nov 2020 10:57:50 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc:     akpm@linux-foundation.org, davem@davemloft.net,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] sparc: Fix handling of page table constructor failure
+Message-ID: <20201125085750.GL8537@kernel.org>
 References: <20201125034655.27687-1-willy@infradead.org>
- <20201125034655.27687-2-willy@infradead.org>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <4e989b22-a144-3778-6d71-f04137a523e4@redhat.com>
-Date:   Wed, 25 Nov 2020 09:43:38 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <20201125034655.27687-2-willy@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201125034655.27687-1-willy@infradead.org>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 25.11.20 04:46, Matthew Wilcox (Oracle) wrote:
-> Code outside mm/ should not be calling free_unref_page().  Also
-> move free_unref_page_list().
+On Wed, Nov 25, 2020 at 03:46:54AM +0000, Matthew Wilcox (Oracle) wrote:
+> The page has just been allocated, so its refcount is 1.  free_unref_page()
+> is for use on pages which have a zero refcount.  Use __free_page()
+> like the other implementations of pte_alloc_one().
 > 
+> Fixes: 1ae9ae5f7df7 ("sparc: handle pgtable_page_ctor() fail")
 > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  include/linux/gfp.h | 2 --
->  mm/internal.h       | 3 +++
->  2 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index c603237e006c..6e479e9c48ce 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -580,8 +580,6 @@ void * __meminit alloc_pages_exact_nid(int nid, size_t size, gfp_t gfp_mask);
->  
->  extern void __free_pages(struct page *page, unsigned int order);
->  extern void free_pages(unsigned long addr, unsigned int order);
-> -extern void free_unref_page(struct page *page);
-> -extern void free_unref_page_list(struct list_head *list);
->  
->  struct page_frag_cache;
->  extern void __page_frag_cache_drain(struct page *page, unsigned int count);
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 75ae680d0a2c..5864815947fe 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -201,6 +201,9 @@ extern void post_alloc_hook(struct page *page, unsigned int order,
->  					gfp_t gfp_flags);
->  extern int user_min_free_kbytes;
->  
-> +extern void free_unref_page(struct page *page);
-> +extern void free_unref_page_list(struct list_head *list);
-> +
->  extern void zone_pcp_update(struct zone *zone);
->  extern void zone_pcp_reset(struct zone *zone);
->  extern void zone_pcp_disable(struct zone *zone);
-> 
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
+
+> ---
+>  arch/sparc/mm/init_64.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index 96edf64d4fb3..182bb7bdaa0a 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -2894,7 +2894,7 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
+>  	if (!page)
+>  		return NULL;
+>  	if (!pgtable_pte_page_ctor(page)) {
+> -		free_unref_page(page);
+> +		__free_page(page);
+>  		return NULL;
+>  	}
+>  	return (pte_t *) page_address(page);
+> -- 
+> 2.29.2
+> 
 
 -- 
-Thanks,
-
-David / dhildenb
-
+Sincerely yours,
+Mike.
