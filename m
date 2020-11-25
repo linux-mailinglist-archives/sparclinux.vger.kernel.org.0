@@ -2,65 +2,111 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6187C2C4072
-	for <lists+sparclinux@lfdr.de>; Wed, 25 Nov 2020 13:47:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA2D52C4117
+	for <lists+sparclinux@lfdr.de>; Wed, 25 Nov 2020 14:25:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbgKYMqI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 25 Nov 2020 07:46:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52030 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725792AbgKYMqH (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 25 Nov 2020 07:46:07 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD6E2C0613D4;
-        Wed, 25 Nov 2020 04:46:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=AOuNFlot/VyZabqwTIsLmcD2t/G7f3vZneAFiQv6T6c=; b=KEa6PL7BAbuR5GDeG0E/m6yG1y
-        DSuILW9uHkBwm9sUaooAAuTk+2TsRtyOo8emEqt8DjHqpThcZYTRwfARucMLlL34aK7h0Hp3ao/+l
-        NrEvthAJDpIc42zLtHmYA0j0h0myOm8yqTVov2qewm4Y71tIIucuqh0nC7UqddOjqUso0YnMo6n4B
-        y4WtGTqHRYpElIHNqv+okvxU2yqD4uVPnGIzefQiFAZgynlBwMnRqGFbuQwpKpu6mmpOWT9u9uPmt
-        0pFaF4q3tu2NZqTnPRFsnRKaGIrg/OaWlLw3ig+LpGiSjUOVeJXiGiKUJxSzNtKZ7eSwOBpvs9JYQ
-        ZYAYPk1g==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1khuBP-0004eu-Ba; Wed, 25 Nov 2020 12:46:03 +0000
-Date:   Wed, 25 Nov 2020 12:46:03 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Vlastimil Babka <vbabka@suse.cz>
+        id S1729470AbgKYNYi (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 25 Nov 2020 08:24:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:28581 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728404AbgKYNYi (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 25 Nov 2020 08:24:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606310677;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yfYwxxCydXD+/2AZjU2DkkyQyPi22Qxb5NijBr+uWj0=;
+        b=KLKI3kKHFh8gfqfrDsSYXzSZOugFkyJxAAYJmGWXUOdxwpx9o0+wXoVFAw4abr61iyvZ9f
+        uULaeGbwek+sKJrk1JgEO+GvDsB5oFbke80aha0oJRGtrZII337Wo3XrP8QdZ61dMqAjJD
+        vQmHzruVc/iNSXl07GgaDMWl2G/zx/I=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-242-I-oSW_vvNE2vnVfTOlFbYw-1; Wed, 25 Nov 2020 08:24:33 -0500
+X-MC-Unique: I-oSW_vvNE2vnVfTOlFbYw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 94DC080EDA9;
+        Wed, 25 Nov 2020 13:24:31 +0000 (UTC)
+Received: from [10.36.112.131] (ovpn-112-131.ams2.redhat.com [10.36.112.131])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 210F15D6AC;
+        Wed, 25 Nov 2020 13:24:29 +0000 (UTC)
+Subject: Re: [PATCH 1/2] sparc: Fix handling of page table constructor failure
+To:     Matthew Wilcox <willy@infradead.org>
 Cc:     akpm@linux-foundation.org, davem@davemloft.net, rppt@kernel.org,
         sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mm@kvack.org
-Subject: Re: [PATCH 2/2] mm: Move free_unref_page to mm/internal.h
-Message-ID: <20201125124603.GL4327@casper.infradead.org>
 References: <20201125034655.27687-1-willy@infradead.org>
- <20201125034655.27687-2-willy@infradead.org>
- <6418f355-ae69-a0bc-3006-b89a4e1cc09c@suse.cz>
+ <b761abc9-12de-f003-b8c4-26e7e506700e@redhat.com>
+ <20201125121037.GJ4327@casper.infradead.org>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Message-ID: <5b574e0d-107a-3ebc-d631-b59e88de7174@redhat.com>
+Date:   Wed, 25 Nov 2020 14:24:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6418f355-ae69-a0bc-3006-b89a4e1cc09c@suse.cz>
+In-Reply-To: <20201125121037.GJ4327@casper.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Nov 25, 2020 at 01:34:04PM +0100, Vlastimil Babka wrote:
-> On 11/25/20 4:46 AM, Matthew Wilcox (Oracle) wrote:
-> > Code outside mm/ should not be calling free_unref_page().  Also
-> > move free_unref_page_list().
+On 25.11.20 13:10, Matthew Wilcox wrote:
+> On Wed, Nov 25, 2020 at 09:43:15AM +0100, David Hildenbrand wrote:
+>> On 25.11.20 04:46, Matthew Wilcox (Oracle) wrote:
+>>> The page has just been allocated, so its refcount is 1.  free_unref_page()
+>>> is for use on pages which have a zero refcount.  Use __free_page()
+>>> like the other implementations of pte_alloc_one().
+>>>
+>>> Fixes: 1ae9ae5f7df7 ("sparc: handle pgtable_page_ctor() fail")
+>>> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+>>> ---
+>>>  arch/sparc/mm/init_64.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+>>> index 96edf64d4fb3..182bb7bdaa0a 100644
+>>> --- a/arch/sparc/mm/init_64.c
+>>> +++ b/arch/sparc/mm/init_64.c
+>>> @@ -2894,7 +2894,7 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
+>>>  	if (!page)
+>>>  		return NULL;
+>>>  	if (!pgtable_pte_page_ctor(page)) {
+>>> -		free_unref_page(page);
+>>> +		__free_page(page);
+>>>  		return NULL;
+>>>  	}
+>>>  	return (pte_t *) page_address(page);
+>>>
+>>
+>> I wonder if reusing __pte_alloc_one() - e.g., internally - would be even
+>> cleaner.
 > 
-> Good idea.
+> It's really awkward to do because pgtable_t is defined differently.
+> The clean thing to do would be:
 > 
-> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> --- arch/sparc/include/asm/page_64.h
+> -typedef pte_t *pgtable_t;
+> +typedef struct page *pgtable_t;
 > 
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+> and then do all the other changes that would require.
 > 
-> There seems to be some effort to remove "extern" from function declarations
-> from headers. Do we want to do that, at once, or piecemeal? If the latter,
-> this is a chance for these functions at least :)
+> But that feels like a lot more work than appropriate to fix this
+> unlikely bug.
 
-I'm generally in favour of those efforts, but since I was just moving
-the function declarations, and all the code near the destination was
-using 'extern', I decided not to remove it so as to avoid getting caught
-up in bikeshedding ...
+Yeah, cleanups would have to come on top of the fix of course. But I can
+understand that you have plenty of better things to do :) ... maybe
+sparc people want to work on that at one point.
+
+-- 
+Thanks,
+
+David / dhildenb
+
