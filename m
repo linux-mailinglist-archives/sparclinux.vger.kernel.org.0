@@ -2,85 +2,65 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B93122C4043
-	for <lists+sparclinux@lfdr.de>; Wed, 25 Nov 2020 13:34:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6187C2C4072
+	for <lists+sparclinux@lfdr.de>; Wed, 25 Nov 2020 13:47:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729348AbgKYMeG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 25 Nov 2020 07:34:06 -0500
-Received: from mx2.suse.de ([195.135.220.15]:37282 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727520AbgKYMeG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 25 Nov 2020 07:34:06 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 6266BACB5;
-        Wed, 25 Nov 2020 12:34:04 +0000 (UTC)
+        id S1726908AbgKYMqI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 25 Nov 2020 07:46:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52030 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725792AbgKYMqH (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 25 Nov 2020 07:46:07 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD6E2C0613D4;
+        Wed, 25 Nov 2020 04:46:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=AOuNFlot/VyZabqwTIsLmcD2t/G7f3vZneAFiQv6T6c=; b=KEa6PL7BAbuR5GDeG0E/m6yG1y
+        DSuILW9uHkBwm9sUaooAAuTk+2TsRtyOo8emEqt8DjHqpThcZYTRwfARucMLlL34aK7h0Hp3ao/+l
+        NrEvthAJDpIc42zLtHmYA0j0h0myOm8yqTVov2qewm4Y71tIIucuqh0nC7UqddOjqUso0YnMo6n4B
+        y4WtGTqHRYpElIHNqv+okvxU2yqD4uVPnGIzefQiFAZgynlBwMnRqGFbuQwpKpu6mmpOWT9u9uPmt
+        0pFaF4q3tu2NZqTnPRFsnRKaGIrg/OaWlLw3ig+LpGiSjUOVeJXiGiKUJxSzNtKZ7eSwOBpvs9JYQ
+        ZYAYPk1g==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1khuBP-0004eu-Ba; Wed, 25 Nov 2020 12:46:03 +0000
+Date:   Wed, 25 Nov 2020 12:46:03 +0000
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     akpm@linux-foundation.org, davem@davemloft.net, rppt@kernel.org,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
 Subject: Re: [PATCH 2/2] mm: Move free_unref_page to mm/internal.h
-To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        akpm@linux-foundation.org
-Cc:     davem@davemloft.net, rppt@kernel.org, sparclinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Message-ID: <20201125124603.GL4327@casper.infradead.org>
 References: <20201125034655.27687-1-willy@infradead.org>
  <20201125034655.27687-2-willy@infradead.org>
-From:   Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <6418f355-ae69-a0bc-3006-b89a4e1cc09c@suse.cz>
-Date:   Wed, 25 Nov 2020 13:34:04 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+ <6418f355-ae69-a0bc-3006-b89a4e1cc09c@suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <20201125034655.27687-2-willy@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6418f355-ae69-a0bc-3006-b89a4e1cc09c@suse.cz>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 11/25/20 4:46 AM, Matthew Wilcox (Oracle) wrote:
-> Code outside mm/ should not be calling free_unref_page().  Also
-> move free_unref_page_list().
-
-Good idea.
-
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-
-There seems to be some effort to remove "extern" from function 
-declarations from headers. Do we want to do that, at once, or piecemeal? 
-If the latter, this is a chance for these functions at least :)
-
-> ---
->   include/linux/gfp.h | 2 --
->   mm/internal.h       | 3 +++
->   2 files changed, 3 insertions(+), 2 deletions(-)
+On Wed, Nov 25, 2020 at 01:34:04PM +0100, Vlastimil Babka wrote:
+> On 11/25/20 4:46 AM, Matthew Wilcox (Oracle) wrote:
+> > Code outside mm/ should not be calling free_unref_page().  Also
+> > move free_unref_page_list().
 > 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index c603237e006c..6e479e9c48ce 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -580,8 +580,6 @@ void * __meminit alloc_pages_exact_nid(int nid, size_t size, gfp_t gfp_mask);
->   
->   extern void __free_pages(struct page *page, unsigned int order);
->   extern void free_pages(unsigned long addr, unsigned int order);
-> -extern void free_unref_page(struct page *page);
-> -extern void free_unref_page_list(struct list_head *list);
->   
->   struct page_frag_cache;
->   extern void __page_frag_cache_drain(struct page *page, unsigned int count);
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 75ae680d0a2c..5864815947fe 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -201,6 +201,9 @@ extern void post_alloc_hook(struct page *page, unsigned int order,
->   					gfp_t gfp_flags);
->   extern int user_min_free_kbytes;
->   
-> +extern void free_unref_page(struct page *page);
-> +extern void free_unref_page_list(struct list_head *list);
-> +
->   extern void zone_pcp_update(struct zone *zone);
->   extern void zone_pcp_reset(struct zone *zone);
->   extern void zone_pcp_disable(struct zone *zone);
+> Good idea.
 > 
+> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> 
+> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+> 
+> There seems to be some effort to remove "extern" from function declarations
+> from headers. Do we want to do that, at once, or piecemeal? If the latter,
+> this is a chance for these functions at least :)
 
+I'm generally in favour of those efforts, but since I was just moving
+the function declarations, and all the code near the destination was
+using 'extern', I decided not to remove it so as to avoid getting caught
+up in bikeshedding ...
