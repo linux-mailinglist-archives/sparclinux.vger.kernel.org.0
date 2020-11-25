@@ -2,111 +2,77 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA2D52C4117
-	for <lists+sparclinux@lfdr.de>; Wed, 25 Nov 2020 14:25:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D88BF2C4222
+	for <lists+sparclinux@lfdr.de>; Wed, 25 Nov 2020 15:24:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729470AbgKYNYi (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 25 Nov 2020 08:24:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:28581 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728404AbgKYNYi (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 25 Nov 2020 08:24:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606310677;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=yfYwxxCydXD+/2AZjU2DkkyQyPi22Qxb5NijBr+uWj0=;
-        b=KLKI3kKHFh8gfqfrDsSYXzSZOugFkyJxAAYJmGWXUOdxwpx9o0+wXoVFAw4abr61iyvZ9f
-        uULaeGbwek+sKJrk1JgEO+GvDsB5oFbke80aha0oJRGtrZII337Wo3XrP8QdZ61dMqAjJD
-        vQmHzruVc/iNSXl07GgaDMWl2G/zx/I=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-242-I-oSW_vvNE2vnVfTOlFbYw-1; Wed, 25 Nov 2020 08:24:33 -0500
-X-MC-Unique: I-oSW_vvNE2vnVfTOlFbYw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 94DC080EDA9;
-        Wed, 25 Nov 2020 13:24:31 +0000 (UTC)
-Received: from [10.36.112.131] (ovpn-112-131.ams2.redhat.com [10.36.112.131])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 210F15D6AC;
-        Wed, 25 Nov 2020 13:24:29 +0000 (UTC)
-Subject: Re: [PATCH 1/2] sparc: Fix handling of page table constructor failure
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     akpm@linux-foundation.org, davem@davemloft.net, rppt@kernel.org,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-References: <20201125034655.27687-1-willy@infradead.org>
- <b761abc9-12de-f003-b8c4-26e7e506700e@redhat.com>
- <20201125121037.GJ4327@casper.infradead.org>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <5b574e0d-107a-3ebc-d631-b59e88de7174@redhat.com>
-Date:   Wed, 25 Nov 2020 14:24:29 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1729819AbgKYOYA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 25 Nov 2020 09:24:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38930 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729690AbgKYOYA (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 25 Nov 2020 09:24:00 -0500
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B52B2C061A51
+        for <sparclinux@vger.kernel.org>; Wed, 25 Nov 2020 06:23:52 -0800 (PST)
+Received: by mail-qk1-x731.google.com with SMTP id h20so4720474qkk.4
+        for <sparclinux@vger.kernel.org>; Wed, 25 Nov 2020 06:23:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=PRRgtDeJ+IvmmClG2za3Gd9Kir7u7xhjXshxMoJsi+o=;
+        b=SHhPkqqhiA1qpZgiqIE1OExx/SvwtbPd1XEBHuyyO2SHkirsAOr+RQ/dQU6iARXywn
+         TP2Vwiwv8mDVB9UylQLQh1I65yQPUMUtmy08vYzSNa2aTMxdJH0ZbI+w3rWUyJnT/FAP
+         e02tnBqIz+P6rSWBaFvdHYy60bwtAoX08Ht2x0EkgSrkrezhhDf8VhO4gNcswDPXIZOz
+         VK8yawdQioMI+VyP3WZp4KAoS5g4dfCV64wi5+xDlXEFqOQ1Xfc3gTVlClzh9nSG0Unk
+         x00Fi0IwkpfPyI8/cbCtskaZK9NU5BBLfskucKg5MM97ZaX/KuqmXywHEyCa23zkbAPg
+         tqWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=PRRgtDeJ+IvmmClG2za3Gd9Kir7u7xhjXshxMoJsi+o=;
+        b=GWLB8VANfSFmAr5thjcLr4llM0n9A3hm7VMKD0VdfV1G13upM4vLvND0YSTTSXIL3g
+         5bmMFJ9Fw+Qt9qGBK3kB+nU3NonvEjiWBnFnL3+NgFLtE9o+BbPcn/pNp4VucaqHM2fq
+         fxdxHVJSKtiUi6J8nJpSQV6Iwy4TetiTOiAAzyul2Ufwtunk5v8cPCxRTzdP9dy2fD+N
+         L65GmuVSX0AVMsh0y8YTDNPCANZ9+D7bp8ike45wk7vmxq0DwoovBW3POI8YXGtB6CEK
+         DDBX8ok1SwZouJqOap8iKEjG/QE7iJx/ZcxWYmLFwdpWEI/dnMtm+89wi1RWP9SHrElu
+         60sA==
+X-Gm-Message-State: AOAM532va6mNI9vlYNUr9xF7m242z09YB5AbbjgvPGq2D2L7W0YMziQF
+        AwEJ0RHimNf7GJuohAcjZfaNRXwAU887EF1ppqo=
+X-Google-Smtp-Source: ABdhPJz7qPjTZU155G2hh9eCyhnS2iS2r1T97QGUfkJbW6gio9NzVBkqeRZnAiORvMaILOdWjXat/bTcJtPIhOK+iGA=
+X-Received: by 2002:a25:2c92:: with SMTP id s140mr6032043ybs.64.1606314231825;
+ Wed, 25 Nov 2020 06:23:51 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20201125121037.GJ4327@casper.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Received: by 2002:a05:7110:3250:b029:2f:4aed:a58b with HTTP; Wed, 25 Nov 2020
+ 06:23:51 -0800 (PST)
+From:   carlos tayi <tayicarlos@gmail.com>
+Date:   Wed, 25 Nov 2020 15:23:51 +0100
+Message-ID: <CADZxQ+N5zC1jKm0wmaOSp1GUEf-=qsiJ7uEx5zJSbKdqvvYLyQ@mail.gmail.com>
+Subject: =?UTF-8?Q?F=C3=9CR_IHRE_KREDITANWENDUNGEN?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 25.11.20 13:10, Matthew Wilcox wrote:
-> On Wed, Nov 25, 2020 at 09:43:15AM +0100, David Hildenbrand wrote:
->> On 25.11.20 04:46, Matthew Wilcox (Oracle) wrote:
->>> The page has just been allocated, so its refcount is 1.  free_unref_page()
->>> is for use on pages which have a zero refcount.  Use __free_page()
->>> like the other implementations of pte_alloc_one().
->>>
->>> Fixes: 1ae9ae5f7df7 ("sparc: handle pgtable_page_ctor() fail")
->>> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
->>> ---
->>>  arch/sparc/mm/init_64.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
->>> index 96edf64d4fb3..182bb7bdaa0a 100644
->>> --- a/arch/sparc/mm/init_64.c
->>> +++ b/arch/sparc/mm/init_64.c
->>> @@ -2894,7 +2894,7 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
->>>  	if (!page)
->>>  		return NULL;
->>>  	if (!pgtable_pte_page_ctor(page)) {
->>> -		free_unref_page(page);
->>> +		__free_page(page);
->>>  		return NULL;
->>>  	}
->>>  	return (pte_t *) page_address(page);
->>>
->>
->> I wonder if reusing __pte_alloc_one() - e.g., internally - would be even
->> cleaner.
-> 
-> It's really awkward to do because pgtable_t is defined differently.
-> The clean thing to do would be:
-> 
-> --- arch/sparc/include/asm/page_64.h
-> -typedef pte_t *pgtable_t;
-> +typedef struct page *pgtable_t;
-> 
-> and then do all the other changes that would require.
-> 
-> But that feels like a lot more work than appropriate to fix this
-> unlikely bug.
+Hallo Herr / Frau
 
-Yeah, cleanups would have to come on top of the fix of course. But I can
-understand that you have plenty of better things to do :) ... maybe
-sparc people want to work on that at one point.
+Angesichts der regelm=C3=A4=C3=9Figen Verweigerung von Kreditinstituten, Ku=
+nden
+Kredite zu gew=C3=A4hren, bieten wir unsere Kreditdienstleistungen an.
 
--- 
-Thanks,
+Wir bieten Darlehen von 5.000 bis 17.000.000 =E2=82=AC mit einer
+2% R=C3=BCckzahlungsrate und basierend auf der f=C3=BCr Sie geeigneten
+R=C3=BCckzahlungsfrist, wenden Sie sich bitte an unsere
+Management f=C3=BCr Ihre kurz- und langfristigen Kreditanfragen
 
-David / dhildenb
+Wenn Sie auch gro=C3=9Fe Projekte haben, die Investitionen erfordern,
+k=C3=B6nnen wir Sie auch mit Investoren in Kontakt bringen
+abh=C3=A4ngig von der Menge, die Sie w=C3=BCnschen
 
+F=C3=BCr alle Ihre Kredit- und Investitionsanfragen bitte
+Kontaktieren Sie unser Management
+
+financialintercreditficsarl@ficsarl.com
