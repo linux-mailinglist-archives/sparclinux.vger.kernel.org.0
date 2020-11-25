@@ -2,32 +2,33 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2556B2C4031
-	for <lists+sparclinux@lfdr.de>; Wed, 25 Nov 2020 13:30:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B93122C4043
+	for <lists+sparclinux@lfdr.de>; Wed, 25 Nov 2020 13:34:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727614AbgKYMaY (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 25 Nov 2020 07:30:24 -0500
-Received: from mx2.suse.de ([195.135.220.15]:35614 "EHLO mx2.suse.de"
+        id S1729348AbgKYMeG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 25 Nov 2020 07:34:06 -0500
+Received: from mx2.suse.de ([195.135.220.15]:37282 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725836AbgKYMaY (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 25 Nov 2020 07:30:24 -0500
+        id S1727520AbgKYMeG (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 25 Nov 2020 07:34:06 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 4C102ACBD;
-        Wed, 25 Nov 2020 12:30:22 +0000 (UTC)
-Subject: Re: [PATCH 1/2] sparc: Fix handling of page table constructor failure
+        by mx2.suse.de (Postfix) with ESMTP id 6266BACB5;
+        Wed, 25 Nov 2020 12:34:04 +0000 (UTC)
+Subject: Re: [PATCH 2/2] mm: Move free_unref_page to mm/internal.h
 To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
         akpm@linux-foundation.org
 Cc:     davem@davemloft.net, rppt@kernel.org, sparclinux@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20201125034655.27687-1-willy@infradead.org>
+ <20201125034655.27687-2-willy@infradead.org>
 From:   Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <691f8be6-e6f3-b10e-5d9e-079e05924f2c@suse.cz>
-Date:   Wed, 25 Nov 2020 13:30:21 +0100
+Message-ID: <6418f355-ae69-a0bc-3006-b89a4e1cc09c@suse.cz>
+Date:   Wed, 25 Nov 2020 13:34:04 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.5.0
 MIME-Version: 1.0
-In-Reply-To: <20201125034655.27687-1-willy@infradead.org>
+In-Reply-To: <20201125034655.27687-2-willy@infradead.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -36,31 +37,50 @@ List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
 On 11/25/20 4:46 AM, Matthew Wilcox (Oracle) wrote:
-> The page has just been allocated, so its refcount is 1.  free_unref_page()
-> is for use on pages which have a zero refcount.  Use __free_page()
-> like the other implementations of pte_alloc_one().
-> 
-> Fixes: 1ae9ae5f7df7 ("sparc: handle pgtable_page_ctor() fail")
+> Code outside mm/ should not be calling free_unref_page().  Also
+> move free_unref_page_list().
+
+Good idea.
+
 > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
 Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
+There seems to be some effort to remove "extern" from function 
+declarations from headers. Do we want to do that, at once, or piecemeal? 
+If the latter, this is a chance for these functions at least :)
+
 > ---
->   arch/sparc/mm/init_64.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   include/linux/gfp.h | 2 --
+>   mm/internal.h       | 3 +++
+>   2 files changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index 96edf64d4fb3..182bb7bdaa0a 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -2894,7 +2894,7 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
->   	if (!page)
->   		return NULL;
->   	if (!pgtable_pte_page_ctor(page)) {
-> -		free_unref_page(page);
-> +		__free_page(page);
->   		return NULL;
->   	}
->   	return (pte_t *) page_address(page);
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index c603237e006c..6e479e9c48ce 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -580,8 +580,6 @@ void * __meminit alloc_pages_exact_nid(int nid, size_t size, gfp_t gfp_mask);
+>   
+>   extern void __free_pages(struct page *page, unsigned int order);
+>   extern void free_pages(unsigned long addr, unsigned int order);
+> -extern void free_unref_page(struct page *page);
+> -extern void free_unref_page_list(struct list_head *list);
+>   
+>   struct page_frag_cache;
+>   extern void __page_frag_cache_drain(struct page *page, unsigned int count);
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 75ae680d0a2c..5864815947fe 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -201,6 +201,9 @@ extern void post_alloc_hook(struct page *page, unsigned int order,
+>   					gfp_t gfp_flags);
+>   extern int user_min_free_kbytes;
+>   
+> +extern void free_unref_page(struct page *page);
+> +extern void free_unref_page_list(struct list_head *list);
+> +
+>   extern void zone_pcp_update(struct zone *zone);
+>   extern void zone_pcp_reset(struct zone *zone);
+>   extern void zone_pcp_disable(struct zone *zone);
 > 
 
