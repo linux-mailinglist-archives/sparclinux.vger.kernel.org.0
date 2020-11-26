@@ -2,100 +2,95 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E5D52C572B
-	for <lists+sparclinux@lfdr.de>; Thu, 26 Nov 2020 15:33:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3F342C594C
+	for <lists+sparclinux@lfdr.de>; Thu, 26 Nov 2020 17:33:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390707AbgKZOc7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 26 Nov 2020 09:32:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56648 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390631AbgKZOc6 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 26 Nov 2020 09:32:58 -0500
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2EEC42065E;
-        Thu, 26 Nov 2020 14:32:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606401178;
-        bh=5dY8cbJVS6zfD7uZoLaby4Q2OOwNKKL2V1i9udJweeM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NBpBmf5VIbEXO88WpbzA6/iIU7KMKeADvAYkqkUzwv1+1V2haTEx2Ph0bDJb0KmlY
-         s1ebOaFIn/gppwqJN43nLeT+6RcP0IDfD2unluy9hcIsWJUDt1xc18gs4uuGOWCHNg
-         0HUeP5Xqav3l1507RgGTmw4lRaV28Zv5UHxU3gi8=
-Date:   Thu, 26 Nov 2020 14:32:50 +0000
-From:   Will Deacon <will@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     kan.liang@linux.intel.com, mingo@kernel.org, acme@kernel.org,
-        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-        jolsa@redhat.com, eranian@google.com, christophe.leroy@csgroup.eu,
-        npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org,
-        mpe@ellerman.id.au, willy@infradead.org,
-        aneesh.kumar@linux.ibm.com, sparclinux@vger.kernel.org,
-        davem@davemloft.net, catalin.marinas@arm.com,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ak@linux.intel.com, dave.hansen@intel.com,
-        kirill.shutemov@linux.intel.com
-Subject: Re: [PATCH v2 4/6] arm64/mm: Implement pXX_leaf_size() support
-Message-ID: <20201126143249.GA18344@willie-the-truck>
-References: <20201126120114.071913521@infradead.org>
- <20201126121121.226210959@infradead.org>
- <20201126125747.GG2414@hirez.programming.kicks-ass.net>
+        id S2390021AbgKZQdj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 26 Nov 2020 11:33:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57212 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730181AbgKZQdj (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 26 Nov 2020 11:33:39 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D43C0613D4;
+        Thu, 26 Nov 2020 08:33:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=bqLeJ7tQgtWVqUanZNK/be2k3nwImihYsEZ6qm1//Jc=; b=bVomFdoZyMjCyp39m/+hI2Cwp+
+        tB/4WCBZR50jHXKiCbmayUPoNDYFTz3eaYscv63cEpljzSt3bgj10aFLmLi9q/bV+6Lf8MCarhByy
+        IqLCyoxLP4RjRInuZScNQ7WlWRaCJLoppv6mSYHkmuUGPmcGeBA3yUMdOsw44vHX7prAhVgmVc28m
+        wTZBQzA4ZMerKTLED4JtJHpuXnhmFuoZTxTLwI7BuoyQrx5EgKb93P9H/24K4JirvjCpCVeSv1wh4
+        3bXfigxXx+9TTJ7WRwvq1r8koyjXVmn06BUMv7X6Pdlx+UzrAO6U5yEZD+dtjZy8cVCntw0YdrBYy
+        uZq6CsaQ==;
+Received: from [2601:1c0:6280:3f0::cc1f]
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kiKD7-0001TC-NC; Thu, 26 Nov 2020 16:33:34 +0000
+Subject: Re: [PATCH] fbdev: aty: SPARC64 requires FB_ATY_CT
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+References: <20201126003957.19604-1-rdunlap@infradead.org>
+ <CAMuHMdVpcLc9enskSBJobmHXy3GU5ULdt78ArAr522VXRmty5w@mail.gmail.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <d0f1daa5-8d3f-4eb9-ad00-29eb344016b7@infradead.org>
+Date:   Thu, 26 Nov 2020 08:33:28 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201126125747.GG2414@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAMuHMdVpcLc9enskSBJobmHXy3GU5ULdt78ArAr522VXRmty5w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Nov 26, 2020 at 01:57:47PM +0100, Peter Zijlstra wrote:
+On 11/26/20 12:29 AM, Geert Uytterhoeven wrote:
+> Hi Randy,
 > 
-> Now with pmd_cont() defined...
+> On Thu, Nov 26, 2020 at 1:40 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+>> It looks like SPARC64 requires FB_ATY_CT to build without errors,
+>> so adjust the Kconfig entry of FB_ATY_CT so that it is always 'y'
+>> for SPARC64 && PCI by disabling the prompt for SPARC64 && PCI.
+>>
+>> As it currently is, FB_ATY_CT can be disabled, resulting in build
+>> errors:
+>>
+>> ERROR: modpost: "aty_postdividers" [drivers/video/fbdev/aty/atyfb.ko] undefined!
+>> ERROR: modpost: "aty_ld_pll_ct" [drivers/video/fbdev/aty/atyfb.ko] undefined!
+>>
+>> Fixes: f7018c213502 ("video: move fbdev to drivers/video/fbdev")
+>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 > 
-> ---
-> Subject: arm64/mm: Implement pXX_leaf_size() support
-> From: Peter Zijlstra <peterz@infradead.org>
-> Date: Fri Nov 13 11:46:06 CET 2020
+> Thanks for your patch!
 > 
-> ARM64 has non-pagetable aligned large page support with PTE_CONT, when
-> this bit is set the page is part of a super-page. Match the hugetlb
-> code and support these super pages for PTE and PMD levels.
+>> --- linux-next-20201124.orig/drivers/video/fbdev/Kconfig
+>> +++ linux-next-20201124/drivers/video/fbdev/Kconfig
+>> @@ -1277,7 +1277,7 @@ config FB_ATY
+>>           module will be called atyfb.
+>>
+>>  config FB_ATY_CT
+>> -       bool "Mach64 CT/VT/GT/LT (incl. 3D RAGE) support"
+>> +       bool "Mach64 CT/VT/GT/LT (incl. 3D RAGE) support" if !(SPARC64 && PCI)
+>>         depends on PCI && FB_ATY
+>>         default y if SPARC64 && PCI
+>>         help
 > 
-> This enables PERF_SAMPLE_{DATA,CODE}_PAGE_SIZE to report accurate
-> pagetable leaf sizes.
-> 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  arch/arm64/include/asm/pgtable.h |    4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -407,6 +407,7 @@ static inline int pmd_trans_huge(pmd_t p
->  #define pmd_dirty(pmd)		pte_dirty(pmd_pte(pmd))
->  #define pmd_young(pmd)		pte_young(pmd_pte(pmd))
->  #define pmd_valid(pmd)		pte_valid(pmd_pte(pmd))
-> +#define pmd_cont(pmd)		pte_cont(pmd_pte(pmd))
->  #define pmd_wrprotect(pmd)	pte_pmd(pte_wrprotect(pmd_pte(pmd)))
->  #define pmd_mkold(pmd)		pte_pmd(pte_mkold(pmd_pte(pmd)))
->  #define pmd_mkwrite(pmd)	pte_pmd(pte_mkwrite(pmd_pte(pmd)))
-> @@ -503,6 +504,9 @@ extern pgprot_t phys_mem_access_prot(str
->  				 PMD_TYPE_SECT)
->  #define pmd_leaf(pmd)		pmd_sect(pmd)
->  
-> +#define pmd_leaf_size(pmd)	(pmd_cont(pmd) ? CONT_PMD_SIZE : PMD_SIZE)
-> +#define pte_leaf_size(pte)	(pte_cont(pte) ? CONT_PTE_SIZE : PAGE_SIZE)
-> +
->  #if defined(CONFIG_ARM64_64K_PAGES) || CONFIG_PGTABLE_LEVELS < 3
->  static inline bool pud_sect(pud_t pud) { return false; }
->  static inline bool pud_table(pud_t pud) { return true; }
+> What about letting FB_ATY select FB_ATY_CT if SPARC64 && PCI, and
+> dropping the "default y"-line, instead?
 
-Acked-by: Will Deacon <will@kernel.org>
+Sure, I'll try it that way and repost.
 
-I'm still highly dubious about the utility of this feature in perf, since
-the TLB entry size is pretty much independent of the page-table
-configuration, but that's a problem for all architectures I suspect.
+thanks.
+-- 
+~Randy
 
-Will
