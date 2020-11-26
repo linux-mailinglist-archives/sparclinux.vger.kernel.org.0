@@ -2,75 +2,95 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B52E2C4C3D
-	for <lists+sparclinux@lfdr.de>; Thu, 26 Nov 2020 01:41:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A5D02C507E
+	for <lists+sparclinux@lfdr.de>; Thu, 26 Nov 2020 09:34:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726483AbgKZAkR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 25 Nov 2020 19:40:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50708 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726009AbgKZAkR (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 25 Nov 2020 19:40:17 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 380CBC0613D4;
-        Wed, 25 Nov 2020 16:40:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=hE2cZTOWMHDfbPKxxpuZpwkZ2TBUHo+B7e7lElVsLP4=; b=NWcmdzI4i5cgAWJbzVhLr/Fmkt
-        ZH/gPcO2po4EoJ7Po6aP2/bMgLH6HUQTBm3A6LZ4H5B+P5nj4xX8pGeu8avyycOmQL2JiA1Dqmvlb
-        JftlKAgrPyvwkauMnvgw2DAros6ViNhnlAHAUviRrGdHr4tRxL75ukv/mcnIrxuDXbkbxJi1P+cep
-        b52UrgfK1T497XJL7m/EgUZ5EgjuXbyoIjuYkdX3W9L4J9SZqw5BogzwV3CByOP8B7cqoEy9J/MLx
-        1pSDcosHAnJSFmh3N0c5OeQnRrf8p3RixxWl6xbAbn9QWbypjgldgA4/nSg9AcjC42T9QbBjahqQx
-        eQMOX9qQ==;
-Received: from [2601:1c0:6280:3f0::cc1f] (helo=smtpauth.infradead.org)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1ki5KY-0005U5-OZ; Thu, 26 Nov 2020 00:40:15 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH] sparc64: only select COMPAT_BINFMT_ELF if BINFMT_ELF is set
-Date:   Wed, 25 Nov 2020 16:40:11 -0800
-Message-Id: <20201126004011.19655-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
+        id S2388866AbgKZI35 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 26 Nov 2020 03:29:57 -0500
+Received: from mail-oo1-f65.google.com ([209.85.161.65]:34970 "EHLO
+        mail-oo1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727039AbgKZI35 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 26 Nov 2020 03:29:57 -0500
+Received: by mail-oo1-f65.google.com with SMTP id y3so237662ooq.2;
+        Thu, 26 Nov 2020 00:29:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=j/vBBElAksTvt4HjurCYnxT73LNYVZ5qmRqRKKnCoNw=;
+        b=SBDUNm3+NYqZ7dOowcbPhy3YJbjDU+cyirOt7w0EkG8uBm4EpeOwLx/6g7IdT76HT0
+         vGFFqRKqms2cKwRLwHd5uzLNP4mzV6WLf4rohuyuim1JFyeOQQet2unlWEdUPsK02Xh8
+         g3XAEiVBLtqtVxHLj1NC5AgacpAh5BHW2wmP82wmdomvdAJ3g4sA289up8s2Eze0mg8m
+         6HCRQ/rt3HNoI/vYmY+krIBPRPNSf37oKQue4ClAalsHB854gmh8OyGSFRfSCbVjTA3A
+         /VGfTT45V9/9uCFAQlD+TuJ8b5CS/2o3gcRUzO83dE9PbFzuy6ZbiflOZSC/lKnwYQ3T
+         n0xA==
+X-Gm-Message-State: AOAM530RJn4uQXQSH6k4fMXhz3ZUWJlrA33IK36tMnm7iUbYASEHWisG
+        J81WCjcMfHYbuY6IpcHYmoPi3lmEi/Sy8sRfCHA=
+X-Google-Smtp-Source: ABdhPJwPulrHQWSHcYoomf4Z7RDCXvKABZRXcws/8ZD9MXQyBQxa3HrEjaME+FqCdHcKa4kGkfEeLCOXS4eDYfiorh4=
+X-Received: by 2002:a4a:abc9:: with SMTP id o9mr1291425oon.1.1606379394915;
+ Thu, 26 Nov 2020 00:29:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201126003957.19604-1-rdunlap@infradead.org>
+In-Reply-To: <20201126003957.19604-1-rdunlap@infradead.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 26 Nov 2020 09:29:43 +0100
+Message-ID: <CAMuHMdVpcLc9enskSBJobmHXy3GU5ULdt78ArAr522VXRmty5w@mail.gmail.com>
+Subject: Re: [PATCH] fbdev: aty: SPARC64 requires FB_ATY_CT
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Currently COMPAT on SPARC64 selects COMPAT_BINFMT_ELF unconditionally,
-even when BINFMT_ELF is not enabled. This causes a kconfig warning.
+Hi Randy,
 
-Instead, just select COMPAT_BINFMT_ELF if BINFMT_ELF is enabled.
-This builds cleanly with no kconfig warnings.
+On Thu, Nov 26, 2020 at 1:40 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+> It looks like SPARC64 requires FB_ATY_CT to build without errors,
+> so adjust the Kconfig entry of FB_ATY_CT so that it is always 'y'
+> for SPARC64 && PCI by disabling the prompt for SPARC64 && PCI.
+>
+> As it currently is, FB_ATY_CT can be disabled, resulting in build
+> errors:
+>
+> ERROR: modpost: "aty_postdividers" [drivers/video/fbdev/aty/atyfb.ko] undefined!
+> ERROR: modpost: "aty_ld_pll_ct" [drivers/video/fbdev/aty/atyfb.ko] undefined!
+>
+> Fixes: f7018c213502 ("video: move fbdev to drivers/video/fbdev")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
-WARNING: unmet direct dependencies detected for COMPAT_BINFMT_ELF
-  Depends on [n]: COMPAT [=y] && BINFMT_ELF [=n]
-  Selected by [y]:
-  - COMPAT [=y] && SPARC64 [=y]
+Thanks for your patch!
 
+> --- linux-next-20201124.orig/drivers/video/fbdev/Kconfig
+> +++ linux-next-20201124/drivers/video/fbdev/Kconfig
+> @@ -1277,7 +1277,7 @@ config FB_ATY
+>           module will be called atyfb.
+>
+>  config FB_ATY_CT
+> -       bool "Mach64 CT/VT/GT/LT (incl. 3D RAGE) support"
+> +       bool "Mach64 CT/VT/GT/LT (incl. 3D RAGE) support" if !(SPARC64 && PCI)
+>         depends on PCI && FB_ATY
+>         default y if SPARC64 && PCI
+>         help
 
-Fixes: 26b4c912185a ("sparc,sparc64: unify Kconfig files")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Sam Ravnborg <sam@ravnborg.org>
----
- arch/sparc/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+What about letting FB_ATY select FB_ATY_CT if SPARC64 && PCI, and
+dropping the "default y"-line, instead?
 
---- linux-next-20201124.orig/arch/sparc/Kconfig
-+++ linux-next-20201124/arch/sparc/Kconfig
-@@ -494,7 +494,7 @@ config COMPAT
- 	bool
- 	depends on SPARC64
- 	default y
--	select COMPAT_BINFMT_ELF
-+	select COMPAT_BINFMT_ELF if BINFMT_ELF
- 	select HAVE_UID16
- 	select ARCH_WANT_OLD_COMPAT_IPC
- 	select COMPAT_OLD_SIGACTION
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
