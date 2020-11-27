@@ -2,221 +2,79 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E2772C5F1F
-	for <lists+sparclinux@lfdr.de>; Fri, 27 Nov 2020 04:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 313282C616E
+	for <lists+sparclinux@lfdr.de>; Fri, 27 Nov 2020 10:17:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389099AbgK0D7C (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 26 Nov 2020 22:59:02 -0500
-Received: from mail.loongson.cn ([114.242.206.163]:52520 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2389089AbgK0D7C (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 26 Nov 2020 22:59:02 -0500
-Received: from bogon.localdomain (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9AxatB6ecBfElAXAA--.37838S2;
-        Fri, 27 Nov 2020 11:58:51 +0800 (CST)
-From:   Youling Tang <tangyouling@loongson.cn>
-To:     Oleg Nesterov <oleg@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] sparc: Removes code duplication between arch_ptrace and compat_arch_ptrace
-Date:   Fri, 27 Nov 2020 11:58:50 +0800
-Message-Id: <1606449530-14319-1-git-send-email-tangyouling@loongson.cn>
-X-Mailer: git-send-email 2.1.0
-X-CM-TRANSID: AQAAf9AxatB6ecBfElAXAA--.37838S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWFy7KFWkWF4UGFy3tF1xAFb_yoWrCF47p3
-        yfA39rKF47tr12kF4xZayrZF95ur1xWF9Fy3s5JFnYkr1vgrWFkFnFq3s2qFyakrWkW3s7
-        Cr4qk3Z09FsFgrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUk2b7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
-        C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-        0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr
-        1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkIecxEwVAFwVW8GwCF04k2
-        0xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI
-        8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41l
-        IxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIx
-        AIcVCF04k26cxKx2IYs7xG6Fyj6rWUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
-        87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIHGQDUUUU
-X-CM-SenderInfo: 5wdqw5prxox03j6o00pqjv00gofq/
+        id S1725985AbgK0JQB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 27 Nov 2020 04:16:01 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:45744 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725875AbgK0JQB (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 27 Nov 2020 04:16:01 -0500
+Received: by mail-oi1-f195.google.com with SMTP id l206so5124487oif.12;
+        Fri, 27 Nov 2020 01:16:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2bL4nt/v+u8bthLLcwo5vWoSSDUj230GtxR+dbDyinE=;
+        b=HdoQSg9+qYm9kBcD3ZXaFQpGTqrY0knhT2pE3Rd28f5yPsaHrGTgJsLotyx9YrvHCP
+         ziG/kd7YB+EVkWvewlrq6Bk67qXZUC7Ap+i8fixt2WRA5ErmcRCjY9Yug7tlfTjyQuA3
+         kilPsSKUpvrBmus+O1uQ89upnHRaQR2bw+q+sjVIH7Q1X5waexMbQA1ogJLQzCDqzugx
+         ZmTMc9bMNPZgMVD1pm3vyaItWwcZ2tonvIwytP677otkOWeyX0chP3lIpv9H2NXLqOm5
+         eKxgMcrD2Pqjhmdf1i1On5zzzqSyqbv+bF7C25ahP0Qxa7GG8z6/kQjSrybg/dJkR2HP
+         LlXA==
+X-Gm-Message-State: AOAM530rqAY+ru/C2OPzOeikNeVbpBPfp9H4+GftGvDYEBiKTNTnUBQX
+        NR801ei8LEUIWj7DDS5z0J4njNmArVOjcE1muWJFbPKTwAg=
+X-Google-Smtp-Source: ABdhPJwwc735j9DU3CQVssDzFK9RFomMYj2kdWdhsc0uJGwQtM3XHiZQkdCwKodyr/1M4ebapYD/57MTPsklQvOavoQ=
+X-Received: by 2002:aca:1c0f:: with SMTP id c15mr4721709oic.54.1606468560125;
+ Fri, 27 Nov 2020 01:16:00 -0800 (PST)
+MIME-Version: 1.0
+References: <20201127031752.10371-1-rdunlap@infradead.org>
+In-Reply-To: <20201127031752.10371-1-rdunlap@infradead.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 27 Nov 2020 10:15:49 +0100
+Message-ID: <CAMuHMdWup4D9A-giF9xDEhva8PPH4Yhg2NHYx3+0q_=Uoi+iRA@mail.gmail.com>
+Subject: Re: [PATCH v2] fbdev: aty: SPARC64 requires FB_ATY_CT
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The patch removes code duplication between arch_ptrace and
-compat_arch_ptrace, in large part by having the former call
-into the later for all requests that don't need any special
-"compat" treatment.
+On Fri, Nov 27, 2020 at 4:18 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+> It looks like SPARC64 requires FB_ATY_CT to build without errors,
+> so have FB_ATY select FB_ATY_CT if both SPARC64 and PCI are enabled
+> instead of using "default y if SPARC64 && PCI", which is not strong
+> enough to prevent build errors.
+>
+> As it currently is, FB_ATY_CT can be disabled, resulting in build
+> errors:
+>
+> ERROR: modpost: "aty_postdividers" [drivers/video/fbdev/aty/atyfb.ko] undefined!
+> ERROR: modpost: "aty_ld_pll_ct" [drivers/video/fbdev/aty/atyfb.ko] undefined!
+>
+> Fixes: f7018c213502 ("video: move fbdev to drivers/video/fbdev")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
-Signed-off-by: Youling Tang <tangyouling@loongson.cn>
----
- arch/sparc/kernel/ptrace_64.c | 71 +++++++++++--------------------------------
- 1 file changed, 17 insertions(+), 54 deletions(-)
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-diff --git a/arch/sparc/kernel/ptrace_64.c b/arch/sparc/kernel/ptrace_64.c
-index 2b92155d..4fd8c33 100644
---- a/arch/sparc/kernel/ptrace_64.c
-+++ b/arch/sparc/kernel/ptrace_64.c
-@@ -929,78 +929,51 @@ struct compat_fps {
- long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
- 			compat_ulong_t caddr, compat_ulong_t cdata)
- {
--	compat_ulong_t caddr2 = task_pt_regs(current)->u_regs[UREG_I4];
- 	struct pt_regs32 __user *pregs;
- 	struct compat_fps __user *fps;
--	unsigned long addr2 = caddr2;
- 	unsigned long addr = caddr;
- 	unsigned long data = cdata;
--	int ret;
- 
- 	pregs = (struct pt_regs32 __user *) addr;
- 	fps = (struct compat_fps __user *) addr;
- 
- 	switch (request) {
--	case PTRACE_PEEKUSR:
--		ret = (addr != 0) ? -EIO : 0;
--		break;
--
- 	case PTRACE_GETREGS:
--		ret = copy_regset_to_user(child, &ptrace32_view,
-+		return copy_regset_to_user(child, &ptrace32_view,
- 					  REGSET_GENERAL, 0,
- 					  19 * sizeof(u32),
- 					  pregs);
--		break;
- 
- 	case PTRACE_SETREGS:
--		ret = copy_regset_from_user(child, &ptrace32_view,
-+		return copy_regset_from_user(child, &ptrace32_view,
- 					  REGSET_GENERAL, 0,
- 					  19 * sizeof(u32),
- 					  pregs);
--		break;
- 
- 	case PTRACE_GETFPREGS:
--		ret = copy_regset_to_user(child, &ptrace32_view,
-+		return copy_regset_to_user(child, &ptrace32_view,
- 					  REGSET_FP, 0,
- 					  68 * sizeof(u32),
- 					  fps);
--		break;
- 
- 	case PTRACE_SETFPREGS:
--		ret = copy_regset_from_user(child, &ptrace32_view,
-+		return copy_regset_from_user(child, &ptrace32_view,
- 					  REGSET_FP, 0,
- 					  33 * sizeof(u32),
- 					  fps);
--		break;
- 
-+	case PTRACE_PEEKUSR:
- 	case PTRACE_READTEXT:
- 	case PTRACE_READDATA:
--		ret = ptrace_readdata(child, addr,
--				      (char __user *)addr2, data);
--		if (ret == data)
--			ret = 0;
--		else if (ret >= 0)
--			ret = -EIO;
--		break;
--
- 	case PTRACE_WRITETEXT:
- 	case PTRACE_WRITEDATA:
--		ret = ptrace_writedata(child, (char __user *) addr2,
--				       addr, data);
--		if (ret == data)
--			ret = 0;
--		else if (ret >= 0)
--			ret = -EIO;
--		break;
-+		return arch_ptrace(child, request, addr, data);
- 
- 	default:
- 		if (request == PTRACE_SPARC_DETACH)
- 			request = PTRACE_DETACH;
--		ret = compat_ptrace_request(child, request, addr, data);
--		break;
-+		return compat_ptrace_request(child, request, addr, data);
- 	}
--
--	return ret;
- }
- #endif /* CONFIG_COMPAT */
- 
-@@ -1025,63 +998,53 @@ long arch_ptrace(struct task_struct *child, long request,
- 
- 	switch (request) {
- 	case PTRACE_PEEKUSR:
--		ret = (addr != 0) ? -EIO : 0;
--		break;
-+		return ((addr != 0) ? -EIO : 0);
- 
- 	case PTRACE_GETREGS64:
--		ret = copy_regset_to_user(child, &ptrace64_view,
-+		return copy_regset_to_user(child, &ptrace64_view,
- 					  REGSET_GENERAL, 0,
- 					  19 * sizeof(u64),
- 					  pregs);
--		break;
- 
- 	case PTRACE_SETREGS64:
--		ret = copy_regset_from_user(child, &ptrace64_view,
-+		return copy_regset_from_user(child, &ptrace64_view,
- 					  REGSET_GENERAL, 0,
- 					  19 * sizeof(u64),
- 					  pregs);
--		break;
- 
- 	case PTRACE_GETFPREGS64:
--		ret = copy_regset_to_user(child, view, REGSET_FP,
-+		return copy_regset_to_user(child, view, REGSET_FP,
- 					  0 * sizeof(u64),
- 					  33 * sizeof(u64),
- 					  fps);
--		break;
- 
- 	case PTRACE_SETFPREGS64:
--		ret = copy_regset_from_user(child, view, REGSET_FP,
-+		return copy_regset_from_user(child, view, REGSET_FP,
- 					  0 * sizeof(u64),
- 					  33 * sizeof(u64),
- 					  fps);
--		break;
- 
- 	case PTRACE_READTEXT:
- 	case PTRACE_READDATA:
- 		ret = ptrace_readdata(child, addr, addr2p, data);
- 		if (ret == data)
--			ret = 0;
-+			return 0;
- 		else if (ret >= 0)
--			ret = -EIO;
--		break;
-+			return -EIO;
- 
- 	case PTRACE_WRITETEXT:
- 	case PTRACE_WRITEDATA:
- 		ret = ptrace_writedata(child, addr2p, addr, data);
- 		if (ret == data)
--			ret = 0;
-+			return 0;
- 		else if (ret >= 0)
--			ret = -EIO;
--		break;
-+			return -EIO;
- 
- 	default:
- 		if (request == PTRACE_SPARC_DETACH)
- 			request = PTRACE_DETACH;
--		ret = ptrace_request(child, request, addr, data);
--		break;
-+		return ptrace_request(child, request, addr, data);
- 	}
--
--	return ret;
- }
- 
- asmlinkage int syscall_trace_enter(struct pt_regs *regs)
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.1.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
