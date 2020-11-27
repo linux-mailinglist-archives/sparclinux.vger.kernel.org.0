@@ -2,94 +2,221 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C49A52C5EEB
-	for <lists+sparclinux@lfdr.de>; Fri, 27 Nov 2020 04:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E2772C5F1F
+	for <lists+sparclinux@lfdr.de>; Fri, 27 Nov 2020 04:59:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392334AbgK0DSI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 26 Nov 2020 22:18:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43068 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388759AbgK0DSI (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 26 Nov 2020 22:18:08 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BA0EC0613D1;
-        Thu, 26 Nov 2020 19:18:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=k5Qw/Urbgsr4b6oxTUWbMQah+Hz+m37ybtc8zTvtg3E=; b=U7nqK/EKDdovDwzz55RcS0ppju
-        I1Rf9vNOYrwUmXr4t5Y3j/ZD7P5gRokg7C/e31NQNhaYAODXPDsPVBwXKf0Wsb5HywMzv0c3eBYjH
-        ydfys6t3XpMJaNN3kTzteOasEn8Ylw857262ixWIXz8kJkjCF33eaYR8Z2mDCnbdnle/ekPQ6xhxM
-        8f8hntimMkj5vEbURPgsjywjdujWzqghuYDx4sgL3YNzIuVmaF8nEbnzMfiPBpVvUC7wPz87iyRK2
-        gMGci9WnsIPYsoWQeM3Wr3ADWKij5lq68ujDD4W0f/8dH93sPWQBpudP+TOtf/dN0piJpeptb6KOi
-        xCCuNI6A==;
-Received: from [2601:1c0:6280:3f0::cc1f] (helo=smtpauth.infradead.org)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kiUGm-0007TW-8s; Fri, 27 Nov 2020 03:18:00 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH v2] fbdev: aty: SPARC64 requires FB_ATY_CT
-Date:   Thu, 26 Nov 2020 19:17:52 -0800
-Message-Id: <20201127031752.10371-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S2389099AbgK0D7C (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 26 Nov 2020 22:59:02 -0500
+Received: from mail.loongson.cn ([114.242.206.163]:52520 "EHLO loongson.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2389089AbgK0D7C (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 26 Nov 2020 22:59:02 -0500
+Received: from bogon.localdomain (unknown [113.200.148.30])
+        by mail.loongson.cn (Coremail) with SMTP id AQAAf9AxatB6ecBfElAXAA--.37838S2;
+        Fri, 27 Nov 2020 11:58:51 +0800 (CST)
+From:   Youling Tang <tangyouling@loongson.cn>
+To:     Oleg Nesterov <oleg@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] sparc: Removes code duplication between arch_ptrace and compat_arch_ptrace
+Date:   Fri, 27 Nov 2020 11:58:50 +0800
+Message-Id: <1606449530-14319-1-git-send-email-tangyouling@loongson.cn>
+X-Mailer: git-send-email 2.1.0
+X-CM-TRANSID: AQAAf9AxatB6ecBfElAXAA--.37838S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxWFy7KFWkWF4UGFy3tF1xAFb_yoWrCF47p3
+        yfA39rKF47tr12kF4xZayrZF95ur1xWF9Fy3s5JFnYkr1vgrWFkFnFq3s2qFyakrWkW3s7
+        Cr4qk3Z09FsFgrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUk2b7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
+        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
+        jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
+        C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+        0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr
+        1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkIecxEwVAFwVW8GwCF04k2
+        0xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI
+        8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41l
+        IxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIx
+        AIcVCF04k26cxKx2IYs7xG6Fyj6rWUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
+        87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIHGQDUUUU
+X-CM-SenderInfo: 5wdqw5prxox03j6o00pqjv00gofq/
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-It looks like SPARC64 requires FB_ATY_CT to build without errors,
-so have FB_ATY select FB_ATY_CT if both SPARC64 and PCI are enabled
-instead of using "default y if SPARC64 && PCI", which is not strong
-enough to prevent build errors.
+The patch removes code duplication between arch_ptrace and
+compat_arch_ptrace, in large part by having the former call
+into the later for all requests that don't need any special
+"compat" treatment.
 
-As it currently is, FB_ATY_CT can be disabled, resulting in build
-errors:
-
-ERROR: modpost: "aty_postdividers" [drivers/video/fbdev/aty/atyfb.ko] undefined!
-ERROR: modpost: "aty_ld_pll_ct" [drivers/video/fbdev/aty/atyfb.ko] undefined!
-
-Fixes: f7018c213502 ("video: move fbdev to drivers/video/fbdev")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: David Airlie <airlied@linux.ie>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Youling Tang <tangyouling@loongson.cn>
 ---
-v2: use select (suggested by Geert)
+ arch/sparc/kernel/ptrace_64.c | 71 +++++++++++--------------------------------
+ 1 file changed, 17 insertions(+), 54 deletions(-)
 
- drivers/video/fbdev/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/arch/sparc/kernel/ptrace_64.c b/arch/sparc/kernel/ptrace_64.c
+index 2b92155d..4fd8c33 100644
+--- a/arch/sparc/kernel/ptrace_64.c
++++ b/arch/sparc/kernel/ptrace_64.c
+@@ -929,78 +929,51 @@ struct compat_fps {
+ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 			compat_ulong_t caddr, compat_ulong_t cdata)
+ {
+-	compat_ulong_t caddr2 = task_pt_regs(current)->u_regs[UREG_I4];
+ 	struct pt_regs32 __user *pregs;
+ 	struct compat_fps __user *fps;
+-	unsigned long addr2 = caddr2;
+ 	unsigned long addr = caddr;
+ 	unsigned long data = cdata;
+-	int ret;
+ 
+ 	pregs = (struct pt_regs32 __user *) addr;
+ 	fps = (struct compat_fps __user *) addr;
+ 
+ 	switch (request) {
+-	case PTRACE_PEEKUSR:
+-		ret = (addr != 0) ? -EIO : 0;
+-		break;
+-
+ 	case PTRACE_GETREGS:
+-		ret = copy_regset_to_user(child, &ptrace32_view,
++		return copy_regset_to_user(child, &ptrace32_view,
+ 					  REGSET_GENERAL, 0,
+ 					  19 * sizeof(u32),
+ 					  pregs);
+-		break;
+ 
+ 	case PTRACE_SETREGS:
+-		ret = copy_regset_from_user(child, &ptrace32_view,
++		return copy_regset_from_user(child, &ptrace32_view,
+ 					  REGSET_GENERAL, 0,
+ 					  19 * sizeof(u32),
+ 					  pregs);
+-		break;
+ 
+ 	case PTRACE_GETFPREGS:
+-		ret = copy_regset_to_user(child, &ptrace32_view,
++		return copy_regset_to_user(child, &ptrace32_view,
+ 					  REGSET_FP, 0,
+ 					  68 * sizeof(u32),
+ 					  fps);
+-		break;
+ 
+ 	case PTRACE_SETFPREGS:
+-		ret = copy_regset_from_user(child, &ptrace32_view,
++		return copy_regset_from_user(child, &ptrace32_view,
+ 					  REGSET_FP, 0,
+ 					  33 * sizeof(u32),
+ 					  fps);
+-		break;
+ 
++	case PTRACE_PEEKUSR:
+ 	case PTRACE_READTEXT:
+ 	case PTRACE_READDATA:
+-		ret = ptrace_readdata(child, addr,
+-				      (char __user *)addr2, data);
+-		if (ret == data)
+-			ret = 0;
+-		else if (ret >= 0)
+-			ret = -EIO;
+-		break;
+-
+ 	case PTRACE_WRITETEXT:
+ 	case PTRACE_WRITEDATA:
+-		ret = ptrace_writedata(child, (char __user *) addr2,
+-				       addr, data);
+-		if (ret == data)
+-			ret = 0;
+-		else if (ret >= 0)
+-			ret = -EIO;
+-		break;
++		return arch_ptrace(child, request, addr, data);
+ 
+ 	default:
+ 		if (request == PTRACE_SPARC_DETACH)
+ 			request = PTRACE_DETACH;
+-		ret = compat_ptrace_request(child, request, addr, data);
+-		break;
++		return compat_ptrace_request(child, request, addr, data);
+ 	}
+-
+-	return ret;
+ }
+ #endif /* CONFIG_COMPAT */
+ 
+@@ -1025,63 +998,53 @@ long arch_ptrace(struct task_struct *child, long request,
+ 
+ 	switch (request) {
+ 	case PTRACE_PEEKUSR:
+-		ret = (addr != 0) ? -EIO : 0;
+-		break;
++		return ((addr != 0) ? -EIO : 0);
+ 
+ 	case PTRACE_GETREGS64:
+-		ret = copy_regset_to_user(child, &ptrace64_view,
++		return copy_regset_to_user(child, &ptrace64_view,
+ 					  REGSET_GENERAL, 0,
+ 					  19 * sizeof(u64),
+ 					  pregs);
+-		break;
+ 
+ 	case PTRACE_SETREGS64:
+-		ret = copy_regset_from_user(child, &ptrace64_view,
++		return copy_regset_from_user(child, &ptrace64_view,
+ 					  REGSET_GENERAL, 0,
+ 					  19 * sizeof(u64),
+ 					  pregs);
+-		break;
+ 
+ 	case PTRACE_GETFPREGS64:
+-		ret = copy_regset_to_user(child, view, REGSET_FP,
++		return copy_regset_to_user(child, view, REGSET_FP,
+ 					  0 * sizeof(u64),
+ 					  33 * sizeof(u64),
+ 					  fps);
+-		break;
+ 
+ 	case PTRACE_SETFPREGS64:
+-		ret = copy_regset_from_user(child, view, REGSET_FP,
++		return copy_regset_from_user(child, view, REGSET_FP,
+ 					  0 * sizeof(u64),
+ 					  33 * sizeof(u64),
+ 					  fps);
+-		break;
+ 
+ 	case PTRACE_READTEXT:
+ 	case PTRACE_READDATA:
+ 		ret = ptrace_readdata(child, addr, addr2p, data);
+ 		if (ret == data)
+-			ret = 0;
++			return 0;
+ 		else if (ret >= 0)
+-			ret = -EIO;
+-		break;
++			return -EIO;
+ 
+ 	case PTRACE_WRITETEXT:
+ 	case PTRACE_WRITEDATA:
+ 		ret = ptrace_writedata(child, addr2p, addr, data);
+ 		if (ret == data)
+-			ret = 0;
++			return 0;
+ 		else if (ret >= 0)
+-			ret = -EIO;
+-		break;
++			return -EIO;
+ 
+ 	default:
+ 		if (request == PTRACE_SPARC_DETACH)
+ 			request = PTRACE_DETACH;
+-		ret = ptrace_request(child, request, addr, data);
+-		break;
++		return ptrace_request(child, request, addr, data);
+ 	}
+-
+-	return ret;
+ }
+ 
+ asmlinkage int syscall_trace_enter(struct pt_regs *regs)
+-- 
+2.1.0
 
---- linux-next-20201124.orig/drivers/video/fbdev/Kconfig
-+++ linux-next-20201124/drivers/video/fbdev/Kconfig
-@@ -1269,6 +1269,7 @@ config FB_ATY
- 	select FB_CFB_IMAGEBLIT
- 	select FB_BACKLIGHT if FB_ATY_BACKLIGHT
- 	select FB_MACMODES if PPC
-+	select FB_ATY_CT if SPARC64 && PCI
- 	help
- 	  This driver supports graphics boards with the ATI Mach64 chips.
- 	  Say Y if you have such a graphics board.
-@@ -1279,7 +1280,6 @@ config FB_ATY
- config FB_ATY_CT
- 	bool "Mach64 CT/VT/GT/LT (incl. 3D RAGE) support"
- 	depends on PCI && FB_ATY
--	default y if SPARC64 && PCI
- 	help
- 	  Say Y here to support use of ATI's 64-bit Rage boards (or other
- 	  boards based on the Mach64 CT, VT, GT, and LT chipsets) as a
