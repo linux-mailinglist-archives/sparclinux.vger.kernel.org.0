@@ -2,42 +2,54 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 313282C616E
-	for <lists+sparclinux@lfdr.de>; Fri, 27 Nov 2020 10:17:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D1F32C688B
+	for <lists+sparclinux@lfdr.de>; Fri, 27 Nov 2020 16:16:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725985AbgK0JQB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 27 Nov 2020 04:16:01 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:45744 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725875AbgK0JQB (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 27 Nov 2020 04:16:01 -0500
-Received: by mail-oi1-f195.google.com with SMTP id l206so5124487oif.12;
-        Fri, 27 Nov 2020 01:16:00 -0800 (PST)
+        id S1730418AbgK0POo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 27 Nov 2020 10:14:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40342 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730410AbgK0POn (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 27 Nov 2020 10:14:43 -0500
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D559AC0613D2
+        for <sparclinux@vger.kernel.org>; Fri, 27 Nov 2020 07:14:41 -0800 (PST)
+Received: by mail-wr1-x443.google.com with SMTP id g14so5894553wrm.13
+        for <sparclinux@vger.kernel.org>; Fri, 27 Nov 2020 07:14:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ZMzwoE0Dd6fGdbZptz4gO2+Eta2edZWtpfnfREQIYBk=;
+        b=iNafPJ5ywOWSDkzoa418mygS+Pu6j0+b0FZhr6dG9lb3JOScnAd3oHUlc0LVjAmD3g
+         exwlJ3BhHTSl3vuBryhe7Kgc56fC1N5rj6jJWeqihvbS3H0kM3HY57LQzY/0PqTshM70
+         wHuQWaqK5Fxc12etXg9s39a4GbCEOsotO/7GU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2bL4nt/v+u8bthLLcwo5vWoSSDUj230GtxR+dbDyinE=;
-        b=HdoQSg9+qYm9kBcD3ZXaFQpGTqrY0knhT2pE3Rd28f5yPsaHrGTgJsLotyx9YrvHCP
-         ziG/kd7YB+EVkWvewlrq6Bk67qXZUC7Ap+i8fixt2WRA5ErmcRCjY9Yug7tlfTjyQuA3
-         kilPsSKUpvrBmus+O1uQ89upnHRaQR2bw+q+sjVIH7Q1X5waexMbQA1ogJLQzCDqzugx
-         ZmTMc9bMNPZgMVD1pm3vyaItWwcZ2tonvIwytP677otkOWeyX0chP3lIpv9H2NXLqOm5
-         eKxgMcrD2Pqjhmdf1i1On5zzzqSyqbv+bF7C25ahP0Qxa7GG8z6/kQjSrybg/dJkR2HP
-         LlXA==
-X-Gm-Message-State: AOAM530rqAY+ru/C2OPzOeikNeVbpBPfp9H4+GftGvDYEBiKTNTnUBQX
-        NR801ei8LEUIWj7DDS5z0J4njNmArVOjcE1muWJFbPKTwAg=
-X-Google-Smtp-Source: ABdhPJwwc735j9DU3CQVssDzFK9RFomMYj2kdWdhsc0uJGwQtM3XHiZQkdCwKodyr/1M4ebapYD/57MTPsklQvOavoQ=
-X-Received: by 2002:aca:1c0f:: with SMTP id c15mr4721709oic.54.1606468560125;
- Fri, 27 Nov 2020 01:16:00 -0800 (PST)
-MIME-Version: 1.0
-References: <20201127031752.10371-1-rdunlap@infradead.org>
-In-Reply-To: <20201127031752.10371-1-rdunlap@infradead.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 27 Nov 2020 10:15:49 +0100
-Message-ID: <CAMuHMdWup4D9A-giF9xDEhva8PPH4Yhg2NHYx3+0q_=Uoi+iRA@mail.gmail.com>
-Subject: Re: [PATCH v2] fbdev: aty: SPARC64 requires FB_ATY_CT
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=ZMzwoE0Dd6fGdbZptz4gO2+Eta2edZWtpfnfREQIYBk=;
+        b=tDzFN3U5O488qfdf1+EAoAAKyVTOjgDo10efaXYiimLMUTAWzTdUa/PXbtdNvpMSH+
+         TAM3ZW7pFvOljXS7oaNf+Bip7jgQW7bTGFONh6LXdHpoKhhV4hH3r2MG9QymXxfw0Lmz
+         /Tq2UQhKBeKPcEUNuKdmQoVk8VnRLAYO1/VC2LYj8cnAY1k+kp8DzgEsK+1iYw7j4v/W
+         CYHfIejnfoflV/EvZVXBYeq0MoUf/ydijf/U34T86uUm9Oud8KFZIbeNllWMX+eJidqi
+         t9o3Mj/oqpFu5vnZ+44mDlPLIosMheEMD2bARNlOC/Rs93TiAC2Y5UgIkkV3o+cgrohe
+         Ctaw==
+X-Gm-Message-State: AOAM532XPXjT3MuKMuq7QrMvnAIgyrxU08Ah8wOylNoS41hqZUkQWJgx
+        7dUS/MKENai+BSFjO07Vg5rQsA==
+X-Google-Smtp-Source: ABdhPJzeFZUg0q2fzZp1cBShV/TYpSR++GJRHPfRmFTBFUpON/ZCauJL86rwWuavStjri4mOLdoRew==
+X-Received: by 2002:adf:e444:: with SMTP id t4mr11341858wrm.152.1606490080594;
+        Fri, 27 Nov 2020 07:14:40 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id j13sm8370481wrp.70.2020.11.27.07.14.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2020 07:14:39 -0800 (PST)
+Date:   Fri, 27 Nov 2020 16:14:37 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         sparclinux <sparclinux@vger.kernel.org>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
@@ -46,35 +58,63 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
         David Airlie <airlied@linux.ie>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v2] fbdev: aty: SPARC64 requires FB_ATY_CT
+Message-ID: <20201127151437.GH401619@phenom.ffwll.local>
+Mail-Followup-To: Geert Uytterhoeven <geert@linux-m68k.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        David Airlie <airlied@linux.ie>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+References: <20201127031752.10371-1-rdunlap@infradead.org>
+ <CAMuHMdWup4D9A-giF9xDEhva8PPH4Yhg2NHYx3+0q_=Uoi+iRA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdWup4D9A-giF9xDEhva8PPH4Yhg2NHYx3+0q_=Uoi+iRA@mail.gmail.com>
+X-Operating-System: Linux phenom 5.7.0-1-amd64 
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Nov 27, 2020 at 4:18 AM Randy Dunlap <rdunlap@infradead.org> wrote:
-> It looks like SPARC64 requires FB_ATY_CT to build without errors,
-> so have FB_ATY select FB_ATY_CT if both SPARC64 and PCI are enabled
-> instead of using "default y if SPARC64 && PCI", which is not strong
-> enough to prevent build errors.
->
-> As it currently is, FB_ATY_CT can be disabled, resulting in build
-> errors:
->
-> ERROR: modpost: "aty_postdividers" [drivers/video/fbdev/aty/atyfb.ko] undefined!
-> ERROR: modpost: "aty_ld_pll_ct" [drivers/video/fbdev/aty/atyfb.ko] undefined!
->
-> Fixes: f7018c213502 ("video: move fbdev to drivers/video/fbdev")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+On Fri, Nov 27, 2020 at 10:15:49AM +0100, Geert Uytterhoeven wrote:
+> On Fri, Nov 27, 2020 at 4:18 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+> > It looks like SPARC64 requires FB_ATY_CT to build without errors,
+> > so have FB_ATY select FB_ATY_CT if both SPARC64 and PCI are enabled
+> > instead of using "default y if SPARC64 && PCI", which is not strong
+> > enough to prevent build errors.
+> >
+> > As it currently is, FB_ATY_CT can be disabled, resulting in build
+> > errors:
+> >
+> > ERROR: modpost: "aty_postdividers" [drivers/video/fbdev/aty/atyfb.ko] undefined!
+> > ERROR: modpost: "aty_ld_pll_ct" [drivers/video/fbdev/aty/atyfb.ko] undefined!
+> >
+> > Fixes: f7018c213502 ("video: move fbdev to drivers/video/fbdev")
+> > Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> 
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Applied to drm-misc-next, thanks for the patch&review.
+-Daniel
 
-Gr{oetje,eeting}s,
-
-                        Geert
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> -- 
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
