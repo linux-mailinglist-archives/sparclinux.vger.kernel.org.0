@@ -2,65 +2,53 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57CB92D1F31
-	for <lists+sparclinux@lfdr.de>; Tue,  8 Dec 2020 01:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B78672D2027
+	for <lists+sparclinux@lfdr.de>; Tue,  8 Dec 2020 02:34:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728812AbgLHAnK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 7 Dec 2020 19:43:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51334 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726231AbgLHAnK (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 7 Dec 2020 19:43:10 -0500
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DDA5C061749;
-        Mon,  7 Dec 2020 16:42:29 -0800 (PST)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kmR5H-00HIUX-3e; Tue, 08 Dec 2020 00:42:27 +0000
-Date:   Tue, 8 Dec 2020 00:42:27 +0000
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Anatoly Pugachev <matorola@gmail.com>
-Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
-        debian-sparc <debian-sparc@lists.debian.org>,
-        Linux Kernel list <linux-kernel@vger.kernel.org>
-Subject: Re: [sparc64] current git kernel networking is broken
-Message-ID: <20201208004227.GF3579531@ZenIV.linux.org.uk>
-References: <CADxRZqwn0uUi+J3bN=uLYMpXYhcYpkQb68Vkgmg70Tn87mhzOw@mail.gmail.com>
+        id S1725995AbgLHBeV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 7 Dec 2020 20:34:21 -0500
+Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:36442 "EHLO
+        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725877AbgLHBeV (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 7 Dec 2020 20:34:21 -0500
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
+        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id 1DB211A2FDC;
+        Tue,  8 Dec 2020 04:23:27 +0900 (JST)
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id 065246820BC;
+        Tue,  8 Dec 2020 04:23:27 +0900 (JST)
+Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
+        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id 9E3C5838260;
+        Tue,  8 Dec 2020 04:23:26 +0900 (JST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CADxRZqwn0uUi+J3bN=uLYMpXYhcYpkQb68Vkgmg70Tn87mhzOw@mail.gmail.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Message-ID: <20201207192326.0000A370.0604@hyogo-dai.ac.jp>
+Date:   Tue, 08 Dec 2020 04:23:26 +0900
+From:   "Raymond " <hozumi@hyogo-dai.ac.jp>
+To:     <infocarferw1@aim.com>
+Reply-To: <infocarfer@aim.com>
+Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
+         Kuo Fung I have Important Matter to Discuss with you concerning
+         my late client. Died without a NEXT OF KIN. Send me your private
+         email for full details information.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MAILER: Active! mail
+X-TM-AS-MML: disable
+X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
+X-TM-AS-Result: No--2.951-5.0-31-10
+X-imss-scan-details: No--2.951-5.0-31-10
+X-TM-AS-User-Approved-Sender: No
+X-TMASE-MatchedRID: X41QhRrT5f5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce6P0
+        clhHAFPyJA6GJqxAEzL554DD9nXlqqPFjJEFr+olfeZdJ1XsoriOub3SYcq1hJf7eAx/Ae/AbQo
+        eraIcZBRw7u01FqNA2K1Ia4IbeAdLm9ukrtqhno/rIUidklntLAP5zT0d393cymsk/wUE4hoZaR
+        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
+        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Dec 08, 2020 at 03:09:47AM +0300, Anatoly Pugachev wrote:
-> Hello!
-> 
-> Sorry for the late report, being 5.10-rc7 is out, but current git
-> kernel (git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git)
-> is broken with the networking. It affects my openvpn tunnel and even
-> internet networking.
-> 
-> ping to a local ethernet network (i.e. gateway ping) works, but i
-> cannot download files from the internet.
-> openvpn tunnel does not work.
+email:kraymond75@aol.com
 
-<eyes commit in question>
-<swears>
-Could you check if the following typo fix is sufficient for your
-reproducer?
 
-diff --git a/arch/sparc/lib/csum_copy.S b/arch/sparc/lib/csum_copy.S
-index 0c0268e77155..d839956407a7 100644
---- a/arch/sparc/lib/csum_copy.S
-+++ b/arch/sparc/lib/csum_copy.S
-@@ -71,7 +71,7 @@
- FUNC_NAME:		/* %o0=src, %o1=dst, %o2=len */
- 	LOAD(prefetch, %o0 + 0x000, #n_reads)
- 	xor		%o0, %o1, %g1
--	mov		1, %o3
-+	mov		-1, %o3
- 	clr		%o4
- 	andcc		%g1, 0x3, %g0
- 	bne,pn		%icc, 95f
+
