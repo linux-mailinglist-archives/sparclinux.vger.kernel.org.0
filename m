@@ -2,96 +2,49 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA2CF2D29BE
-	for <lists+sparclinux@lfdr.de>; Tue,  8 Dec 2020 12:28:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88ED42D358D
+	for <lists+sparclinux@lfdr.de>; Tue,  8 Dec 2020 22:49:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726890AbgLHL0b (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 8 Dec 2020 06:26:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37486 "EHLO
+        id S1728955AbgLHVtJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 8 Dec 2020 16:49:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726338AbgLHL0a (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 8 Dec 2020 06:26:30 -0500
-Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 483E1C0613D6;
-        Tue,  8 Dec 2020 03:25:50 -0800 (PST)
-Received: by mail-yb1-xb41.google.com with SMTP id t33so15844713ybd.0;
-        Tue, 08 Dec 2020 03:25:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VpQxjEi5D+WZTv1NZRTqv6yPxyq3egFLkFsYc9qfXJY=;
-        b=G70TI57kuie5x8hgswKi2E+UO7yVJdfJCuo70tRvSLEFv6f0DgqAVmYyK4rDNXGF1X
-         tLBDV8606Veazqdi2ktluSdRY/Ljna2pMT2HMRiP3ZUiBGTmM/SgbxT4QbXwPJkOinlY
-         lFKeCB1BnktZF3FLdiuo5+E+vY6odW+1K63jCa6ziqLWwid+jYoYtiBC9wYCJbdP3dQ2
-         ho+97Ynb4irGGNb7HHdEzxtDMkl/1Snxxwgg4OlIaFWvLfXtagw8uMfTpm4yE1C9xpbn
-         tlQPsg/dAoHD6TlIn077AMbCA7tGlaO9+i7efeOGva4G5Ys8DX8wZQ3vEn3KEjtAXEY/
-         tDmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VpQxjEi5D+WZTv1NZRTqv6yPxyq3egFLkFsYc9qfXJY=;
-        b=sELWSFd4mUnfCoqrLtGXHE5MjCPEwvu0nfhu51Tx73kXdIi4k396UjJF99E43+K1OL
-         kwNJjQMrpwFy078vZ+GVi4A6jJ5zBWOoYrMq2r9d4i/1k8ZHkac0tx5Lu4pLC5DpFKLT
-         /HBI/Qjohu18awtfXl6OsS7vpUBQy545ae+XCPg+IgpDeZLFZIY3jEHbmeA9fBB2jgvg
-         K5MQPRqLeznSXLL18ChzquZxIa1DcU07NoXE9U+LcZec0wJ/Gpk/M/2IxQuA3Oi4s1u1
-         Z2LgCroWZhkieG7qNvKKXHapjuEVZ4Jj0Xm3vV1l6rccN/M2yZV8GrN3p0VLfnrMKUdQ
-         3cpw==
-X-Gm-Message-State: AOAM532rsND+9fBAKCYnnI/83GEJjWkxdnS/GS1cCvO+l4GQVs8eO9N8
-        c0+N75E4ChG062fWDxwRQgGKo1p1JOuWzSnaeFmfC+55
-X-Google-Smtp-Source: ABdhPJzK1NOjqFsx0qyHCehpT1xGgHle1Rkx9Wl4RdQo35e6V+yhZIj8hqQTIvz5bDMkGZcoXNHzPfknfTbqSAgU4f0=
-X-Received: by 2002:a25:ab31:: with SMTP id u46mr21111573ybi.179.1607426749542;
- Tue, 08 Dec 2020 03:25:49 -0800 (PST)
+        with ESMTP id S1726114AbgLHVtJ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 8 Dec 2020 16:49:09 -0500
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16EECC0613CF;
+        Tue,  8 Dec 2020 13:48:29 -0800 (PST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kmkqO-00HVWT-09; Tue, 08 Dec 2020 21:48:24 +0000
+Date:   Tue, 8 Dec 2020 21:48:23 +0000
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [git pull] [brown paperbag] regression in sparc64 this cycle
+Message-ID: <20201208214823.GJ3579531@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-References: <CADxRZqwn0uUi+J3bN=uLYMpXYhcYpkQb68Vkgmg70Tn87mhzOw@mail.gmail.com>
- <20201208004227.GF3579531@ZenIV.linux.org.uk>
-In-Reply-To: <20201208004227.GF3579531@ZenIV.linux.org.uk>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Tue, 8 Dec 2020 14:25:38 +0300
-Message-ID: <CADxRZqzdME66_xzh565vSOG7=ep0dmF1p3DCNW5VTeggr5LMKw@mail.gmail.com>
-Subject: Re: [sparc64] current git kernel networking is broken
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
-        debian-sparc <debian-sparc@lists.debian.org>,
-        Linux Kernel list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Al Viro <viro@ftp.linux.org.uk>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Dec 8, 2020 at 3:42 AM Al Viro <viro@zeniv.linux.org.uk> wrote:
->
-> On Tue, Dec 08, 2020 at 03:09:47AM +0300, Anatoly Pugachev wrote:
-> > Hello!
-> >
-> > Sorry for the late report, being 5.10-rc7 is out, but current git
-> > kernel (git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git)
-> > is broken with the networking. It affects my openvpn tunnel and even
-> > internet networking.
-> >
-> > ping to a local ethernet network (i.e. gateway ping) works, but i
-> > cannot download files from the internet.
-> > openvpn tunnel does not work.
->
-> <eyes commit in question>
-> <swears>
-> Could you check if the following typo fix is sufficient for your
-> reproducer?
->
-> diff --git a/arch/sparc/lib/csum_copy.S b/arch/sparc/lib/csum_copy.S
-> index 0c0268e77155..d839956407a7 100644
-> --- a/arch/sparc/lib/csum_copy.S
-> +++ b/arch/sparc/lib/csum_copy.S
-> @@ -71,7 +71,7 @@
->  FUNC_NAME:             /* %o0=src, %o1=dst, %o2=len */
->         LOAD(prefetch, %o0 + 0x000, #n_reads)
->         xor             %o0, %o1, %g1
-> -       mov             1, %o3
-> +       mov             -1, %o3
->         clr             %o4
->         andcc           %g1, 0x3, %g0
->         bne,pn          %icc, 95f
+The following changes since commit 4bbf439b09c5ac3f8b3e9584fe080375d8d0ad2d:
 
+  fix return values of seq_read_iter() (2020-11-15 22:12:53 -0500)
 
-Thanks Al, this patch fixes networking for me.
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git fixes
+
+for you to fetch changes up to 6220e48d9640538ff700f2e7d24c2f9277555fd6:
+
+  [regression fix] really dumb fuckup in sparc64 __csum_partial_copy() changes (2020-12-08 16:37:47 -0500)
+
+----------------------------------------------------------------
+Al Viro (1):
+      [regression fix] really dumb fuckup in sparc64 __csum_partial_copy() changes
+
+ arch/sparc/lib/csum_copy.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
