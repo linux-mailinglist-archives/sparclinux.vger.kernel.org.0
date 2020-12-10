@@ -2,49 +2,51 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CB892D4734
-	for <lists+sparclinux@lfdr.de>; Wed,  9 Dec 2020 17:55:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A61F2D80DF
+	for <lists+sparclinux@lfdr.de>; Fri, 11 Dec 2020 22:17:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729345AbgLIQwr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 9 Dec 2020 11:52:47 -0500
-Received: from ec2-52-52-5-210.us-west-1.compute.amazonaws.com ([52.52.5.210]:35802
-        "EHLO vps1924093a8.rebelvps.cloud" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731986AbgLIQwr (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 9 Dec 2020 11:52:47 -0500
-X-Greylist: delayed 6763 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Dec 2020 11:52:47 EST
-Received: by vps1924093a8.rebelvps.cloud (Postfix, from userid 10001)
-        id 2C5FB5D838; Wed,  9 Dec 2020 14:43:07 +0000 (UTC)
-To:     sparclinux@vger.kernel.org
-Subject: Re: Credit Proposal!!
-X-PHP-Originating-Script: 10001:index.php
-Date:   Wed, 9 Dec 2020 14:43:07 +0000
-From:   Bill Wang <support@credibly.info>
-Reply-To: billwang@lendioclub.org
-Message-ID: <cf5d7f64b5201d4d3f0e3c7fed322ce7@credibly.info>
+        id S2405455AbgLKVO4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 11 Dec 2020 16:14:56 -0500
+Received: from server.kenspensetc.com ([185.148.128.76]:33226 "EHLO
+        server.kenspensetc.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2395070AbgLKVNO (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 11 Dec 2020 16:13:14 -0500
+Received: from localhost ([127.0.0.1]:36952 helo=server.kenspensetc.com)
+        by server.kenspensetc.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <sender@ridecals.com>)
+        id 1knMjp-0004nr-1G; Thu, 10 Dec 2020 09:16:09 -0500
+Received: from [70.32.0.46] ([70.32.0.46]) by ridecals.com (Horde Framework)
+ with HTTPS; Thu, 10 Dec 2020 09:16:08 -0500
+Date:   Thu, 10 Dec 2020 09:16:08 -0500
+Message-ID: <20201210091608.Horde.IvGDWlLyLBzY4tJFkfhcDg5@ridecals.com>
+From:   Russell Branting <sender@ridecals.com>
+Subject: Vital
+Reply-to: Goodagent01@gmail.com
+User-Agent: Horde Application Framework 5
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.kenspensetc.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - ridecals.com
+X-Get-Message-Sender-Via: server.kenspensetc.com: authenticated_id: sender9@ridecals.com
+X-Authenticated-Sender: server.kenspensetc.com: sender9@ridecals.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello,
 
-I would want to use this medium to intimate you about our credible and
-reliable Private Investment Network. We provide some useful soft/hard
-loans cum corporate financing, which may span over a period of ten to
-fifteen (10-15) year repayment period with a 3 percentage (slightly negotiable)
-annual interest rate. This is a specifically tailored tool to boost
-prospects of business owners and starters as well.
+I am instructed to inform you of your appointment as the next of kin  
+to your deceased relative estate. Kindly indicate your acceptance by  
+reconfirming your Full Name, Address & Phone Number for immediate  
+processing of the funds release to your control OR the deceased  
+deposited funds will be declared unclaimed.
 
-Suffice to say that we have the capacity to provide proceeds for viable
-business enterprises, projects, and investment portfolios. Our network
-has earmarked a portfolio of up to twenty billion pounds for credible
-business entities, as our trustworthy network is currently handling
-thousands of transactions/project applications.
-
-You can get back to me, so that we can further discuss on how you tap
-into this business opportunity. Looking forward to hearing from you.
-
-Best regards
-Bill Wang
 
