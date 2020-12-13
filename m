@@ -2,84 +2,86 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FB222D862B
-	for <lists+sparclinux@lfdr.de>; Sat, 12 Dec 2020 12:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D319B2D8DDF
+	for <lists+sparclinux@lfdr.de>; Sun, 13 Dec 2020 15:14:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726038AbgLLLKq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 12 Dec 2020 06:10:46 -0500
-Received: from master.hostvps.net ([85.234.128.110]:55452 "EHLO
-        host.sysriacomms.com" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S2388329AbgLLLKq (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 12 Dec 2020 06:10:46 -0500
-X-Greylist: delayed 20874 seconds by postgrey-1.27 at vger.kernel.org; Sat, 12 Dec 2020 06:10:46 EST
-Received: from sysriacomms.com (ec2-3-129-59-77.us-east-2.compute.amazonaws.com [3.129.59.77])
-        by host.sysriacomms.com (Postfix) with ESMTPA id 57F053092067
-        for <sparclinux@vger.kernel.org>; Sat, 12 Dec 2020 01:37:35 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.sysriacomms.com 57F053092067
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sysriacomms.com;
-        s=default; t=1607737055;
-        bh=TyDrvEeEFdXlR/MshqaTYzQ7nnR7m/zs1uM19XkvmD0=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=bv+cv10PAcs9eA387VMl09nh9xJo5aAxNYA5qEHpbZtdlagUigFcXS/n3iiIRSMEb
-         y5UFLrxyyZaT6f/guhO2qsGqhEN0w2D0tm8LHiRuKvb6JD/YukNRRm8oc1WeFaLj7K
-         OdK+aE8J3YKE767Hjw2RwJihvuM+xFEGhn7cERME=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.sysriacomms.com 57F053092067
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sysriacomms.com;
-        s=default; t=1607737055;
-        bh=TyDrvEeEFdXlR/MshqaTYzQ7nnR7m/zs1uM19XkvmD0=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=bv+cv10PAcs9eA387VMl09nh9xJo5aAxNYA5qEHpbZtdlagUigFcXS/n3iiIRSMEb
-         y5UFLrxyyZaT6f/guhO2qsGqhEN0w2D0tm8LHiRuKvb6JD/YukNRRm8oc1WeFaLj7K
-         OdK+aE8J3YKE767Hjw2RwJihvuM+xFEGhn7cERME=
-Reply-To: moutraore02@syriservas.com
-From:   Moussa <moutraore02@sysriacomms.com>
-To:     sparclinux@vger.kernel.org
-Subject: Get Back To Me
-Date:   12 Dec 2020 01:37:48 +0000
-Message-ID: <20201212013747.D809577EF5B5B44A@sysriacomms.com>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        id S2437042AbgLMOLv (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 13 Dec 2020 09:11:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37708 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2395199AbgLMOLL (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 13 Dec 2020 09:11:11 -0500
+Date:   Sun, 13 Dec 2020 09:10:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607868630;
+        bh=S0NZCKTHXO1/XgTBibTeHKY2NyaV+jWp9oZjgvuSOZg=;
+        h=From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nFttyLKxDFdTzDqG+uV+ZMYwIDraCwmT1csa8RGjNQtB2KNQuC3CWvsr8XvQHFTkX
+         bOVfEZ3hZGq/q87besC+Bjzp/UHT9BZ6/avesb9g234GUTyQ6mz9ZdKVWLvvWayKcR
+         5IsZC3of1cWOok1XpWOR2jKmC5sWYP7UWQbjwfCJNcyT1mEousS3/8Iz7qmQngrF+E
+         UBfwNFX/Xim1w8qNAQxV89tayOf16Xozhta7DOpqMYNyp+n+eIU7Y985xkZoMGJ7UI
+         W/Q6SnFz+H4jXIWSjxGFg8FVH/fANHjQkaleEJRhOabM6QD83DoUX7CgAE554wRsQU
+         Zom91bCLKheaA==
+From:   Sasha Levin <sashal@kernel.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Heiko Carstens <hca@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 5.9 27/39] sched/idle: Fix arch_cpu_idle() vs
+ tracing
+Message-ID: <20201213141029.GQ643756@sasha-vm>
+References: <20201203132834.930999-1-sashal@kernel.org>
+ <20201203132834.930999-27-sashal@kernel.org>
+ <20201203145442.GC9994@osiris>
+ <20201203171015.GN2414@hirez.programming.kicks-ass.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20201203171015.GN2414@hirez.programming.kicks-ass.net>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Greeetings from Mali. I am sorry for contacting you like this but=20
-I do have a very urgent matter that I want to discuss with you.=20
-Before I proceed, I want you to keep an open mind while reading=20
-this proposal. My name is Moussa Traore, I am the Personal=20
-Assistant to Mr. Issa Saley Maiga who was the head of the civil=20
-aviation agency in Mali during the tenure of Ibrahim Boubacar=20
-Ke=C3=AFta, the former president of Mali. His tenure was overtaken by=20
-the military during a coup d'etat. I am sure you would have read=20
-about this in your country because it was covered by the=20
-international news agencies worldwide. 
+On Thu, Dec 03, 2020 at 06:10:15PM +0100, Peter Zijlstra wrote:
+>On Thu, Dec 03, 2020 at 03:54:42PM +0100, Heiko Carstens wrote:
+>> On Thu, Dec 03, 2020 at 08:28:21AM -0500, Sasha Levin wrote:
+>> > From: Peter Zijlstra <peterz@infradead.org>
+>> >
+>> > [ Upstream commit 58c644ba512cfbc2e39b758dd979edd1d6d00e27 ]
+>> >
+>> > We call arch_cpu_idle() with RCU disabled, but then use
+>> > local_irq_{en,dis}able(), which invokes tracing, which relies on RCU.
+>> >
+>> > Switch all arch_cpu_idle() implementations to use
+>> > raw_local_irq_{en,dis}able() and carefully manage the
+>> > lockdep,rcu,tracing state like we do in entry.
+>> >
+>> > (XXX: we really should change arch_cpu_idle() to not return with
+>> > interrupts enabled)
+>> >
+>> > Reported-by: Sven Schnelle <svens@linux.ibm.com>
+>> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>> > Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+>> > Tested-by: Mark Rutland <mark.rutland@arm.com>
+>> > Link: https://lkml.kernel.org/r/20201120114925.594122626@infradead.org
+>> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>
+>> This patch broke s390 irq state tracing. A patch to fix this is
+>> scheduled to be merged upstream today (hopefully).
+>> Therefore I think this patch should not yet go into 5.9 stable.
+>
+>Agreed.
 
-Anyway, my boss was also affected by the coup d'etat and he was=20
-arrested along with other high profile politicians. Also, all of=20
-his local assets (bother property and financial assets) were=20
-seized by the Government. Due to this situation, my boss belives=20
-that he is at risk and he is now very scared for the safety of=20
-his family especially his wife and kids. In order to ensure that=20
-his family is taken care of and protected incase anything happens=20
-to him, he has asked me to help him find a foreign investor who=20
-can help him accommodate and manage the finanical assets that he=20
-has in Europe. These assets was secured with the help of a proxy=20
-and it is currently held with an offshore financial bank so it is=20
-safe so secure. Also, the Government of his country do not know=20
-of this asset hence why they are unable to seize it as they have=20
-done his other assets.
+I'll also grab b1cae1f84a0f ("s390: fix irq state tracing"). Thanks!
 
-My proposal to you is for you to help us manage these funds, and=20
-invest it in lucrative projects in your country that will yeild=20
-good profits. You also do not have to worry about if this is safe=20
-or not because everything will be handled in a legal and=20
-transparent manner. You will also be handosmely rewarded for your=20
-help if you decide to work with us. If this proposal interests=20
-you, please kindly respond so that I can give you more details. I=20
-hope to hear from you soon.
-
-Regards,
-
-Moussa.
+-- 
+Thanks,
+Sasha
