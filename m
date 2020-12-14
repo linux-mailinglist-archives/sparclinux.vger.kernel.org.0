@@ -2,118 +2,120 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FFC12D9CA4
-	for <lists+sparclinux@lfdr.de>; Mon, 14 Dec 2020 17:28:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FEA22D9CB6
+	for <lists+sparclinux@lfdr.de>; Mon, 14 Dec 2020 17:29:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440246AbgLNQ1O (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 14 Dec 2020 11:27:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34346 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2440242AbgLNQ1M (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 14 Dec 2020 11:27:12 -0500
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 95526227C3;
-        Mon, 14 Dec 2020 16:26:31 +0000 (UTC)
-Date:   Mon, 14 Dec 2020 11:26:29 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Anatoly Pugachev <matorola@gmail.com>
-Cc:     Linux Kernel list <linux-kernel@vger.kernel.org>,
+        id S1729598AbgLNQ2w (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 14 Dec 2020 11:28:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35296 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2440262AbgLNQ2s (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 14 Dec 2020 11:28:48 -0500
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D001AC061793
+        for <sparclinux@vger.kernel.org>; Mon, 14 Dec 2020 08:28:07 -0800 (PST)
+Received: by mail-wm1-x341.google.com with SMTP id 3so15815164wmg.4
+        for <sparclinux@vger.kernel.org>; Mon, 14 Dec 2020 08:28:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jrtc27.com; s=gmail.jrtc27.user;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=51YsbQIYuq9kiX/Ezj5Ht0AVHuSlN5jsKWqnvhPG9kE=;
+        b=iDHzsbT6UFubPP0i50ey89vA1UgdSoprtVon0iTpYV1cW+lOkGEWfqFwtngURquUz5
+         B077Wh7OmIoJub+RoM+M1x6u85K6cAbUV1EjwYve6CQ9Aor5/hA0jWrFAR9CLuFrFXkz
+         3C2jp8TLffbBwnwyp1NdC+MQFZvQRineyv56g4pvimfGyyIKlzCGmHTKHa4EmgyeVeiV
+         mTw6lJyWtD1sScow0A6lE6kIX4apxVttPZd2oBVY/jNrebHSjsEaQOFQwg5VCtcYqqN0
+         JcM99HgTBXlqpNWMFCze1PUVc0oWhq7eQUDbMfzWFsQpV5I2DugUwd6SmpwvpYAI8V9s
+         ODvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=51YsbQIYuq9kiX/Ezj5Ht0AVHuSlN5jsKWqnvhPG9kE=;
+        b=rBKVwNAlhHNZsZ9dhY3Q6ACbeIOrcOhOuuuRRbi/zVvZASDMnkPhP9ZWb3gi4tzE99
+         be8aHy2xr8e2prAp/pyqYsVuzea1xJC5OpXOixEMFUmWDXi+TmsGhedFZdPdpB8i14b9
+         UU9XKi8pDdyXQ4QJdL//O0RN6aAdalBZMyXOsVNIwxXZ/Yi+/8R2ZrmlvjLXacTibwUE
+         dRd5efABFnNc1wci3SmQ3sECB8Main1+c2ypsdCeZYmTQvsffbE9I+mXkk4vbBSPNElt
+         ptjpBjlJlgAQU5eZntyF3nlvi9Kca9Yd5S84tpin+iyWEx9Inf6x8O59ooMlWS9ENEWK
+         kRhg==
+X-Gm-Message-State: AOAM532Bx1PHE4cBrTnzVvXW75wvcgpEMDs81iGP0sVAPIQJHce8NMgW
+        pI3GOfDU5IYdOpvfA8u8Md+8V8eq50TC08RA
+X-Google-Smtp-Source: ABdhPJy/HD9Xc/p5LiC20sf0NJ5AuesdVQXZgve4vr1XtQmZ1M0zrGpdVf8En/HPezn6ogxD8VFYdQ==
+X-Received: by 2002:a7b:cb0c:: with SMTP id u12mr28187914wmj.11.1607963286539;
+        Mon, 14 Dec 2020 08:28:06 -0800 (PST)
+Received: from Jessicas-MacBook.local (trinity-students-nat.trin.cam.ac.uk. [131.111.193.104])
+        by smtp.gmail.com with ESMTPSA id v64sm30884456wme.25.2020.12.14.08.28.04
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 14 Dec 2020 08:28:05 -0800 (PST)
+Received: by Jessicas-MacBook.local (Postfix, from userid 501)
+        id 53694209CCA69F; Mon, 14 Dec 2020 16:28:04 +0000 (GMT)
+Date:   Mon, 14 Dec 2020 16:28:04 +0000
+From:   Jessica Clarke <jrtc27@jrtc27.com>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     Anatoly Pugachev <matorola@gmail.com>,
+        Linux Kernel list <linux-kernel@vger.kernel.org>,
         Sparc kernel list <sparclinux@vger.kernel.org>,
         Ingo Molnar <mingo@redhat.com>
 Subject: Re: [sparc64] ftrace: kernel startup-tests unaligned access
-Message-ID: <20201214112629.3cf6f240@gandalf.local.home>
-In-Reply-To: <20201214111512.415717ac@gandalf.local.home>
+Message-ID: <20201214162804.GA27786@Jessicas-MacBook.local>
 References: <CADxRZqzXQRYgKc=y-KV=S_yHL+Y8Ay2mh5ezeZUnpRvg+syWKw@mail.gmail.com>
-        <20201214111512.415717ac@gandalf.local.home>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ <20201214111512.415717ac@gandalf.local.home>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201214111512.415717ac@gandalf.local.home>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, 14 Dec 2020 11:15:12 -0500
-Steven Rostedt <rostedt@goodmis.org> wrote:
-
-> Does sparc64 require 8 byte alignment for 8 byte words?
+On Mon, Dec 14, 2020 at 11:15:12AM -0500, Steven Rostedt wrote:
+> On Mon, 14 Dec 2020 18:59:02 +0300
+> Anatoly Pugachev <matorola@gmail.com> wrote:
 > 
+> > Hello!
+> > 
+> > Enabled ftrace startup tests on a sparc64 test VM/LDOM:
+> > 
+> > $ diff -u <(gzip -dc ~/dmesg/config-5.10.0.gz) <(gzip -dc /proc/config.gz)
+> > --- /dev/fd/63  2020-12-14 16:19:38.239372599 +0300
+> > +++ /dev/fd/62  2020-12-14 16:19:38.235372433 +0300
+> > @@ -2842,7 +2842,10 @@
+> >  # CONFIG_TRACEPOINT_BENCHMARK is not set
+> >  # CONFIG_RING_BUFFER_BENCHMARK is not set
+> >  # CONFIG_TRACE_EVAL_MAP_FILE is not set
+> > -# CONFIG_FTRACE_STARTUP_TEST is not set
+> > +CONFIG_FTRACE_SELFTEST=y
+> > +CONFIG_FTRACE_STARTUP_TEST=y
+> > +CONFIG_EVENT_TRACE_STARTUP_TEST=y
+> > +# CONFIG_EVENT_TRACE_TEST_SYSCALLS is not set
+> >  # CONFIG_RING_BUFFER_STARTUP_TEST is not set
+> >  # CONFIG_PREEMPTIRQ_DELAY_TEST is not set
+> >  # CONFIG_KPROBE_EVENT_GEN_TEST is not set
+> > 
+> > 
+> > Got the following results with kernel boot logs:
+> > 
+> > Dec 14 13:48:15 kernel: clocksource: jiffies: mask: 0xffffffff
+> > max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+> > Dec 14 13:48:15 kernel: futex hash table entries: 65536 (order: 9,
+> > 4194304 bytes, linear)
+> > Dec 14 13:48:15 kernel: Running postponed tracer tests:
+> > Dec 14 13:48:15 kernel: Testing tracer function:
+> > Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[552a20]
+> > trace_function+0x40/0x140
+> > Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[552a24]
+> > trace_function+0x44/0x140
+> > Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[552a20]
+> > trace_function+0x40/0x140
+> > Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[552a24]
+> > trace_function+0x44/0x140
+> > Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[552a20]
+> > trace_function+0x40/0x140
+> 
+> Does sparc64 require 8 byte alignment for 8 byte words?
 
-In other words, does this patch fix anything?
+Yes, SPARC requires natural alignment for all primitive types (and that
+even includes 8-byte alignment for 8-byte types on 32-bit SPARC as it
+has load/store pair instructions the compiler is free to use).
 
--- Steve
-
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 56b6ccc0e32d..fa716994f77e 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -143,6 +143,22 @@ config UPROBES
- 	    managed by the kernel and kept transparent to the probed
- 	    application. )
- 
-+config HAVE_64BIT_ALIGNED_ACCESS
-+	def_bool 64BIT && !HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	help
-+	  Some architectures require 64 bit accesses to be 64 bit
-+	  aligned, which also requires structs containing 64 bit values
-+	  to be 64 bit aligned too. This includes some 32 bit
-+	  architectures which can do 64 bit accesses, as well as 64 bit
-+	  architectures without unaligned access.
-+
-+	  This symbol should be selected by an architecture if 64 bit
-+	  accesses are required to be 64 bit aligned in this way even
-+	  though it is not a 64 bit architecture.
-+
-+	  See Documentation/unaligned-memory-access.txt for more
-+	  information on the topic of unaligned memory accesses.
-+
- config HAVE_EFFICIENT_UNALIGNED_ACCESS
- 	bool
- 	help
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index f09d3f5911cb..623657f84b72 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -130,7 +130,16 @@ int ring_buffer_print_entry_header(struct trace_seq *s)
- #define RB_ALIGNMENT		4U
- #define RB_MAX_SMALL_DATA	(RB_ALIGNMENT * RINGBUF_TYPE_DATA_TYPE_LEN_MAX)
- #define RB_EVNT_MIN_SIZE	8U	/* two 32bit words */
--#define RB_ALIGN_DATA		__aligned(RB_ALIGNMENT)
-+
-+#ifndef CONFIG_HAVE_64BIT_ALIGNED_ACCESS
-+# define RB_FORCE_8BYTE_ALIGNMENT	0
-+# define RB_ARCH_ALIGNMENT		RB_ALIGNMENT
-+#else
-+# define RB_FORCE_8BYTE_ALIGNMENT	1
-+# define RB_ARCH_ALIGNMENT		8U
-+#endif
-+
-+#define RB_ALIGN_DATA		__aligned(RB_ARCH_ALIGNMENT)
- 
- /* define RINGBUF_TYPE_DATA for 'case RINGBUF_TYPE_DATA:' */
- #define RINGBUF_TYPE_DATA 0 ... RINGBUF_TYPE_DATA_TYPE_LEN_MAX
-@@ -2717,7 +2726,7 @@ rb_update_event(struct ring_buffer_per_cpu *cpu_buffer,
- 
- 	event->time_delta = delta;
- 	length -= RB_EVNT_HDR_SIZE;
--	if (length > RB_MAX_SMALL_DATA) {
-+	if (length > RB_MAX_SMALL_DATA || RB_FORCE_8BYTE_ALIGNMENT) {
- 		event->type_len = 0;
- 		event->array[0] = length;
- 	} else
-@@ -2732,11 +2741,11 @@ static unsigned rb_calculate_event_length(unsigned length)
- 	if (!length)
- 		length++;
- 
--	if (length > RB_MAX_SMALL_DATA)
-+	if (length > RB_MAX_SMALL_DATA || RB_FORCE_8BYTE_ALIGNMENT)
- 		length += sizeof(event.array[0]);
- 
- 	length += RB_EVNT_HDR_SIZE;
--	length = ALIGN(length, RB_ALIGNMENT);
-+	length = ALIGN(length, RB_ARCH_ALIGNMENT);
- 
- 	/*
- 	 * In case the time delta is larger than the 27 bits for it
+Jess
