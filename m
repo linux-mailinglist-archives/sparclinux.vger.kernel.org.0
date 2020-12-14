@@ -2,104 +2,153 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E7F2D989D
-	for <lists+sparclinux@lfdr.de>; Mon, 14 Dec 2020 14:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF11A2D9B98
+	for <lists+sparclinux@lfdr.de>; Mon, 14 Dec 2020 17:00:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732205AbgLNNQZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 14 Dec 2020 08:16:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58090 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725763AbgLNNQZ (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 14 Dec 2020 08:16:25 -0500
-X-Gm-Message-State: AOAM533fCbREzfACd5I8f9vC+VzXkpKUf+lyBnytQC5DYAWnIkSX8bXr
-        c/jTzWTq8o2itWwPlxn7HDUrOwRRjLbXDiDoy+U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607951744;
-        bh=X7NfmqFfeZxN9ZZWHM4FSxFJ7dLG2FO+7mXQYFgN0xU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=h5s4ri4H+20pEzRL3JhNoK9BP5C5LvZrlFo6iMhvJJoXYW7SEnmswysV/x0rOiAD2
-         Nyfi1Bq00QJwXDFq1V+ssj58s0FQUYJ0bB3OjIfDztXfPSWYcdZUm47qV2nomjvfSz
-         Fv+Mzs7bZ7EFBan544VLAzSqiGBlFOeW1sUgoQmemAG54yuKsB/p7RwjSQuAeQLjoG
-         H+hqygPcQbm2wiA3k1izV81QSlgncvHIAXNmXnOr23+4r+Wq/QfT5CUhxIC7AN9Fkd
-         3zVCJQ9yjgfwUPL33PA0lCerbagulkYGapUrVVkO0f7f6C8V1yddnI6EP/bxM/u3u+
-         C6LfeRDQ1IpWQ==
-X-Google-Smtp-Source: ABdhPJwneBXIbGc4q2UDyJgiJ3+uJZH1pPDANBY87SMMfQGTFfmv+G+j1p8TNNjg6eMN42mNCUMwLX+OWlLV2W508rA=
-X-Received: by 2002:a05:6830:2413:: with SMTP id j19mr10871981ots.251.1607951742989;
- Mon, 14 Dec 2020 05:15:42 -0800 (PST)
+        id S1728209AbgLNP7y (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 14 Dec 2020 10:59:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59050 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727956AbgLNP7y (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 14 Dec 2020 10:59:54 -0500
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFAFC0613D3;
+        Mon, 14 Dec 2020 07:59:13 -0800 (PST)
+Received: by mail-yb1-xb33.google.com with SMTP id v67so15962774ybi.1;
+        Mon, 14 Dec 2020 07:59:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=D96YB791WIxmPDEX0dM0+WooRGFJ0en+NE1jV1jbsew=;
+        b=nsLLdDmAtmAGnalEGtnnq5OeHUbkgd33pzeoL5wiU5K7YaNZdSdv8kRsjaE+nhMy+Y
+         urOSO9wPdFdUMuJ1mlK3bQc28owHNPKEdx2nbC0hmf+0aD/mLtNy1D3yBOySlT0mGdBQ
+         NSqBVl4m3RPKh/f2NMRBCsf4VniJEfZB+K1mXUKN1lhsEmVJNtNi3H1KwuUJRJYhyeoa
+         6eN1to41riRvjy/qQ7VF/bMBf5FAA33SIHIYOUyYqMsx2yAElv4haYrblSrt+6p/Idku
+         BA3Oacl4xYZEIkWs4HZKNWu7F8CYdv2apwRA3t+5RhCNPe/YZ5t7zTKlWHs/+Z8aU6TN
+         hrhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=D96YB791WIxmPDEX0dM0+WooRGFJ0en+NE1jV1jbsew=;
+        b=PrHgT4DBcwRDX2bAodGWSL/qgVcmU/+JvgDa93RNY7ndTT/EvMq7abAKW5NWwTjm0f
+         CqMusLGr4GQLnrGOwREt4Qhgm40xqHTZDuAGYxadF0SACwZ45abIuiGn8SnCwyjMAqMQ
+         zhWd88jcNFW0PJ0CbXE8sDCYj1soq+TsPqclCDmlYcXBSkGRcc6VJvZW5MFZFkInOohu
+         IJwY03apVQrAxQZX2+SjvPi9Goodw/usW4j+kB26Zqy42I4OkxESg1QyXLNC7LBtbA4Q
+         sJaQLO5ArDWArp4NA0mXXIl2hPICz1jLbb/s7ygoEfMtZzqlR90cOcIs8wxqPY109BDb
+         MteQ==
+X-Gm-Message-State: AOAM533u//zyCIXEaSs4lxb5BoPGH0CwkSTH5YtviAuvRS1rBxAEAnU6
+        gMETKJhDlJ6Qi3bj1QRYRtKv70vw3ZjVoiGu7gevgBs515ptew==
+X-Google-Smtp-Source: ABdhPJyXTV9DRuzFBusId2cDnorHEr1r38aW4pu6qrco+Dvg+HvOFbejY+Uku/2A4OnO0DMfLzEyMlNXTsCY0+orJLQ=
+X-Received: by 2002:a05:6902:100f:: with SMTP id w15mr34570378ybt.25.1607961552836;
+ Mon, 14 Dec 2020 07:59:12 -0800 (PST)
 MIME-Version: 1.0
-References: <20190307091514.2489338-1-arnd@arndb.de> <X9S28TcEXd2zghzp@elver.google.com>
- <87czzeg5ep.fsf@nanos.tec.linutronix.de>
-In-Reply-To: <87czzeg5ep.fsf@nanos.tec.linutronix.de>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Mon, 14 Dec 2020 14:15:26 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a0LWjNgwm605TM4dKCsn078X7NC3sEfdBSgcMNEocQ5iA@mail.gmail.com>
-Message-ID: <CAK8P3a0LWjNgwm605TM4dKCsn078X7NC3sEfdBSgcMNEocQ5iA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] futex: mark futex_detect_cmpxchg() as 'noinline'
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Marco Elver <elver@google.com>, Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Elena Reshetova <elena.reshetova@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
-        sparclinux <sparclinux@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
+From:   Anatoly Pugachev <matorola@gmail.com>
+Date:   Mon, 14 Dec 2020 18:59:02 +0300
+Message-ID: <CADxRZqzXQRYgKc=y-KV=S_yHL+Y8Ay2mh5ezeZUnpRvg+syWKw@mail.gmail.com>
+Subject: [sparc64] ftrace: kernel startup-tests unaligned access
+To:     Linux Kernel list <linux-kernel@vger.kernel.org>,
+        Sparc kernel list <sparclinux@vger.kernel.org>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sat, Dec 12, 2020 at 9:01 PM Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> On Sat, Dec 12 2020 at 13:26, Marco Elver wrote:
-> > On Thu, Mar 07, 2019 at 10:14AM +0100, Arnd Bergmann wrote:
-> >> -static void __init futex_detect_cmpxchg(void)
-> >> +static noinline void futex_detect_cmpxchg(void)
-> >>  {
-> >>  #ifndef CONFIG_HAVE_FUTEX_CMPXCHG
-> >>      u32 curval;
-> >
-> > What ever happened to this patch?
->
-> It obviously fell through the cracks.
->
-> > I'm seeing this again with the attached config + next-20201211 (for
-> > testing https://bugs.llvm.org/show_bug.cgi?id=48492). Had to apply this
-> > patch to build the kernel.
->
-> What really bothers me is to remove the __init from a function which is
-> clearly only used during init. And looking deeper it's simply a hack.
->
-> This function is only needed when an architecture has to runtime
-> discover whether the CPU supports it or not. ARM has unconditional
-> support for this, so the obvious thing to do is the below.
->
+Hello!
 
-Ah perfect, that is clearly the right solution here.
+Enabled ftrace startup tests on a sparc64 test VM/LDOM:
 
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -86,6 +86,7 @@ config ARM
->         select HAVE_FTRACE_MCOUNT_RECORD if !XIP_KERNEL
->         select HAVE_FUNCTION_GRAPH_TRACER if !THUMB2_KERNEL && !CC_IS_CLANG
->         select HAVE_FUNCTION_TRACER if !XIP_KERNEL
-> +       select HAVE_FUTEX_CMPXCHG if FUTEX
->         select HAVE_GCC_PLUGINS
->         select HAVE_HW_BREAKPOINT if PERF_EVENTS && (CPU_V6 || CPU_V6K || CPU_V7)
->         select HAVE_IDE if PCI || ISA || PCMCIA
+$ diff -u <(gzip -dc ~/dmesg/config-5.10.0.gz) <(gzip -dc /proc/config.gz)
+--- /dev/fd/63  2020-12-14 16:19:38.239372599 +0300
++++ /dev/fd/62  2020-12-14 16:19:38.235372433 +0300
+@@ -2842,7 +2842,10 @@
+ # CONFIG_TRACEPOINT_BENCHMARK is not set
+ # CONFIG_RING_BUFFER_BENCHMARK is not set
+ # CONFIG_TRACE_EVAL_MAP_FILE is not set
+-# CONFIG_FTRACE_STARTUP_TEST is not set
++CONFIG_FTRACE_SELFTEST=y
++CONFIG_FTRACE_STARTUP_TEST=y
++CONFIG_EVENT_TRACE_STARTUP_TEST=y
++# CONFIG_EVENT_TRACE_TEST_SYSCALLS is not set
+ # CONFIG_RING_BUFFER_STARTUP_TEST is not set
+ # CONFIG_PREEMPTIRQ_DELAY_TEST is not set
+ # CONFIG_KPROBE_EVENT_GEN_TEST is not set
 
-I had a look at what other architectures always implement
-futex_atomic_cmpxchg_inatomic() or can use the asm-generic non-SMP version,
-and I found that it's pretty much all of them, the odd ones being just sparc32
-and csky, which use asm-generic/futex.h but do have an SMP option,
-as well as xtensa
 
-I would guess that for csky, this is a mistake, as the architecture is fairly
-new and should be able to implement it. Not sure about sparc32.
+Got the following results with kernel boot logs:
 
-       Arnd
+Dec 14 13:48:15 kernel: clocksource: jiffies: mask: 0xffffffff
+max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+Dec 14 13:48:15 kernel: futex hash table entries: 65536 (order: 9,
+4194304 bytes, linear)
+Dec 14 13:48:15 kernel: Running postponed tracer tests:
+Dec 14 13:48:15 kernel: Testing tracer function:
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[552a20]
+trace_function+0x40/0x140
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[552a24]
+trace_function+0x44/0x140
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[552a20]
+trace_function+0x40/0x140
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[552a24]
+trace_function+0x44/0x140
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[552a20]
+trace_function+0x40/0x140
+Dec 14 13:48:15 kernel: PASSED
+Dec 14 13:48:15 kernel: Testing dynamic ftrace: PASSED
+...
+Dec 14 13:48:15 kernel: Testing event workqueue_execute_end:
+Dec 14 13:48:15 kernel: log_unaligned: 194175 callbacks suppressed
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[47faa4]
+trace_event_raw_event_workqueue_execute_end+0x44/0xa0
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[47fab0]
+trace_event_raw_event_workqueue_execute_end+0x50/0xa0
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[47faa4]
+trace_event_raw_event_workqueue_execute_end+0x44/0xa0
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[47fab0]
+trace_event_raw_event_workqueue_execute_end+0x50/0xa0
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[47faa4]
+trace_event_raw_event_workqueue_execute_end+0x44/0xa0
+Dec 14 13:48:15 kernel: OK
+...
+Dec 14 13:48:15 kernel: Testing event sched_waking: OK
+Dec 14 13:48:15 kernel: Testing event sched_kthread_stop_ret:
+Dec 14 13:48:15 kernel: log_unaligned: 401755 callbacks suppressed
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[f4c538]
+function_test_events_call+0x84/0x188
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[f4c53c]
+function_test_events_call+0x88/0x188
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[f4c538]
+function_test_events_call+0x84/0x188
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[f4c53c]
+function_test_events_call+0x88/0x188
+Dec 14 13:48:15 kernel: Kernel unaligned access at TPC[f4c538]
+function_test_events_call+0x84/0x188
+Dec 14 13:48:15 kernel: OK
+Dec 14 13:48:15 kernel: Testing event sched_kthread_stop: OK
+...
+
+full log is at  https://gist.github.com/mator/a44eb39d5103aaaea2f1b2f3856c391d
+
+Looking at the most encountered function list in dmesg (journalctl -b
+-k) output:
+
+$ zgrep 'Kernel unaligned access at TPC' kernel-ftrace.log.gz | awk
+'{print $NF}' | cut -f1 -d'+' | sort  | uniq -c
+    313 function_test_events_call
+      4 trace_event_raw_event_kmem_alloc
+      4 trace_event_raw_event_kmem_free
+      1 trace_event_raw_event_mm_page
+      1 trace_event_raw_event_mm_page_alloc
+      2 trace_event_raw_event_rcu_utilization
+      5 trace_event_raw_event_sched_switch
+      3 trace_event_raw_event_timer_class
+      2 trace_event_raw_event_timer_expire_entry
+      8 trace_event_raw_event_workqueue_execute_end
+      2 trace_event_raw_event_workqueue_execute_start
+      5 trace_function
+
+Can someone look for unaligned access at least in
+function_test_events_call() to fix it?
+
+Thanks.
