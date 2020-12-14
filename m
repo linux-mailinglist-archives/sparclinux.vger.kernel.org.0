@@ -2,112 +2,142 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B94C2D9D5E
-	for <lists+sparclinux@lfdr.de>; Mon, 14 Dec 2020 18:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 918802D9E01
+	for <lists+sparclinux@lfdr.de>; Mon, 14 Dec 2020 18:45:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408415AbgLNRNU (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 14 Dec 2020 12:13:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2408413AbgLNRNN (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 14 Dec 2020 12:13:13 -0500
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED87C0613D3;
-        Mon, 14 Dec 2020 09:12:33 -0800 (PST)
-Received: by mail-yb1-xb44.google.com with SMTP id 82so9252658yby.6;
-        Mon, 14 Dec 2020 09:12:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6rKntWAzezKQY6iRUqQwhm52Tcc3Is8F5R6X0L2T4x0=;
-        b=aeBQBa2+tSZ5IwKLmky59/317du25kb5QvdC9TIwDci6aoupzBEyy0TJWD23cZbZpF
-         FCLyMLzHRAX3P5Z7NxUChIi374ZZENIny2AKBbunXKVNy6DzhXMgMh7TN6FO4ro5ZcY3
-         R5RRQIkjF4/1PiU2BZORpSsOzq7qi2OjkmiuSssrk2EzVILNXwzCj1Xn0b6BPH21y1fP
-         NstTfcQ+kIy7CTI0Cw3NpZYysrZyPyfe3eo2Tw9/QzmIwcusOC9Kr3CJ+N+zog7Klj/n
-         L0UpRvL69C4gv37lyjwfCuQwFFsM/YkZqfPnLb/4wRodAzYUhgFAxa1U6OdFQFHveYpe
-         L9Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6rKntWAzezKQY6iRUqQwhm52Tcc3Is8F5R6X0L2T4x0=;
-        b=U5eXP1VXeg87W0QtoPpQ2LNheUq0us8LTfbrgpJ2/DZOPRYwPnifMf8FfVHOvdSHlf
-         T8zkhwPS0gZO/nwLgnik5VDExl6BvNXsZKsUNvkPez5jAojCJ/uI9DiiBGOHe3wPWC5D
-         r8Sbj+KvXB1RxmJNGEYcwMZ2pX3Lgj1jk30DTgEDR/EWao1RKWHrz/mA739sfQP68OAs
-         31d3bQ8DJhfc6Kar58OHIdz6pzP+ejbPMkToEeNkF344kQQvjkH5TS6YeNQ4yOoR1pFY
-         BpoU5eQCY7vWtVfs8m+o9SduzPRz8MjhJfcKBMapb4l1NW1fRqkpcENAl4/aJgfRUeMy
-         fnvA==
-X-Gm-Message-State: AOAM533Pfw4xfePqJugC0jaJDAleyFXw351/DPV/0T2hjKcyfP6m/5a9
-        MZb1EONLWDIYS5JQPB0LeTH+Pzdq+ZzclbB6vZA=
-X-Google-Smtp-Source: ABdhPJwmepRzWIWkCfUMN5Kbq6U3QkiOKjfBZudMDR1drxErt8YUn0ov9ksl8/hO4b05XcLvCKm9aVC8DsljRQN2Pl0=
-X-Received: by 2002:a25:f02:: with SMTP id 2mr36268254ybp.500.1607965948994;
- Mon, 14 Dec 2020 09:12:28 -0800 (PST)
-MIME-Version: 1.0
-References: <CADxRZqzXQRYgKc=y-KV=S_yHL+Y8Ay2mh5ezeZUnpRvg+syWKw@mail.gmail.com>
- <20201214111512.415717ac@gandalf.local.home> <20201214112629.3cf6f240@gandalf.local.home>
-In-Reply-To: <20201214112629.3cf6f240@gandalf.local.home>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Mon, 14 Dec 2020 20:12:18 +0300
-Message-ID: <CADxRZqwDAZK3s2jjavUKunvbE3jux=yNfPQFRwvMZRjqqS_6cw@mail.gmail.com>
-Subject: Re: [sparc64] ftrace: kernel startup-tests unaligned access
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Linux Kernel list <linux-kernel@vger.kernel.org>,
+        id S2502383AbgLNRmb (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 14 Dec 2020 12:42:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51680 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2502539AbgLNRm1 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 14 Dec 2020 12:42:27 -0500
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 75AE920643;
+        Mon, 14 Dec 2020 17:41:45 +0000 (UTC)
+Date:   Mon, 14 Dec 2020 12:41:43 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Anatoly Pugachev <matorola@gmail.com>,
         Sparc kernel list <sparclinux@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+        Jessica Clarke <jrtc27@jrtc27.com>
+Subject: [PATCH] Revert: "ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"
+Message-ID: <20201214124143.675d78bf@gandalf.local.home>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Dec 14, 2020 at 7:26 PM Steven Rostedt <rostedt@goodmis.org> wrote:
-> On Mon, 14 Dec 2020 11:15:12 -0500 Steven Rostedt <rostedt@goodmis.org> wrote:
->
-> > Does sparc64 require 8 byte alignment for 8 byte words?
-> >
->
-> In other words, does this patch fix anything?
->
-> -- Steve
->
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index 56b6ccc0e32d..fa716994f77e 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -143,6 +143,22 @@ config UPROBES
->             managed by the kernel and kept transparent to the probed
->             application. )
->
-> +config HAVE_64BIT_ALIGNED_ACCESS
-...
+From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
 
-Steven,
+It was believed that metag was the only architecture that required the ring
+buffer to keep 8 byte words aligned on 8 byte architectures, and with its
+removal, it was assumed that the ring buffer code did not need to handle
+this case. It appears that sparc64 also requires this.
 
-yes, this patch fully fixes ftrace sparc64 "unaligned access". Thanks!
+The following was reported on a sparc64 boot up:
 
-$ journalctl -b -k --no-hostname -o short-monotonic | grep -c unaligned
-0
+   kernel: futex hash table entries: 65536 (order: 9, 4194304 bytes, linear)
+   kernel: Running postponed tracer tests:
+   kernel: Testing tracer function:
+   kernel: Kernel unaligned access at TPC[552a20] trace_function+0x40/0x140
+   kernel: Kernel unaligned access at TPC[552a24] trace_function+0x44/0x140
+   kernel: Kernel unaligned access at TPC[552a20] trace_function+0x40/0x140
+   kernel: Kernel unaligned access at TPC[552a24] trace_function+0x44/0x140
+   kernel: Kernel unaligned access at TPC[552a20] trace_function+0x40/0x140
+   kernel: PASSED
 
-$ diff -u <(gzip -dc ~/dmesg/config-5.10.0.gz) <(gzip -dc /proc/config.gz)
---- /dev/fd/63  2020-12-14 20:11:10.442415669 +0300
-+++ /dev/fd/62  2020-12-14 20:11:10.438415619 +0300
-@@ -305,6 +305,7 @@
- CONFIG_JUMP_LABEL=y
- # CONFIG_STATIC_KEYS_SELFTEST is not set
- CONFIG_UPROBES=y
-+CONFIG_HAVE_64BIT_ALIGNED_ACCESS=y
- CONFIG_KRETPROBES=y
- CONFIG_HAVE_KPROBES=y
- CONFIG_HAVE_KRETPROBES=y
-@@ -2842,7 +2843,10 @@
- # CONFIG_TRACEPOINT_BENCHMARK is not set
- # CONFIG_RING_BUFFER_BENCHMARK is not set
- # CONFIG_TRACE_EVAL_MAP_FILE is not set
--# CONFIG_FTRACE_STARTUP_TEST is not set
-+CONFIG_FTRACE_SELFTEST=y
-+CONFIG_FTRACE_STARTUP_TEST=y
-+CONFIG_EVENT_TRACE_STARTUP_TEST=y
-+# CONFIG_EVENT_TRACE_TEST_SYSCALLS is not set
- # CONFIG_RING_BUFFER_STARTUP_TEST is not set
- # CONFIG_PREEMPTIRQ_DELAY_TEST is not set
- # CONFIG_KPROBE_EVENT_GEN_TEST is not set
+Need to put back the 64BIT aligned code for the ring buffer.
+
+Link: https://lore.kernel.org/r/CADxRZqzXQRYgKc=y-KV=S_yHL+Y8Ay2mh5ezeZUnpRvg+syWKw@mail.gmail.com
+
+Cc: stable@vger.kernel.org
+Fixes: 86b3de60a0b6 ("ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS")
+Reported-by: Anatoly Pugachev <matorola@gmail.com>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+---
+ arch/Kconfig               | 16 ++++++++++++++++
+ kernel/trace/ring_buffer.c | 17 +++++++++++++----
+ 2 files changed, 29 insertions(+), 4 deletions(-)
+
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 56b6ccc0e32d..fa716994f77e 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -143,6 +143,22 @@ config UPROBES
+ 	    managed by the kernel and kept transparent to the probed
+ 	    application. )
+ 
++config HAVE_64BIT_ALIGNED_ACCESS
++	def_bool 64BIT && !HAVE_EFFICIENT_UNALIGNED_ACCESS
++	help
++	  Some architectures require 64 bit accesses to be 64 bit
++	  aligned, which also requires structs containing 64 bit values
++	  to be 64 bit aligned too. This includes some 32 bit
++	  architectures which can do 64 bit accesses, as well as 64 bit
++	  architectures without unaligned access.
++
++	  This symbol should be selected by an architecture if 64 bit
++	  accesses are required to be 64 bit aligned in this way even
++	  though it is not a 64 bit architecture.
++
++	  See Documentation/unaligned-memory-access.txt for more
++	  information on the topic of unaligned memory accesses.
++
+ config HAVE_EFFICIENT_UNALIGNED_ACCESS
+ 	bool
+ 	help
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index e03bc4e5d482..926845eb5ab5 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -130,7 +130,16 @@ int ring_buffer_print_entry_header(struct trace_seq *s)
+ #define RB_ALIGNMENT		4U
+ #define RB_MAX_SMALL_DATA	(RB_ALIGNMENT * RINGBUF_TYPE_DATA_TYPE_LEN_MAX)
+ #define RB_EVNT_MIN_SIZE	8U	/* two 32bit words */
+-#define RB_ALIGN_DATA		__aligned(RB_ALIGNMENT)
++
++#ifndef CONFIG_HAVE_64BIT_ALIGNED_ACCESS
++# define RB_FORCE_8BYTE_ALIGNMENT	0
++# define RB_ARCH_ALIGNMENT		RB_ALIGNMENT
++#else
++# define RB_FORCE_8BYTE_ALIGNMENT	1
++# define RB_ARCH_ALIGNMENT		8U
++#endif
++
++#define RB_ALIGN_DATA		__aligned(RB_ARCH_ALIGNMENT)
+ 
+ /* define RINGBUF_TYPE_DATA for 'case RINGBUF_TYPE_DATA:' */
+ #define RINGBUF_TYPE_DATA 0 ... RINGBUF_TYPE_DATA_TYPE_LEN_MAX
+@@ -2718,7 +2727,7 @@ rb_update_event(struct ring_buffer_per_cpu *cpu_buffer,
+ 
+ 	event->time_delta = delta;
+ 	length -= RB_EVNT_HDR_SIZE;
+-	if (length > RB_MAX_SMALL_DATA) {
++	if (length > RB_MAX_SMALL_DATA || RB_FORCE_8BYTE_ALIGNMENT) {
+ 		event->type_len = 0;
+ 		event->array[0] = length;
+ 	} else
+@@ -2733,11 +2742,11 @@ static unsigned rb_calculate_event_length(unsigned length)
+ 	if (!length)
+ 		length++;
+ 
+-	if (length > RB_MAX_SMALL_DATA)
++	if (length > RB_MAX_SMALL_DATA || RB_FORCE_8BYTE_ALIGNMENT)
+ 		length += sizeof(event.array[0]);
+ 
+ 	length += RB_EVNT_HDR_SIZE;
+-	length = ALIGN(length, RB_ALIGNMENT);
++	length = ALIGN(length, RB_ARCH_ALIGNMENT);
+ 
+ 	/*
+ 	 * In case the time delta is larger than the 27 bits for it
+-- 
+2.25.4
+
