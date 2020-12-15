@@ -2,142 +2,181 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 918802D9E01
-	for <lists+sparclinux@lfdr.de>; Mon, 14 Dec 2020 18:45:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4BA22DA7FA
+	for <lists+sparclinux@lfdr.de>; Tue, 15 Dec 2020 07:11:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502383AbgLNRmb (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 14 Dec 2020 12:42:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51680 "EHLO mail.kernel.org"
+        id S1725907AbgLOGJ6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 15 Dec 2020 01:09:58 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47962 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2502539AbgLNRm1 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 14 Dec 2020 12:42:27 -0500
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 75AE920643;
-        Mon, 14 Dec 2020 17:41:45 +0000 (UTC)
-Date:   Mon, 14 Dec 2020 12:41:43 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Anatoly Pugachev <matorola@gmail.com>,
-        Sparc kernel list <sparclinux@vger.kernel.org>,
-        Jessica Clarke <jrtc27@jrtc27.com>
-Subject: [PATCH] Revert: "ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"
-Message-ID: <20201214124143.675d78bf@gandalf.local.home>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1725535AbgLOGJ6 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 15 Dec 2020 01:09:58 -0500
+X-Gm-Message-State: AOAM530pUftn/EoSEYzmtrJzjxfIfmrw2YmPe+0zNmZVC8x4ecSn6r3p
+        uF+igu+3kAZMhyBbZhu4eGZAXXd2ENXBmw19h+0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608012557;
+        bh=eM1iO62Y+OABfsmTbsKqTvjKPUgGID9OYipCgGIAT+k=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=S36pMsUlhsZjpVADM5DMLS5Xa+oX4t4tX1PtMtg5YGUzJ7dM8qQ/K+2qedPxpeC1b
+         /OFcxxOHGjv8NZvYOaJaq/nmDAZX2WghI6loHuKR4X8HidnNcguXmj9T2EDAppQPuH
+         GKDjw3/3FaCi1fQcnrxds6LxT4MRLGPYsfKvJ4TCsIZ4VvSfOH0Ld5J8jIu3ABMXs4
+         h4E3uo+Frd9G+sJE3xkTAoOF/iW/MPqQLdaY3Z2in2YdLSRXa+V1nfPB6yzFTHASAu
+         P8zlCwXVOG0YW/Vq8eRHi1o+XxLdwvxtjOorWKlB5Cs+rPj1Qp+lA2wdqL5fAi1t/y
+         FILTfGFyc5eAw==
+X-Google-Smtp-Source: ABdhPJyCs/wn6V3CXZjp6FzMHp+77chg0XMZ9jFKivN81ulq6TJSCfI6QCX8XlMHeQSzem6E4veUA20MQNX6nlCaAIs=
+X-Received: by 2002:a19:804c:: with SMTP id b73mr12099365lfd.231.1608012555072;
+ Mon, 14 Dec 2020 22:09:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20190307091514.2489338-1-arnd@arndb.de> <X9S28TcEXd2zghzp@elver.google.com>
+ <87czzeg5ep.fsf@nanos.tec.linutronix.de> <CAK8P3a0LWjNgwm605TM4dKCsn078X7NC3sEfdBSgcMNEocQ5iA@mail.gmail.com>
+In-Reply-To: <CAK8P3a0LWjNgwm605TM4dKCsn078X7NC3sEfdBSgcMNEocQ5iA@mail.gmail.com>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Tue, 15 Dec 2020 14:09:03 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTRLEbBfZJ7Y6UNOMq-cwG5OYRW=+8Pfauz6v6R8ntBjYA@mail.gmail.com>
+Message-ID: <CAJF2gTRLEbBfZJ7Y6UNOMq-cwG5OYRW=+8Pfauz6v6R8ntBjYA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] futex: mark futex_detect_cmpxchg() as 'noinline'
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Marco Elver <elver@google.com>, Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Elena Reshetova <elena.reshetova@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org,
+        sparclinux <sparclinux@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+Hi Arnd,
 
-It was believed that metag was the only architecture that required the ring
-buffer to keep 8 byte words aligned on 8 byte architectures, and with its
-removal, it was assumed that the ring buffer code did not need to handle
-this case. It appears that sparc64 also requires this.
+On Mon, Dec 14, 2020 at 9:15 PM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> On Sat, Dec 12, 2020 at 9:01 PM Thomas Gleixner <tglx@linutronix.de> wrote:
+> >
+> > On Sat, Dec 12 2020 at 13:26, Marco Elver wrote:
+> > > On Thu, Mar 07, 2019 at 10:14AM +0100, Arnd Bergmann wrote:
+> > >> -static void __init futex_detect_cmpxchg(void)
+> > >> +static noinline void futex_detect_cmpxchg(void)
+> > >>  {
+> > >>  #ifndef CONFIG_HAVE_FUTEX_CMPXCHG
+> > >>      u32 curval;
+> > >
+> > > What ever happened to this patch?
+> >
+> > It obviously fell through the cracks.
+> >
+> > > I'm seeing this again with the attached config + next-20201211 (for
+> > > testing https://bugs.llvm.org/show_bug.cgi?id=48492). Had to apply this
+> > > patch to build the kernel.
+> >
+> > What really bothers me is to remove the __init from a function which is
+> > clearly only used during init. And looking deeper it's simply a hack.
+> >
+> > This function is only needed when an architecture has to runtime
+> > discover whether the CPU supports it or not. ARM has unconditional
+> > support for this, so the obvious thing to do is the below.
+> >
+>
+> Ah perfect, that is clearly the right solution here.
+>
+> > --- a/arch/arm/Kconfig
+> > +++ b/arch/arm/Kconfig
+> > @@ -86,6 +86,7 @@ config ARM
+> >         select HAVE_FTRACE_MCOUNT_RECORD if !XIP_KERNEL
+> >         select HAVE_FUNCTION_GRAPH_TRACER if !THUMB2_KERNEL && !CC_IS_CLANG
+> >         select HAVE_FUNCTION_TRACER if !XIP_KERNEL
+> > +       select HAVE_FUTEX_CMPXCHG if FUTEX
+> >         select HAVE_GCC_PLUGINS
+> >         select HAVE_HW_BREAKPOINT if PERF_EVENTS && (CPU_V6 || CPU_V6K || CPU_V7)
+> >         select HAVE_IDE if PCI || ISA || PCMCIA
+>
+> I had a look at what other architectures always implement
+> futex_atomic_cmpxchg_inatomic() or can use the asm-generic non-SMP version,
+> and I found that it's pretty much all of them, the odd ones being just sparc32
+> and csky, which use asm-generic/futex.h but do have an SMP option,
+> as well as xtensa
+>
+> I would guess that for csky, this is a mistake, as the architecture is fairly
+> new and should be able to implement it. Not sure about sparc32.
 
-The following was reported on a sparc64 boot up:
+The c610, c807, c810 don't support SMP, so futex_cmpxchg_enabled = 1
+with asm-generic's implementation.
+For c860, there is no HAVE_FUTEX_CMPXCHG and cmpxchg_inatomic/inuser
+implementation, so futex_cmpxchg_enabled = 0.
 
-   kernel: futex hash table entries: 65536 (order: 9, 4194304 bytes, linear)
-   kernel: Running postponed tracer tests:
-   kernel: Testing tracer function:
-   kernel: Kernel unaligned access at TPC[552a20] trace_function+0x40/0x140
-   kernel: Kernel unaligned access at TPC[552a24] trace_function+0x44/0x140
-   kernel: Kernel unaligned access at TPC[552a20] trace_function+0x40/0x140
-   kernel: Kernel unaligned access at TPC[552a24] trace_function+0x44/0x140
-   kernel: Kernel unaligned access at TPC[552a20] trace_function+0x40/0x140
-   kernel: PASSED
+Thx for point it out, we'll implement cmpxchg_inatomic/inuser for C860
+and still use asm-generic for non-smp CPUs:
 
-Need to put back the 64BIT aligned code for the ring buffer.
-
-Link: https://lore.kernel.org/r/CADxRZqzXQRYgKc=y-KV=S_yHL+Y8Ay2mh5ezeZUnpRvg+syWKw@mail.gmail.com
-
-Cc: stable@vger.kernel.org
-Fixes: 86b3de60a0b6 ("ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS")
-Reported-by: Anatoly Pugachev <matorola@gmail.com>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
----
- arch/Kconfig               | 16 ++++++++++++++++
- kernel/trace/ring_buffer.c | 17 +++++++++++++----
- 2 files changed, 29 insertions(+), 4 deletions(-)
-
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 56b6ccc0e32d..fa716994f77e 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -143,6 +143,22 @@ config UPROBES
- 	    managed by the kernel and kept transparent to the probed
- 	    application. )
- 
-+config HAVE_64BIT_ALIGNED_ACCESS
-+	def_bool 64BIT && !HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	help
-+	  Some architectures require 64 bit accesses to be 64 bit
-+	  aligned, which also requires structs containing 64 bit values
-+	  to be 64 bit aligned too. This includes some 32 bit
-+	  architectures which can do 64 bit accesses, as well as 64 bit
-+	  architectures without unaligned access.
+diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
+index a2189c0..e968c58 100644
+--- a/arch/csky/Kconfig
++++ b/arch/csky/Kconfig
+@@ -49,6 +49,7 @@ config CSKY
+        select HAVE_FUNCTION_TRACER
+        select HAVE_FUNCTION_GRAPH_TRACER
+        select HAVE_FUNCTION_ERROR_INJECTION
++       select HAVE_FUTEX_CMPXCHG if FUTEX && SMP
+        select HAVE_FTRACE_MCOUNT_RECORD
+        select HAVE_KERNEL_GZIP
+        select HAVE_KERNEL_LZO
+diff --git a/arch/csky/include/asm/futex.h b/arch/csky/include/asm/futex.h
+new file mode 100644
+index 00000000..29275e8
+--- /dev/null
++++ b/arch/csky/include/asm/futex.h
+@@ -0,0 +1,42 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +
-+	  This symbol should be selected by an architecture if 64 bit
-+	  accesses are required to be 64 bit aligned in this way even
-+	  though it is not a 64 bit architecture.
++#ifndef __ASM_CSKY_FUTEX_H
++#define __ASM_CSKY_FUTEX_H
 +
-+	  See Documentation/unaligned-memory-access.txt for more
-+	  information on the topic of unaligned memory accesses.
-+
- config HAVE_EFFICIENT_UNALIGNED_ACCESS
- 	bool
- 	help
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index e03bc4e5d482..926845eb5ab5 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -130,7 +130,16 @@ int ring_buffer_print_entry_header(struct trace_seq *s)
- #define RB_ALIGNMENT		4U
- #define RB_MAX_SMALL_DATA	(RB_ALIGNMENT * RINGBUF_TYPE_DATA_TYPE_LEN_MAX)
- #define RB_EVNT_MIN_SIZE	8U	/* two 32bit words */
--#define RB_ALIGN_DATA		__aligned(RB_ALIGNMENT)
-+
-+#ifndef CONFIG_HAVE_64BIT_ALIGNED_ACCESS
-+# define RB_FORCE_8BYTE_ALIGNMENT	0
-+# define RB_ARCH_ALIGNMENT		RB_ALIGNMENT
++#ifndef CONFIG_SMP
++#include <asm-generic/futex.h>
 +#else
-+# define RB_FORCE_8BYTE_ALIGNMENT	1
-+# define RB_ARCH_ALIGNMENT		8U
-+#endif
++#include <linux/futex.h>
++#include <linux/uaccess.h>
++#include <linux/errno.h>
 +
-+#define RB_ALIGN_DATA		__aligned(RB_ARCH_ALIGNMENT)
- 
- /* define RINGBUF_TYPE_DATA for 'case RINGBUF_TYPE_DATA:' */
- #define RINGBUF_TYPE_DATA 0 ... RINGBUF_TYPE_DATA_TYPE_LEN_MAX
-@@ -2718,7 +2727,7 @@ rb_update_event(struct ring_buffer_per_cpu *cpu_buffer,
- 
- 	event->time_delta = delta;
- 	length -= RB_EVNT_HDR_SIZE;
--	if (length > RB_MAX_SMALL_DATA) {
-+	if (length > RB_MAX_SMALL_DATA || RB_FORCE_8BYTE_ALIGNMENT) {
- 		event->type_len = 0;
- 		event->array[0] = length;
- 	} else
-@@ -2733,11 +2742,11 @@ static unsigned rb_calculate_event_length(unsigned length)
- 	if (!length)
- 		length++;
- 
--	if (length > RB_MAX_SMALL_DATA)
-+	if (length > RB_MAX_SMALL_DATA || RB_FORCE_8BYTE_ALIGNMENT)
- 		length += sizeof(event.array[0]);
- 
- 	length += RB_EVNT_HDR_SIZE;
--	length = ALIGN(length, RB_ALIGNMENT);
-+	length = ALIGN(length, RB_ARCH_ALIGNMENT);
- 
- 	/*
- 	 * In case the time delta is larger than the 27 bits for it
++static inline int
++arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
++{
++       int oldval = 0, ret = 0;
++
++       if (!access_ok(uaddr, sizeof(u32)))
++               return -EFAULT;
++
++       <...>
++
++       return ret;
++}
++
++static inline int
++futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
++                             u32 oldval, u32 newval)
++{
++       int ret = 0;
++       u32 val;
++       uintptr_t tmp;
++
++       if (!access_ok(uaddr, sizeof(u32)))
++               return -EFAULT;
++
++       <...>
++
++       return ret;
++}
++#endif
++#endif /* __ASM_CSKY_FUTEX_H */
 -- 
-2.25.4
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
