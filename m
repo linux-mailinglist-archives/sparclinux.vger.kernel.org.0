@@ -2,89 +2,94 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F59D2DE1C8
-	for <lists+sparclinux@lfdr.de>; Fri, 18 Dec 2020 12:09:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5026F2DE429
+	for <lists+sparclinux@lfdr.de>; Fri, 18 Dec 2020 15:36:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733206AbgLRLJV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 18 Dec 2020 06:09:21 -0500
-Received: from vsp-unauthed02.binero.net ([195.74.38.227]:25763 "EHLO
-        vsp-unauthed02.binero.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733174AbgLRLJV (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 18 Dec 2020 06:09:21 -0500
-X-Halon-ID: 581e0ce0-4121-11eb-a542-005056917a89
-Authorized-sender: andreas@gaisler.com
-Received: from andreas.got.gaisler.com (h-98-128-223-123.na.cust.bahnhof.se [98.128.223.123])
-        by bin-vsp-out-01.atm.binero.net (Halon) with ESMTPA
-        id 581e0ce0-4121-11eb-a542-005056917a89;
-        Fri, 18 Dec 2020 12:08:32 +0100 (CET)
-Subject: Re: [PATCH 1/2] futex: mark futex_detect_cmpxchg() as 'noinline'
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Sam Ravnborg <sam@ravnborg.org>, Guo Ren <guoren@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marco Elver <elver@google.com>, Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Elena Reshetova <elena.reshetova@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org,
-        sparclinux <sparclinux@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>, software@gaisler.com
-References: <20190307091514.2489338-1-arnd@arndb.de>
- <X9S28TcEXd2zghzp@elver.google.com> <87czzeg5ep.fsf@nanos.tec.linutronix.de>
- <CAK8P3a0LWjNgwm605TM4dKCsn078X7NC3sEfdBSgcMNEocQ5iA@mail.gmail.com>
- <CAJF2gTRLEbBfZJ7Y6UNOMq-cwG5OYRW=+8Pfauz6v6R8ntBjYA@mail.gmail.com>
- <CAK8P3a3+WaQNyJ6Za2qfu6=0mBgU1hApnRXrdp1b1=P7wwyRUg@mail.gmail.com>
- <20201215193800.GA1098247@ravnborg.org>
- <CAK8P3a24eAYjPTw_GvEC5H9nGODjeKCVLSmfpoNSvrzew5BX4Q@mail.gmail.com>
- <6a2c250a-2c7e-81c5-705a-5904c0fc91b8@gaisler.com>
- <CAK8P3a31LRref0UfsQ3AbyohZcTN6F=6qYA-dspMaadSkP8Vrw@mail.gmail.com>
-From:   Andreas Larsson <andreas@gaisler.com>
-Message-ID: <e9be6bfd-38da-cbfa-9b54-fc4d3dd94d14@gaisler.com>
-Date:   Fri, 18 Dec 2020 12:08:23 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <CAK8P3a31LRref0UfsQ3AbyohZcTN6F=6qYA-dspMaadSkP8Vrw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1728012AbgLROfN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 18 Dec 2020 09:35:13 -0500
+Received: from mout.kundenserver.de ([212.227.126.187]:46385 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727810AbgLROfJ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 18 Dec 2020 09:35:09 -0500
+Received: from orion.localdomain ([95.115.54.243]) by mrelayeu.kundenserver.de
+ (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1M2wCi-1kmxPC1v92-003Pjz; Fri, 18 Dec 2020 15:31:38 +0100
+From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
+        jolsa@redhat.com, namhyung@kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, msalter@redhat.com, jacquiot.aurelien@gmail.com,
+        gerg@linux-m68k.org, geert@linux-m68k.org,
+        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        tglx@linutronix.de, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        maz@kernel.org, tony@atomide.com, arnd@arndb.de,
+        linux-alpha@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arch@vger.kernel.org
+Subject: cleanup handling of bad IRQs
+Date:   Fri, 18 Dec 2020 15:30:59 +0100
+Message-Id: <20201218143122.19459-1-info@metux.net>
+X-Mailer: git-send-email 2.11.0
+X-Provags-ID: V03:K1:GCc9gbsI9eyOCfdNmRX4o9bXX1pOCTy0AyznDchDYs0oM1Puh0V
+ HaUshqI/aGp8nZ32pIa3W6umlwkDU/2qcylknjRG07xPj3Phd4Hi7sPh0w6jCYT7br8wP9r
+ fsQ6guhbrEZJsPZNI8LuMeU1nvpg4pLhQC4hxQMx4DspP5teK6wAXTnJgWzY/Mk0t7irqLX
+ kur37BKvbPWU7xvonpMrg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:/sbNIRVafqs=:7E0S8ysTyADzbE8lkSM6eP
+ 3TWEq16dIlocEj3ixPEv4zX+3uTZPLFNfZxuuLVDe5vQethUoPCGbLrF+TJzqQS6i9ZiPDOWV
+ +MEyUwQsMabb9a7q9A0f4yZPbmnRvOUDPtXYvFQYiaQf8++meO3+CL9+AQCaHZpZU5Lu4zk3h
+ DHvOcIL0N3IkgsS8EOQdWctpP0notp1p3/QtKqWrA0uwnQO8udkYh4oSleqescXu70z7m0miq
+ aQx+1M87gYUAFYOUnCysSU1ZhyZRm3NivHaA+X1Bi0lbdEx0v1kCrv+PamjVlz+r4tOy1m2VO
+ 7GBJGicMrEiBxqRit0qr0sJg1PjhIfT/u0Up/KxPuvMs/TGlnv05ySaqY98K0u1+80NKHB60f
+ iftFYU5etid5UzRqKbNb+YFzN9b3C5t5lHQzh4h/GALhKjmHZEoAm9bm1bb//
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 2020-12-17 17:43, Arnd Bergmann wrote:
-> It does make sense to require that a single kernel can work on all
-> possible hardware. So if we remove sun4m/sun4d support, all that
-> is left is LEON, and you likely wouldn't need to worry about other
-> CPUs any more.
-> 
-> However, there is still the question whether a single kernel needs
-> to work on LEON both with and without CASA. Do you still care
-> about Linux users on LEON cores that do not support CASA, or is
-> widespread enough that you just make it unconditional for both
-> SMP and non-SMP?
-
-We are fine with unconditional CASA for both SMP and non-SMP for LEON.
+Hello friends,
 
 
-> I hope that you can make it to 5.10 then, as this contains the work
-> I did for 64-bit time_t, which is required if you have users that want to
-> run systems after 2038.
+here's a patch queue for cleaning up the IRQ handling. Inspired by a
+discussion we had on a previous patch of mine:
 
-That is a good point! Thank you!
+    "arch: fix 'unexpected IRQ trap at vector' warnings"
+    https://www.spinics.net/lists/kernel/msg3763137.html
+
+Turned out that the whole message, as it is right now, doesn't make much
+sense at at all - not just incorrect wording, but also not quite useful
+information. And the whole ack_bad_irq() thing deserves a cleanup anyways.
+
+So, I've had a closer look and came to these conclusions:
+
+1. The warning message doesn't need to be duplicated in the per architecture
+   ack_bad_irq() functions. All, but one callers already do their own warning.
+   Thus just adding a pr_warn() call there, printing out more useful data
+   like the hardware IRQ number, and dropping all warnings from all the
+   ack_bad_irq() functions.
+
+2. Many of the ack_bad_irq()'s count up the spurious interrupts - lots of
+   duplications over the various archs. Some of them using atomic_t, some
+   just plain ints. Consolidating this by introducing a global counter
+   with inline'd accessors and doing the upcounting in the (currently 3)
+   call sites of ack_bad_irq(). After that, step by step changing all
+   archs to use the new counter.
+
+3. For all but one arch (x86), ack_bad_irq() became a no-op.
+
+   On x86, it's just a call to ack_APIC_irq(), in order to prevent lockups
+   when IRQs missed to be ack'ed on the APIC. Could we perhaps do this in
+   some better place ? In that case, ack_bad_irq() could easily be removed
+   entirely.
+
+have fun,
+
+--mtx
 
 
-> FWIW, glibc-2.31 does not have support for 64-bit time_t yet, but I
-> know there was interest in adding sparc support to the musl libc, which
-> does support 64-bit time_t.
-
-Yes, we will have to follow the developments regarding 64-bit time_t
-in GLIBC as well.
-
--- 
-Andreas
