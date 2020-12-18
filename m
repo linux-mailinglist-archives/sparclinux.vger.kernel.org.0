@@ -2,105 +2,190 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A6362DE70D
-	for <lists+sparclinux@lfdr.de>; Fri, 18 Dec 2020 16:57:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 215D52DE908
+	for <lists+sparclinux@lfdr.de>; Fri, 18 Dec 2020 19:45:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729665AbgLRP4s (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 18 Dec 2020 10:56:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45188 "EHLO
+        id S1725942AbgLRSop (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 18 Dec 2020 13:44:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725797AbgLRP4r (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 18 Dec 2020 10:56:47 -0500
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28006C0617A7;
-        Fri, 18 Dec 2020 07:56:07 -0800 (PST)
-Received: by mail-pg1-x530.google.com with SMTP id n16so1591298pgm.0;
-        Fri, 18 Dec 2020 07:56:07 -0800 (PST)
+        with ESMTP id S1725822AbgLRSoo (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 18 Dec 2020 13:44:44 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC36BC0617A7;
+        Fri, 18 Dec 2020 10:44:03 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id s26so7887998lfc.8;
+        Fri, 18 Dec 2020 10:44:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=abkacR5EtfH7n3c7FX6aX1PPXUx2EG3knfWGOF7I8KQ=;
-        b=CBfVYlZ7drbVWtqD4bM3rkW3OWAqtTHQ4tOTswiI8hMNopfxOrNSevY5aJbqvp0mM5
-         TCt5A9KlDha/typLUMvAinFqZihBhKDs4BnfOvsBgN1UEuOfn2IctSX1c7RAJE00PX2w
-         n7klcFUYA8+Wh03OFueMg42mGZ0RkQcUL9Og1KFLwVu3sptluQTtOKanGWeSuBQ6+cvG
-         IQarphsJdlgszUZ2XFgxxcoIxIFcXYZtA7DiUUAY+OhzWh0reHMzfpVaZ6Tbo/44jQMr
-         d42Q7DDFcqvQMmrXsNBpvMeT3nysS6sMGtm6mQ7XQdIwUbkG3/ZAqQL4skrB49QcSHxQ
-         YUtg==
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6LSPXGseFdJjaxW3YvdtOcQhTKWjAIwtmDZc3IC14gU=;
+        b=KiXQhtwJHjYBNa31hK6+LMEWrVlQFzsB3lFr64+g7O5eGzwHlIqXjcHH6dAFJd8VJ1
+         hg61sox1lJniq3MsoiK61mxqCMe4mME8g66WVA1F/KUfTjewiPbCSy4yZf/yOLbpAW1f
+         92MwMuFgcFjalqM0Ko1ExGgPi6wD5MlCsFSVx/8OjG1O1tSdJtlzBoR4vQLhoXPl5Ihh
+         wPltrdTnTdEjeRLzir/ag9YRBm9Wtgn7UWHmu/uus6tPJPIr6PaMryt2cdQg8huKCYaf
+         wLlOXfCjLFzFDt9Zlo7lWIVmUMFIEw+bX1P2ztx+jrtQTGo1Nhx8M8rDhSc9m2iRwKkg
+         Hbbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=abkacR5EtfH7n3c7FX6aX1PPXUx2EG3knfWGOF7I8KQ=;
-        b=c/cqZzY4wqpKKkqKdHgyX4S3xg6deNWnLSVFQPtsPb8AwR6RuB6RLa4ecouD90os4O
-         2GSt6P1LZRf220aaKYHUfUL6uhmoAYRT9Sh0c0/uawl0vUDAgeZAHgx9NZpFYBwwMVFF
-         FQ0jrU1k6+AdenjeO4qLaNid17eDP4yISZn1oPo6GFjECc7VsCTtf57JW4dSpcTMLMBr
-         5eA6b5vEe+wEvdKELJElYKm8zXuPJP04ZgWm++vjzow4//9TH9BSyY2s1ElUNkXvnV7H
-         mUF1Twguozcq4Rk24I0wICZ6xIO9Uh781mcprCN3Dfu4b3rPsCaudi7nruYhdcQawAxB
-         7/aw==
-X-Gm-Message-State: AOAM532YaV5M8Qr692GEUlIfNqCbePWCm9v0zqJPzG0ljVRW99BXhYiu
-        Kh5JCfLCUEQnfPiiKTGXqN9dY/gnFJMQfoTE5fM=
-X-Google-Smtp-Source: ABdhPJx7CKHKNahHF7wOhrRaWmRijCkWWyTNv/8H9aIqR6dzxIZFoFPjsHMLJGY+VN1uh1mCeWPnu3uWBQAXjL7LLn4=
-X-Received: by 2002:a63:b1e:: with SMTP id 30mr4683229pgl.203.1608306966654;
- Fri, 18 Dec 2020 07:56:06 -0800 (PST)
-MIME-Version: 1.0
-References: <20201218143122.19459-1-info@metux.net> <20201218143122.19459-2-info@metux.net>
-In-Reply-To: <20201218143122.19459-2-info@metux.net>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 18 Dec 2020 17:55:50 +0200
-Message-ID: <CAHp75VfYz_K2BYOxqmSx0q+1F2F9Lp1eb70RrNYzJHs3FX+quQ@mail.gmail.com>
-Subject: Re: [PATCH 01/23] kernel: irq: irqdescs: warn on spurious IRQ
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, msalter@redhat.com,
-        jacquiot.aurelien@gmail.com, gerg@linux-m68k.org,
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=6LSPXGseFdJjaxW3YvdtOcQhTKWjAIwtmDZc3IC14gU=;
+        b=dGqZwBvdzrjxygXDC+/7j34pMHMwWn/yIBSgNuQsc4HzO7CN24oc4wuYPK4bc2EMhm
+         irRw5vdHWRO71ibzGSyS2HKnp/mlx89uWWeP25fGH7KH5I76xC5w6Bzq5R+A/t0nrD14
+         uJzKyOgUSejf8dK3i0KqS4cHwgL3EQ0uCkDfuNNaNn1Q0mJIHyQoHN/NgcJghAwL/E2C
+         6ZNI7KCUIaXy6yZRkbwAB9ltx9BHOTHpXM1kzW1fBxZODuR7xC/FyO+lmo0HOfF52bFk
+         pjH2SA0WoNDtHdfEIai5DvscLpC4boKjdBWh7n3Ld3J0qUPmrT5MEXqtcA/Ssws8bid9
+         QiRA==
+X-Gm-Message-State: AOAM532CpD770JlRrToZTlhfnJANBKgigDeX6e8V5E3P77Dj/LvUn5lY
+        fBUJen1KSIiLwpfuM6lQvjE=
+X-Google-Smtp-Source: ABdhPJyCepN0NmhiFgB+GJRpRSU3knX5RDYc8GrYZ+jJWEZ/PSHQKOvYRMJhsOTF/V9+yeaHtdNetA==
+X-Received: by 2002:a05:651c:211e:: with SMTP id a30mr2540206ljq.18.1608317041724;
+        Fri, 18 Dec 2020 10:44:01 -0800 (PST)
+Received: from saturn.localdomain ([2a00:fd00:8060:1c00:2c04:50ad:1138:9ea2])
+        by smtp.gmail.com with ESMTPSA id s7sm1116980ljp.38.2020.12.18.10.43.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Dec 2020 10:44:01 -0800 (PST)
+Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     David S Miller <davem@davemloft.net>, sparclinux@vger.kernel.org,
+        Andreas Larsson <andreas@gaisler.com>,
+        Arnd Bergmann <arnd@kernel.org>
+Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Denis Efremov <efremov@linux.com>,
+        Dmitry Safonov <0x7f454c46@gmail.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Pekka Enberg <penberg@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
-        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
-        <linuxppc-dev@lists.ozlabs.org>, linux-s390@vger.kernel.org,
-        Linux-SH <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Will Deacon <will@kernel.org>, Willy Tarreau <w@1wt.eu>,
+        linux-kernel@vger.kernel.org, debian-sparc@lists.debian.org,
+        gentoo-sparc@l.g.o
+Subject: [RFC PATCH 0/13] sparc32: sunset sun4m and sun4d
+Date:   Fri, 18 Dec 2020 19:43:34 +0100
+Message-Id: <20201218184347.2180772-1-sam@ravnborg.org>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Dec 18, 2020 at 4:37 PM Enrico Weigelt, metux IT consult
-<info@metux.net> wrote:
+The sun4m and sun4d based SPARC machines was very popular in the
+90'ties and was then replaced by the more powerful sparc64
+class of machines.
+Today there is only Gentoo that to my best knowledge supports
+sparc32 and people have moved on to more capable HW.
 
-> +               if (printk_ratelimit())
-> +                       pr_warn("spurious IRQ: irq=%d hwirq=%d nr_irqs=%d\n",
-> +                               irq, hwirq, nr_irqs);
+Cobham Gaisler have variants of the LEON processer that
+runs sparc32 - and they are in production today.
 
-Perhaps you missed pr_warn_ratelimit() macro which is already in the
-kernel for a long time.
+With this patchset I propose to sunset sun4m and sun4d and move
+focus to a more streamlined support for LEON.
 
--- 
-With Best Regards,
-Andy Shevchenko
+One downside is that qemu supports sun4m - and we may loose
+some testing possibilities when sun4m is dropped. qemu supports
+LEON to some degree - I have not yet tried it out.
+
+Andreas from Gaisler have indicated that they may be more active
+upstream on sparc32 - and this will only be easier with a kernel
+where the legacy stuff is dropped.
+
+I decided to divide up the patches to make it possible to review
+the set as some of the patches touches assembler and these parts
+could use some extra eyes if we move forward with this.
+
+For now it builds with the configurations I have tried.
+
+Looking forward for feedback if sunsetting is a good idea or not.
+
+	Sam
+
+Sam Ravnborg (13):
+      sparc32: Drop sun4m/sun4d support from head_32.S
+      sparc32: Drop floppy support
+      sparc32: Drop sun4m specific led driver
+      sparc32: Drop auxio support
+      sparc32: Drop run-time patching of ipi trap
+      sparc32: Drop patching of interrupt vector
+      sparc32: Drop sun4m/sun4d specific irq handling
+      sparc32: Drop sun4d/sun4m smp support
+      sparc32: Drop pcic support
+      sparc32: Drop mbus support
+      sparc32: Drop unused mmu models
+      sparc32: drop check for sparc_model
+      sparc32: drop use of sparc_config
+
+Note: I dunno why git does not see floppy_64.h=>floppy.h as a rename??
+
+ arch/sparc/Kconfig                  |  16 +-
+ arch/sparc/include/asm/auxio_32.h   |  73 +---
+ arch/sparc/include/asm/cpu_type.h   |  18 -
+ arch/sparc/include/asm/elf_32.h     |   2 -
+ arch/sparc/include/asm/floppy.h     | 786 ++++++++++++++++++++++++++++++++-
+ arch/sparc/include/asm/floppy_32.h  | 393 -----------------
+ arch/sparc/include/asm/floppy_64.h  | 779 ---------------------------------
+ arch/sparc/include/asm/io_32.h      |   4 +-
+ arch/sparc/include/asm/irq_32.h     |   1 -
+ arch/sparc/include/asm/mbus.h       |  97 -----
+ arch/sparc/include/asm/mxcc.h       | 138 ------
+ arch/sparc/include/asm/pcic.h       | 130 ------
+ arch/sparc/include/asm/pgtable_32.h |  24 -
+ arch/sparc/include/asm/ross.h       | 192 --------
+ arch/sparc/include/asm/swift.h      | 107 -----
+ arch/sparc/include/asm/timer_32.h   |   1 +
+ arch/sparc/include/asm/tsunami.h    |  65 ---
+ arch/sparc/include/asm/viking.h     | 255 -----------
+ arch/sparc/kernel/Makefile          |   8 +-
+ arch/sparc/kernel/apc.c             |  14 -
+ arch/sparc/kernel/auxio_32.c        | 140 ------
+ arch/sparc/kernel/cpu.c             |   1 -
+ arch/sparc/kernel/devices.c         |  10 +-
+ arch/sparc/kernel/entry.S           | 354 +--------------
+ arch/sparc/kernel/head_32.S         | 190 +-------
+ arch/sparc/kernel/ioport.c          |   6 +-
+ arch/sparc/kernel/irq.h             |  35 +-
+ arch/sparc/kernel/irq_32.c          | 127 +-----
+ arch/sparc/kernel/kernel.h          |  28 --
+ arch/sparc/kernel/led.c             | 146 -------
+ arch/sparc/kernel/leon_kernel.c     |  43 +-
+ arch/sparc/kernel/leon_pmc.c        |  14 +-
+ arch/sparc/kernel/leon_smp.c        |   3 -
+ arch/sparc/kernel/of_device_32.c    |   4 +-
+ arch/sparc/kernel/pcic.c            | 841 ------------------------------------
+ arch/sparc/kernel/pmc.c             |  10 -
+ arch/sparc/kernel/process_32.c      |  10 -
+ arch/sparc/kernel/setup_32.c        |  80 +---
+ arch/sparc/kernel/smp_32.c          | 102 +----
+ arch/sparc/kernel/sun4d_irq.c       | 519 ----------------------
+ arch/sparc/kernel/sun4d_smp.c       | 413 ------------------
+ arch/sparc/kernel/sun4m_irq.c       | 240 ----------
+ arch/sparc/kernel/sun4m_smp.c       | 273 ------------
+ arch/sparc/kernel/time_32.c         | 114 +++--
+ arch/sparc/kernel/ttable_32.S       |   9 +-
+ arch/sparc/mm/Makefile              |   1 -
+ arch/sparc/mm/hypersparc.S          | 414 ------------------
+ arch/sparc/mm/io-unit.c             |   3 -
+ arch/sparc/mm/iommu.c               |  49 +--
+ arch/sparc/mm/mm_32.h               |   1 -
+ arch/sparc/mm/srmmu.c               | 834 +----------------------------------
+ arch/sparc/mm/swift.S               | 256 -----------
+ arch/sparc/mm/tsunami.S             | 132 ------
+ arch/sparc/mm/viking.S              | 284 ------------
+ arch/sparc/prom/misc_32.c           |   2 -
+ 55 files changed, 905 insertions(+), 7886 deletions(-)
+
+
