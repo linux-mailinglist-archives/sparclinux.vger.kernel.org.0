@@ -2,42 +2,60 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F7592DEB37
-	for <lists+sparclinux@lfdr.de>; Fri, 18 Dec 2020 22:42:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D1362DEB89
+	for <lists+sparclinux@lfdr.de>; Fri, 18 Dec 2020 23:29:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbgLRVmC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 18 Dec 2020 16:42:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58876 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725813AbgLRVmC (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 18 Dec 2020 16:42:02 -0500
-X-Gm-Message-State: AOAM533cbtRYSc9tr/Q2+keUAXv6QyKZevqfE+CGiGKSqbZW1ZFQX9oN
-        5c+Md0z6a5o0qr3qyC1JLT0oJXJyv0O+R/WSp84=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608327681;
-        bh=Hq8wR/llExnD1xPaqlnM06iMoNktQtCOZk26zXnX3+w=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=qDF4cKk7wAbFNvm4+TSMONgFASickPJueZgggl7iZ2nQbnCupprRs1SHIBfNWKapi
-         OjW5EPjI/h9yi/kUT4MVb4TA0U0qSVrBVJsaXJS4sP98NdS9A7lNPB/DaJNTBaRc2K
-         cqNnemlmSS/9/v3orqJJfS405hnsYINd5YbpSRoUrq3AxwvMu5sOyvAMbCRgF5aUUo
-         sp/AQqxsw3uFmm2Y/6NQCI27xYzpMW+TcnlT1MrSVSHhsLex4y3h6R0reZ83RNPNBc
-         KpIS5cHaeIlurM6YUtxprbqDeZJYRrL+Med9JQabksQv7bae+dSQlA1EsJncj68cCS
-         e+kT1izSUkCqQ==
-X-Google-Smtp-Source: ABdhPJyM4Mr7qNYdEaUSe9FUl1ZQdkgzfgjFVq0sQxkCK8X7Lgj1RPioMzsX7zUP7J8GfN0LeWZY/JFUbd+8375/cL4=
-X-Received: by 2002:aca:44d:: with SMTP id 74mr4248055oie.4.1608327680658;
- Fri, 18 Dec 2020 13:41:20 -0800 (PST)
+        id S1725939AbgLRW2t (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 18 Dec 2020 17:28:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48892 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726117AbgLRW2t (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 18 Dec 2020 17:28:49 -0500
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 795F1C0617A7;
+        Fri, 18 Dec 2020 14:28:09 -0800 (PST)
+Received: by mail-il1-x131.google.com with SMTP id q1so3602426ilt.6;
+        Fri, 18 Dec 2020 14:28:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=ZjpjdjP/kx6CmrGSWKO3qDoSaGWe4tkhPwI5BTAB6Hg=;
+        b=mjniCRyiPZkXoykePXVkZ0bS77EKQD9F/T55XbhY7/Sj3RfOVyppEncN3kSwQUwToj
+         iIDx6Z0v3RoA8MLg85Jb8hiMz915VWqFAuiYUU6kEIalyXVClMt8sQGa1oftIeQOcGWk
+         F6YflUxRbzvNZl9ePaSgqfkah1KvqAcqYBPyMlhdVzPt6YjiaE388HUhFAO6lCJ+3EQy
+         bb6VF7UCtN+zWzp2AJF0JQe7OoHtltGd53ge6btLsqwb2T9aJKKf5KCF/yYlTEb74Azd
+         ZuAQvnXE+bfBwLnY4buYL8P144Cl7dAjy9ETb2FnoFyyr/YqNWvbKTtSKlT0ev09OWB4
+         qNKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=ZjpjdjP/kx6CmrGSWKO3qDoSaGWe4tkhPwI5BTAB6Hg=;
+        b=lg5cIEuAl/0sR/HPbl/KuViU1LR2XtCfDmBRCp1DWLJXZ98Wr0ua3c9mB09RfUHrqw
+         +QDCGVDnCUon0TbCcBjAxeWBCzEWdxIBYGrhq+yvsYcbs1llkQevMLmjnRgMxn4rSi0W
+         xhzDjXzew5/CG+TrR9CREF36B7ZMZ7M6+kpiTwvAiHi/6wLLcMXyCXLbEqHgn9Sep/bg
+         WuHWB4IDjv/f7k/hZmiwMUse7K55heTtJGFNexUz85E8Z8NJJW6ibp9gN9buecustyB/
+         vsjxWxxmaKNm4AHjLdXrEvF3u+FwFK9TxdGv8CxP/1obrDqI0IrqtnOxLcZI+R24SP43
+         oq9w==
+X-Gm-Message-State: AOAM531NN/S3SQlSBiDrB26DnAG2noGK2lS7e24u2o9QLjyBbWYKazVG
+        wAz0vxe1tzW7V+k3IXLYUsjenDhn4iY/csk0a9k=
+X-Google-Smtp-Source: ABdhPJz4V2ybF74i3zOnSHOmYeV46WBCxPwW1bWE9wxqp/hie6Lvqw4UTUeQY9H8xEQ+qX/UkbvcpHVQGAYBcXYWHHc=
+X-Received: by 2002:a05:6e02:8d:: with SMTP id l13mr6310898ilm.163.1608330488850;
+ Fri, 18 Dec 2020 14:28:08 -0800 (PST)
 MIME-Version: 1.0
-References: <20201218184347.2180772-1-sam@ravnborg.org>
+Received: by 2002:a5e:dd01:0:0:0:0:0 with HTTP; Fri, 18 Dec 2020 14:28:08
+ -0800 (PST)
 In-Reply-To: <20201218184347.2180772-1-sam@ravnborg.org>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Fri, 18 Dec 2020 22:41:04 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2L-AGHwszuoLKAnzY2ag_8L-iewCZ_aWxk_770w1SMqQ@mail.gmail.com>
-Message-ID: <CAK8P3a2L-AGHwszuoLKAnzY2ag_8L-iewCZ_aWxk_770w1SMqQ@mail.gmail.com>
+References: <20201218184347.2180772-1-sam@ravnborg.org>
+From:   Kjetil Oftedal <oftedal@gmail.com>
+Date:   Fri, 18 Dec 2020 23:28:08 +0100
+Message-ID: <CALMQjD-M4MN+zcZ0t4P5hvtjbd57azmNRmsj9jvwyHFquY84Vw@mail.gmail.com>
 Subject: Re: [RFC PATCH 0/13] sparc32: sunset sun4m and sun4d
 To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     David S Miller <davem@davemloft.net>,
-        sparclinux <sparclinux@vger.kernel.org>,
+Cc:     David S Miller <davem@davemloft.net>, sparclinux@vger.kernel.org,
         Andreas Larsson <andreas@gaisler.com>,
+        Arnd Bergmann <arnd@kernel.org>,
         Alexey Dobriyan <adobriyan@gmail.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -57,15 +75,13 @@ Cc:     David S Miller <davem@davemloft.net>,
         Stephen Rothwell <sfr@canb.auug.org.au>,
         Thomas Gleixner <tglx@linutronix.de>,
         Will Deacon <will@kernel.org>, Willy Tarreau <w@1wt.eu>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        debian-sparc@lists.debian.org
+        linux-kernel@vger.kernel.org, debian-sparc@lists.debian.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Dec 18, 2020 at 7:43 PM Sam Ravnborg <sam@ravnborg.org> wrote:
->
+On 18/12/2020, Sam Ravnborg <sam@ravnborg.org> wrote:
 > The sun4m and sun4d based SPARC machines was very popular in the
 > 90'ties and was then replaced by the more powerful sparc64
 > class of machines.
@@ -86,22 +102,22 @@ On Fri, Dec 18, 2020 at 7:43 PM Sam Ravnborg <sam@ravnborg.org> wrote:
 > upstream on sparc32 - and this will only be easier with a kernel
 > where the legacy stuff is dropped.
 >
-> I decided to divide up the patches to make it possible to review
-> the set as some of the patches touches assembler and these parts
-> could use some extra eyes if we move forward with this.
->
-> For now it builds with the configurations I have tried.
 
-Thank you for doing this, it looks like a very nice cleanup.
+This makes me a bit sad. But I guess I haven't had any time to put
+into the sparc32 port
+for many years, so I guess it is time to let go.
 
-> Looking forward for feedback if sunsetting is a good idea or not.
+But I do believe that by doing this we should make sure we are not
+putting ourselves
+in a position where the sparc kernel-developers don't have access to
+any real sparc32
+hardware.
 
-I have no insight on whether there are any users left that would miss
-it, but I'm fairly sure that there are lots of people that would rather
-see it gone.
+SUN machines were at least plentiful. The LEON-family of processors
+being targeted
+towards the rad-hardened market are not so much available.
 
-> Note: I dunno why git does not see floppy_64.h=>floppy.h as a rename??
+Maybe Gaisler can contribute some systems, or make some available remotely?
 
-It doesn't do that if the old name existed already.
-
-        Arnd
+Best regards,
+Kjetil Oftedal
