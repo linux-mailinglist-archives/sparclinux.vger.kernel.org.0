@@ -2,39 +2,23 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F11732DEAA2
-	for <lists+sparclinux@lfdr.de>; Fri, 18 Dec 2020 21:58:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DA2B2DEADB
+	for <lists+sparclinux@lfdr.de>; Fri, 18 Dec 2020 22:17:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726323AbgLRU6Z (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 18 Dec 2020 15:58:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51366 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727347AbgLRU6Y (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 18 Dec 2020 15:58:24 -0500
-X-Gm-Message-State: AOAM530stEErVHdrUUDZB6BA6w1qMUkIDs1eNECuVwwjvdc/YX9joBWs
-        d8NKfLfa6+Vv6u3nsadn+v82UDyQqobvsZiOdpM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608325084;
-        bh=NDWyD44yv5h4fmgy5/aj2LJSkbrK3dYAcTBLz1rEuhE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KeMJCRnTw9phxa7F612ovvnYF4uSaT2vNACdpXKmZJFI6S3Go0Bxke27R2yuGhx1T
-         qRVjF37iL4eHwXiW7qhGMW981FW0drS3McSsG7PDzSe2cIgwaQhtYatF1oYb9uULNu
-         opb9nw7K2N3T13HAlJDwI7lGUMwS2k6n6qVtiT1lhhKrx0kLXAeAGTzybNyAnd98q7
-         PsPAruci3WUj25/qzKRKXOZu2DV34ooicBzYNncYOzB6Xuya0mS6K/Oh1T2RcnnRyV
-         FdnDBQJZ88n0hQ76/VdmckeTTWD1SjKs5HuCubgwgwBpOjanoYOz2wTijTZljrEpQN
-         EMA2PCgJjFpgw==
-X-Google-Smtp-Source: ABdhPJxouB7L6MRsWBksjwJ4rgPpSege1Mw5uUvSWOuHYxF/DoyPNrFkO54j9UDdw1WxdtX3aNU0eJ0hyaR7AFGMuzw=
-X-Received: by 2002:a9d:7a4b:: with SMTP id z11mr4228287otm.305.1608325084134;
- Fri, 18 Dec 2020 12:58:04 -0800 (PST)
-MIME-Version: 1.0
-References: <20201218184347.2180772-1-sam@ravnborg.org> <20201218184347.2180772-3-sam@ravnborg.org>
-In-Reply-To: <20201218184347.2180772-3-sam@ravnborg.org>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Fri, 18 Dec 2020 21:57:47 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1Q1EvvyuPNn7V7tysCDubeyYQe+Z-9dM9iu-CM3XJM8A@mail.gmail.com>
-Message-ID: <CAK8P3a1Q1EvvyuPNn7V7tysCDubeyYQe+Z-9dM9iu-CM3XJM8A@mail.gmail.com>
-Subject: Re: [PATCH v1 02/13] sparc32: Drop floppy support
-To:     Sam Ravnborg <sam@ravnborg.org>
+        id S1726070AbgLRVRg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 18 Dec 2020 16:17:36 -0500
+Received: from asavdk3.altibox.net ([109.247.116.14]:39904 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725843AbgLRVRg (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 18 Dec 2020 16:17:36 -0500
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 8EAAA20026;
+        Fri, 18 Dec 2020 22:16:40 +0100 (CET)
+Date:   Fri, 18 Dec 2020 22:16:38 +0100
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Arnd Bergmann <arnd@kernel.org>
 Cc:     David S Miller <davem@davemloft.net>,
         sparclinux <sparclinux@vger.kernel.org>,
         Andreas Larsson <andreas@gaisler.com>,
@@ -59,36 +43,55 @@ Cc:     David S Miller <davem@davemloft.net>,
         Will Deacon <will@kernel.org>, Willy Tarreau <w@1wt.eu>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         debian-sparc@lists.debian.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v1 02/13] sparc32: Drop floppy support
+Message-ID: <20201218211638.GA2421393@ravnborg.org>
+References: <20201218184347.2180772-1-sam@ravnborg.org>
+ <20201218184347.2180772-3-sam@ravnborg.org>
+ <CAK8P3a1Q1EvvyuPNn7V7tysCDubeyYQe+Z-9dM9iu-CM3XJM8A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a1Q1EvvyuPNn7V7tysCDubeyYQe+Z-9dM9iu-CM3XJM8A@mail.gmail.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=Ibmpp1ia c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=7gkXJVJtAAAA:8 a=J1Y8HTJGAAAA:8 a=VwQbUJbxAAAA:8
+        a=Z4Rwk6OoAAAA:8 a=NufY4J3AAAAA:8 a=MYakio4dAAAA:8 a=fxJcL_dCAAAA:8
+        a=ebG-ZW-8AAAA:8 a=9jQWrajF32laIYKc0cIA:9 a=CjuIK1q_8ugA:10
+        a=E9Po1WZjFZOl8hwRPBS3:22 a=y1Q9-5lHfBjTkpIzbSAN:22
+        a=AjGcO6oz07-iQ99wixmX:22 a=HkZW87K1Qel5hWWM3VKY:22
+        a=TPcZfFuj8SYsoCJAFAiX:22 a=cei-m1nUyINrUup_78-m:22
+        a=Bj2TwAA_C77lQ_X2_dkp:22
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Dec 18, 2020 at 7:43 PM Sam Ravnborg <sam@ravnborg.org> wrote:
->
-> LEON do not have floppy support so we can drop it
->
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Denis Efremov <efremov@linux.com>
-> Cc: Willy Tarreau <w@1wt.eu>
-> Cc: Christian Brauner <christian.brauner@ubuntu.com>
-> Cc: sparclinux@vger.kernel.org
-> Cc: Arnd Bergmann <arnd@kernel.org>
-> Cc: Andreas Larsson <andreas@gaisler.com>
-> ---
->  arch/sparc/Kconfig                 |   2 +-
->  arch/sparc/include/asm/floppy.h    | 786 ++++++++++++++++++++++++++++-
->  arch/sparc/include/asm/floppy_32.h | 393 ---------------
->  arch/sparc/include/asm/floppy_64.h | 779 ----------------------------
+On Fri, Dec 18, 2020 at 09:57:47PM +0100, Arnd Bergmann wrote:
+> On Fri, Dec 18, 2020 at 7:43 PM Sam Ravnborg <sam@ravnborg.org> wrote:
+> >
+> > LEON do not have floppy support so we can drop it
+> >
+> > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: Sam Ravnborg <sam@ravnborg.org>
+> > Cc: Mike Rapoport <rppt@kernel.org>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Denis Efremov <efremov@linux.com>
+> > Cc: Willy Tarreau <w@1wt.eu>
+> > Cc: Christian Brauner <christian.brauner@ubuntu.com>
+> > Cc: sparclinux@vger.kernel.org
+> > Cc: Arnd Bergmann <arnd@kernel.org>
+> > Cc: Andreas Larsson <andreas@gaisler.com>
+> > ---
+> >  arch/sparc/Kconfig                 |   2 +-
+> >  arch/sparc/include/asm/floppy.h    | 786 ++++++++++++++++++++++++++++-
+> >  arch/sparc/include/asm/floppy_32.h | 393 ---------------
+> >  arch/sparc/include/asm/floppy_64.h | 779 ----------------------------
+> 
+> Rather than renaming the floppy_64.h to floppy.h, it might be easier to just
+> remove the #else from floppy.h, similar to what asm/adi.h does.
+That is what I had first but then thought it pointless with a wrapper
+file. I will revert back to use floppy_64.h for now - we can always
+consolidate header files later.
 
-Rather than renaming the floppy_64.h to floppy.h, it might be easier to just
-remove the #else from floppy.h, similar to what asm/adi.h does.
-
-This might be helpful in the (unlikely) case that someone has patches for
-this file and wants to rebase them.
-
-       Arnd
+	Sam
