@@ -2,24 +2,32 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F10492DF1D8
-	for <lists+sparclinux@lfdr.de>; Sat, 19 Dec 2020 22:41:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16A0A2DF1E5
+	for <lists+sparclinux@lfdr.de>; Sat, 19 Dec 2020 22:58:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727468AbgLSVlv (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 19 Dec 2020 16:41:51 -0500
-Received: from asavdk3.altibox.net ([109.247.116.14]:33662 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726473AbgLSVlv (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 19 Dec 2020 16:41:51 -0500
-Received: from ravnborg.org (unknown [188.228.123.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id 7CD862001F;
-        Sat, 19 Dec 2020 22:40:55 +0100 (CET)
-Date:   Sat, 19 Dec 2020 22:40:54 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     David S Miller <davem@davemloft.net>, sparclinux@vger.kernel.org,
-        Andreas Larsson <andreas@gaisler.com>,
+        id S1726357AbgLSV6K (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 19 Dec 2020 16:58:10 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:38719 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725788AbgLSV6K (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Sat, 19 Dec 2020 16:58:10 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1kqkE3-001M7e-OQ; Sat, 19 Dec 2020 22:57:19 +0100
+Received: from dynamic-077-013-032-222.77.13.pool.telefonica.de ([77.13.32.222] helo=[192.168.1.10])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1kqkE3-002OMT-Ff; Sat, 19 Dec 2020 22:57:19 +0100
+Subject: Re: [RFC PATCH 0/13] sparc32: sunset sun4m and sun4d
+To:     Sam Ravnborg <sam@ravnborg.org>,
+        David S Miller <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
         Arnd Bergmann <arnd@kernel.org>
 Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
@@ -42,48 +50,36 @@ Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
         Will Deacon <will@kernel.org>, Willy Tarreau <w@1wt.eu>,
         linux-kernel@vger.kernel.org, debian-sparc@lists.debian.org,
         gentoo-sparc@lists.gentoo.org, info@temlib.org
-Subject: Re: [RFC PATCH 0/13] sparc32: sunset sun4m and sun4d
-Message-ID: <20201219214054.GB3132151@ravnborg.org>
 References: <20201218184347.2180772-1-sam@ravnborg.org>
+ <20201219214054.GB3132151@ravnborg.org>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <d7c8c97e-6aab-3d11-c8a5-2a08fe872647@physik.fu-berlin.de>
+Date:   Sat, 19 Dec 2020 22:57:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201218184347.2180772-1-sam@ravnborg.org>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=Ibmpp1ia c=1 sm=1 tr=0
-        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
-        a=kj9zAlcOel0A:10 a=mgTqUXvhAAAA:8 a=mrJAqwzcyFW6BaUAzm0A:9
-        a=CjuIK1q_8ugA:10 a=VOnB0Y9YHlndsCffChEF:22
+In-Reply-To: <20201219214054.GB3132151@ravnborg.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 77.13.32.222
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi all,
+On 12/19/20 10:40 PM, Sam Ravnborg wrote:
+> Please keep the inputs coming independent if you are pro or not
+> for the sunset of sun4m and sun4d.
 
-On Fri, Dec 18, 2020 at 07:43:34PM +0100, Sam Ravnborg wrote:
-> The sun4m and sun4d based SPARC machines was very popular in the
-> 90'ties and was then replaced by the more powerful sparc64
-> class of machines.
+I would personally be in favor of keeping it and I should finally get
+my SPARCstation 5 up and running again.
 
-I have received a couple of mails in private.
-One said it was better to sunset now when it is actually working,
-so there is a working state to return to.
-Another said that it would be a shame to sunset sun4m and sun4d because
-there are so many machines around, and netbsd is also active on the
-sparc32 area.
+Adrian
 
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
-The second mail also re-reminded me of an interesting project
-implementing SPARC V8 and the sun4m platform in VHDL.
-See https://temlib.org - the author posted a new blog post a
-few months ago.
-
-temlib is, to my best knowledge, an impressive one-man project.
-And this is not enough to keep sun4m around as this would
-require real users that cannot just stay at their current kernel
-but who need to follow upstream.
-
-Please keep the inputs coming independent if you are pro or not
-for the sunset of sun4m and sun4d.
-
-	Sam
