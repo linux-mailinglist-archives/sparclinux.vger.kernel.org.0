@@ -2,112 +2,88 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE942DF5A4
-	for <lists+sparclinux@lfdr.de>; Sun, 20 Dec 2020 15:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C41AA2DF5FA
+	for <lists+sparclinux@lfdr.de>; Sun, 20 Dec 2020 16:45:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727629AbgLTOYk (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 20 Dec 2020 09:24:40 -0500
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:42803 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727487AbgLTOYj (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 20 Dec 2020 09:24:39 -0500
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-239--4zdmDidPLOfipD4dYIEDA-1; Sun, 20 Dec 2020 14:23:00 +0000
-X-MC-Unique: -4zdmDidPLOfipD4dYIEDA-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Sun, 20 Dec 2020 14:22:57 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Sun, 20 Dec 2020 14:22:57 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Julian Calaby' <julian.calaby@gmail.com>,
-        Romain Dolbeau <romain@dolbeau.org>
-CC:     Sam Ravnborg <sam@ravnborg.org>,
-        David S Miller <davem@davemloft.net>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Denis Efremov <efremov@linux.com>,
-        "Dmitry Safonov" <0x7f454c46@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Pekka Enberg" <penberg@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Stephen Rothwell" <sfr@canb.auug.org.au>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Will Deacon" <will@kernel.org>, Willy Tarreau <w@1wt.eu>,
-        LKML <linux-kernel@vger.kernel.org>,
-        debian-sparc <debian-sparc@lists.debian.org>,
-        "gentoo-sparc@lists.gentoo.org" <gentoo-sparc@lists.gentoo.org>,
-        "info@temlib.org" <info@temlib.org>
-Subject: RE: [RFC PATCH 0/13] sparc32: sunset sun4m and sun4d
-Thread-Topic: [RFC PATCH 0/13] sparc32: sunset sun4m and sun4d
-Thread-Index: AQHW1q4JwyC+PXoQ40294z1p+0W3HaoAB2cA
-Date:   Sun, 20 Dec 2020 14:22:57 +0000
-Message-ID: <1afa7f144a154d1597212f026a329cc8@AcuMS.aculab.com>
-References: <20201218184347.2180772-1-sam@ravnborg.org>
- <20201219214054.GB3132151@ravnborg.org>
- <CADuzgbqBx7cajLg5-9+bqoUvHV4heoNjBH-cakU5YGV549Gdxg@mail.gmail.com>
- <CAGRGNgUxGY3wz5sDVJqO8hB=yw=-symr0tGXQeQ1ovqwb6-e9w@mail.gmail.com>
-In-Reply-To: <CAGRGNgUxGY3wz5sDVJqO8hB=yw=-symr0tGXQeQ1ovqwb6-e9w@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S1727495AbgLTPo4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 20 Dec 2020 10:44:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46442 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727474AbgLTPoz (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 20 Dec 2020 10:44:55 -0500
+X-Gm-Message-State: AOAM5316y/v0huV8jj8bupFRZQae5HinXdlOa+mAC202THLZZlxo1LV5
+        FR2SYA5+EBIqIJ9Trk/kAEfYra1P95Spq+gbzTY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608479055;
+        bh=HkKiub65ipire3e2ahkx2AsS2X8l0pXLoLsYAl6pgds=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=pYv6WnlLGyVBrw6omIVgT5oi5MEsywjaO0uyPOuEN1ETkIQRyeHnkYpfpyzs2rjAp
+         gCi/VNEWzmBeK/L0z9V9Sqk96BgvN1YdEzRL6lxkKzK8JLoAZDFABfmJQdfqxWH2Og
+         oFVrT+b2H5CYvaw0tFfFx5sS5OM/qYYtFBk4zUoRp7mzuvuVjCrqGy0IQPrbUTfIlA
+         /L3uHzS5xQTwQpKhx2Ss43pOHlgz6vUqQKV7eznJvzTXVUZwry9MxFm8fxkHY+WDy0
+         LJG5zYAEkU7+YaNRMShS0p9p4rkmoa3XF5AxaJjn+1SvxAfyLcG1TPFZjelQ9PNjIX
+         7/ls3BzTTzMgg==
+X-Google-Smtp-Source: ABdhPJwN37zyTdHVtAaxBp4/w7PGJLCIyce4rq1B2FeLm9BHILKVERvfHjjLnZgA9qmknN/yINNixhCWoEaQ8OrCons=
+X-Received: by 2002:ac2:4987:: with SMTP id f7mr4736496lfl.41.1608479053208;
+ Sun, 20 Dec 2020 07:44:13 -0800 (PST)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+References: <20190307091514.2489338-1-arnd@arndb.de> <X9S28TcEXd2zghzp@elver.google.com>
+ <87czzeg5ep.fsf@nanos.tec.linutronix.de> <CAK8P3a0LWjNgwm605TM4dKCsn078X7NC3sEfdBSgcMNEocQ5iA@mail.gmail.com>
+ <CAJF2gTRLEbBfZJ7Y6UNOMq-cwG5OYRW=+8Pfauz6v6R8ntBjYA@mail.gmail.com> <CAK8P3a3+WaQNyJ6Za2qfu6=0mBgU1hApnRXrdp1b1=P7wwyRUg@mail.gmail.com>
+In-Reply-To: <CAK8P3a3+WaQNyJ6Za2qfu6=0mBgU1hApnRXrdp1b1=P7wwyRUg@mail.gmail.com>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Sun, 20 Dec 2020 23:44:01 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQUPXzRL4P2ghoSt6t+pyAJ7A9dqdD6VWYNdOmJjd2HQg@mail.gmail.com>
+Message-ID: <CAJF2gTQUPXzRL4P2ghoSt6t+pyAJ7A9dqdD6VWYNdOmJjd2HQg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] futex: mark futex_detect_cmpxchg() as 'noinline'
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Marco Elver <elver@google.com>, Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Elena Reshetova <elena.reshetova@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org,
+        sparclinux <sparclinux@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-RnJvbTogSnVsaWFuIENhbGFieQ0KPiBTZW50OiAyMCBEZWNlbWJlciAyMDIwIDA4OjU1DQo+IA0K
-PiBPbiBTdW4sIERlYyAyMCwgMjAyMCBhdCA2OjQ2IFBNIFJvbWFpbiBEb2xiZWF1IDxyb21haW5A
-ZG9sYmVhdS5vcmc+IHdyb3RlOg0KPiA+DQo+ID4gTGUgc2FtLiAxOSBkw6ljLiAyMDIwIMOgIDIy
-OjQxLCBTYW0gUmF2bmJvcmcgPHNhbUByYXZuYm9yZy5vcmc+IGEgw6ljcml0IDoNCj4gPiA+IEFu
-b3RoZXIgc2FpZCB0aGF0IGl0IHdvdWxkIGJlIGEgc2hhbWUgdG8gc3Vuc2V0IHN1bjRtIGFuZCBz
-dW40ZCBiZWNhdXNlDQo+ID4gPiB0aGVyZSBhcmUgc28gbWFueSBtYWNoaW5lcyBhcm91bmQsIGFu
-ZCBuZXRic2QgaXMgYWxzbyBhY3RpdmUgb24gdGhlDQo+ID4gPiBzcGFyYzMyIGFyZWEuDQoNClRo
-ZSBhZHZhbnRhZ2Ugb2YgbmV0YnNkIGlzIHRoYXQgdGhlIGJ1aWxkIGdpdmVzIHlvdSBhIGtlcm5l
-bCBhbmQgdXNlcnNwYWNlDQpmcm9tIHRoZSBzYW1lIHNvdXJjZSB0cmVlIGFuZCBpdCBpcyBkZXNp
-Z25lZCB0byBjcm9zcyBidWlsZC4NCkV2ZW4gdGhlIGNvbXBpbGVycyBnZXQgYnVpbHQgLSBzbyBh
-bGwgeW91IG5lZWQgaXMgYSBuYXRpdmUgY29tcGlsZXINCnRoYXQgd2lsbCBjb21waWxlIHRoZSAo
-cHJvYmFibHkgc2xpZ2h0bHkgb2xkZXIpIHZlcnNpb24gb2YgZ2NjLg0KVGhpcyB1c2VkIHRvIGJl
-IHByb2JsZW1hdGljIGJlY2F1c2UgZ2NjIHNvdXJjZXMgdGVuZGVkIHRvIHVzZSBnY2Mtb25seQ0K
-ZmVhdHVyZXMgKHdoaWNoIGhhdmUgYmVlbiBkZXByZWNhdGVkKS4NCg0KVGhlIHVzZXJzcGFjZSB3
-aWxsIGFsc28gYmUgYSBsb3QgbGVzcyBibG9hdGVkIHRoYW4gYSB0eXBpY2FsIExpbnV4LA0KYnV0
-IG1vcmUgY29tcGxldGUgdGhhbiB0aGUgJ2J1c3lib3gnIHRvb2xzIG9mdGVuIHVzZWQgb24gc21h
-bGwvZW1iZWRkZWQNCkxpbnV4IHN5c3RlbXMuDQoNCj4gPiBZZXMsIHRob3NlIHdlcmUgcGxlbnRp
-ZnVsIGJhY2sgaW4gdGhlIGRheSBhbmQgdGhlcmUncyBzdGlsbCBxdWl0ZSBhIGZldyBhcm91bmQu
-DQo+IA0KPiBJIGhhdmUgdGhyZWU6IHR3byBTcGFyY1N0YXRpb24gMTBzIGFuZCBhIFNwYXJjU3Rh
-dGlvbiBMWC4NCj4gDQo+IElmIEkgd2FudCB0byBydW4gdGhlbSwgYXNzdW1pbmcgdGhlIGhhcmR3
-YXJlIHN0aWxsIHdvcmtzLCBJIG5lZWQgdG8NCj4gbmV0Ym9vdCB0aGVtIGFzIEkgY2Fubm90IGZp
-bmQgd29ya2luZywgY29tcGF0aWJsZSBIRERzIGZvciB0aGVtIGFzDQo+IGV2ZXJ5dGhpbmcgaGFz
-IHN3aXRjaGVkIHRvIFNBVEEgb3IgU0FTLg0KDQpJIHRyYXNoZWQgdGhlIFBTVSBvbiBteSBzdW4z
-IHRyeWluZyB0byBnZXQgbmV0Ym9vdCB0byB3b3JrLg0KVGhlIG1haW4gcHJvYmxlbSBzZWVtZWQg
-dG8gYmUgdGhhdCB0aGUgc3dpdGNoaW5nIGZldCB3YXNuJ3QNCmFjdHVhbGx5IHJhdGVkIGZvciAy
-NDB2IGlucHV0ISAobmVlZHMgdG8gYmUgYSA0MDB2IGRldmljZSkuDQoNCkkgbmV2ZXIgZGlkIGdl
-dCBhcm91bmQgdG8gY29ubmVjdGluZyBhbiBBVFggcHN1IHVwIHRvIHRoZSBjb25uZWN0b3IuDQoN
-CglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwg
-TW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzog
-MTM5NzM4NiAoV2FsZXMpDQo=
+Hi Arnd,
 
+On Tue, Dec 15, 2020 at 7:26 PM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> On Tue, Dec 15, 2020 at 7:09 AM Guo Ren <guoren@kernel.org> wrote:
+> > On Mon, Dec 14, 2020 at 9:15 PM Arnd Bergmann <arnd@kernel.org> wrote:
+> > > I had a look at what other architectures always implement
+> > > futex_atomic_cmpxchg_inatomic() or can use the asm-generic non-SMP version,
+> > > and I found that it's pretty much all of them, the odd ones being just sparc32
+> > > and csky, which use asm-generic/futex.h but do have an SMP option,
+> > > as well as xtensa
+> > >
+> > > I would guess that for csky, this is a mistake, as the architecture is fairly
+> > > new and should be able to implement it. Not sure about sparc32.
+> >
+> > The c610, c807, c810 don't support SMP, so futex_cmpxchg_enabled = 1
+> > with asm-generic's implementation.
+> > For c860, there is no HAVE_FUTEX_CMPXCHG and cmpxchg_inatomic/inuser
+> > implementation, so futex_cmpxchg_enabled = 0.
+> >
+> > Thx for point it out, we'll implement cmpxchg_inatomic/inuser for C860
+> > and still use asm-generic for non-smp CPUs.
+>
+> Sounds good to me.
+Done: https://lore.kernel.org/linux-csky/1608478763-60148-3-git-send-email-guoren@kernel.org/T/#u
+
+-- 
+Best Regards
+ Guo Ren
+
+ML: https://lore.kernel.org/linux-csky/
