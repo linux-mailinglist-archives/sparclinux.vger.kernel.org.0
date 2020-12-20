@@ -2,34 +2,45 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16A0A2DF1E5
-	for <lists+sparclinux@lfdr.de>; Sat, 19 Dec 2020 22:58:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 754832DF453
+	for <lists+sparclinux@lfdr.de>; Sun, 20 Dec 2020 08:45:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726357AbgLSV6K (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 19 Dec 2020 16:58:10 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:38719 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725788AbgLSV6K (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Sat, 19 Dec 2020 16:58:10 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1kqkE3-001M7e-OQ; Sat, 19 Dec 2020 22:57:19 +0100
-Received: from dynamic-077-013-032-222.77.13.pool.telefonica.de ([77.13.32.222] helo=[192.168.1.10])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1kqkE3-002OMT-Ff; Sat, 19 Dec 2020 22:57:19 +0100
+        id S1727120AbgLTHow convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Sun, 20 Dec 2020 02:44:52 -0500
+Received: from mail-wr1-f41.google.com ([209.85.221.41]:32893 "EHLO
+        mail-wr1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727111AbgLTHow (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 20 Dec 2020 02:44:52 -0500
+Received: by mail-wr1-f41.google.com with SMTP id t30so7499517wrb.0;
+        Sat, 19 Dec 2020 23:44:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=A51slqXeBIIj2k18wlJdscEv12PXv3H1QDmjxvkdUGk=;
+        b=IahXccl6gclbGI4v/BvlBEX66/ErF/BnNvneMj+oNT7rLfulvU1LHSfbA4JFpy1ie+
+         GBiKFv8Y6/pLfaGutgzW5TWt70DvoPRUAWPkUGUrE4yIjyTJi3slB4kDXs0JM084bQT/
+         j6sNE7PAo5w/2CrsxT0oyEkGK7PzsUGL0en1kMMNNBz8h/1SN3hRWIRVHFCRcc2VQWde
+         9OIvGkCDGJ2wYhpk9ve/Hn+9wVrrSdrL6uwfu9AV6q3rjk3nedVJZthEi6Fm0hA+8vIX
+         tLTeLiCtIFnYegkgFEYUT1qZjQSPBl/ZNM5QkI7bOvI2jrc+RASBMAP708d0n9xXJMnJ
+         VtBg==
+X-Gm-Message-State: AOAM533iShmAgZYrhg2SjNGZQpoCqOnjIcLf+tgY3XSAuJ8exHo39elr
+        H4c1Ig0pD1Qq4Kc69Asby26W6DN2O3Gj/+Y7O/I=
+X-Google-Smtp-Source: ABdhPJyGmFyfcPcbRaV7/tMrGaaU7DRIuh5KMll/evHnxEoEJijvK81yFd90f71FemAn9WdCExmmj3JJ7JL0QbM8ulM=
+X-Received: by 2002:adf:cd8f:: with SMTP id q15mr12146820wrj.79.1608450250229;
+ Sat, 19 Dec 2020 23:44:10 -0800 (PST)
+MIME-Version: 1.0
+References: <20201218184347.2180772-1-sam@ravnborg.org> <20201219214054.GB3132151@ravnborg.org>
+In-Reply-To: <20201219214054.GB3132151@ravnborg.org>
+From:   Romain Dolbeau <romain@dolbeau.org>
+Date:   Sun, 20 Dec 2020 08:43:59 +0100
+Message-ID: <CADuzgbqBx7cajLg5-9+bqoUvHV4heoNjBH-cakU5YGV549Gdxg@mail.gmail.com>
 Subject: Re: [RFC PATCH 0/13] sparc32: sunset sun4m and sun4d
-To:     Sam Ravnborg <sam@ravnborg.org>,
-        David S Miller <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
-        Arnd Bergmann <arnd@kernel.org>
-Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
+To:     Sam Ravnborg <sam@ravnborg.org>
+Cc:     David S Miller <davem@davemloft.net>, sparclinux@vger.kernel.org,
+        Andreas Larsson <andreas@gaisler.com>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
         Andrew Morton <akpm@linux-foundation.org>,
         Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -48,38 +59,35 @@ Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
         Stephen Rothwell <sfr@canb.auug.org.au>,
         Thomas Gleixner <tglx@linutronix.de>,
         Will Deacon <will@kernel.org>, Willy Tarreau <w@1wt.eu>,
-        linux-kernel@vger.kernel.org, debian-sparc@lists.debian.org,
+        linux-kernel@vger.kernel.org,
+        debian-sparc <debian-sparc@lists.debian.org>,
         gentoo-sparc@lists.gentoo.org, info@temlib.org
-References: <20201218184347.2180772-1-sam@ravnborg.org>
- <20201219214054.GB3132151@ravnborg.org>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <d7c8c97e-6aab-3d11-c8a5-2a08fe872647@physik.fu-berlin.de>
-Date:   Sat, 19 Dec 2020 22:57:16 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
-MIME-Version: 1.0
-In-Reply-To: <20201219214054.GB3132151@ravnborg.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 77.13.32.222
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 12/19/20 10:40 PM, Sam Ravnborg wrote:
-> Please keep the inputs coming independent if you are pro or not
-> for the sunset of sun4m and sun4d.
+Le sam. 19 déc. 2020 à 22:41, Sam Ravnborg <sam@ravnborg.org> a écrit :
+> Another said that it would be a shame to sunset sun4m and sun4d because
+> there are so many machines around, and netbsd is also active on the
+> sparc32 area.
 
-I would personally be in favor of keeping it and I should finally get
-my SPARCstation 5 up and running again.
+Yes, those were plentiful back in the day and there's still quite a few around.
 
-Adrian
+> The second mail also re-reminded me of an interesting project
+> implementing SPARC V8 and the sun4m platform in VHDL.
+
+There's also new hardware being developed for SBus systems :-)
+<https://github.com/rdolbeau/SBusFPGA>
+(disclaimer: work-in-progress and shameless self-promotion here!).
+
+If there's still a distribution willing to build for Sparc v8, then I
+believe the kernel
+should try to keep support of the relevant machine architectures if at all
+possible...
+
+Cordially,
 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+Romain Dolbeau
