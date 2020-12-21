@@ -2,78 +2,104 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3128A2DF862
-	for <lists+sparclinux@lfdr.de>; Mon, 21 Dec 2020 05:48:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D93B2DF7EC
+	for <lists+sparclinux@lfdr.de>; Mon, 21 Dec 2020 04:00:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728045AbgLUErt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 20 Dec 2020 23:47:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37552 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728021AbgLUErs (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 20 Dec 2020 23:47:48 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC4BC061285
-        for <sparclinux@vger.kernel.org>; Sun, 20 Dec 2020 20:47:06 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id w5so9676220wrm.11
-        for <sparclinux@vger.kernel.org>; Sun, 20 Dec 2020 20:47:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=tCjvEtOXjUzYqZRN9dsIp4f7PWsyuSk8HXdZhU6nIbg=;
-        b=RI49HEjnWHTq92R8AqWi9ovZBVaN+HbCzjNDf/nLWy10Idby2DB7w5uwAhswk4faIY
-         s7AHoqhOO70GNzW4HjruZRcnhaxBkz/jWPhIVPGTcSxL8vzMpBjI+5l9bzcKhzlxSKO0
-         Ys+kDsfSrUFiab+5E8URcK7zS4Hcli+tgVNAE5bAAiWE/v2W0LtEXlvKtbL1mYpTwNFh
-         xM3Y4Ai4xBpdfu8EkDz6QJMLSz1/5XKhOnw0P+/5SD8kOQQ+bqiRdpQyHIttFJ453Dpl
-         M5InJ+OA3+HY6uwO5F1XJC4hDad6kctiW5llozFktcFg4F2QWjx9udTquYG2v6ejkckI
-         sK7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=tCjvEtOXjUzYqZRN9dsIp4f7PWsyuSk8HXdZhU6nIbg=;
-        b=ZDX9dWYKNW2nAZOGh1qVrK543bmFgx72t1+yH3RnMdgRgp3Ok0y1yK6Tn1Pp+Q/Q6q
-         hQOgoe8HJ0mERAW9IhQ2bnDsZEcyvX4PNk+4gopKfsEmLQVLJuEC9TfSMC0IMgAX0Ivq
-         ge82LDN8G7jpXMwN2B+/hB4gxK9+kP3UL4B5z8syaYhw+6cGFaHhOWHhNM3xFHQ/gAnX
-         uHi5BNirmO5KqVlWvD7r5MfIvF+j0YvfJBGJWkLC/jK1jN+AbXhd3mRFVIIXzXPj6Y6f
-         ledM9qzECHMJJCjXVGm49Fy6ZfX9SUvgcugIg1/oN0Vb9vrAWY4XgVyIy4DcS3AnkAHy
-         Rwmg==
-X-Gm-Message-State: AOAM530r8Zl1o4jfzz5vdC/Ivc1n50gamP2gGWDfe7SpLqt3rOqKCWkP
-        XuNPZlK3iZzWySoPgqZUhDQJiET6sYcx+X39n7A1GYun
-X-Google-Smtp-Source: ABdhPJxXOwS4cwc42vuce/IE8Y5+CbGWtKSrMS0AGmiVhe6Pss5gLO4kKNdT6l20SNSCaZ67L9VXTb5zlR5ppkJekvU=
-X-Received: by 2002:a05:6402:d09:: with SMTP id eb9mr13241224edb.71.1608493288198;
- Sun, 20 Dec 2020 11:41:28 -0800 (PST)
+        id S1728339AbgLUC7e (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 20 Dec 2020 21:59:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53320 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728330AbgLUC7d (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 20 Dec 2020 21:59:33 -0500
+X-Gm-Message-State: AOAM530pn7rmVqsXiGABYed+AGXkkwhMXinScdLrDPtSmqT7VKU8Bgih
+        ZYpHWHa4Pw9hBWIjvELU5inmTbeoBw5vCtKLt1k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608519532;
+        bh=SZun7TJm7wCXlJxQxcZrzlk8v6yvxc/nAR0yaGvTZu8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=KnNET7Lg40h3y5kFwF1waDYdIM8Do0+T2isXSZpLIjVJHXvg0BfIqCvJkjtPxCkFL
+         JQ7bVyERdGu/FzYlZN2MFSyeEjnd8gJ+1rkJYGwWLnDgJOk2E3cuNbfkGamcAXyIJt
+         RMlA7a9j81ZzSxufNR4vdFhkUY3qFMU9f83PuMzCGRsLWOebk5ePK36HIpwhNKW/60
+         LxhwVNCvg15YNnvXcdpq/+x2hWELFpHcDPUW8hh+bygmQb8g3op7OveZMBhcW/qUqz
+         q08W5Pw2YELINNhxFI52BjULPc5Txzzm6f5Q+b0SDTzALSBP/+LqoDI5iuJkGJO2nl
+         VFOEUSt0b+YLA==
+X-Google-Smtp-Source: ABdhPJx09BMHVq0KkSgpUsvrCS7aZUZUQ68ReymvsEtc1ivryBp80GH4ho6nbTRrPxmTlRcdp7vXNmLo69BQ/g4I9GA=
+X-Received: by 2002:a19:c511:: with SMTP id w17mr5425729lfe.557.1608519530327;
+ Sun, 20 Dec 2020 18:58:50 -0800 (PST)
 MIME-Version: 1.0
-References: <20201218184347.2180772-1-sam@ravnborg.org> <20201219214054.GB3132151@ravnborg.org>
- <CADuzgbqBx7cajLg5-9+bqoUvHV4heoNjBH-cakU5YGV549Gdxg@mail.gmail.com>
- <CAGRGNgUxGY3wz5sDVJqO8hB=yw=-symr0tGXQeQ1ovqwb6-e9w@mail.gmail.com> <CADuzgbqZQ5oMxUh5XhmzqGpVgU+m6L-42TucOhACDviKYpaCMg@mail.gmail.com>
-In-Reply-To: <CADuzgbqZQ5oMxUh5XhmzqGpVgU+m6L-42TucOhACDviKYpaCMg@mail.gmail.com>
-From:   chase rayfield <cusbrar1@gmail.com>
-Date:   Sun, 20 Dec 2020 14:41:17 -0500
-Message-ID: <CACwypyN30H4WWwQxsyAZDO=yjB7bo8dLj9Of5ygN7TB_UdaWWw@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/13] sparc32: sunset sun4m and sun4d
-To:     Sparc kernel list <sparclinux@vger.kernel.org>
+References: <20190307091514.2489338-1-arnd@arndb.de> <X9S28TcEXd2zghzp@elver.google.com>
+ <87czzeg5ep.fsf@nanos.tec.linutronix.de> <CAK8P3a0LWjNgwm605TM4dKCsn078X7NC3sEfdBSgcMNEocQ5iA@mail.gmail.com>
+ <CAJF2gTRLEbBfZJ7Y6UNOMq-cwG5OYRW=+8Pfauz6v6R8ntBjYA@mail.gmail.com>
+ <CAK8P3a3+WaQNyJ6Za2qfu6=0mBgU1hApnRXrdp1b1=P7wwyRUg@mail.gmail.com>
+ <CAJF2gTQUPXzRL4P2ghoSt6t+pyAJ7A9dqdD6VWYNdOmJjd2HQg@mail.gmail.com> <CAK8P3a3mrD7U__T-X2jr1Mw9Xk=dBE=Fuid_BHNE85GcX0g-rg@mail.gmail.com>
+In-Reply-To: <CAK8P3a3mrD7U__T-X2jr1Mw9Xk=dBE=Fuid_BHNE85GcX0g-rg@mail.gmail.com>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Mon, 21 Dec 2020 10:58:38 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSc5FS-iUZUiEygviFwa17e=iBncmL+mZ_BORbSthmxiQ@mail.gmail.com>
+Message-ID: <CAJF2gTSc5FS-iUZUiEygviFwa17e=iBncmL+mZ_BORbSthmxiQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] futex: mark futex_detect_cmpxchg() as 'noinline'
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Marco Elver <elver@google.com>, Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Elena Reshetova <elena.reshetova@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org,
+        sparclinux <sparclinux@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From Experience... The best way to go about Gentoo for 32bit sparcs is
-in a chroot on a faster 64bit Sparc system, you could probably also
-run a faster than realtime QEMU but that's a bit more of a hassle if
-you have fast Sun hardware. Last time I did this was on a T2000, I
-have been meaning to retrace my steps on a T4.
+Hi Arnd,
 
-I did run into a bug with portage or python... it would be nice to fix
-that so those could be used on Slower systems. I'd also like at some
-point to compile a list of software in the vein of suckless.org
-(perhaps a bit less masochistic though), that is usable on old
-machines, the one I really want to dogfood is pcb-rnd and corelEDA on
-a sparcstation to see how well it could compete with KiCad.
+On Mon, Dec 21, 2020 at 1:49 AM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> On Sun, Dec 20, 2020 at 4:46 PM Guo Ren <guoren@kernel.org> wrote:
+> > On Tue, Dec 15, 2020 at 7:26 PM Arnd Bergmann <arnd@kernel.org> wrote:
+> > >
+> > > On Tue, Dec 15, 2020 at 7:09 AM Guo Ren <guoren@kernel.org> wrote:
+> > > > On Mon, Dec 14, 2020 at 9:15 PM Arnd Bergmann <arnd@kernel.org> wrote:
+> > > > > I had a look at what other architectures always implement
+> > > > > futex_atomic_cmpxchg_inatomic() or can use the asm-generic non-SMP version,
+> > > > > and I found that it's pretty much all of them, the odd ones being just sparc32
+> > > > > and csky, which use asm-generic/futex.h but do have an SMP option,
+> > > > > as well as xtensa
+> > > > >
+> > > > > I would guess that for csky, this is a mistake, as the architecture is fairly
+> > > > > new and should be able to implement it. Not sure about sparc32.
+> > > >
+> > > > The c610, c807, c810 don't support SMP, so futex_cmpxchg_enabled = 1
+> > > > with asm-generic's implementation.
+> > > > For c860, there is no HAVE_FUTEX_CMPXCHG and cmpxchg_inatomic/inuser
+> > > > implementation, so futex_cmpxchg_enabled = 0.
+> > > >
+> > > > Thx for point it out, we'll implement cmpxchg_inatomic/inuser for C860
+> > > > and still use asm-generic for non-smp CPUs.
+> > >
+> > > Sounds good to me.
+> > Done: https://lore.kernel.org/linux-csky/1608478763-60148-3-git-send-email-guoren@kernel.org/T/#u
+>
+> Thanks!
+>
+> Can you clarify if there are any dependencies on the other patches in
+> that series?
+No dependency.
 
-Weird thing about the LCDs not syncing... all the LCDs I have that are
-1280x1024 or greater work. The problem is that sometimes the default
-resolution also has a sync rate of a few hz higher than some LCDs can
-handle, most of my LCDs are older higher end models (1600x1200 etc...)
-so also happen to support those rates. You can get most commodity LCDs
-to sync by choosing a display mode via serial port that plays nice
-with standard VGA resolutions and rates.
+>
+> I'd like to take the futex patch through the asm-generic tree along with the
+> patches for the other architectures.
+You take the futex patch and I'll remove it from my tree.
+
+-- 
+Best Regards
+ Guo Ren
+
+ML: https://lore.kernel.org/linux-csky/
