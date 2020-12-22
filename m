@@ -2,125 +2,110 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 922292DFAD4
-	for <lists+sparclinux@lfdr.de>; Mon, 21 Dec 2020 11:08:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 714892E0E0A
+	for <lists+sparclinux@lfdr.de>; Tue, 22 Dec 2020 19:02:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726665AbgLUKIU (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 21 Dec 2020 05:08:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58248 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725804AbgLUKIS (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 21 Dec 2020 05:08:18 -0500
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E6FC061793;
-        Mon, 21 Dec 2020 02:07:38 -0800 (PST)
-Received: by mail-il1-x12e.google.com with SMTP id g1so8376138ilk.7;
-        Mon, 21 Dec 2020 02:07:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qMI1qb6jm5Lag9GLrKzNd8c/nLzIAunUnseb/Ze4wwk=;
-        b=TNketNi86VoSW7yUCz1xJ0TySRbiCNnk6lgZVPNFHRq1Z0hYh2gKvfrjKM7LrvZdfw
-         RQePP3CI0izt8okVH5i0MDqzLe17kJ+gYsfp1t+Ps8IwCEHGQkv7O3PSU8DKD3ZNNffG
-         /JlM0O2eWxUHvRwz8qee/+LJwONqHO0lDu8V6J4W8M+AzN/jgGfMEfd8saM3jRp+ynNl
-         yyNQ52YpnwxSo70pHdjSzvzY1s3U8IilByiBPR9JecD00QG9hEu5BbgRdRErCXzWs2gF
-         45fFo4tr95q3qQ6Y+q0mxPqCFls3IDtt7iuwAPe+p0gTlRoSBsbkFCIhsAdHSkhvZ6+r
-         94Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qMI1qb6jm5Lag9GLrKzNd8c/nLzIAunUnseb/Ze4wwk=;
-        b=YYKLvGl49Km5hp+Bhy6/FVGJ+0Bs1nfjCqWnTl+18srqAkzbUwoRONQZ8fc0oxqVtK
-         K8zasPDI3EpqyiKJ7JGaqivlENoYT2EvhUaGwIeYGnvBldfIKZ4WQJDbI7dajvUJP+jU
-         I2Z1a/71m7Mmmx+UdTauIar3o5BA8H5IUXbnuH2FBrriA58Guqh/yOAQDj9MElWGkHxV
-         ls07dg3f9eF3pMIaOyGd9BmC0b5E3PzeeCtQoWQA/6vOiNpW6rUKLh15DgZa+/sCOyIs
-         2Gv6B683vv1YoKiiU12qLhDmnX9ZndeEtAZqd3BbVx8/yMcn9MrIxPn7osbk0X//571l
-         Mi3A==
-X-Gm-Message-State: AOAM532IJrq3cD4UeWGwIHg1XDotXF8tOTmhme06aQyNCMZoSIRSLQAl
-        SGAqA2+QLJQk0+1+TKBagaaq0zLivqz8H7DQHrQbPzj51EY=
-X-Google-Smtp-Source: ABdhPJxBtvImbDXQFJZFiuLU9iSSxkb054vusc68KLoVKz7M+YJaEYxx6P2xuo8zwNE89O9MkgEk4eONGxpDIef9SqA=
-X-Received: by 2002:a63:74b:: with SMTP id 72mr14619803pgh.4.1608542798518;
- Mon, 21 Dec 2020 01:26:38 -0800 (PST)
+        id S1728038AbgLVR7t (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 22 Dec 2020 12:59:49 -0500
+Received: from bin-mail-out-06.binero.net ([195.74.38.229]:45256 "EHLO
+        bin-mail-out-06.binero.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728033AbgLVR7t (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 22 Dec 2020 12:59:49 -0500
+X-Halon-ID: 5e35e258-447f-11eb-b73f-0050569116f7
+Authorized-sender: andreas@gaisler.com
+Received: from andreas.got.gaisler.com (h-98-128-223-123.na.cust.bahnhof.se [98.128.223.123])
+        by bin-vsp-out-03.atm.binero.net (Halon) with ESMTPA
+        id 5e35e258-447f-11eb-b73f-0050569116f7;
+        Tue, 22 Dec 2020 18:59:04 +0100 (CET)
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        sparclinux <sparclinux@vger.kernel.org>, linux-mm@kvack.org
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>
+From:   Andreas Larsson <andreas@gaisler.com>
+Subject: sparc32: Init process fails to load with generic kmap atomic
+Message-ID: <c1dc2579-17b1-493b-ef23-0b9ed1ec13c3@gaisler.com>
+Date:   Tue, 22 Dec 2020 18:58:59 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20201218143122.19459-1-info@metux.net> <20201218143122.19459-2-info@metux.net>
- <CAHp75VfYz_K2BYOxqmSx0q+1F2F9Lp1eb70RrNYzJHs3FX+quQ@mail.gmail.com> <87ft3zyaqa.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87ft3zyaqa.fsf@mpe.ellerman.id.au>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 21 Dec 2020 11:27:27 +0200
-Message-ID: <CAHp75VeGs-x0-XgpLS0uB2oZmxKZREfUKM1ByUwmRquqFc2FPg@mail.gmail.com>
-Subject: Re: [PATCH 01/23] kernel: irq: irqdescs: warn on spurious IRQ
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, msalter@redhat.com,
-        jacquiot.aurelien@gmail.com, gerg@linux-m68k.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
-        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
-        <linuxppc-dev@lists.ozlabs.org>, linux-s390@vger.kernel.org,
-        Linux-SH <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Dec 21, 2020 at 7:44 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
-> Andy Shevchenko <andy.shevchenko@gmail.com> writes:
-> > On Fri, Dec 18, 2020 at 4:37 PM Enrico Weigelt, metux IT consult
-> > <info@metux.net> wrote:
-> >
-> >> +               if (printk_ratelimit())
-> >> +                       pr_warn("spurious IRQ: irq=%d hwirq=%d nr_irqs=%d\n",
-> >> +                               irq, hwirq, nr_irqs);
-> >
-> > Perhaps you missed pr_warn_ratelimit() macro which is already in the
-> > kernel for a long time.
->
-> pr_warn_ratelimited() which calls printk_ratelimited().
 
-I stand corrected.
-Right, that's what I had in mind (actually didn't know that there are variants).
+Unfortunately I did not see this problem before I encountered it in
+master. Commit 3293efa9780712ad8504689e0c296d2bd33827d5
 
-Thanks!
+    sparc/mm/highmem: Switch to generic kmap atomic
 
-> And see the comment above printk_ratelimit():
->
-> /*
->  * Please don't use printk_ratelimit(), because it shares ratelimiting state
->  * with all other unrelated printk_ratelimit() callsites.  Instead use
->  * printk_ratelimited() or plain old __ratelimit().
->  */
+     No reason having the same code in every architecture
 
+     Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+     Cc: "David S. Miller" <davem@davemloft.net>
+     Cc: Arnd Bergmann <arnd@arndb.de>
+     Link: https://lore.kernel.org/r/20201103095858.197568209@linutronix.de
+
+prevents the init process to be started for me on a sparc32 LEON. On the
+commit before this it works. Details below from that commit but I get
+the same behavior on current master.
+
+ From as far as I have gotten into hunting down the problem, I get a
+failure from load_elf_binary here:
+
+	/* First of all, some simple consistency checks */
+	if (memcmp(elf_ex->e_ident, ELFMAG, SELFMAG) != 0)
+		goto out;
+
+at least seemingly due to the kaddr from copy_page_to_iter in
+lib/iov_iter.c
+
+	if (i->type & (ITER_BVEC|ITER_KVEC)) {
+		void *kaddr = kmap_atomic(page);
+		size_t wanted = copy_to_iter(kaddr + offset, bytes, i);
+
+where kaddr points to memory with all zeroes (from an earlier bzero) in 
+this context:
+
+#0  _copy_to_iter (addr=0xfcffe000, bytes=0x100, i=0xf201fd78)
+                at lib/iov_iter.c:635
+#1  copy_to_iter (i=0xf201fd78, bytes=0x1ce, addr=0xfcffe000)
+                at include/linux/uio.h:137
+#2  copy_page_to_iter (page=0xf137ede0, offset=0x0, bytes=0x1ce, 
+i=0xf201fd78)
+                at lib/iov_iter.c:920
+#3  shmem_file_read_iter (iocb=0xf201fd90, to=0xf201fd78)
+                at mm/shmem.c:2661
+#4  __kernel_read (file=0xf2103900, buf=0xf241365c, count=0x100, 
+pos=0xf201fe80)
+                at fs/read_write.c:454
+#5  kernel_read (file=0xf2103900, buf=0xf241365c, count=0x100, 
+pos=0xf201fe80)
+                at fs/read_write.c:472
+#6  prepare_binprm (bprm=0xf2413600)
+                at fs/exec.c:1633
+#7  search_binary_handler (bprm=0xf2413600)
+                at fs/exec.c:1687
+#8  exec_binprm (bprm=0xf2413600)
+                at fs/exec.c:1744
+#9  bprm_execve (bprm=0xf2413600, fd=<opt>, filename=<opt>, flags=<opt>)
+                at fs/exec.c:1820
+#10 kernel_execve (kernel_filename=<opt>,
+                    argv=0xf050d4f0 <argv_init>,
+                    envp=0xf050d468 <envp_init>)
+                at fs/exec.c:1969
+#11 kernel_init (unused=0x0)
+                at init/main.c:1427
+
+I will have to continue to dig deeper into this in January. If anyone
+has any ideas how this could stem from this kmap patch, I am all ears.
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Andreas Larsson
+Software Engineer
+Cobham Gaisler
