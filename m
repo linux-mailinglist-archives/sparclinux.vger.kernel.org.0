@@ -2,98 +2,124 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3DA72F2523
-	for <lists+sparclinux@lfdr.de>; Tue, 12 Jan 2021 02:18:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 949CA2F330F
+	for <lists+sparclinux@lfdr.de>; Tue, 12 Jan 2021 15:38:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728067AbhALAvl (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 11 Jan 2021 19:51:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58846 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727995AbhALAvk (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 11 Jan 2021 19:51:40 -0500
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE7FEC061575;
-        Mon, 11 Jan 2021 16:50:59 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id d17so1026190ejy.9;
-        Mon, 11 Jan 2021 16:50:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=G5DIxSZetsXeR2X3GAYIsmKuc4e0LX+pB1h8al42nGA=;
-        b=j+w8cAPmi1ouSNkB0JqJUkdXD2VJoqYoycV8eQYOpVz5VF8TwAYOQnJu4l6qSpe1TP
-         l7cC9+RmbUcKXbqnWzgLDa+qn60MdYylKKNyOM2Y3aYHPOqg45Q7c2vcm5mofHVVOnWW
-         BhwCQrkXbjWXz4C7+VJWYTGrFCHl2Onjd1rasxY4Tze0mPYJnVEeqWVwXrnP3jFbtpAG
-         hhy+ITv2iGARdXt0IgayP4e7IkWKy/y1Qv/3GkoDzqJUyn1XKHXO+0D83Mz/Xr/TEUEd
-         ee7W91Ay8q4dNbSafyg4ABdEc88Nh6n9FXIKHIe77FLIeiDzpDJ2KT9ADfJFVO1SEbQo
-         KrsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=G5DIxSZetsXeR2X3GAYIsmKuc4e0LX+pB1h8al42nGA=;
-        b=cOUhRoc7NRNwlcEQZls6MRmBkwzFyvk5ArEZ4mPfezciLavdZ6fTzaBmsU5TaA5kBd
-         6mYaJmX4gfJ3CYEflQbP7tCma0wNP8hp4JcZ7YtcU9qm/A7e2vfo2AhV9eQhiQpSXoTS
-         S15+r7SiY1X1ZvgRSOcRMDWYAYKrk5UnvGgo5c4U3kzwi20B+NuUvujtb/P6rOe3bKOD
-         Hs2klR5nOTrzc4meT2te+pvx15hgvYUXHdBRMK0mbJ6Oqmf8LvKbY7Yfg5eeZFQmdDap
-         ZrSTC1Bv/ObLVUEFshCm7Y9dWYTBqYRC/BNh3YX4CFw6F+iuUjMaSzw0sadzqMujySlj
-         VZlQ==
-X-Gm-Message-State: AOAM533DctozyEpwyuf0BW8nb2itWlLwvtubQVT3Z6iDAFRW/fmh4XxE
-        JazHxXIfNOisDxZjddBsD8FOoixlsYBumIwESsISUvapTus=
-X-Google-Smtp-Source: ABdhPJzLOupF2EAqOuP41DKkzhcSVFM9yIFN4BjqQCM5peWAM46JF+3fPJTzZ1sn4B2uQLYl7RFtxyYMab7dSCaZUh4=
-X-Received: by 2002:a17:906:7c49:: with SMTP id g9mr1408341ejp.185.1610412658411;
- Mon, 11 Jan 2021 16:50:58 -0800 (PST)
-MIME-Version: 1.0
-References: <CAK8P3a2VW8T+yYUG1pn1yR-5eU4jJXe1+M_ot6DAvfr2KyXCzQ@mail.gmail.com>
- <ef1dc21f-694b-2433-e1c6-aa121320173e@physik.fu-berlin.de>
- <20210110214653.GA1693373@ravnborg.org> <df42946e-5b1f-c433-fc6b-a2950f3d8dab@physik.fu-berlin.de>
- <CACwypyNS+fVoPVspSr36v8YjFbkrnYb+amcYRqVmA2kD2uD1Wg@mail.gmail.com> <1f6e936c-4947-4952-fae2-c05d03e0cd2c@landley.net>
-In-Reply-To: <1f6e936c-4947-4952-fae2-c05d03e0cd2c@landley.net>
-From:   chase rayfield <cusbrar1@gmail.com>
-Date:   Mon, 11 Jan 2021 19:50:48 -0500
-Message-ID: <CACwypyNVibQby75dZek=P1oBkcHQYMx-kbria9Y6NnBpERh+qQ@mail.gmail.com>
+        id S1728303AbhALOiR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 12 Jan 2021 09:38:17 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:38941 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726329AbhALOiR (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 12 Jan 2021 09:38:17 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1kzKne-000o6B-Ed; Tue, 12 Jan 2021 15:37:34 +0100
+Received: from p5b13a61e.dip0.t-ipconnect.de ([91.19.166.30] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1kzKnd-001CLC-9K; Tue, 12 Jan 2021 15:37:33 +0100
 Subject: Re: Old platforms: bring out your dead
-To:     Rob Landley <rob@landley.net>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Sam Ravnborg <sam@ravnborg.org>, Arnd Bergmann <arnd@arndb.de>,
+To:     chase rayfield <cusbrar1@gmail.com>
+Cc:     Sam Ravnborg <sam@ravnborg.org>, Arnd Bergmann <arnd@arndb.de>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-m68k <linux-m68k@lists.linux-m68k.org>,
         Sparc kernel list <sparclinux@vger.kernel.org>,
         Linux-sh list <linux-sh@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <CAK8P3a2VW8T+yYUG1pn1yR-5eU4jJXe1+M_ot6DAvfr2KyXCzQ@mail.gmail.com>
+ <ef1dc21f-694b-2433-e1c6-aa121320173e@physik.fu-berlin.de>
+ <20210110214653.GA1693373@ravnborg.org>
+ <df42946e-5b1f-c433-fc6b-a2950f3d8dab@physik.fu-berlin.de>
+ <CACwypyNS+fVoPVspSr36v8YjFbkrnYb+amcYRqVmA2kD2uD1Wg@mail.gmail.com>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <4c42f2ce-7702-55cd-a2c0-558d3dd208f2@physik.fu-berlin.de>
+Date:   Tue, 12 Jan 2021 15:37:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
+MIME-Version: 1.0
+In-Reply-To: <CACwypyNS+fVoPVspSr36v8YjFbkrnYb+amcYRqVmA2kD2uD1Wg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.166.30
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-> Sparc has a runtime relocation I've never understood but did manage to break
-> once, resulting in a long thread to fix:
->
-> http://lists.landley.net/pipermail/aboriginal-landley.net/2011-December/001964.html
->
-> Between that and the weird save half the stack register thing with function
-> calls on some sort of "wheel"... there's a _reason_ I haven't been able to talk
-> Rich into adding support for it to musl.
->
-Register windowing, with parts of each window overlapping for function
-arguments etc... you can kind of think of it as a ring buffer of
-overlapping register files that's an oversimplification but it was
-originally intended to accelerate and improve register file usage.
-MIPS and the rest of the industry abandoned this for improved compile
-time allocation. I think you might be more likely on MIPS to incur
-more interrupt latency though since you have to spill to memory (at
-least on MIPS contemporary to Sparc V8) instead of just switching
-register windows mileage varies greatly.... From what I remember
-overflowing the register file is implemented with hardware traps that
-spill to memory etc... since you don't know that information at
-compile time. on Sparc so yeah it's quite involved to understand and I
-certainly don't grasp it fully. So on MIPS you spill the register file
-to memory, on Sparc you spill register windows to memory... if you
-have exceeded the supported call depth (which is rather expensive
-since all the register windows go at once). Note spilling a single
-variable within a register window is a separate issue.
+Hello!
 
-Amazing, a link that actually works and is informative:
-https://blogs.oracle.com/d/flush-register-windows
+On 1/11/21 3:55 PM, chase rayfield wrote:
+> My take is that there *would* be more interest in Sparc sun4m / Sun4d
+> from enthusiasts at the very least if it was possible to actually boot
+> the bloat hog that is Linux these days in a fully usable configuration
+> that probably means some modifications to SILO and Linux required.
 
+The Linux kernel is configurable. If you want a small kernel, then just
+configure one. No one expects you to boot a fully-fledged distribution
+kernel on these machines.
 
-Chase
+> The problem is as I understand it, SILO only sets up a 16Mb mapping
+> (either due to having to assume 4MB minimum dram stick size or due to
+> mapping limitations not sure, most of these machines have at least
+> 16MB in slot one...these days though that wasn't the case for sun4c),
+> loads Linux into it and says good Luck. This isn't enough for a modern
+> kernel with any  hardware support built in. So you might for instance
+> get a kernel to fit but only if you dropped all of networking support
+> etc...
+
+That makes no sense. It worked in the past, why shouldn't it work nowadays?
+
+As I said, you disable everything you don't need. I'm booting my SH-7785LCR
+SuperH board with a kernel that is less than 4 MB in size and which includes
+everything I need.
+
+> I'm guessing the fix for this would be to modify silo to map a
+> larger amount in a way that Linux expects so it can remap it as it
+> likes, or just have SILO map the full memory as Linux would. Anyway
+> that is THE main demotivation for these architectures.... otherwise
+> they have plenty of ram and performance to do basic router/server
+> tasks sans SSL.
+
+Or just configure a smaller kernel.
+
+> This has been the status quo for since the last of the 2.6 series of
+> kernels which it was still possible to just barely squeeze a usable
+> kernel out of... If someone wanted to take a few hours and fix this
+> issue, and keep these architectures around I'd be happy to "buy them a
+> round of pizza", though I recognize that many people that work on this
+> already have nice jobs, and just don't have time.
+
+I haven't gotten around to setup my SPARCstation 5 yet, but I will certainly
+going to do that later this year to give it a try.
+
+> Also Sparc would probably be a good project for someone to extend/test
+> Andi Keen's Linux LTO patch set so we could reduce the kernel binary
+> size that way also even if sun4 architectures are dropped, it would
+> still be useful for embedded sparc. Also there is a port of Temlib to
+> the Mister hardware now, 3 cores roughly equivalent to a mid 90s
+> machine, at least 128MB ram is possible ( more if a way to map the ARM
+> system memory also 1GB is available there, it would have higher
+> latency though).
+> 
+> It is perfectly viable to build Sparc v7 or v8 32bit binaries in a
+> chroot on a fast machine also, and I would recommend this if you wish
+> to retain sanity rather than attempting cross compiler voodoo, unless
+> that is your thing.
+
+We build anything SPARC on a SPARC T5 that we have for Debian, no need
+for cross-compilation and that machine is actually quite fast.
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
