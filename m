@@ -2,63 +2,88 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 244B42F40DE
-	for <lists+sparclinux@lfdr.de>; Wed, 13 Jan 2021 01:57:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB4BE2F4576
+	for <lists+sparclinux@lfdr.de>; Wed, 13 Jan 2021 08:45:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392402AbhAMAnN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 12 Jan 2021 19:43:13 -0500
-Received: from kvm5.telegraphics.com.au ([98.124.60.144]:39420 "EHLO
-        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392251AbhAMAM4 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 12 Jan 2021 19:12:56 -0500
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 3DD552B776;
-        Tue, 12 Jan 2021 19:12:12 -0500 (EST)
-Date:   Wed, 13 Jan 2021 11:12:06 +1100 (AEDT)
-From:   Finn Thain <fthain@telegraphics.com.au>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-cc:     Gerhard Pircher <gerhard_pircher@gmx.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Sparc kernel list <sparclinux@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-Subject: Old platforms never die, was Re: Old platforms: bring out your
- dead
-In-Reply-To: <cb5a2e11-d423-96ec-3d43-3568a109e37f@physik.fu-berlin.de>
-Message-ID: <alpine.LNX.2.23.453.2101131035500.6@nippy.intranet>
-References: <ef1dc21f-694b-2433-e1c6-aa121320173e@physik.fu-berlin.de> <f48bcf43-9dcc-e48b-d29d-f75f3814398b@gmx.net> <cb5a2e11-d423-96ec-3d43-3568a109e37f@physik.fu-berlin.de>
+        id S1725927AbhAMHpW (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 13 Jan 2021 02:45:22 -0500
+Received: from bin-mail-out-05.binero.net ([195.74.38.228]:37994 "EHLO
+        bin-mail-out-05.binero.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725924AbhAMHpW (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 13 Jan 2021 02:45:22 -0500
+X-Halon-ID: 27ebd293-5573-11eb-a076-005056917f90
+Authorized-sender: andreas@gaisler.com
+Received: from andreas.got.gaisler.com (h-98-128-223-123.na.cust.bahnhof.se [98.128.223.123])
+        by bin-vsp-out-02.atm.binero.net (Halon) with ESMTPA
+        id 27ebd293-5573-11eb-a076-005056917f90;
+        Wed, 13 Jan 2021 08:44:33 +0100 (CET)
+Subject: Re: [patch 1/4] sparc/mm/highmem: Flush cache and TLB
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linuxppc-dev@lists.ozlabs.org
+References: <20210112170136.078559026@linutronix.de>
+ <20210112170410.905976187@linutronix.de>
+From:   Andreas Larsson <andreas@gaisler.com>
+Message-ID: <8a55c407-4fad-1a2f-5540-152e28b71617@gaisler.com>
+Date:   Wed, 13 Jan 2021 08:44:24 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20210112170410.905976187@linutronix.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, 12 Jan 2021, John Paul Adrian Glaubitz wrote:
 
+On 2021-01-12 18:01, Thomas Gleixner wrote:
+> The recent conversion to the generic kmap_local infrastructure failed to
+> assign the proper pre/post map/unmap flush operations for sparc.
 > 
-> There has to be a healthy balance between hobbyist and commercial use.
+> Sparc requires cache flush before map/unmap and tlb flush afterwards.
 > 
+> Fixes: 3293efa97807 ("sparc/mm/highmem: Switch to generic kmap atomic")
+> Reported-by: Andreas Larsson <andreas@gaisler.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: sparclinux@vger.kernel.org
+> ---
+>   arch/sparc/include/asm/highmem.h |    9 +++++----
+>   1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> --- a/arch/sparc/include/asm/highmem.h
+> +++ b/arch/sparc/include/asm/highmem.h
+> @@ -50,10 +50,11 @@ extern pte_t *pkmap_page_table;
+>   
+>   #define flush_cache_kmaps()	flush_cache_all()
+>   
+> -/* FIXME: Use __flush_tlb_one(vaddr) instead of flush_cache_all() -- Anton */
+> -#define arch_kmap_local_post_map(vaddr, pteval)	flush_cache_all()
+> -#define arch_kmap_local_post_unmap(vaddr)	flush_cache_all()
+> -
+> +/* FIXME: Use __flush_*_one(vaddr) instead of flush_*_all() -- Anton */
+> +#define arch_kmap_local_pre_map(vaddr, pteval)	flush_cache_all()
+> +#define arch_kmap_local_pre_unmap(vaddr)	flush_cache_all()
+> +#define arch_kmap_local_post_map(vaddr, pteval)	flush_tlb_all()
+> +#define arch_kmap_local_post_unmap(vaddr)	flush_tlb_all()
+>   
+>   #endif /* __KERNEL__ */
 
-Yes, both of those, and everything in-between, including for-profit 
-businesses that serve mostly hobbyists. Also start-up companies that may 
-never be commercially viable (which is most of them).
+Yes! I found, just an hour before your patched was posted, that an
+equivalent fix helped back where the switch-to-generic patch first
+occurred. This patch was successfully tested on master.
 
-And don't forget government and non-government organisations, 
-not-for-profit organisations, charities, etc.
+Tested-by: Andreas Larsson <andreas@gaisler.com>
 
-> I understand that from a commercial point of view, it doesn't make much 
-> sense to run Linux on a 30-year-old computer.
-
-It ain't necessarily so. I would be surprised if there are no Linux VMs 
-running on old corporate mainframes right now. But the age of the hardware 
-is largely irrelevant.
-
-If you're a museum interested in cultural artifacts from decades past, or 
-if you're a business doing data recovery, you're going to need to operate 
-those platforms.
-
-Once removed from mainline Linux, a port becomes basically frozen, and may 
-not be compatible with future emulators, which are a moving target. I say 
-that because last year I fixed bugs in Linux/m68k that made it incomatible 
-with recent QEMU releases (it was only compatible with old QEMU releases).
+-- 
+Andreas Larsson
+Cobham Gaisler
