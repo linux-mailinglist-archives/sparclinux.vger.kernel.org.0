@@ -2,141 +2,67 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D59F42F88AC
-	for <lists+sparclinux@lfdr.de>; Fri, 15 Jan 2021 23:47:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B2852F8B52
+	for <lists+sparclinux@lfdr.de>; Sat, 16 Jan 2021 05:47:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727344AbhAOWok (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 15 Jan 2021 17:44:40 -0500
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:57771 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727177AbhAOWoj (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 15 Jan 2021 17:44:39 -0500
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id uk-mta-8-lXDDyAc-MTCPOuhWUXC4Tg-1;
- Fri, 15 Jan 2021 22:39:47 +0000
-X-MC-Unique: lXDDyAc-MTCPOuhWUXC4Tg-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Fri, 15 Jan 2021 22:39:44 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Fri, 15 Jan 2021 22:39:44 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Arnd Bergmann' <arnd@kernel.org>
-CC:     "sonicadvance1@gmail.com" <sonicadvance1@gmail.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "Rich Felker" <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Andy Lutomirski" <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Ingo Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Xiaoming Ni <nixiaoming@huawei.com>,
-        David Rientjes <rientjes@google.com>,
-        "Willem de Bruijn" <willemb@google.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Minchan Kim <minchan@kernel.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Oleg Nesterov" <oleg@redhat.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        "Suren Baghdasaryan" <surenb@google.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Brian Gerst" <brgerst@gmail.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Jan Kara <jack@suse.cz>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>
-Subject: RE: [PATCH] Adds a new ioctl32 syscall for backwards compatibility
- layers
-Thread-Topic: [PATCH] Adds a new ioctl32 syscall for backwards compatibility
- layers
-Thread-Index: AQHW6wzXd1V6Thk8U0iiUgMFo8hTJqopEBwAgAAyHoCAAARq4A==
-Date:   Fri, 15 Jan 2021 22:39:44 +0000
-Message-ID: <313c380c4b1b477fbd09aac66eed4505@AcuMS.aculab.com>
-References: <20210106064807.253112-1-Sonicadvance1@gmail.com>
- <20210115070326.294332-1-Sonicadvance1@gmail.com>
- <b15672b1caec4cf980f2753d06b03596@AcuMS.aculab.com>
- <CAK8P3a1gqt-gBCPTdNeY+8SaG8eUGN4zkCrNKSjA=aEL-TkaUQ@mail.gmail.com>
-In-Reply-To: <CAK8P3a1gqt-gBCPTdNeY+8SaG8eUGN4zkCrNKSjA=aEL-TkaUQ@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S1725797AbhAPEr0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 15 Jan 2021 23:47:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51034 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725781AbhAPEr0 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 15 Jan 2021 23:47:26 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5512C061757
+        for <sparclinux@vger.kernel.org>; Fri, 15 Jan 2021 20:46:45 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id c124so9065233wma.5
+        for <sparclinux@vger.kernel.org>; Fri, 15 Jan 2021 20:46:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:sender:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=ty8Pzs8YnsPvOci6WSbfq+yaGMF9rXTaArqQK+d4Yss=;
+        b=e+Us4Hx16oFYzHQYX3IME/4imE6yYSIRKfmNZeQtfae3cPSOq+G0/mrxGau2VBd30N
+         fj5qyq88WzYzm8BrI9S+AgDicB7Q/WIEaz8p4hc7zXala4xqE4rrj7dafD2I2m8UMIOa
+         wAryJ8dY0MkwHcw+ov5rdOaskSFTRi+1v9k0TEkwYytkq+wpIRj7goKFqBgeY853Uf8h
+         qcl7+e25lSxXvqLgQxYrM2/CMslZHapfEhDmM94uzxuCLyshmZOb3LPrlGBRnse9Oked
+         YDkAzgAzqrcYPgDKjGJo5Ms6SW3INLUwuW8fxMGUHiUA6Q+KDke/1iUtaQhS0Soc1m5/
+         ow7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:sender:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=ty8Pzs8YnsPvOci6WSbfq+yaGMF9rXTaArqQK+d4Yss=;
+        b=Rc4d3UnLsP2b/BXuZftZayk1AW1bh8ackEs4ibYUY879wx3/42oFmbWpuAhcc0lk6L
+         IXej4KU/2f0Pa/6gVpeIGShhs8IpNtBT1HbbpEXe0ym9mma9Rl2QJjjuZ3UmrSNoYpkV
+         9aq9Ya9Ym2IniGaCVstS1cjTAnMSTMPlp6Cpyla6jsXEY/s3349OM23FEgK8jg32svZP
+         x0jPT+wdFnndW8bSuI0UcUkCGo+KUC6eyjTT7IyWfFU4kZCa1lnNLLtsvwDDzsnXWc2I
+         6RQ+2b83cF5z6Zt9HbwkJi/LNnzV0BajbbzuvpgPfKF2CYFOstGL9DHk7oRatMQagivJ
+         /4WA==
+X-Gm-Message-State: AOAM530i2OHvhAqXBQOnl1qhrTh/fddUz53TV6FECJX30wVOnUR/lAOA
+        Uw4tvvs3uEKGOcxyhZ68MoQSjYnb8uP6Zw==
+X-Google-Smtp-Source: ABdhPJzQb3fW2BQXQBS7oMvgWpWtlyQaLzvHpUDcOUdIA9EmrZBZjWIdwhhWW47qQ6SWk2V0pfb3iA==
+X-Received: by 2002:a05:600c:29cc:: with SMTP id s12mr11597667wmd.180.1610772404618;
+        Fri, 15 Jan 2021 20:46:44 -0800 (PST)
+Received: from [192.168.1.8] ([154.124.21.107])
+        by smtp.gmail.com with ESMTPSA id a24sm8224297wmj.17.2021.01.15.20.46.41
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Fri, 15 Jan 2021 20:46:44 -0800 (PST)
+Message-ID: <60026fb4.1c69fb81.5efe7.9404@mx.google.com>
+Sender: Skylar Anderson <khadykasse98@gmail.com>
+From:   Skylar Anderson <sgt.skylaranderson876@gmail.com>
+X-Google-Original-From: Skylar Anderson
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: hi
+To:     Recipients <Skylar@vger.kernel.org>
+Date:   Sat, 16 Jan 2021 04:46:37 +0000
+Reply-To: sgt.skylaranderson876@gmail.com
+X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Li4uDQo+IEhlJ3MgYWxyZWFkeSBkb2luZyB0aGUgc3lzdGVtIGNhbGwgZW11bGF0aW9uIGZvciBh
-bGwgdGhlIHN5c3RlbQ0KPiBjYWxscyBvdGhlciB0aGFuIGlvY3RsIGluIHVzZXIgc3BhY2UgdGhv
-dWdoLiBJbiBteSBleHBlcmllbmNlLA0KPiB0aGVyZSBhcmUgYWN0dWFsbHkgZmFpcmx5IGZldyBp
-b2N0bCBjb21tYW5kcyB0aGF0IGFyZSBkaWZmZXJlbnQNCj4gYmV0d2VlbiBhcmNoaXRlY3R1cmVz
-IC0tIG1vc3Qgb2YgdGhlbSBoYXZlIG5vIG1pc2FsaWduZWQNCj4gb3IgYXJjaGl0ZWN0dXJlLWRl
-ZmluZWQgc3RydWN0IG1lbWJlcnMgYXQgYWxsLg0KDQpBcmVuJ3QgdGhlcmUgYWxzbyBzb21lIGlu
-dHJhY3RhYmxlIGlzc3VlcyB3aXRoIHNvY2tldCBvcHRpb25zPw0KSUlSQyB0aGUga2VybmVsIGNv
-ZGUgdGhhdCB0cmllZCB0byBjaGFuZ2UgdGhlbSB0byA2NGJpdCB3YXMNCmhvcnJpYmx5IGJyb2tl
-biBpbiBzb21lIG9ic2N1cmUgY2FzZXMuDQoNClB1c2hpbmcgdGhlIGNvbnZlcnNpb24gZG93biB0
-aGUgc3RhY2sgbm90IG9ubHkgaWRlbnRpZmllZCB0aGUNCmlzc3VlcywgaXQgYWxzbyBtYWRlIHRo
-ZW0gZWFzaWVyIHRvIGZpeC4NCg0KSWYgeW91IGNoYW5nZSB0aGUga2VybmVsIHNvIGEgNjRiaXQg
-cHJvY2VzcyBjYW4gZXhlY3V0ZSAzMmJpdA0Kc3lzdGVtIGNhbGxzIHRoZW4gYSBsb3Qgb2YgdGhl
-IHByb2JsZW1zIGRvIGdvIGF3YXkuDQpUaGlzIGlzIHByb2JhYmx5IGVhc2llc3QgZG9uZSBieSBz
-ZXR0aW5nIGEgaGlnaCBiaXQgb24gdGhlDQpzeXN0ZW0gY2FsbCBudW1iZXIgLSBhcyB4ODZfNjQg
-ZG9lcyBmb3IgeDMyIGNhbGxzLg0KDQpZb3Ugc3RpbGwgaGF2ZSB0byBzb2x2ZSB0aGUgZGlmZmVy
-ZW50IGFsaWdubWVudCBvZiA2NGJpdCBkYXRhDQpvbiBpMzg2Lg0KDQpPZiBjb3Vyc2UgdGhlIHN5
-c3RlbSBjYWxsIG51bWJlcnMgYXJlIGRpZmZlcmVudCAtIGJ1dCB0aGF0IGlzDQpqdXN0IGEgbG9v
-a3VwLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5
-IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRp
-b24gTm86IDEzOTczODYgKFdhbGVzKQ0K
-
+there is something important to tell
