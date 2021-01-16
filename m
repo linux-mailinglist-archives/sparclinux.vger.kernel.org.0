@@ -2,67 +2,150 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B2852F8B52
-	for <lists+sparclinux@lfdr.de>; Sat, 16 Jan 2021 05:47:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B9E32F8BEE
+	for <lists+sparclinux@lfdr.de>; Sat, 16 Jan 2021 07:42:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725797AbhAPEr0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 15 Jan 2021 23:47:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51034 "EHLO
+        id S1726533AbhAPGmf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 16 Jan 2021 01:42:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725781AbhAPEr0 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 15 Jan 2021 23:47:26 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5512C061757
-        for <sparclinux@vger.kernel.org>; Fri, 15 Jan 2021 20:46:45 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id c124so9065233wma.5
-        for <sparclinux@vger.kernel.org>; Fri, 15 Jan 2021 20:46:45 -0800 (PST)
+        with ESMTP id S1725964AbhAPGme (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 16 Jan 2021 01:42:34 -0500
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0CA4C061793
+        for <sparclinux@vger.kernel.org>; Fri, 15 Jan 2021 22:41:53 -0800 (PST)
+Received: by mail-ot1-x32a.google.com with SMTP id a109so10927747otc.1
+        for <sparclinux@vger.kernel.org>; Fri, 15 Jan 2021 22:41:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:sender:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=ty8Pzs8YnsPvOci6WSbfq+yaGMF9rXTaArqQK+d4Yss=;
-        b=e+Us4Hx16oFYzHQYX3IME/4imE6yYSIRKfmNZeQtfae3cPSOq+G0/mrxGau2VBd30N
-         fj5qyq88WzYzm8BrI9S+AgDicB7Q/WIEaz8p4hc7zXala4xqE4rrj7dafD2I2m8UMIOa
-         wAryJ8dY0MkwHcw+ov5rdOaskSFTRi+1v9k0TEkwYytkq+wpIRj7goKFqBgeY853Uf8h
-         qcl7+e25lSxXvqLgQxYrM2/CMslZHapfEhDmM94uzxuCLyshmZOb3LPrlGBRnse9Oked
-         YDkAzgAzqrcYPgDKjGJo5Ms6SW3INLUwuW8fxMGUHiUA6Q+KDke/1iUtaQhS0Soc1m5/
-         ow7A==
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language;
+        bh=p4Nk3AilftG5ExBAGS6bfQpd59rxlKgXfcFq9DUpCjk=;
+        b=pAanG4QYLVdqHA7d+KTehzpGBsRMb6s5xhzHsfq8B71fiian/mBZm5+o6sFXindpzA
+         obvIa6SQAsXJZslpsW+FcDB1J4xC+3vxh49OAqdbRpiJwLlTLsx5TNuJqfRI33kBXAy0
+         NvlUVqccvWJAmnbAyEBY7wi5WvONiihiwHLddVQn6Q2S9/ZI3s3z4/9uDjgJ2LOVmKeg
+         Qo6CgKsFjI63dVfKO7Jx+faEpvvxOslSKTe0XTxheT0fwP0fKRDhAgPHyakgW1/l8TNe
+         lEGwySnVRS3HCMGMvWMf8TLaeEwxDK+cMvNKVV57oVPUjre8xuOLdvn6TapS+F2yG55p
+         5ZWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:sender:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=ty8Pzs8YnsPvOci6WSbfq+yaGMF9rXTaArqQK+d4Yss=;
-        b=Rc4d3UnLsP2b/BXuZftZayk1AW1bh8ackEs4ibYUY879wx3/42oFmbWpuAhcc0lk6L
-         IXej4KU/2f0Pa/6gVpeIGShhs8IpNtBT1HbbpEXe0ym9mma9Rl2QJjjuZ3UmrSNoYpkV
-         9aq9Ya9Ym2IniGaCVstS1cjTAnMSTMPlp6Cpyla6jsXEY/s3349OM23FEgK8jg32svZP
-         x0jPT+wdFnndW8bSuI0UcUkCGo+KUC6eyjTT7IyWfFU4kZCa1lnNLLtsvwDDzsnXWc2I
-         6RQ+2b83cF5z6Zt9HbwkJi/LNnzV0BajbbzuvpgPfKF2CYFOstGL9DHk7oRatMQagivJ
-         /4WA==
-X-Gm-Message-State: AOAM530i2OHvhAqXBQOnl1qhrTh/fddUz53TV6FECJX30wVOnUR/lAOA
-        Uw4tvvs3uEKGOcxyhZ68MoQSjYnb8uP6Zw==
-X-Google-Smtp-Source: ABdhPJzQb3fW2BQXQBS7oMvgWpWtlyQaLzvHpUDcOUdIA9EmrZBZjWIdwhhWW47qQ6SWk2V0pfb3iA==
-X-Received: by 2002:a05:600c:29cc:: with SMTP id s12mr11597667wmd.180.1610772404618;
-        Fri, 15 Jan 2021 20:46:44 -0800 (PST)
-Received: from [192.168.1.8] ([154.124.21.107])
-        by smtp.gmail.com with ESMTPSA id a24sm8224297wmj.17.2021.01.15.20.46.41
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Fri, 15 Jan 2021 20:46:44 -0800 (PST)
-Message-ID: <60026fb4.1c69fb81.5efe7.9404@mx.google.com>
-Sender: Skylar Anderson <khadykasse98@gmail.com>
-From:   Skylar Anderson <sgt.skylaranderson876@gmail.com>
-X-Google-Original-From: Skylar Anderson
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language;
+        bh=p4Nk3AilftG5ExBAGS6bfQpd59rxlKgXfcFq9DUpCjk=;
+        b=V5Uw0QuDCEcSsjntO3OnwK1BmW/mf4K+NVC4zxRD00bOi/G302ldJpljoUv8ZVryi/
+         aBGVeMFRGdiRFy4u3tMw95Z8At9yyLmaPMQ7gWYBKNItQ3Pravs5XK1MPic4bYSz7K5W
+         /VEQRGI+K3m8j6X6tluEFtwZujmHZD4l5WJyirn+oeoR1TXfQ7bjDcwfN3w4Tw+NDJ0v
+         jJvvGQDl24RKnB9CST8ZKxKrbySb2UIqy15Bj9Z0qgDgPulNqDgbmTOtBg4mzKGaeiR7
+         sL1t7bhFDMeT2ZsMhBEZeb6oe30cxgHAEXRA7fS81odP3CS8j8amrtXdTn81jy4RenV+
+         6zQQ==
+X-Gm-Message-State: AOAM532Rfhx3UhP9zmMXYf/OUOKwQJcvhjOfOF41lcBtJ1cI1oxaRZoN
+        7x/lX5VWchnultURcdFnxARVvQ==
+X-Google-Smtp-Source: ABdhPJyEsrxB0txbEUm6UqJKCpoLJBj/DEeFhI7BLALCwtVBrucFzbF8T55c4WgnHJrajqbLR2geyQ==
+X-Received: by 2002:a9d:d10:: with SMTP id 16mr11464306oti.101.1610779312992;
+        Fri, 15 Jan 2021 22:41:52 -0800 (PST)
+Received: from ?IPv6:2607:fb90:e6af:5dea:6680:99ff:fe6f:cb54? ([2607:fb90:e6af:5dea:6680:99ff:fe6f:cb54])
+        by smtp.gmail.com with ESMTPSA id c14sm2337402otp.19.2021.01.15.22.41.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Jan 2021 22:41:51 -0800 (PST)
+Subject: Re: Old platforms never die, was Re: Old platforms: bring out your
+ dead
+To:     Finn Thain <fthain@telegraphics.com.au>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     Gerhard Pircher <gerhard_pircher@gmx.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Sparc kernel list <sparclinux@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>
+References: <ef1dc21f-694b-2433-e1c6-aa121320173e@physik.fu-berlin.de>
+ <f48bcf43-9dcc-e48b-d29d-f75f3814398b@gmx.net>
+ <cb5a2e11-d423-96ec-3d43-3568a109e37f@physik.fu-berlin.de>
+ <alpine.LNX.2.23.453.2101131035500.6@nippy.intranet>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <897dbd50-ce42-8fdb-8777-fab08185e324@landley.net>
+Date:   Sat, 16 Jan 2021 00:54:22 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: hi
-To:     Recipients <Skylar@vger.kernel.org>
-Date:   Sat, 16 Jan 2021 04:46:37 +0000
-Reply-To: sgt.skylaranderson876@gmail.com
-X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
+In-Reply-To: <alpine.LNX.2.23.453.2101131035500.6@nippy.intranet>
+Content-Type: multipart/mixed;
+ boundary="------------14B6DC6FBF1B2EFA5CB0B019"
+Content-Language: en-US
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-there is something important to tell
+This is a multi-part message in MIME format.
+--------------14B6DC6FBF1B2EFA5CB0B019
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+On 1/12/21 6:12 PM, Finn Thain wrote:
+> If you're a museum interested in cultural artifacts from decades past, or 
+> if you're a business doing data recovery, you're going to need to operate 
+> those platforms.
+
+Or if you're camping patent expirations and want to be able to point at prior
+art for new hardware development WITHOUT a legal team big enough to have its own
+office building.
+
+> Once removed from mainline Linux, a port becomes basically frozen, and may 
+> not be compatible with future emulators, which are a moving target. I say 
+> that because last year I fixed bugs in Linux/m68k that made it incomatible 
+> with recent QEMU releases (it was only compatible with old QEMU releases).
+
+Speaking of which, my qemu m68k system has failed to boot ever since commit:
+
+commit f93bfeb55255bddaa16597e187a99ae6131b964a
+Author: Finn Thain <fthain@telegraphics.com.au>
+Date:   Sun Jun 28 14:23:12 2020 +1000
+
+    macintosh/via-macii: Poll the device most likely to respond
+
+    Poll the most recently polled device by default, rather than the lowest
+    device address that happens to be enabled in autopoll_devs. This improves
+    input latency. Re-use macii_queue_poll() rather than duplicate that logic.
+    This eliminates a static struct and function.
+
+It hangs in a cpu-eating loop after "random: crng init done". Miniconfig
+attached, the qemu invocation is:
+
+qemu-system-m68k -M q800 -nographic -no-reboot -m 256 -kernel vmlinux \
+  -initrd cpio.gz -append "panic=1 HOST=m68k console=ttyS0
+
+Rob
+
+P.S. This is the toybox "make root" m68k target from
+https://github.com/landley/toybox/blob/master/scripts/mkroot.sh#L171 if that's
+useful to know. It doesn't get to the root filesystem and the build just creates
+that miniconfig and runs it as the comments say...
+
+--------------14B6DC6FBF1B2EFA5CB0B019
+Content-Type: text/plain; charset=UTF-8;
+ name="miniconfig-m68k"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="miniconfig-m68k"
+
+IyBtYWtlIEFSQ0g9bTY4ayBhbGxub2NvbmZpZyBLQ09ORklHX0FMTENPTkZJRz1tNjhrLm1p
+bmljb25mCiMgbWFrZSBBUkNIPW02OGsgLWogJChucHJvYykKIyBib290IHZtbGludXgKCgoj
+IENPTkZJR19FTUJFRERFRCBpcyBub3Qgc2V0CiMgYXJjaGl0ZWN0dXJlIGluZGVwZW5kZW50
+CkNPTkZJR19CSU5GTVRfRUxGPXkKQ09ORklHX0JJTkZNVF9TQ1JJUFQ9eQpDT05GSUdfTk9f
+SFo9eQpDT05GSUdfSElHSF9SRVNfVElNRVJTPXkKQ09ORklHX0JMS19ERVY9eQpDT05GSUdf
+QkxLX0RFVl9JTklUUkQ9eQpDT05GSUdfUkRfR1pJUD15CkNPTkZJR19CTEtfREVWX0xPT1A9
+eQpDT05GSUdfRVhUNF9GUz15CkNPTkZJR19FWFQ0X1VTRV9GT1JfRVhUMj15CkNPTkZJR19W
+RkFUX0ZTPXkKQ09ORklHX0ZBVF9ERUZBVUxUX1VURjg9eQpDT05GSUdfTUlTQ19GSUxFU1lT
+VEVNUz15CkNPTkZJR19TUVVBU0hGUz15CkNPTkZJR19TUVVBU0hGU19YQVRUUj15CkNPTkZJ
+R19TUVVBU0hGU19aTElCPXkKQ09ORklHX0RFVlRNUEZTPXkKQ09ORklHX0RFVlRNUEZTX01P
+VU5UPXkKQ09ORklHX1RNUEZTPXkKQ09ORklHX1RNUEZTX1BPU0lYX0FDTD15CkNPTkZJR19O
+RVQ9eQpDT05GSUdfUEFDS0VUPXkKQ09ORklHX1VOSVg9eQpDT05GSUdfSU5FVD15CkNPTkZJ
+R19JUFY2PXkKQ09ORklHX05FVERFVklDRVM9eQpDT05GSUdfTkVUX0NPUkU9eQpDT05GSUdf
+TkVUQ09OU09MRT15CkNPTkZJR19FVEhFUk5FVD15CkNPTkZJR19DT01QQVRfMzJCSVRfVElN
+RT15CkNPTkZJR19FQVJMWV9QUklOVEs9eQpDT05GSUdfSUtDT05GSUc9eQpDT05GSUdfSUtD
+T05GSUdfUFJPQz15CgojIGFyY2hpdGVjdHVyZSBzcGVjaWZpYwpDT05GSUdfTU1VPXkKQ09O
+RklHX002ODA0MD15CkNPTkZJR19NNjhLRlBVX0VNVT15CkNPTkZJR19NQUM9eQpDT05GSUdf
+U0NTSV9NQUNfRVNQPXkKQ09ORklHX01BQ0lOVE9TSF9EUklWRVJTPXkKQ09ORklHX0FEQj15
+CkNPTkZJR19BREJfTUFDSUk9eQpDT05GSUdfTkVUX0NPUkU9eQpDT05GSUdfTUFDU09OSUM9
+eQpDT05GSUdfU0VSSUFMX1BNQUNaSUxPRz15CkNPTkZJR19TRVJJQUxfUE1BQ1pJTE9HX1RU
+WVM9eQpDT05GSUdfU0VSSUFMX1BNQUNaSUxPR19DT05TT0xFPXkKCgo=
+--------------14B6DC6FBF1B2EFA5CB0B019--
