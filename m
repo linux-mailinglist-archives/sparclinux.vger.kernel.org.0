@@ -2,93 +2,111 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1372F2F9B2B
-	for <lists+sparclinux@lfdr.de>; Mon, 18 Jan 2021 09:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEEA52FD6BC
+	for <lists+sparclinux@lfdr.de>; Wed, 20 Jan 2021 18:18:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726488AbhARIYi (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 18 Jan 2021 03:24:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60168 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726794AbhARIYe (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 18 Jan 2021 03:24:34 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D616C061573
-        for <sparclinux@vger.kernel.org>; Mon, 18 Jan 2021 00:23:52 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id 190so12754892wmz.0
-        for <sparclinux@vger.kernel.org>; Mon, 18 Jan 2021 00:23:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id;
-        bh=M2czl7AdXkeiTJE6+fnFESw8QQNDAv21y8gTRe13G3s=;
-        b=SewdvCuVtGMVvQa+3LWuDIOjAtprDaXDN8yaxSzOVZKUBuqZW28dnBlMA7IjH6h6EP
-         O7HydD212ho94Nbe8iV33BxENkJHznH7g1twrxWqp8+7/rj1d4p2sI2PrjeQXhj/POXh
-         pouFhJnmQPPzvezRbAXe97S18WUEBAbAbsFoqRXhDqEqAYZ734l3nO6QZ389dGtY0mR8
-         /lJNXV9lEMpZCku+BnLJdpxo9jAhE1kKXOMM//3fe8geKIWTNF8I7VCvXzIkGcEZ7pS6
-         qmPZqUiRl1aIKG1KP8CKOOFdDOYyXLyGAaxwvsu3JRr6RxHlhlwjkC3Gv+PASs3jHq4P
-         Hjtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=M2czl7AdXkeiTJE6+fnFESw8QQNDAv21y8gTRe13G3s=;
-        b=p3uu38Ohus/CE2To8Xlg54YQfCQh2+aTmpKwuyUs68NWg+ENKFVnuuKNW+uQ35JkB1
-         Oh2neTNYxRjXsit9xKyRmBSZZl7XY2AczxsXQyn2KiSVa9b9XhPgYfgtNAS8zjFVdYqX
-         EPgAs/j0YK+jYDYu8QCW6eNG1yS0bajlSKolXD+eLCJtIxxLU8E/EHkrhzKYG3x4t5rc
-         Ll9fUOqFz5qer56wIwZi2sjq8FlZh8ovcZWSiYNzHOPuFjUGZ9/nh8+c3NhfjKZravZM
-         H554dbT+6n1Se3VkVX6P2GDZo2g6NKwsIdViFDZ+D5i1COAhjzxurpXepRR4TUuDmLMF
-         rKRw==
-X-Gm-Message-State: AOAM533W8Pl+++3rpzOWu/geu1PPwsFqNtHJn03DrHpnc36oTTEL1nZw
-        JMQ5NOp5aODn9UaXV9Djp9G94w==
-X-Google-Smtp-Source: ABdhPJzUIdERXVaNzWyi/T2hRfvLw85RB8089LN9Z6eORPK4jumPEfOAhsKk1UA7NLCNPRJ/5XNctw==
-X-Received: by 2002:a05:600c:3551:: with SMTP id i17mr19401993wmq.140.1610958231178;
-        Mon, 18 Jan 2021 00:23:51 -0800 (PST)
-Received: from localhost.localdomain ([163.172.76.58])
-        by smtp.googlemail.com with ESMTPSA id b7sm27292961wru.33.2021.01.18.00.23.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Jan 2021 00:23:50 -0800 (PST)
-From:   Corentin Labbe <clabbe@baylibre.com>
-To:     davem@davemloft.net
-Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
-        Corentin Labbe <clabbe@baylibre.com>
-Subject: [PATCH v2] sparc: sparc64_defconfig: add necessary configs for qemu
-Date:   Mon, 18 Jan 2021 08:23:45 +0000
-Message-Id: <20210118082345.16163-1-clabbe@baylibre.com>
-X-Mailer: git-send-email 2.17.1
+        id S2404138AbhATRSC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 20 Jan 2021 12:18:02 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:55996 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2391783AbhATRRy (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 20 Jan 2021 12:17:54 -0500
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 10KH2nCW173241;
+        Wed, 20 Jan 2021 12:17:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=2MjYTQAKg0XcBO/QYJ9eWIey23lQUMAlaNMBygShzeQ=;
+ b=PCySfe32pH4LgMJecWe5JOM64akELCHpqhnbpn/SVRX5rrY9/Jx2wzCBUaK/xyEK4lZE
+ HfXUuxU2eYpTP/B4daMW7BnZrKJIznzdleUjATimhSXw5Bzchedq73u6GKy2b9Ux5tbq
+ gueq7qq4Rmmron/PzFKg+G52/uIHEvU9RUkK36au7yfAuvosv1Y47uc8fUkGzie7CZyB
+ 4aCvJU9M9gZg/nDETcKI4zJ7Vk2rijpRxmm+G3wUin0VVMTkTOkjeQ0C03/wlQ9Qd4Or
+ QVDBUVZwmivcb4w7kHEbC4a8cVy7kaEioUncsa8gR4Jm4VbYvc817+Y1d/0Yud4A4nfa ow== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 366rbj0vn4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 20 Jan 2021 12:17:00 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+        by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10KHGPD5011286;
+        Wed, 20 Jan 2021 17:17:00 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+        by ppma02dal.us.ibm.com with ESMTP id 3668ps7d22-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 20 Jan 2021 17:17:00 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
+        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 10KHGx1U15860140
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 20 Jan 2021 17:16:59 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 70D8A112067;
+        Wed, 20 Jan 2021 17:16:59 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5C453112064;
+        Wed, 20 Jan 2021 17:16:58 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.65.196.188])
+        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+        Wed, 20 Jan 2021 17:16:58 +0000 (GMT)
+Subject: Re: [PATCH 1/3] tty: hvcs: Drop unnecessary if block
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org
+References: <20210114175718.137483-1-u.kleine-koenig@pengutronix.de>
+ <20210114175718.137483-2-u.kleine-koenig@pengutronix.de>
+From:   Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <ce62e2fb-d882-ab6b-1a81-2315ce9a2b64@linux.ibm.com>
+Date:   Wed, 20 Jan 2021 09:16:56 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
+MIME-Version: 1.0
+In-Reply-To: <20210114175718.137483-2-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
+ definitions=2021-01-20_10:2021-01-20,2021-01-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxscore=0 clxscore=1011 spamscore=0
+ adultscore=0 bulkscore=0 mlxlogscore=961 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101200097
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The sparc64 qemu machines uses sunhme network hardware by default, so for
-simple NFS boot testing using qemu, having CONFIG_HAPPYMEAL is useful.
-And so we need also IP_PNP_DHCP for NFS boot.
-For the same reason we need to enable its storage which is a PATA_CMD64.
-And finally, we need CONFIG_DEVTMPFS for handling recent udev/systemd.
+On 1/14/21 9:57 AM, Uwe Kleine-König wrote:
+> If hvcs_probe() succeeded dev_set_drvdata() is called with a non-NULL
+> value, and if hvcs_probe() failed hvcs_remove() isn't called.
+> 
+> So there is no way dev_get_drvdata() can return NULL in hvcs_remove() and
+> the check can just go away.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-All those options will permit to enable boot testing in both kernelCI
-and gentoo's kernelCI.
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 
-Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
----
-Changes since v1:
-- Added CONFIG_DEVTMPFS for udev
-- Changed PCNET32 to HAPPYMEAL, as the default netword card is sunhme
-
- arch/sparc/configs/sparc64_defconfig | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/sparc/configs/sparc64_defconfig b/arch/sparc/configs/sparc64_defconfig
-index bde4d21a8ac8..439ec8bc6dca 100644
---- a/arch/sparc/configs/sparc64_defconfig
-+++ b/arch/sparc/configs/sparc64_defconfig
-@@ -236,3 +236,9 @@ CONFIG_CRYPTO_TWOFISH=m
- CONFIG_CRC16=m
- CONFIG_LIBCRC32C=m
- CONFIG_VCC=m
-+CONFIG_ATA=y
-+CONFIG_PATA_CMD64X=y
-+CONFIG_HAPPYMEAL=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_DEVTMPFS=y
--- 
-2.26.2
+> ---
+>  drivers/tty/hvc/hvcs.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
+> index 509d1042825a..3e0461285c34 100644
+> --- a/drivers/tty/hvc/hvcs.c
+> +++ b/drivers/tty/hvc/hvcs.c
+> @@ -825,9 +825,6 @@ static int hvcs_remove(struct vio_dev *dev)
+>  	unsigned long flags;
+>  	struct tty_struct *tty;
+> 
+> -	if (!hvcsd)
+> -		return -ENODEV;
+> -
+>  	/* By this time the vty-server won't be getting any more interrupts */
+> 
+>  	spin_lock_irqsave(&hvcsd->lock, flags);
+> 
 
