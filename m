@@ -2,111 +2,126 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEEA52FD6BC
-	for <lists+sparclinux@lfdr.de>; Wed, 20 Jan 2021 18:18:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF3102FE3E5
+	for <lists+sparclinux@lfdr.de>; Thu, 21 Jan 2021 08:27:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404138AbhATRSC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 20 Jan 2021 12:18:02 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:55996 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2391783AbhATRRy (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 20 Jan 2021 12:17:54 -0500
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 10KH2nCW173241;
-        Wed, 20 Jan 2021 12:17:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=2MjYTQAKg0XcBO/QYJ9eWIey23lQUMAlaNMBygShzeQ=;
- b=PCySfe32pH4LgMJecWe5JOM64akELCHpqhnbpn/SVRX5rrY9/Jx2wzCBUaK/xyEK4lZE
- HfXUuxU2eYpTP/B4daMW7BnZrKJIznzdleUjATimhSXw5Bzchedq73u6GKy2b9Ux5tbq
- gueq7qq4Rmmron/PzFKg+G52/uIHEvU9RUkK36au7yfAuvosv1Y47uc8fUkGzie7CZyB
- 4aCvJU9M9gZg/nDETcKI4zJ7Vk2rijpRxmm+G3wUin0VVMTkTOkjeQ0C03/wlQ9Qd4Or
- QVDBUVZwmivcb4w7kHEbC4a8cVy7kaEioUncsa8gR4Jm4VbYvc817+Y1d/0Yud4A4nfa ow== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 366rbj0vn4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 20 Jan 2021 12:17:00 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10KHGPD5011286;
-        Wed, 20 Jan 2021 17:17:00 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-        by ppma02dal.us.ibm.com with ESMTP id 3668ps7d22-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 20 Jan 2021 17:17:00 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 10KHGx1U15860140
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 Jan 2021 17:16:59 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 70D8A112067;
-        Wed, 20 Jan 2021 17:16:59 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5C453112064;
-        Wed, 20 Jan 2021 17:16:58 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.65.196.188])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Wed, 20 Jan 2021 17:16:58 +0000 (GMT)
-Subject: Re: [PATCH 1/3] tty: hvcs: Drop unnecessary if block
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>
-Cc:     sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org
-References: <20210114175718.137483-1-u.kleine-koenig@pengutronix.de>
- <20210114175718.137483-2-u.kleine-koenig@pengutronix.de>
-From:   Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <ce62e2fb-d882-ab6b-1a81-2315ce9a2b64@linux.ibm.com>
-Date:   Wed, 20 Jan 2021 09:16:56 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S1725988AbhAUH1R (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 21 Jan 2021 02:27:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45472 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727630AbhAUHZM (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 21 Jan 2021 02:25:12 -0500
+Received: from mail.sf-mail.de (mail.sf-mail.de [IPv6:2a01:4f8:1c17:6fae:616d:6c69:616d:6c69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 638EDC061757
+        for <sparclinux@vger.kernel.org>; Wed, 20 Jan 2021 23:24:31 -0800 (PST)
+Received: (qmail 16413 invoked from network); 21 Jan 2021 07:23:45 -0000
+Received: from mail.sf-mail.de ([2a01:4f8:1c17:6fae:616d:6c69:616d:6c69]:42734 HELO webmail.sf-mail.de) (auth=eike@sf-mail.de)
+        by mail.sf-mail.de (Qsmtpd 0.37dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+        for <sparclinux@vger.kernel.org>; Thu, 21 Jan 2021 08:23:45 +0100
 MIME-Version: 1.0
-In-Reply-To: <20210114175718.137483-2-u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2021-01-20_10:2021-01-20,2021-01-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 mlxscore=0 clxscore=1011 spamscore=0
- adultscore=0 bulkscore=0 mlxlogscore=961 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101200097
+Date:   Thu, 21 Jan 2021 08:23:44 +0100
+From:   Rolf Eike Beer <eike-kernel@sf-tec.de>
+To:     sparclinux@vger.kernel.org
+Subject: Re: soft lockups on T5120
+In-Reply-To: <65a62b7c6e752dfb1b46624aa579d5e2@sf-tec.de>
+References: <65a62b7c6e752dfb1b46624aa579d5e2@sf-tec.de>
+User-Agent: Roundcube Webmail/1.4.9
+Message-ID: <d9e79cfa4b80373e2c54e1358d110335@sf-tec.de>
+X-Sender: eike-kernel@sf-tec.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 1/14/21 9:57 AM, Uwe Kleine-König wrote:
-> If hvcs_probe() succeeded dev_set_drvdata() is called with a non-NULL
-> value, and if hvcs_probe() failed hvcs_remove() isn't called.
+Am 2021-01-13 09:51, schrieb Rolf Eike Beer:
+> Every one ine a while my T5120 locks up, i.e. some processes get stuck 
+> forever.
+> Starting new screen sessions or logging in via SSH luckily still works, 
+> but I
+> can't get it to properly reboot. Sync via sysrq has worked today which 
+> is quite
+> nice, but the software RAID still needs rebuild :/
 > 
-> So there is no way dev_get_drvdata() can return NULL in hvcs_remove() and
-> the check can just go away.
+> This usually happens when I torture the machine with parallel builds
+> and testsuites
+> when doing package stabilizations for Gentoo.
 > 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> The kernel currently is 5.10.3, but I hit this for quite a while
+> 
+> Here is what came out of dmesg today. I found no signs of trouble
+> earlier than this:
 
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+And here it is again:
 
-> ---
->  drivers/tty/hvc/hvcs.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
-> index 509d1042825a..3e0461285c34 100644
-> --- a/drivers/tty/hvc/hvcs.c
-> +++ b/drivers/tty/hvc/hvcs.c
-> @@ -825,9 +825,6 @@ static int hvcs_remove(struct vio_dev *dev)
->  	unsigned long flags;
->  	struct tty_struct *tty;
-> 
-> -	if (!hvcsd)
-> -		return -ENODEV;
-> -
->  	/* By this time the vty-server won't be getting any more interrupts */
-> 
->  	spin_lock_irqsave(&hvcsd->lock, flags);
-> 
+[667028.274283] many-headers[40569]: segfault at 0 ip 00000000700007c0 
+(rpc 000000007000073c) sp 00000000ff9eddf8 error 1 in 
+many-headers[70000000+2000]
+[671105.790298] rcu: INFO: rcu_sched self-detected stall on CPU
+[671105.790512] rcu:    24-....: (2099 ticks this GP) 
+idle=c3a/1/0x4000000000000002 softirq=12392985/12392985 fqs=1033
+[671105.790709]         (t=2100 jiffies g=37879413 q=5992)
+[671105.790859] * CPU[ 24]: TSTATE[0000000080001601] 
+TPC[000000000040770c] TNPC[0000000000407710] TASK[ctest:50100]
+[671105.791083]              TPC[sparc64_realfault_common+0x8/0x20] 
+O7[sparc64_realfault_common+0x10/0x20] I7[0xf76e6e3c] 
+RPC[do_signal+0x1a0/0x560]
+[671168.853244] rcu: INFO: rcu_sched self-detected stall on CPU
+[671168.853475] rcu:    24-....: (8402 ticks this GP) 
+idle=c3a/1/0x4000000000000002 softirq=12392985/12392985 fqs=4100
+[671168.853684]         (t=8403 jiffies g=37879413 q=64804)
+[671168.853843] * CPU[ 24]: TSTATE[0000000080001601] 
+TPC[000000000040770c] TNPC[0000000000407710] TASK[ctest:50100]
+[671168.854072]              TPC[sparc64_realfault_common+0x8/0x20] 
+O7[sparc64_realfault_common+0x10/0x20] I7[0xf76e6e3c] 
+RPC[do_signal+0x1a0/0x560]
+[671231.926163] rcu: INFO: rcu_sched self-detected stall on CPU
+[671231.926395] rcu:    24-....: (14706 ticks this GP) 
+idle=c3a/1/0x4000000000000002 softirq=12392985/12392985 fqs=6738
+[671231.926610]         (t=14707 jiffies g=37879413 q=82515)
+[671231.926781] * CPU[ 24]: TSTATE[0000000080001602] 
+TPC[0000000000af61e0] TNPC[0000000000af61e4] TASK[ctest:50100]
+[671231.927033]              TPC[do_sparc64_fault+0x340/0x820] 
+O7[do_sparc64_fault+0x56c/0x820] I7[sparc64_realfault_common+0x10/0x20] 
+RPC[0xf76e6e3c]
+[671277.260094] INFO: task khugepaged:337 blocked for more than 122 
+seconds.
+[671277.260277]       Not tainted 5.10.3-gentoo-sparc64 #1
+[671277.260399] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" 
+disables this message.
+[671277.260528] task:khugepaged      state:D stack:    0 pid:  337 ppid: 
+     2 flags:0x01000000
+[671277.260666] Call Trace:
+[671277.260765] [<0000000000af0ae0>] schedule+0x40/0xe0
+[671277.260898] [<0000000000af4018>] schedule_timeout+0x1f8/0x380
+[671277.261028] [<0000000000af1c80>] wait_for_completion+0x60/0xc0
+[671277.261163] [<000000000047de70>] __flush_work.isra.0+0xf0/0x220
+[671277.261234] [<0000000000597954>] lru_add_drain_all+0x1b4/0x240
+[671277.261306] [<00000000006052c4>] khugepaged+0x44/0x1e40
+[671277.261377] [<0000000000485a04>] kthread+0x104/0x120
+[671277.261453] [<00000000004060c8>] ret_from_fork+0x1c/0x2c
+[671277.261520] [<0000000000000000>] 0x0
+[671277.261605] INFO: task md127_raid1:1100 blocked for more than 122 
+seconds.
+[671277.261673]       Not tainted 5.10.3-gentoo-sparc64 #1
+[671277.261737] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" 
+disables this message.
+[671277.261806] task:md127_raid1     state:D stack:    0 pid: 1100 ppid: 
+     2 flags:0x01000000
+[671277.261883] Call Trace:
+[671277.261939] [<0000000000af0ae0>] schedule+0x40/0xe0
+[671277.262018] [<00000000007a3694>] 
+percpu_ref_switch_to_atomic_sync+0x34/0x80
+[671277.262097] [<00000000009199e0>] set_in_sync+0x40/0xe0
+[671277.262168] [<0000000000928280>] md_check_recovery+0x520/0x5c0
+[671277.262242] [<00000000008f17f4>] raid1d+0x14/0x1380
+[671277.262313] [<000000000091a54c>] md_thread+0xac/0x1a0
+[671277.262382] [<0000000000485a04>] kthread+0x104/0x120
+[671277.262453] [<00000000004060c8>] ret_from_fork+0x1c/0x2c
+[671277.262519] [<0000000000000000>] 0x0
+[671277.262601] INFO: task jbd2/dm-0-8:1208 blocked for more than 122 
+seconds.
+[671277.262670]       Not tainted 5.10.3-gentoo-sparc64 #1
 
+and so on.
