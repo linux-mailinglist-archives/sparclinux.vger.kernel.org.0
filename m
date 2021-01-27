@@ -2,119 +2,532 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AE2F305FD2
-	for <lists+sparclinux@lfdr.de>; Wed, 27 Jan 2021 16:40:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D7763066E9
+	for <lists+sparclinux@lfdr.de>; Wed, 27 Jan 2021 23:00:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235703AbhA0PfF (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 27 Jan 2021 10:35:05 -0500
-Received: from bin-mail-out-05.binero.net ([195.74.38.228]:60671 "EHLO
-        bin-mail-out-05.binero.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235608AbhA0PD6 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 27 Jan 2021 10:03:58 -0500
-X-Halon-ID: bf46de24-60b0-11eb-a542-005056917a89
-Authorized-sender: andreas@gaisler.com
-Received: from andreas.got.gaisler.com (h-98-128-223-123.na.cust.bahnhof.se [98.128.223.123])
-        by bin-vsp-out-01.atm.binero.net (Halon) with ESMTPA
-        id bf46de24-60b0-11eb-a542-005056917a89;
-        Wed, 27 Jan 2021 16:03:09 +0100 (CET)
-From:   Andreas Larsson <andreas@gaisler.com>
-Subject: sparc32: boot fails with > 256 MB memory after switch to NO_BOOTMEM
-To:     Sparc kernel list <sparclinux@vger.kernel.org>, linux-mm@kvack.org,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        id S236114AbhA0V64 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 27 Jan 2021 16:58:56 -0500
+Received: from antares.kleine-koenig.org ([94.130.110.236]:43306 "EHLO
+        antares.kleine-koenig.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236121AbhA0V62 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 27 Jan 2021 16:58:28 -0500
+X-Greylist: delayed 432 seconds by postgrey-1.27 at vger.kernel.org; Wed, 27 Jan 2021 16:58:23 EST
+Received: by antares.kleine-koenig.org (Postfix, from userid 1000)
+        id 5B29DAE0BB9; Wed, 27 Jan 2021 22:50:27 +0100 (CET)
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+To:     Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Michal Hocko <mhocko@kernel.org>
-Message-ID: <5adb7c41-ad71-b904-6b73-35aef4dfcafe@gaisler.com>
-Date:   Wed, 27 Jan 2021 16:03:00 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Jens Axboe <axboe@kernel.dk>, Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Haren Myneni <haren@us.ibm.com>,
+        =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+        Steven Royer <seroyer@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Cristobal Forno <cforno12@linux.ibm.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Dany Madden <drt@linux.ibm.com>, Lijun Pan <ljp@linux.ibm.com>,
+        Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+        Tyrel Datwyler <tyreld@linux.ibm.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Michael Cyr <mikecyr@linux.ibm.com>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: [PATCH] vio: make remove callback return void
+Date:   Wed, 27 Jan 2021 22:50:10 +0100
+Message-Id: <20210127215010.99954-1-uwe@kleine-koenig.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+The driver core ignores the return value of struct bus_type::remove()
+because there is only little that can be done. To simplify the quest to
+make this function return void, let struct vio_driver::remove() return
+void, too. All users already unconditionally return 0, this commit makes
+it obvious that returning an error code is a bad idea and makes it
+obvious for future driver authors that returning an error code isn't
+intended.
 
+Note there are two nominally different implementations for a vio bus:
+one in arch/sparc/kernel/vio.c and the other in
+arch/powerpc/platforms/pseries/vio.c. I didn't care to check which
+driver is using which of these busses (or if even some of them can be
+used with both) and simply adapt all drivers and the two bus codes in
+one go.
 
-Commit cca079ef8ac29a7c02192d2bad2ffe4c0c5ffdd0 makes sparc32 use
-memblocks instead of the previous bootmem solution. Unfortunately, due
-to this:
+Note that for the powerpc implementation there is a semantical change:
+Before this patch for a device that was bound to a driver without a
+remove callback vio_cmo_bus_remove(viodev) wasn't called. As the device
+core still considers the device unbound after vio_bus_remove() returns
+calling this unconditionally is the consistent behaviour which is
+implemented here.
 
-#define PAGE_OFFSET  0xf0000000
-#define __va(x)	     ((void *)((unsigned long) (x) - phys_base + 
-PAGE_OFFSET))
-#define phys_to_virt __va
+Signed-off-by: Uwe Kleine-König <uwe@kleine-koenig.org>
+---
+Hello,
 
-it makes physical addresses >= 0x10000000 past phys_base wrap around the
-32-bit memory space when converted to virtual addresses, e.g. in
-memblock_alloc_try_nid. Physical memory exactly 0x10000000 past
-phys_base is returned as an unintended NULL pointer, leading to a panic
-in my boot when percpu memory allocation fails due to it.
+note that this change depends on
+https://lore.kernel.org/r/20210121062005.53271-1-ljp@linux.ibm.com which removes
+an (ignored) return -EBUSY in drivers/net/ethernet/ibm/ibmvnic.c.
+I don't know when/if this latter patch will be applied, so it might take
+some time until my patch can go in.
 
-Unfortunately I have had 256 MB memory or less in a lot of my testing,
-so this old one has slipped by me.
+Best regards
+Uwe
 
-Does anyone has any ideas or pointers on how to resolve this?
+ arch/powerpc/include/asm/vio.h           | 2 +-
+ arch/powerpc/platforms/pseries/vio.c     | 7 +++----
+ arch/sparc/include/asm/vio.h             | 2 +-
+ arch/sparc/kernel/ds.c                   | 6 ------
+ arch/sparc/kernel/vio.c                  | 4 ++--
+ drivers/block/sunvdc.c                   | 3 +--
+ drivers/char/hw_random/pseries-rng.c     | 3 +--
+ drivers/char/tpm/tpm_ibmvtpm.c           | 4 +---
+ drivers/crypto/nx/nx-842-pseries.c       | 4 +---
+ drivers/crypto/nx/nx.c                   | 4 +---
+ drivers/misc/ibmvmc.c                    | 4 +---
+ drivers/net/ethernet/ibm/ibmveth.c       | 4 +---
+ drivers/net/ethernet/ibm/ibmvnic.c       | 4 +---
+ drivers/net/ethernet/sun/ldmvsw.c        | 4 +---
+ drivers/net/ethernet/sun/sunvnet.c       | 3 +--
+ drivers/scsi/ibmvscsi/ibmvfc.c           | 3 +--
+ drivers/scsi/ibmvscsi/ibmvscsi.c         | 4 +---
+ drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c | 4 +---
+ drivers/tty/hvc/hvcs.c                   | 3 +--
+ drivers/tty/vcc.c                        | 4 +---
+ 20 files changed, 22 insertions(+), 54 deletions(-)
 
-Example follows where I have 512 MB memory at 0x40000000:
-
------>%>%>%>%-----
-memblock_add: [0x40000000-0x5fffafff] bootmem_init+0x1f8/0x210
-319MB HIGHMEM available.
-memblock_reserve: [0x40000000-0x40e71fff] bootmem_init+0x178/0x210
-memblock_add: [0x40000000-0x40e71fff] bootmem_init+0x188/0x210
-memblock_alloc_try_nid: 5242880 bytes align=0x40000 nid=-1 
-from=0x00000000 max_addr=0x00000000 srmmu_nocache_init+0x20/0x25c
-memblock_reserve: [0x40e80000-0x4137ffff] 
-memblock_alloc_range_nid+0xcc/0x178
-memblock_alloc_try_nid: 2560 bytes align=0x20 nid=-1 from=0x00000000 
-max_addr=0x00000000 srmmu_nocache_init+0x94/0x25c
-memblock_reserve: [0x40e72000-0x40e729ff] 
-memblock_alloc_range_nid+0xcc/0x178
-memblock_alloc_try_nid: 4096 bytes align=0x20 nid=-1 from=0x00000000 
-max_addr=0x00000000 sparc_context_init+0x1c/0xe4
-memblock_reserve: [0x40e72a00-0x40e739ff] 
-memblock_alloc_range_nid+0xcc/0x178
-Zone ranges:
-   DMA      [mem 0x0000000040000000-0x000000004bffffff]
-   Normal   empty
-   HighMem  [mem 0x000000004c000000-0x000000005fffafff]
-Movable zone start for each node
-Early memory node ranges
-   node   0: [mem 0x0000000040000000-0x000000005fffafff]
-Initmem setup node 0 [mem 0x0000000040000000-0x000000005fffafff]
------>%>%>%>%-----
-
-then much much later memblock_alloc_internal gets 0x50000000 from
-memblock_alloc_range_nid and returns a NULL pointer as result of
-phys_to_virt.
-
------>%>%>%>%-----
-memblock_alloc_try_nid: 40960 bytes align=0x1000 nid=-1 from=0x4fffffff 
-max_addr=0x00000000 pcpu_dfl_fc_alloc+0x28/0x40
-memblock_reserve: [0x50000000-0x50009fff] 
-memblock_alloc_range_nid+0xcc/0x178
-memblock_free: [0x40e7e000-0x40e7efff] pcpu_free_alloc_info+0x1c/0x30
-memblock_free: [0x40e7f000-0x40e7ffff] pcpu_embed_first_chunk+0x194/0x3b8
-Kernel panic - not syncing: Failed to initialize percpu areas.
-CPU: 0 PID: 0 Comm: swapper Not tainted 
-5.11.0-rc3-00040-gbc4547251e1-dirty #28
------>%>%>%>%-----
-
-Adding mem=256M to the command line solves the panic problem but makes
-the extra memory not be available for normal allocation later on either.
-
-The two first memblock_add calls (seen in the first first set of
-outputs) with overlapping address ranges that is done in bootmem_init
-also looks a bit worrying, but removing the second one does not affect
-this problem.
-
+diff --git a/arch/powerpc/include/asm/vio.h b/arch/powerpc/include/asm/vio.h
+index 0cf52746531b..721c0d6715ac 100644
+--- a/arch/powerpc/include/asm/vio.h
++++ b/arch/powerpc/include/asm/vio.h
+@@ -113,7 +113,7 @@ struct vio_driver {
+ 	const char *name;
+ 	const struct vio_device_id *id_table;
+ 	int (*probe)(struct vio_dev *dev, const struct vio_device_id *id);
+-	int (*remove)(struct vio_dev *dev);
++	void (*remove)(struct vio_dev *dev);
+ 	/* A driver must have a get_desired_dma() function to
+ 	 * be loaded in a CMO environment if it uses DMA.
+ 	 */
+diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
+index b2797cfe4e2b..9cb4fc839fd5 100644
+--- a/arch/powerpc/platforms/pseries/vio.c
++++ b/arch/powerpc/platforms/pseries/vio.c
+@@ -1261,7 +1261,6 @@ static int vio_bus_remove(struct device *dev)
+ 	struct vio_dev *viodev = to_vio_dev(dev);
+ 	struct vio_driver *viodrv = to_vio_driver(dev->driver);
+ 	struct device *devptr;
+-	int ret = 1;
+ 
+ 	/*
+ 	 * Hold a reference to the device after the remove function is called
+@@ -1270,13 +1269,13 @@ static int vio_bus_remove(struct device *dev)
+ 	devptr = get_device(dev);
+ 
+ 	if (viodrv->remove)
+-		ret = viodrv->remove(viodev);
++		viodrv->remove(viodev);
+ 
+-	if (!ret && firmware_has_feature(FW_FEATURE_CMO))
++	if (firmware_has_feature(FW_FEATURE_CMO))
+ 		vio_cmo_bus_remove(viodev);
+ 
+ 	put_device(devptr);
+-	return ret;
++	return 0;
+ }
+ 
+ /**
+diff --git a/arch/sparc/include/asm/vio.h b/arch/sparc/include/asm/vio.h
+index 059f0eb678e0..8a1a83bbb6d5 100644
+--- a/arch/sparc/include/asm/vio.h
++++ b/arch/sparc/include/asm/vio.h
+@@ -362,7 +362,7 @@ struct vio_driver {
+ 	struct list_head		node;
+ 	const struct vio_device_id	*id_table;
+ 	int (*probe)(struct vio_dev *dev, const struct vio_device_id *id);
+-	int (*remove)(struct vio_dev *dev);
++	void (*remove)(struct vio_dev *dev);
+ 	void (*shutdown)(struct vio_dev *dev);
+ 	unsigned long			driver_data;
+ 	struct device_driver		driver;
+diff --git a/arch/sparc/kernel/ds.c b/arch/sparc/kernel/ds.c
+index 522e5b51050c..4a5bdb0df779 100644
+--- a/arch/sparc/kernel/ds.c
++++ b/arch/sparc/kernel/ds.c
+@@ -1236,11 +1236,6 @@ static int ds_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 	return err;
+ }
+ 
+-static int ds_remove(struct vio_dev *vdev)
+-{
+-	return 0;
+-}
+-
+ static const struct vio_device_id ds_match[] = {
+ 	{
+ 		.type = "domain-services-port",
+@@ -1251,7 +1246,6 @@ static const struct vio_device_id ds_match[] = {
+ static struct vio_driver ds_driver = {
+ 	.id_table	= ds_match,
+ 	.probe		= ds_probe,
+-	.remove		= ds_remove,
+ 	.name		= "ds",
+ };
+ 
+diff --git a/arch/sparc/kernel/vio.c b/arch/sparc/kernel/vio.c
+index 4f57056ed463..348a88691219 100644
+--- a/arch/sparc/kernel/vio.c
++++ b/arch/sparc/kernel/vio.c
+@@ -105,10 +105,10 @@ static int vio_device_remove(struct device *dev)
+ 		 * routines to do so at the moment. TBD
+ 		 */
+ 
+-		return drv->remove(vdev);
++		drv->remove(vdev);
+ 	}
+ 
+-	return 1;
++	return 0;
+ }
+ 
+ static ssize_t devspec_show(struct device *dev,
+diff --git a/drivers/block/sunvdc.c b/drivers/block/sunvdc.c
+index 39aeebc6837d..1547d4345ad8 100644
+--- a/drivers/block/sunvdc.c
++++ b/drivers/block/sunvdc.c
+@@ -1071,7 +1071,7 @@ static int vdc_port_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 	return err;
+ }
+ 
+-static int vdc_port_remove(struct vio_dev *vdev)
++static void vdc_port_remove(struct vio_dev *vdev)
+ {
+ 	struct vdc_port *port = dev_get_drvdata(&vdev->dev);
+ 
+@@ -1094,7 +1094,6 @@ static int vdc_port_remove(struct vio_dev *vdev)
+ 
+ 		kfree(port);
+ 	}
+-	return 0;
+ }
+ 
+ static void vdc_requeue_inflight(struct vdc_port *port)
+diff --git a/drivers/char/hw_random/pseries-rng.c b/drivers/char/hw_random/pseries-rng.c
+index 8038a8a9fb58..f4949b689bd5 100644
+--- a/drivers/char/hw_random/pseries-rng.c
++++ b/drivers/char/hw_random/pseries-rng.c
+@@ -54,10 +54,9 @@ static int pseries_rng_probe(struct vio_dev *dev,
+ 	return hwrng_register(&pseries_rng);
+ }
+ 
+-static int pseries_rng_remove(struct vio_dev *dev)
++static void pseries_rng_remove(struct vio_dev *dev)
+ {
+ 	hwrng_unregister(&pseries_rng);
+-	return 0;
+ }
+ 
+ static const struct vio_device_id pseries_rng_driver_ids[] = {
+diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
+index 994385bf37c0..903604769de9 100644
+--- a/drivers/char/tpm/tpm_ibmvtpm.c
++++ b/drivers/char/tpm/tpm_ibmvtpm.c
+@@ -343,7 +343,7 @@ static int ibmvtpm_crq_send_init_complete(struct ibmvtpm_dev *ibmvtpm)
+  *
+  * Return: Always 0.
+  */
+-static int tpm_ibmvtpm_remove(struct vio_dev *vdev)
++static void tpm_ibmvtpm_remove(struct vio_dev *vdev)
+ {
+ 	struct tpm_chip *chip = dev_get_drvdata(&vdev->dev);
+ 	struct ibmvtpm_dev *ibmvtpm = dev_get_drvdata(&chip->dev);
+@@ -372,8 +372,6 @@ static int tpm_ibmvtpm_remove(struct vio_dev *vdev)
+ 	kfree(ibmvtpm);
+ 	/* For tpm_ibmvtpm_get_desired_dma */
+ 	dev_set_drvdata(&vdev->dev, NULL);
+-
+-	return 0;
+ }
+ 
+ /**
+diff --git a/drivers/crypto/nx/nx-842-pseries.c b/drivers/crypto/nx/nx-842-pseries.c
+index 2de5e3672e42..cc8dd3072b8b 100644
+--- a/drivers/crypto/nx/nx-842-pseries.c
++++ b/drivers/crypto/nx/nx-842-pseries.c
+@@ -1042,7 +1042,7 @@ static int nx842_probe(struct vio_dev *viodev,
+ 	return ret;
+ }
+ 
+-static int nx842_remove(struct vio_dev *viodev)
++static void nx842_remove(struct vio_dev *viodev)
+ {
+ 	struct nx842_devdata *old_devdata;
+ 	unsigned long flags;
+@@ -1063,8 +1063,6 @@ static int nx842_remove(struct vio_dev *viodev)
+ 	if (old_devdata)
+ 		kfree(old_devdata->counters);
+ 	kfree(old_devdata);
+-
+-	return 0;
+ }
+ 
+ static const struct vio_device_id nx842_vio_driver_ids[] = {
+diff --git a/drivers/crypto/nx/nx.c b/drivers/crypto/nx/nx.c
+index 0d2dc5be7f19..1d0e8a1ba160 100644
+--- a/drivers/crypto/nx/nx.c
++++ b/drivers/crypto/nx/nx.c
+@@ -783,7 +783,7 @@ static int nx_probe(struct vio_dev *viodev, const struct vio_device_id *id)
+ 	return nx_register_algs();
+ }
+ 
+-static int nx_remove(struct vio_dev *viodev)
++static void nx_remove(struct vio_dev *viodev)
+ {
+ 	dev_dbg(&viodev->dev, "entering nx_remove for UA 0x%x\n",
+ 		viodev->unit_address);
+@@ -811,8 +811,6 @@ static int nx_remove(struct vio_dev *viodev)
+ 		nx_unregister_skcipher(&nx_ecb_aes_alg, NX_FC_AES,
+ 				       NX_MODE_AES_ECB);
+ 	}
+-
+-	return 0;
+ }
+ 
+ 
+diff --git a/drivers/misc/ibmvmc.c b/drivers/misc/ibmvmc.c
+index 2d778d0f011e..c0fe3295c330 100644
+--- a/drivers/misc/ibmvmc.c
++++ b/drivers/misc/ibmvmc.c
+@@ -2288,15 +2288,13 @@ static int ibmvmc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 	return -EPERM;
+ }
+ 
+-static int ibmvmc_remove(struct vio_dev *vdev)
++static void ibmvmc_remove(struct vio_dev *vdev)
+ {
+ 	struct crq_server_adapter *adapter = dev_get_drvdata(&vdev->dev);
+ 
+ 	dev_info(adapter->dev, "Entering remove for UA 0x%x\n",
+ 		 vdev->unit_address);
+ 	ibmvmc_release_crq_queue(adapter);
+-
+-	return 0;
+ }
+ 
+ static struct vio_device_id ibmvmc_device_table[] = {
+diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+index c3ec9ceed833..7fea9ae60f13 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -1758,7 +1758,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+ 	return 0;
+ }
+ 
+-static int ibmveth_remove(struct vio_dev *dev)
++static void ibmveth_remove(struct vio_dev *dev)
+ {
+ 	struct net_device *netdev = dev_get_drvdata(&dev->dev);
+ 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+@@ -1771,8 +1771,6 @@ static int ibmveth_remove(struct vio_dev *dev)
+ 
+ 	free_netdev(netdev);
+ 	dev_set_drvdata(&dev->dev, NULL);
+-
+-	return 0;
+ }
+ 
+ static struct attribute veth_active_attr;
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index a187d51bcf92..2eec0652760c 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -5430,7 +5430,7 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
+ 	return rc;
+ }
+ 
+-static int ibmvnic_remove(struct vio_dev *dev)
++static void ibmvnic_remove(struct vio_dev *dev)
+ {
+ 	struct net_device *netdev = dev_get_drvdata(&dev->dev);
+ 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
+@@ -5460,8 +5460,6 @@ static int ibmvnic_remove(struct vio_dev *dev)
+ 	device_remove_file(&dev->dev, &dev_attr_failover);
+ 	free_netdev(netdev);
+ 	dev_set_drvdata(&dev->dev, NULL);
+-
+-	return 0;
+ }
+ 
+ static ssize_t failover_store(struct device *dev, struct device_attribute *attr,
+diff --git a/drivers/net/ethernet/sun/ldmvsw.c b/drivers/net/ethernet/sun/ldmvsw.c
+index 01ea0d6f8819..50bd4e3b0af9 100644
+--- a/drivers/net/ethernet/sun/ldmvsw.c
++++ b/drivers/net/ethernet/sun/ldmvsw.c
+@@ -404,7 +404,7 @@ static int vsw_port_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 	return err;
+ }
+ 
+-static int vsw_port_remove(struct vio_dev *vdev)
++static void vsw_port_remove(struct vio_dev *vdev)
+ {
+ 	struct vnet_port *port = dev_get_drvdata(&vdev->dev);
+ 	unsigned long flags;
+@@ -430,8 +430,6 @@ static int vsw_port_remove(struct vio_dev *vdev)
+ 
+ 		free_netdev(port->dev);
+ 	}
+-
+-	return 0;
+ }
+ 
+ static void vsw_cleanup(void)
+diff --git a/drivers/net/ethernet/sun/sunvnet.c b/drivers/net/ethernet/sun/sunvnet.c
+index 96b883f965f6..58ee89223951 100644
+--- a/drivers/net/ethernet/sun/sunvnet.c
++++ b/drivers/net/ethernet/sun/sunvnet.c
+@@ -510,7 +510,7 @@ static int vnet_port_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 	return err;
+ }
+ 
+-static int vnet_port_remove(struct vio_dev *vdev)
++static void vnet_port_remove(struct vio_dev *vdev)
+ {
+ 	struct vnet_port *port = dev_get_drvdata(&vdev->dev);
+ 
+@@ -533,7 +533,6 @@ static int vnet_port_remove(struct vio_dev *vdev)
+ 
+ 		kfree(port);
+ 	}
+-	return 0;
+ }
+ 
+ static const struct vio_device_id vnet_port_match[] = {
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index 42e4d35e0d35..0a472acaca5d 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -5253,7 +5253,7 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+  * Return value:
+  * 	0
+  **/
+-static int ibmvfc_remove(struct vio_dev *vdev)
++static void ibmvfc_remove(struct vio_dev *vdev)
+ {
+ 	struct ibmvfc_host *vhost = dev_get_drvdata(&vdev->dev);
+ 	unsigned long flags;
+@@ -5282,7 +5282,6 @@ static int ibmvfc_remove(struct vio_dev *vdev)
+ 	spin_unlock(&ibmvfc_driver_lock);
+ 	scsi_host_put(vhost->host);
+ 	LEAVE;
+-	return 0;
+ }
+ 
+ /**
+diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
+index 29fcc44be2d5..77fafb1bc173 100644
+--- a/drivers/scsi/ibmvscsi/ibmvscsi.c
++++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
+@@ -2335,7 +2335,7 @@ static int ibmvscsi_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 	return -1;
+ }
+ 
+-static int ibmvscsi_remove(struct vio_dev *vdev)
++static void ibmvscsi_remove(struct vio_dev *vdev)
+ {
+ 	struct ibmvscsi_host_data *hostdata = dev_get_drvdata(&vdev->dev);
+ 
+@@ -2356,8 +2356,6 @@ static int ibmvscsi_remove(struct vio_dev *vdev)
+ 	spin_unlock(&ibmvscsi_driver_lock);
+ 
+ 	scsi_host_put(hostdata->host);
+-
+-	return 0;
+ }
+ 
+ /**
+diff --git a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
+index cc3908c2d2f9..9abd9e253af6 100644
+--- a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
++++ b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
+@@ -3595,7 +3595,7 @@ static int ibmvscsis_probe(struct vio_dev *vdev,
+ 	return rc;
+ }
+ 
+-static int ibmvscsis_remove(struct vio_dev *vdev)
++static void ibmvscsis_remove(struct vio_dev *vdev)
+ {
+ 	struct scsi_info *vscsi = dev_get_drvdata(&vdev->dev);
+ 
+@@ -3622,8 +3622,6 @@ static int ibmvscsis_remove(struct vio_dev *vdev)
+ 	list_del(&vscsi->list);
+ 	spin_unlock_bh(&ibmvscsis_dev_lock);
+ 	kfree(vscsi);
+-
+-	return 0;
+ }
+ 
+ static ssize_t system_id_show(struct device *dev,
+diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
+index 3e0461285c34..80874945ded8 100644
+--- a/drivers/tty/hvc/hvcs.c
++++ b/drivers/tty/hvc/hvcs.c
+@@ -819,7 +819,7 @@ static int hvcs_probe(
+ 	return 0;
+ }
+ 
+-static int hvcs_remove(struct vio_dev *dev)
++static void hvcs_remove(struct vio_dev *dev)
+ {
+ 	struct hvcs_struct *hvcsd = dev_get_drvdata(&dev->dev);
+ 	unsigned long flags;
+@@ -849,7 +849,6 @@ static int hvcs_remove(struct vio_dev *dev)
+ 
+ 	printk(KERN_INFO "HVCS: vty-server@%X removed from the"
+ 			" vio bus.\n", dev->unit_address);
+-	return 0;
+ };
+ 
+ static struct vio_driver hvcs_vio_driver = {
+diff --git a/drivers/tty/vcc.c b/drivers/tty/vcc.c
+index e2d6205f83ce..5f72ebf93821 100644
+--- a/drivers/tty/vcc.c
++++ b/drivers/tty/vcc.c
+@@ -677,7 +677,7 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+  *
+  * Return: status of removal
+  */
+-static int vcc_remove(struct vio_dev *vdev)
++static void vcc_remove(struct vio_dev *vdev)
+ {
+ 	struct vcc_port *port = dev_get_drvdata(&vdev->dev);
+ 
+@@ -712,8 +712,6 @@ static int vcc_remove(struct vio_dev *vdev)
+ 		kfree(port->domain);
+ 		kfree(port);
+ 	}
+-
+-	return 0;
+ }
+ 
+ static const struct vio_device_id vcc_match[] = {
 -- 
-Best regards,
+2.29.2
 
-Andreas Larsson
-Cobham Gaisler
