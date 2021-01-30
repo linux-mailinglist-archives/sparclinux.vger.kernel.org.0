@@ -2,116 +2,77 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14475308D26
-	for <lists+sparclinux@lfdr.de>; Fri, 29 Jan 2021 20:16:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF9F83097C9
+	for <lists+sparclinux@lfdr.de>; Sat, 30 Jan 2021 20:07:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232981AbhA2TKq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 29 Jan 2021 14:10:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44544 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232942AbhA2TJn (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 29 Jan 2021 14:09:43 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D76A9C06174A;
-        Fri, 29 Jan 2021 11:08:59 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id c12so9910723wrc.7;
-        Fri, 29 Jan 2021 11:08:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=O23rlZtfo1FZK0qx/WutTi+hkYR2QPOf0nbtZy10Zxw=;
-        b=DdVDH9ZXqAC6pKsXfQftK93OjTPC27Nw5D2M6I8L/f2uvZev0A9JsuKm0emyUXWDAF
-         SM7M/J5PhQl9LL8FbOW4nNny9Or4Gkqp9wlfYzTawOjIgh2P71w8aSqwWH9J6OkZmR/z
-         GpY8TDRxBO79rLhpmj6+29vwqm6hJmzjOy6ym74Rq3Qd5KbAWfoHO4pMnjuFrxqw5gbE
-         9uGCmsJhWd+lFYGDpi2mUqyJdWdAgaeMHNofQjputA9/s65xjOmhqiCTbD+tW5nU+Ex1
-         RJTAI7mK3KBmLP/le5Q01NDo6Ed8KhScv3SWrGEHMCjKt6GT6Tf5HZfXLQ5/5hIB8Y1Z
-         5qpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=O23rlZtfo1FZK0qx/WutTi+hkYR2QPOf0nbtZy10Zxw=;
-        b=uISZpXuAqlEj+FCY9gquqskiRK8lGUWuXy3dUzsUrYMN3yU5Ak5FwCSUNfDhJCqYCe
-         QH2Cxbc2YjpM67Td5zhiCFc+NG+AHk4NkErrNwKzK9m3kdTihxgP9prte9su/2Za/xEI
-         WAjYg2Z40NdMyIkChFOoPFo5hvqk4jwGdri/NdGxkphReeJbTsVcdpG7FYMA8bb36vlQ
-         rm7OawgDams0AC+7IpZqhMsb4Xba4y30X9tUnkLs7VLZAb43WrA7ilrOxuGrykyasjg+
-         9nBDktPdKamw9lIO9URTfH4yxmVULD3Y9FntYwqTZRBD62gRDTS+zAAcNpOY773EEuqE
-         8eHQ==
-X-Gm-Message-State: AOAM530zu47yrmWVzv3ouVqpFhVtBnZFAIIFPH2LmZ62kQz4WbVDZqzo
-        U3YPo4ReOneTJ0JOCu6rbI65QE/WLcKcLLR3ySE=
-X-Google-Smtp-Source: ABdhPJzAbgdkkapiGmzGouxTGwveq5m7LmJNveRCk+Kv9qY2evOh0QQsbBh6o6uIYkABxwRfFnIBxorHq8dmbcxo0OQ=
-X-Received: by 2002:a5d:49cf:: with SMTP id t15mr6034971wrs.217.1611947338629;
- Fri, 29 Jan 2021 11:08:58 -0800 (PST)
+        id S232171AbhA3TGf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 30 Jan 2021 14:06:35 -0500
+Received: from smtprelay0228.hostedemail.com ([216.40.44.228]:46868 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229990AbhA3TGe (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Sat, 30 Jan 2021 14:06:34 -0500
+X-Greylist: delayed 573 seconds by postgrey-1.27 at vger.kernel.org; Sat, 30 Jan 2021 14:06:34 EST
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave06.hostedemail.com (Postfix) with ESMTP id B9EEE8124C82
+        for <sparclinux@vger.kernel.org>; Sat, 30 Jan 2021 18:57:01 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 5A37E837F24C;
+        Sat, 30 Jan 2021 18:56:19 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3868:4321:5007:7652:7875:10004:10400:10848:11232:11658:11914:12296:12297:12555:12740:12895:13069:13311:13357:13439:13894:14181:14659:14721:21080:21627:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: rice07_1e13932275b3
+X-Filterd-Recvd-Size: 1721
+Received: from [192.168.1.159] (unknown [47.151.137.21])
+        (Authenticated sender: joe@perches.com)
+        by omf11.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 30 Jan 2021 18:56:18 +0000 (UTC)
+Message-ID: <537f6b211185eec4e511bc146d1863f448e7d6c7.camel@perches.com>
+Subject: Re: [PATCH 04/29] sparc: Avoid comma separated statements
+From:   Joe Perches <joe@perches.com>
+To:     Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org
+Cc:     "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Date:   Sat, 30 Jan 2021 10:56:17 -0800
+In-Reply-To: <9dade53620b9532ff76a726320a497c67138264c.1598331148.git.joe@perches.com>
+References: <cover.1598331148.git.joe@perches.com>
+         <9dade53620b9532ff76a726320a497c67138264c.1598331148.git.joe@perches.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-References: <20210127215010.99954-1-uwe@kleine-koenig.org>
-In-Reply-To: <20210127215010.99954-1-uwe@kleine-koenig.org>
-From:   Lijun Pan <lijunp213@gmail.com>
-Date:   Fri, 29 Jan 2021 13:08:45 -0600
-Message-ID: <CAOhMmr4ZMXS+R3AcdKm3qcePfuaZeC-0dNWvsSzowbv5hXo2-Q@mail.gmail.com>
-Subject: Re: [PATCH] vio: make remove callback return void
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <uwe@kleine-koenig.org>
-Cc:     Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jens Axboe <axboe@kernel.dk>, Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Haren Myneni <haren@us.ibm.com>,
-        =?UTF-8?Q?Breno_Leit=C3=A3o?= <leitao@debian.org>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
-        Steven Royer <seroyer@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Cristobal Forno <cforno12@linux.ibm.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dany Madden <drt@linux.ibm.com>, Lijun Pan <ljp@linux.ibm.com>,
-        Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
-        Tyrel Datwyler <tyreld@linux.ibm.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Michael Cyr <mikecyr@linux.ibm.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Jan 27, 2021 at 6:41 PM Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.or=
-g> wrote:
->
-> The driver core ignores the return value of struct bus_type::remove()
-> because there is only little that can be done. To simplify the quest to
-> make this function return void, let struct vio_driver::remove() return
-> void, too. All users already unconditionally return 0, this commit makes
-> it obvious that returning an error code is a bad idea and makes it
-> obvious for future driver authors that returning an error code isn't
-> intended.
->
-> Note there are two nominally different implementations for a vio bus:
-> one in arch/sparc/kernel/vio.c and the other in
-> arch/powerpc/platforms/pseries/vio.c. I didn't care to check which
-> driver is using which of these busses (or if even some of them can be
-> used with both) and simply adapt all drivers and the two bus codes in
-> one go.
->
-> Note that for the powerpc implementation there is a semantical change:
-> Before this patch for a device that was bound to a driver without a
-> remove callback vio_cmo_bus_remove(viodev) wasn't called. As the device
-> core still considers the device unbound after vio_bus_remove() returns
-> calling this unconditionally is the consistent behaviour which is
-> implemented here.
->
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.org>
+On Mon, 2020-08-24 at 21:56 -0700, Joe Perches wrote:
+> Use semicolons and braces.
 
-Acked-by: Lijun Pan <ljp@linux.ibm.com>
+ping?
+
+> Signed-off-by: Joe Perches <joe@perches.com>
+> ---
+>  arch/sparc/kernel/smp_64.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
+> index e286e2badc8a..28c11f7871cd 100644
+> --- a/arch/sparc/kernel/smp_64.c
+> +++ b/arch/sparc/kernel/smp_64.c
+> @@ -186,8 +186,11 @@ static inline long get_delta (long *rt, long *master)
+>  		wmb();
+>  		t1 = tick_ops->get_tick();
+>  
+> 
+> -		if (t1 - t0 < best_t1 - best_t0)
+> -			best_t0 = t0, best_t1 = t1, best_tm = tm;
+> +		if (t1 - t0 < best_t1 - best_t0) {
+> +			best_t0 = t0;
+> +			best_t1 = t1;
+> +			best_tm = tm;
+> +		}
+>  	}
+>  
+> 
+>  	*rt = best_t1 - best_t0;
+
+
