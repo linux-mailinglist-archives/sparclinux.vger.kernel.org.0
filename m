@@ -2,69 +2,68 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A77F630D31C
-	for <lists+sparclinux@lfdr.de>; Wed,  3 Feb 2021 06:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B8B530DE59
+	for <lists+sparclinux@lfdr.de>; Wed,  3 Feb 2021 16:37:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbhBCFhV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 3 Feb 2021 00:37:21 -0500
-Received: from mail.loongson.cn ([114.242.206.163]:56716 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229650AbhBCFhU (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 3 Feb 2021 00:37:20 -0500
-Received: from linux.localdomain (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dx3_NdNhpgHncCAA--.3007S2;
-        Wed, 03 Feb 2021 13:36:29 +0800 (CST)
-From:   Tiezhu Yang <yangtiezhu@loongson.cn>
-To:     davem@davemloft.net
-Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] sparc: Replace test_ti_thread_flag() with test_tsk_thread_flag()
-Date:   Wed,  3 Feb 2021 13:36:28 +0800
-Message-Id: <1612330588-7026-1-git-send-email-yangtiezhu@loongson.cn>
-X-Mailer: git-send-email 2.1.0
-X-CM-TRANSID: AQAAf9Dx3_NdNhpgHncCAA--.3007S2
-X-Coremail-Antispam: 1UD129KBjvdXoWruw1ftryUGrWxXr4xZry3XFb_yoWDJrb_uw
-        47G3Z3Gr4Syrnaqwn8Ww4fZF1jyw4Y9FWrZrWv9r90yFW8Kry5XFZ5Z3WDXF9xurWvkrnI
-        va4DGFyqyw10kjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb28YjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I
-        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0
-        cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4
-        A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-        w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMc
-        vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY02Avz4vE14v_GrWl42xK82IY
-        c2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s
-        026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF
-        0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0x
-        vE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
-        87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jYoGQUUUUU=
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+        id S233997AbhBCPhp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 3 Feb 2021 10:37:45 -0500
+Received: from 198-20-226-115.unifiedlayer.com ([198.20.226.115]:56722 "EHLO
+        198-20-226-115.unifiedlayer.com" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S234512AbhBCPgR (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 3 Feb 2021 10:36:17 -0500
+X-Greylist: delayed 29383 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Feb 2021 10:35:24 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=carnivalassure.com.bd; s=default; h=Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=miRpAdBSO5eDo01VDX+EK9bqGCmqMjXHS3kO16T6iWw=; b=BeRp52iTZNZnIj6Yk4q4qmVg1o
+        TGW3OyQQDqdIygbFzrOvnb1VFlTwDZeYzPg7x0gcAhNqpY+RPOU8XZPJCHVzHp7N6NMkd40+DlrAZ
+        BxMd0S46HbScvjeaenOH3+S94exP2AbS+FzziGjhE87mUv7G1Yf3DGvnuFRQOMF8rB7m0VxjRMPDd
+        55/dxUiSnVbBa0JImuQYYXUpRt83SOvMPmEy3tm7HhC6eVNF+f6Wxow3WBSbpKE+vZC1jXRKKl9C1
+        bK6OQxLWFq7P4uMl6BygkP9QC4QklVZQU7qWYFjfzBfV8UP2ROnwJjNJGJIyClrEEjRpgcDNFfVIx
+        4EKHpC7g==;
+Received: from [127.0.0.1] (port=46990 helo=dot.dotlines.com.sg)
+        by dot.dotlines.com.sg with esmtpa (Exim 4.93)
+        (envelope-from <noreply@carnivalassure.com.bd>)
+        id 1l7CVy-0005dS-7D; Wed, 03 Feb 2021 01:23:50 -0600
+MIME-Version: 1.0
+Date:   Wed, 03 Feb 2021 01:23:49 -0600
+From:   Francois Pinault <noreply@carnivalassure.com.bd>
+To:     undisclosed-recipients:;
+Subject: Hello/Hallo
+Organization: Donation
+Reply-To: francoispinault1936@outlook.com
+Mail-Reply-To: francoispinault1936@outlook.com
+Message-ID: <6b70d71c493b5c027dd3ef878f38d028@carnivalassure.com.bd>
+X-Sender: noreply@carnivalassure.com.bd
+User-Agent: Roundcube Webmail/1.3.15
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - dot.dotlines.com.sg
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - carnivalassure.com.bd
+X-Get-Message-Sender-Via: dot.dotlines.com.sg: authenticated_id: noreply@carnivalassure.com.bd
+X-Authenticated-Sender: dot.dotlines.com.sg: noreply@carnivalassure.com.bd
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Use test_tsk_thread_flag() directly instead of test_ti_thread_flag() to
-improve readability when the argument type is struct task_struct, it is
-similar with commit 5afc78551bf5 ("arm64: Use test_tsk_thread_flag() for
-checking TIF_SINGLESTEP").
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
----
- arch/sparc/kernel/process_32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sparc/kernel/process_32.c b/arch/sparc/kernel/process_32.c
-index a023637..7649b14 100644
---- a/arch/sparc/kernel/process_32.c
-+++ b/arch/sparc/kernel/process_32.c
-@@ -183,7 +183,7 @@ void exit_thread(struct task_struct *tsk)
- #ifndef CONFIG_SMP
- 	if (last_task_used_math == tsk) {
- #else
--	if (test_ti_thread_flag(task_thread_info(tsk), TIF_USEDFPU)) {
-+	if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) {
- #endif
- 		/* Keep process from leaving FPU in a bogon state. */
- 		put_psr(get_psr() | PSR_EF);
 -- 
-2.1.0
+Hallo, ich bin Herr Francois Pinault, ich habe Ihnen gespendet. Sie 
+können mein Profil auf Wikipedia, Google oder Forbes überprüfen.
 
+Für Ihren Spendenanspruch und weitere Informationen kontaktieren Sie 
+mich umgehend unter francoispinault1936@outlook.com
+
+Mit freundlichen Grüßen,
+Herr Francois Pinault
