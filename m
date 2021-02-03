@@ -2,64 +2,69 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E23F30ADF9
-	for <lists+sparclinux@lfdr.de>; Mon,  1 Feb 2021 18:35:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A77F630D31C
+	for <lists+sparclinux@lfdr.de>; Wed,  3 Feb 2021 06:39:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231975AbhBARe1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 1 Feb 2021 12:34:27 -0500
-Received: from [20.39.40.203] ([20.39.40.203]:59622 "EHLO optinix.in"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S230000AbhBAReS (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 1 Feb 2021 12:34:18 -0500
-dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
-        b=kZEoensbcqP81bg0otkECOlOrelhGkobeRT8EcEZ2gQ7CjSUW5mJKXRoJXhFoed0bIztUDUK4yqZHps82nk0TMAqtF/CqWIuSapnNQXiMTlkiVfxinixMiHmif5LVTgZviMm5kddHSnHMTUZ0D/T6Taxj9C/VXMlsrOD69VrOK8bKvyQYhoiwuJJPHthko94FvmeHl1JxaEO+Rws1DqreYqmWR2vVWnW8Cp9xaKsBKIMtCBshQh1hytxRX
-        TU/OYLA65uhajTidoQcbDLKdoyIPtlYGbCvR3c4scnJiwU49+b+ho7sXrgzShsupRfDBnk6QYPxRT2bTIEfRALJqiztg==
-Received: from User (Unknown [52.231.31.5])
-        by optinix.in with ESMTP
-        ; Sat, 30 Jan 2021 14:17:35 +0000
-Message-ID: <3251FE42-7810-471E-AFFF-52618D9455C6@optinix.in>
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <support@digitalsol.in>
-Subject: Re:read
-Date:   Sat, 30 Jan 2021 14:17:34 -0000
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+        id S229681AbhBCFhV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 3 Feb 2021 00:37:21 -0500
+Received: from mail.loongson.cn ([114.242.206.163]:56716 "EHLO loongson.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229650AbhBCFhU (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 3 Feb 2021 00:37:20 -0500
+Received: from linux.localdomain (unknown [113.200.148.30])
+        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dx3_NdNhpgHncCAA--.3007S2;
+        Wed, 03 Feb 2021 13:36:29 +0800 (CST)
+From:   Tiezhu Yang <yangtiezhu@loongson.cn>
+To:     davem@davemloft.net
+Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] sparc: Replace test_ti_thread_flag() with test_tsk_thread_flag()
+Date:   Wed,  3 Feb 2021 13:36:28 +0800
+Message-Id: <1612330588-7026-1-git-send-email-yangtiezhu@loongson.cn>
+X-Mailer: git-send-email 2.1.0
+X-CM-TRANSID: AQAAf9Dx3_NdNhpgHncCAA--.3007S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruw1ftryUGrWxXr4xZry3XFb_yoWDJrb_uw
+        47G3Z3Gr4Syrnaqwn8Ww4fZF1jyw4Y9FWrZrWv9r90yFW8Kry5XFZ5Z3WDXF9xurWvkrnI
+        va4DGFyqyw10kjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUb28YjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I
+        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
+        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0
+        cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4
+        A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
+        w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMc
+        vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY02Avz4vE14v_GrWl42xK82IY
+        c2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s
+        026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF
+        0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0x
+        vE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
+        87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jYoGQUUUUU=
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello,
+Use test_tsk_thread_flag() directly instead of test_ti_thread_flag() to
+improve readability when the argument type is struct task_struct, it is
+similar with commit 5afc78551bf5 ("arm64: Use test_tsk_thread_flag() for
+checking TIF_SINGLESTEP").
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+---
+ arch/sparc/kernel/process_32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
-
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
-
-Regards,
-Ms. Reem.
+diff --git a/arch/sparc/kernel/process_32.c b/arch/sparc/kernel/process_32.c
+index a023637..7649b14 100644
+--- a/arch/sparc/kernel/process_32.c
++++ b/arch/sparc/kernel/process_32.c
+@@ -183,7 +183,7 @@ void exit_thread(struct task_struct *tsk)
+ #ifndef CONFIG_SMP
+ 	if (last_task_used_math == tsk) {
+ #else
+-	if (test_ti_thread_flag(task_thread_info(tsk), TIF_USEDFPU)) {
++	if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) {
+ #endif
+ 		/* Keep process from leaving FPU in a bogon state. */
+ 		put_psr(get_psr() | PSR_EF);
+-- 
+2.1.0
 
