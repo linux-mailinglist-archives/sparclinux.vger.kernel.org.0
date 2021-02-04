@@ -2,68 +2,99 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B8B530DE59
-	for <lists+sparclinux@lfdr.de>; Wed,  3 Feb 2021 16:37:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35C1130F769
+	for <lists+sparclinux@lfdr.de>; Thu,  4 Feb 2021 17:17:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233997AbhBCPhp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 3 Feb 2021 10:37:45 -0500
-Received: from 198-20-226-115.unifiedlayer.com ([198.20.226.115]:56722 "EHLO
-        198-20-226-115.unifiedlayer.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S234512AbhBCPgR (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 3 Feb 2021 10:36:17 -0500
-X-Greylist: delayed 29383 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Feb 2021 10:35:24 EST
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=carnivalassure.com.bd; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=miRpAdBSO5eDo01VDX+EK9bqGCmqMjXHS3kO16T6iWw=; b=BeRp52iTZNZnIj6Yk4q4qmVg1o
-        TGW3OyQQDqdIygbFzrOvnb1VFlTwDZeYzPg7x0gcAhNqpY+RPOU8XZPJCHVzHp7N6NMkd40+DlrAZ
-        BxMd0S46HbScvjeaenOH3+S94exP2AbS+FzziGjhE87mUv7G1Yf3DGvnuFRQOMF8rB7m0VxjRMPDd
-        55/dxUiSnVbBa0JImuQYYXUpRt83SOvMPmEy3tm7HhC6eVNF+f6Wxow3WBSbpKE+vZC1jXRKKl9C1
-        bK6OQxLWFq7P4uMl6BygkP9QC4QklVZQU7qWYFjfzBfV8UP2ROnwJjNJGJIyClrEEjRpgcDNFfVIx
-        4EKHpC7g==;
-Received: from [127.0.0.1] (port=46990 helo=dot.dotlines.com.sg)
-        by dot.dotlines.com.sg with esmtpa (Exim 4.93)
-        (envelope-from <noreply@carnivalassure.com.bd>)
-        id 1l7CVy-0005dS-7D; Wed, 03 Feb 2021 01:23:50 -0600
+        id S237848AbhBDQJl (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 4 Feb 2021 11:09:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41506 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237835AbhBDQJa (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 4 Feb 2021 11:09:30 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B37B264F6A;
+        Thu,  4 Feb 2021 16:08:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1612454929;
+        bh=3IAPQCCNYn5V60zzmVrr36a9HtGkWRc99HBODO496rg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SbGXD2TYulwmiUQymxa1aJ6E9gI3aWMtXnHBN5sPgXVrkpXtCbu+v0ZHPxelGg3kf
+         OCEK7Js2lxNP6OULdJSFxzpq9FfVDxZmJCQNHvO0+GZx0qC8q1M2tspWFbV3CM2ebX
+         7vYTxzaaKedXFZO77mr+R3l5UMy2ORCNsruSabzc=
+Date:   Thu, 4 Feb 2021 17:08:46 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jens Axboe <axboe@kernel.dk>, Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Haren Myneni <haren@us.ibm.com>,
+        Breno =?iso-8859-1?Q?Leit=E3o?= <leitao@debian.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+        Steven Royer <seroyer@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Cristobal Forno <cforno12@linux.ibm.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Dany Madden <drt@linux.ibm.com>, Lijun Pan <ljp@linux.ibm.com>,
+        Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+        Tyrel Datwyler <tyreld@linux.ibm.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Michael Cyr <mikecyr@linux.ibm.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: Re: [PATCH] vio: make remove callback return void
+Message-ID: <YBwcDmtefa2WmS90@kroah.com>
+References: <20210127215010.99954-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Date:   Wed, 03 Feb 2021 01:23:49 -0600
-From:   Francois Pinault <noreply@carnivalassure.com.bd>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Organization: Donation
-Reply-To: francoispinault1936@outlook.com
-Mail-Reply-To: francoispinault1936@outlook.com
-Message-ID: <6b70d71c493b5c027dd3ef878f38d028@carnivalassure.com.bd>
-X-Sender: noreply@carnivalassure.com.bd
-User-Agent: Roundcube Webmail/1.3.15
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - dot.dotlines.com.sg
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - carnivalassure.com.bd
-X-Get-Message-Sender-Via: dot.dotlines.com.sg: authenticated_id: noreply@carnivalassure.com.bd
-X-Authenticated-Sender: dot.dotlines.com.sg: noreply@carnivalassure.com.bd
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+In-Reply-To: <20210127215010.99954-1-uwe@kleine-koenig.org>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+On Wed, Jan 27, 2021 at 10:50:10PM +0100, Uwe Kleine-K�nig wrote:
+> The driver core ignores the return value of struct bus_type::remove()
+> because there is only little that can be done. To simplify the quest to
+> make this function return void, let struct vio_driver::remove() return
+> void, too. All users already unconditionally return 0, this commit makes
+> it obvious that returning an error code is a bad idea and makes it
+> obvious for future driver authors that returning an error code isn't
+> intended.
+> 
+> Note there are two nominally different implementations for a vio bus:
+> one in arch/sparc/kernel/vio.c and the other in
+> arch/powerpc/platforms/pseries/vio.c. I didn't care to check which
+> driver is using which of these busses (or if even some of them can be
+> used with both) and simply adapt all drivers and the two bus codes in
+> one go.
+> 
+> Note that for the powerpc implementation there is a semantical change:
+> Before this patch for a device that was bound to a driver without a
+> remove callback vio_cmo_bus_remove(viodev) wasn't called. As the device
+> core still considers the device unbound after vio_bus_remove() returns
+> calling this unconditionally is the consistent behaviour which is
+> implemented here.
+> 
+> Signed-off-by: Uwe Kleine-K�nig <uwe@kleine-koenig.org>
+> ---
+> Hello,
+> 
+> note that this change depends on
+> https://lore.kernel.org/r/20210121062005.53271-1-ljp@linux.ibm.com which removes
+> an (ignored) return -EBUSY in drivers/net/ethernet/ibm/ibmvnic.c.
+> I don't know when/if this latter patch will be applied, so it might take
+> some time until my patch can go in.
 
-
--- 
-Hallo, ich bin Herr Francois Pinault, ich habe Ihnen gespendet. Sie 
-können mein Profil auf Wikipedia, Google oder Forbes überprüfen.
-
-Für Ihren Spendenanspruch und weitere Informationen kontaktieren Sie 
-mich umgehend unter francoispinault1936@outlook.com
-
-Mit freundlichen Grüßen,
-Herr Francois Pinault
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
