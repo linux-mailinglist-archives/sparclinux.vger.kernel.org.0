@@ -2,236 +2,78 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 466B0316644
-	for <lists+sparclinux@lfdr.de>; Wed, 10 Feb 2021 13:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59BF231670B
+	for <lists+sparclinux@lfdr.de>; Wed, 10 Feb 2021 13:46:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229898AbhBJMNN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 10 Feb 2021 07:13:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39822 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231671AbhBJMKn (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 10 Feb 2021 07:10:43 -0500
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4C2DC061A27
-        for <sparclinux@vger.kernel.org>; Wed, 10 Feb 2021 04:04:39 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id o24so1615710wmh.5
-        for <sparclinux@vger.kernel.org>; Wed, 10 Feb 2021 04:04:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=7YlFkcwEzuK8xj1bqWFb4J+pbM9jNy7GJX0y3deB8As=;
-        b=syPwiZlFCfO6MHc40aH33LzcMM6KfDmzRv+D2pLSH5QhqhfJeAI8pcSdpGXIuefrhT
-         QANrLqzWqVKdKDRMI9LkGu7/nHBiH+rC1ieNTWfFHSmkspO5VBaxfKVXb2X2Squ8dPwc
-         gqbcZAWKlW0ioCr6UjiF2eRNBO1Q7kMUruhv0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=7YlFkcwEzuK8xj1bqWFb4J+pbM9jNy7GJX0y3deB8As=;
-        b=MFUp+ASRoV0zpZJgWQKaqdI3KTTLXN6OY0GHdzxM2O0VYTtWEw8KyHe36PqvoTIrey
-         dmrQkXk8/Di4lYkZIdTJKHO6o2htR3c1brB683s6IsHOs9sxhrcqSpjyFu2658hzgem+
-         c54g25CSSO/AvXjcuCnFLlN2lAmtEhCfOOufLNBp8rFYg6BWX2QaOMxuab6QzjcfVDeK
-         xf0hpcn4KweGQ9m+XZpq3zF6a0OiD/vvDQurYl7tnGQ2GpWdW7ifG/Tf7n5uS95Ph5Az
-         T4JJua3SeE+TvXvU/eeNjb78AYFP3zFR5ljNIzSpYHdEv52S+MwFtp3LoDZiE2b6tDBx
-         9z9Q==
-X-Gm-Message-State: AOAM531GDCxe121tA2tUdUv19eXIlZE/qp1uW6tTPPTm9jFi2KmuTaGu
-        /Ehl8FVBx3RqDsLtf8AmdKNA4Q==
-X-Google-Smtp-Source: ABdhPJzWH8Tw+178GsaKwHlgz0XiwPg9erze0gT5N1I/sfwQGjRhxr9XRlOCiSD9NdzdTDxtpCscUA==
-X-Received: by 2002:a1c:f70c:: with SMTP id v12mr2614677wmh.77.1612958678358;
-        Wed, 10 Feb 2021 04:04:38 -0800 (PST)
-Received: from antares.lan (c.3.c.9.d.d.c.e.0.a.6.8.a.9.e.c.f.f.6.2.a.5.a.7.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:7a5a:26ff:ce9a:86a0:ecdd:9c3c])
-        by smtp.gmail.com with ESMTPSA id j7sm2837854wrp.72.2021.02.10.04.04.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Feb 2021 04:04:38 -0800 (PST)
-From:   Lorenz Bauer <lmb@cloudflare.com>
-To:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     kernel-team@cloudflare.com, Lorenz Bauer <lmb@cloudflare.com>,
-        linux-api@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Subject: [PATCH bpf 1/4] net: add SO_NETNS_COOKIE socket option
-Date:   Wed, 10 Feb 2021 12:04:22 +0000
-Message-Id: <20210210120425.53438-2-lmb@cloudflare.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210210120425.53438-1-lmb@cloudflare.com>
-References: <20210210120425.53438-1-lmb@cloudflare.com>
+        id S231396AbhBJMps convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Wed, 10 Feb 2021 07:45:48 -0500
+Received: from spam.auroraoh.com ([24.56.89.101]:40214 "EHLO
+        barracuda.auroraoh.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231481AbhBJMnp (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 10 Feb 2021 07:43:45 -0500
+X-ASG-Debug-ID: 1612960939-112c0d6a799d4e0001-qiSAmN
+Received: from COASRV-MAIL2.auroraoh.loc (coasrv-mail2.auroraoh.loc [10.3.1.15]) by barracuda.auroraoh.com with ESMTP id FAETB7tiKTzvBmxR; Wed, 10 Feb 2021 07:42:19 -0500 (EST)
+X-Barracuda-Envelope-From: JanuskaD@auroraoh.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.3.1.15
+Received: from [172.20.10.5] (197.210.29.8) by COASRV-MAIL2.auroraoh.loc
+ (10.3.1.15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 9 Feb 2021
+ 02:48:36 -0500
+Content-Type: text/plain; charset="iso-8859-1"
+X-Barracuda-RBL-Trusted-Forwarder: 172.20.10.5
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+To:     Recipients <januskad@auroraoh.com>
+X-ASG-Orig-Subj: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+From:   <januskad@auroraoh.com>
+Date:   Tue, 9 Feb 2021 15:47:50 +0800
+Reply-To: <cfolimiited@gmail.com>
+X-Priority: 1 (High)
+X-Antivirus: Avast (VPS 210207-2, 02/07/2021), Outbound message
+X-Antivirus-Status: Clean
+Message-ID: <7366e102-3fd6-407f-8b25-4f84cc21ff2e@COASRV-MAIL2.auroraoh.loc>
+X-Originating-IP: [197.210.29.8]
+X-ClientProxiedBy: COASRV-MAIL3.auroraoh.loc (10.3.1.13) To
+ COASRV-MAIL2.auroraoh.loc (10.3.1.15)
+X-Barracuda-Connect: coasrv-mail2.auroraoh.loc[10.3.1.15]
+X-Barracuda-Start-Time: 1612960939
+X-Barracuda-URL: https://10.3.1.12:443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at auroraoh.com
+X-Barracuda-Scan-Msg-Size: 755
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Spam-Score: 1.61
+X-Barracuda-Spam-Status: No, SCORE=1.61 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=5.0 tests=BSF_SC0_SA609_NRN, BSF_SC0_SA912_RP_FR, BSF_SC0_SA_TO_FROM_ADDR_MATCH, NO_REAL_NAME
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.87885
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+        0.00 NO_REAL_NAME           From: does not include a real name
+        0.01 BSF_SC0_SA912_RP_FR    Custom Rule BSF_SC0_SA912_RP_FR
+        0.50 BSF_SC0_SA_TO_FROM_ADDR_MATCH Sender Address Matches Recipient
+                                   Address
+        1.10 BSF_SC0_SA609_NRN      Custom Rule SA609_NRN
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-We need to distinguish which network namespace a socket belongs to.
-BPF has the useful bpf_get_netns_cookie helper for this, but accessing
-it from user space isn't possible. Add a read-only socket option that
-returns the netns cookie, similar to SO_COOKIE. If network namespaces
-are disabled, SO_NETNS_COOKIE returns the cookie of init_net.
+We are seeking for beneficiaries who source for fund to expand/relocating their business interest abroad. We are ready to fund projects outside Turkey and United Kingdom in the form of Soft Loan. We grant loans to both corporate and private entities at a low interest rate of 2% R.O.I per annul.
 
-The BPF helpers change slightly: instead of returning 0 when network
-namespaces are disabled we return the init_net cookie as for the
-socket option.
+We like to grant loan in the following sectors: oil/Gas, banking, real estate, stock speculation and mining, transportation, health sector and tobacco, Communication Services, Agriculture Forestry & Fishing, thus any sector. The terms are very flexible and interesting.
 
-Cc: linux-api@vger.kernel.org
-Signed-off-by: Lorenz Bauer <lmb@cloudflare.com>
----
- arch/alpha/include/uapi/asm/socket.h  |  2 ++
- arch/mips/include/uapi/asm/socket.h   |  2 ++
- arch/parisc/include/uapi/asm/socket.h |  2 ++
- arch/sparc/include/uapi/asm/socket.h  |  2 ++
- include/linux/sock_diag.h             | 20 ++++++++++++++++++++
- include/uapi/asm-generic/socket.h     |  2 ++
- net/core/filter.c                     |  9 ++++-----
- net/core/sock.c                       |  7 +++++++
- 8 files changed, 41 insertions(+), 5 deletions(-)
+Please contact us for more details;
 
-diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
-index 57420356ce4c..6b3daba60987 100644
---- a/arch/alpha/include/uapi/asm/socket.h
-+++ b/arch/alpha/include/uapi/asm/socket.h
-@@ -127,6 +127,8 @@
- #define SO_PREFER_BUSY_POLL	69
- #define SO_BUSY_POLL_BUDGET	70
- 
-+#define SO_NETNS_COOKIE		71
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
-index 2d949969313b..cdf404a831b2 100644
---- a/arch/mips/include/uapi/asm/socket.h
-+++ b/arch/mips/include/uapi/asm/socket.h
-@@ -138,6 +138,8 @@
- #define SO_PREFER_BUSY_POLL	69
- #define SO_BUSY_POLL_BUDGET	70
- 
-+#define SO_NETNS_COOKIE		71
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
-index f60904329bbc..5b5351cdcb33 100644
---- a/arch/parisc/include/uapi/asm/socket.h
-+++ b/arch/parisc/include/uapi/asm/socket.h
-@@ -119,6 +119,8 @@
- #define SO_PREFER_BUSY_POLL	0x4043
- #define SO_BUSY_POLL_BUDGET	0x4044
- 
-+#define SO_NETNS_COOKIE		0x4045
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
-index 848a22fbac20..ff79db753dce 100644
---- a/arch/sparc/include/uapi/asm/socket.h
-+++ b/arch/sparc/include/uapi/asm/socket.h
-@@ -120,6 +120,8 @@
- #define SO_PREFER_BUSY_POLL	 0x0048
- #define SO_BUSY_POLL_BUDGET	 0x0049
- 
-+#define SO_NETNS_COOKIE		 0x004a
-+
- #if !defined(__KERNEL__)
- 
- 
-diff --git a/include/linux/sock_diag.h b/include/linux/sock_diag.h
-index 0b9ecd8cf979..6e88436097b1 100644
---- a/include/linux/sock_diag.h
-+++ b/include/linux/sock_diag.h
-@@ -38,6 +38,26 @@ static inline u64 sock_gen_cookie(struct sock *sk)
- 	return cookie;
- }
- 
-+static inline u64 __sock_gen_netns_cookie(struct sock *sk)
-+{
-+#ifdef CONFIG_NET_NS
-+	return __net_gen_cookie(sk->sk_net.net);
-+#else
-+	return __net_gen_cookie(&init_net);
-+#endif
-+}
-+
-+static inline u64 sock_gen_netns_cookie(struct sock *sk)
-+{
-+	u64 cookie;
-+
-+	preempt_disable();
-+	cookie = __sock_gen_netns_cookie(sk);
-+	preempt_enable();
-+
-+	return cookie;
-+}
-+
- int sock_diag_check_cookie(struct sock *sk, const __u32 *cookie);
- void sock_diag_save_cookie(struct sock *sk, __u32 *cookie);
- 
-diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
-index 4dcd13d097a9..d588c244ec2f 100644
---- a/include/uapi/asm-generic/socket.h
-+++ b/include/uapi/asm-generic/socket.h
-@@ -122,6 +122,8 @@
- #define SO_PREFER_BUSY_POLL	69
- #define SO_BUSY_POLL_BUDGET	70
- 
-+#define SO_NETNS_COOKIE		71
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
-diff --git a/net/core/filter.c b/net/core/filter.c
-index e15d4741719a..51f47b6913f1 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4645,11 +4645,10 @@ static const struct bpf_func_proto bpf_get_socket_cookie_sock_ops_proto = {
- 
- static u64 __bpf_get_netns_cookie(struct sock *sk)
- {
--#ifdef CONFIG_NET_NS
--	return __net_gen_cookie(sk ? sk->sk_net.net : &init_net);
--#else
--	return 0;
--#endif
-+	if (sk)
-+		return __sock_gen_netns_cookie(sk);
-+
-+	return __net_gen_cookie(&init_net);
- }
- 
- BPF_CALL_1(bpf_get_netns_cookie_sock, struct sock *, ctx)
-diff --git a/net/core/sock.c b/net/core/sock.c
-index bbcd4b97eddd..2db201c210ca 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1606,6 +1606,13 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
- 		v.val = sk->sk_bound_dev_if;
- 		break;
- 
-+	case SO_NETNS_COOKIE:
-+		lv = sizeof(u64);
-+		if (len < lv)
-+			return -EINVAL;
-+		v.val64 = sock_gen_netns_cookie(sk);
-+		break;
-+
- 	default:
- 		/* We implement the SO_SNDLOWAT etc to not be settable
- 		 * (1003.1g 7).
+
+Kind regards,
+
+Paul McCann
+
 -- 
-2.27.0
+This email has been checked for viruses by Avast antivirus software.
+https://www.avast.com/antivirus
 
