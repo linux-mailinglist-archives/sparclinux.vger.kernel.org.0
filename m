@@ -2,138 +2,187 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E27EF316971
-	for <lists+sparclinux@lfdr.de>; Wed, 10 Feb 2021 15:52:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47119316EDA
+	for <lists+sparclinux@lfdr.de>; Wed, 10 Feb 2021 19:37:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231559AbhBJOwV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 10 Feb 2021 09:52:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46360 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbhBJOwS (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 10 Feb 2021 09:52:18 -0500
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FEEDC06174A;
-        Wed, 10 Feb 2021 06:51:36 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id m1so2069215wml.2;
-        Wed, 10 Feb 2021 06:51:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=zjhXKo3lnsUCaAO03EAAKy7XedvCevX8vo7EKjAoj3Q=;
-        b=jJ8LF025NOB5tTRRmh45iSwVNW9BiH2jesDquvAlwBgGfOycUUj9SneIWmt0+ZsKNg
-         G4jfNkdmBdVwNrf6KziMjZyDhDfsh0VTabiZ88CqjMSEyWAAB9KcF0LqWF574ojQJWfB
-         uEcBjTGL5J1sN7VltBi5masq/ykxXWJ71FekRuG1mMOVHDXcYAaB69OZ0pm/EZyGUojM
-         E8ghijNjy9n51CKDhciWDBttcc7mGU9VLnekLrNRsHhHEJw6eo3kNbDjNnFbJryP9S1m
-         HqCjtV55tT0SgA+5jTrOqavLEvYCCRxhlE/v9SL/9kkxp+24Qjc3js9+kLYBwSORR2i+
-         /jyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=zjhXKo3lnsUCaAO03EAAKy7XedvCevX8vo7EKjAoj3Q=;
-        b=N0NSqR7UJcDgyWO/9pfk5rjy2qj1WSru0YnBPESxmPdaloVurwSjVrzHn/driXgDQM
-         X8PTlMUwGV+XNd5qs0dXNxnTsJb5M30fE0w1ArsgkhiUCZyzeLEKkWGsNvSNAeZDsDnX
-         ilsW5+XVTDaY3mNDCphDp2uNFHELY4tVL2cXhPNbbLhOnEWaB+BRJQcbq3KNieNy//VO
-         8JjWI6bEwRS/C7W1WLSfxk9xnAtS4qYzAK3/pvxkpZYWoqoGbDSbwTsGVMnr/77IJIis
-         sjUfvH2B6MKjv03KQhYOiSCqc7V+f63nn4HtGvWg4cBZ8VZngZoV4983t1EGrM7v8cd9
-         R7gA==
-X-Gm-Message-State: AOAM531BYnuYLAHIBaTrzjxGkPbQjsCpPNQkflsWWmmPHZW69fhi1GwZ
-        2VZSz06yZmbgh2SjqBfr8yxc40ffyFE=
-X-Google-Smtp-Source: ABdhPJzD1UwIOcK8QlbA/opY/7S8Oipu5m0gukv+y2QgFJwbqk6JJMIT/ifLddt6Wbwu5S+4rtPxqA==
-X-Received: by 2002:a1c:67c3:: with SMTP id b186mr3336454wmc.24.1612968695135;
-        Wed, 10 Feb 2021 06:51:35 -0800 (PST)
-Received: from [192.168.1.101] ([37.170.168.78])
-        by smtp.gmail.com with ESMTPSA id v15sm4054700wra.61.2021.02.10.06.51.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Feb 2021 06:51:34 -0800 (PST)
-Subject: Re: [PATCH bpf 1/4] net: add SO_NETNS_COOKIE socket option
-To:     Lorenz Bauer <lmb@cloudflare.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
+        id S234096AbhBJSgt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 10 Feb 2021 13:36:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:44037 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234122AbhBJSen (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 10 Feb 2021 13:34:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1612981995;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=U/kEUdiVTFSkXdDlFfnN0pNfEfW0SscYP5LvJr9uMD4=;
+        b=R/tfgvZuQ4G37CYzZET2pIZtBvkJ7VLpKg3kEmvqYnS/ufIiuF3FsT5YF+k30ItpFVlbsl
+        0AQ4qKgsb3CtXkE0NsYkFwCtfo+dcHNzGrNCgOp8v17Xx6NG92GbgGCxSyhcrd0T0+WzdS
+        Jsl4DSnCKHyWdMaAUWTdAcS6IeszSnU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-189-7FXvma-PPKic8Esl0H0dDw-1; Wed, 10 Feb 2021 13:33:10 -0500
+X-MC-Unique: 7FXvma-PPKic8Esl0H0dDw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E7678801977;
+        Wed, 10 Feb 2021 18:33:06 +0000 (UTC)
+Received: from virtlab701.virt.lab.eng.bos.redhat.com (virtlab701.virt.lab.eng.bos.redhat.com [10.19.152.228])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 066025C1BD;
+        Wed, 10 Feb 2021 18:33:01 +0000 (UTC)
+From:   Paolo Bonzini <pbonzini@redhat.com>
+To:     linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Waiman Long <longman@redhat.com>,
+        Ben Gardon <bgardon@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
         "David S. Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     kernel-team@cloudflare.com, linux-api@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        netdev@vger.kernel.org, bpf@vger.kernel.org
-References: <20210210120425.53438-1-lmb@cloudflare.com>
- <20210210120425.53438-2-lmb@cloudflare.com>
-From:   Eric Dumazet <eric.dumazet@gmail.com>
-Message-ID: <a922e31d-efce-35c3-c584-cf1bdcf93c5d@gmail.com>
-Date:   Wed, 10 Feb 2021 15:51:32 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
+        Davidlohr Bueso <dbueso@suse.de>,
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM64 PORT
+        (AARCH64 ARCHITECTURE)),
+        linux-mips@vger.kernel.org (open list:MIPS),
+        sparclinux@vger.kernel.org (open list:SPARC + UltraSPARC
+        (sparc/sparc64)),
+        linux-xtensa@linux-xtensa.org (open list:TENSILICA XTENSA PORT (xtensa)),
+        linux-arch@vger.kernel.org (open list:GENERIC INCLUDE/ASM HEADER FILES),
+        linux-csky@vger.kernel.org (open list:C-SKY ARCHITECTURE)
+Subject: [PATCH] locking/arch: Move qrwlock.h include after qspinlock.h
+Date:   Wed, 10 Feb 2021 13:33:01 -0500
+Message-Id: <20210210183301.453422-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20210210120425.53438-2-lmb@cloudflare.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+include/asm-generic/qrwlock.h was trying to get arch_spin_is_locked via
+asm-generic/qspinlock.h.  However, this does not work because architectures
+might be using queued rwlocks but not queued spinlocks (csky), or because they
+might be defining their own queued_* macros before including asm/qspinlock.h.
 
+To fix this, ensure that asm/spinlock.h always includes qrwlock.h after
+defining arch_spin_is_locked (either directly for csky, or via
+asm/qspinlock.h for other architectures).  The only inclusion elsewhere
+is in kernel/locking/qrwlock.c.  That one is really unnecessary because
+the file is only compiled in SMP configurations (config QUEUED_RWLOCKS
+depends on SMP) and in that case linux/spinlock.h already includes
+asm/qrwlock.h if needed, via asm/spinlock.h.
 
-On 2/10/21 1:04 PM, Lorenz Bauer wrote:
-> We need to distinguish which network namespace a socket belongs to.
-> BPF has the useful bpf_get_netns_cookie helper for this, but accessing
-> it from user space isn't possible. Add a read-only socket option that
-> returns the netns cookie, similar to SO_COOKIE. If network namespaces
-> are disabled, SO_NETNS_COOKIE returns the cookie of init_net.
-> 
-> The BPF helpers change slightly: instead of returning 0 when network
-> namespaces are disabled we return the init_net cookie as for the
-> socket option.
-> 
-> Cc: linux-api@vger.kernel.org
-> Signed-off-by: Lorenz Bauer <lmb@cloudflare.com>
-> ---
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Cc: Waiman Long <longman@redhat.com>
+Fixes: 26128cb6c7e6 ("locking/rwlocks: Add contention detection for rwlocks")
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Ben Gardon <bgardon@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+	v1->v2: Fix sparc too.  Add a comment in qrwlock.h itself.
+	Remove unnecessary inclusion in kernel/locking/qrwlock.c
 
-...
+ arch/arm64/include/asm/spinlock.h    | 2 +-
+ arch/mips/include/asm/spinlock.h     | 2 +-
+ arch/sparc/include/asm/spinlock_64.h | 2 +-
+ arch/xtensa/include/asm/spinlock.h   | 2 +-
+ include/asm-generic/qrwlock.h        | 3 ++-
+ kernel/locking/qrwlock.c             | 1 -
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
->  
-> +static inline u64 __sock_gen_netns_cookie(struct sock *sk)
-> +{
-> +#ifdef CONFIG_NET_NS
-> +	return __net_gen_cookie(sk->sk_net.net);
-> +#else
-> +	return __net_gen_cookie(&init_net);
-> +#endif
-> +}
-> +
-> +static inline u64 sock_gen_netns_cookie(struct sock *sk)
-> +{
-> +	u64 cookie;
-> +
-> +	preempt_disable();
-> +	cookie = __sock_gen_netns_cookie(sk);
-> +	preempt_enable();
-> +
-> +	return cookie;
-> +}
-> +
-> 
-
-I suggest we make net->net_cookie a mere u64 initialized in setup_net(),
-instead of having to preempt_disable() around reading it.
-
-(Here and in your patch 2/4)
-
-Your patches would be much simpler.
-
-Cleanup patch :
-
-https://patchwork.kernel.org/project/netdevbpf/patch/20210210144144.24284-1-eric.dumazet@gmail.com/
-
+diff --git a/arch/arm64/include/asm/spinlock.h b/arch/arm64/include/asm/spinlock.h
+index 9083d6992603..0525c0b089ed 100644
+--- a/arch/arm64/include/asm/spinlock.h
++++ b/arch/arm64/include/asm/spinlock.h
+@@ -5,8 +5,8 @@
+ #ifndef __ASM_SPINLOCK_H
+ #define __ASM_SPINLOCK_H
+ 
+-#include <asm/qrwlock.h>
+ #include <asm/qspinlock.h>
++#include <asm/qrwlock.h>
+ 
+ /* See include/linux/spinlock.h */
+ #define smp_mb__after_spinlock()	smp_mb()
+diff --git a/arch/mips/include/asm/spinlock.h b/arch/mips/include/asm/spinlock.h
+index 8a88eb265516..6ce2117e49f6 100644
+--- a/arch/mips/include/asm/spinlock.h
++++ b/arch/mips/include/asm/spinlock.h
+@@ -10,7 +10,6 @@
+ #define _ASM_SPINLOCK_H
+ 
+ #include <asm/processor.h>
+-#include <asm/qrwlock.h>
+ 
+ #include <asm-generic/qspinlock_types.h>
+ 
+@@ -27,5 +26,6 @@ static inline void queued_spin_unlock(struct qspinlock *lock)
+ }
+ 
+ #include <asm/qspinlock.h>
++#include <asm/qrwlock.h>
+ 
+ #endif /* _ASM_SPINLOCK_H */
+diff --git a/arch/sparc/include/asm/spinlock_64.h b/arch/sparc/include/asm/spinlock_64.h
+index 7fc82a233f49..3a9a0b0c7465 100644
+--- a/arch/sparc/include/asm/spinlock_64.h
++++ b/arch/sparc/include/asm/spinlock_64.h
+@@ -11,8 +11,8 @@
+ 
+ #include <asm/processor.h>
+ #include <asm/barrier.h>
+-#include <asm/qrwlock.h>
+ #include <asm/qspinlock.h>
++#include <asm/qrwlock.h>
+ 
+ #endif /* !(__ASSEMBLY__) */
+ 
+diff --git a/arch/xtensa/include/asm/spinlock.h b/arch/xtensa/include/asm/spinlock.h
+index 584b0de6f2ca..41c449ece2d8 100644
+--- a/arch/xtensa/include/asm/spinlock.h
++++ b/arch/xtensa/include/asm/spinlock.h
+@@ -12,8 +12,8 @@
+ #define _XTENSA_SPINLOCK_H
+ 
+ #include <asm/barrier.h>
+-#include <asm/qrwlock.h>
+ #include <asm/qspinlock.h>
++#include <asm/qrwlock.h>
+ 
+ #define smp_mb__after_spinlock()	smp_mb()
+ 
+diff --git a/include/asm-generic/qrwlock.h b/include/asm-generic/qrwlock.h
+index 0020d3b820a7..7ae0ece07b4e 100644
+--- a/include/asm-generic/qrwlock.h
++++ b/include/asm-generic/qrwlock.h
+@@ -14,7 +14,8 @@
+ #include <asm/processor.h>
+ 
+ #include <asm-generic/qrwlock_types.h>
+-#include <asm-generic/qspinlock.h>
++
++/* Must be included from asm/spinlock.h after defining arch_spin_is_locked.  */
+ 
+ /*
+  * Writer states & reader shift and bias.
+diff --git a/kernel/locking/qrwlock.c b/kernel/locking/qrwlock.c
+index fe9ca92faa2a..4786dd271b45 100644
+--- a/kernel/locking/qrwlock.c
++++ b/kernel/locking/qrwlock.c
+@@ -12,7 +12,6 @@
+ #include <linux/percpu.h>
+ #include <linux/hardirq.h>
+ #include <linux/spinlock.h>
+-#include <asm/qrwlock.h>
+ 
+ /**
+  * queued_read_lock_slowpath - acquire read lock of a queue rwlock
+-- 
+2.26.2
 
