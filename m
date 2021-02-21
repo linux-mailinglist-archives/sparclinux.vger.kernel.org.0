@@ -2,135 +2,101 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26DBD32017A
-	for <lists+sparclinux@lfdr.de>; Fri, 19 Feb 2021 23:53:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF013320C05
+	for <lists+sparclinux@lfdr.de>; Sun, 21 Feb 2021 18:16:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229612AbhBSWvP (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 19 Feb 2021 17:51:15 -0500
-Received: from vmicros1.altlinux.org ([194.107.17.57]:60876 "EHLO
-        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbhBSWvP (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 19 Feb 2021 17:51:15 -0500
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-        by vmicros1.altlinux.org (Postfix) with ESMTP id 20AF88A309F;
-        Sat, 20 Feb 2021 01:50:31 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-        id E7F7A7CC8A2; Sat, 20 Feb 2021 01:50:30 +0300 (MSK)
-Date:   Sat, 20 Feb 2021 01:50:30 +0300
-From:   "Dmitry V. Levin" <ldv@altlinux.org>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
-        Alexey Gladkov <gladkov.alexey@gmail.com>,
-        Gleb Fotengauer-Malinovskiy <glebfm@altlinux.org>,
-        Anatoly Pugachev <matorola@gmail.com>,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] sparc: make copy_thread honor pid namespaces
-Message-ID: <20210219225030.GA23520@altlinux.org>
-References: <20210217080000.GA25861@altlinux.org>
- <m1tuq9nsnf.fsf@fess.ebiederm.org>
+        id S230174AbhBURQZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 21 Feb 2021 12:16:25 -0500
+Received: from conssluserg-06.nifty.com ([210.131.2.91]:33446 "EHLO
+        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229970AbhBURQX (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 21 Feb 2021 12:16:23 -0500
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id 11LHFQMn029412;
+        Mon, 22 Feb 2021 02:15:26 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 11LHFQMn029412
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1613927726;
+        bh=+E+JRgKeitH5eFBx4Z/rh8FyWasix1MSTNAEXqizMQU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=fY8q6G98uh1+un5PrwsG4Zb3rSAd52PO9NSoxDJ8nwquEkzuJdR6rBF5sZrJUQbe9
+         KWCT8wBjnWUfz7vheSDo+fWEVgovNo9SHlNVuFyQQj0HmV7nB2ApBNZANPZVurwuRE
+         OPvztrgFoeH+fOxkb4nxTbw8JucqU5hHRx4mF3+AMVhL15XIswHkujGL0xSI8cL6QI
+         Ii+CzdqSBbptV3imDDdvgz94e1uZBko1b579roKG6OFciJ/jTRWVIx1O7HbRt/m0Tc
+         pLkXdi0thvqyabjecA6KbCP/kR2SvsJ0NPIVn7afYMW4aobGgVsdv/ZSnZtoPqwJ1E
+         OSXLJ0vAyyr9A==
+X-Nifty-SrcIP: [209.85.214.175]
+Received: by mail-pl1-f175.google.com with SMTP id u11so6119214plg.13;
+        Sun, 21 Feb 2021 09:15:26 -0800 (PST)
+X-Gm-Message-State: AOAM530f3OWgCXm+QZ167geaZY82/Uo9+39wdJo5pmm4HsKG5QmkcNNT
+        mL1vjaSkpRTYyM05el/V9QycQ4fsrEROqr66210=
+X-Google-Smtp-Source: ABdhPJxczjkYYwfFedULPavyehBQNlTo4yyE2oDz3aAz68ppY9EMF/VKLUDXMsDnW+fSNSL17VJtx2kpM0VX1zgRRK4=
+X-Received: by 2002:a17:90a:609:: with SMTP id j9mr19512007pjj.198.1613927724902;
+ Sun, 21 Feb 2021 09:15:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <m1tuq9nsnf.fsf@fess.ebiederm.org>
+References: <20210215004823.440102-1-masahiroy@kernel.org>
+In-Reply-To: <20210215004823.440102-1-masahiroy@kernel.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Mon, 22 Feb 2021 02:14:47 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATvCAyHSUQNTdSck3JM1MfHNFcanjn0i4835okWE9Km5w@mail.gmail.com>
+Message-ID: <CAK7LNATvCAyHSUQNTdSck3JM1MfHNFcanjn0i4835okWE9Km5w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] arch: syscalls: add missing FORCE and fix 'targets'
+ to make if_changed work
+To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Chris Zankel <chris@zankel.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Simek <monstr@monstr.eu>,
+        Paul Mackerras <paulus@samba.org>,
+        Rich Felker <dalias@libc.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        sparclinux <sparclinux@vger.kernel.org>, X86 ML <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On sparc, fork and clone syscalls have an unusual semantics of
-returning the pid of the parent process to the child process.
+On Mon, Feb 15, 2021 at 9:50 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> The rules in these Makefiles cannot detect the command line change
+> because the prerequisite 'FORCE' is missing.
+>
+> Adding 'FORCE' will result in the headers being rebuilt every time
+> because the 'targets' additions are also wrong; the file paths in
+> 'targets' must be relative to the current Makefile.
+>
+> Fix all of them so the if_changed rules work correctly.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Apparently, the implementation did not honor pid namespaces at all,
-so the child used to get the pid of its parent in the init namespace.
 
-Fortunately, most users of these syscalls are not affected by this bug
-because they use another register to distinguish the parent process
-from its child, and the pid of the parent process is often discarded.
+Both applied to linux-kbuild.
 
-Reproducer:
 
-  $ gcc -Wall -O2 -xc - <<'EOF'
-  #define _GNU_SOURCE
-  #include <err.h>
-  #include <errno.h>
-  #include <sched.h>
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <sys/wait.h>
-  #include <unistd.h>
-  #include <asm/unistd.h>
-  #include <linux/sched.h>
-  static void test_fork(void)
-  {
-  	int pid = syscall(__NR_fork);
-  	if (pid < 0)
-  		err(1, "fork");
-  	fprintf(stderr, "current: %d, parent: %d, fork returned: %d\n",
-  		getpid(), getppid(), pid);
-  	int status;
-  	if (wait(&status) < 0) {
-  		if (errno == ECHILD)
-  			_exit(0);
-  		err(1, "wait");
-  	}
-  	if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
-  		errx(1, "wait: %#x", status);
-  }
-  int main(void)
-  {
-  	test_fork();
-  	if (unshare(CLONE_NEWPID | CLONE_NEWUSER) < 0)
-  		err(1, "unshare");
-  	test_fork();
-  	return 0;
-  }
-  EOF
-  $ sh -c ./a.out
-  current: 10001, parent: 10000, fork returned: 10002
-  current: 10002, parent: 10001, fork returned: 10001
-  current: 10001, parent: 10000, fork returned: 10003
-  current: 1, parent: 0, fork returned: 10001
-
-This bug was found by strace test suite.
-
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry V. Levin <ldv@altlinux.org>
----
-
-v2: Replaced task_active_pid_ns(p) with current->nsproxy->pid_ns_for_children
-    as suggested by Eric.
-
- arch/sparc/kernel/process_32.c | 3 ++-
- arch/sparc/kernel/process_64.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/sparc/kernel/process_32.c b/arch/sparc/kernel/process_32.c
-index a02363735915..3be653e40204 100644
---- a/arch/sparc/kernel/process_32.c
-+++ b/arch/sparc/kernel/process_32.c
-@@ -368,7 +368,8 @@ int copy_thread(unsigned long clone_flags, unsigned long sp, unsigned long arg,
- #endif
- 
- 	/* Set the return value for the child. */
--	childregs->u_regs[UREG_I0] = current->pid;
-+	childregs->u_regs[UREG_I0] =
-+		task_pid_nr_ns(current, current->nsproxy->pid_ns_for_children);
- 	childregs->u_regs[UREG_I1] = 1;
- 
- 	/* Set the return value for the parent. */
-diff --git a/arch/sparc/kernel/process_64.c b/arch/sparc/kernel/process_64.c
-index 6f8c7822fc06..f53ef5cff46a 100644
---- a/arch/sparc/kernel/process_64.c
-+++ b/arch/sparc/kernel/process_64.c
-@@ -629,7 +629,8 @@ int copy_thread(unsigned long clone_flags, unsigned long sp, unsigned long arg,
- 		t->utraps[0]++;
- 
- 	/* Set the return value for the child. */
--	t->kregs->u_regs[UREG_I0] = current->pid;
-+	t->kregs->u_regs[UREG_I0] =
-+		task_pid_nr_ns(current, current->nsproxy->pid_ns_for_children);
- 	t->kregs->u_regs[UREG_I1] = 1;
- 
- 	/* Set the second return value for the parent. */
 -- 
-ldv
+Best Regards
+Masahiro Yamada
