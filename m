@@ -2,144 +2,59 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C962832332F
-	for <lists+sparclinux@lfdr.de>; Tue, 23 Feb 2021 22:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26BA7323463
+	for <lists+sparclinux@lfdr.de>; Wed, 24 Feb 2021 00:52:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231274AbhBWVWS convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Tue, 23 Feb 2021 16:22:18 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:34498 "EHLO
-        mail.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231837AbhBWVWQ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 23 Feb 2021 16:22:16 -0500
-Received: from localhost (unknown [66.175.76.100])
-        by mail.monkeyblade.net (Postfix) with ESMTPSA id 7906E4D0C3F7E;
-        Tue, 23 Feb 2021 13:21:31 -0800 (PST)
-Date:   Tue, 23 Feb 2021 13:21:26 -0800 (PST)
-Message-Id: <20210223.132126.1594995051384966189.davem@davemloft.net>
-To:     torvalds@linux-foundation.org
-CC:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT] Sparc
-From:   David Miller <davem@davemloft.net>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail.monkeyblade.net [0.0.0.0]); Tue, 23 Feb 2021 13:21:31 -0800 (PST)
+        id S233785AbhBWXqw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 23 Feb 2021 18:46:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54270 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233627AbhBWXkI (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 23 Feb 2021 18:40:08 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id E2FE964E89;
+        Tue, 23 Feb 2021 23:36:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614123392;
+        bh=8KeLSV+vsfT3g4xaERh1xb8aonlTwmisMGnK+8OJG28=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=Yvw9mbSqYQx4BhDrzxcAYIIvitjbZ26Qa+1bYNH2ndnPjqrBj5H/FCrrk4cIf9iQu
+         zIsdV/oMNBa8iooVmyjtftpMz/WhVZsH9slUbY1lsa+pwWydwCdGeydSEPk7dsloTt
+         vX2/00XztTJJ/IaEVnfO7JC/SkcujU2Q1KTiRjo/eqkZ2HWDIHNngPsXCo5V/REchQ
+         l/YrcAba/ZTrOkgJCWKr/lR6cDp/zIe63DpvtSjtGUsUDHWRTKl1LWgYPLOj0q6+U+
+         EQ07tKslX5JmPzqbHPvKzGaiKRJds27v2FGtaW5dADkM/y2wGgaijOGG9W19boVRWf
+         +eio5CtcQzvnw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id DE89060973;
+        Tue, 23 Feb 2021 23:36:32 +0000 (UTC)
+Subject: Re: [GIT] Sparc
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20210223.132126.1594995051384966189.davem@davemloft.net>
+References: <20210223.132126.1594995051384966189.davem@davemloft.net>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20210223.132126.1594995051384966189.davem@davemloft.net>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git refs/heads/master
+X-PR-Tracked-Commit-Id: 356184fb6d67770d7788f316226be810a430937b
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6dd580b93da8de5cab4ac1f24f343086318b664e
+Message-Id: <161412339290.20258.4463825858883396868.pr-tracker-bot@kernel.org>
+Date:   Tue, 23 Feb 2021 23:36:32 +0000
+To:     David Miller <davem@davemloft.net>
+Cc:     torvalds@linux-foundation.org, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+The pull request you sent on Tue, 23 Feb 2021 13:21:26 -0800 (PST):
 
-A host of mall cleanups and adjustments that have accumulated while
-I was away, nothing major.
+> git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git refs/heads/master
 
-Please pull, thanks a lot!
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6dd580b93da8de5cab4ac1f24f343086318b664e
 
-The following changes since commit dd0d718152e4c65b173070d48ea9dfc06894c3e5:
+Thank you!
 
-  Merge tag 'spi-fix-v5.8-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi (2020-06-22 09:49:59 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git 
-
-for you to fetch changes up to 356184fb6d67770d7788f316226be810a430937b:
-
-  sparc: make xchg() into a statement expression (2021-02-18 16:40:22 -0800)
-
-----------------------------------------------------------------
-Al Viro (1):
-      sparc32: fix a user-triggerable oops in clear_user()
-
-Alexander A. Klimov (1):
-      arch/sparc: Replace HTTP links with HTTPS ones
-
-Andreas Larsson (2):
-      sparc32: Limit memblock allocation to low memory
-      sparc32: Preserve clone syscall flags argument for restarts due to signals
-
-Ben Hutchings (1):
-      sparc32: signal: Fix stack trampoline for RT signals
-
-Christoph Hellwig (1):
-      sparc64: switch defconfig from the legacy ide driver to libata
-
-Corentin Labbe (2):
-      sparc: piggyback: handle invalid image
-      sparc: sparc64_defconfig: add necessary configs for qemu
-
-David S. Miller (1):
-      Merge branch 'sparc32-srmmu-improve-type-safety-of-__nocache_fix'
-
-Gustavo A. R. Silva (2):
-      sparc64: viohs: Use struct_size() helper
-      sparc: Use fallthrough pseudo-keyword
-
-Jing Xiangfeng (1):
-      sbus: char: Remove meaningless jump label out_free
-
-Kaixu Xia (1):
-      sparc32: Fix comparing pointer to 0 coccicheck warning
-
-Khalid Aziz (1):
-      sparc64: Use arch_validate_flags() to validate ADI flag
-
-Matthew Wilcox (Oracle) (1):
-      sparc: Fix handling of page table constructor failure
-
-Mike Rapoport (2):
-      sparc32: use PUD rather than PGD to get PMD in srmmu_inherit_prom_mappings()
-      sparc32: srmmu: improve type safety of __nocache_fix()
-
-Peter Collingbourne (1):
-      sparc: remove SA_STATIC_ALLOC macro definition
-
-Qinglang Miao (1):
-      sparc: use for_each_child_of_node() macro
-
-Randy Dunlap (4):
-      SPARC: backoff.h: delete a duplicated word
-      sparc64: only select COMPAT_BINFMT_ELF if BINFMT_ELF is set
-      sparc: fix led.c driver when PROC_FS is not enabled
-      sparc: make xchg() into a statement expression
-
-Tiezhu Yang (1):
-      sparc: Replace test_ti_thread_flag() with test_tsk_thread_flag()
-
-Uwe Kleine-König (3):
-      tty: vcc: Drop impossible to hit WARN_ON
-      tty: vcc: Drop unnecessary if block
-      tty: hvcs: Drop unnecessary if block
-
- arch/sparc/Kconfig                   |  4 ++--
- arch/sparc/boot/piggyback.c          |  4 ++++
- arch/sparc/configs/sparc64_defconfig | 11 ++++++++---
- arch/sparc/include/asm/backoff.h     |  2 +-
- arch/sparc/include/asm/cmpxchg_32.h  |  2 +-
- arch/sparc/include/asm/mman.h        | 54 +++++++++++++++++++++++++++++-------------------------
- arch/sparc/include/asm/pgtsrmmu.h    |  2 +-
- arch/sparc/include/asm/signal.h      | 12 ------------
- arch/sparc/kernel/auxio_64.c         |  1 -
- arch/sparc/kernel/central.c          |  2 +-
- arch/sparc/kernel/entry.S            |  8 +++-----
- arch/sparc/kernel/kgdb_32.c          |  2 +-
- arch/sparc/kernel/kgdb_64.c          |  2 +-
- arch/sparc/kernel/led.c              |  2 ++
- arch/sparc/kernel/pci.c              |  3 +--
- arch/sparc/kernel/pcr.c              |  2 +-
- arch/sparc/kernel/process_32.c       |  2 +-
- arch/sparc/kernel/prom_32.c          |  2 +-
- arch/sparc/kernel/rtrap_32.S         |  2 +-
- arch/sparc/kernel/signal32.c         |  4 ++--
- arch/sparc/kernel/signal_32.c        |  8 ++++----
- arch/sparc/kernel/signal_64.c        |  4 ++--
- arch/sparc/kernel/viohs.c            |  6 ++----
- arch/sparc/lib/memset.S              |  1 +
- arch/sparc/math-emu/math_32.c        |  8 ++++----
- arch/sparc/mm/init_32.c              |  3 +++
- arch/sparc/mm/init_64.c              |  2 +-
- arch/sparc/mm/srmmu.c                | 20 ++++++++++----------
- drivers/sbus/char/display7seg.c      |  4 +---
- drivers/tty/hvc/hvcs.c               |  3 ---
- drivers/tty/vcc.c                    | 10 ++--------
- 31 files changed, 91 insertions(+), 101 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
