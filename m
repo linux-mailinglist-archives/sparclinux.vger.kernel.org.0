@@ -2,59 +2,60 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26BA7323463
-	for <lists+sparclinux@lfdr.de>; Wed, 24 Feb 2021 00:52:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8CDB323501
+	for <lists+sparclinux@lfdr.de>; Wed, 24 Feb 2021 02:20:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233785AbhBWXqw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 23 Feb 2021 18:46:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54270 "EHLO mail.kernel.org"
+        id S234591AbhBXBLQ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 23 Feb 2021 20:11:16 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:9716 "EHLO mail.JVPinto.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233627AbhBWXkI (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 23 Feb 2021 18:40:08 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id E2FE964E89;
-        Tue, 23 Feb 2021 23:36:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614123392;
-        bh=8KeLSV+vsfT3g4xaERh1xb8aonlTwmisMGnK+8OJG28=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=Yvw9mbSqYQx4BhDrzxcAYIIvitjbZ26Qa+1bYNH2ndnPjqrBj5H/FCrrk4cIf9iQu
-         zIsdV/oMNBa8iooVmyjtftpMz/WhVZsH9slUbY1lsa+pwWydwCdGeydSEPk7dsloTt
-         vX2/00XztTJJ/IaEVnfO7JC/SkcujU2Q1KTiRjo/eqkZ2HWDIHNngPsXCo5V/REchQ
-         l/YrcAba/ZTrOkgJCWKr/lR6cDp/zIe63DpvtSjtGUsUDHWRTKl1LWgYPLOj0q6+U+
-         EQ07tKslX5JmPzqbHPvKzGaiKRJds27v2FGtaW5dADkM/y2wGgaijOGG9W19boVRWf
-         +eio5CtcQzvnw==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id DE89060973;
-        Tue, 23 Feb 2021 23:36:32 +0000 (UTC)
-Subject: Re: [GIT] Sparc
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20210223.132126.1594995051384966189.davem@davemloft.net>
-References: <20210223.132126.1594995051384966189.davem@davemloft.net>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20210223.132126.1594995051384966189.davem@davemloft.net>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git refs/heads/master
-X-PR-Tracked-Commit-Id: 356184fb6d67770d7788f316226be810a430937b
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 6dd580b93da8de5cab4ac1f24f343086318b664e
-Message-Id: <161412339290.20258.4463825858883396868.pr-tracker-bot@kernel.org>
-Date:   Tue, 23 Feb 2021 23:36:32 +0000
-To:     David Miller <davem@davemloft.net>
-Cc:     torvalds@linux-foundation.org, sparclinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        id S234949AbhBXAYT (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 23 Feb 2021 19:24:19 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 16:22:59 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
+ 16:22:45 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Hello okay
+Date:   Wed, 24 Feb 2021 00:22:58 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <13c868505e64489fa80047991ef72fdf@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The pull request you sent on Tue, 23 Feb 2021 13:21:26 -0800 (PST):
+Hello,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc.git refs/heads/master
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/6dd580b93da8de5cab4ac1f24f343086318b664e
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-Thank you!
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Regards,
+Ms. Reem.
