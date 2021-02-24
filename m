@@ -2,91 +2,81 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E55D332437E
-	for <lists+sparclinux@lfdr.de>; Wed, 24 Feb 2021 19:05:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37D35324741
+	for <lists+sparclinux@lfdr.de>; Thu, 25 Feb 2021 00:01:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233374AbhBXSFV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 24 Feb 2021 13:05:21 -0500
-Received: from mout.web.de ([212.227.17.12]:52223 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230001AbhBXSFV (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 24 Feb 2021 13:05:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1614189801;
-        bh=brA08jd38xvbf3oc7joMJr2hS6HhBMB6QkenNnCq+xY=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=H+bHiVZVbhjH1LSaWFrT9v8MFiX1r7fKSDRhPbwi+3p22ruKZsT1jU08luachlaim
-         88xzFCBqwM7XtPElsP6/xgxDtSb9b7UE9C4ACnRzlEiY62xA9wPuIhBWdlvCJ8qetj
-         ZSj0JWDISCwnXY2N3Rl1qj5GO7ordUo9hn0AFGzk=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.178.36] ([217.247.33.56]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LtWsC-1lvpgC3cMG-010ugE; Wed, 24
- Feb 2021 19:03:20 +0100
-Subject: Re: Newer kernels fail to boot on a U450?
-To:     Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc:     debian-sparc <debian-sparc@lists.debian.org>,
-        sparclinux@vger.kernel.org
-References: <6cb1a2ea-c228-abbf-7aa7-0046799eff1e@ilande.co.uk>
- <69171194-4f65-f355-7fc4-4cf9b519c059@web.de>
- <edd947e8-7e27-c002-018d-f3070d47fef1@ilande.co.uk>
-From:   Frank Scheiner <frank.scheiner@web.de>
-Message-ID: <36fae360-339b-b250-a2cd-5defa9b81fad@web.de>
-Date:   Wed, 24 Feb 2021 19:03:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S235969AbhBXXAo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 24 Feb 2021 18:00:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52292 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235070AbhBXXAn (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 24 Feb 2021 18:00:43 -0500
+Received: from zeniv-ca.linux.org.uk (unknown [IPv6:2607:5300:60:148a::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 272BDC061574;
+        Wed, 24 Feb 2021 15:00:03 -0800 (PST)
+Received: from viro by zeniv-ca.linux.org.uk with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1lF38E-000UEC-0d; Wed, 24 Feb 2021 22:59:46 +0000
+Date:   Wed, 24 Feb 2021 22:59:46 +0000
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     David Miller <davem@davemloft.net>
+Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: [git pull] work.sparc32
+Message-ID: <YDbaYnzBVf604ns3@zeniv-ca.linux.org.uk>
 MIME-Version: 1.0
-In-Reply-To: <edd947e8-7e27-c002-018d-f3070d47fef1@ilande.co.uk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:SpkAKW2aQNS9WDeXBXKdYLsCcEjBuXQf2eQvY01rcSVH9SmFhrH
- /GRwG6E7BgxqwSTT0K2FAuh/cg1jvzcvDDl87HDBZPzs7MDvh4YXyydnH1HkJVdDQYgsznS
- LYTQ9dRiwLk+mG0gzvOz31zd4/PdzaknujJtxzckB01gqqRScbRlMToXSoYEnAM5KffcoKQ
- 1y2xp7QGruRxNFijaPhxw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:tBQxrjFmEfk=:jJ1hLhZcTCzOfdv6AquHpt
- gHAxA5ufsE5tvTGu7sGTMkQKcgWegxbrPdcfRaqVk3aE2V3v0rwAr876Y0LF4ysl0mS/h2YLc
- DiPyUn34bwmoP9T16xWAz9VthroVM8/3lQez1VOrmo/9hQIyS+5VarRyzm29TUdm9SLcPj98J
- yF92Qata46eK0TsIZzgdsEvzoCIN9naPdJfvc0FuYWwe1x8/3+P1rydS972XLawtYFu4mzoBF
- 8mCidTOmBxCwLmduCV/Nag3zhPsiioeEUs4L1MajONR1ZAxpUoQhbaC6HAHLiu+cCtUAYlKgX
- tyqZoJfG2kc6fyeg9iB2kzMnrez7rupPQ9DJ1UzNT5EkPHwEf3bg0X1yYrGsjukqKYjbhL7Va
- nDpBmOgOIK/ghiZCBjtYqFNH99QY2Lkiy+YX5c+2cVPHJizclSGY9oywuyGBLsRFYP/dh5SXr
- owQDVwgKFuOnDwwOFAy3WEtgr0IL+JYlkV5uErmXD33Z3PZJzXLKYf5KutSxhr4XAETnkF36z
- bXOpjP/gK3GXxg720vK1gJQclJjEb+fiKh8fV86MvDXSSTR/kNkJv/H6/Hqpzo3Ejkw0C9tAn
- arPUwZBuafYn821wgkLm2I6lZEoPXEshbvfVTdfDg++sTXHxUDMhGX4o47zDKay/8j8FVEozn
- tv/QBNZLe0hq5VSrJsRWXGgZ7Pn21ZVTSUMkv53Wsw8b0kyT4zjqti9VFbQDxrWEwoNdWQi4Y
- mLB6ipachUSoL5+4UaXuL7EF9AiOuBagZqelm0XhQmlW0p+0/WTWEDFivaIcZfF5JPCSbYc+9
- pBzvWb098QEL+fxlcJO8o0NoBl8IvX69EGwbL8xtN94M97KYi5Z4uTXTQ5xHNAOEXrkT6Jsu1
- dytPOuM34pdFi7U/6x8w==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Al Viro <viro@ftp.linux.org.uk>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Mark,
+	Switching sparc32 to generic extables.  A bunch of magic goes away,
+along with ARCH_HAS_SEARCH_EXTABLE.  Sat in -next for a couple of cycles
+by now...
 
-On 24.02.21 14:01, Mark Cave-Ayland wrote:
-> On 24/02/2021 12:29, Frank Scheiner wrote:
->> On 24.02.21 12:14, Mark Cave-Ayland wrote:
-> Thanks for the information! Do you have a display on your U450 at all?
+The following changes since commit 5c8fe583cce542aa0b84adc939ce85293de36e5e:
 
-No, access was/is via serial console.
+  Linux 5.11-rc1 (2020-12-27 15:30:22 -0800)
 
-> The U450 we were trying to rescue was headless (i.e. connect via serial
-> only) so the only differences I can see might either be the display or
-> the fact that the boot was occurring from the CDROM rather than a local
-> disk installation.
+are available in the git repository at:
 
-I'd agree to no display and serial console except that my machine had no
-local disk and was netbooted - so netboot instead of boot from CDROM.
+  git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git work.sparc32
 
-Other idea, can you be sure that the used disc was w/o errors and the
-used disc drive was OK, too?
+for you to fetch changes up to 73686e787b495a85551e2e99c459adde6836eb31:
 
-> Next time you have the U450 fired up, I'd be interested to find out if
-> it is possible to boot directly from the latest debian ports CDROM for
-> comparison.
+  Merge remote-tracking branch 'sparc/master' into work.sparc32 (2021-01-03 20:07:31 -0500)
 
-I can give that a try end of the week and report back.
+----------------------------------------------------------------
+Al Viro (7):
+      sparc32: don't bother with lookup_fault() in __bzero()
+      sparc32: kill lookup_fault()
+      sparc32: switch __bzero() away from range exception table entries
+      sparc32: get rid of range exception table entries in checksum_32.S
+      sparc32: switch copy_user.S away from range exception table entries
+      sparc32: switch to generic extables
+      Merge remote-tracking branch 'sparc/master' into work.sparc32
 
-Cheers,
-Frank
+ arch/sparc/Kconfig                                 |   2 +-
+ arch/sparc/boot/piggyback.c                        |   4 +
+ arch/sparc/include/asm/backoff.h                   |   2 +-
+ arch/sparc/include/asm/elf_64.h                    |   1 -
+ arch/sparc/include/asm/{extable_64.h => extable.h} |   4 +-
+ arch/sparc/include/asm/pgtsrmmu.h                  |   2 +-
+ arch/sparc/include/asm/uaccess.h                   |   3 +
+ arch/sparc/include/asm/uaccess_32.h                |  38 ---
+ arch/sparc/include/asm/uaccess_64.h                |   1 -
+ arch/sparc/kernel/pci.c                            |   3 +-
+ arch/sparc/kernel/unaligned_32.c                   |  10 +-
+ arch/sparc/kernel/viohs.c                          |   6 +-
+ arch/sparc/lib/checksum_32.S                       |  64 ++---
+ arch/sparc/lib/copy_user.S                         | 315 ++++++++-------------
+ arch/sparc/lib/memset.S                            |  86 +++---
+ arch/sparc/mm/Makefile                             |   2 +-
+ arch/sparc/mm/extable.c                            | 107 -------
+ arch/sparc/mm/fault_32.c                           |  80 +-----
+ arch/sparc/mm/mm_32.h                              |   2 -
+ arch/sparc/mm/srmmu.c                              |  18 +-
+ lib/extable.c                                      |   5 -
+ 21 files changed, 212 insertions(+), 543 deletions(-)
+ rename arch/sparc/include/asm/{extable_64.h => extable.h} (92%)
+ delete mode 100644 arch/sparc/mm/extable.c
