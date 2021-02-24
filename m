@@ -2,15 +2,15 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8CDB323501
-	for <lists+sparclinux@lfdr.de>; Wed, 24 Feb 2021 02:20:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED040324ECB
+	for <lists+sparclinux@lfdr.de>; Thu, 25 Feb 2021 12:06:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234591AbhBXBLQ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 23 Feb 2021 20:11:16 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:9716 "EHLO mail.JVPinto.com"
+        id S231818AbhBYLGH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 25 Feb 2021 06:06:07 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:54497 "EHLO mail.JVPinto.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234949AbhBXAYT (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 23 Feb 2021 19:24:19 -0500
+        id S229561AbhBYLGH (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 25 Feb 2021 06:06:07 -0500
 Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
  RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
  (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 16:22:59 -0800
