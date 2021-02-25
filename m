@@ -2,119 +2,259 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BDA3325124
-	for <lists+sparclinux@lfdr.de>; Thu, 25 Feb 2021 15:03:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3C0325697
+	for <lists+sparclinux@lfdr.de>; Thu, 25 Feb 2021 20:24:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231414AbhBYOC0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 25 Feb 2021 09:02:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44314 "EHLO mail.kernel.org"
+        id S229769AbhBYTYE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 25 Feb 2021 14:24:04 -0500
+Received: from mx2.cyber.ee ([45.144.6.23]:35953 "EHLO mx2.cyber.ee"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230467AbhBYOCY (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 25 Feb 2021 09:02:24 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 33D3764F1B;
-        Thu, 25 Feb 2021 14:01:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614261702;
-        bh=gB6SQ75V2Rk37+UKLUfmsXNjtKCUUEXnmz4FEJPQVQY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=iGKh9gRLvR8o04SWuKsCmipjtlzTrYuO47BWoJKHisDTteOpg/JDJDJJNnt+rGTTb
-         0rw4Z/+2u64PifagBhihDsPlyJ67Y3oQmsZn/oOul3KOK4yi2rGalMnkTSGw0hDAQu
-         5UCXh/aLF+AKNOXFFYPj9pbvUcZ+cJQXjOePkvmGZX37GfJUD/b8DZYdke/mmAKvZT
-         fAGvXP4lcs8maCpu0ckyrKPIoHkrpGb6cRtLNo09qQE/bWR08AfpprntjG9xmxGdei
-         eNSETbirr5t3ogcQ9xtRSswYiW1kh8gzy8rrgKIT9HRwylXF4qapcoQRRth0EghGpX
-         ctCpWU8hVtI2A==
-Received: by mail-oo1-f51.google.com with SMTP id x10so1389976oor.3;
-        Thu, 25 Feb 2021 06:01:42 -0800 (PST)
-X-Gm-Message-State: AOAM530YQNSUY6DI1p/w+oMByG+xrschcT2x6xk2C68fFUBMnyNwDQQJ
-        HRKQc6KM13zEsopqRnEASZN4oYZnOLKbfAR4rYM=
-X-Google-Smtp-Source: ABdhPJy0Z8oAC8F3qvd9r/HrjNWv0zSRZwzOF/sqWqHtbHpdIOPcLKBh4nK6FxEKGL+hdddWAENt07LK/yhwcmvgmrE=
-X-Received: by 2002:a4a:870c:: with SMTP id z12mr2391944ooh.15.1614261701193;
- Thu, 25 Feb 2021 06:01:41 -0800 (PST)
+        id S234444AbhBYTVY (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 25 Feb 2021 14:21:24 -0500
+X-Greylist: delayed 456 seconds by postgrey-1.27 at vger.kernel.org; Thu, 25 Feb 2021 14:21:21 EST
+From:   Meelis Roos <mroos@linux.ee>
+Subject: Re: bisected kernel crash on sparc64 with stress-ng
+To:     Rob Gardner <rob.gardner@oracle.com>,
+        Anatoly Pugachev <matorola@gmail.com>
+Cc:     "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
+References: <b7fbbf94-2ac8-8043-b59f-195a3716977f@linux.ee>
+ <11c6400a-c331-bcef-2bac-9bad39349eb4@oracle.com>
+ <CADxRZqy8Mhv8EMhDjXLf3npLb14inqPf9Mr-0fVtBg_TPz2XTA@mail.gmail.com>
+ <d55f1011-375a-cd41-5c4e-3e38d97e3cba@oracle.com>
+ <cde8e197-bad5-f239-6e6e-ed39eb3f7d53@linux.ee>
+ <5c14289d-501f-ed36-e1dd-ec00a540a823@oracle.com>
+Message-ID: <3d42713e-bff6-63d9-2c0e-781e829d78f8@linux.ee>
+Date:   Thu, 25 Feb 2021 21:12:47 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-References: <20210224072516.74696-1-uwe@kleine-koenig.org> <87sg5ks6xp.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87sg5ks6xp.fsf@mpe.ellerman.id.au>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Thu, 25 Feb 2021 15:01:25 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1q=zqyOxBgV-nprpN3jBczZWexupkA1Wy6g+AEW6rQqw@mail.gmail.com>
-Message-ID: <CAK8P3a1q=zqyOxBgV-nprpN3jBczZWexupkA1Wy6g+AEW6rQqw@mail.gmail.com>
-Subject: Re: [PATCH v2] vio: make remove callback return void
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <uwe@kleine-koenig.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jens Axboe <axboe@kernel.dk>, Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Haren Myneni <haren@us.ibm.com>,
-        =?UTF-8?Q?Breno_Leit=C3=A3o?= <leitao@debian.org>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
-        Steven Royer <seroyer@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Cristobal Forno <cforno12@linux.ibm.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dany Madden <drt@linux.ibm.com>, Lijun Pan <ljp@linux.ibm.com>,
-        Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
-        Tyrel Datwyler <tyreld@linux.ibm.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Michael Cyr <mikecyr@linux.ibm.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>, linux-integrity@vger.kernel.org,
-        Networking <netdev@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        target-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <5c14289d-501f-ed36-e1dd-ec00a540a823@oracle.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Feb 25, 2021 at 12:52 PM Michael Ellerman <mpe@ellerman.id.au> wrot=
-e:
->
-> Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.org> writes:
-> > The driver core ignores the return value of struct bus_type::remove()
-> > because there is only little that can be done. To simplify the quest to
-> > make this function return void, let struct vio_driver::remove() return
-> > void, too. All users already unconditionally return 0, this commit make=
-s
-> > it obvious that returning an error code is a bad idea and makes it
-> > obvious for future driver authors that returning an error code isn't
-> > intended.
-> >
-> > Note there are two nominally different implementations for a vio bus:
-> > one in arch/sparc/kernel/vio.c and the other in
-> > arch/powerpc/platforms/pseries/vio.c. I didn't care to check which
-> > driver is using which of these busses (or if even some of them can be
-> > used with both) and simply adapt all drivers and the two bus codes in
-> > one go.
->
-> I'm 99% sure there's no connection between the two implementations,
-> other than the name.
->
-> So splitting the patch by arch would make it easier to merge. I'm
-> reluctant to merge changes to sparc code.
+> 1. If you want to do it just with ng-stress, you could change it so that instead of generating a random opcode and executing it, generate a list of (many) random opcodes on your ssh client, and send them over to the test machine to be executed. If the system doesn't crash or hang, generate a new list and try again. If it does crash, then do a binary search on the list of opcodes to find the culprit.
 
-The sparc subsystem clearly started out as a copy of the powerpc
-version, and serves roughly the same purpose, but the communication
-with the hypervisor is quite different.
+Well, it generates many opcodes butI do not feel like redesigning stress-ng  opcode stressto client-server solution, I better go with your kernel modifications.
+> 
+> 2. If that sounds like too much work, we could print the instructions in the kernel when we know we're going to return true. (Sorry the formatting of this will likely be messed up):
 
-As there are only four drivers for the sparc vio subsystem:
-drivers/block/sunvdc.c
-drivers/net/ethernet/sun/ldmvsw.c
-drivers/net/ethernet/sun/sunvnet.c
-drivers/tty/vcc.c
-maybe it would make sense to rename those to use distinct
-identifiers now?
+Tried it on top of todays git 5.11.0-09786-g3b9cdafb535
 
-       Arnd
+
+[   92.724186] fixing up no fault insn c6c310ca
+[   94.675033] fixing up no fault insn c8c6d0de
+[   94.742247] fixing up no fault insn c8c6d0de
+
+
+Login incorrect
+v240 login:
+Password:
+
+Login incorrect
+v240 login: [  125.751204] fixing up no fault insn dad750ec
+
+Login timed out
+Debian GNU/Linux stretch/sid v240 ttyS0
+
+v240 login: [  128.809516] fixing up no fault insn ea8fd1cb
+[  133.757945] fixing up no fault insn fff21079
+[  133.819635] fixing up no fault insn fff21079
+[  134.605780] fixing up no fault insn e09810de
+
+Debian GNU/Linux stretch/sid v240 ttyS0
+
+v240 login: [  138.514897] fixing up no fault insn cf95d1ef
+[  138.571102] fixing up no fault insn cf95d1ef
+[  138.627244] fixing up no fault insn cf95d1ef
+[  138.683339] fixing up no fault insn cf95d1ef
+[  138.739382] fixing up no fault insn cf95d1ef
+[  138.795443] fixing up no fault insn cf95d1ef
+[  138.851583] fixing up no fault insn cf95d1ef
+[  138.907736] fixing up no fault insn cf95d1ef
+[  138.963879] fixing up no fault insn cf95d1ef
+[  139.020024] fixing up no fault insn cf95d1ef
+[  139.076068] fixing up no fault insn cf95d1ef
+[  139.132114] fixing up no fault insn cf95d1ef
+[  139.188159] fixing up no fault insn cf95d1ef
+[  139.244203] fixing up no fault insn cf95d1ef
+[  139.300251] fixing up no fault insn cf95d1ef
+[  139.356293] fixing up no fault insn cf95d1ef
+[  139.412339] fixing up no fault insn cf95d1ef
+[  139.468386] fixing up no fault insn cf95d1ef
+[  139.524432] fixing up no fault insn cf95d1ef
+[  139.580474] fixing up no fault insn cf95d1ef
+[  139.636524] fixing up no fault insn cf95d1ef
+[  139.692570] fixing up no fault insn cf95d1ef
+[  139.748607] fixing up no fault insn cf95d1ef
+[  139.804655] fixing up no fault insn cf95d1ef
+[  139.860720] fixing up no fault insn cf95d1ef
+[  139.860869] Kernel unaligned access at TPC[4add34] cpuacct_charge+0x74/0x80
+[  139.916835] Kernel unaligned access at TPC[469db0] irq_enter_rcu+0x10/0x80
+
+
+ From two boots, the insn varies among
+c798d0c9
+c8c6d0de
+cf95d1ef
+d49cd066
+dad750ec
+e09810de
+e3e790c4
+e5a051cb
+e7f21165
+ea8fd1cb
+ebb611fc
+f4c551de
+fe8690fd
+fff21079
+
+On last try, "fixing up no fault insn ebb611fc" appeared many times and the the machine hung with nothing more on seerial console. This was the second hang like that.
+
+
+> 3. I have a theory that the instruction may be something like this:
+> 
+>          sta %f0, [ %g0 ] #ASI_PNF
+> 
+> which should assemble to 0xc1a01040. You could just try this instruction.
+
+Putting 0xc1a01040 at the start of the opcode sequence makes the test spew this in dmesg 26 times:
+fixing up no fault insn c1a01040
+and then the kernel hangs.
+  
+> 4. If this does result in a crash, this patch might be the fix:
+
+Yes, with this patch only, it works for multiple minutes and is stable. Nothing in dmesg either.
+
+> 5. Here is another patch to try after the others:
+
+
+This resulted in a crash (this is different, irq5 during mm code):
+
+[  304.847868] Unable to handle kernel paging request at virtual address ffffffffffffe000
+[  304.952010] tsk->{mm,active_mm}->context = 00000000000009be
+[  305.025294] tsk->{mm,active_mm}->pgd = fff0000000db6000
+[  305.093913]               \|/ ____ \|/
+[  305.093913]               "@'/ .. \`@"
+[  305.093913]               /_| \__/ |_\
+[  305.093913]                  \__U_/
+[  305.287234] stress-ng-opcod(1517): Oops [#1]
+[  305.343363] CPU: 1 PID: 1517 Comm: stress-ng-opcod Not tainted 5.11.0-09786-g3b9cdafb535-dirty #294
+[  305.462321] TSTATE: 0000004480001603 TPC: 000000000089ad98 TNPC: 000000000089ad9c Y: 00000000    Not tainted
+[  305.591565] TPC: <__inet_lookup_established+0x78/0x1e0>
+[  305.660186] g0: fff0000000a993c1 g1: 0000000000000000 g2: 2057cf51ce000000 g3: 000000000057cf51
+[  305.774569] g4: fff0000000f152c0 g5: fff000133ee8c000 g6: fff000000107c000 g7: 5973ffef02e64d70
+[  305.888946] o0: 00000000000065c8 o1: 30222850b2de49fe o2: 0000000000160000 o3: 6857e211521f25c5
+[  306.003325] o4: 0000000340f12326 o5: 0000000000a8f400 sp: fff000133fe1ed81 ret_pc: 000000000089ad4c
+[  306.122278] RPC: <__inet_lookup_established+0x2c/0x1e0>
+[  306.190900] l0: 0000000000000002 l1: 0000000000000000 l2: fff00000006b2e40 l3: 0000000000010000
+[  306.305281] l4: 0000000000000001 l5: fff0000000be8980 l6: fff0000000be8840 l7: fff0000000be8840
+[  306.419659] i0: 0000000000b30640 i1: 00000000000065c8 i2: 00000000d98965c8 i3: 0000000000000000
+[  306.534037] i4: c0a80101c0a8018e i5: 00000000e4230016 i6: fff000133fe1ee31 i7: 00000000008bee58
+[  306.648415] I7: <tcp_v4_early_demux+0x98/0x160>
+[  306.707887] Call Trace:
+[  306.739910] [<00000000008bee58>] tcp_v4_early_demux+0x98/0x160
+[  306.816544] [<000000000088f178>] ip_rcv_finish_core.isra.17+0x318/0x420
+[  306.903472] [<000000000088f6cc>] ip_list_rcv_finish.isra.19+0x6c/0x140
+[  306.989256] [<000000000088fc5c>] ip_list_rcv+0x11c/0x140
+[  307.059025] [<0000000000834658>] __netif_receive_skb_list_core+0x138/0x240
+[  307.149386] [<0000000000834970>] netif_receive_skb_list_internal+0x210/0x300
+[  307.242031] [<0000000000834a68>] gro_normal_list.part.188+0x8/0x40
+[  307.323239] [<0000000000835e8c>] napi_complete_done+0x14c/0x1e0
+[  307.401015] [<000000001002fc80>] tg3_poll+0x140/0x460 [tg3]
+[  307.474326] [<00000000008360a4>] __napi_poll+0x44/0x1a0
+[  307.542948] [<00000000008363c4>] net_rx_action+0xc4/0x240
+[  307.613861] [<000000000095e170>] __do_softirq+0xd0/0x260
+[  307.683633] [<000000000042c86c>] do_softirq_own_stack+0x2c/0x40
+[  307.761410] [<0000000000469fa8>] irq_exit+0xc8/0xe0
+[  307.825461] [<000000000095de40>] handler_irq+0xc0/0x100
+[  307.894087] [<00000000004208b4>] tl0_irq5+0x14/0x20
+[  307.958140] Disabling lock debugging due to kernel taint
+[  308.027910] Caller[00000000008bee58]: tcp_v4_early_demux+0x98/0x160
+[  308.110263] Caller[000000000088f178]: ip_rcv_finish_core.isra.17+0x318/0x420
+[  308.202910] Caller[000000000088f6cc]: ip_list_rcv_finish.isra.19+0x6c/0x140
+[  308.294411] Caller[000000000088fc5c]: ip_list_rcv+0x11c/0x140
+[  308.369898] Caller[0000000000834658]: __netif_receive_skb_list_core+0x138/0x240
+[  308.465981] Caller[0000000000834970]: netif_receive_skb_list_internal+0x210/0x300
+[  308.564346] Caller[0000000000834a68]: gro_normal_list.part.188+0x8/0x40
+[  308.651270] Caller[0000000000835e8c]: napi_complete_done+0x14c/0x1e0
+[  308.734766] Caller[000000001002fc80]: tg3_poll+0x140/0x460 [tg3]
+[  308.813791] Caller[00000000008360a4]: __napi_poll+0x44/0x1a0
+[  308.888134] Caller[00000000008363c4]: net_rx_action+0xc4/0x240
+[  308.964769] Caller[000000000095e170]: __do_softirq+0xd0/0x260
+[  309.040257] Caller[000000000042c86c]: do_softirq_own_stack+0x2c/0x40
+[  309.123754] Caller[0000000000469fa8]: irq_exit+0xc8/0xe0
+[  309.193523] Caller[000000000095de40]: handler_irq+0xc0/0x100
+[  309.267869] Caller[00000000004208b4]: tl0_irq5+0x14/0x20
+[  309.337640] Caller[000000000055e5d0]: __handle_mm_fault+0x190/0xaa0
+[  309.419992] Caller[000000000055ef74]: handle_mm_fault+0x94/0x220
+[  309.498913] Caller[0000000000451824]: do_sparc64_fault+0x264/0x6e0
+[  309.580120] Caller[0000000000407714]: sparc64_realfault_common+0x10/0x20
+[  309.668191] Caller[00000000f7b5f298]: 0xf7b5f298
+[  309.728811] Instruction DUMP:
+[  309.728815]  808ee001
+[  309.767698]  32600043
+[  309.798579]  b736f001
+[  309.829461] <c206ffa0>
+[  309.860342]  80a0401a
+[  309.891225]  124ffffa
+[  309.922107]  01000000
+[  309.952988]  c206ffa4
+[  309.983871]  80a74001
+[  310.014753]
+[  310.065080] Kernel panic - not syncing: Aiee, killing interrupt handler!
+[  310.153153] ------------[ cut here ]------------
+[  310.213767] WARNING: CPU: 1 PID: 1517 at kernel/smp.c:633 smp_call_function_many_cond+0x3bc/0x400
+[  310.330439] Modules linked in: loop flash tg3
+[  310.387621] CPU: 1 PID: 1517 Comm: stress-ng-opcod Tainted: G      D           5.11.0-09786-g3b9cdafb535-dirty #294
+[  310.524881] Call Trace:
+[  310.556899] [<0000000000463ea8>] __warn+0x88/0xe0
+[  310.618665] [<0000000000463f58>] warn_slowpath_fmt+0x58/0x80
+[  310.693010] [<00000000004ef8bc>] smp_call_function_many_cond+0x3bc/0x400
+[  310.781083] [<00000000004efb7c>] smp_call_function+0x1c/0x40
+[  310.855426] [<0000000000953e2c>] panic+0x11c/0x334
+[  310.918333] [<0000000000468ebc>] do_exit+0x8bc/0xbc0
+[  310.983529] [<000000000042a854>] die_if_kernel+0x194/0x300
+[  311.055587] [<000000000095389c>] unhandled_fault+0x84/0x90
+[  311.127646] [<0000000000451a2c>] do_sparc64_fault+0x46c/0x6e0
+[  311.203135] [<0000000000407714>] sparc64_realfault_common+0x10/0x20
+[  311.285488] [<000000000089ad98>] __inet_lookup_established+0x78/0x1e0
+[  311.370127] [<00000000008bee58>] tcp_v4_early_demux+0x98/0x160
+[  311.446760] [<000000000088f178>] ip_rcv_finish_core.isra.17+0x318/0x420
+[  311.533687] [<000000000088f6cc>] ip_list_rcv_finish.isra.19+0x6c/0x140
+[  311.619471] [<000000000088fc5c>] ip_list_rcv+0x11c/0x140
+[  311.689241] [<0000000000834658>] __netif_receive_skb_list_core+0x138/0x240
+[  311.779601] ---[ end trace bb4c0255fe0bffe8 ]---
+[  311.840221] ------------[ cut here ]------------
+[  311.900838] WARNING: CPU: 1 PID: 1517 at kernel/smp.c:498 smp_call_function_single+0x188/0x1c0
+[  312.014078] Modules linked in: loop flash tg3
+[  312.071261] CPU: 1 PID: 1517 Comm: stress-ng-opcod Tainted: G      D W         5.11.0-09786-g3b9cdafb535-dirty #294
+[  312.208523] Call Trace:
+[  312.240539] [<0000000000463ea8>] __warn+0x88/0xe0
+[  312.302304] [<0000000000463f58>] warn_slowpath_fmt+0x58/0x80
+[  312.376652] [<00000000004ef4c8>] smp_call_function_single+0x188/0x1c0
+[  312.461291] [<00000000004efb7c>] smp_call_function+0x1c/0x40
+[  312.535637] [<0000000000953e2c>] panic+0x11c/0x334
+[  312.598543] [<0000000000468ebc>] do_exit+0x8bc/0xbc0
+[  312.663739] [<000000000042a854>] die_if_kernel+0x194/0x300
+[  312.735796] [<000000000095389c>] unhandled_fault+0x84/0x90
+[  312.807856] [<0000000000451a2c>] do_sparc64_fault+0x46c/0x6e0
+[  312.883344] [<0000000000407714>] sparc64_realfault_common+0x10/0x20
+[  312.965698] [<000000000089ad98>] __inet_lookup_established+0x78/0x1e0
+[  313.050337] [<00000000008bee58>] tcp_v4_early_demux+0x98/0x160
+[  313.126970] [<000000000088f178>] ip_rcv_finish_core.isra.17+0x318/0x420
+[  313.213897] [<000000000088f6cc>] ip_list_rcv_finish.isra.19+0x6c/0x140
+[  313.299679] [<000000000088fc5c>] ip_list_rcv+0x11c/0x140
+[  313.369450] [<0000000000834658>] __netif_receive_skb_list_core+0x138/0x240
+[  313.459809] ---[ end trace bb4c0255fe0bffe9 ]---
+[  313.520436] Press Stop-A (L1-A) from sun keyboard or send break
+[  313.520436] twice on console to return to the boot prom
+[  313.666839] ---[ end Kernel panic - not syncing: Aiee, killing interrupt handler! ]---
+
+
+> Let me know what you find out from all this and I'll try to come up with more ideas.
+
+OK, I can try more things. And thank you for quick response times!
