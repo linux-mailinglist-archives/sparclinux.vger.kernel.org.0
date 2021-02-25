@@ -2,81 +2,111 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37D35324741
-	for <lists+sparclinux@lfdr.de>; Thu, 25 Feb 2021 00:01:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9E5324F77
+	for <lists+sparclinux@lfdr.de>; Thu, 25 Feb 2021 12:51:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235969AbhBXXAo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 24 Feb 2021 18:00:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52292 "EHLO
+        id S233451AbhBYLuw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 25 Feb 2021 06:50:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235070AbhBXXAn (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 24 Feb 2021 18:00:43 -0500
-Received: from zeniv-ca.linux.org.uk (unknown [IPv6:2607:5300:60:148a::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 272BDC061574;
-        Wed, 24 Feb 2021 15:00:03 -0800 (PST)
-Received: from viro by zeniv-ca.linux.org.uk with local (Exim 4.94 #2 (Red Hat Linux))
-        id 1lF38E-000UEC-0d; Wed, 24 Feb 2021 22:59:46 +0000
-Date:   Wed, 24 Feb 2021 22:59:46 +0000
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     David Miller <davem@davemloft.net>
-Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: [git pull] work.sparc32
-Message-ID: <YDbaYnzBVf604ns3@zeniv-ca.linux.org.uk>
+        with ESMTP id S229961AbhBYLut (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 25 Feb 2021 06:50:49 -0500
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0769C06174A;
+        Thu, 25 Feb 2021 03:50:08 -0800 (PST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4DmWLG6r0dz9sVF;
+        Thu, 25 Feb 2021 22:49:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1614253805;
+        bh=/SYtgE5qENlSC96VzcIwZTaGUmL6HCYNrQHwHPYZSs4=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=iSkCaS/DJVPQlH0gbL+LD45kazqnKgdUXrGSiY0t5rVH7XgWyEZ3dVcZQMrrdzWxb
+         5MgqcVG9pQkFcrHW+MXEpmHj5iL5Dc/O0Q3xerdpbA7nNL2QioWinUYOGNO1CftmBu
+         foAGxV0uCzTC0mgQqEJOVDt+y1/5VQz2b92Jel0/OqIMCucyj2A49/JmP77ew5X9ex
+         7ocZxtF4Q7Ij1XMzTR+G4KGixhAD12BQzG5y3VyTqzm+g5IL6UR67JPFL4nCBTOTxL
+         1NBGWLbvxkYV3zB/XybDZ47lwrc8H7FUaYmZhnqcTWr1RcqeZBKCgq+EBQqZHvNLXS
+         lfxhg1WNI9+Mg==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jens Axboe <axboe@kernel.dk>, Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Haren Myneni <haren@us.ibm.com>,
+        Breno =?utf-8?Q?Leit?= =?utf-8?Q?=C3=A3o?= <leitao@debian.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+        Steven Royer <seroyer@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Cristobal Forno <cforno12@linux.ibm.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Dany Madden <drt@linux.ibm.com>, Lijun Pan <ljp@linux.ibm.com>,
+        Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+        Tyrel Datwyler <tyreld@linux.ibm.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Michael Cyr <mikecyr@linux.ibm.com>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+        netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: Re: [PATCH v2] vio: make remove callback return void
+In-Reply-To: <20210224072516.74696-1-uwe@kleine-koenig.org>
+References: <20210224072516.74696-1-uwe@kleine-koenig.org>
+Date:   Thu, 25 Feb 2021 22:49:54 +1100
+Message-ID: <87sg5ks6xp.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-	Switching sparc32 to generic extables.  A bunch of magic goes away,
-along with ARCH_HAS_SEARCH_EXTABLE.  Sat in -next for a couple of cycles
-by now...
+Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.org> writes:
+> The driver core ignores the return value of struct bus_type::remove()
+> because there is only little that can be done. To simplify the quest to
+> make this function return void, let struct vio_driver::remove() return
+> void, too. All users already unconditionally return 0, this commit makes
+> it obvious that returning an error code is a bad idea and makes it
+> obvious for future driver authors that returning an error code isn't
+> intended.
+>
+> Note there are two nominally different implementations for a vio bus:
+> one in arch/sparc/kernel/vio.c and the other in
+> arch/powerpc/platforms/pseries/vio.c. I didn't care to check which
+> driver is using which of these busses (or if even some of them can be
+> used with both) and simply adapt all drivers and the two bus codes in
+> one go.
 
-The following changes since commit 5c8fe583cce542aa0b84adc939ce85293de36e5e:
+I'm 99% sure there's no connection between the two implementations,
+other than the name.
 
-  Linux 5.11-rc1 (2020-12-27 15:30:22 -0800)
+So splitting the patch by arch would make it easier to merge. I'm
+reluctant to merge changes to sparc code.
 
-are available in the git repository at:
+The list of powerpc specific drivers is:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git work.sparc32
+  drivers/char/hw_random/pseries-rng.c
+  drivers/char/tpm/tpm_ibmvtpm.c
+  drivers/crypto/nx/nx-842-pseries.c
+  drivers/crypto/nx/nx.c
+  drivers/misc/ibmvmc.c
+  drivers/net/ethernet/ibm/ibmveth.c
+  drivers/net/ethernet/ibm/ibmvnic.c
+  drivers/scsi/ibmvscsi/ibmvfc.c
+  drivers/scsi/ibmvscsi/ibmvscsi.c
+  drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
+  drivers/tty/hvc/hvcs.c
 
-for you to fetch changes up to 73686e787b495a85551e2e99c459adde6836eb31:
-
-  Merge remote-tracking branch 'sparc/master' into work.sparc32 (2021-01-03 20:07:31 -0500)
-
-----------------------------------------------------------------
-Al Viro (7):
-      sparc32: don't bother with lookup_fault() in __bzero()
-      sparc32: kill lookup_fault()
-      sparc32: switch __bzero() away from range exception table entries
-      sparc32: get rid of range exception table entries in checksum_32.S
-      sparc32: switch copy_user.S away from range exception table entries
-      sparc32: switch to generic extables
-      Merge remote-tracking branch 'sparc/master' into work.sparc32
-
- arch/sparc/Kconfig                                 |   2 +-
- arch/sparc/boot/piggyback.c                        |   4 +
- arch/sparc/include/asm/backoff.h                   |   2 +-
- arch/sparc/include/asm/elf_64.h                    |   1 -
- arch/sparc/include/asm/{extable_64.h => extable.h} |   4 +-
- arch/sparc/include/asm/pgtsrmmu.h                  |   2 +-
- arch/sparc/include/asm/uaccess.h                   |   3 +
- arch/sparc/include/asm/uaccess_32.h                |  38 ---
- arch/sparc/include/asm/uaccess_64.h                |   1 -
- arch/sparc/kernel/pci.c                            |   3 +-
- arch/sparc/kernel/unaligned_32.c                   |  10 +-
- arch/sparc/kernel/viohs.c                          |   6 +-
- arch/sparc/lib/checksum_32.S                       |  64 ++---
- arch/sparc/lib/copy_user.S                         | 315 ++++++++-------------
- arch/sparc/lib/memset.S                            |  86 +++---
- arch/sparc/mm/Makefile                             |   2 +-
- arch/sparc/mm/extable.c                            | 107 -------
- arch/sparc/mm/fault_32.c                           |  80 +-----
- arch/sparc/mm/mm_32.h                              |   2 -
- arch/sparc/mm/srmmu.c                              |  18 +-
- lib/extable.c                                      |   5 -
- 21 files changed, 212 insertions(+), 543 deletions(-)
- rename arch/sparc/include/asm/{extable_64.h => extable.h} (92%)
- delete mode 100644 arch/sparc/mm/extable.c
+cheers
