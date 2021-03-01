@@ -2,116 +2,81 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B13E327737
-	for <lists+sparclinux@lfdr.de>; Mon,  1 Mar 2021 06:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACCAE327EB3
+	for <lists+sparclinux@lfdr.de>; Mon,  1 Mar 2021 13:58:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231939AbhCAFty (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 1 Mar 2021 00:49:54 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:45310 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231653AbhCAFtx (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 1 Mar 2021 00:49:53 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1215jIQv168261
-        for <sparclinux@vger.kernel.org>; Mon, 1 Mar 2021 05:48:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
- date : message-id; s=corp-2020-01-29;
- bh=W+lyc+mqEbI0IXglSP/VKFnT5/pi9W3s6/+x8e/XEww=;
- b=zXkxcJ7I/7PkkjICUAReQWnLV7RaNOPnQkrigIdi/Y6f3bc4blp8L5LiX9XBsUGaRfIJ
- 8kYYjjsSfpUO3l8zlJvt8kyv7dcT6WmcQ6X+jg6gWYcdpykUhutG+rcXpT4GRhEl1qfl
- YwE4sxYUaGqVPY32jO5a43w+0hWZQj7IjyTScAsyxN27D4tTu3taVu6xnYuYZuGGjG6m
- pV4K+tRuVi3zBnl/1CfRZeKQSe570V1/SMPly+Fen+gX1Wf1ki3tgqZ3TE8Fd2F5p1d0
- EdjbjiDvJJBzo/AZmJf79ZEZ8LvCslAZmj4W4mddy3eDsZcuSaDJPPgXFWDpMxfiZO0f Ow== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 36yeqmtfyh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-        for <sparclinux@vger.kernel.org>; Mon, 01 Mar 2021 05:48:17 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1215kTnt051120
-        for <sparclinux@vger.kernel.org>; Mon, 1 Mar 2021 05:48:16 GMT
-Received: from maggid.us.oracle.com (dhcp-10-65-188-222.vpn.oracle.com [10.65.188.222])
-        by userp3020.oracle.com with ESMTP id 36yyuq2n92-1
-        for <sparclinux@vger.kernel.org>; Mon, 01 Mar 2021 05:48:16 +0000
-From:   Rob Gardner <rob.gardner@oracle.com>
-To:     sparclinux@vger.kernel.org
-Subject: [PATCH] sparc64: Fix opcode filtering in handling of no fault loads
-Date:   Sun, 28 Feb 2021 22:48:16 -0700
-Message-Id: <1614577696-27586-1-git-send-email-rob.gardner@oracle.com>
-X-Mailer: git-send-email 2.7.4
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9909 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103010048
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9909 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 clxscore=1015
- priorityscore=1501 mlxlogscore=999 suspectscore=0 malwarescore=0
- impostorscore=0 bulkscore=0 adultscore=0 mlxscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103010048
+        id S235175AbhCAM5v (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 1 Mar 2021 07:57:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47800 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235154AbhCAM5p (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 1 Mar 2021 07:57:45 -0500
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97611C061788
+        for <sparclinux@vger.kernel.org>; Mon,  1 Mar 2021 04:57:05 -0800 (PST)
+Received: by mail-yb1-xb2d.google.com with SMTP id c131so16815094ybf.7
+        for <sparclinux@vger.kernel.org>; Mon, 01 Mar 2021 04:57:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=amvIN0iYG0XExlSqU712DBvKm6x/yC7Si9XQCggqkNo=;
+        b=bE+cuOLKzgZCEEoK+LMcxIP77fkm8rIeD7M2yEDCiOTOuHncfYTQ+gTy4DZhKpMiN7
+         Ds7UQv2NU/eBR/FC6Lnz5matUybFmTtSHm5fySQtNBrgw0D32C98hNza3eH/fNXSB2dj
+         SH4ngUBppEjFtjpditmL/4MtsPUOa6GY+EF9kRE3YTCPtYAVBAF4UydSDyNR9N7AgmrJ
+         ai8SZKB5fdHXdcu6JSqUrZzX6kMDMFf6ljYC29nI4WdQov+ZE9d0WmcYYBHNi6OnA9lb
+         C8DZ9rC+9nr8+MqBNiB7zrUeqOF0g3Cn7DOeSNtc5Ov9ypmuZX9oqt3Km4zioMnRzVBP
+         smpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=amvIN0iYG0XExlSqU712DBvKm6x/yC7Si9XQCggqkNo=;
+        b=lVDbvUGDd4ntVSK2dfHKvQKXysm/hOKVFhVercAaeBFYqW6JMWzdoIWmxbN6gFRymE
+         MDdnkrh+OREj5tOmij+yFOWknTUEMva5v+oq3N+eIjsysCYS4fskG9AVL28UGKwJaMfK
+         lF0lNiB2jhGGKNVu8dUPpNxV2qUbgBp8AyoBv3w9OSWYh5uz7bnCMwgGWhpoDwnUr195
+         ApDZFdCgj8CRjIOB20vYn3kzrqfgy68zAw8DKF9715JiNwmagiCWc1E1ltpUSe+w0Ado
+         7wvISQXE5Ua48uI18cx3MjbJjLnOcdajztLHMvPGI/p+9OHTSPnkoR7xxGeMIaTrS27j
+         bVdw==
+X-Gm-Message-State: AOAM531I9c+JN9nGS6jHsWVM62UYMYdCt9dNpy+lUydgaoDP1x7pIfnC
+        zCQql2eQ0uXTnXiCgpLY9Em8et8u30dG6jjLAtQ+dQY6sjc05g==
+X-Google-Smtp-Source: ABdhPJzG9T0/uPwXdkuVGivyigMhcOX/WlvTtYAM5SpuLyfE1iA9BxzgEUhZB85JS8T4ShVQ4CpS6gDJnJvvKKuqrM8=
+X-Received: by 2002:a25:50e:: with SMTP id 14mr22732147ybf.287.1614603424854;
+ Mon, 01 Mar 2021 04:57:04 -0800 (PST)
+MIME-Version: 1.0
+References: <1614577696-27586-1-git-send-email-rob.gardner@oracle.com>
+In-Reply-To: <1614577696-27586-1-git-send-email-rob.gardner@oracle.com>
+From:   Anatoly Pugachev <matorola@gmail.com>
+Date:   Mon, 1 Mar 2021 15:56:53 +0300
+Message-ID: <CADxRZqxScpzebDEh+LjyKmsgoQErqB=Lie=JUX2WWN2NOzqPcQ@mail.gmail.com>
+Subject: Re: [PATCH] sparc64: Fix opcode filtering in handling of no fault loads
+To:     Rob Gardner <rob.gardner@oracle.com>
+Cc:     Sparc kernel list <sparclinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-is_no_fault_exception() has two bugs which were discovered via random
-opcode testing with stress-ng. Both are caused by improper filtering
-of opcodes.
+On Mon, Mar 1, 2021 at 9:09 AM Rob Gardner <rob.gardner@oracle.com> wrote:
+>
+> is_no_fault_exception() has two bugs which were discovered via random
+> opcode testing with stress-ng. Both are caused by improper filtering
+> of opcodes.
 
-The first bug can be triggered by a floating point store with a no-fault
-ASI, for instance "sta %f0, [%g0] #ASI_PNF", opcode C1A01040.
+Rob, tested on my ldom, works perfectly now...
 
-The code first tests op3[5] (0x1000000), which denotes a floating
-point instruction, and then tests op3[2] (0x200000), which denotes a
-store instruction. But these bits are not mutually exclusive, and the
-above mentioned opcode has both bits set. The intent is to filter out
-stores, so the test for stores must be done first in order to have
-any effect.
+$ uname -a
+Linux ttip 5.12.0-rc1-dirty #195 SMP Mon Mar 1 15:46:15 MSK 2021
+sparc64 GNU/Linux
 
-The second bug can be triggered by a floating point load with one of
-the invalid ASI values 0x8e or 0x8f, which pass this check in
-is_no_fault_exception():
-     if ((asi & 0xf2) == ASI_PNF)
+$ stress-ng --opcode 1 --timeout 60 --metrics-brief
+stress-ng: info:  [945] dispatching hogs: 1 opcode
+stress-ng: info:  [945] successful run completed in 60.00s (1 min, 0.00 secs)
+stress-ng: info:  [945] stressor       bogo ops real time  usr time
+sys time   bogo ops/s   bogo ops/s
+stress-ng: info:  [945]                           (secs)    (secs)
+(secs)   (real time) (usr+sys time)
+stress-ng: info:  [945] opcode            17847     60.00     27.45
+ 34.03       297.45       290.29
 
-An example instruction is "ldqa [%l7 + %o7] #ASI 0x8f, %f38",
-opcode CF95D1EF. Asi values greater than 0x8b (ASI_SNFL) are fatal
-in handle_ldf_stq(), and is_no_fault_exception() must not allow these
-invalid asi values to make it that far.
-
-In both of these cases, handle_ldf_stq() reacts by calling
-sun4v_data_access_exception() or spitfire_data_access_exception(),
-which call is_no_fault_exception() and results in an infinite
-recursion.
-
-Signed-off-by: Rob Gardner <rob.gardner@oracle.com>
----
- arch/sparc/kernel/traps_64.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
-
-diff --git a/arch/sparc/kernel/traps_64.c b/arch/sparc/kernel/traps_64.c
-index d92e5ea..a850dcc 100644
---- a/arch/sparc/kernel/traps_64.c
-+++ b/arch/sparc/kernel/traps_64.c
-@@ -275,14 +275,13 @@ bool is_no_fault_exception(struct pt_regs *regs)
- 			asi = (regs->tstate >> 24); /* saved %asi       */
- 		else
- 			asi = (insn >> 5);	    /* immediate asi    */
--		if ((asi & 0xf2) == ASI_PNF) {
--			if (insn & 0x1000000) {     /* op3[5:4]=3       */
--				handle_ldf_stq(insn, regs);
--				return true;
--			} else if (insn & 0x200000) { /* op3[2], stores */
-+		if ((asi & 0xf6) == ASI_PNF) {
-+			if (insn & 0x200000)        /* op3[2], stores   */
- 				return false;
--			}
--			handle_ld_nf(insn, regs);
-+			if (insn & 0x1000000)       /* op3[5:4]=3 (fp)  */
-+				handle_ldf_stq(insn, regs);
-+			else
-+				handle_ld_nf(insn, regs);
- 			return true;
- 		}
- 	}
--- 
-2.7.4
-
+Thank you for a quick fix.
