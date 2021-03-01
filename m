@@ -2,41 +2,34 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEEC9328623
-	for <lists+sparclinux@lfdr.de>; Mon,  1 Mar 2021 18:05:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DF0B328686
+	for <lists+sparclinux@lfdr.de>; Mon,  1 Mar 2021 18:12:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235965AbhCAREk (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 1 Mar 2021 12:04:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59162 "EHLO mail.kernel.org"
+        id S236973AbhCARLt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 1 Mar 2021 12:11:49 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36352 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236721AbhCARDS (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 1 Mar 2021 12:03:18 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CD32564EDB;
-        Mon,  1 Mar 2021 16:38:40 +0000 (UTC)
+        id S236971AbhCARJn (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 1 Mar 2021 12:09:43 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5E85C64E99;
+        Mon,  1 Mar 2021 16:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1614616721;
-        bh=HWt8j+hbvhrQPej1Uq8e3ZIKSqaMxvW7ZbU4BXe/xqM=;
+        s=korg; t=1614616961;
+        bh=66sK3yAydc9g1KiW61EpXbNrkFOzjQ/pz/UJTDITgIk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PPk0P7NmpMbH/JLHKQTffLe1ShcFC2yvPT+I6sW4eFe6ggN30WSya8yTimlwN+l74
-         cvnYt08/7ZA5Mc2e67MZAhNkSNsmsZU3N0pBIJ7lVTu4cOCkwu6iss1WCVT3ARsMqs
-         sZTAcWrL2xHe4VwDYDT4R1YDqzdmBrtqmYQaYOcE=
+        b=1V2QC2seGGazipH9z+Wk+wdS7pWT8BZtLDhzA1NadwsWeo7pK/oCzwokaWgVutNE7
+         HY1riiDObCorAoSyXuQt3I9SZ3jCRCf9BKn2qEv+5eF0s8KuLxKe8ePXC0n2wu51/L
+         CHVdamoNrEdILQIJH3cfV5RtOLFWLO8zzR0TPI4I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Randy Dunlap <rdunlap@infradead.org>,
+        stable@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
         "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
+        sparclinux@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 073/247] fbdev: aty: SPARC64 requires FB_ATY_CT
-Date:   Mon,  1 Mar 2021 17:11:33 +0100
-Message-Id: <20210301161035.261994907@linuxfoundation.org>
+Subject: [PATCH 4.19 153/247] sparc64: only select COMPAT_BINFMT_ELF if BINFMT_ELF is set
+Date:   Mon,  1 Mar 2021 17:12:53 +0100
+Message-Id: <20210301161039.153818631@linuxfoundation.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210301161031.684018251@linuxfoundation.org>
 References: <20210301161031.684018251@linuxfoundation.org>
@@ -50,58 +43,43 @@ X-Mailing-List: sparclinux@vger.kernel.org
 
 From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit c6c90c70db4d9a0989111d6b994d545659410f7a ]
+[ Upstream commit 80bddf5c93a99e11fc9faf7e4b575d01cecd45d3 ]
 
-It looks like SPARC64 requires FB_ATY_CT to build without errors,
-so have FB_ATY select FB_ATY_CT if both SPARC64 and PCI are enabled
-instead of using "default y if SPARC64 && PCI", which is not strong
-enough to prevent build errors.
+Currently COMPAT on SPARC64 selects COMPAT_BINFMT_ELF unconditionally,
+even when BINFMT_ELF is not enabled. This causes a kconfig warning.
 
-As it currently is, FB_ATY_CT can be disabled, resulting in build
-errors:
+Instead, just select COMPAT_BINFMT_ELF if BINFMT_ELF is enabled.
+This builds cleanly with no kconfig warnings.
 
-ERROR: modpost: "aty_postdividers" [drivers/video/fbdev/aty/atyfb.ko] undefined!
-ERROR: modpost: "aty_ld_pll_ct" [drivers/video/fbdev/aty/atyfb.ko] undefined!
+WARNING: unmet direct dependencies detected for COMPAT_BINFMT_ELF
+  Depends on [n]: COMPAT [=y] && BINFMT_ELF [=n]
+  Selected by [y]:
+  - COMPAT [=y] && SPARC64 [=y]
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Fixes: f7018c213502 ("video: move fbdev to drivers/video/fbdev")
+Fixes: 26b4c912185a ("sparc,sparc64: unify Kconfig files")
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: sparclinux@vger.kernel.org
-Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: David Airlie <airlied@linux.ie>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20201127031752.10371-1-rdunlap@infradead.org
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/Kconfig | 2 +-
+ arch/sparc/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index f99558d006bf4..97c4319797d5c 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -1303,6 +1303,7 @@ config FB_ATY
- 	select FB_CFB_IMAGEBLIT
- 	select FB_BACKLIGHT if FB_ATY_BACKLIGHT
- 	select FB_MACMODES if PPC
-+	select FB_ATY_CT if SPARC64 && PCI
- 	help
- 	  This driver supports graphics boards with the ATI Mach64 chips.
- 	  Say Y if you have such a graphics board.
-@@ -1313,7 +1314,6 @@ config FB_ATY
- config FB_ATY_CT
- 	bool "Mach64 CT/VT/GT/LT (incl. 3D RAGE) support"
- 	depends on PCI && FB_ATY
--	default y if SPARC64 && PCI
- 	help
- 	  Say Y here to support use of ATI's 64-bit Rage boards (or other
- 	  boards based on the Mach64 CT, VT, GT, and LT chipsets) as a
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index e6f2a38d2e61e..1f1a7583fa905 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -554,7 +554,7 @@ config COMPAT
+ 	bool
+ 	depends on SPARC64
+ 	default y
+-	select COMPAT_BINFMT_ELF
++	select COMPAT_BINFMT_ELF if BINFMT_ELF
+ 	select HAVE_UID16
+ 	select ARCH_WANT_OLD_COMPAT_IPC
+ 	select COMPAT_OLD_SIGACTION
 -- 
 2.27.0
 
