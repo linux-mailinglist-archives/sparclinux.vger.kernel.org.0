@@ -2,96 +2,77 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF67E328FFA
-	for <lists+sparclinux@lfdr.de>; Mon,  1 Mar 2021 21:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D24432B151
+	for <lists+sparclinux@lfdr.de>; Wed,  3 Mar 2021 04:46:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238554AbhCAUAf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 1 Mar 2021 15:00:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60384 "EHLO mail.kernel.org"
+        id S1349258AbhCCCT6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 2 Mar 2021 21:19:58 -0500
+Received: from mx2.suse.de ([195.135.220.15]:39624 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236448AbhCATz0 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 1 Mar 2021 14:55:26 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6D8BE65379;
-        Mon,  1 Mar 2021 17:55:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1614621319;
-        bh=SXwRkkWMscxW1zS486YfdL6JbMjdQZidxAyHEx17ZiQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LeYHPGzDdMLfJvGnxx20JD14mWETXRN0XBa1G0/sJGli96KPMLOIMLKHpa+AuG7lp
-         CxGKW2/gONDCP3AbyAw3JhxyN+xJWWWKS/jKZdubHeCEMifA4FZ6eJ0aEAfvwS6igx
-         NF7O2bY7Et+fQG81Uhz8oBSvYsqk9T9/ragdMHWc=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Lars Kotthoff <metalhead@metalhead.ws>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.11 473/775] sparc: fix led.c driver when PROC_FS is not enabled
-Date:   Mon,  1 Mar 2021 17:10:41 +0100
-Message-Id: <20210301161224.917464211@linuxfoundation.org>
+        id S1835876AbhCBGYT (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 2 Mar 2021 01:24:19 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id E3224B02C;
+        Tue,  2 Mar 2021 06:22:19 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     gregkh@linuxfoundation.org
+Cc:     linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiri Slaby <jslaby@suse.cz>,
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: [PATCH 26/44] tty: vcc, drop version dump
+Date:   Tue,  2 Mar 2021 07:21:56 +0100
+Message-Id: <20210302062214.29627-26-jslaby@suse.cz>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210301161201.679371205@linuxfoundation.org>
-References: <20210301161201.679371205@linuxfoundation.org>
-User-Agent: quilt/0.66
+In-Reply-To: <20210302062214.29627-1-jslaby@suse.cz>
+References: <20210302062214.29627-1-jslaby@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+The version number is artificial, no need to dump it to logs during
+initialization.
 
-[ Upstream commit b3554aa2470b5db1222c31e08ec9c29ab33eabc7 ]
-
-Fix Sparc build when CONFIG_PROC_FS is not enabled.
-
-Fixes this build error:
-arch/sparc/kernel/led.c:107:30: error: 'led_proc_ops' defined but not used [-Werror=unused-const-variable=]
-     107 | static const struct proc_ops led_proc_ops = {
-         |                              ^~~~~~~~~~~~
-   cc1: all warnings being treated as errors
-
-Fixes: 97a32539b956 ("proc: convert everything to "struct proc_ops"")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lars Kotthoff <metalhead@metalhead.ws>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <sparclinux@vger.kernel.org>
 ---
- arch/sparc/kernel/led.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/vcc.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/arch/sparc/kernel/led.c b/arch/sparc/kernel/led.c
-index bd48575172c32..3a66e62eb2a0e 100644
---- a/arch/sparc/kernel/led.c
-+++ b/arch/sparc/kernel/led.c
-@@ -50,6 +50,7 @@ static void led_blink(struct timer_list *unused)
- 	add_timer(&led_blink_timer);
- }
+diff --git a/drivers/tty/vcc.c b/drivers/tty/vcc.c
+index 50bf9011a0c4..31b8a9a77375 100644
+--- a/drivers/tty/vcc.c
++++ b/drivers/tty/vcc.c
+@@ -14,16 +14,9 @@
+ #include <asm/vio.h>
+ #include <asm/ldc.h>
  
-+#ifdef CONFIG_PROC_FS
- static int led_proc_show(struct seq_file *m, void *v)
+-#define DRV_MODULE_NAME		"vcc"
+-#define DRV_MODULE_VERSION	"1.1"
+-#define DRV_MODULE_RELDATE	"July 1, 2017"
+-
+-static char version[] =
+-	DRV_MODULE_NAME ".c:v" DRV_MODULE_VERSION " (" DRV_MODULE_RELDATE ")";
+-
+ MODULE_DESCRIPTION("Sun LDOM virtual console concentrator driver");
+ MODULE_LICENSE("GPL");
+-MODULE_VERSION(DRV_MODULE_VERSION);
++MODULE_VERSION("1.1");
+ 
+ struct vcc_port {
+ 	struct vio_driver_state vio;
+@@ -1066,8 +1059,6 @@ static int vcc_tty_init(void)
  {
- 	if (get_auxio() & AUXIO_LED)
-@@ -111,6 +112,7 @@ static const struct proc_ops led_proc_ops = {
- 	.proc_release	= single_release,
- 	.proc_write	= led_proc_write,
- };
-+#endif
+ 	int rv;
  
- static struct proc_dir_entry *led;
- 
+-	pr_info("VCC: %s\n", version);
+-
+ 	vcc_tty_driver = tty_alloc_driver(VCC_MAX_PORTS, VCC_TTY_FLAGS);
+ 	if (IS_ERR(vcc_tty_driver)) {
+ 		pr_err("VCC: TTY driver alloc failed\n");
 -- 
-2.27.0
-
-
+2.30.1
 
