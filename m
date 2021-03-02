@@ -2,81 +2,89 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D213932B1FB
-	for <lists+sparclinux@lfdr.de>; Wed,  3 Mar 2021 04:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAE9332B210
+	for <lists+sparclinux@lfdr.de>; Wed,  3 Mar 2021 04:48:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244224AbhCCCer (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 2 Mar 2021 21:34:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33722 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1446112AbhCBNNk (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 2 Mar 2021 08:13:40 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 505A264FC9;
-        Tue,  2 Mar 2021 11:59:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614686382;
-        bh=EN+8mv8T3yg6CH9bMuNhDmN22IweqqPq3XDER+/w9Ds=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kIWdcC5rj5XUrh6pNlf2YIxwmvfgGkFX7q8t+Rm41+o3H5PnuykW/22oZNlgSR0z6
-         YpQCDk7bQi2cKikeD9V+gMcBkREcqMxfluJrQ44BwTc6p7/7Z7dW3+iKlTWxfcmrJb
-         ZJGv+pcX1xUR84OrxHSPfvvzn+a6zjRQrgSk5HKuUpeA2nX/lcE2xXhLkJWcfIF7Ug
-         98prNrkIToNdAjGGEOaqfDkHptnSVz5n6mzFCVmabr3Z01ecHQZZOUwgyb7pt+t8n5
-         WxIaz5m9h4muvlwrstambC0z8b9yavPgtFOl+0JfGFGRy7rqZbYi9t/Dl797JuQOSA
-         Hex65Ki+X8Ydw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Andreas Larsson <andreas@gaisler.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 4/8] sparc32: Limit memblock allocation to low memory
-Date:   Tue,  2 Mar 2021 06:59:31 -0500
-Message-Id: <20210302115935.63777-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210302115935.63777-1-sashal@kernel.org>
-References: <20210302115935.63777-1-sashal@kernel.org>
+        id S244166AbhCCCga (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 2 Mar 2021 21:36:30 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:43129 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1574331AbhCBPPU (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 2 Mar 2021 10:15:20 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1lH6Gd-003w7t-OX; Tue, 02 Mar 2021 15:44:55 +0100
+Received: from dslb-092-078-035-231.092.078.pools.vodafone-ip.de ([92.78.35.231] helo=[192.168.178.45])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1lH6Gd-000duF-Ht; Tue, 02 Mar 2021 15:44:55 +0100
+Subject: Re: [PATCH] sparc64: Fix opcode filtering in handling of no fault
+ loads
+To:     Rob Gardner <rob.gardner@oracle.com>,
+        Anatoly Pugachev <matorola@gmail.com>
+Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        David Miller <davem@davemloft.net>
+References: <1614577696-27586-1-git-send-email-rob.gardner@oracle.com>
+ <CADxRZqxScpzebDEh+LjyKmsgoQErqB=Lie=JUX2WWN2NOzqPcQ@mail.gmail.com>
+ <4b2456f6-f080-9104-e5a0-22e009164979@oracle.com>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <cacdc021-75cd-7325-0273-cc007a4767ff@physik.fu-berlin.de>
+Date:   Tue, 2 Mar 2021 15:44:54 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <4b2456f6-f080-9104-e5a0-22e009164979@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 92.78.35.231
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Andreas Larsson <andreas@gaisler.com>
+Hi!
 
-[ Upstream commit bda166930c37604ffa93f2425426af6921ec575a ]
+On 3/1/21 4:05 PM, Rob Gardner wrote:
+> On 3/1/21 5:56 AM, Anatoly Pugachev wrote:
+>> On Mon, Mar 1, 2021 at 9:09 AM Rob Gardner <rob.gardner@oracle.com> wrote:
+>>> is_no_fault_exception() has two bugs which were discovered via random
+>>> opcode testing with stress-ng. Both are caused by improper filtering
+>>> of opcodes.
+>> Rob, tested on my ldom, works perfectly now...
+>>
+>> $ uname -a
+>> Linux ttip 5.12.0-rc1-dirty #195 SMP Mon Mar 1 15:46:15 MSK 2021
+>> sparc64 GNU/Linux
+>>
+>> $ stress-ng --opcode 1 --timeout 60 --metrics-brief
+>> stress-ng: info:  [945] dispatching hogs: 1 opcode
+>> stress-ng: info:  [945] successful run completed in 60.00s (1 min, 0.00 secs)
+>> stress-ng: info:  [945] stressor       bogo ops real time  usr time
+>> sys time   bogo ops/s   bogo ops/s
+>> stress-ng: info:  [945]                           (secs)    (secs)
+>> (secs)   (real time) (usr+sys time)
+>> stress-ng: info:  [945] opcode            17847     60.00     27.45
+>>   34.03       297.45       290.29
+>>
+>> Thank you for a quick fix.
+> 
+> 
+> You're welcome. Please add your "tested-by" if you like.
 
-Commit cca079ef8ac29a7c02192d2bad2ffe4c0c5ffdd0 changed sparc32 to use
-memblocks instead of bootmem, but also made high memory available via
-memblock allocation which does not work together with e.g. phys_to_virt
-and can lead to kernel panic.
+Any chance we could get this patch into 5.12 and the stable kernels? (CC Greg)
 
-This changes back to only low memory being allocatable in the early
-stages, now using memblock allocation.
+Adrian
 
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/sparc/mm/init_32.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/sparc/mm/init_32.c b/arch/sparc/mm/init_32.c
-index 3b7092d9ea8f..4abe4bf08377 100644
---- a/arch/sparc/mm/init_32.c
-+++ b/arch/sparc/mm/init_32.c
-@@ -240,6 +240,9 @@ unsigned long __init bootmem_init(unsigned long *pages_avail)
- 	reserve_bootmem((bootmap_pfn << PAGE_SHIFT), size, BOOTMEM_DEFAULT);
- 	*pages_avail -= PAGE_ALIGN(size) >> PAGE_SHIFT;
- 
-+	/* Only allow low memory to be allocated via memblock allocation */
-+	memblock_set_current_limit(max_low_pfn << PAGE_SHIFT);
-+
- 	return max_pfn;
- }
- 
 -- 
-2.30.1
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
