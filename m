@@ -2,64 +2,77 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C2E3331B8D
-	for <lists+sparclinux@lfdr.de>; Tue,  9 Mar 2021 01:20:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EA0233292E
+	for <lists+sparclinux@lfdr.de>; Tue,  9 Mar 2021 15:53:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229821AbhCIATh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 8 Mar 2021 19:19:37 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:51429 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231969AbhCIATI (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 8 Mar 2021 19:19:08 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lJQ5a-0044oU-Hy; Tue, 09 Mar 2021 01:19:06 +0100
-Received: from p57bd9fdc.dip0.t-ipconnect.de ([87.189.159.220] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lJQ5a-003dbK-B4; Tue, 09 Mar 2021 01:19:06 +0100
-Subject: Re: [GIT] SPARC
-To:     David Miller <davem@davemloft.net>, torvalds@linux-foundation.org
-Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210308.154619.729170517586257571.davem@davemloft.net>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <37859f29-dc59-d6c2-6f92-abaae32ee4ab@physik.fu-berlin.de>
-Date:   Tue, 9 Mar 2021 01:19:05 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        id S231243AbhCIOwh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 9 Mar 2021 09:52:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35330 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231732AbhCIOw0 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 9 Mar 2021 09:52:26 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F9C9C06174A
+        for <sparclinux@vger.kernel.org>; Tue,  9 Mar 2021 06:52:26 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id f4so14205287ybk.11
+        for <sparclinux@vger.kernel.org>; Tue, 09 Mar 2021 06:52:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=oLFngrQGVB/sdDvHscGkPQd9Jg4SNCPQGeJ/f0+0YDU=;
+        b=ZqMiMMYh+32xRD54T/8UEpaPxJ1COSbLzf8RpI2wnqkED3fQqDVxPlDt9rymzKLQIc
+         Ner0T45eLv9IFkkGU1z9HRaSGuGNEVvAFwzqPm8dZHO1S+jxAX37sUejwKjQZiEPCspv
+         OogZRAq388+Bx/JKyk2738kd6MJdXIBhgBUaRClpeM8Ciu1wY3BXAb+cVCBEYPxdKlDa
+         p+J24Unf18kYdTx73CcjuOq89Tu2Je2ohcP7I/hJweoZE1oa3kYpW/Y+PrJ3+oUx6tRX
+         nzf4JkT5pAa0XAua8F6J6nFiZN1pcfGRGdiq64l37AVPe1IgUX1eg9DXoOm5eQSngNn1
+         4WFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=oLFngrQGVB/sdDvHscGkPQd9Jg4SNCPQGeJ/f0+0YDU=;
+        b=gZCymkVUQJXPC/XN5utsz3ygCJ7id6VR/qsXWpHaz9OR3gD84BnFHKfRA8jDOQBvVm
+         FU06Zd3GZs/guyX+CPmOpyyvUu8fHs9K6yiWn+R6dB26eHQJqBCr8krppTJ+x3IQgMmg
+         tlMGmAfK9l33jcJXyikAwQYnqSIKAXvBWBk1/5MtJfCZY0CZq1kbzRE+C6/b/eEdEx6Z
+         o4XaGoGNT/IFAxImai+l4zQ1xh2aDJbVNGF+Qxp+oRV2VwP7I/TX4/eR9aRdZH0OdH6N
+         Kzd0Yc1ZFa+Vc7oeiux0uVUd0aJy5ZpdYEK6NfsGpsaIDXUhhB0uDYW4bikBpTla4LaK
+         6AQA==
+X-Gm-Message-State: AOAM533aDthbP83b5ZoFTXb6cLFvK8YPKLSJMPBCKU9w9iW8/oX7IRN6
+        FZXVYBOrw1XqQM1iTniygqMFhvj6E7GKmZf/r4qGLjWjIbdHaA==
+X-Google-Smtp-Source: ABdhPJzzBPTNxESxGUPj0kfXZBI5MbfnrOIG5qroZVHzGaWQFlTe3Xyb7GumHurGth1weRkEU6817OSudhHZVsaQxv4=
+X-Received: by 2002:a25:c006:: with SMTP id c6mr41805403ybf.353.1615301545852;
+ Tue, 09 Mar 2021 06:52:25 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20210308.154619.729170517586257571.davem@davemloft.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.159.220
+References: <1614577696-27586-1-git-send-email-rob.gardner@oracle.com> <CADxRZqw2yFxEh0ZB-LgJrwBwG0Rxd5ocwDafK1yi5hDEGNC75g@mail.gmail.com>
+In-Reply-To: <CADxRZqw2yFxEh0ZB-LgJrwBwG0Rxd5ocwDafK1yi5hDEGNC75g@mail.gmail.com>
+From:   Anatoly Pugachev <matorola@gmail.com>
+Date:   Tue, 9 Mar 2021 17:52:15 +0300
+Message-ID: <CADxRZqybON2s+_BWx4LzruuR8dsshiLC=9PcPZ4Svi22Kf3eJg@mail.gmail.com>
+Subject: Re: [PATCH] sparc64: Fix opcode filtering in handling of no fault loads
+To:     Rob Gardner <rob.gardner@oracle.com>
+Cc:     Sparc kernel list <sparclinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Dave!
+On Mon, Mar 1, 2021 at 7:03 PM Anatoly Pugachev <matorola@gmail.com> wrote:
+>
+> On Mon, Mar 1, 2021 at 9:09 AM Rob Gardner <rob.gardner@oracle.com> wrote:
+> >
+> > is_no_fault_exception() has two bugs which were discovered via random
+> > opcode testing with stress-ng. Both are caused by improper filtering
+> > of opcodes.
+>
+> fixes the issue for me. thanks again
+>
+> Tested-by: Anatoly Pugachev <matorola@gmail.com>
 
-On 3/9/21 12:46 AM, David Miller wrote:
-> Just some more random bits from Al,  including a conversion over to generic exytables.
+Rob,
 
-Is there a chance we could include this important fix by Rob Gardner for 5.12 as well?
+you might want to add:
 
-> https://marc.info/?l=linux-sparc&m=161457847223456&w=2
+Fixes: b6fe1089667a7afcc2cf92cdaec590c7b8381715
 
-It fixes a hard kernel crash under certain loads which we have seen in Debian quite frequently.
-
-Thanks,
-Adrian
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+as well , on a patch submission.
