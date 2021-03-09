@@ -2,88 +2,64 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB945331B33
-	for <lists+sparclinux@lfdr.de>; Tue,  9 Mar 2021 01:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C2E3331B8D
+	for <lists+sparclinux@lfdr.de>; Tue,  9 Mar 2021 01:20:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231228AbhCHX77 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 8 Mar 2021 18:59:59 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:50940 "EHLO
-        mail.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230070AbhCHX7r (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 8 Mar 2021 18:59:47 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        by mail.monkeyblade.net (Postfix) with ESMTPSA id CF8A04D243037;
-        Mon,  8 Mar 2021 15:59:45 -0800 (PST)
-Date:   Mon, 08 Mar 2021 15:46:19 -0800 (PST)
-Message-Id: <20210308.154619.729170517586257571.davem@davemloft.net>
-To:     torvalds@linux-foundation.org
-CC:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT] SPARC
-From:   David Miller <davem@davemloft.net>
-X-Mailer: Mew version 6.8 on Emacs 27.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        id S229821AbhCIATh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 8 Mar 2021 19:19:37 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:51429 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231969AbhCIATI (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 8 Mar 2021 19:19:08 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1lJQ5a-0044oU-Hy; Tue, 09 Mar 2021 01:19:06 +0100
+Received: from p57bd9fdc.dip0.t-ipconnect.de ([87.189.159.220] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1lJQ5a-003dbK-B4; Tue, 09 Mar 2021 01:19:06 +0100
+Subject: Re: [GIT] SPARC
+To:     David Miller <davem@davemloft.net>, torvalds@linux-foundation.org
+Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210308.154619.729170517586257571.davem@davemloft.net>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <37859f29-dc59-d6c2-6f92-abaae32ee4ab@physik.fu-berlin.de>
+Date:   Tue, 9 Mar 2021 01:19:05 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
+MIME-Version: 1.0
+In-Reply-To: <20210308.154619.729170517586257571.davem@davemloft.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail.monkeyblade.net [0.0.0.0]); Mon, 08 Mar 2021 15:59:46 -0800 (PST)
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.159.220
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hi Dave!
 
-Just some more random bits from Al,  including a conversion over to generic exytables.
+On 3/9/21 12:46 AM, David Miller wrote:
+> Just some more random bits from Al,  including a conversion over to generic exytables.
 
-Please pull, thanks a lot!
+Is there a chance we could include this important fix by Rob Gardner for 5.12 as well?
 
-The following changes since commit 062c84fccc4444805738d76a2699c4d3c95184ec:
+> https://marc.info/?l=linux-sparc&m=161457847223456&w=2
 
-  Merge tag 'rproc-v5.12' of git://git.kernel.org/pub/scm/linux/kernel/git/andersson/remoteproc (2021-02-24 11:30:13 -0800)
+It fixes a hard kernel crash under certain loads which we have seen in Debian quite frequently.
 
-are available in the Git repository at:
+Thanks,
+Adrian
 
-  git://git.kernel.org:/pub/scm/linux/kernel/git/davem/sparc.git 
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
-for you to fetch changes up to cf64c2a905e0dabcc473ca70baf275fb3a61fac4:
-
-  Merge branch 'work.sparc32' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs (2021-02-26 16:16:24 -0800)
-
-----------------------------------------------------------------
-Al Viro (10):
-      sparc32: don't bother with lookup_fault() in __bzero()
-      sparc32: kill lookup_fault()
-      sparc32: switch __bzero() away from range exception table entries
-      sparc32: get rid of range exception table entries in checksum_32.S
-      sparc32: switch copy_user.S away from range exception table entries
-      sparc32: switch to generic extables
-      Merge remote-tracking branch 'sparc/master' into work.sparc32
-      sparc64: get rid of fake_swapper_regs
-      sparc32: get rid of fake_swapper_regs
-      sparc32: take ->thread.flags out
-
-David S. Miller (2):
-      Merge branch 'work.sparc' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
-      Merge branch 'work.sparc32' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
-
- arch/sparc/include/asm/elf_64.h                    |   1 -
- arch/sparc/include/asm/{extable_64.h => extable.h} |   4 +-
- arch/sparc/include/asm/processor_32.h              |   6 +-
- arch/sparc/include/asm/thread_info_64.h            |   1 +
- arch/sparc/include/asm/uaccess.h                   |   3 +
- arch/sparc/include/asm/uaccess_32.h                |  38 ----------
- arch/sparc/include/asm/uaccess_64.h                |   1 -
- arch/sparc/kernel/head_32.S                        |   2 +-
- arch/sparc/kernel/head_64.S                        |   2 +-
- arch/sparc/kernel/process_32.c                     |  12 ----
- arch/sparc/kernel/setup_32.c                       |   3 -
- arch/sparc/kernel/setup_64.c                       |   4 --
- arch/sparc/kernel/unaligned_32.c                   | 106 ++-------------------------
- arch/sparc/lib/checksum_32.S                       |  64 +++++++----------
- arch/sparc/lib/copy_user.S                         | 315 +++++++++++++++++++++++++++++----------------------------------------------------
- arch/sparc/lib/memset.S                            |  87 +++++++++--------------
- arch/sparc/mm/Makefile                             |   2 +-
- arch/sparc/mm/extable.c                            | 107 ----------------------------
- arch/sparc/mm/fault_32.c                           |  80 +++------------------
- arch/sparc/mm/mm_32.h                              |   2 -
- lib/extable.c                                      |   5 --
- 21 files changed, 198 insertions(+), 647 deletions(-)
- rename arch/sparc/include/asm/{extable_64.h => extable.h} (92%)
- delete mode 100644 arch/sparc/mm/extable.c
