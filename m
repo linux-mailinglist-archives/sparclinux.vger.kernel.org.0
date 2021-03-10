@@ -2,87 +2,118 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F1A4332EFF
-	for <lists+sparclinux@lfdr.de>; Tue,  9 Mar 2021 20:29:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC5133324B
+	for <lists+sparclinux@lfdr.de>; Wed, 10 Mar 2021 01:26:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230451AbhCIT2b (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 9 Mar 2021 14:28:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38890 "EHLO
+        id S230269AbhCJAZh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 9 Mar 2021 19:25:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230159AbhCIT2B (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 9 Mar 2021 14:28:01 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92E3FC06174A
-        for <sparclinux@vger.kernel.org>; Tue,  9 Mar 2021 11:28:00 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id u4so29140257lfs.0
-        for <sparclinux@vger.kernel.org>; Tue, 09 Mar 2021 11:28:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+YSV6ncCEG+y5BT6rnDei0hUzTGyRtar1eyCHbKmYIA=;
-        b=BpWbaJ9DlLjy2lfPpHHbAiFzYeSNCksb4Sv0yGoyTicKvDXTpdNBSZ7heRe8GWAlkK
-         7jxNeEasX8wDIReyMSzEJ3IT0qEmKc+QxIc+KBE4tiKufvfrah/5FjjvwYe/10dRerGz
-         feWcjIGoH/8abiiwJ84KXJOLDap3HzPPhea9k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+YSV6ncCEG+y5BT6rnDei0hUzTGyRtar1eyCHbKmYIA=;
-        b=FiO4pnjZKRSuvStUUK9GXJsSVPvJ9Ti9FtrKU1CsAv2jogjH+uqqI0wFT6fYWuppTN
-         COzbIynjM7AeH7XUjrOJRHzpIQaKIv8SHv+LFYen0bgm8IX8Vk6KbrY4R6YvAIAV8Cw0
-         50uNKMLKZBsMJrWPf5+AZ3cp67StoEUZXld2Pm8BuBX74iJ633+L68RCCHc3y4S6/7Bi
-         EY0SubokuDVSqUm6pF8o6UEQ4d3pzBFh3gysNwJYoBfw5V4t3PnhxRXWhKsy19GNfkvB
-         scj1k1lexR+tnkEZLteW7l5q1rBn5wdsWOLuXbJcXt19f3qSDJpclBKrzJrK3pgLUFnW
-         Kslg==
-X-Gm-Message-State: AOAM533Lw4GfsTg5FVlaGZcNeSif/B4rreOALNDJagON9c0dWAJRMfq0
-        Bbo6J3nxSnYu9x4PbiiAzNuzlZjM2RcWVQ==
-X-Google-Smtp-Source: ABdhPJxoJgv+ZmBE53SOZQhHCmksmHD/JZAwr6GRxHwakjZnf/gzNKhHvTmlP7uYun9FY3uYGHMQWQ==
-X-Received: by 2002:a19:7f95:: with SMTP id a143mr17893369lfd.419.1615318078507;
-        Tue, 09 Mar 2021 11:27:58 -0800 (PST)
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com. [209.85.167.44])
-        by smtp.gmail.com with ESMTPSA id u4sm2053322lfs.61.2021.03.09.11.27.57
-        for <sparclinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Mar 2021 11:27:57 -0800 (PST)
-Received: by mail-lf1-f44.google.com with SMTP id v2so16085012lft.9
-        for <sparclinux@vger.kernel.org>; Tue, 09 Mar 2021 11:27:57 -0800 (PST)
-X-Received: by 2002:ac2:58fc:: with SMTP id v28mr17816354lfo.201.1615318077386;
- Tue, 09 Mar 2021 11:27:57 -0800 (PST)
-MIME-Version: 1.0
-References: <20210308.154619.729170517586257571.davem@davemloft.net>
- <37859f29-dc59-d6c2-6f92-abaae32ee4ab@physik.fu-berlin.de> <20210309.110812.234617387417457658.davem@davemloft.net>
-In-Reply-To: <20210309.110812.234617387417457658.davem@davemloft.net>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 9 Mar 2021 11:27:41 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whgiPiFy9Ye_t=fV9J8VdqgZW5XQcb-1z8PgpQbVBWqCQ@mail.gmail.com>
-Message-ID: <CAHk-=whgiPiFy9Ye_t=fV9J8VdqgZW5XQcb-1z8PgpQbVBWqCQ@mail.gmail.com>
+        with ESMTP id S229775AbhCJAZB (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 9 Mar 2021 19:25:01 -0500
+X-Greylist: delayed 87914 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 09 Mar 2021 16:25:01 PST
+Received: from mail.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5449C06174A;
+        Tue,  9 Mar 2021 16:25:01 -0800 (PST)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        by mail.monkeyblade.net (Postfix) with ESMTPSA id 015764D2ECC91;
+        Tue,  9 Mar 2021 16:24:58 -0800 (PST)
+Date:   Tue, 09 Mar 2021 16:24:54 -0800 (PST)
+Message-Id: <20210309.162454.822491855062735992.davem@davemloft.net>
+To:     torvalds@linux-foundation.org
+Cc:     glaubitz@physik.fu-berlin.de, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Subject: Re: [GIT] SPARC
-To:     David Miller <davem@davemloft.net>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        linux-sparc <sparclinux@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <CAHk-=whgiPiFy9Ye_t=fV9J8VdqgZW5XQcb-1z8PgpQbVBWqCQ@mail.gmail.com>
+References: <37859f29-dc59-d6c2-6f92-abaae32ee4ab@physik.fu-berlin.de>
+        <20210309.110812.234617387417457658.davem@davemloft.net>
+        <CAHk-=whgiPiFy9Ye_t=fV9J8VdqgZW5XQcb-1z8PgpQbVBWqCQ@mail.gmail.com>
+X-Mailer: Mew version 6.8 on Emacs 27.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail.monkeyblade.net [0.0.0.0]); Tue, 09 Mar 2021 16:24:59 -0800 (PST)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Mar 9, 2021 at 11:08 AM David Miller <davem@davemloft.net> wrote:
->
-> I'll make sure that gets into my next pull req, thanks.
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 9 Mar 2021 11:27:41 -0800
 
-Note that it's obviously always easiest for me to just ignore
-something like sparc entirely, but on the other hand, particularly for
-low-volume trees it's also ok to just say "I don't have anything
-pending, here's the link to lore.kernel.org, can you apply that one
-patch directly".
+> On Tue, Mar 9, 2021 at 11:08 AM David Miller <davem@davemloft.net> wrote:
+> 
+> (And yes, I prefer lore.kernel.org over marc, although for single
+> patches it doesn't make much of a difference. For patch series, I find
+> 'b4' so convenient that I definitely want the patch to show up on
+> lore.kernel.org).
 
-(And yes, I prefer lore.kernel.org over marc, although for single
-patches it doesn't make much of a difference. For patch series, I find
-'b4' so convenient that I definitely want the patch to show up on
-lore.kernel.org).
+Sadly, lore does not archive sparclinux@vger.kernel.org, so there
+isn't much choice in this case.
+> 
+> I'll await your pull request or 'I have nothing else, take it from
+> xyz', this thread is otherwise archived for me as "done".
 
-I'll await your pull request or 'I have nothing else, take it from
-xyz', this thread is otherwise archived for me as "done".
+I added Rob's fix to the tree, here is a new pull request, thanks!
 
-              Linus
+The following changes since commit 062c84fccc4444805738d76a2699c4d3c95184ec:
+
+  Merge tag 'rproc-v5.12' of git://git.kernel.org/pub/scm/linux/kernel/git/andersson/remoteproc (2021-02-24 11:30:13 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org:/pub/scm/linux/kernel/git/davem/sparc.git 
+
+for you to fetch changes up to 69264b4a43aff7307283e2bae29e9305ab6b7d47:
+
+  sparc: sparc64_defconfig: remove duplicate CONFIGs (2021-03-09 16:22:40 -0800)
+
+----------------------------------------------------------------
+Al Viro (10):
+      sparc32: don't bother with lookup_fault() in __bzero()
+      sparc32: kill lookup_fault()
+      sparc32: switch __bzero() away from range exception table entries
+      sparc32: get rid of range exception table entries in checksum_32.S
+      sparc32: switch copy_user.S away from range exception table entries
+      sparc32: switch to generic extables
+      Merge remote-tracking branch 'sparc/master' into work.sparc32
+      sparc64: get rid of fake_swapper_regs
+      sparc32: get rid of fake_swapper_regs
+      sparc32: take ->thread.flags out
+
+Corentin Labbe (1):
+      sparc: sparc64_defconfig: remove duplicate CONFIGs
+
+David S. Miller (2):
+      Merge branch 'work.sparc' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
+      Merge branch 'work.sparc32' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
+
+Rob Gardner (1):
+      sparc64: Fix opcode filtering in handling of no fault loads
+
+ arch/sparc/configs/sparc64_defconfig               |   4 +-
+ arch/sparc/include/asm/elf_64.h                    |   1 -
+ arch/sparc/include/asm/{extable_64.h => extable.h} |   4 +-
+ arch/sparc/include/asm/processor_32.h              |   6 +-
+ arch/sparc/include/asm/thread_info_64.h            |   1 +
+ arch/sparc/include/asm/uaccess.h                   |   3 +
+ arch/sparc/include/asm/uaccess_32.h                |  38 ----------
+ arch/sparc/include/asm/uaccess_64.h                |   1 -
+ arch/sparc/kernel/head_32.S                        |   2 +-
+ arch/sparc/kernel/head_64.S                        |   2 +-
+ arch/sparc/kernel/process_32.c                     |  12 ----
+ arch/sparc/kernel/setup_32.c                       |   3 -
+ arch/sparc/kernel/setup_64.c                       |   4 --
+ arch/sparc/kernel/traps_64.c                       |  13 ++--
+ arch/sparc/kernel/unaligned_32.c                   | 106 ++-------------------------
+ arch/sparc/lib/checksum_32.S                       |  64 +++++++----------
+ arch/sparc/lib/copy_user.S                         | 315 +++++++++++++++++++++++++++++----------------------------------------------------
+ arch/sparc/lib/memset.S                            |  87 +++++++++--------------
+ arch/sparc/mm/Makefile                             |   2 +-
+ arch/sparc/mm/extable.c                            | 107 ----------------------------
+ arch/sparc/mm/fault_32.c                           |  80 +++------------------
+ arch/sparc/mm/mm_32.h                              |   2 -
+ lib/extable.c                                      |   5 --
+ 23 files changed, 205 insertions(+), 657 deletions(-)
+ rename arch/sparc/include/asm/{extable_64.h => extable.h} (92%)
+ delete mode 100644 arch/sparc/mm/extable.c
