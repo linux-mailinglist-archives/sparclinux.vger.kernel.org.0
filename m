@@ -2,47 +2,37 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0628348558
-	for <lists+sparclinux@lfdr.de>; Thu, 25 Mar 2021 00:33:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C75AA348A81
+	for <lists+sparclinux@lfdr.de>; Thu, 25 Mar 2021 08:51:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231599AbhCXXcw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 24 Mar 2021 19:32:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55290 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238635AbhCXXcv (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 24 Mar 2021 19:32:51 -0400
-Received: from mail.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF1ABC06174A
-        for <sparclinux@vger.kernel.org>; Wed, 24 Mar 2021 16:32:50 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        by mail.monkeyblade.net (Postfix) with ESMTPSA id 5D1074D248D95;
-        Wed, 24 Mar 2021 16:32:48 -0700 (PDT)
-Date:   Wed, 24 Mar 2021 16:32:44 -0700 (PDT)
-Message-Id: <20210324.163244.1041346292889410246.davem@davemloft.net>
-To:     npiggin@gmail.com
-Cc:     akpm@linux-foundation.org, sparclinux@vger.kernel.org,
-        linux-mm@kvack.org, sfr@canb.auug.org.au
-Subject: Re: [PATCH] sparc32: add stub pud_page define for walking huge
- vmalloc page tables
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20210324232825.1157363-1-npiggin@gmail.com>
-References: <20210324232825.1157363-1-npiggin@gmail.com>
-X-Mailer: Mew version 6.8 on Emacs 27.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail.monkeyblade.net [0.0.0.0]); Wed, 24 Mar 2021 16:32:48 -0700 (PDT)
+        id S229728AbhCYHuz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 25 Mar 2021 03:50:55 -0400
+Received: from verein.lst.de ([213.95.11.211]:39975 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229651AbhCYHuj (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 25 Mar 2021 03:50:39 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 3800268B05; Thu, 25 Mar 2021 08:50:37 +0100 (CET)
+Date:   Thu, 25 Mar 2021 08:50:36 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Frank Scheiner <frank.scheiner@web.de>
+Cc:     Christoph Hellwig <hch@lst.de>, Jan Engelhardt <jengelh@inai.de>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Sparc kernel list <sparclinux@vger.kernel.org>,
+        debian-sparc <debian-sparc@lists.debian.org>
+Subject: Re: Regression in 028abd92 for Sun UltraSPARC T1
+Message-ID: <20210325075036.GA27022@lst.de>
+References: <n0n38p9-rn4s-213-n983-9o3o4oo8s54r@vanv.qr> <20210323165721.GA14577@lst.de> <d68767c2-e010-f90e-9f2c-bb5250465c58@web.de> <20210324082817.GA2625@lst.de> <a356b88c-2b75-3d8b-ba47-8f0c6d0420e0@web.de> <p1p52s61-n8p-s29n-n195-q22rs07qoq40@vanv.qr> <250aaeb3-40fe-60c7-044e-aa9daacd7c12@web.de> <20210324161045.GA5969@lst.de> <092f6c45-d4fe-ac02-d416-e644e2f26795@web.de> <b8e98852-8e90-2860-a051-2173da2805c7@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b8e98852-8e90-2860-a051-2173da2805c7@web.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
-Date: Thu, 25 Mar 2021 09:28:25 +1000
-
-> Similarly to the stub p4d_page in sparc64, add a stub pud_page, this
-> is needed for hugepages in the vmap page tables to be walked without
-> ifdefs, which should be no functional change for sparc32.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-Acked-by: David S. Miller <davem@davemloft.net>
+I have to admit I'm completely lost at this point.  This new trace looks
+totally strange to me, and I'm pretty sure whatever symptoms you see are
+due to different alignments / code sections etc just triggered by the
+removal, we need help from the real sparc experts.
