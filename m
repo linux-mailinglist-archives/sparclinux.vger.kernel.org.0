@@ -2,92 +2,73 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8F234A988
-	for <lists+sparclinux@lfdr.de>; Fri, 26 Mar 2021 15:21:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A808334AA33
+	for <lists+sparclinux@lfdr.de>; Fri, 26 Mar 2021 15:40:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230248AbhCZOUw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 26 Mar 2021 10:20:52 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:43073 "EHLO pegase1.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230100AbhCZOU1 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Fri, 26 Mar 2021 10:20:27 -0400
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 4F6PJQ0zLJz9v03Q;
-        Fri, 26 Mar 2021 15:20:22 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id s0KOf5I51hUM; Fri, 26 Mar 2021 15:20:22 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 4F6PJP6Vfbz9v0P3;
-        Fri, 26 Mar 2021 15:20:21 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 9B5C58B8CF;
-        Fri, 26 Mar 2021 15:20:23 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id apm4h56oZ3Cq; Fri, 26 Mar 2021 15:20:23 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 95C5C8B8C7;
-        Fri, 26 Mar 2021 15:20:22 +0100 (CET)
-Subject: Re: [PATCH v3 11/17] riscv: Convert to GENERIC_CMDLINE
-To:     Andreas Schwab <schwab@linux-m68k.org>
-Cc:     will@kernel.org, danielwa@cisco.com, robh@kernel.org,
-        daniel@gimpelevich.san-francisco.ca.us, linux-arch@vger.kernel.org,
-        devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        microblaze <monstr@monstr.eu>, linux-mips@vger.kernel.org,
-        nios2 <ley.foon.tan@intel.com>, openrisc@lists.librecores.org,
-        linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
-        x86@kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-References: <cover.1616765869.git.christophe.leroy@csgroup.eu>
- <46745e07b04139a22b5bd01dc37df97e6981e643.1616765870.git.christophe.leroy@csgroup.eu>
- <87zgyqdn3d.fsf@igel.home>
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <81a7e63f-57d4-5c81-acc5-35278fe5bb04@csgroup.eu>
-Date:   Fri, 26 Mar 2021 15:20:20 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        id S230044AbhCZOjb (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 26 Mar 2021 10:39:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53592 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230213AbhCZOjN (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 26 Mar 2021 10:39:13 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC83C0613AA;
+        Fri, 26 Mar 2021 07:39:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=Utv9ctzA6JbUf5fzkr2Iqea2KSx8G5/onxIdDRpz+iI=; b=pwunMNpwbNGiq4DpTHowZL0XLj
+        +1BJOa0IXN/N1cqIhAKK24rogTUJN4Rom9Y7fL03P15FKPKmMTLNwdymKEwXlwSaHo4ketVtJRvd5
+        tCVyxeVRY1gFoNUZE/5QwShA2CdnByXadWqRIZxT2LXS8zWNtqGEs3szh0d4U0T2QdxAG8oLXqSSE
+        8+kLFntalg5rJONA3g5uJz9NRj3Uew0be6UCnm+87stjWJfMcvn7wJj8RY4rcOVhVnpeICXXNdDGV
+        0iXJa3VCf6BeqQ7F+EQ7hQZTMCR93e2LJzQCYYWI/PgNLr1cp8AycFH488ulR7uj14QtoNWgKJzj1
+        ZDLib1Pg==;
+Received: from [213.208.157.35] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lPnbj-005U6L-JU; Fri, 26 Mar 2021 14:38:40 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Brian Gerst <brgerst@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: cleanup compat exec handling
+Date:   Fri, 26 Mar 2021 15:38:27 +0100
+Message-Id: <20210326143831.1550030-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-In-Reply-To: <87zgyqdn3d.fsf@igel.home>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hi all,
 
+this series cleans up the exec code by sharing the native vs compat
+versions less awkwardly.
 
-Le 26/03/2021 à 15:08, Andreas Schwab a écrit :
-> On Mär 26 2021, Christophe Leroy wrote:
-> 
->> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
->> index f8f15332caa2..e7c91ee478d1 100644
->> --- a/arch/riscv/kernel/setup.c
->> +++ b/arch/riscv/kernel/setup.c
->> @@ -20,6 +20,7 @@
->>   #include <linux/swiotlb.h>
->>   #include <linux/smp.h>
->>   #include <linux/efi.h>
->> +#include <linux/cmdline.h>
->>   
->>   #include <asm/cpu_ops.h>
->>   #include <asm/early_ioremap.h>
->> @@ -228,10 +229,8 @@ static void __init parse_dtb(void)
->>   	}
->>   
->>   	pr_err("No DTB passed to the kernel\n");
->> -#ifdef CONFIG_CMDLINE_FORCE
->> -	strlcpy(boot_command_line, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
->> +	cmdline_build(boot_command_line, NULL, COMMAND_LINE_SIZE);
->>   	pr_info("Forcing kernel command line to: %s\n", boot_command_line);
-> 
-> Shouldn't that message become conditional in some way?
-> 
-
-You are right, I did something similar on ARM but looks like I missed it on RISCV.
-
-Christophe
+Diffstat:
+ arch/arm64/include/asm/unistd32.h                  |    4 
+ arch/mips/kernel/syscalls/syscall_n32.tbl          |    4 
+ arch/mips/kernel/syscalls/syscall_o32.tbl          |    4 
+ arch/parisc/kernel/syscalls/syscall.tbl            |    4 
+ arch/powerpc/kernel/syscalls/syscall.tbl           |    4 
+ arch/s390/kernel/syscalls/syscall.tbl              |    4 
+ arch/sparc/kernel/syscalls.S                       |    4 
+ arch/x86/entry/syscall_x32.c                       |    2 
+ arch/x86/entry/syscalls/syscall_32.tbl             |    4 
+ arch/x86/entry/syscalls/syscall_64.tbl             |    4 
+ fs/exec.c                                          |  136 +++------------------
+ include/linux/compat.h                             |    7 -
+ include/uapi/asm-generic/unistd.h                  |    4 
+ tools/include/uapi/asm-generic/unistd.h            |    4 
+ tools/perf/arch/powerpc/entry/syscalls/syscall.tbl |    4 
+ tools/perf/arch/s390/entry/syscalls/syscall.tbl    |    4 
+ tools/perf/arch/x86/entry/syscalls/syscall_64.tbl  |    4 
+ 17 files changed, 53 insertions(+), 148 deletions(-)
