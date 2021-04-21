@@ -2,155 +2,127 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F202365CD4
-	for <lists+sparclinux@lfdr.de>; Tue, 20 Apr 2021 18:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A6C3669D0
+	for <lists+sparclinux@lfdr.de>; Wed, 21 Apr 2021 13:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233054AbhDTQGW (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 20 Apr 2021 12:06:22 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:23168 "EHLO pegase1.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232174AbhDTQGV (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 20 Apr 2021 12:06:21 -0400
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 4FPpST5fYSz9tyMJ;
-        Tue, 20 Apr 2021 18:05:45 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id 6qTfVqAOsH66; Tue, 20 Apr 2021 18:05:45 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 4FPpST4Shgz9tyMF;
-        Tue, 20 Apr 2021 18:05:45 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 2B5AD8B807;
-        Tue, 20 Apr 2021 18:05:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id ZiEcE-0Tlz-R; Tue, 20 Apr 2021 18:05:47 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 0267E8B7ED;
-        Tue, 20 Apr 2021 18:05:45 +0200 (CEST)
-Subject: Re: [PATCH v4 19/20] mips: Convert to GENERIC_CMDLINE
-To:     Daniel Walker <danielwa@cisco.com>, Rob Herring <robh@kernel.org>
-Cc:     will@kernel.org, daniel@gimpelevich.san-francisco.ca.us,
-        arnd@kernel.org, akpm@linux-foundation.org,
-        linux-arch@vger.kernel.org, devicetree@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        microblaze <monstr@monstr.eu>, linux-mips@vger.kernel.org,
-        nios2 <ley.foon.tan@intel.com>, openrisc@lists.librecores.org,
-        linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
-        x86@kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-mm@kvack.org
-References: <cover.1617375802.git.christophe.leroy@csgroup.eu>
- <a01b6cdbae01fff77e26f7a5c40ee5260e1952b5.1617375802.git.christophe.leroy@csgroup.eu>
- <20210406173836.GW2469518@zorba>
- <20210408190408.GA1724284@robh.at.kernel.org>
- <20210409012349.GG3981976@zorba>
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <d92f99bf-20b7-a4b6-3d86-5b859e42cad8@csgroup.eu>
-Date:   Tue, 20 Apr 2021 18:05:44 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+        id S238938AbhDULSx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 21 Apr 2021 07:18:53 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:56276 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S237414AbhDULSw (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 21 Apr 2021 07:18:52 -0400
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13LBEZRO050148;
+        Wed, 21 Apr 2021 07:18:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=jAiMiw2e6+1XZZGZXBMG035KEyr8tjtVKWXIdCM0biQ=;
+ b=YUKvfRbx7B0r3vJ1PH4TaPyxW+vonDkI3EH/cT+Kl96BFtDb0qi5CCzhG2EzoN9q13b4
+ RZQ5EFbbvlKiTLtup2ArpoKVH+HNnFlX2+Y/MNQnm5sU4po2M4cE5z33TC65gfCtI1/I
+ NZgha6NdX5OU9ta49/njYdMqjYM4nXcp5hIIkSneElvN3PTWHRlBhXyzcPlXpyeTOKxQ
+ SF+RwcRnWW+ZXqiOtZLz8uK69ymgWTyhw5RArZo5nyv2A3+B+i8mo5iFt7DvPGcLoTVK
+ m8/Xae0conpE77bb00py3JCuuICLQt7hO4JHJl1gPSsbAGkvHda7sjp9WYJgGGwbYB8i jQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 382jds14pq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Apr 2021 07:18:05 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13LBG88B056012;
+        Wed, 21 Apr 2021 07:18:04 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 382jds14p3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Apr 2021 07:18:04 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13LBH3ZK018782;
+        Wed, 21 Apr 2021 11:18:02 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by ppma04ams.nl.ibm.com with ESMTP id 37yqa8j91u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Apr 2021 11:18:02 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13LBI0tE24445332
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Apr 2021 11:18:00 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 67DC94203F;
+        Wed, 21 Apr 2021 11:18:00 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0988142045;
+        Wed, 21 Apr 2021 11:18:00 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 21 Apr 2021 11:17:59 +0000 (GMT)
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>, Vineet Gupta <vgupta@synopsys.com>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, sparclinux@vger.kernel.org
+Subject: [PATCH v3 0/3] asm-generic/io.h: Silence -Wnull-pointer-arithmetic warning on PCI_IOBASE
+Date:   Wed, 21 Apr 2021 13:17:56 +0200
+Message-Id: <20210421111759.2059976-1-schnelle@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210409012349.GG3981976@zorba>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: EAQBMOlkNhLPmhmROBdDkmWEOEqTImRJ
+X-Proofpoint-ORIG-GUID: M-rChegDgNZIrGrKaOcdNqLCeP0dzNQa
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-21_04:2021-04-21,2021-04-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ clxscore=1011 impostorscore=0 adultscore=0 lowpriorityscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 mlxlogscore=647
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104210085
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hi,
 
+This is version 3 of my attempt to get rid of a clang -Wnull-pointer-arithmetic
+warning for the use of PCI_IOBASE in asm-generic/io.h. This was originally
+found on s390 but should apply to all platforms leaving PCI_IOBASE undefined
+while making use of the inb() and friends helpers from asm-generic/io.h.
 
-Le 09/04/2021 à 03:23, Daniel Walker a écrit :
-> On Thu, Apr 08, 2021 at 02:04:08PM -0500, Rob Herring wrote:
->> On Tue, Apr 06, 2021 at 10:38:36AM -0700, Daniel Walker wrote:
->>> On Fri, Apr 02, 2021 at 03:18:21PM +0000, Christophe Leroy wrote:
->>>> -config CMDLINE_BOOL
->>>> -	bool "Built-in kernel command line"
->>>> -	help
->>>> -	  For most systems, it is firmware or second stage bootloader that
->>>> -	  by default specifies the kernel command line options.  However,
->>>> -	  it might be necessary or advantageous to either override the
->>>> -	  default kernel command line or add a few extra options to it.
->>>> -	  For such cases, this option allows you to hardcode your own
->>>> -	  command line options directly into the kernel.  For that, you
->>>> -	  should choose 'Y' here, and fill in the extra boot arguments
->>>> -	  in CONFIG_CMDLINE.
->>>> -
->>>> -	  The built-in options will be concatenated to the default command
->>>> -	  line if CMDLINE_OVERRIDE is set to 'N'. Otherwise, the default
->>>> -	  command line will be ignored and replaced by the built-in string.
->>>> -
->>>> -	  Most MIPS systems will normally expect 'N' here and rely upon
->>>> -	  the command line from the firmware or the second-stage bootloader.
->>>> -
->>>
->>>
->>> See how you complained that I have CMDLINE_BOOL in my changed, and you think it
->>> shouldn't exist.
->>>
->>> Yet here mips has it, and you just deleted it with no feature parity in your
->>> changes for this.
->>
->> AFAICT, CMDLINE_BOOL equates to a non-empty or empty CONFIG_CMDLINE. You
->> seem to need it just because you have CMDLINE_PREPEND and
->> CMDLINE_APPEND. If that's not it, what feature is missing? CMDLINE_BOOL
->> is not a feature, but an implementation detail.
-> 
-> Not true.
-> 
-> It makes it easier to turn it all off inside the Kconfig , so it's for usability
-> and multiple architecture have it even with just CMDLINE as I was commenting
-> here.
-> 
+This applies cleanly and was compile tested on top of v5.12-rc8 for the
+previously broken ARC and nds32 architectures.
 
-Among the 13 architectures having CONFIG_CMDLINE, todayb only 6 have a CONFIG_CMDLINE_BOOL in addition:
+I did boot test this only on x86_64 and s390x the former implements inb()
+itself while the latter would emit a WARN_ONCE() but no drivers using inb().
 
-arch/arm/Kconfig:config CMDLINE
-arch/arm64/Kconfig:config CMDLINE
-arch/hexagon/Kconfig:config CMDLINE
-arch/microblaze/Kconfig:config CMDLINE
-arch/mips/Kconfig.debug:config CMDLINE
-arch/nios2/Kconfig:config CMDLINE
-arch/openrisc/Kconfig:config CMDLINE
-arch/powerpc/Kconfig:config CMDLINE
-arch/riscv/Kconfig:config CMDLINE
-arch/sh/Kconfig:config CMDLINE
-arch/sparc/Kconfig:config CMDLINE
-arch/x86/Kconfig:config CMDLINE
-arch/xtensa/Kconfig:config CMDLINE
+Thanks,
+Niklas
 
-arch/microblaze/Kconfig:config CMDLINE_BOOL
-arch/mips/Kconfig.debug:config CMDLINE_BOOL
-arch/nios2/Kconfig:config CMDLINE_BOOL
-arch/sparc/Kconfig:config CMDLINE_BOOL
-arch/x86/Kconfig:config CMDLINE_BOOL
-arch/xtensa/Kconfig:config CMDLINE_BOOL
+Changes since v2:
+- Improved comment for SPARC PCI_IOBASE definition as suggested by David Laight
+- Added a patch for ARC which is missing the asm/bug.h include for WARN_ONCE()
+  (kernel test robot)
+- Added ifdefs to ioport_map() and __pci_ioport_map() since apparently at least
+  test configs enable CONFIG_HAS_IOPORT_MAP even on architectures which leave
+  PCI_IOBASE unset (kernel test robot for nds32 and ARC).
 
+Changes since v1:
+- Added patch to explicitly set PCI_IOBASE to 0 on sparc as suggested by Arnd
+  Bergmann
+- Instead of working around the warning with a uintptr_t PCI_IOBASE make inb()
+  and friends explicitly WARN_ONCE() and return 0xff... (Arnd Bergmann)
 
-In the begining I hesitated about the CMDLINE_BOOL, at the end I decided to go the same way as what 
-is done today in the kernel for initramfs with CONFIG_INITRAMFS_SOURCE.
+Niklas Schnelle (3):
+  sparc: explicitly set PCI_IOBASE to 0
+  ARC: io.h: Include asm/bug.h
+  asm-generic/io.h: Silence -Wnull-pointer-arithmetic warning on
+    PCI_IOBASE
 
-The problem I see within adding CONFIG_CMDLINE_BOOL for every architecture which don't have it today 
-is that when doing a "make oldconfig" on their custom configs, thousands of users will loose their 
-CMDLINE without notice.
+ arch/arc/include/asm/io.h   |  1 +
+ arch/sparc/include/asm/io.h |  8 +++++
+ include/asm-generic/io.h    | 64 ++++++++++++++++++++++++++++++++++---
+ 3 files changed, 69 insertions(+), 4 deletions(-)
 
-When we do the other way round, removing CONFIG_CMDLINE_BOOL on the 6 architectures that have it 
-today will have no impact on existing config.
+-- 
+2.25.1
 
-Also, in order to avoid tons of #ifdefs in the code as mandated by Kernel Codying Style §21, we have 
-to have CONFIG_CMDLINE defined at all time, so at the end CONFIG_CMDLINE_BOOL is really redundant 
-with an empty CONFIG_CMDLINE.
-
-Unlike you, the approach I took for my series is to minimise the impact on existing implementation 
-and existing configurations as much as possible.
-
-I know you have a different approach where you break every existing config anyway.
-
-https://www.kernel.org/doc/html/latest/process/coding-style.html#conditional-compilation
-
-Christophe
