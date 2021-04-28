@@ -2,88 +2,98 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A711A36A114
-	for <lists+sparclinux@lfdr.de>; Sat, 24 Apr 2021 14:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18B0B36DD55
+	for <lists+sparclinux@lfdr.de>; Wed, 28 Apr 2021 18:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232867AbhDXMQr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 24 Apr 2021 08:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43348 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231836AbhDXMQo (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 24 Apr 2021 08:16:44 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA02FC061574;
-        Sat, 24 Apr 2021 05:16:05 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id nk8so11282623pjb.3;
-        Sat, 24 Apr 2021 05:16:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=r1gXv13coxNNVVcBOEf3L5qiNAnvOA7HW7SOkda9D54=;
-        b=kYRgP5XiPLgbHJe4oC/WtWzxVkZUMMJtMKtbrsOXJ4/9+LCtE6D13ykYEC2QTTu646
-         JR/ZPDaWdJkgcDkeH/30EW8Adn+OtmDUOOYu/M3H9ULIq9PtkxJhmcYZbVLLnyBA6B/K
-         O4ipvTEIAyx4KE8gfS8Ktb/ymD9W9EEXVDZDz+bn+evThuaYRQ5PKJvi/wKMcG/agrZa
-         zA73L4EBgIiZoP67TG+GRXZXoA5TWq6jTVrHGX/uWZTb7I5j2xaU9eEU526clkn9xh+3
-         wI3Bsb0g9NzWZ7AA+DbEnSJyunWzhwhV1kyB/dzeezvWebKfqFoq8CVhpDKE8eCU+fg/
-         CA8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=r1gXv13coxNNVVcBOEf3L5qiNAnvOA7HW7SOkda9D54=;
-        b=lzbs3czZlye7tPsqADnPNIGEszUbxhRxUSCXeWS/0xHbApiN/gv0RPkC5tZKUJFur9
-         2PDgTzvOj01NaB4fkRnaQR6/f2w48Kd0dcNZ/evmRdIzNhU8fN00xEFYiCXo7nYn6w/M
-         QON+5TbbhWr29Yetdef7ADpR/qz5jzaod/r0WgMq/bs25cyh3YCYKw80ibsRw4di50vY
-         8vBFfPv4hGlN19FkdbfrG351ZH6ASsWN3nV5Tvaz8engI5V+IDD1/uG++v0ruVLCmRHb
-         CZjb64dyraHeR+59Y0lzIQkIbX7qV5cutC8hY05fAk8NbxtIxxoE4LaGgQr3/k6t6vV7
-         8cnQ==
-X-Gm-Message-State: AOAM532cpFPIBYNwKufDrCH7u9B79kDhzwy4RfnfZD/lK4XFXK0JodEg
-        aatDbl+HAxJQ9jXudVwUUx+y1X80KnM=
-X-Google-Smtp-Source: ABdhPJz0jN9trmZRph4TDy9/C1Fz7+hfi1CxGXWxd8ZUP6FzR1JngHBNXrhLTWk5Q9usIHGdCtEFtA==
-X-Received: by 2002:a17:90a:c209:: with SMTP id e9mr11134321pjt.104.1619266565523;
-        Sat, 24 Apr 2021 05:16:05 -0700 (PDT)
-Received: from shreya-VirtualBox ([49.207.225.77])
-        by smtp.gmail.com with ESMTPSA id e8sm1167308pfv.177.2021.04.24.05.16.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Apr 2021 05:16:05 -0700 (PDT)
-Date:   Sat, 24 Apr 2021 17:46:00 +0530
-From:   Shreya Ajith <shreya.ajithchb@gmail.com>
-To:     davem@davemloft.net
-Cc:     linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
-        davem@davemloft.net
-Subject: [PATCH v2]sbus: char: bbc_i2c: Replaced header file asm/io.h with
- linux/io.h
-Message-ID: <20210424121600.GA2036@shreya-VirtualBox>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+        id S241138AbhD1Qq7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 28 Apr 2021 12:46:59 -0400
+Received: from pegase1.c-s.fr ([93.17.236.30]:36618 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241139AbhD1Qq6 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 28 Apr 2021 12:46:58 -0400
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+        by localhost (Postfix) with ESMTP id 4FVkzS05MQz9tcb;
+        Wed, 28 Apr 2021 18:46:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 0mBuk7O_7kHk; Wed, 28 Apr 2021 18:46:11 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 4FVkzR6Cxgz9tcY;
+        Wed, 28 Apr 2021 18:46:11 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 720158B839;
+        Wed, 28 Apr 2021 18:46:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id ikFClZJogkW5; Wed, 28 Apr 2021 18:46:11 +0200 (CEST)
+Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id EDB278B831;
+        Wed, 28 Apr 2021 18:46:10 +0200 (CEST)
+Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+        id B90C16428C; Wed, 28 Apr 2021 16:46:10 +0000 (UTC)
+Message-Id: <cover.1619628001.git.christophe.leroy@csgroup.eu>
+From:   Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [RFC PATCH v1 0/4] Implement huge VMAP and VMALLOC on powerpc 8xx
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mike Rapoport <rppt@kernel.org>
+Cc:     linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org
+Date:   Wed, 28 Apr 2021 16:46:10 +0000 (UTC)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Replaced header file asm/io.h with linux/io.h
+This series is a first tentative to implement huge VMAP and VMALLOC
+on powerpc 8xx. This series applies on Linux next.
+For the time being the 8xx specificities are plugged directly into
+generic mm functions. I have no real idea on how to make it a nice
+beautiful generic implementation for the time being, hence this RFC
+in order to get suggestions.
 
-Signed-off-by:Shreya Ajith <shreya.ajithchb@gmail.com
----
-v1->v2:
-Fixed missing spaces in the subject
+powerpc 8xx has 4 page sizes:
+- 4k
+- 16k
+- 512k
+- 8M
 
- drivers/sbus/char/bbc_i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+At the time being, vmalloc and vmap only support huge pages which are
+leaf at PMD level.
 
-diff --git a/drivers/sbus/char/bbc_i2c.c b/drivers/sbus/char/bbc_i2c.c
-index 537e55cd038d..a4a38a405b6f 100644
---- a/drivers/sbus/char/bbc_i2c.c
-+++ b/drivers/sbus/char/bbc_i2c.c
-@@ -16,7 +16,7 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <asm/bbc.h>
--#include <asm/io.h>
-+#include <linux/io.h>
- 
- #include "bbc_i2c.h"
- 
+Here the PMD level is 4M, it doesn't correspond to any supported
+page size.
+
+For the time being, implement use of 16k and 512k pages which is done
+at PTE level.
+
+Support of 8M pages will be implemented later, it requires use of
+hugepd tables.
+
+Christophe Leroy (4):
+  mm/ioremap: Fix iomap_max_page_shift
+  mm/hugetlb: Change parameters of arch_make_huge_pte()
+  mm/pgtable: Add stubs for {pmd/pub}_{set/clear}_huge
+  mm/vmalloc: Add support for huge pages on VMAP and VMALLOC for powerpc
+    8xx
+
+ arch/arm64/include/asm/hugetlb.h              |  3 +-
+ arch/arm64/mm/hugetlbpage.c                   |  5 +-
+ arch/powerpc/Kconfig                          |  3 +-
+ .../include/asm/nohash/32/hugetlb-8xx.h       |  5 +-
+ arch/sparc/include/asm/pgtable_64.h           |  3 +-
+ arch/sparc/mm/hugetlbpage.c                   |  6 +-
+ include/linux/hugetlb.h                       |  4 +-
+ include/linux/pgtable.h                       | 26 ++++++-
+ mm/hugetlb.c                                  |  6 +-
+ mm/ioremap.c                                  |  6 +-
+ mm/migrate.c                                  |  4 +-
+ mm/vmalloc.c                                  | 74 ++++++++++++++++---
+ 12 files changed, 111 insertions(+), 34 deletions(-)
+
 -- 
-2.25.1
+2.25.0
 
