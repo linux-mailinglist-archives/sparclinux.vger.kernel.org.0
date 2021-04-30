@@ -2,127 +2,142 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8D2B36F147
-	for <lists+sparclinux@lfdr.de>; Thu, 29 Apr 2021 22:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4F136F90A
+	for <lists+sparclinux@lfdr.de>; Fri, 30 Apr 2021 13:16:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235536AbhD2UuJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 29 Apr 2021 16:50:09 -0400
-Received: from mout.kundenserver.de ([217.72.192.74]:54623 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231201AbhD2UuG (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 29 Apr 2021 16:50:06 -0400
-Received: from mail-wm1-f41.google.com ([209.85.128.41]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1N4yyQ-1lUlMv1UpQ-010wy8; Thu, 29 Apr 2021 22:49:17 +0200
-Received: by mail-wm1-f41.google.com with SMTP id 4-20020a05600c26c4b0290146e1feccd8so521816wmv.1;
-        Thu, 29 Apr 2021 13:49:17 -0700 (PDT)
-X-Gm-Message-State: AOAM533Lsa8YXw7vetbN82yaMhNUIX/cxsJQ3o0zJumPSHkeUDH4ZlrO
-        E2NdMfX1mGTztpCj5Y3ak1IEvnDZGYHfo9QU+VU=
-X-Google-Smtp-Source: ABdhPJwlxMNdSsRwR0fdPNqNypLLItyjoOqUJmBY9r3HaMsASmwKpwt6rd7DUEn1wPswZS5VmrYEijB1isok1r6KSGg=
-X-Received: by 2002:a7b:c4da:: with SMTP id g26mr2183043wmk.43.1619729356972;
- Thu, 29 Apr 2021 13:49:16 -0700 (PDT)
+        id S231442AbhD3LRp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 30 Apr 2021 07:17:45 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:1336 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229849AbhD3LRo (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Fri, 30 Apr 2021 07:17:44 -0400
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13UB3H4M016527;
+        Fri, 30 Apr 2021 07:16:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=X7H6Thm5vVvEdOzIMF99WmtzE3yIxl5XgPZmIRQQpSM=;
+ b=BNfwknSmGRvxLT33wsoOPyxeWMipoQHfo4/O8XDyHNyLU3gvh8qbW034jnOI7FEaMKx8
+ w/E94NrQRqe3rrMpZldpxGgH/oq3dFrBlmhhvWULuXv5BAEUnkJumCPxyzLdeY5ed9Qy
+ dkxAY+ckatHVlhtbFO+Bzr9l7DjrmzSRgWP3TeHcum2SAMJ9K/Acv1oFwc+KT0OPTfZ3
+ TeDUYe7FcNbOzkZHs4jW7WR/LcqXLfIcKCUD90/+sep4DpRYIZ3nmZ6TxW6E6txtyaAy
+ zrXh7kCoawUz7cjYZss189Gkqxa4tx5iDpAgngnWmpito7it3tKJRzPC0BeTaKeNUFBA 0g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 388drswy1k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Apr 2021 07:16:47 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13UBDd8B052160;
+        Fri, 30 Apr 2021 07:16:46 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 388drswy0h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Apr 2021 07:16:46 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+        by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13UBCsJJ010967;
+        Fri, 30 Apr 2021 11:16:44 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma01fra.de.ibm.com with ESMTP id 384ay81q8s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Apr 2021 11:16:44 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13UBGf4C45809994
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 30 Apr 2021 11:16:42 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D2843A4057;
+        Fri, 30 Apr 2021 11:16:41 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7DF82A4040;
+        Fri, 30 Apr 2021 11:16:41 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 30 Apr 2021 11:16:41 +0000 (GMT)
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>, Vineet Gupta <vgupta@synopsys.com>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, sparclinux@vger.kernel.org
+Subject: [PATCH v4 0/3] asm-generic/io.h: Silence -Wnull-pointer-arithmetic warning on PCI_IOBASE
+Date:   Fri, 30 Apr 2021 13:16:38 +0200
+Message-Id: <20210430111641.1911207-1-schnelle@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <YIpkvGrBFGlB5vNj@elver.google.com> <m11rat9f85.fsf@fess.ebiederm.org>
-In-Reply-To: <m11rat9f85.fsf@fess.ebiederm.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 29 Apr 2021 22:48:40 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0+uKYwL1NhY6Hvtieghba2hKYGD6hcKx5n8=4Gtt+pHA@mail.gmail.com>
-Message-ID: <CAK8P3a0+uKYwL1NhY6Hvtieghba2hKYGD6hcKx5n8=4Gtt+pHA@mail.gmail.com>
-Subject: Re: siginfo_t ABI break on sparc64 from si_addr_lsb move 3y ago
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Marco Elver <elver@google.com>,
-        Florian Weimer <fweimer@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Collingbourne <pcc@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Alexander Potapenko <glider@google.com>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        kasan-dev <kasan-dev@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:Y5+kRV9UPqKJX/D/7aStG7U/Py7dIw+sGe7g3Wp8tNykx536WRq
- iv7bhZcLn7MPQIK+Gsjut2r2Itj6RnUpzjoS5iGld/vCXEhrGh/Df0y2laAfdIIVWqQjYsF
- qJI0oQN0aJfc67ZCbPr2aLvhIAp+UGPF3D9E0vMbh/JrPrLq+vGNDfq5TQtBp+fTWKRYaCR
- rOsFCo+6OdKTmhFtRMwow==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0gnD6TDUOGU=:VQyZMBvfQy1PO9+fgiyh4r
- ueF8VvNBMmTBRRaDtlb+077rlOEFzdMgDjMwS8Okn2sDCgz5IB1TForHNfA5k5lhFjLK0S7sa
- BxWimh/mdubIO40EmLhbOs2XjMv1rr4YzC2flihFITSBaO5rL9M1fldhPs0zLjfveHNV63g1D
- BB5XqARpRCbi81hm89Yn56Qy0c3NWBA/6SZBrw0KaUjiQGPY3F3j5bozH7lhroDbXOEbW8l0W
- +cklcRFYePQw18i4fS0Z9l5WohNFS21H3x5xVSZuaerf1tDra5KIZDBQyN0SBga36FYnO55Gp
- RC1JrkceZDDqfYOMmRjkWp5jRdcN9CsCDOlwZyZTnzOoSW/OpgbIMYl5CurgWd0ugiETJDykW
- x93WVKNNyY8jyryfbqgyUdBjfpQHpPFnTbvlBkn8hsZyuMnTPj+XWRDHdZ9SF7fez1BWkcHb6
- Y3rBRdFmnueYn6OdAW+QeId4qwhnyb5NNmxUUa9H0Nw/qb65slp5VdjlBYnAqNTeX+mT6Vkpl
- P0p7x9WVPIkywSg84RUSk0=
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: xRR3TU8l-97YDHOxFoi3RsZeyFN6kn-G
+X-Proofpoint-GUID: RZlDyf6cM3uzqma3gwaEolsaHKGd2vpX
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-30_06:2021-04-30,2021-04-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 mlxscore=0 bulkscore=0 spamscore=0 malwarescore=0
+ clxscore=1015 suspectscore=0 adultscore=0 priorityscore=1501
+ mlxlogscore=729 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104060000 definitions=main-2104300080
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Apr 29, 2021 at 7:23 PM Eric W. Biederman <ebiederm@xmission.com> wrote:
+From: Niklas Schnelle <niklas@komani.de>
 
-> > Which option do you prefer? Are there better options?
->
-> Personally the most important thing to have is a single definition
-> shared by all architectures so that we consolidate testing.
->
-> A little piece of me cries a little whenever I see how badly we
-> implemented the POSIX design.  As specified by POSIX the fields can be
-> place in siginfo such that 32bit and 64bit share a common definition.
-> Unfortunately we did not addpadding after si_addr on 32bit to
-> accommodate a 64bit si_addr.
->
-> I find it unfortunate that we are adding yet another definition that
-> requires translation between 32bit and 64bit, but I am glad
-> that at least the translation is not architecture specific.  That common
-> definition is what has allowed this potential issue to be caught
-> and that makes me very happy to see.
->
-> Let's go with Option 3.
->
-> Confirm BUS_MCEERR_AR, BUS_MCEERR_AO, SEGV_BNDERR, SEGV_PKUERR are not
-> in use on any architecture that defines __ARCH_SI_TRAPNO, and then fixup
-> the userspace definitions of these fields.
->
-> To the kernel I would add some BUILD_BUG_ON's to whatever the best
-> maintained architecture (sparc64?) that implements __ARCH_SI_TRAPNO just
-> to confirm we don't create future regressions by accident.
->
-> I did a quick search and the architectures that define __ARCH_SI_TRAPNO
-> are sparc, mips, and alpha.  All have 64bit implementations.
+Hi,
 
-I think you (slightly) misread: mips has "#undef __ARCH_SI_TRAPNO", not
-"#define __ARCH_SI_TRAPNO". This means it's only sparc and
-alpha.
+This is version 4 of my attempt to get rid of a clang
+-Wnull-pointer-arithmetic warning for the use of PCI_IOBASE in
+asm-generic/io.h. This was originally found on s390 but should apply to
+all platforms leaving PCI_IOBASE undefined while making use of the inb()
+and friends helpers from asm-generic/io.h.
 
-I can see that the alpha instance was added to the kernel during linux-2.5,
-but never made it into the glibc or uclibc copy of the struct definition, and
-musl doesn't support alpha or sparc. Debian codesearch only turns up
-sparc (and BSD) references to si_trapno.
+This applies cleanly and was compile tested on top of v5.12 for the
+previously broken ARC, nds32, h8300 and risc-v architecture
 
-> I did a quick search and the architectures that define __ARCH_SI_TRAPNO
-> are sparc, mips, and alpha.  All have 64bit implementations.  A further
-> quick search shows that none of those architectures have faults that
-> use BUS_MCEERR_AR, BUS_MCEERR_AO, SEGV_BNDERR, SEGV_PKUERR, nor do
-> they appear to use mm/memory-failure.c
->
-> So it doesn't look like we have an ABI regression to fix.
+I did boot test this only on x86_64 and s390x the former implements
+inb() itself while the latter would emit a WARN_ONCE() but no drivers
+use inb().
 
-Even better!
+Thanks,
+Niklas
 
-So if sparc is the only user of _trapno and it uses none of the later
-fields in _sigfault, I wonder if we could take even more liberty at
-trying to have a slightly saner definition. Can you think of anything that
-might break if we put _trapno inside of the union along with _perf
-and _addr_lsb?
+Changes since v3:
+- Changed the subject of the last patch to better reflect the actual
+  change i.e. the addition of WARN_ONCE() to the helpers not the
+  silencing of the clang warning
+- Added asm/bug.h to asm-generic/io.h so it doesn't have to be included
+  previously by all arches to be available for the WARN_ONCE()
+- Added patch for risc-v which defines PCI_IOBASE except when compiled
+  for nommu
 
-I suppose in theory sparc64 or alpha might start using the other
-fields in the future, and an application might be compiled against
-mismatched headers, but that is unlikely and is already broken
-with the current headers.
+Changes since v2:
+- Improved comment for SPARC PCI_IOBASE definition as suggested
+  by David Laight
+- Added a patch for ARC which is missing the asm/bug.h include for
+  WARN_ONCE() (kernel test robot)
+- Added ifdefs to ioport_map() and __pci_ioport_map() since apparently
+  at least test configs enable CONFIG_HAS_IOPORT_MAP even on
+  architectures which leave PCI_IOBASE unset (kernel test robot for
+  nds32 and ARC).
 
-       Arnd
+Changes since v1:
+- Added patch to explicitly set PCI_IOBASE to 0 on sparc as suggested by
+  Arnd Bergmann
+- Instead of working around the warning with a uintptr_t PCI_IOBASE make
+  inb() and friends explicitly WARN_ONCE() and return 0xff... (Arnd
+  Bergmann)
+
+Niklas Schnelle (3):
+  sparc: explicitly set PCI_IOBASE to 0
+  risc-v: Use generic io.h helpers for nommu
+  asm-generic/io.h: warn in inb() and friends with undefined PCI_IOBASE
+
+ arch/riscv/include/asm/io.h |  5 +--
+ arch/sparc/include/asm/io.h |  8 +++++
+ include/asm-generic/io.h    | 65 ++++++++++++++++++++++++++++++++++---
+ 3 files changed, 72 insertions(+), 6 deletions(-)
+
+-- 
+2.31.1
+
