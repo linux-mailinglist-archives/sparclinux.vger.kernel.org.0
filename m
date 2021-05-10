@@ -2,374 +2,145 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2072F377095
-	for <lists+sparclinux@lfdr.de>; Sat,  8 May 2021 10:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32A78377E93
+	for <lists+sparclinux@lfdr.de>; Mon, 10 May 2021 10:49:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229701AbhEHIHO (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 8 May 2021 04:07:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33400 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbhEHIHO (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 8 May 2021 04:07:14 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B8EEC061574
-        for <sparclinux@vger.kernel.org>; Sat,  8 May 2021 01:06:12 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id 82so14962378yby.7
-        for <sparclinux@vger.kernel.org>; Sat, 08 May 2021 01:06:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6A5tSBw2lQ9VwV8ravEhSr3GGgI8pYktJsKtsL6zJGE=;
-        b=HYXfLP87c2WSUZTILIsC53Gh40kJE6xScpSjQYxnnQEw4qJEz1p56IZ6iu9jhy1dta
-         g9PPcBu+yjkeHqolAb1rZMRBtmGVd889h4u+ZTcmDjws4urFvdAI5bX2LE9ICz/uhcfE
-         av1dpjEfcUt/cOXju8JmcdGGBsGUOiquSIhZirQf8flf9fwDO3msQZsvletQWiibUkyb
-         QIwLCnq8+26OXsbSBTYykGWOFYKqqllKLfPZqIi0q1cSxzMTteyKA9l3F5XC0uj/2eTR
-         mKDP6mbl/cUd7Dd/mdnIYzuT+/5xgWkq22W7tdpCcjtZcZ7RbjPlYx4iyYDlIO/d/YAP
-         jOaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6A5tSBw2lQ9VwV8ravEhSr3GGgI8pYktJsKtsL6zJGE=;
-        b=KvMtf3NwfT7wN2E1j+kTy7Qy/HAAiFs6xSwYvBzpS4RPtDmtMJJWUFdlQ/SlKdfi48
-         Q7RNMzXUNrEhkvQ30o5LJlOMyJglXI63ATYnHoJLCluiQFuR8t7wLMO/XttTL+SE6flf
-         RRQh7hE+cwM47S0QwGfVYI9lURCryBqr+WWKqXoDayatmcvHCl9GMdnya7oSikXKp8t1
-         zp1E45oJ5RX9eHBri2dKcp2oyA/OkweblIcH0U5GTpQTT55d2dkZj84tl01oHcRCwRYu
-         UVrYwOpbH2Uf7ahdLB/4lCgCpI3mdoYTZFkjanEq7HGTeVct9Saj+lF2aBaqpBmx68Vf
-         OkIw==
-X-Gm-Message-State: AOAM5321SNsSJZK5nLzBsC1t0RbE5pQyHH00XYU34J6EHMZ7boYiIbWl
-        mxO13wgw6cq+GZC/DGi7LX0GbzC0MM+S8K0aSR2D2KeEe6k=
-X-Google-Smtp-Source: ABdhPJwmx5yn9SWtsevKXg9la3/CAxgZb+W3bYsRsVC5D1cVjw5cDzXuCJrfNis04/MIq4xnb0TrcM71zlfNdIzYswI=
-X-Received: by 2002:a25:641:: with SMTP id 62mr19080690ybg.101.1620461171508;
- Sat, 08 May 2021 01:06:11 -0700 (PDT)
+        id S230098AbhEJIuq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 10 May 2021 04:50:46 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:57702 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230209AbhEJItG (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 10 May 2021 04:49:06 -0400
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14A8WxRR054354;
+        Mon, 10 May 2021 04:47:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=4yO9eZxepSCyEp/8vUMaotEbypsOwfQJcgLtkm5jAsc=;
+ b=jHXUB2YdvHj0jFuMK0dYYMcS7BPELF5KdCSsik4VjAXfnKrzPsi71IQaYAwJqZ4fTaQC
+ Vdc1Uw8f00e/Px2Rk6sLR6siGJSe85K78bTFvYE3PD+UW1MBCx6gDgOH6F+r+ntwUYjA
+ J23XHeOHCjx88bOahURrA7gBER7c2MDbXAWZr6TzPQ67m2kTR6nom3WqW4xmS7WdKlIj
+ Zd9QVQf0Vcp7onAW0OC15efZhaizFFjy1nVRQiD6S9fxrNHFRChVa+IvxlpW+M+epf6z
+ qiEjBNoGVpS9pWbSDdrh+ZNzNCPGGuMc4y0gXug6fBkf4tSIRAJkFEluff7mvsMtzT4J nQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 38exgcnd2r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 10 May 2021 04:47:49 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14A8X9wj054828;
+        Mon, 10 May 2021 04:47:49 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 38exgcnd20-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 10 May 2021 04:47:48 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+        by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14A8gf3i023607;
+        Mon, 10 May 2021 08:47:46 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by ppma03ams.nl.ibm.com with ESMTP id 38dj988sfy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 10 May 2021 08:47:46 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 14A8lisr21037452
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 10 May 2021 08:47:44 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 44B054C052;
+        Mon, 10 May 2021 08:47:44 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D55F44C059;
+        Mon, 10 May 2021 08:47:43 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Mon, 10 May 2021 08:47:43 +0000 (GMT)
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>, Vineet Gupta <vgupta@synopsys.com>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, sparclinux@vger.kernel.org
+Subject: [PATCH 0/3]  asm-generic/io.h: Silence -Wnull-pointer-arithmetic warning on PCI_IOBASE
+Date:   Mon, 10 May 2021 10:47:40 +0200
+Message-Id: <20210510084743.1850777-1-schnelle@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <520.1620350498@sss.pgh.pa.us> <CADxRZqyzbEo6kiC_DD6y9sFOtVJ4z8Ss+raccv8sy-XXdjzQHw@mail.gmail.com>
- <33336.1620396305@sss.pgh.pa.us> <34248.1620397342@sss.pgh.pa.us> <43932.1620408571@sss.pgh.pa.us>
-In-Reply-To: <43932.1620408571@sss.pgh.pa.us>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Sat, 8 May 2021 11:06:00 +0300
-Message-ID: <CADxRZqxiQxUjs8g25i3FmxA3dRJ0dbaennUfLghovumpA0J7SA@mail.gmail.com>
-Subject: Re: [cfarm-admins] gcc202 is occasionally returning EIO from fdatasync(2)
-To:     Tom Lane <tgl@sss.pgh.pa.us>,
-        Sparc kernel list <sparclinux@vger.kernel.org>
-Cc:     GCC Compile Farm administrators 
-        <cfarm-admins@lists.tetaneutral.net>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        strace development discussions <strace-devel@lists.strace.io>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: NMdOodGgcMvFTQlivDvIFZED_HKrqbO3
+X-Proofpoint-GUID: iRZs0VnKc3G77quBi8FWVfDuKQ_XxELi
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-05-10_02:2021-05-10,2021-05-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 impostorscore=0 clxscore=1015 spamscore=0 mlxlogscore=670
+ bulkscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105100061
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-So, I took a retrospective view on logs from my running ldoms...
+Hi,
 
-Summary:
-- it does not tied to specific filesystem, as gcc202 /home was ext4
-earlier and currently live on xfs (migrated recently)
-- strace test suite (futex in logs) seems a good candidate to try to
-catch the issue with sunvdc
-- it does not tied to specific LDOM configuration, some ldoms live on
-raw zfs volumes (gcc202), some ldoms have its disk devices living in a
-files on zfs  filesystem (ttip, buildd)
+This is version 5 of my attempt to get rid of a clang
+-Wnull-pointer-arithmetic warning for the use of PCI_IOBASE in
+asm-generic/io.h. This was originally found on s390 but should apply to
+all platforms leaving PCI_IOBASE undefined while making use of the inb()
+and friends helpers from asm-generic/io.h.
 
-I'm still going to make tests/checks with xfstests, strace and
-stress-ng trying to catch the issue.
+This applies cleanly and was compile tested on top of v5.12 for the
+previously broken ARC, nds32, h8300 and risc-v architecture. It also
+applies cleanly on v5.13-rc1 for which I boot tested it on s390.
 
-Detailed logs:
+I did boot test this only on x86_64 and s390x the former implements
+inb() itself while the latter would emit a WARN_ONCE() but no drivers
+use inb().
 
-deimos == management / control LDOM
-cfgcc == gcc202
-ttip == my test sparc64 ldom
+Thanks,
+Niklas
 
-sysadmin@deimos:/var/log/vntsd/cfgcc$ grep -c blk_update *
-console-log:8
-console-log.0:20
-console-log.1:13
-console-log.2:1
-console-log.3:0
-console-log.4:1
-console-log.5:1
-sysadmin@deimos:/var/log/vntsd/cfgcc$ ls -l
-total 70103
--rw-r-----   1 root     root       90002 May  7 23:05 console-log
--rw-r-----   1 root     root      185171 May  3 19:26 console-log.0
--rw-r-----   1 root     root     28291781 Apr  3 23:19 console-log.1
--rw-r-----   1 root     root     4157903 Mar  4 23:03 console-log.2
--rw-r-----   1 root     root      605083 Jan 29 20:51 console-log.3
--rw-r-----   1 root     root      522874 Dec 30 22:40 console-log.4
--rw-r-----   1 root     root     1641315 Dec  4 23:09 console-log.5
+Changes since v4:
+- Added Link to patch 4 (Arnd)
+- Improved comment on RISC-V patch mentioning current brokeness (Arnd)
 
-from console-log.5:
-[    0.000056] Linux version 5.9.0-3-sparc64-smp
-(debian-kernel@lists.debian.org) (gcc-10 (Debian 10.2.0-17) 10.2.0,
-GNU ld (GNU Binutils for Debian) 2.35.1) #1 SMP Debian 5.9.9-1
-(2020-11-19)
-[101790.136672] sunvdc: vdc_tx_trigger() failure, err=-11
-[101790.136746] blk_update_request: I/O error, dev vdiska, sector
-2174003304 op 0x1:(WRITE) flags 0x107000 phys_seg 18 prio class 0
-[101790.136764] Buffer I/O error on dev dm-0, logical block 268449293,
-lost async page write
-[101790.136786] Buffer I/O error on dev dm-0, logical block 268449294,
-lost async page write
-[101790.136796] Buffer I/O error on dev dm-0, logical block 268449295,
-lost async page write
-[101790.136806] Buffer I/O error on dev dm-0, logical block 268449296,
-lost async page write
-[101790.136816] Buffer I/O error on dev dm-0, logical block 268449297,
-lost async page write
-[101790.136826] Buffer I/O error on dev dm-0, logical block 268449298,
-lost async page write
-[101790.136835] Buffer I/O error on dev dm-0, logical block 268449299,
-lost async page write
-[101790.136845] Buffer I/O error on dev dm-0, logical block 268449300,
-lost async page write
-[101790.136854] Buffer I/O error on dev dm-0, logical block 268449301,
-lost async page write
-[101790.136864] Buffer I/O error on dev dm-0, logical block 268449302,
-lost async page write
-[101790.136917] EXT4-fs error (device dm-0):
-ext4_check_bdev_write_error:215: comm systemd-journal: Error while
-async write back metadata
-[101790.200384] Aborting journal on device dm-0-8.
-[101790.257119] EXT4-fs (dm-0): Remounting filesystem read-only
-[101790.257142] EXT4-fs error (device dm-0) in
-ext4_reserve_inode_write:5667: Journal has aborted
-[101790.257240] EXT4-fs error (device dm-0):
-ext4_journal_check_start:83: Detected aborted journal
-[101790.259239] EXT4-fs error (device dm-0):
-ext4_journal_check_start:83: Detected aborted journal
-[101790.287445] EXT4-fs error (device dm-0): ext4_dirty_inode:5869:
-inode #8782187: comm systemd-journal: mark_inode_dirty error
+Changes since v3:
+- Changed the subject of the last patch to better reflect the actual
+  change i.e. the addition of WARN_ONCE() to the helpers not the
+  silencing of the clang warning
+- Added asm/bug.h to asm-generic/io.h so it doesn't have to be included
+  previously by all arches to be available for the WARN_ONCE()
+- Added patch for risc-v which defines PCI_IOBASE except when compiled
+  for nommu
 
-from console-log.4:
-[    0.000057] Linux version 5.9.0-4-sparc64-smp
-(debian-kernel@lists.debian.org) (gcc-10 (Debian 10.2.0-19) 10.2.0,
-GNU ld (GNU Binutils for Debian) 2.35.1) #1 SMP Debian 5.9.11-1
-(2020-11-27)
-[493284.878035] futex_wake_op: futex tries to shift op by -518; fix this program
-[493287.765631] sunvdc: vdc_tx_trigger() failure, err=-11
-[493287.765704] blk_update_request: I/O error, dev vdiska, sector
-1049830096 op 0x1:(WRITE) flags 0x3000 phys_seg 2 prio class 0
-[493287.765736] Buffer I/O error on dev dm-0, logical block 127927642,
-lost async page write
-[493287.765760] Buffer I/O error on dev dm-0, logical block 127927643,
-lost async page write
-[493287.765787] EXT4-fs error (device dm-0):
-ext4_check_bdev_write_error:215: comm strace: Error while async write
-back metadata
-[493289.006197] Aborting journal on device dm-0-8.
-[493289.006244] EXT4-fs error (device dm-0) in ext4_evict_inode:249:
-Journal has aborted
-[493289.006248] EXT4-fs error (device dm-0) in ext4_evict_inode:249:
-Journal has aborted
-[493289.222338] EXT4-fs error (device dm-0):
-ext4_journal_check_start:83: Detected aborted journal
-[493289.222409] EXT4-fs (dm-0): Remounting filesystem read-only
+Changes since v2:
+- Improved comment for SPARC PCI_IOBASE definition as suggested
+  by David Laight
+- Added a patch for ARC which is missing the asm/bug.h include for
+  WARN_ONCE() (kernel test robot)
+- Added ifdefs to ioport_map() and __pci_ioport_map() since apparently
+  at least test configs enable CONFIG_HAS_IOPORT_MAP even on
+  architectures which leave PCI_IOBASE unset (kernel test robot for
+  nds32 and ARC).
 
-from console-log.2:
-[    0.000060] Linux version 5.10.0-3-sparc64-smp
-(debian-kernel@lists.debian.org) (gcc-10 (Debian 10.2.1-6) 10.2.1
-20210110, GNU ld (GNU Binutils for Debian) 2.35.1) #1 SMP Debian
-5.10.13-1 (2021-02-06)
-[220118.794680] sunvdc: vdc_tx_trigger() failure, err=-11
-[220118.794744] blk_update_request: I/O error, dev vdiskc, sector
-789205200 op 0x1:(WRITE) flags 0x4800 phys_seg 16 prio class 0
+Changes since v1:
+- Added patch to explicitly set PCI_IOBASE to 0 on sparc as suggested by
+  Arnd Bergmann
+- Instead of working around the warning with a uintptr_t PCI_IOBASE make
+  inb() and friends explicitly WARN_ONCE() and return 0xff... (Arnd
+  Bergmann)
 
-from console-log.1:
-[    0.000061] Linux version 5.10.0-4-sparc64-smp
-(debian-kernel@lists.debian.org) (gcc-10 (Debian 10.2.1-6) 10.2.1
-20210110, GNU ld (GNU Binutils for Debian) 2.35.2) #1 SMP Debian
-5.10.19-1+sparc64 (2021-03-07)
-[395369.003918] futex_wake_op: futex tries to shift op by -518; fix this program
-[505723.531540] sunvdc: vdc_tx_trigger() failure, err=-11
-[505723.531613] blk_update_request: I/O error, dev vdiskc, sector
-1833122064 op 0x1:(WRITE) flags 0x1000 phys_seg 1 prio class 0
-[505723.547017] sunvdc: vdc_tx_trigger() failure, err=-11
-[505723.547068] blk_update_request: I/O error, dev vdiskc, sector
-1833239920 op 0x1:(WRITE) flags 0x1000 phys_seg 1 prio class 0
-[505723.562462] sunvdc: vdc_tx_trigger() failure, err=-11
-[505723.562513] blk_update_request: I/O error, dev vdiskc, sector
-1833284832 op 0x1:(WRITE) flags 0x1000 phys_seg 1 prio class 0
-[505723.567732] XFS (dm-0): metadata I/O error in
-"xfs_buf_ioend+0x2cc/0x640 [xfs]" at daddr 0x6d433110 len 8 error 5
-[564991.789167] futex_atomic_op_inuser: 2 callbacks suppressed
-[564991.789176] futex_wake_op: futex tries to shift op by -849; fix this program
+Niklas Schnelle (3):
+  sparc: explicitly set PCI_IOBASE to 0
+  risc-v: Use generic io.h helpers for nommu
+  asm-generic/io.h: warn in inb() and friends with undefined PCI_IOBASE
 
-[    0.000061] Linux version 5.10.0-4-sparc64-smp
-(debian-kernel@lists.debian.org) (gcc-10 (Debian 10.2.1-6) 10.2.1
-20210110, GNU ld (GNU Binutils for Debian) 2.35.2) #1 SMP Debian
-5.10.19-1+sparc64 (2021-03-07)
-[606538.865338] sunvdc: vdc_tx_trigger() failure, err=-11
-[606538.865412] blk_update_request: I/O error, dev vdiskc, sector
-1760253248 op 0x1:(WRITE) flags 0x1000 phys_seg 4 prio class 0
-[606538.869736] XFS (dm-0): metadata I/O error in
-"xfs_buf_ioend+0x2cc/0x640 [xfs]" at daddr 0x68eb4d40 len 32 error 5
-[728702.059059] sunvdc: vdc_tx_trigger() failure, err=-11
-[728702.059131] blk_update_request: I/O error, dev vdiskc, sector
-1137021984 op 0x1:(WRITE) flags 0x4800 phys_seg 17 prio class 0
-[728702.215048] dm-0: writeback error on inode 1157860231, offset 0,
-sector 1136988968
+ arch/riscv/include/asm/io.h |  5 +--
+ arch/sparc/include/asm/io.h |  8 +++++
+ include/asm-generic/io.h    | 65 ++++++++++++++++++++++++++++++++++---
+ 3 files changed, 72 insertions(+), 6 deletions(-)
 
-[    0.000061] Linux version 5.10.0-4-sparc64-smp
-(debian-kernel@lists.debian.org) (gcc-10 (Debian 10.2.1-6) 10.2.1
-20210110, GNU ld (GNU Binutils for Debian) 2.35.2) #1 SMP Debian
-5.10.19-1+sparc64 (2021-03-07)
-[1605065.277545] futex_wake_op: futex tries to shift op by -518; fix
-this program
-[1605090.203207] sunvdc: vdc_tx_trigger() failure, err=-11
-[1605090.203295] blk_update_request: I/O error, dev vdiskc, sector
-1087405072 op 0x1:(WRITE) flags 0x4800 phys_seg 16 prio class 0
-[1605090.219790] sunvdc: vdc_tx_trigger() failure, err=-11
-[1605090.219871] blk_update_request: I/O error, dev vdiskc, sector
-1087405328 op 0x1:(WRITE) flags 0x4800 phys_seg 16 prio class 0
-[1605090.235954] sunvdc: vdc_tx_trigger() failure, err=-11
-[1605090.236016] blk_update_request: I/O error, dev vdiskc, sector
-1074363797 op 0x1:(WRITE) flags 0x9800 phys_seg 4 prio class 0
-[1605090.236059] XFS (dm-0): log I/O error -5
-[1605090.236086] XFS (dm-0): xfs_do_force_shutdown(0x2) called from
-line 1196 of file fs/xfs/xfs_log.c. Return address = 0000000076933e51
-[1605090.236097] XFS (dm-0): Log I/O Error Detected. Shutting down filesystem
-[1605090.236106] XFS (dm-0): Please unmount the filesystem and rectify
-the problem(s)
-[1605090.609638] dm-0: writeback error on inode 547115109, offset 0,
-sector 547205784
-[1605090.609657] dm-0: writeback error on inode 35621093, offset 0,
-sector 35703240
-[1605090.609707] dm-0: writeback error on inode 1085975733, offset 0,
-sector 1085987480
-[1605090.628900] dm-0: writeback error on inode 575365206, offset 0,
-sector 575365272
-[1605090.628952] dm-0: writeback error on inode 547115099, offset 0,
-sector 547144576
-[1605090.628977] dm-0: writeback error on inode 35621096, offset 0,
-sector 35621672
-[1605090.629000] dm-0: writeback error on inode 547115112, offset 0,
-sector 547144600
-[1605090.629038] dm-0: writeback error on inode 1085975738, offset 0,
-sector 1085975808
+-- 
+2.25.1
 
-
-[567060.440416] futex_wake_op: futex tries to shift op by -518; fix this program
-[606538.865338] sunvdc: vdc_tx_trigger() failure, err=-11
-[606538.865412] blk_update_request: I/O error, dev vdiskc, sector
-1760253248 op 0x1:(WRITE) flags 0x1000 phys_seg 4 prio class 0
-[606538.869736] XFS (dm-0): metadata I/O error in
-"xfs_buf_ioend+0x2cc/0x640 [xfs]" at daddr 0x68eb4d40 len 32 error 5
-[728702.059059] sunvdc: vdc_tx_trigger() failure, err=-11
-[728702.059131] blk_update_request: I/O error, dev vdiskc, sector
-1137021984 op 0x1:(WRITE) flags 0x4800 phys_seg 17 prio class 0
-[728702.215048] dm-0: writeback error on inode 1157860231, offset 0,
-sector 1136988968
-
-[    0.000061] Linux version 5.10.0-4-sparc64-smp
-(debian-kernel@lists.debian.org) (gcc-10 (Debian 10.2.1-6) 10.2.1
-20210110, GNU ld (GNU Binutils for Debian) 2.35.2) #1 SMP Debian
-5.10.19-1+sparc64 (2021-03-07)
-[52078.670379] process 'fixes_3_2/fpcsrc/packages/fpmake' started with
-executable stack
-[84700.481814] sunvdc: vdc_tx_trigger() failure, err=-11
-[84700.481875] blk_update_request: I/O error, dev vdiskc, sector
-1726087232 op 0x1:(WRITE) flags 0x800 phys_seg 9 prio class 0
-[84700.674742] dm-0: writeback error on inode 1727211665, offset 0,
-sector 1726052552
-
-
-
-from console-log:
-
-[3086382.281890] futex_wake_op: futex tries to shift op by -518; fix
-this program
-[3141976.195280] sunvdc: vdc_tx_trigger() failure, err=-11
-[3141976.195444] blk_update_request: I/O error, dev vdiskc, sector
-63150848 op 0x1:(WRITE) flags 0x4800 phys_seg 17 prio class 0
-[3141976.377290] dm-0: writeback error on inode 32556699, offset 0,
-sector 63117832
-[3151124.220995] futex_atomic_op_inuser: 14 callbacks suppressed
-[3151124.221001] futex_wake_op: futex tries to shift op by -849; fix
-this program
-...
-[3151605.377426] futex_wake_op: futex tries to shift op by -518; fix
-this program
-[3253624.278367] sunvdc: vdc_tx_trigger() failure, err=-11
-[3253624.278443] blk_update_request: I/O error, dev vdiskc, sector
-159273120 op 0x1:(WRITE) flags 0x4800 phys_seg 17 prio class 0
-[3253624.371989] dm-0: writeback error on inode 2148294407, offset 0,
-sector 159239256
-[3253918.135035] sunvdc: vdc_tx_trigger() failure, err=-11
-[3253918.135105] blk_update_request: I/O error, dev vdiskc, sector
-157618896 op 0x1:(WRITE) flags 0x4800 phys_seg 16 prio class 0
-[3253918.226523] dm-0: writeback error on inode 155142134, offset 0,
-sector 157584576
-[3254125.590955] sunvdc: vdc_tx_trigger() failure, err=-11
-[3254125.591023] blk_update_request: I/O error, dev vdiskc, sector
-657284672 op 0x1:(WRITE) flags 0x1000 phys_seg 4 prio class 0
-[3254125.606031] XFS (dm-0): metadata I/O error in
-"xfs_buf_ioend+0x2cc/0x640 [xfs]" at daddr 0x272d5640 len 32 error 5
-
-
-May 07 03:26:45 gcc202 kernel: sunvdc: vdc_tx_trigger() failure, err=-11
-May 07 03:26:45 gcc202 kernel: blk_update_request: I/O error, dev
-vdiskc, sector 159273120 op 0x1:(WRITE) flags 0x4800 phys_seg 17 prio
-class 0
-May 07 03:31:39 gcc202 kernel: dm-0: writeback error on inode
-2148294407, offset 0, sector 159239256
-May 07 03:31:39 gcc202 kernel: sunvdc: vdc_tx_trigger() failure, err=-11
-May 07 03:31:39 gcc202 kernel: blk_update_request: I/O error, dev
-vdiskc, sector 157618896 op 0x1:(WRITE) flags 0x4800 phys_seg 16 prio
-class 0
-May 07 03:35:06 gcc202 kernel: dm-0: writeback error on inode
-155142134, offset 0, sector 157584576
-May 07 03:35:06 gcc202 kernel: sunvdc: vdc_tx_trigger() failure, err=-11
-May 07 03:35:06 gcc202 kernel: blk_update_request: I/O error, dev
-vdiskc, sector 657284672 op 0x1:(WRITE) flags 0x1000 phys_seg 4 prio
-class 0
-May 07 03:35:06 gcc202 kernel: XFS (dm-0): metadata I/O error in
-"xfs_buf_ioend+0x2cc/0x640 [xfs]" at daddr 0x272d5640 len 32 error 5
-
-
-[    0.000060] Linux version 5.10.0-6-sparc64-smp
-(debian-kernel@lists.debian.org) (gcc-10 (Debian 10.2.1-6) 10.2.1
-20210110, GNU ld (GNU Binutils for Debian) 2.35.2) #1 SMP Debian
-5.10.28-1 (2021-04-09)
-May 07 11:21:40 gcc202 kernel: xfs filesystem being mounted at /home
-supports timestamps until 2038 (0x7fffffff)
-May 07 21:50:54 gcc202 kernel: sunvdc: vdc_tx_trigger() failure, err=-11
-May 07 21:50:54 gcc202 kernel: blk_update_request: I/O error, dev
-vdiskc, sector 1764819232 op 0x1:(WRITE) flags 0x1000 phys_seg 2 prio
-class 0
-May 07 21:50:54 gcc202 kernel: sunvdc: vdc_tx_trigger() failure, err=-11
-May 07 21:50:54 gcc202 kernel: blk_update_request: I/O error, dev
-vdiskc, sector 1764819328 op 0x1:(WRITE) flags 0x1000 phys_seg 8 prio
-class 0
-May 07 21:50:54 gcc202 kernel: sunvdc: vdc_tx_trigger() failure, err=-11
-May 07 21:50:54 gcc202 kernel: blk_update_request: I/O error, dev
-vdiskc, sector 1764821440 op 0x1:(WRITE) flags 0x1000 phys_seg 4 prio
-class 0
-May 07 21:50:54 gcc202 kernel: sunvdc: vdc_tx_trigger() failure, err=-11
-May 07 21:50:54 gcc202 kernel: blk_update_request: I/O error, dev
-vdiskc, sector 1764824576 op 0x1:(WRITE) flags 0x1000 phys_seg 2 prio
-class 0
-May 07 21:50:54 gcc202 kernel: XFS (dm-0): metadata I/O error in
-"xfs_buf_ioend+0x2cc/0x640 [xfs]" at daddr 0x6930f920 len 32 error 5
-
-
-
-from another LDOM :
-[    0.000070] Linux version 5.12.0-rc3 (mator@ttip) (gcc (Debian
-10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2)
-#199 SMP Mon Mar 15 13:04:24 MSK 2021
-[ 6008.263499] run fstests generic/323 at 2021-03-20 19:58:13
-[ 6008.874269] XFS (vdiskb1): Mounting V5 Filesystem
-[ 6008.886915] XFS (vdiskb1): Ending clean mount
-[ 6008.888990] xfs filesystem being mounted at /1/testvol supports
-timestamps until 2038 (0x7fffffff)
-[ 6112.836409] sunvdc: vdc_tx_trigger() failure, err=-11
-[ 6112.836548] blk_update_request: I/O error, dev vdiskb, sector
-1097992 op 0x0:(READ) flags 0x0 phys_seg 8 prio class 0
-
-and I was unable to reproduce to reproduce it with simply run
-"xfstests-dev$./check generic/323"
-
-and there's quite occasional almost same blk_update errors on another
-ldom (buildd - debian sid build)
