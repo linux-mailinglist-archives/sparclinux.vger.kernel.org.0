@@ -2,67 +2,83 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3563B39CB92
-	for <lists+sparclinux@lfdr.de>; Sun,  6 Jun 2021 00:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2A3F39D7D4
+	for <lists+sparclinux@lfdr.de>; Mon,  7 Jun 2021 10:45:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230025AbhFEXBJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 5 Jun 2021 19:01:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47516 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229998AbhFEXBJ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 5 Jun 2021 19:01:09 -0400
-Received: from mail-oo1-xc29.google.com (mail-oo1-xc29.google.com [IPv6:2607:f8b0:4864:20::c29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56BCDC061766
-        for <sparclinux@vger.kernel.org>; Sat,  5 Jun 2021 15:59:04 -0700 (PDT)
-Received: by mail-oo1-xc29.google.com with SMTP id o5-20020a4a2c050000b0290245d6c7b555so3184912ooo.11
-        for <sparclinux@vger.kernel.org>; Sat, 05 Jun 2021 15:59:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Vuef6UMB3u4KtSmbVmPIsdI+pp8YGRUKBSdGzlDIu5o=;
-        b=jmSPm1EClQxSCuwKB52pEyIdI7FGFke/UlzZFAFX0IT3eOWL1arM/KOYvo+cGlAAQg
-         pEimARMlvX1W4FzBfkh5vjWg39avHHImkJqF9Bs/fCnskzVU8eZxEYTfVtH/Mj1s43kP
-         nZt1/PJSQwmg8mi3He3vToFSZyFWL/jdRXvOVQFbs2IlLS7Z3V99Gc5Ue4oo+vnI5BrU
-         eOalUuiz9VVq+rgMKmgpZLEWMmt/aw5YJe0Q1zlSF3UEIqGQf9yScIiTGq4JCiqR58IB
-         OCqkRJ9Othxy0qrlGLeKvs8uFiD1O+YH0ICpOpmZOrwjhYJUeb+vQFss0E65KeSz4+uZ
-         wBnA==
+        id S231238AbhFGIrH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 7 Jun 2021 04:47:07 -0400
+Received: from mail-vs1-f54.google.com ([209.85.217.54]:46775 "EHLO
+        mail-vs1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230374AbhFGIrF (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 7 Jun 2021 04:47:05 -0400
+Received: by mail-vs1-f54.google.com with SMTP id z15so8465015vsn.13;
+        Mon, 07 Jun 2021 01:44:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Vuef6UMB3u4KtSmbVmPIsdI+pp8YGRUKBSdGzlDIu5o=;
-        b=ZroJ9/+fdEeFav10e1RFGx0Q6T64APMgyub+/maOw9VMvSOivnjaAUXQSKmir1UEHm
-         96XuG69g/B5vnIZP4U560lD/EbI7M0wcqQQ9hV7mZuNb7yNpjHMP8vxeHl7tjZqUwTLy
-         HWL9uFab80+hb+q1UtLkcjrYXyd7YfyNaqoZ4uAZWGsEyakqLsWSHwMvKsdmoJORGTrS
-         0dM4P8sQz/WgLdRRvXtsFl5lq92qRg3xFO746HfSWeYBgzwwWGK/D3MN+yCk3YeV7qgs
-         KtHr3MEcjWJs7qRNEly0JNF4Lyxycp3/jY5JgTKKUadpjaGZ5n6gUD3sgq84RHLQl5Re
-         HUFw==
-X-Gm-Message-State: AOAM532n89X0f78ICcczUIk8nhdftb6YR4Nq3S4//le3YVAW5uCMwQDu
-        uHmq88hZgOrC2uSZFUlPneiu2z57iJQp6jN+duI=
-X-Google-Smtp-Source: ABdhPJzxfgRgCvxjmzKFMjtmJwoxHRfAQ8++Nu9tmH7/yd9fTt/XzLNp9bJ6RJ1WhyIlIF3yU5rZT/2XHipHwRdBAsI=
-X-Received: by 2002:a4a:94ef:: with SMTP id l44mr8528849ooi.84.1622933943550;
- Sat, 05 Jun 2021 15:59:03 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NMLFqpyinJNzmHBwsTXpi/IC86W5Z3EEdqUV4Gadqtw=;
+        b=YUbC/hYOqslL6/ObJ+SXGcYz04AW2Bl5kv0FBQfpyjrL1K7dEe9Jz1aEp2NiZngjqB
+         pSImytQZbfunCF1nFrabAKZEPGMM8ewN2IRHchhEzV/nYh5y/alwS+udHY3OPsnOON1Y
+         4Xwm5ojYKx5hdJ/T6P8utxYGmz+IB4ppUWd+eM4j3CE47XU/UZuL/SkA2kOa7aActou/
+         OyC8obJD+2c2fOb8kD2ODUnnj5MrNeFGYuxC4XCfTihVUNbSMFCrHtfOzqlzF4HAMjsY
+         zkC762tdDvl6yJw6YGJIOcrTOsfhDtYPbkxFw4S89QDbSQG7rzDaI9BEZr52j2ZolYrn
+         CNsA==
+X-Gm-Message-State: AOAM531A7/q0k6XkJa7PviYZZbEnu+lu+QtUCrpCSqXAlKUzqzKPQ0SS
+        EDUmHfNsLJQSXn4b+SrfpeNLxqy6IQ/7I1ozums=
+X-Google-Smtp-Source: ABdhPJwMLHirwEQ4tJUPI7qaplUDz3bp0fsmhod8P88K7RhBRU2njU8TgCywfoM2VwxcEnVDrH/bezsBM2ie2giEJTc=
+X-Received: by 2002:a05:6102:c4c:: with SMTP id y12mr3863270vss.18.1623055497041;
+ Mon, 07 Jun 2021 01:44:57 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a4a:97a7:0:0:0:0:0 with HTTP; Sat, 5 Jun 2021 15:59:02 -0700 (PDT)
-Reply-To: maverickjones57@gmail.com
-From:   maverick Jones <jonesmaverick555@gmail.com>
-Date:   Sat, 5 Jun 2021 23:59:02 +0100
-Message-ID: <CAHk1UWmjCf_Adt92sTU4tWeQQ0gRSZt7mRt_DZtn3gP1oWT_4g@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
+References: <20210604064916.26580-1-rppt@kernel.org>
+In-Reply-To: <20210604064916.26580-1-rppt@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 7 Jun 2021 10:44:45 +0200
+Message-ID: <CAMuHMdWuOk2LBJunCsCjzjYnBDs1rZh_x=ez7N=gjYv_ETMAcQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/9] Remove DISCINTIGMEM memory model
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Matt Turner <mattst88@gmail.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        sparclinux <sparclinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hi Mike,
+
+You may want to fix the DISCINTIGMEM typo in the subject for v3, unless
+you think that makes tracking series versions more complicated ;-)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-We wish to notify you again that you were listed as a beneficiary in
-the intent of the deceased .Please provide
-
-your contact details to enable us contact you with full details on how
-to claims the Inheritance.
-
-Yours faithfully,
-
-Maverick Jones.
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
