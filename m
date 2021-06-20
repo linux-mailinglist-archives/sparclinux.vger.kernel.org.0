@@ -2,89 +2,103 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D346E3AD91C
-	for <lists+sparclinux@lfdr.de>; Sat, 19 Jun 2021 11:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 611ED3ADEB1
+	for <lists+sparclinux@lfdr.de>; Sun, 20 Jun 2021 15:35:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229851AbhFSJsJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 19 Jun 2021 05:48:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47442 "EHLO
+        id S229706AbhFTNiI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 20 Jun 2021 09:38:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbhFSJsI (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 19 Jun 2021 05:48:08 -0400
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D51CC061574;
-        Sat, 19 Jun 2021 02:45:57 -0700 (PDT)
-Received: by mail-qk1-x733.google.com with SMTP id g4so16105556qkl.1;
-        Sat, 19 Jun 2021 02:45:57 -0700 (PDT)
+        with ESMTP id S229653AbhFTNiC (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 20 Jun 2021 09:38:02 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2FA1C061283
+        for <sparclinux@vger.kernel.org>; Sun, 20 Jun 2021 06:35:47 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id w4so11215115ior.1
+        for <sparclinux@vger.kernel.org>; Sun, 20 Jun 2021 06:35:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=PzhHRAQ5Svkk0I70djnQE5HENy3mID1lQRTd49BDNKg=;
-        b=vW+YLNCLFosuKGCa6q+hnHHqYNXp/k57Va1OC9XIrIkUq8Wk0aJiFck3fzzRM8jd9h
-         Yd0sP0nr4w4at3yrJTuIg049EM+Uz8COeHdwGN3hzOeYRSMJq/O4QWAuS7+kR+l4Pmp8
-         +YHI9pW6fXDDMPSDtBl/9+fmT1De5ICus/AvZvMnaPZik5eN8Y6Viu6ueqBO7OSHppaC
-         v7tcwS0V7CKy88ZaTAZ6FDVst0dhH6cYmKDEj3JfEJI8OVyx0djlq5sUv17LntPpZnMJ
-         RpNRvYfSmUjkyHdmhnmZGNw3yVO3QR7Ib+vAqP6gYV4xnaLwVnmlx729zTcMpIJ5mzfZ
-         bbFw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=sec9fLKaTeyUvI3U/9cH5uXh5khwaRmiJ3Slq1YZSCexwKlBLvi58L8DBu55CdJDji
+         U+HuEZd9onOgJ+OTF2rj1+rkaNRkmc9mUKozs32zG54utaQ749Tn8dwDfGRCa86Y13h3
+         aTPzQqGcbZM/EAbe2+YYkP8IzEtm7OFmKWqXTdVfNhb2VSah4cfQXUGVQ0X59BkXxqUT
+         4pZGErCa13JdLdCIRor4r89BUHwblkmYb4cwi8/7Nzr0zyCOHjauEmAl4PRZ8S1C6dv6
+         acCJLW1ZaLruky9plyyHKip4E8d31xV8uUpmSHsk2ZsjBfcQBVTL2OilqasULeboqC8n
+         0h/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PzhHRAQ5Svkk0I70djnQE5HENy3mID1lQRTd49BDNKg=;
-        b=b9Zv8ISiNsOPW2Jp+tJl3xNyszO9F9NHj09Pwf6fSUxRJ9Y0NMgQbeG4PURdDyyeJD
-         D4IetknrDuncaxmipPHRdTyf5ijuGGV929x3e7bTp21yNxk50gQxwSe26mbtf5nweNI8
-         KBqQzAY6ackYXRy0NSYzwplwtmXWAxMQB4GiLZTeiubIFI5AFp3L9d4ttbggXCM0hvCf
-         yvSfVnv2tGWdM2c3iEoTVOCpWOJwhpG9ETGqB5yQidwhiMs7HP80tx+D4ZaYzUcsCwkt
-         tQPKzIQmxSdJ/Hc4lGCjY0EOZepnOBzpUlXdrsaa87BcPrGNJG9OBTdmsFVCORydqbz+
-         /mhQ==
-X-Gm-Message-State: AOAM531PEFNmGEErMrGJeLqpt+g1f2dif3tTWv4Mo9ILRWPEqc0G31rb
-        EfbwXCzvU4aJMzOaQI5iy8FOa/mXOaEj1aW+T8XDK6DidF0iHA==
-X-Google-Smtp-Source: ABdhPJzqgTsUss+Mlk8wTIbZKaO/PULpJ49bXoyv8GTim81lOQQyKy7c5dnduRsXsY6gra4Z8sR5zEYkSRAPJsWOpYk=
-X-Received: by 2002:a25:26cb:: with SMTP id m194mr19905097ybm.362.1624095956135;
- Sat, 19 Jun 2021 02:45:56 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=h6ODOSYN0yHD8bH5kn9lPkxxSLVn+0F95QjuGlo6w15yI7zPvviG4va5mF2kYc3n/b
+         StI1hq4rpxo9pwX4TyQtSrtHJUUHthA0XjmDif4KUPlKTlgR6hk3rqx0hFPUtinKrjSi
+         71DQzCIr8HXqgvPPXaRdni+NbwYMJ6TnTIRZ86VUyj+Idj0M4toAKdLmcPxHy10tPV+X
+         hBi/XPqtjEFILMI+6YOz4FOSqd0m37qWH5idC/YE3GV+7vjjQ2XlVCQtEgOtWfonJx0P
+         8pvrj6TQzftJp40WRR1dM+gxT1pflKchCNSzjCiCUh4BLtdK07tXVOmvYJvO4Z2AMpJz
+         azSA==
+X-Gm-Message-State: AOAM531JQon+Z4CyfKTbrS2L6v9vOoA0kHZPUXIcvPBdlhN+1kXjEbuE
+        MwVY+A0CkSTx+XnU7HmGTGj29KBhbn3CYvdl/4o=
+X-Google-Smtp-Source: ABdhPJwO76FoleXtHusTIesxM2cuIvE9VdIlMyNt5WPTfvQkSUUR8O1MTtP/waIv/m9vsUoacT9Q2gT5SJ41poXCB/Q=
+X-Received: by 2002:a05:6602:1810:: with SMTP id t16mr15654363ioh.48.1624196145888;
+ Sun, 20 Jun 2021 06:35:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <CADxRZqwzbHvMwEB=y_xi2GYK55wtnzycWcUoK_t4q_ccisp+Sg@mail.gmail.com>
- <f9bd5a0e-6f9e-c042-cbfc-2e03bf16b92c@canonical.com>
-In-Reply-To: <f9bd5a0e-6f9e-c042-cbfc-2e03bf16b92c@canonical.com>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Sat, 19 Jun 2021 12:45:45 +0300
-Message-ID: <CADxRZqz6EZ-K+mWn4A5kp9yZEt1v1YjmFqeZNcf+W99fT2dm8w@mail.gmail.com>
-Subject: Re: [sparc64] kernel panic from running a program in userspace
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     Sparc kernel list <sparclinux@vger.kernel.org>,
-        Linux Kernel list <linux-kernel@vger.kernel.org>,
-        debian-sparc <debian-sparc@lists.debian.org>,
-        kernel-testers@vger.kernel.org
+Received: by 2002:a05:6e02:1baf:0:0:0:0 with HTTP; Sun, 20 Jun 2021 06:35:45
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <sarah.koffi101@gmail.com>
+Date:   Sun, 20 Jun 2021 15:35:45 +0200
+Message-ID: <CA+ifgLGSH5KW9J+Z85axgUznJEQcab5mED6rZZnS3OBzXTnaxw@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sat, Jun 19, 2021 at 12:31 PM Colin Ian King
-<colin.king@canonical.com> wrote:
->
-> Hi,
->
-> I suspect this issue was fixed with the following commit:
->
-> commit e5e8b80d352ec999d2bba3ea584f541c83f4ca3f
-> Author: Rob Gardner <rob.gardner@oracle.com>
-> Date:   Sun Feb 28 22:48:16 2021 -0700
->
->     sparc64: Fix opcode filtering in handling of no fault loads
+Greetings From Mrs. Sarah Koffi
 
-Colin,
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-yes, but I believe that it was quite a different kernel bug.
-Besides, my current kernel test is based on git kernel 5.13.0-rc6
-(released last monday), which already includes the mentioned 'opcode'
-fix.
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
 
-> > stress-ng.git$ ./stress-ng --verbose --timeout 10m --opcode -1
-> > stress-ng: debug: [480950] stress-ng 0.12.10 g27f90a2276bd
-> > stress-ng: debug: [480950] system: Linux ttip 5.13.0-rc6 #229 SMP Tue
-> > Jun 15 12:30:23 MSK 2021 sparc64
-> > stress-ng: debug: [480950] RAM total: 7.8G, RAM free: 7.0G, swap free: 768.7M
-> > stress-ng: debug: [480950] 8 processors online, 256 processors configured
-> > stress-ng: info:  [480950] dispatching hogs: 8 opcode
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
+
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
+
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
+
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi
