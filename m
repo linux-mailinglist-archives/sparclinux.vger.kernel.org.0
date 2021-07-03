@@ -2,96 +2,64 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 762A13B9DBA
-	for <lists+sparclinux@lfdr.de>; Fri,  2 Jul 2021 10:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 120E33BB3CA
+	for <lists+sparclinux@lfdr.de>; Mon,  5 Jul 2021 01:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230518AbhGBIxx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 2 Jul 2021 04:53:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50540 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230335AbhGBIxx (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 2 Jul 2021 04:53:53 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CADC061764
-        for <sparclinux@vger.kernel.org>; Fri,  2 Jul 2021 01:51:21 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id w127so10490517oig.12
-        for <sparclinux@vger.kernel.org>; Fri, 02 Jul 2021 01:51:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zbPxvu3NmB2z0+Y/UKqhW4DpRcr/7LUWF7NaploBKiY=;
-        b=g25azOrQxK05y8GRoMOZ+brcEx47mkcPMDJpvFXSyPuG3DFIItFa0fY3sE+mixpaVM
-         ws+joTgnwsvcrFjC6noqzghYqyjApLTZf3/GR8fpmhPRBepsgZlXCGzzTzpiQL8gPjXe
-         fnMwrTok4oukOf/UFv6IpM2uO5IJ3hn1t5IK+TQTyMLXEJzjnxjh6Sl9jPj5Bjj7glXm
-         YGGskCsDUjCqolu/ZsbHGqSQPW43Wv+9O2Ui00PyBlyUwGkGEW1hSlIliznPfxEcWbT2
-         WxNonKgDlH2gwU7OekOq+F8AXT2NvkSnK0AggHowz4Y/P1Z/E1HvUOauPgrjYC6kBDno
-         DW3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zbPxvu3NmB2z0+Y/UKqhW4DpRcr/7LUWF7NaploBKiY=;
-        b=ivjz3H7ZaQN29rPY71XeVZ0g2E0cpNrajpbaWRkgN4FKOP79rNjoaOQnjLVgPZyS9d
-         VYQautoOqaUBt2QGY6caN0oBn8O94igF0cN0aCImzo7zmNAuXVrUvg1KapvSMoSgK2gM
-         z+lUr9lPGbCLwU0Xh0NV3bGHvJw2y5ET6qScwqlTGepcY90WSHQlJeKrffNMm9oIW85e
-         I8OUc1NmN5bPQ06DuGJ1lUUCXJPcKxXyQ7ZUn0abvhk4rrbZ3dTYhAmmkyCNqn8ZscR1
-         MGwFyitnbQEffg9JXg8Oo+a5cPGHZ1rSsL+wuJU2NaDyoyhxPU9LM2gpKSEowcu+ARSc
-         tn3g==
-X-Gm-Message-State: AOAM532KBqSVWqFPHRr4R+NEKKjxr6guiStsPw6xQw7sJKyTWodtNwlX
-        ST90QuRkODZlTLsM3SEV9b9moeoJyEF4mFKJCXX9Tg==
-X-Google-Smtp-Source: ABdhPJympXWi8Ppuk567NBcohD0mgz01KaWIVKIBQyPdKE6YubE7I55ijr5HkmI+QxdfkyM3G3QCDTahgXwb8SBr2eM=
-X-Received: by 2002:a05:6808:7c8:: with SMTP id f8mr3011976oij.121.1625215880431;
- Fri, 02 Jul 2021 01:51:20 -0700 (PDT)
+        id S232238AbhGDXTE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 4 Jul 2021 19:19:04 -0400
+Received: from static-190-25-223-138.static.etb.net.co ([190.25.223.138]:34952
+        "EHLO correo.hdv.gov.co" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233257AbhGDXOS (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 4 Jul 2021 19:14:18 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by correo.hdv.gov.co (Postfix) with ESMTP id 811E31EE26B7;
+        Sat,  3 Jul 2021 15:32:01 -0500 (-05)
+Received: from correo.hdv.gov.co ([127.0.0.1])
+        by localhost (correo.hdv.gov.co [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 1-1GoIKjNWbP; Sat,  3 Jul 2021 15:32:01 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.hdv.gov.co (Postfix) with ESMTP id 111371EC626B;
+        Sat,  3 Jul 2021 14:51:03 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.10.3 correo.hdv.gov.co 111371EC626B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hdv.gov.co;
+        s=11DF984A-9D1F-11E6-B193-F2669FC4C452; t=1625341863;
+        bh=SKFadKgM92kiwue8eMLvzaTB0eiP/neKAp89ygsk9fM=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=FepetqF58iwAACfM0G4fGLhZeR9WmN+IHEd9i53CA645XYrzJqDp+HSKLe/nOb0NC
+         G5FqcZdY4qhKCsx91O/jzUTsg+zIUD4murVIQA0wJMYxw0zlYfBWr7lBEvQjrozCwq
+         vqwrwbeOKsjz/m09bg+CiJe/KoqfC//FDENwdknA=
+X-Virus-Scanned: amavisd-new at correo.hdv.gov.co
+Received: from correo.hdv.gov.co ([127.0.0.1])
+        by localhost (correo.hdv.gov.co [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id OMADQNkglG40; Sat,  3 Jul 2021 14:51:02 -0500 (-05)
+Received: from [172.20.10.6] (unknown [41.147.1.129])
+        by correo.hdv.gov.co (Postfix) with ESMTPSA id 7666D1E4066B;
+        Sat,  3 Jul 2021 10:10:47 -0500 (-05)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <20210429190734.624918-1-elver@google.com> <20210429190734.624918-3-elver@google.com>
- <20210526174217.GB19898@willie-the-truck> <CANpmjNOOW6-8su=VNipvb7ztQ0TdF9THn+yeWepz7D7BAL418Q@mail.gmail.com>
- <20210526182937.GA20055@willie-the-truck>
-In-Reply-To: <20210526182937.GA20055@willie-the-truck>
-From:   Marco Elver <elver@google.com>
-Date:   Fri, 2 Jul 2021 10:51:08 +0200
-Message-ID: <CANpmjNN6D7MQJN5oDuLzmG3wxuFvc-ORBoHPLPhWo+f6cOH2cA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] arm64: Add compile-time asserts for siginfo_t offsets
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: my subject
+To:     Recipients <planeacion.arquitecto@hdv.gov.co>
+From:   planeacion.arquitecto@hdv.gov.co
+Date:   Sat, 03 Jul 2021 08:10:36 -0700
+Reply-To: callumfoundation05@outlook.com
+Message-Id: <20210703151048.7666D1E4066B@correo.hdv.gov.co>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, 26 May 2021 at 20:29, Will Deacon <will@kernel.org> wrote:
-> On Wed, May 26, 2021 at 07:50:41PM +0200, Marco Elver wrote:
-> > On Wed, 26 May 2021 at 19:42, Will Deacon <will@kernel.org> wrote:
-> > > Hi Marco,
-> > >
-> > > On Thu, Apr 29, 2021 at 09:07:34PM +0200, Marco Elver wrote:
-> > > > To help catch ABI breaks at compile-time, add compile-time assertions to
-> > > > verify the siginfo_t layout.
-> > > >
-> > > > Signed-off-by: Marco Elver <elver@google.com>
-> > > > ---
-> > > >  arch/arm64/kernel/signal.c   | 36 ++++++++++++++++++++++++++++++++++++
-> > > >  arch/arm64/kernel/signal32.c | 36 ++++++++++++++++++++++++++++++++++++
-> > > >  2 files changed, 72 insertions(+)
-> > >
-> > > Do you want me to queue this patch in the arm64 tree, or is the series all
-> > > going together via another route?
-> >
-> > I think Eric will queue them together with a bunch of other cleanups,
-> > because as-is these patches are out-of-date as of:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a0e31f3a38e77612ed8967aaad28db6d3ee674b5
->
-> Ok, thanks. I will ignore this then :)
+Hallo,
 
-Eric, are these static_assert patches being sent this merge-window
-along with the other cleanups?
+ Sie haben eine Spende von 2.800.000,00 USD. Ich gewann die amerikanische L=
+otterie im Wert von 343 Millionen US-Dollar in Amerika und spendete einen T=
+eil davon an f=FCnf gl=FCckliche Menschen und Wohlt=E4tigkeitsorganisatione=
+n, die sich an meinen verstorbenen Enkel erinnern, der Anfang April vorzeit=
+ig geboren wurde und nur einen Tag lebte. F=FCr weitere Informationen wende=
+n Sie sich bitte an: callumfoundation05@outlook.com
 
-Thanks,
--- Marco
+ =
+
+
+Mit freundlichen Gr=FC=DFen
+Frau Lerynne West
