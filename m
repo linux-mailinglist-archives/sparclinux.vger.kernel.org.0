@@ -2,42 +2,59 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B77A3BF11B
-	for <lists+sparclinux@lfdr.de>; Wed,  7 Jul 2021 22:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 719EC3C4000
+	for <lists+sparclinux@lfdr.de>; Mon, 12 Jul 2021 01:32:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231244AbhGGU7h (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 7 Jul 2021 16:59:37 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:47504 "EHLO
-        mail.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230019AbhGGU7h (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 7 Jul 2021 16:59:37 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        by mail.monkeyblade.net (Postfix) with ESMTPSA id 3B2284D0F688B;
-        Wed,  7 Jul 2021 13:56:55 -0700 (PDT)
-Date:   Wed, 07 Jul 2021 13:56:51 -0700 (PDT)
-Message-Id: <20210707.135651.420878063579280953.davem@davemloft.net>
-To:     mark.rutland@arm.com
-Cc:     linux-kernel@vger.kernel.org, peterz@lists.infradead.org,
-        mingo@kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH] locking/atomic: sparc: fix arch_cmpxchg64_local()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20210707083032.567-1-mark.rutland@arm.com>
-References: <20210707083032.567-1-mark.rutland@arm.com>
-X-Mailer: Mew version 6.8 on Emacs 27.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail.monkeyblade.net [0.0.0.0]); Wed, 07 Jul 2021 13:56:55 -0700 (PDT)
+        id S229665AbhGKXfB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Sun, 11 Jul 2021 19:35:01 -0400
+Received: from mail.07d05.mspz7.gob.ec ([186.46.59.139]:45492 "EHLO
+        mail.07d05.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229660AbhGKXfB (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 11 Jul 2021 19:35:01 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTP id D4B0219209A3;
+        Sun, 11 Jul 2021 17:14:55 -0500 (-05)
+Received: from mail.07d05.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.07d05.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ZNhf_DR2roRU; Sun, 11 Jul 2021 17:14:55 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTP id E356919209C8;
+        Sun, 11 Jul 2021 17:14:54 -0500 (-05)
+X-Virus-Scanned: amavisd-new at 07d05.mspz7.gob.ec
+Received: from mail.07d05.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.07d05.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 22V2TeR8ooKw; Sun, 11 Jul 2021 17:14:54 -0500 (-05)
+Received: from cris-PC.wifi (unknown [105.9.79.139])
+        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTPSA id 9DA8F1920980;
+        Sun, 11 Jul 2021 17:14:45 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: spende von 2,000,000 euro
+To:     Recipients <maria.coronel@07d05.mspz7.gob.ec>
+From:   ''Michael Weirsky'' <maria.coronel@07d05.mspz7.gob.ec>
+Date:   Mon, 12 Jul 2021 00:14:33 +0200
+Reply-To: mikeweirskyspende@gmail.com
+Message-Id: <20210711221445.9DA8F1920980@mail.07d05.mspz7.gob.ec>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Mark Rutland <mark.rutland@arm.com>
-Date: Wed,  7 Jul 2021 09:30:32 +0100
+Lieber Freund,
 
-> Peter, David, could one of you please apply this? It's an urgent fix for
-> fallout from the ARCH_ATOMIC conversion, and it'd be good to fix before -rc1.
+Ich bin Herr Mike Weirsky, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 273million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen.
+Das ist dein Spendencode: [MW530342019]
 
-Peter please take this as I am backlogged.
+www.youtube.com/watch?v=un8yRTmrYMY
 
-Thank you.
+
+Antworten Sie mit dem SPENDE-CODE an diese 
+
+E-Mail:mikeweirskyspende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+Grüße
+Herr Mike Weirsky
