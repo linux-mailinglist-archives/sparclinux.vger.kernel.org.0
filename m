@@ -2,61 +2,90 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5736E3E122B
-	for <lists+sparclinux@lfdr.de>; Thu,  5 Aug 2021 12:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1382C3E1A86
+	for <lists+sparclinux@lfdr.de>; Thu,  5 Aug 2021 19:36:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240354AbhHEKJm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 5 Aug 2021 06:09:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38712 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240055AbhHEKJk (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 5 Aug 2021 06:09:40 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 856CEC06179A
-        for <sparclinux@vger.kernel.org>; Thu,  5 Aug 2021 03:09:24 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id y12so7560909edo.6
-        for <sparclinux@vger.kernel.org>; Thu, 05 Aug 2021 03:09:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
-        b=n10iYXs1AptC2KvJm+JtSBDhlxmP7w+4FSSzJCGBzq744n00FbqUWvZZ1M3bZIKpMZ
-         47t3M6EWAmnRZF6k56QxknChoLO78dSaGiSlJbAqzjzueaaLLGpPQ3kFrT+txqh9UQPY
-         ckHJxwkcp9Sb+t5M3r6xElhq5Tv3kwreLwJ7h0PIV6g++T/NLgEsq3RUzTDxwVMWNudb
-         B23/XgMRR0KFyESIvsnqpAwJc00bgHroH7IdjmYgwt6LTT9l4eHOjIJs17dI9kANiK68
-         b7SkW3ma7hdPuV0RwtTRXLbBeqCyKXnkNrXjF0ByEpQ7Ioda+xBsHwM+DF7fSBt/H/Gl
-         v/7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
-        b=N6FrzjsIAkVpDCcTuCLfI6HhsmPHMR4PAqGDM/uafMTry3e4Mjyd7iWWh1mQX546+2
-         MyhCdfoo2zK8UjHYpMOCpmkGClp6bthn8wckEwh3brWodu/zAevOfbQCwBwrCHHs7+1f
-         z/NXURbN+ZhZuc4D1ywnuGaxAHVIOKK3qULX/904XTOqeoBV0FnbP8DgETBbplXlhiIK
-         ZXUWis5mRIQbiba2OpytCJ5GNo4CbX0nJCi7QBSwGmYJ8+ZPixF12p9/P4s8H0TF5vnj
-         Jg16zY+OUo2T8ZGihbvZ7jviUn1ZnADX84HXMCl0cfUHge0+ic8j57IL9agdkgd1b2ZP
-         gexg==
-X-Gm-Message-State: AOAM530jGrdO5eO4h7GSG9jNIklqgoPDK5oMtT3NtJuR65REMalVb4t1
-        m7rnQKISPvKvHefu4b+NXQ8XQSM7l8zd4DxQNdA=
-X-Google-Smtp-Source: ABdhPJzuHjsBuIWS9qvNtJFp87n7oEYiWdxsYj88OckM/2Pcka357A6t48J28bM9KZMmF0BZhbTLriiZhGWd0NHcLJ4=
-X-Received: by 2002:a05:6402:49a:: with SMTP id k26mr5365440edv.279.1628158163011;
- Thu, 05 Aug 2021 03:09:23 -0700 (PDT)
+        id S240291AbhHERgz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 5 Aug 2021 13:36:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58014 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239498AbhHERgz (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 5 Aug 2021 13:36:55 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0683E610A2;
+        Thu,  5 Aug 2021 17:36:32 +0000 (UTC)
+Date:   Thu, 5 Aug 2021 18:36:25 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Brian Cain <bcain@codeaurora.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        John Crispin <john@phrozen.org>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-snps-arc@lists.infradead.org, linux-csky@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org
+Subject: Re: [PATCH 1/3] arch: Export machine_restart() instances so they can
+ be called from modules
+Message-ID: <20210805173625.GH6719@arm.com>
+References: <20210805075032.723037-1-lee.jones@linaro.org>
+ <20210805075032.723037-2-lee.jones@linaro.org>
 MIME-Version: 1.0
-Received: by 2002:a05:6408:258c:b029:e3:fe5c:5c2d with HTTP; Thu, 5 Aug 2021
- 03:09:20 -0700 (PDT)
-Reply-To: theresabangurah3333@yahoo.com
-From:   Theresa Bangurah <mariamabah77879@gmail.com>
-Date:   Thu, 5 Aug 2021 11:09:20 +0100
-Message-ID: <CAAi==jpsiLcjDaWg_=tyzCq6dfO42hxUrbAZW5hFC8u1MxcqiQ@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210805075032.723037-2-lee.jones@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
--- 
-My name is Mrs.Theresa Bangurah,i am American citizen i have something
-important to tell you.Reply me immediately you get this message.God
-bless you.
+On Thu, Aug 05, 2021 at 08:50:30AM +0100, Lee Jones wrote:
+> diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+> index b4bb67f17a2ca..cf89ce91d7145 100644
+> --- a/arch/arm64/kernel/process.c
+> +++ b/arch/arm64/kernel/process.c
+> @@ -212,6 +212,7 @@ void machine_restart(char *cmd)
+>  	printk("Reboot failed -- System halted\n");
+>  	while (1);
+>  }
+> +EXPORT_SYMBOL(machine_restart);
+
+Should we make this EXPORT_SYMBOL_GPL? I suppose it's not for general
+use by out of tree drivers and it matches the other pm_power_off symbol
+we export in this file.
+
+Either way:
+
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
