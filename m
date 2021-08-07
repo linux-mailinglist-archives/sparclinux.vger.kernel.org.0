@@ -2,70 +2,140 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C44113E2CD7
-	for <lists+sparclinux@lfdr.de>; Fri,  6 Aug 2021 16:41:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2B7E3E370D
+	for <lists+sparclinux@lfdr.de>; Sat,  7 Aug 2021 22:50:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241081AbhHFOmL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 6 Aug 2021 10:42:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33792 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240937AbhHFOmL (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 6 Aug 2021 10:42:11 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 658EFC06179E
-        for <sparclinux@vger.kernel.org>; Fri,  6 Aug 2021 07:41:54 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id o5so15443790ejy.2
-        for <sparclinux@vger.kernel.org>; Fri, 06 Aug 2021 07:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
-        b=Bwoup+8csuZ0aplYDrhW1xTORktIbRO14S6hXUsMZ9qnVQK/Wen6vIADpq80JjLLvK
-         2pA4sCb9U7+sKuLkDvBPL+7glCU3yWZXzZXfnOqNPlpUMIi37fJjkb1OyWFGaXbn+7qJ
-         ZgpNgioUv5oIUkujl6qgAeZCEY+5dL8nHoDIeUBJmbLeQbGLl8RMPfl5e1I7TVQtz72M
-         YgCtE5Ps5pu1XK1Wap/uxFRItrSEKSh9T9SE6S/+fyFaZRR8rqClRcvW6amRZLYFOpTd
-         W9AfLqI29XcgUqeuC8OIG9xIi1Y7WAzEvjmjWDuPPWYUqQ4diYsAuxjLzXbMOPuFHMkS
-         MwFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
-        b=CmHwxfp0Ryy2A0DndW/HK9j7+/hsupLu89ql/klznLcPQvLsA0cilokdGacqeiicYk
-         W2PxwkiHCQgN5qOfO4rQ7Fk5642zRfRKvZT5ZsAiMI8x5ZfcfkN+p2uyDMTKlarzc/w+
-         8+nXCRoQHfgjsBca1pPG8MKAQDPUu4hUFCVppbyKrHUqnwq49727GwyygE+ZuoWfkrz1
-         DW57KPxkgnjI4Fr0efcUJro55V8kMjVCXiRrC2RY67lKyQaGYEFgpX72LEyMv0jEufsT
-         D6eq4xI5lIEmqA2ghMJH00/6g+rpTZr0Nvae1B2r0oEVg/62TFa/OscFIckYiIoXw0n+
-         gqgg==
-X-Gm-Message-State: AOAM532B44TeAynT4FIlhK8FoyyRvnPvFYkpESYLV0iaSPnCA897B1js
-        P+01zFbcWgKDzElMFjVgLo15vytY0lPsZrjFB4w=
-X-Google-Smtp-Source: ABdhPJzhoMwSsDxi4S8EoWL0J76UmqUWdvA8vv3/aAh6CaNxty+Qan2PxETx4EBDoNgIDXjmLPth7CopVqd9zmwjhmA=
-X-Received: by 2002:a17:906:648f:: with SMTP id e15mr10312451ejm.451.1628260912483;
- Fri, 06 Aug 2021 07:41:52 -0700 (PDT)
+        id S229919AbhHGUuT (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 7 Aug 2021 16:50:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:50419 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229882AbhHGUuS (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 7 Aug 2021 16:50:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1628369400;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+        bh=sz8B19iZOKGMJ6EdmHryUsLjJMtkphPwU0rE5odAY5c=;
+        b=JkaR+K+66bLuw9j2htzvgMW+BJRwSqn2vdy8B7iJ/hfGSC3FricjVk1OLs2x5yAoEhJU4/
+        ggojocBvX+TUJQCpADSzxO9ExnGnAa9qMP0yRvudzcQmcJeJzIwnPFKqmEKiGSwmKu5kHk
+        m3VL+S4yjfrmPztcHhLHCQv6Q6cjIro=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-229-Egatw2qiNcyRuKj5p5975A-1; Sat, 07 Aug 2021 16:49:57 -0400
+X-MC-Unique: Egatw2qiNcyRuKj5p5975A-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D075C801AEB;
+        Sat,  7 Aug 2021 20:49:55 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 96C331007606;
+        Sat,  7 Aug 2021 20:49:55 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 177KnsfW003455;
+        Sat, 7 Aug 2021 16:49:54 -0400
+Received: from localhost (mpatocka@localhost)
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 177Knr6g003451;
+        Sat, 7 Aug 2021 16:49:54 -0400
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date:   Sat, 7 Aug 2021 16:49:53 -0400 (EDT)
+From:   Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To:     "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+cc:     Jakub Jelinek <jakub@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Milan Broz <gmazyland@gmail.com>
+Subject: [PATCH] sparc64: fix boot on UltraSparcIII+
+Message-ID: <alpine.LRH.2.02.2108071604110.30513@file01.intranet.prod.int.rdu2.redhat.com>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
 MIME-Version: 1.0
-Received: by 2002:ab4:a729:0:0:0:0:0 with HTTP; Fri, 6 Aug 2021 07:41:51 -0700 (PDT)
-Reply-To: mrmaxwellwatford@gmail.com
-From:   Maxwell Watford <kazahalima@gmail.com>
-Date:   Fri, 6 Aug 2021 14:41:51 +0000
-Message-ID: <CAA3roWncDd30x6RhoupgCfnn44FVPeEfYLaNFmHeDGvKLtq7EQ@mail.gmail.com>
-Subject: i need your reply
-To:     kazahalima@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Greetings,
+Hi
 
-We are writing to you from Ecowas Finance Controller Office Lome Togo,
-because we have received a file from the Ministry of Finance Lome-
-Togo, concerning an Inherited Fund bearing your name on it, And after
-our verifications, we found out that the funds belong to you.
+I have Sun Blade 2000 with two UltraSparcIII+ processors and 8GB RAM. The 
+kernel doesn't work on it (the last working version is 3.17).
 
-It has been awarded and I will like to guide you to claim the funds.
-Please contact me at my private email address
-(mrmaxwellwatford@gmail.com) for more information and directive
+If I put printk's at these two positions in kernel_physical_mapping_init():
+	printk("kernel_physical_mapping_init: %lx\n", (long)mem_section[0]);
+        kvmap_linear_patch[0] = 0x01000000; /* nop */
+        flushi(&kvmap_linear_patch[0]);
+        flush_all_kernel_tsbs();
+        __flush_tlb_all();
+	printk("kernel_physical_mapping_init: %lx\n", (long)mem_section[0]);
+I get different values (the second value is 0) which indicates that the
+linear bootmem mapping is not equivalent to the kernel page table mapping.
+This mismatch causes crash on boot.
 
-I am looking forward to your urgent reply,
-Best regards
-Mr Maxwell Watford
+When I compiled the kernel with CONFIG_DEBUG_PAGEALLOC, the kernel boots
+fine. CONFIG_DEBUG_PAGEALLOC disables 4M mapping, so the problem is with
+it.
+
+I have created this patch that disables large pages on UltraSparcIII and
+UltraSparcIII+. It makes the kernel boot.
+
+Do you have an idea why large pages don't work on UltraSparcIII? (they
+work on UltraSparcII fine) Do you have some idea what I should test to
+make them work?
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+
+---
+ arch/sparc/kernel/ktlb.S |   11 +++++++++++
+ arch/sparc/mm/init_64.c  |    7 +++++++
+ 2 files changed, 18 insertions(+)
+
+Index: linux-stable/arch/sparc/mm/init_64.c
+===================================================================
+--- linux-stable.orig/arch/sparc/mm/init_64.c	2021-08-07 16:28:26.000000000 +0200
++++ linux-stable/arch/sparc/mm/init_64.c	2021-08-07 16:40:21.000000000 +0200
+@@ -1882,6 +1882,10 @@ static void __init kernel_physical_mappi
+ #ifdef CONFIG_DEBUG_PAGEALLOC
+ 	use_huge = false;
+ #endif
++
++	if (tlb_type == cheetah || tlb_type == cheetah_plus)
++		use_huge = false;
++
+ 	for (i = 0; i < pall_ents; i++) {
+ 		unsigned long phys_start, phys_end;
+ 
+@@ -2691,6 +2695,9 @@ static void __init sun4u_pgprot_init(voi
+ 	kern_linear_pte_xor[0] |= (_PAGE_CP_4U | _PAGE_CV_4U |
+ 				   _PAGE_P_4U | _PAGE_W_4U);
+ 
++	if (tlb_type == cheetah || tlb_type == cheetah_plus)
++		kern_linear_pte_xor[0] &= ~_PAGE_SZ4MB_4U;
++
+ 	for (i = 1; i < 4; i++)
+ 		kern_linear_pte_xor[i] = kern_linear_pte_xor[0];
+ 
+Index: linux-stable/arch/sparc/kernel/ktlb.S
+===================================================================
+--- linux-stable.orig/arch/sparc/kernel/ktlb.S	2021-08-07 16:28:26.000000000 +0200
++++ linux-stable/arch/sparc/kernel/ktlb.S	2021-08-07 17:03:45.000000000 +0200
+@@ -150,7 +150,18 @@ kvmap_dtlb_4v:
+ 	 */
+ 	KERN_TSB_LOOKUP_TL1(%g4, %g6, %g5, %g1, %g2, %g3, kvmap_dtlb_load)
+ #else
++	sethi		%hi(tlb_type), %g1
++	lduw		[%g1 + %lo(tlb_type)], %g1
++	sub		%g1, 1, %g1
++	cmp		%g1, 1
++	bgu,pt		%xcc, use_4m_tsb
++	 nop
++
++	KERN_TSB_LOOKUP_TL1(%g4, %g6, %g5, %g1, %g2, %g3, kvmap_dtlb_load)
++	ba,pt		%xcc, kvmap_linear_patch
++	 nop
+ 	/* Correct TAG_TARGET is already in %g6, check 4mb TSB.  */
++use_4m_tsb:
+ 	KERN_TSB4M_LOOKUP_TL1(%g6, %g5, %g1, %g2, %g3, kvmap_dtlb_load)
+ #endif
+ 	/* Linear mapping TSB lookup failed.  Fallthrough to kernel
+
