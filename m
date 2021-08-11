@@ -2,69 +2,60 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E5CA3E8220
-	for <lists+sparclinux@lfdr.de>; Tue, 10 Aug 2021 20:06:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABFEF3E9158
+	for <lists+sparclinux@lfdr.de>; Wed, 11 Aug 2021 14:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236371AbhHJSFy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 10 Aug 2021 14:05:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57060 "EHLO
+        id S230515AbhHKMco (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 11 Aug 2021 08:32:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238292AbhHJSD6 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 10 Aug 2021 14:03:58 -0400
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32816C09B13B
-        for <sparclinux@vger.kernel.org>; Tue, 10 Aug 2021 10:36:54 -0700 (PDT)
-Received: by mail-lf1-x142.google.com with SMTP id z2so26334150lft.1
-        for <sparclinux@vger.kernel.org>; Tue, 10 Aug 2021 10:36:54 -0700 (PDT)
+        with ESMTP id S231172AbhHKMcd (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 11 Aug 2021 08:32:33 -0400
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2243BC08E9AC
+        for <sparclinux@vger.kernel.org>; Wed, 11 Aug 2021 05:30:34 -0700 (PDT)
+Received: by mail-oi1-x22b.google.com with SMTP id bj40so4280838oib.6
+        for <sparclinux@vger.kernel.org>; Wed, 11 Aug 2021 05:30:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
-        b=rZyDO+pQmFAMTqMMwbflMM4ql7GCGPeivQF49luaUKDh68BdWveTpXnyTbx8OavZh5
-         bGP7zLKVlUZwhT2f48vcZmIt1snZCfta1+RSsuWy7jL1bN3yiCeI7kSgY9GO+Mr9hMq3
-         QkduLfUrIvN/HhmkJo3bkzdVVz9B3L1xqaqjjeWbgQaiVHo19p8Fs6QUjc1RLTijFsZ1
-         J9z0vnpLd+WWbyIkFWEiiEi8HRNeEnyGx9q1dMSNuv5GsXDJ6u1Pt8dggrrGxNlZZA6H
-         nx910xE9Y9oc9IQRBXvrtvv831ie/oFdSTFPcOo+Z7/z7WR4icLIqTKALRAXVA68hURN
-         avgA==
+        bh=77BwqRII9XCweQU8IJul6unijI/BEL+vUJmVmCRLxH4=;
+        b=nFX2iyV8Qzv5VsUpkp+XCZa2rMildRgp4rmfs3/i85r3diZKl8jKG090hSg6ULd5u0
+         wIUSHLA1AmXndyReLtv1chzdu754A+Ph1wh/vfIxRjmTWJBsEDXYNbyV2L9uurl7rygw
+         3BEum9dkaxKey+Q+UMRctjDwuKQ1YXcRTKc1UUkneSCjfxqWrboBTOfNkJIzK5BsdQWa
+         4ApOxxKRhIhdaQEWowgLF5+CTQczgHFusP4oeusQUd6ved7FHPiMHEi1ZA8iFV2rLfKi
+         fjv9vsAR1EzF12CgxEwzjmHIzUqCG96Sjm8KNwWILsHtKg9/nTHJHDOvwQ9NbYqFW4uy
+         uTIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
-        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
-        b=jqMlem8bK61pbnMo1x2AC+y4XMqOU+yDQTAiKilxY2nbY+GnAMhI5nbZoAFs1NS4eO
-         o3diVqrfd6RXBj9u3YMi1l9ec9ZuBaxnwa7ztLwLkv/N1rDGcIullajMDT1W9iPDBWaH
-         idSxFWFmphzu10dMPeW8nM7L5AV50SS39H5EkCiJHIKFYadmvSY+YLVcNqh5P2EIhF/O
-         osIn9n6wn2DcNzTDZV1SWfnTzfT5e1hEZq5na+DIn7/uEMtmbd/5MrA4IGZklKrXKj1+
-         wWbRQs91yWaW92OkmjzVA5MTLZ/twsJwh7cwn8pv5SpQY2eqXjJta8KIHqUJKqR2NzIq
-         MVww==
-X-Gm-Message-State: AOAM533CXrk92BSkkW/YeY3/Gu+2+YbMsvYnVSUb5TME8Ji5jjPh5Ww3
-        vuDVbK2vGlg6nzNCN7dBrK2sVDB7qskd6NkBWdY=
-X-Google-Smtp-Source: ABdhPJzIebxwo90Zyr4sj9ScmYCof4VCk1w95dCMQpZ4/cQfOuUDCqwTC1pz0BbxoizG48Nn6kSbzrBfyOpB9YVAvEQ=
-X-Received: by 2002:a05:6512:11c3:: with SMTP id h3mr22104381lfr.413.1628617013026;
- Tue, 10 Aug 2021 10:36:53 -0700 (PDT)
+        bh=77BwqRII9XCweQU8IJul6unijI/BEL+vUJmVmCRLxH4=;
+        b=ez1fudNQcuQ2MyvjmjkEMFLIeD2mT595qE9wYgo+6PaYrI7hSQyRv1+WHah5qvR3Nl
+         5VP/I6T3oqJ555JhtSuKGkxaYge54+PmHlOS8K6jsixAz2B1RWWq2uMRbOj8ZqBccTUC
+         U5RluouzJ9ietyCUV8jzby3B+V4kDW6AJQSeg+cYckQLvKo73b8SdE+GUkGesnamfo7H
+         y5CIVTeuTFQv48UctIIIpMbel8cBOFtFpa29sOjZQyAtE+VCAQl0P7h4w9e01rbFQtW0
+         2Fwv+OTdHuRE1OzkIAAA0di17gUJ7ILgmsoeHffxlANMVv4XWwnsQZgH7qZH8uEhKY4a
+         D3vA==
+X-Gm-Message-State: AOAM531hWYj2D4ayVyt4kmxufGSP1PtHb+sAr5YOOkPJMPW9TNopolrR
+        MHSFw0psBBENBRqwgsTGPdUPiXOmXO+ejjVv8HY=
+X-Google-Smtp-Source: ABdhPJxSi33xoEoIXQryMK7AlPvsXum9+Uhn2FA5SmsaT4s7SDGDeViE6wxc5zRdGly1PhBzYc0n/cZJtjhPnV2BKH4=
+X-Received: by 2002:aca:f306:: with SMTP id r6mr23008947oih.165.1628685033420;
+ Wed, 11 Aug 2021 05:30:33 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ac2:4eca:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 10:36:52
+Received: by 2002:a05:6830:23a5:0:0:0:0 with HTTP; Wed, 11 Aug 2021 05:30:32
  -0700 (PDT)
-Reply-To: majidmuzaffar8@gmail.com
-From:   Majid Muzaffar <ngl.binabdul.rashiid333.me@gmail.com>
-Date:   Tue, 10 Aug 2021 20:36:52 +0300
-Message-ID: <CAG1gDZWXEFoLwsRk8a_qSWzn3-vwvvxE2XX3d--LKh2r2t4e1w@mail.gmail.com>
-Subject: Proposal
+Reply-To: rihabmanyang07@yahoo.com
+From:   Rihab Manyang <ndourandiogou1@gmail.com>
+Date:   Wed, 11 Aug 2021 13:30:32 +0100
+Message-ID: <CAP5_mB4O7JPQr86GPAep=Ynd-Yb8pks_-mRAKZxGu6O8ZzfAKA@mail.gmail.com>
+Subject: hi
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Salam alaikum,
-
-I am the investment officer of UAE based investment company who are
-ready to fund projects outside UAE, in the form of debt finance. We
-grant loan to both Corporate and private entities at a low interest
-rate of 3% ROI per annum. The terms are very flexible and interesting.
-Kindly revert back if you have projects that needs funding for further
-discussion and negotiation.
-
-Thanks
-
-investment officer
+-- 
+How are you?I am miss.Rihab Manyang i will like to be your friend
+please write me back on my email for more details, Thanks.
