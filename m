@@ -2,36 +2,59 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C70D43F58BB
-	for <lists+sparclinux@lfdr.de>; Tue, 24 Aug 2021 09:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 573AE3F5A8E
+	for <lists+sparclinux@lfdr.de>; Tue, 24 Aug 2021 11:12:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234603AbhHXHMb (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 24 Aug 2021 03:12:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59564 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229823AbhHXHMa (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 24 Aug 2021 03:12:30 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BC81C061575;
-        Tue, 24 Aug 2021 00:11:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=yyOWKyVgFnzXQH7hUCU2sLB3yDJPcTOpVipPjz3CdkE=; b=vhbSFZGCSzrdVnS1l48yczaF9K
-        SvGLI6rQMV0CT4xfqBFA1Ef8Ep6dM6q2xMdXaRx9S+pjQv+qRWNTnYsJWFL8YUyXFnmmGXijIOv/u
-        PmjJy+0bZz71DBJ/UkUMV+6BfLJLvi+0cQKLjAPOl4yUvzdEyDBluDRFXDs9PGsu260PN6t8h9BWS
-        H1PEQ3FThNCcxhmfejfOihqbEbqvN5Tz9D5EG6yz3rmvyIp8Jq/WE/Lfa1HosWUPEttO8bNdoTMb3
-        MEPPz3NaNDAKI3Hj8hsdNgFtMUO4QPPaCM8IM8adV5zMNm5tB0B7013DPglF0teZ/nW4MFAZoW9MB
-        bODkw5sg==;
-Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mIQXL-00Ah6e-Fc; Tue, 24 Aug 2021 07:08:07 +0000
-Date:   Tue, 24 Aug 2021 08:07:55 +0100
-From:   Christoph Hellwig <hch@infradead.org>
+        id S235617AbhHXJM6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 24 Aug 2021 05:12:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:20368 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235675AbhHXJM5 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 24 Aug 2021 05:12:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1629796332;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=UO2zBbBs1G6uT3R3xch5pdAd9JzMFmQCenqYTZnnAws=;
+        b=ciI55oT+4ry/YlJLlDbugRTfprdq8vmV8TxkKb01viiPuKkCGhO804W14LS76wuqUuE+pJ
+        KfuZCRH8vytOEwSgN/ZVJOTN8ffYpvEEqlTWk9AnsTrzYcdsb0W9dwj/0mW756MhXE+X9y
+        cur4x82RiyCts6/Ze32mfLqL6/9yMes=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-300-UXK7FWXtNW2Oen-Qiz74nQ-1; Tue, 24 Aug 2021 05:12:11 -0400
+X-MC-Unique: UXK7FWXtNW2Oen-Qiz74nQ-1
+Received: by mail-ej1-f70.google.com with SMTP id ak17-20020a170906889100b005c5d1e5e707so2048716ejc.16
+        for <sparclinux@vger.kernel.org>; Tue, 24 Aug 2021 02:12:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=UO2zBbBs1G6uT3R3xch5pdAd9JzMFmQCenqYTZnnAws=;
+        b=uOWKhub0WOAx6XkstAq2l7V0/xi66GWpGfaovfY5z1anSUj53nOfmZOk1phrVrRhyg
+         pbW9P0CGCcjnR+EEtJa/vMXPgDWQoV36JmXVNTThIlwe72yOeO1lbsp933J1Mo5R12l7
+         YkfJGPAJRzrI/3ANVaxVoLz9D2mBsw6nQH4jSjxX9KABwLwZxP3K58vm8qm8BK0RjP92
+         lIxbPRAHIuxZSADO/ovptd1wItaGNXMPsNMiyGzAbJeXjDxWW1a/qn4a3OSwbS4GSjFo
+         Fd6VrObNlu4Vml/fW75HCSuJOROzAzpJ2kLhDFx3KzaJzPPsy1Ps/Xu7GRv3oAtjbIms
+         15Hg==
+X-Gm-Message-State: AOAM5315drGyd0IsMFl5OIMzBGI1HvkCbpokPtKSa3D//ZTf8u1zRwJX
+        eJ0IvDQgHBy8rDg62ELGl0J1DN3FgJiKa77NQqRLh/yLTwqLoZizy0VZBkPfZma7yixZgU5yYKa
+        u4g/mLu+r5+RqotCsUbvKZQ==
+X-Received: by 2002:a17:906:544f:: with SMTP id d15mr39905081ejp.520.1629796330484;
+        Tue, 24 Aug 2021 02:12:10 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz3bMICaqu3WLm0C02mi3EAPqHyfBIAeSrxUN0aqhXmoBEhQ7Pz6k5PO9S6BLCHr/N7T4Bnvg==
+X-Received: by 2002:a17:906:544f:: with SMTP id d15mr39905053ejp.520.1629796330344;
+        Tue, 24 Aug 2021 02:12:10 -0700 (PDT)
+Received: from redhat.com ([2.55.137.225])
+        by smtp.gmail.com with ESMTPSA id b18sm2737239ejl.90.2021.08.24.02.12.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Aug 2021 02:12:09 -0700 (PDT)
+Date:   Tue, 24 Aug 2021 05:12:03 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
 To:     "Kuppuswamy, Sathyanarayanan" 
         <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Peter Zijlstra <peterz@infradead.org>,
         Andy Lutomirski <luto@kernel.org>,
@@ -58,7 +81,7 @@ Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
         linux-doc@vger.kernel.org,
         virtualization@lists.linux-foundation.org
 Subject: Re: [PATCH v4 11/15] pci: Add pci_iomap_shared{,_range}
-Message-ID: <YSSay4zGjLaNMOh1@infradead.org>
+Message-ID: <20210824050842-mutt-send-email-mst@kernel.org>
 References: <20210805005218.2912076-1-sathyanarayanan.kuppuswamy@linux.intel.com>
  <20210805005218.2912076-12-sathyanarayanan.kuppuswamy@linux.intel.com>
  <20210823195409-mutt-send-email-mst@kernel.org>
@@ -67,7 +90,6 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <26a3cce5-ddf7-cbe6-a41e-58a2aea48f78@linux.intel.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
@@ -90,5 +112,15 @@ On Mon, Aug 23, 2021 at 05:30:54PM -0700, Kuppuswamy, Sathyanarayanan wrote:
 > we don't want to make all PCI resource as shared. It should be allowed
 > only for hardened drivers/devices.
 
-Well, assuming the host can do any damage when mapped shared that also
-means not mapping it shared will completely break the drivers.
+I can't say this answers the question at all. PCI devices are part of
+the VMM and so un-trusted. In particular PCI devices do not have
+the key to decrypt memory. Therefore as far as I can see PCI resources
+should not be encrypted.  I conclude they all should be marked
+shared.
+
+If I'm wrong can you please give an example of a PCI resource
+that is encrypted?
+
+-- 
+MST
+
