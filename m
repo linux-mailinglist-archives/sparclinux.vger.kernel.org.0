@@ -2,91 +2,90 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBEDB3FE231
-	for <lists+sparclinux@lfdr.de>; Wed,  1 Sep 2021 20:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8061B3FE7CF
+	for <lists+sparclinux@lfdr.de>; Thu,  2 Sep 2021 04:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239018AbhIASPE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 1 Sep 2021 14:15:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54472 "EHLO
+        id S233142AbhIBCzF (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 1 Sep 2021 22:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344153AbhIASPD (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 1 Sep 2021 14:15:03 -0400
-Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A753C0613C1
-        for <sparclinux@vger.kernel.org>; Wed,  1 Sep 2021 11:14:06 -0700 (PDT)
-Received: by mail-vs1-xe2a.google.com with SMTP id d6so588978vsr.7
-        for <sparclinux@vger.kernel.org>; Wed, 01 Sep 2021 11:14:06 -0700 (PDT)
+        with ESMTP id S232922AbhIBCzF (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 1 Sep 2021 22:55:05 -0400
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94D57C061575;
+        Wed,  1 Sep 2021 19:54:07 -0700 (PDT)
+Received: by mail-io1-xd2f.google.com with SMTP id y18so650645ioc.1;
+        Wed, 01 Sep 2021 19:54:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=2joGkq8i8C5vglZO1FYNTlWqLyr4vSiCXKQYXBVnv4Q=;
-        b=kHTHw9paPXIrQdued1Y4q8p6feQAUKI/KpOQr7IMYAO2GzbSCPaCgM17Ei9qAS1OwZ
-         E4G0tXEg+9kh8d6SpKiYchp9e8A3PtZgKngYOZDdHVJRRTSCcUbk0zcY0kiiolV4bzRe
-         XbkXphBP/bt5rxW0h8AC3OjvRDSxJik+IdzXZYVB4/X8BU5KS18CHrn98389tFZDTUhM
-         i15IPveK8eLviezIw3pr3fj3PMs3kmLmtky0vQ1abxKuFsjYkVy2NhaGhGef7mavYFDL
-         SWGlEgwScMZ6/nFgnXkwDRPW6ozXiOPRZQtGOQg5rRJVmVqZwDG6KsNhsIh/w1Gr9BUn
-         8eCg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DW8iXfbLh2q7u5SVvpsUGnLef5eS1UxEivJKh91KQXk=;
+        b=TKw8ArfDl+5zYD9xU+Slyf17czWgWrSuI1XAkMZKaCTk+fsD9N1w7yOgOy39tCV3m8
+         d3NKUgeM97lIfzLsOzZeJrRJH35uHe8+U0UsB0VuZ4fkqweTVKC9U3neASeGCRJHlXBn
+         eERKAfe/DghyXjsNiWfvNS/zQkYWDIEv7Xort5kviWRyBbmd+UCnfMoAhaQnTTWZwDAN
+         oR1YyMrwZAOjB1FvO8rLzf6TiYsh2rUuRzGC0GlghYTMxFgX387ekQ1AngcPhfWrJ9kH
+         rw9Af1LU1D4MlDqowFVWMgLrNiqfwTfqylrZABX0nZ34ZiGHsr54S8Dq/ShTcZdqtN8p
+         sclQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=2joGkq8i8C5vglZO1FYNTlWqLyr4vSiCXKQYXBVnv4Q=;
-        b=uLnX9KdaFgUEdwfKnQFqjntSxn8qoA/Vy9mHskMLoTgNTxxIZxNwirWIHfq7uLwo1c
-         Osbm+XRFp2AyZfKUEyi9WAAjSw/jzcCvK2JvaxOizreMx1wXO2Xj+GX2Tn1ZFcusV+N+
-         31X1NMZuNjnFNI1RXxEPD5QxVQNayccapYqR+mh/RCKcjh/vcwYKxdirRhU9BLY7G+GA
-         uiqDt/EH6TT5D7KM5MHLkOZJB5VgQbpl9I19SNfVLC1aOy3RRSNS9YTDpGNLwFChFhOu
-         jTPM3RW6GtRlyRMHSgndgAPWEzJgDvyTBr+3JRaHWkFwGuMKRavI66wltEF+N3SduE5n
-         HQqg==
-X-Gm-Message-State: AOAM532bD/nS50tYEgZk0152k8lwkowYAIcwzwsDnwoD9741APLhJETp
-        sQ4sDoRTh8Gmd53EedlSiFEyQ9w2rp5y6aRLj3U=
-X-Google-Smtp-Source: ABdhPJwpmBx2oXbQIXrbRYde2lPyHgJ76VpsE7byX7nLZn23cmh824bZOT4Nftoni3ebPOzqpWOEaluvcwK7YiX0Fa0=
-X-Received: by 2002:a67:d981:: with SMTP id u1mr983349vsj.9.1630520044838;
- Wed, 01 Sep 2021 11:14:04 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DW8iXfbLh2q7u5SVvpsUGnLef5eS1UxEivJKh91KQXk=;
+        b=B39/6u6iNKQUHGpXia0fs6sL1OD6MBi2aGiLSmvmyzK9LrrH573pFHEc5VwT2vKcjR
+         mjJnIwebqX1CCIU2fz0aK+bHQQdhfNFHOrtHvv59MAM/Ajfj8V8JQKFOvQNblflhLwI3
+         JNb+BC4uBlbkE/5bkCPHxtmOMuptvlnkJJjwxc5YgqKJ4eQhKi4T45k8lrKs7v8Tt19D
+         V16Yei6IKvZoIzqCeeADSnMMFAZgu+L+TiXrZnJcpFQ+UCPqFOEVVAH/vK7vSqqQJEJG
+         lcwlsiFicDnsVVDDrDQEQdnhSUbxXrByasv/RZl01ZwB5eUa7Mabb9zAzxjm1ffkMGgo
+         6LBg==
+X-Gm-Message-State: AOAM5336Or0W/H2S9EwHJqE4Dv8+UPKmoYKjClqES5JeH0tn0RKbMmdH
+        KdOEWagrKX9rVqiAILmKMjmdWoV/zCutzVEjRvXUIuI=
+X-Google-Smtp-Source: ABdhPJwNf60dM3LZjiAqeigHW2/EnvbgMq70APSOLYwTXOyokVYIJV4DiPgatOpzJZxNTlwMTZkikWjW9bvzB5OZv3I=
+X-Received: by 2002:a6b:f114:: with SMTP id e20mr877774iog.41.1630551246933;
+ Wed, 01 Sep 2021 19:54:06 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ab0:740d:0:0:0:0:0 with HTTP; Wed, 1 Sep 2021 11:14:04 -0700 (PDT)
-From:   CorisBank International <corisbankintlbf@gmail.com>
-Date:   Wed, 1 Sep 2021 11:14:04 -0700
-Message-ID: <CA+25hwzAX0aBDNcDkQJb7bAbM8CTKivYeGqFcsHVsqgaaGJ7JA@mail.gmail.com>
-Subject: CORISBANK INTERNATIONAL OFFICIAL NOTIFICATION
-To:     undisclosed-recipients:;
+References: <20210824031435.9664-1-kernelfans@gmail.com> <YSenB+Rr/4OV8EHQ@alley>
+In-Reply-To: <YSenB+Rr/4OV8EHQ@alley>
+From:   Pingfan Liu <kernelfans@gmail.com>
+Date:   Thu, 2 Sep 2021 10:53:56 +0800
+Message-ID: <CAFgQCTtehXTfD2rfPOzBneXPYuFsDmozDL2bUT8b1DY1K5AXeQ@mail.gmail.com>
+Subject: Re: [PATCH] kernel/watchdog: change prototype of watchdog_nmi_enable()
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     sparclinux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Wang Qing <wangqing@vivo.com>,
+        Santosh Sivaraj <santosh@fossix.org>, Tejun Heo <tj@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Att: Client
+Hi Petr,
 
+Thank you for reviewing.
 
-CORISBANK INTERNATIONAL URGENT NOTIFICATION
+But I am composing a series, which may overstep this patch. So please
+drop this patch, and sorry for inconvenience.
 
-Notification / Notification/ Notification
+Regards,
 
-Note, We are writing to inform you officially that Finally the Central
-Bank Financial Authority have approved to transfer your $8.2Million
-which was signed by late Mrs Rose Banneth the COVID.19 victim to
-transfer to you, Late Mrs Rose Banneth the France Lady contacted us to
-transfer her fund in our bank to you for Orphanage work before she
-died by the COVID.19
-and as it is now, you will receive your fund through our corresponding
-bank in Dubai [Emirate Investment Bank ] for security reason. Please
-you should reconfirm your details to receive the $8.2Million.
+Pingfan
 
-Name, Country, Address, occupations, Age, Telephone number, account
-Details so that we can immediately forward to the World Bank to
-transfer the fund.
-You are advised to comply on timely manner to permit this esteem bank
-transfer your fund as scheduled.
-
-We look forward to serving you better
-Your Financial Comfort Is A Priority
-Thank you for choosing Corisbank International.
-
-Sincerely,
-
-----
-
-Mr Diakarya Ouattara
-Managing Director
-Bank Coris
-Burkina Faso
-+226 556 163 37
-financial_bf_info@accountant.com
+On Thu, Aug 26, 2021 at 10:36 PM Petr Mladek <pmladek@suse.com> wrote:
+>
+> On Tue 2021-08-24 11:14:35, Pingfan Liu wrote:
+> > The only caller does not handle the return value of
+> > watchdog_nmi_enable(). If there is an error, it seems to be reported by
+> > arch specific code.
+> >
+> > Hence changing watchdog_nmi_enable() return value from int to void.
+> >
+> > Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+>
+> Looks good to me:
+>
+> Reviewed-by: Petr Mladek <pmladek@suse.com>
+>
+> Best Regards,
+> Petr
