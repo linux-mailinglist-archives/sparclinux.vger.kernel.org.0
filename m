@@ -2,68 +2,83 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6336240C388
-	for <lists+sparclinux@lfdr.de>; Wed, 15 Sep 2021 12:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72F6D40C6F8
+	for <lists+sparclinux@lfdr.de>; Wed, 15 Sep 2021 16:04:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232139AbhIOKTA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 15 Sep 2021 06:19:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58148 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231940AbhIOKS6 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Sep 2021 06:18:58 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC919C061574
-        for <sparclinux@vger.kernel.org>; Wed, 15 Sep 2021 03:17:38 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id s16so4801396ybe.0
-        for <sparclinux@vger.kernel.org>; Wed, 15 Sep 2021 03:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=eX04ap3vShCH3Q5/Wpj0I6a+7Cmy++D3Oz8eXJhy5jU=;
-        b=AfvZ4l1HdcGjKDb4DOOYQNTl5QAGqmaExm35JQ/iOhwNFb3tH6PD14RpBp2laOqfGm
-         HovLYomVIKUI5p8Nb28amKYdraKowx9zeYHwwvYiw2zWJNkkDHgxXBGj9/3USOpebOED
-         5GGJiNTjZKQ6suzBmjsDFFvBhwCN0zfvZD1DxGf93BqK0jZNaGYxFr9RMEx0Dc0w4mM0
-         iMMbudMf9Njbke+X2EbiYMa/dzBMP+sE106/G2IdWxvV+Dab2CAqHHvKuXvEYj7FAshz
-         tM9Q59t7Wh88fttuGxBtSRFqC3oKS92zdhMwaeKTv2bGBbBuZLqijCUBTDML/7YQMSNR
-         7ryA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=eX04ap3vShCH3Q5/Wpj0I6a+7Cmy++D3Oz8eXJhy5jU=;
-        b=TtunkC0lDoqFJVRCRpxRRVshdOcW0f/OY6Lnm8JGxfydxMwtnvmJLCF93l/i5VXsPR
-         b2JING8NtuPb1qtVnaj2MRSo4BfkhlVRiQKJYgtishhgTg8Or3U93WpkhFX5+CewYP41
-         7zuOkR4/1ymJn/hhnh7tPCDzyPVz2G6LZaiKgC4VKc4kKh5DqOB4dNP0PFaqrB/OGoX0
-         D6AeZvtxK6nYqnkWJPC1smGYrYwhHYwMDGRGBDSDCDXIN0nL9b1lj3BsPxRIkbaBGr4A
-         lBWaXFbXjKUIKFZPBQqwHHrrDqDwTd5KBXRfhXFjAXeMxhq+4xPjtU2yIiUXOjmwiGuU
-         R81A==
-X-Gm-Message-State: AOAM532a+7+tfJcpg/KsDjt6Zcb9kY9+rDP+/IR7m77cqdPMMR4PMEX7
-        9hIJL9KVk2ASoVf6cEy8pZUdm5jtqFYWGTx6Dy0=
-X-Google-Smtp-Source: ABdhPJwhiyNB6rzJgFkFkI5pC3zMntGgdauwTs3JdcGJv8NdaVApMzayZcDSPt30sOppt8iOylrIw0XRPic40MX+qN0=
-X-Received: by 2002:a5b:142:: with SMTP id c2mr5245012ybp.425.1631701057951;
- Wed, 15 Sep 2021 03:17:37 -0700 (PDT)
+        id S234729AbhIOOF6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 15 Sep 2021 10:05:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55550 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236295AbhIOOF5 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 15 Sep 2021 10:05:57 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C83FE61263;
+        Wed, 15 Sep 2021 14:04:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631714678;
+        bh=H27IuGY14sfE01ZBOE3qbr+Aje0qknX6KxWJUz9aISY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Mt8iYkeCpuvxp25RAeN9quGvNziHP1pgXw2GB8fKD/mymlhyyAxICQ7hbRwUyFg9Y
+         Dz6lOg2rFDJ1x29vlxBrU13sefeeVpzxfxhmMneSoMVFyYNw6dgVv/qeP2+fN8Is47
+         2Df2I+LHlOIw6U5A/kHf/wi/ketSqO0Jwrt5NNw8mH/ilzWxgVY7C0Co0ubil1VKC6
+         0mTZqCfioBEvADdChAheA181Hb78J/ZmnwKyEjZiEi4DnVJ9GgnI5G5RLxRohXR/HG
+         cAiCWcdQNM4yVMPvZMOcWEwIRFtHDlqQVihe+TYWg0OuNhev57eWppsU1mrNJYasbV
+         CrubNIu5XLMDw==
+Received: by mail-wm1-f46.google.com with SMTP id l7-20020a1c2507000000b002e6be5d86b3so2108261wml.3;
+        Wed, 15 Sep 2021 07:04:38 -0700 (PDT)
+X-Gm-Message-State: AOAM531DDI/AnaxIYwjTJl7kL5pkcS+mt92K6H74Ai7JdqYqe4Tms2J2
+        1uN4iSQurMHfRqhqkOzpa7Z1o8Qzb05KJl8tLkA=
+X-Google-Smtp-Source: ABdhPJyjXfJKM6vyDJu6ychD3He3pDf7+1/YRPwn/p4sPd8URfURxCd23cro1bdM922Ixa76Pgelwn3dchKZ3Lf21nE=
+X-Received: by 2002:a1c:4c14:: with SMTP id z20mr4802564wmf.82.1631714677368;
+ Wed, 15 Sep 2021 07:04:37 -0700 (PDT)
 MIME-Version: 1.0
-Reply-To: mrsmariagraceboyi532@gmail.com
-Sender: newsgood759@gmail.com
-Received: by 2002:a05:7110:4988:b0:f6:d591:52d7 with HTTP; Wed, 15 Sep 2021
- 03:17:37 -0700 (PDT)
-From:   Mrs Maria Grace Boyi <graceboyimaria@gmail.com>
-Date:   Wed, 15 Sep 2021 03:17:37 -0700
-X-Google-Sender-Auth: _tg5k0kJZT3RzpiWwecmno8kiy4
-Message-ID: <CAG86jCaZAn1mabbn0_OzODu2J4sU6Q2XgDoJfCvWzJ5mYUHAPg@mail.gmail.com>
-Subject: =?UTF-8?Q?Por_favor=2C_perd=C3=B3name_por_estresarte_con_mis_apuros=2E?=
-To:     undisclosed-recipients:;
+References: <20210914224709.601156-1-linux@roeck-us.net>
+In-Reply-To: <20210914224709.601156-1-linux@roeck-us.net>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Wed, 15 Sep 2021 16:04:22 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a36YHAnDyhy+nQEo9x=c2Dq8pf44sBsksXj2xb+Fnk-bA@mail.gmail.com>
+Message-ID: <CAK8P3a36YHAnDyhy+nQEo9x=c2Dq8pf44sBsksXj2xb+Fnk-bA@mail.gmail.com>
+Subject: Re: [PATCH v2] sparc: mdesc: Fix compile error seen with gcc 11.x
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        David Laight <David.Laight@aculab.com>,
+        Anatoly Pugachev <matorola@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
---=20
-Saludos,
+On Wed, Sep 15, 2021 at 12:47 AM Guenter Roeck <linux@roeck-us.net> wrote:
+>
+> sparc64 images fail to compile with gcc 11.x, reporting the following
+> errors.
+>
+> arch/sparc/kernel/mdesc.c:647:22: error:
+>         'strcmp' reading 1 or more bytes from a region of size 0
+> arch/sparc/kernel/mdesc.c:692:22: error:
+>         'strcmp' reading 1 or more bytes from a region of size 0
+> arch/sparc/kernel/mdesc.c:719:21:
+>         error: 'strcmp' reading 1 or more bytes from a region of size 0
+>
+> The underlying problem is that node_block() returns a pointer beyond
+> the end of struct mdesc_hdr. gcc 11.x detects that and reports the error.
+> Adding an additional zero-length field to struct mdesc_hdr and pointing
+> to that field fixes the problem.
+>
+> Cc: Arnd Bergmann <arnd@kernel.org>
+> Cc: David Laight <David.Laight@ACULAB.COM>
+> Cc: Anatoly Pugachev <matorola@gmail.com>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+> v2: data[0] => data[]
+>
+> I am not sure if there was agreement to accept this patch or not, but
+> I was asked to resend it with the above change, so here it is. An open
+> question was if it is acceptable to have a structure named xxx_hdr
+> include an element pointing to the data following that header.
+>
 
-Me complace estar en contacto con usted, tengo una discusi=C3=B3n privada
-con usted. Por favor, perm=C3=ADtame escribirle con m=C3=A1s detalle.
-
-Qu=C3=A9 tengas un lindo d=C3=ADa.
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
