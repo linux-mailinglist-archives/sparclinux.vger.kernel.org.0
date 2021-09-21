@@ -2,111 +2,45 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4519B412BE0
-	for <lists+sparclinux@lfdr.de>; Tue, 21 Sep 2021 04:38:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4966D412F94
+	for <lists+sparclinux@lfdr.de>; Tue, 21 Sep 2021 09:36:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351306AbhIUCjc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 20 Sep 2021 22:39:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42290 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243769AbhIUCbL (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 20 Sep 2021 22:31:11 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA42C04A155
-        for <sparclinux@vger.kernel.org>; Mon, 20 Sep 2021 13:11:53 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id e15so33649350lfr.10
-        for <sparclinux@vger.kernel.org>; Mon, 20 Sep 2021 13:11:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VJRE9kS/QPf/0tOqznxzvGRA8erQC6C/9CuG+/yz+9U=;
-        b=MjF/lwuc6mPv7nAhg2ZP9d30rlvilAFvjKmYIG8K/nAhbMgJRIcrN70sahLhELV4NY
-         uJMN/H9Eb+TGaf8vH+d6MIDjEqr8JeeHKbNJeW1urY2uxDdTgMkADNmigKMnbr6Ri8D8
-         J+BrPizNwPAYdm66/8hXK2c/1vjtRzwGGDMjU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VJRE9kS/QPf/0tOqznxzvGRA8erQC6C/9CuG+/yz+9U=;
-        b=E3eFBA+4ojQKVoezCWeP22l/4zWbsY4VhQcLaoBJRiKlh8BKho0GZqMN76MOuht4sb
-         SmZItzPa6PxQbjFEKL+FKy6580T9ERBDjLQ0KkaeBQs+oLP+krXtNvjvOt6gPkhchcE+
-         Z2xrfnkiEQq0H6JCf4zNldbRhOYvFFTMzIc2Rbvjm7BrXZJCzXtUPXkQLlICg857kUKj
-         Qt5I1/zoN7A68JkfHjnPOTPt+ss46DqANSIVhIyewYz3s+kAmbxeFKKlVxvJnnxgd/8C
-         xVesCvp9P71GZ1Uty+bjJjgYWYEpkEB6r6RUYU10bTFy6ksAUMQqrbGqVz4zFiu3PjS7
-         ZPmg==
-X-Gm-Message-State: AOAM530HBi1zqXU/oOLoRAd7vvWFfnK5E3wQLqYQhVXxSlCi2XVbHJh9
-        AqrrYGiTmvfXAmMMxWoe675/3kopJCe1gTyJ42A=
-X-Google-Smtp-Source: ABdhPJzOLyn2QP7lkbb74ZwrNPrZAZPMGF7n6HeBzKwoqXkXBvyR0457ZAVk1ivBXuhxERi7QDUrOw==
-X-Received: by 2002:ac2:4e04:: with SMTP id e4mr16667967lfr.262.1632168711101;
-        Mon, 20 Sep 2021 13:11:51 -0700 (PDT)
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com. [209.85.167.51])
-        by smtp.gmail.com with ESMTPSA id o9sm210536lfl.280.2021.09.20.13.11.49
-        for <sparclinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Sep 2021 13:11:49 -0700 (PDT)
-Received: by mail-lf1-f51.google.com with SMTP id p29so71670042lfa.11
-        for <sparclinux@vger.kernel.org>; Mon, 20 Sep 2021 13:11:49 -0700 (PDT)
-X-Received: by 2002:a2e:3309:: with SMTP id d9mr12260277ljc.249.1632168709492;
- Mon, 20 Sep 2021 13:11:49 -0700 (PDT)
+        id S230172AbhIUHiX (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 21 Sep 2021 03:38:23 -0400
+Received: from verein.lst.de ([213.95.11.211]:55353 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230168AbhIUHiW (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 21 Sep 2021 03:38:22 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id C8F8567373; Tue, 21 Sep 2021 09:36:52 +0200 (CEST)
+Date:   Tue, 21 Sep 2021 09:36:52 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     David Miller <davem@davemloft.net>
+Cc:     hch@lst.de, andreas@gaisler.com, sparclinux@vger.kernel.org
+Subject: Re: use the generic DMA remap allocator for sparc32
+Message-ID: <20210921073652.GA25677@lst.de>
+References: <20210920113108.1299996-1-hch@lst.de> <20210920.123432.51038656274894609.davem@davemloft.net>
 MIME-Version: 1.0
-References: <CAHk-=wirexiZR+VO=H3xemGKOMkh8OasmXaKXTKUmAKYCzi8AQ@mail.gmail.com>
- <20210920134424.GA346531@roeck-us.net> <CAHk-=wgheheFx9myQyy5osh79BAazvmvYURAtub2gQtMvLrhqQ@mail.gmail.com>
- <CAHk-=wgnSFePkt9_TxgdgFvMz6ZyofLFQLuV_Tc7MQVXYdgSng@mail.gmail.com> <715c52e6-9a71-6924-0643-407311ad56ba@physik.fu-berlin.de>
-In-Reply-To: <715c52e6-9a71-6924-0643-407311ad56ba@physik.fu-berlin.de>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 20 Sep 2021 13:11:33 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjcCZW-Lu85djtfDSiQdOqH1hR=dDP5xHj6vhvMdBCMVA@mail.gmail.com>
-Message-ID: <CAHk-=wjcCZW-Lu85djtfDSiQdOqH1hR=dDP5xHj6vhvMdBCMVA@mail.gmail.com>
-Subject: Re: Linux 5.15-rc2
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-sparc <sparclinux@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-arch <linux-arch@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210920.123432.51038656274894609.davem@davemloft.net>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Sep 20, 2021 at 12:14 PM John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
->
-> If you want to get feedback whether the kernel actually boots, let me know.
+On Mon, Sep 20, 2021 at 12:34:32PM +0100, David Miller wrote:
+> From: Christoph Hellwig <hch@lst.de>
+> Date: Mon, 20 Sep 2021 13:31:06 +0200
+> 
+> > Hi Dave,
+> > 
+> > this series switches sparc32 to use the generic dma remap allocator
+> > instead of its own version.
+> 
+> For series:
+> 
+> Acked-by: David S. Miller <davem@davemloft.net>
 
-So having looked around more sparc64 actually looks to be ok as-is,
-because it doesn't do any ioremap at all, and the PIO accesses are
-done at physical address zero.
-
-Sparc uses a special IO memory address space and can basically map all
-of PCI that way, and it looks like the hardware does all the required
-special things for the PIO range at address 0-0xffff.
-
-So it turns out that the "missing iounmap()" is actually ok on sparc,
-because it's a no-op anyway - because the ioremap() was just a pointer
-cast with no actual remapping necessary.
-
-And the generic IOMAP thing does assume that PIO is special, in ways
-that sparc doesn't need. On x86, PIO is not remapped, but also uses
-different instructions, so it's not just pointer games that could be
-done at iomap/unmap case.
-
-(And on many other architectures you need to do different
-synchronization, even if you could perhaps otherwise make the
-PIO-vs-MMIO be only about the pointer mapping - so "writeb()" and
-"outb()" aren't just different in the addressing).
-
-End result: the only downside of sparc not using the generic iomap is
-likely that sparc will happily use a NULL __iomap pointer (error) and
-basically use it as a PIO access. But since other architectures like
-x86-64 would warn for that case (see 'bad_io_access()' in
-lib/iomap.c), even that isn't actually a big deal - any such bugs
-would have been found elsewhere.
-
-And having looked at this, I'm starting to suspect that sparc oddity
-is _why_ the fallback version in <asm-generic/io.h> was so broken. It
-did the right thing on sparc, but leaks iomap remappings almost
-anywhere else. But maybe sparc ended up being the only user of it?
-
-           Linus
+Does this mean you'd prefer them to go through the dma-mapping tree
+and not the sparc tree?
