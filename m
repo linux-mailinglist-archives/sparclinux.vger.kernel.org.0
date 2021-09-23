@@ -2,39 +2,39 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42D884156F9
-	for <lists+sparclinux@lfdr.de>; Thu, 23 Sep 2021 05:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7D1F415714
+	for <lists+sparclinux@lfdr.de>; Thu, 23 Sep 2021 05:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239543AbhIWDpP (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 22 Sep 2021 23:45:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41968 "EHLO mail.kernel.org"
+        id S239670AbhIWDqB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 22 Sep 2021 23:46:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42542 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239555AbhIWDnP (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Wed, 22 Sep 2021 23:43:15 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C35FA6128E;
-        Thu, 23 Sep 2021 03:40:39 +0000 (UTC)
+        id S239963AbhIWDoL (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 22 Sep 2021 23:44:11 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A769A6113E;
+        Thu, 23 Sep 2021 03:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632368440;
-        bh=Bz+E8LNs8ytPWUjTlv/NsRHobPvyXzz1g8nxTX45R58=;
+        s=k20201202; t=1632368463;
+        bh=HCZIEz2iJyd8rqlOQHEWcGeYIH85CnkeUTti0ysOWos=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VZk+zHOV2T0FfKhg2zEHT6sh7varw7LvcTRHpI5IcKffAAsyyc4eWxeI87A3u1tvU
-         RaSNs2xn2NRdwJi/Pbw8I+i85MGBBHLbtfUP6OgEn7aHEjA4XuWyklunOlDuS6d5lc
-         KvTAucPiFh69TfwD9dVkmN6q+AQHK0RJR3b+woQinWgp+CqdKxpifEqef0KhFqFD9V
-         /gZxehVdRvYNWPxh1T/SYCLHlKePR1X8Vj8qrWHkE1MHr5Lt43WdKAr0fq9TpqCkqz
-         e0XZl4LIxviJc9Dul0a0Hd0fWa2XeCCE6hCYqUw0KDiMGy3fIcA55TqIHv+CR65AEI
-         bDPoGARM3rwjw==
+        b=naLsR5Uk6kZswOvFQsVo73thu9tii6EVsw5KhYe6muXlwcSij1Uuf8CZU0JARA/5S
+         6Tek5Xy8Uf1qqMt48a3qwCrvMPzHmBeJj0WA51OsL3i3PfBDOX8ah5EQ1dPUDLQEFM
+         tF2OiTiQCzScA5PbHaTGL64/4mgzsnfx93GvdHRWWBFFBgjDOwdL9mjmqpkZBVjAGY
+         AY9+6O0nJa9AHIIUxweTGGYWe35qE/yjEXkgzBmelCqM5AYGX8ukEBSLmBMGUlprP2
+         X9NDF2+NYneOUJuyM8Fdulb3XAdSgkDVCArZB54nbrqbLcuSwTtNccocWUrY9Jh3FE
+         Xf1jKHlrMl1kQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Guenter Roeck <linux@roeck-us.net>,
         "David S . Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 05/11] sparc: avoid stringop-overread errors
-Date:   Wed, 22 Sep 2021 23:40:21 -0400
-Message-Id: <20210923034028.1421876-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 04/10] sparc: avoid stringop-overread errors
+Date:   Wed, 22 Sep 2021 23:40:47 -0400
+Message-Id: <20210923034055.1422059-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210923034028.1421876-1-sashal@kernel.org>
-References: <20210923034028.1421876-1-sashal@kernel.org>
+In-Reply-To: <20210923034055.1422059-1-sashal@kernel.org>
+References: <20210923034055.1422059-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -78,7 +78,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/sparc/kernel/mdesc.c b/arch/sparc/kernel/mdesc.c
-index 8a6982dfd733..5aa33bf7139e 100644
+index 6f80936e0eea..75445ba7e237 100644
 --- a/arch/sparc/kernel/mdesc.c
 +++ b/arch/sparc/kernel/mdesc.c
 @@ -37,6 +37,7 @@ struct mdesc_hdr {
