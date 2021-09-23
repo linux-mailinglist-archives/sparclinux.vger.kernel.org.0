@@ -2,71 +2,80 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42F6D415276
-	for <lists+sparclinux@lfdr.de>; Wed, 22 Sep 2021 23:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB48E415663
+	for <lists+sparclinux@lfdr.de>; Thu, 23 Sep 2021 05:39:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237964AbhIVVMv (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 22 Sep 2021 17:12:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37948 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237930AbhIVVMv (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 22 Sep 2021 17:12:51 -0400
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8396C061574
-        for <sparclinux@vger.kernel.org>; Wed, 22 Sep 2021 14:11:20 -0700 (PDT)
-Received: by mail-qk1-x72f.google.com with SMTP id 73so14715664qki.4
-        for <sparclinux@vger.kernel.org>; Wed, 22 Sep 2021 14:11:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
-        b=OISVm/lxGDD7sl8dGkgmfTHx/dAEYmcItEwm/TJU+RtVxgZqIb8EalqVqHZvrt2BNV
-         qANJjCr61Z+WiNGkjzfgKSKznB3FtJq/csiW0WMfvxT67ViW/Na3sd8lwzvWzc1NyPth
-         wgzm1KvcTe6nRMybA4LuFDrx8UoFMmH2KrDlvvVd/aAKLkdUciU2rYxs/HBUwhE8xpTE
-         mYje+iiqM+pKO8sHL5ezSSme9KNEkr0akLKE9vBgPQhsup1SzGBPhE7aGJ5CmvJ2kr1w
-         vBQfIdXLSJDs3cPl3G5AeAADo1LPnxDb0UuYEvT8Pg05Ye6XHSHpDywFpIS99tuDQD91
-         MhYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
-        b=VhaghqrBTU/aAGO4Jp2JkyrdKA08KIwGee7o9olxPxi/Q/t/feDWezyahenrNEKUAy
-         T5CQVeAwUkMZnFtiRJx/Fyj5FrKYnY5JMiYdYBqzKXlGaCZf+yTRaYOKJCRUHRJTmXCY
-         yz7uwoMOIwfxnjeoHG9c9Hzkd5O/ZaBfg9NfX7+lVrvs9hyJ/sHZJhhLul8hWLa+BNQh
-         sNjM9m0eBOO8naaj7rnGJhCe28ylw8eFit28Tnh49XD7ag08aKqsfqpFsi844S1ZaOEZ
-         zmbQ5cNPZRaPbDtdtAoaig9wAKoToE3uZOW73SKJByHwzO2GGjzjpFX4IOXQif3hRvy+
-         aJZg==
-X-Gm-Message-State: AOAM533dZj0BnysLxVcVfc3PNaIu9aSLYggf6+NdozJjEHgYQDewRBhh
-        vJjBpwi9hyqZ4ROpFvP69DUsYMSeGCBLnGurQb0=
-X-Google-Smtp-Source: ABdhPJxjcMZkqPi7x3rzG57zQqpf1uARAzQgvhNVsFvd1JPU0MU0+4a58bwnKpuYQUFIQBP9U9hv7aTIn/l5JG+7pdE=
-X-Received: by 2002:a25:4cc3:: with SMTP id z186mr1544419yba.212.1632345080169;
- Wed, 22 Sep 2021 14:11:20 -0700 (PDT)
+        id S239212AbhIWDlI (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 22 Sep 2021 23:41:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41756 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239356AbhIWDkj (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Wed, 22 Sep 2021 23:40:39 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 41D776121F;
+        Thu, 23 Sep 2021 03:39:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632368349;
+        bh=BJnQJGKsBsmbmS6kpbj/l8IiwogKaf4AYawUXj+cxEw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=URtvXQlWMuvgGG0LIq+yrkmp7pb2/+RIvLiHYuTgiNxDiJoDvS0bGpsKX/CKWloWM
+         +yJr2lMNg/ltAw38VhOJ3yIY+WECdydnxvNVktLejrPcgY2aXOogicEqpwvR29p1Pq
+         fx9bT8yom2AiLZKao2YvraU7sqR1+pvN5Lr174HHlNYO72g5jhTz4SfwrA4R/AHpcC
+         OMNQok4OwJQw2gfNm6MyREFKuDIHtUAIzCD2pBg0kXuCYri8X+ZRKU7QvA3js8Thro
+         nknOjqyJ4TB7RwO9QvuJR+hzbVUO+w6jGKPhel8NFEeF1RzldWml3TbCU4W0HqNX/I
+         +LlE0bjnsagIQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Andreas Larsson <andreas@gaisler.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Sasha Levin <sashal@kernel.org>, davem@davemloft.net,
+        sparclinux@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 09/19] sparc32: page align size in arch_dma_alloc
+Date:   Wed, 22 Sep 2021 23:38:43 -0400
+Message-Id: <20210923033853.1421193-9-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210923033853.1421193-1-sashal@kernel.org>
+References: <20210923033853.1421193-1-sashal@kernel.org>
 MIME-Version: 1.0
-Sender: pablogboy98@gmail.com
-Received: by 2002:a05:7000:1903:0:0:0:0 with HTTP; Wed, 22 Sep 2021 14:11:19
- -0700 (PDT)
-From:   Aisha Al-Qaddafi <aisha.gdaffi24@gmail.com>
-Date:   Wed, 22 Sep 2021 22:11:19 +0100
-X-Google-Sender-Auth: 8v47fGjUmVok1biZxCB7xHED1N4
-Message-ID: <CAFZ0LQEGwMyiJFwcFoh2HC6mXUWzULE8=yi0pUULRd0+63jxfg@mail.gmail.com>
-Subject: My Dear Friend
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Assalamu alaikum,
-I came across your e-mail contact prior to a private search while in
-need of your assistance. I am Aisha Al-Qaddafi, the only biological,
-Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
-single Mother and a Widow with three Children. I have investment funds
-worth Twenty Seven Million Five Hundred Thousand United State Dollar
-($27.500.000.00 ) and i need a trusted  investment Manager/Partner
-because of my current refugee status, however, I am interested in you
-for investment project assistance in your country. If you are willing
-to handle this project on my behalf kindly reply urgently to enable me
-to provide you more information about the investment
-funds.
-Best Regards
+From: Andreas Larsson <andreas@gaisler.com>
+
+[ Upstream commit 59583f747664046aaae5588d56d5954fab66cce8 ]
+
+Commit 53b7670e5735 ("sparc: factor the dma coherent mapping into
+helper") lost the page align for the calls to dma_make_coherent and
+srmmu_unmapiorange. The latter cannot handle a non page aligned len
+argument.
+
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/sparc/kernel/ioport.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/sparc/kernel/ioport.c b/arch/sparc/kernel/ioport.c
+index f89603855f1e..b87e0002131d 100644
+--- a/arch/sparc/kernel/ioport.c
++++ b/arch/sparc/kernel/ioport.c
+@@ -356,7 +356,9 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
+ void arch_dma_free(struct device *dev, size_t size, void *cpu_addr,
+ 		dma_addr_t dma_addr, unsigned long attrs)
+ {
+-	if (!sparc_dma_free_resource(cpu_addr, PAGE_ALIGN(size)))
++	size = PAGE_ALIGN(size);
++
++	if (!sparc_dma_free_resource(cpu_addr, size))
+ 		return;
+ 
+ 	dma_make_coherent(dma_addr, size);
+-- 
+2.30.2
+
