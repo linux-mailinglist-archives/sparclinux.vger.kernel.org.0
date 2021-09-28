@@ -2,39 +2,39 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A0B641A857
-	for <lists+sparclinux@lfdr.de>; Tue, 28 Sep 2021 08:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 521B141A87C
+	for <lists+sparclinux@lfdr.de>; Tue, 28 Sep 2021 08:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239597AbhI1GET (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 28 Sep 2021 02:04:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49526 "EHLO mail.kernel.org"
+        id S239314AbhI1GFQ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 28 Sep 2021 02:05:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49680 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239864AbhI1GCs (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 28 Sep 2021 02:02:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A8B456137E;
-        Tue, 28 Sep 2021 05:57:37 +0000 (UTC)
+        id S239650AbhI1GA5 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 28 Sep 2021 02:00:57 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DA9A0613A9;
+        Tue, 28 Sep 2021 05:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632808657;
-        bh=DD1/RWx0Jf0U3/++KX4FgO2svGaoEtvE0J5b5DS9k0o=;
+        s=k20201202; t=1632808649;
+        bh=tXM17ftZo6zb9iZvoXX/Qu2JrcVS4VAYlpj1pqVIu9g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J4Ikrqzxiy0D41G5E4UaWJJYj3OhQSTIDQYX+voNlcUN89IELtCeYwfme318JmsSu
-         wrHMb3H7UDXSAX2JtLxuNMjntS+0lxf8ztAoXIjZ8ZAPd994qxVSsoYOzUTf73C3Pe
-         1ARy1SZJOXC+bclsB7STqZZPWNn/v6Trwvur+CujSh1wbl3GNX55LfZJ497zTt27lf
-         ZHWP8uyDs+KbioGXefPW2kDXce1hwiDH5rLSdfrEd8QFrfFp3BiKKYfCtNORROPg36
-         0tUDVNcY97EyHIkoAmpdYZ0KImnbdIjysKLph4mwMJ3z1RLsWB7c3hrLDAWcP77Hjw
-         wJXYNi20iWaQQ==
+        b=oQO9IQISfptfUkN1aQK80egg4kvOG7o5XlaQto6qiWm+WxG60tmmplyojnBCv+Cpz
+         +znzks1ixA5EHslTJf8j61Fbo7JIVL5rJUzuundughC/GsWfwNuFWvdIIyzyu0qjV4
+         OMXzzYQLLYyyOnsYoSmZ9YDwq/PfI4RPIStQRs8/Dv4wgigI868yP2Ricqpr8pA2tv
+         ta2aZWTQmEvqOzCuq2tUDibVNSeq5yLJe3L3ICOCeaGbG/YI+3FQi/eEXBpN116rvW
+         D7kluR6DyFb5GOpD+OtvQCM6rGBay7Tytp0THamBzPtHeGE2cLtoyPrx1qLFxa1lyC
+         w1HOFndoqZ9Lg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Guenter Roeck <linux@roeck-us.net>,
         David Miller <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 3/6] sparc64: fix pci_iounmap() when CONFIG_PCI is not set
-Date:   Tue, 28 Sep 2021 01:57:31 -0400
-Message-Id: <20210928055734.173182-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 3/8] sparc64: fix pci_iounmap() when CONFIG_PCI is not set
+Date:   Tue, 28 Sep 2021 01:57:21 -0400
+Message-Id: <20210928055727.173078-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210928055734.173182-1-sashal@kernel.org>
-References: <20210928055734.173182-1-sashal@kernel.org>
+In-Reply-To: <20210928055727.173078-1-sashal@kernel.org>
+References: <20210928055727.173078-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -69,10 +69,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/arch/sparc/lib/iomap.c b/arch/sparc/lib/iomap.c
-index c4d42a50ebc0..fa4abbaf27de 100644
+index c9da9f139694..f3a8cd491ce0 100644
 --- a/arch/sparc/lib/iomap.c
 +++ b/arch/sparc/lib/iomap.c
-@@ -18,8 +18,10 @@ void ioport_unmap(void __iomem *addr)
+@@ -19,8 +19,10 @@ void ioport_unmap(void __iomem *addr)
  EXPORT_SYMBOL(ioport_map);
  EXPORT_SYMBOL(ioport_unmap);
  
