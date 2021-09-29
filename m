@@ -2,87 +2,84 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9A4141A861
-	for <lists+sparclinux@lfdr.de>; Tue, 28 Sep 2021 08:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0299241BCFB
+	for <lists+sparclinux@lfdr.de>; Wed, 29 Sep 2021 04:56:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238908AbhI1GE2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 28 Sep 2021 02:04:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48784 "EHLO mail.kernel.org"
+        id S243822AbhI2C6e (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 28 Sep 2021 22:58:34 -0400
+Received: from foss.arm.com ([217.140.110.172]:57194 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239061AbhI1GCu (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 28 Sep 2021 02:02:50 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1A37A61390;
-        Tue, 28 Sep 2021 05:57:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632808664;
-        bh=DD1/RWx0Jf0U3/++KX4FgO2svGaoEtvE0J5b5DS9k0o=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RUEvt/LXdI/+tNHIREdq2uFTOlz3pNu+gmuak+IvHPZfoJfesxmmMJBwqX0Hombd9
-         Xan57rnJdy3R8LrrreYCdroiJZVKAfM71UWT26EoZxAZ/bDrVjEJKicPam4K3jM0IW
-         zo0/V6ZfHtLgh6cxZVC/DeqnbESu2AieYIjM7ugP46fRO9C5DitIfNjOGq9RdL8NxG
-         1TxN1LzdbBYl5sf25HwRiBCncysmGwdJ8TiE5vvQjwBFvXt+7wy6nXT3Zmf+3I+xBA
-         lPsWkuoTMLEG42wibKFfSSgS2h7PwMYRx19HwAPTdhDSw+3MpCpOwdFMmpUxx+IqYb
-         pdY4JdNvlu8xA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        David Miller <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>, sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 2/5] sparc64: fix pci_iounmap() when CONFIG_PCI is not set
-Date:   Tue, 28 Sep 2021 01:57:38 -0400
-Message-Id: <20210928055741.173265-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210928055741.173265-1-sashal@kernel.org>
-References: <20210928055741.173265-1-sashal@kernel.org>
+        id S243733AbhI2C6d (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 28 Sep 2021 22:58:33 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDA65D6E;
+        Tue, 28 Sep 2021 19:56:51 -0700 (PDT)
+Received: from [192.168.0.130] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F15653F70D;
+        Tue, 28 Sep 2021 19:56:48 -0700 (PDT)
+Subject: Re: [PATCH] mm/mmap: Define index macros for protection_map[]
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     linux-mm@kvack.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <1632712920-8171-1-git-send-email-anshuman.khandual@arm.com>
+ <YVHcCZXmQ1yjINaf@infradead.org>
+ <f224c661-f8f0-3c4a-bad8-095209412dd4@arm.com>
+ <YVKdH4G5Alfwjkix@infradead.org>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <9051a597-0229-aaf2-9aad-42509b4f621d@arm.com>
+Date:   Wed, 29 Sep 2021 08:27:46 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+In-Reply-To: <YVKdH4G5Alfwjkix@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit d8b1e10a2b8efaf71d151aa756052fbf2f3b6d57 ]
 
-Guenter reported [1] that the pci_iounmap() changes remain problematic,
-with sparc64 allnoconfig and tinyconfig still not building due to the
-header file changes and confusion with the arch-specific pci_iounmap()
-implementation.
+On 9/28/21 10:12 AM, Christoph Hellwig wrote:
+> On Tue, Sep 28, 2021 at 08:24:43AM +0530, Anshuman Khandual wrote:
+>>> simple switch statement provided by each architecture.  See the below
+>>> WIP which just works for x86 and without pagetable debugging for where I
+>>> think we should be going.
+>>
+>> Sure, this will work as well but all platforms need to be changed at once.
+>> Is there any platform that would not subscribe ARCH_HAS_GET_PAGE_PROT and
+>> export its own vm_get_page_prot() ? AFAICS all platforms are required to
+>> export __PXXX and __SXXX elements currently.
+>>
+>> This seems to be a better idea than the current proposal. Probably all the
+>> vm_flags combinations, which will be used in those switch statements can be
+>> converted into macros just to improve readability. Are you planning to send
+>> this as a proper patch soon ?
+> 
+> This was just a quіck WIP patch.  If you have some spare time to tackle
+> it for real I'd sugget the following approach:
 
-I'm pretty convinced that sparc should just use GENERIC_IOMAP instead of
-doing its own thing, since it turns out that the sparc64 version of
-pci_iounmap() is somewhat buggy (see [2]).  But in the meantime, this
-just fixes the build by avoiding the trivial re-definition of the empty
-case.
+Sure, will try and get this working.
 
-Link: https://lore.kernel.org/lkml/20210920134424.GA346531@roeck-us.net/ [1]
-Link: https://lore.kernel.org/lkml/CAHk-=wgheheFx9myQyy5osh79BAazvmvYURAtub2gQtMvLrhqQ@mail.gmail.com/ [2]
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Cc: David Miller <davem@davemloft.net>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/sparc/lib/iomap.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/sparc/lib/iomap.c b/arch/sparc/lib/iomap.c
-index c4d42a50ebc0..fa4abbaf27de 100644
---- a/arch/sparc/lib/iomap.c
-+++ b/arch/sparc/lib/iomap.c
-@@ -18,8 +18,10 @@ void ioport_unmap(void __iomem *addr)
- EXPORT_SYMBOL(ioport_map);
- EXPORT_SYMBOL(ioport_unmap);
- 
-+#ifdef CONFIG_PCI
- void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
- {
- 	/* nothing to do */
- }
- EXPORT_SYMBOL(pci_iounmap);
-+#endif
--- 
-2.33.0
-
+> 
+>  1) Remove the direct references to protection_map in debug_vm_pgtable.c
+>  2) add the ARCH_HAS_GET_PAGE_PROT symbol that lets architectures
+>     provide vm_get_page_prot itself and not define protection_map at all
+>     in this case
+>  3) convert all architectures that touch protection_map to provide
+>     vm_get_page_prot themselves
+>  4) mark protection_map static
+>  5) convert all architectures that provide arch_filter_pgprot and/or
+>     arch_vm_get_page_prot to provide vm_get_page_prot directly and
+>     remove those hooks
+>  6) remove the __S???/__P??? macros and the generic vm_get_page_prot
+>     after providing an arch implementation for every architecture.
+>     This can maybe simplified with a new generic version that directly
+>     looks at PAGE_* macros, but that will need further investigation
+>     first.
+> 
