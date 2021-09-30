@@ -2,84 +2,150 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0299241BCFB
-	for <lists+sparclinux@lfdr.de>; Wed, 29 Sep 2021 04:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8637B41DF44
+	for <lists+sparclinux@lfdr.de>; Thu, 30 Sep 2021 18:40:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243822AbhI2C6e (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 28 Sep 2021 22:58:34 -0400
-Received: from foss.arm.com ([217.140.110.172]:57194 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243733AbhI2C6d (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Tue, 28 Sep 2021 22:58:33 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDA65D6E;
-        Tue, 28 Sep 2021 19:56:51 -0700 (PDT)
-Received: from [192.168.0.130] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F15653F70D;
-        Tue, 28 Sep 2021 19:56:48 -0700 (PDT)
-Subject: Re: [PATCH] mm/mmap: Define index macros for protection_map[]
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     linux-mm@kvack.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <1632712920-8171-1-git-send-email-anshuman.khandual@arm.com>
- <YVHcCZXmQ1yjINaf@infradead.org>
- <f224c661-f8f0-3c4a-bad8-095209412dd4@arm.com>
- <YVKdH4G5Alfwjkix@infradead.org>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <9051a597-0229-aaf2-9aad-42509b4f621d@arm.com>
-Date:   Wed, 29 Sep 2021 08:27:46 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1352203AbhI3Qmk (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 30 Sep 2021 12:42:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39334 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236437AbhI3Qmj (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 30 Sep 2021 12:42:39 -0400
+Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6C42C06176C
+        for <sparclinux@vger.kernel.org>; Thu, 30 Sep 2021 09:40:56 -0700 (PDT)
+Received: by mail-vs1-xe44.google.com with SMTP id y141so8123573vsy.5
+        for <sparclinux@vger.kernel.org>; Thu, 30 Sep 2021 09:40:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=FV+sR2jqeq3a30q0fwwes6WIJUL0Aly1jHDpEuRKN4E5hFr75A8Lw1Hf7FsKbd3IgX
+         Y0NETW3LIdrr+GfiFqDiRliDmaT3s6ks2SCzQ8xKiQWqtfryMEQxZRm/Ehnv8sx9IvZA
+         muPVzb5TbIR8gh03qrKvvPLKt+CWDdsXkBUBiZw2JG/VPZRXtjF2vQGNdWqMtE0+KYCn
+         puyxTyxmsl+RwXB2mIAoqF5n+/rz1oAVYvnPo9p/4N+LHs01uAkZKBx+0yd7aFh3bUHG
+         h/EeRqLYRyFYlkHNLt6EEQaizEMQ1XNxoB1ZM7qr+/WnP5xBCG7P4Ey4iY0NmkRmr8S1
+         mh4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=EWmvXlP+sB4YCSi2FnfKRqImljhkxnrV/J/RSdOB92NJodrRug1eHyWNwekXFNzgll
+         Fxc22ZUTjge7R3JWGhFmwYm9E356Gg8EEL2omEA4Vu0eACSpD81dlc7N9j8H+Z6nBmIN
+         U+P/7yAmmqVm5+9XiTpiAZA6/JI9FdXFuf5245eutdql9QtnHJde2uoePyZDdcLSqgi5
+         0ED9CNqLHiGaMyG7iq3QlcPi7lrwBk9+yNwRUkAtU8WEenHjqg+Hno4hMPtmHOK42FZJ
+         gdm/wIBUJmYbz/40URbw3vvvCOzK8kRJk/K3ZJga1z51WD5yR+i+eygfeROEQO8gejtK
+         MUmA==
+X-Gm-Message-State: AOAM533Y7GnLvwj1cjIidisfEXOSlLzgsX86MCg2eLMU8z4GNVDk7ciJ
+        F/RzcihdErdkXSn8tJ8uxQMY8bb3xqTE88Zz30M=
+X-Google-Smtp-Source: ABdhPJyrlzTC2MbiFYv9Onunj6ymT4OoDGeF1Rs8K96BASDJdMf5G8ZjaV568mQ5Ecmy8bt02e07EU6x/22RNi/kmb0=
+X-Received: by 2002:a67:ce14:: with SMTP id s20mr148117vsl.34.1633020056080;
+ Thu, 30 Sep 2021 09:40:56 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YVKdH4G5Alfwjkix@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a59:ab2e:0:b0:22d:7f44:603a with HTTP; Thu, 30 Sep 2021
+ 09:40:55 -0700 (PDT)
+Reply-To: irenezakari24@gmail.com
+From:   Irene zakari <irenezakari88@gmail.com>
+Date:   Thu, 30 Sep 2021 09:40:55 -0700
+Message-ID: <CAFT8PFEuTDyM7AWv4-LAqHpR0VFES6VrRn3W0Yw7s4vRmk+-jg@mail.gmail.com>
+Subject: PLEASE I NEED YOUR HELP
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Hello   ..
 
+How do you do over there? I hope you are doing well?
 
-On 9/28/21 10:12 AM, Christoph Hellwig wrote:
-> On Tue, Sep 28, 2021 at 08:24:43AM +0530, Anshuman Khandual wrote:
->>> simple switch statement provided by each architecture.  See the below
->>> WIP which just works for x86 and without pagetable debugging for where I
->>> think we should be going.
->>
->> Sure, this will work as well but all platforms need to be changed at once.
->> Is there any platform that would not subscribe ARCH_HAS_GET_PAGE_PROT and
->> export its own vm_get_page_prot() ? AFAICS all platforms are required to
->> export __PXXX and __SXXX elements currently.
->>
->> This seems to be a better idea than the current proposal. Probably all the
->> vm_flags combinations, which will be used in those switch statements can be
->> converted into macros just to improve readability. Are you planning to send
->> this as a proper patch soon ?
-> 
-> This was just a quіck WIP patch.  If you have some spare time to tackle
-> it for real I'd sugget the following approach:
+My name is Irene. (24 years), i am single, from Gambia, the only child
+of late Eng. Bernard Bakary Zakaria. the Director of Bajam Enterprise
+(Building Construction Company in The Gambia) also the CEO of Bernard
+Import and Export (GAMBIA).
 
-Sure, will try and get this working.
+As a matter of fact my mother died when i was barely 4 years old
+according to my late father and because of the type of love he had for
+my mother made him to remain UN-married till he left the ghost..
 
-> 
->  1) Remove the direct references to protection_map in debug_vm_pgtable.c
->  2) add the ARCH_HAS_GET_PAGE_PROT symbol that lets architectures
->     provide vm_get_page_prot itself and not define protection_map at all
->     in this case
->  3) convert all architectures that touch protection_map to provide
->     vm_get_page_prot themselves
->  4) mark protection_map static
->  5) convert all architectures that provide arch_filter_pgprot and/or
->     arch_vm_get_page_prot to provide vm_get_page_prot directly and
->     remove those hooks
->  6) remove the __S???/__P??? macros and the generic vm_get_page_prot
->     after providing an arch implementation for every architecture.
->     This can maybe simplified with a new generic version that directly
->     looks at PAGE_* macros, but that will need further investigation
->     first.
-> 
+So after the death of my father as a result of assassinate, his brother (My
+Uncle) who is the purchasing and marketing sale manager of my late
+fathers company named (Mr. James Tokunbo Oriade Zakaria) wanted to
+convert all the properties and resources of my late father into his
+which i quarreled with him and it made him to lay his anger on me to
+the extent of hiring an assassins to kill me but to God be the glory i
+succeeded by making a way to Burkina faso for my dear life.
+Honestly i do live a fearful life even here in Burkina faso because of
+those Assassins coming after me .
+
+I would want to live and study in your country for my better future.
+because my father same blood brother wanted to force me into undecided
+marriage, just for me to leave my father home and went and live with
+another man I never know as he want to occupied all my father home
+and maybe to sold it as my father no longer alive, I'm the only child
+daughter my father born, '' but he don't know that i am not
+interesting in any of my father properties or early marriage for now,
+because i still have future to think about and to focus on my studies
+first as i was doing my first year in the University before the death
+of my father.
+
+Actually what I want to discuss with you is about my personal issue
+concern funds my late father deposited in a bank outside my country,
+worth $4.5 million united state dollars. i need your assistance to
+receive and invest this funds in your country.
+
+Please help me, I am sincere to you and I want to be member of your
+family as well if you wouldn't mind to accept me and lead me to better
+future in your country.
+
+All the documents the bank issue to my father during time of deposit
+is with me now.
+I already notify the bank on phone about the death of my father and
+they are surprise for the news and accept that my father is their good
+customer.
+I will be happy if this money can be invested in any business of your
+choice and it will be under your control till i finished my education,
+also I'm assuring you good relationship and I am ready to discuss the
+amount of money to give you from this money for your help.
+
+Therefore, I shall give you the bank contact and other necessary
+information in my next email if you will only promise me that you will
+not/never betray and disclosed this matter to anybody, because, this
+money is the only hope i have for survival on earth since I have lost
+my parents.
+
+Moreover I have the FUND PLACEMENT CERTIFICATE and the DEATH
+CERTIFICATE here with me, but before I give you further information, i
+will like to know your full data
+
+1. Full Name: ........................
+2. Address: ..................
+3. Nationality: ........... Sex................
+4. Age:........... Date of Birth:................
+5. Occupation:...................
+.....
+6. Phone: ........... Fax:.........................
+7. State of Origin: .......Country:..............
+8. Occupation:...................
+................
+9. Marital status........... E-mail address's: ............
+10. Scan copy of your ID card or Driving License/Photo:............
+DECLARATION:
+
+so that i will be fully sure that i am not trusting the wrong person.
+and it will also give me the mind to send you the bank contact for you
+to communicate with them for more verification about this money. and
+to know you more better.
+
+Meanwhile, you can reach me through my pastor,his name is Pastor Paul
+any time you call, tell him that you want to speak with me because
+right now i am living in the church here in Burkina faso and i don't
+want to stay here any longer,
+send for me to speak with you his phone number is this(+226 75213646)
+
+I will stop here and i will be waiting for your reply and feel free
+ask any thing you want to know about me.
+Please help me, I would be highly appreciated
+Have nice day.
+From Irene
