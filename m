@@ -2,71 +2,83 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C230E41EBF7
-	for <lists+sparclinux@lfdr.de>; Fri,  1 Oct 2021 13:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4612541FB5B
+	for <lists+sparclinux@lfdr.de>; Sat,  2 Oct 2021 14:00:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353921AbhJALeH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 1 Oct 2021 07:34:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40508 "EHLO
+        id S232925AbhJBMCJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 2 Oct 2021 08:02:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230345AbhJALeH (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 1 Oct 2021 07:34:07 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76D28C061775
-        for <sparclinux@vger.kernel.org>; Fri,  1 Oct 2021 04:32:22 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id l8so33873080edw.2
-        for <sparclinux@vger.kernel.org>; Fri, 01 Oct 2021 04:32:22 -0700 (PDT)
+        with ESMTP id S232935AbhJBMCI (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 2 Oct 2021 08:02:08 -0400
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7A0C061782
+        for <sparclinux@vger.kernel.org>; Sat,  2 Oct 2021 05:00:22 -0700 (PDT)
+Received: by mail-io1-xd2a.google.com with SMTP id 5so2167125iov.9
+        for <sparclinux@vger.kernel.org>; Sat, 02 Oct 2021 05:00:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
-        b=Gr4fGII/I3I2DsHLEZqLf/MZFxAwf+13Y268MeE0Rgho9RGNCbyVRXEhltY4WEhVMX
-         Flp+8bmWQsLtfCZqmEzSspC4I97TX6ZSqIPjVX40UcowjHOfPCs7doYKsgY4wJmW3h5S
-         C5xgNi+6vWWJjqvpssk8mmBwKayqZ+0lpLYrHGQFXyui7MxQndnthqbKTZU0kPCo/FLS
-         HdLx1pNKTKx9uSeDtC7DQ/5AQtGw6JVq2lpu21jbU+hs1QvQKiRvd1rK3i1sPmAIVQvl
-         IlbU/dHBrk9agh1Kpl8CHXuTKdVLHFu5kqrHuiMk3zJ6l++znU/EhTJkZ5ISTI21sr5n
-         vhCg==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
+        b=DAO1bC92JOsdQ/NNexsSuEPMQkilehd80HK72Rw533l3nqgRLvVKlZ4YV3yD/WCheY
+         4oM2fGsJKCvHisgrawN73IUYlsBA00mFtxuEijoEieucGMttbEK51A9+6y1h1vfNYsSL
+         V+iO0/gGIhsADgxIDt87cycZICu4jv29F/5ETG1bQzrpIq8psSXZSsFuHD+2cbtRtNV/
+         5BovcK9ZTGyMKsheQu3wwH62Vg551soQeKVTlj9RzfHqVL5suo4MlDJx6GvxHWnDzFlb
+         x3+Zd8VPNJghIanrTHnG53Yxpt0043BQ7R/6Lfzl5vQ4F5mulm/cNLyIIEzRMo1ZftRF
+         8VCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
-        b=vbE/WEhC41GJjJ03PEk1K4vCPCyQaAalrCkTNV4dHyydkV4PXemV1AalM+07CSEJvG
-         Dh+/uvdI1OrDCG0mcP0LwWWCpnYLocv+htaDsIBqjOvqtiWwVCb4E2k4LOzMSRG6JQM3
-         Lm2RF7eXsjBwuUl9Xn1GbrLIZ1IwsDkAwAxNXXUl7DH3ctqq7EyLRy1/THBS1C0UX+dv
-         Xqi/WOFUqrz6dxolfmnF20Lt8xg0LrEM7F4NiX2t3+KZ4lfbV64E8rthM0yltD91iOXu
-         pc/KRraJF8597IuCi/ycRX8212hW+1HjucKVr2Up9EZavTXLTonBcO6jlVbpMsDeM0j4
-         KuUw==
-X-Gm-Message-State: AOAM531iUJbbjSzjYcUO+JcTmDl6URzLilpDdb/nJgXP7QQ8lwwR+e0y
-        Ykpu45FW5DzGeWrb7xYTKjl6FoPvhz7HffrGcXI=
-X-Google-Smtp-Source: ABdhPJzKNED3Wm85NzFOqVVWsL7zEujm78mcYHMp0PBB0Y1o/U8Yfqt3y3ko4Zq1WjufeL5sqnWm3WZVUGJmwBTiqy8=
-X-Received: by 2002:a05:6402:3088:: with SMTP id de8mr14047171edb.76.1633087940916;
- Fri, 01 Oct 2021 04:32:20 -0700 (PDT)
+         :subject:to:content-transfer-encoding;
+        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
+        b=V6tBRpf3LDeL/vElVIoPK5WyuSd3Wnk+7O01n8pY2DZm2iRnS0LJHYyDy3z9wzH2wf
+         tShUXMILX1GifwO2YTDn78PAu/jDKoGYr2PRDnZKHqQA3zkh/TEKo0zSu7JeJKNgzJRu
+         nEk7IEQYahYjE5qEq7geQ9HwwdvGqheLDGYLJrzZiV0HCKzoV7O+hx19LQ/WzSxQueFs
+         eDFUeGlFfJ95FB9qraGvzN9RkUeLzQnO6O83d5QpRtVoym++3+4MLfjff9WQE3CY493L
+         gkbSxTDHLVsRFogSzmfS38fB3qjOwiwZZa4Bi8lgNzgYHWwjdFXfw+icxVE5yIuXeN6E
+         EtWQ==
+X-Gm-Message-State: AOAM5318pFdrnHywS28vBuiiXNty3Q4j7E9A7uiVarUz4cFYs2ya2R2M
+        Q34Hy/84OfMlMln4Bj17YMvgyIZLmzjz9GQhMGc=
+X-Google-Smtp-Source: ABdhPJzaNlegqSNGaU2rEjcw7R82KLsQUybV5SJRnD84iDcFQAkNifcNUeBKLnoeSIPUqunFsYney56+JL5zHQvZr/g=
+X-Received: by 2002:a02:a18d:: with SMTP id n13mr2632357jah.132.1633176022067;
+ Sat, 02 Oct 2021 05:00:22 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a17:906:724a:0:0:0:0 with HTTP; Fri, 1 Oct 2021 04:32:20
- -0700 (PDT)
-Reply-To: joymat52@gmail.com
-From:   Joyce Thomas <tjoyc1234@gmail.com>
-Date:   Fri, 1 Oct 2021 04:32:20 -0700
-Message-ID: <CAF-RpUhc2usBhXZRkw4EuXAU8SAKmVWeyJ4HEX_2TwXhCDGQUw@mail.gmail.com>
-Subject: ATTN:
-To:     undisclosed-recipients:;
+Received: by 2002:a4f:f90d:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 05:00:21 -0700 (PDT)
+Reply-To: unitednnation0@gmail.com
+From:   "U.n" <wadebaye33@gmail.com>
+Date:   Sat, 2 Oct 2021 00:00:21 -1200
+Message-ID: <CACE0T5XpHfLe2aaSywgKNWk-y8sFt0sp3qnGdVPEMJnR3OjNpg@mail.gmail.com>
+Subject: Attention
+To:     unitednnation0@gmail.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello Dear
-My Name is Mr. Joyce Thomas. Contact me for more information on the
-transfer of ($7.9 million dollars) left by my late client from your
-Country. I want to present you as a business partner and next of kin
-of the fund. I will give you the details of this transaction, as soon
-as I hear from you. I need the information below:
-Full Name:
+--=20
+
+
+Attention Sir/Madam
+This is the United Nation (UN). We the United Nations (UN) Globally
+has approved (US$2.500,000)( two Million Five hundred thousand
+dollars) compensation as part of our responsibilities for humanitarian
+Aid for fighting against CoronaVirus and you are among the lucky ones.
+
+
+This compensation is for the most affected countries, communities and
+families across the global. Your funds were deposited with Bank in USA
+to transfer your funds to you via Internet Banking. You have to send
+your full details as state below:with this email Address
+  ( unitednnation0@gmail.com )
+Your full names:
 Address:
+Telephone:
 Occupation:
-Age:
-Personal Email:
-Personal Telephone:
-Best Regards,
-Mr.Joyce  Thomas
+
+
+
+Yours Sincerely
+Mr. Ant=C3=B3nio Guterres
+United Nations (UN).
