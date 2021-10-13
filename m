@@ -2,145 +2,75 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 102A442B831
-	for <lists+sparclinux@lfdr.de>; Wed, 13 Oct 2021 08:59:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 932F042C444
+	for <lists+sparclinux@lfdr.de>; Wed, 13 Oct 2021 16:58:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238213AbhJMHBX (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 13 Oct 2021 03:01:23 -0400
-Received: from mail-ua1-f42.google.com ([209.85.222.42]:46020 "EHLO
-        mail-ua1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229798AbhJMHBT (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 13 Oct 2021 03:01:19 -0400
-Received: by mail-ua1-f42.google.com with SMTP id 64so2466055uab.12;
-        Tue, 12 Oct 2021 23:59:15 -0700 (PDT)
+        id S237899AbhJMPAM (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 13 Oct 2021 11:00:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56380 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237819AbhJMPAC (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 13 Oct 2021 11:00:02 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0B0C061753
+        for <sparclinux@vger.kernel.org>; Wed, 13 Oct 2021 07:56:33 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id r18so9366304wrg.6
+        for <sparclinux@vger.kernel.org>; Wed, 13 Oct 2021 07:56:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=szeolAqmJqd0hJn5d47PHeNOyZWuU1CeFrejo0YAi2g=;
+        b=qJIHv+OX3UruXidUgWkiGpPMzCozv6BpjR3X4o9qy0t17HhNYtyPVbBGY4BUFfw3RA
+         JkGTCKxYrvAfhfJ7XnCdVGT0bSDcwZGxgjC7ZGO25aP3/j5WpCaAXlRBEFCYwX92h9sK
+         QGa41bCqeN3rG99Y9kMzYo8Q5wPM6MrqQdCzpslw46V+MB0YiY2QOPYzEHzfDzSLJ06O
+         oJp+4mnhTsoxn4MwIXxCgLwGqaKfTYPgw3jEP7uixbyO2ZZreY+qRzGts9rrpGt7CMXD
+         6j1bQNHR0aZz057IaHUTV5A13WMjUgUIOcn4aRKz4AZnCeQpsM9sGxTeSAYBGB/Otikt
+         AdNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vLmWoWym/1fKiJu7c9gpS1cDGT+57poTvw7kTscrC00=;
-        b=Gg+JGh/RyVv0o+fGhBa/WFOeEb2LNvd/qL4Tom37dhPYvviNUEwuLUQtdctYvsC2zO
-         dXxTr6BCjLALaPjwKnpYkaMsJEG4PS0aehh9MrByP4nyPyqJu3p81T/w9dqicVwv9yLp
-         dN18x6SzUIAsuKay+DiAAObgmB95M0qESd/IMJBkREfjiPfypsXJ+G0Kxg6DK8yLz6xr
-         t+zJTsY8hEJg60v2sBuClsciRjfkcXlxfQ/ML2jTqaE6MR7f9/EGOpsPW4sFtwMzSWRw
-         oRZew4j7Fk2Fo4n/N+blry6VUeqkJOXy7rC1NuLsBt936oXaxOQM1jLfSFadS4JA7FzP
-         CdgA==
-X-Gm-Message-State: AOAM5327PtGL95WWpRA6LPgNlrxRV6JY7GWmyYquyUn9e9UJz8ka6TBT
-        6JBxFIUJEgVv6akYZmd2u7CeD/PsniKn8S6JxRQ=
-X-Google-Smtp-Source: ABdhPJzwsQvQy07KzSSKF36slqOOCBmzhi7G4XFKh+MxO1aqVfgv6UylAsUlKqrZrwFEymqmWaysD4XtAMh8gSFAJlY=
-X-Received: by 2002:a67:d583:: with SMTP id m3mr36353545vsj.41.1634108355035;
- Tue, 12 Oct 2021 23:59:15 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=szeolAqmJqd0hJn5d47PHeNOyZWuU1CeFrejo0YAi2g=;
+        b=ByoyWuIcmyPBRCvsUje42KEHOJA9SiQnuyKYqTxu397ETo7pFxxl8PWWp8FxaQxc0s
+         36pimrDDTppfkbOrQGBxEszBX38vxH2PnWbjuR1DeZ9WsiQzAYg+dhr6NvcYg2KuXGlC
+         Yv+I+CsqmVaMsZ2s63+R5SmOhFMDpm/o2eX9kkQ0sAC7Ohq/UbXEZ3XpDsq2ekiPMo/K
+         ClRxdsSxvcZ67PCzU8bQ8xmxKPFYMEu+Vp4/7yHtel7bs0tPVFAPUhXIpN1X8KucVt35
+         HolPJBmtOQKHYZbiHqZd6lkhVsW2EACA2lIOXGzOIm4KEx0wj2rr3P1m6Swd0MNhxIjN
+         kq6Q==
+X-Gm-Message-State: AOAM533pHmJQuPj2DbpcliFzwV2VKQzmHj7Fr0cPnohLJij0hLnLmzw7
+        8XEKZk6WEwZyh+8ROo5EAVr/GRGtSXzHpilzbrw=
+X-Google-Smtp-Source: ABdhPJwHyXIP0XrLM6QEHntxptdMVGBkwiRGbu/a4sfkfg8+SZV40Tj2AfPK9us1qHLKvGoaGMCgVf5UoB6hNEUHh0Q=
+X-Received: by 2002:a5d:4dd1:: with SMTP id f17mr16726828wru.226.1634136992421;
+ Wed, 13 Oct 2021 07:56:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211013063622.548590-1-masahiroy@kernel.org> <20211013063622.548590-2-masahiroy@kernel.org>
-In-Reply-To: <20211013063622.548590-2-masahiroy@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 13 Oct 2021 08:59:03 +0200
-Message-ID: <CAMuHMdUQVpvvq=ZqjL97gV6AxS5eGm4mRS=gL4PPwWiBS-v5AA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] kbuild: use more subdir- for visiting subdirectories
- while cleaning
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild <linux-kbuild@vger.kernel.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Zankel <chris@zankel.net>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greentime Hu <green.hu@gmail.com>, Guo Ren <guoren@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Julien Thierry <jthierry@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Michal Simek <monstr@monstr.eu>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Rich Felker <dalias@libc.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Rob Herring <robh@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Vineet Gupta <vgupta@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Will Deacon <will@kernel.org>,
-        William Cohen <wcohen@redhat.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-csky@vger.kernel.org,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Openrisc <openrisc@lists.librecores.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>, x86@kernel.org
+Received: by 2002:a05:6000:1146:0:0:0:0 with HTTP; Wed, 13 Oct 2021 07:56:31
+ -0700 (PDT)
+Reply-To: mrsaishag45@gmail.com
+From:   Mrs Aisha Al-Qaddafi <mrsaishag31@gmail.com>
+Date:   Wed, 13 Oct 2021 07:56:31 -0700
+Message-ID: <CANoeRo6B5UBayoHLFO808ZTpzCXzme10qc1BocVsASuPtxonbA@mail.gmail.com>
+Subject: Dear Friend,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Oct 13, 2021 at 8:43 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> Documentation/kbuild/makefiles.rst suggests to use "archclean" for
-> cleaning arch/$(SRCARCH)/boot/.
->
-> Since commit d92cc4d51643 ("kbuild: require all architectures to have
-> arch/$(SRCARCH)/Kbuild"), we can use the "subdir- += boot" trick for
-> all architectures. This can take advantage of the parallel option (-j)
-> for "make clean".
->
-> I also cleaned up the comments. The "archdep" target does not exist.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Dear Friend,
 
->  arch/m68k/Makefile                 |  4 +---
+I came across your e-mail contact prior to a private search while in
+need of your assistance. I am Aisha Al-Qaddafi, the only biological
+Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
+single Mother and a Widow with three Children.
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+I have investment funds worth Twenty Seven Million Five Hundred
+Thousand United State Dollar ($27.500.000.00 ) and i need a trusted
+investment Manager/Partner because of my current refugee status,
+however, I am interested in you for investment project assistance in
+your country, may be from there, we can build business relationship in
+the nearest future.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+I am willing to negotiate an investment/business profit sharing ratio
+with you based on the future investment earning profits.
+Best Regards
+Mrs Aisha Al-Qaddafi
