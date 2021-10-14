@@ -2,263 +2,348 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83E5E42D960
-	for <lists+sparclinux@lfdr.de>; Thu, 14 Oct 2021 14:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BB7342DBE9
+	for <lists+sparclinux@lfdr.de>; Thu, 14 Oct 2021 16:41:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231652AbhJNMgF (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 14 Oct 2021 08:36:05 -0400
-Received: from mga09.intel.com ([134.134.136.24]:15553 "EHLO mga09.intel.com"
+        id S229743AbhJNOna (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 14 Oct 2021 10:43:30 -0400
+Received: from u164.east.ru ([195.170.63.164]:48284 "EHLO u164.east.ru"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230177AbhJNMgD (ORCPT <rfc822;sparclinux@vger.kernel.org>);
-        Thu, 14 Oct 2021 08:36:03 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10136"; a="227563458"
-X-IronPort-AV: E=Sophos;i="5.85,372,1624345200"; 
-   d="scan'208";a="227563458"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2021 05:33:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,372,1624345200"; 
-   d="scan'208";a="626783598"
-Received: from fmsmsx605.amr.corp.intel.com ([10.18.126.85])
-  by fmsmga001.fm.intel.com with ESMTP; 14 Oct 2021 05:33:58 -0700
-Received: from fmsmsx607.amr.corp.intel.com (10.18.126.87) by
- fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.12; Thu, 14 Oct 2021 05:33:57 -0700
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx607.amr.corp.intel.com (10.18.126.87) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.12; Thu, 14 Oct 2021 05:33:57 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.12 via Frontend Transport; Thu, 14 Oct 2021 05:33:57 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.48) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2242.12; Thu, 14 Oct 2021 05:33:57 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cmssFszxjrRU4rp0VAoefaF6kzYGjzixtVoz39jBymfL1QBVnFsnenuISQkl4Td8Z8VnNtE9wU5mdguKCbmxchTESLsjvtYPUTcxNNXtpKEGHoHrbYR538FehFSlAHvdUlBPPsshpTjtWmLSMW9gfKdngXaRl8/NXptZv4jfO0L8COIbltXTROiBwrU2xDXWZTytloVLofIYiKr2d/IqJmpg29DMqP8nKmz9IyKqnWFFXVCsZ7ZVKoNCLdq/DxIJPFDwOnpwUH/GLmwLWJFqvLS7u+tPp56domONK8Y4LJumAVmX/rGa9EqZlekTrtHAtyG4Wn8bnT+d/5tVL4kC3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4FOJuvoJJ48oW+x03tB/D7zCX3mQvKdh2r2mpBn2R+A=;
- b=cr75bv+wrrf6m7zNjDJn1LEgKkBsom/m2VHXl4j37ZTPyKZpcPCoV3AN3upF9vvaP8rmuS1ZsL9J47PGM3nUIch3scUaAlz11uJDrR1OZbclw7iIEpgfMPZavO2OSwG7UMldow8XYI3lhkR4q3o7lyJaoeI0JMe6rlz5u9nR0IR0wJHfOaXLbZwxnXBYzP4q0w5DpTQ7BZ4YdBcC+ZWvhnPlAmmk8JwJekFpCJwjOg+V0JUv7dpLhkgDZG5M+P5FZiIvHy4cfzd3LvBcl2kwRfjaPB6ZlXMyaoIvYzubwyRmHVR+KkO4Ky30Dim2N+HASqVbeKO0nLfk1k9OdBiU8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4FOJuvoJJ48oW+x03tB/D7zCX3mQvKdh2r2mpBn2R+A=;
- b=lIlD8uzNvoZpN8s/ICg7hXLqZIjfp7i+C+E9IrL2z+eTPVWU+1Z/wePWgfUu6WJHkgshG2O55lHI3nfRgz61uGRP+tLT1M2rmm2XVUi1GF48uyf3mI+kQIDTpCt0tuZ+1cU9wE8rfo/G7RP9qX0op1d2SbNv4kbXqHkmm4ys3Iw=
-Received: from DM8PR11MB5750.namprd11.prod.outlook.com (2603:10b6:8:11::17) by
- DM6PR11MB3324.namprd11.prod.outlook.com (2603:10b6:5:59::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4587.22; Thu, 14 Oct 2021 12:33:49 +0000
-Received: from DM8PR11MB5750.namprd11.prod.outlook.com
- ([fe80::e52d:425f:5db8:9742]) by DM8PR11MB5750.namprd11.prod.outlook.com
- ([fe80::e52d:425f:5db8:9742%6]) with mapi id 15.20.4608.016; Thu, 14 Oct 2021
- 12:33:49 +0000
-From:   "Reshetova, Elena" <elena.reshetova@intel.com>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-CC:     Andi Kleen <ak@linux.intel.com>,
-        "Williams, Dan J" <dan.j.williams@intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Lutomirski, Andy" <luto@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E J Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter H Anvin <hpa@zytor.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "Luck, Tony" <tony.luck@intel.com>,
-        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        X86 ML <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "virtualization@lists.linux-foundation.org" 
-        <virtualization@lists.linux-foundation.org>
-Subject: RE: [PATCH v5 12/16] PCI: Add pci_iomap_host_shared(),
- pci_iomap_host_shared_range()
-Thread-Topic: [PATCH v5 12/16] PCI: Add pci_iomap_host_shared(),
- pci_iomap_host_shared_range()
-Thread-Index: AQHXvKYONYCiLR7qcUWwBEZSAUzHCavKbb0AgAC0m4CAAavhgIAC4/bggAAwBACAAi5lAIAAB66AgAAFYFCAACQlAIAAMccw
-Date:   Thu, 14 Oct 2021 12:33:49 +0000
-Message-ID: <DM8PR11MB57505AAA1E1209F7FCA69C11E7B89@DM8PR11MB5750.namprd11.prod.outlook.com>
-References: <20211009003711.1390019-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20211009003711.1390019-13-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20211009053103-mutt-send-email-mst@kernel.org>
- <CAPcyv4hDhjRXYCX_aiOboLF0eaTo6VySbZDa5NQu2ed9Ty2Ekw@mail.gmail.com>
- <0e6664ac-cbb2-96ff-0106-9301735c0836@linux.intel.com>
- <DM8PR11MB57501C8F8F5C8B315726882EE7B69@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20211012171016-mutt-send-email-mst@kernel.org>
- <DM8PR11MB5750A40FAA6AFF6A29CF70DAE7B89@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20211014025514-mutt-send-email-mst@kernel.org>
- <DM8PR11MB57500B2D821E8AAF93EB66CEE7B89@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20211014052605-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20211014052605-mutt-send-email-mst@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: redhat.com; dkim=none (message not signed)
- header.d=none;redhat.com; dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b04597d9-b085-4083-7728-08d98f0edfcd
-x-ms-traffictypediagnostic: DM6PR11MB3324:
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr,ExtFwd
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM6PR11MB3324FB0C8EC537B26FF4ECF6E7B89@DM6PR11MB3324.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 3m8v3e0x3XrQUi5iJ+Fg3rkLkP0uIk77ylZL96WgNFJZx7eqlOkKxLi2LA06ePOLMZ88UYJgX4LKWkqqQs5C7KOLZwJZVFIeXhZT+fnG1W0jI9JY5i1FTsu9Nxl2gH4wVYbeVDyRz0pI/XyHCHGrWkVrIyAAKKQ2a1S2TO+RTdqLEXMmPY7R3buAjxssbeqC79X9nbVSz0+hSNWtarF6f3oJbeNpp1hLV+8qNNPogPuRa1n8ITe82vAMrreHL2hFEr2kFy8R6bVZXcTwqllicLyjGeeEWpzIdL0X8+O8rBt3y0EdlzWURQWnujRThd02Yigrxj2ln7ad3/Q4G0XDQJ0ctsFwnWQKrKCanibpaQb1MVkPs5X/hCJR2Z/R4sWMLcNTGLFNbzw81wmPtWphI4QpqPtTakMZdd5jpUGkMXRbB9VOh5VUOE7FafBpPHt2IqiyotlO1fAJ/5yFNR6toMW1qezcL7lkvwyXi80fi1Bxk7ABjGUaPgxPhK21SE6pJ/+z3ujebIe6nEPlm0IGheRqY38H2LuOstXRrZdVbbCJ5HdxQTf8D0GVH32VEF3soo3M5DdSSOkAhRRayetAwIhL4M36tQxyRNTSgw57La/IGmwG/+rShHoQ9l6qV/lltA1KUOyFxiJjP15y+VwRXZ4xMcR6LPJxpZO0iEl4SGf53HCdX61YRym3FEbRNrVcFNqpxzhwcmp3sAzzmdX5lov8vz4yLtFmD9WR5mH6dktdPwYueDEaQKts4ISlalBc5TdGA0ViFj8c1xkYp+HXNlU5TiQ8HQY1OZeGQphHbAQ=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR11MB5750.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(38100700002)(8936002)(186003)(4326008)(52536014)(9686003)(122000001)(7696005)(71200400001)(82960400001)(54906003)(316002)(7406005)(6506007)(26005)(66476007)(7416002)(8676002)(966005)(76116006)(33656002)(66946007)(38070700005)(55016002)(2906002)(508600001)(66446008)(83380400001)(66556008)(64756008)(86362001)(6916009)(5660300002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?TKchS+CtpIbIejaxdFhTslNG8Ao9xJ8rabsvj8olrXWoI/Ww6ASMY3gImaLH?=
- =?us-ascii?Q?5l1AX3d+j25thnn4ZyBcnT3szd6uYNO/k8zubJW83v7yD7axOwxL59Vn8iqK?=
- =?us-ascii?Q?4P5yboUnoKkhG4tgtezSoDy1YbIzFf4ntwxqPzbeIyfN0m1henwUHjxI3dAD?=
- =?us-ascii?Q?+L3JNDAGV7fZMCNgTf/B00wYmph0RU6ds7wyCTNdKSaqpduehuRZJ+xEaKvu?=
- =?us-ascii?Q?/Z/rlJ00lLfrG56hrxR5Qx9kufB4wtYqya5ize1jhh5ChOawwmW75+VhlItj?=
- =?us-ascii?Q?vMKqviij3xAtIAl6zde8jgf4+kdfqBBSo73E3SKDulGTchtUGoHVjpcU312T?=
- =?us-ascii?Q?vD8TVgwD1NSBYPcWEYQ1/3EgduG/74fUwUEFmKk1VW1K7kZXVgp7s/aGoVzX?=
- =?us-ascii?Q?EtxP7dtw2VMLdNHEO+SfMZ6bzhLbm0OnxQBaaDQG/8HeQFpvEPrIErJO5MoF?=
- =?us-ascii?Q?7eLytMrB3YutHQvs7LSBidCiqF0WGvapmVfwuuYr37OLfbU3U1b3pEM/SSw0?=
- =?us-ascii?Q?a694enm2Baswb0Yb4DfbweW5PH2D2TuqbtpLTgIApxRhXPOiSbs0QnCzmNcT?=
- =?us-ascii?Q?PkXbyC0l3A994zriwOlZAreVjqHav6uM74F67fP6rKXRlY9U/cCmOEVgeRSb?=
- =?us-ascii?Q?o/meW9jgGtSyMHi1vXCDLVIew9BSUNKYCFbcCJE3FOglQb1RFM+vkU7yidJm?=
- =?us-ascii?Q?GTXbRNrcIYK2FtTKgkEr+AAryglDbWu6G/TGCX10qTIUl8MVwX3SD34lolB2?=
- =?us-ascii?Q?Y9RRTif7Rfy5PaQbUpoIpzxfAiYif5fMW44C6H6oInc/pyMJAYIZOrW1gkym?=
- =?us-ascii?Q?J465DM4sVcnaNMvglqJ6kRqu77vfvbept0BQ6TUrI28T4SxZkKdNdBT1dAjr?=
- =?us-ascii?Q?yTJurh+SZf8vX4iynw1pPMYynXZmRSx+VhLpQ3uePtiloSROKp/Eday3K+Zk?=
- =?us-ascii?Q?WRaJYM+G7lLZz3FWyZxwTWx3KyaMlZZ396o7b8QzYsxweoEEI1r7KHBcxEiP?=
- =?us-ascii?Q?erbe1lDymLQidmbhFNMcn5Gv8KRmd8fPgpjJilPlC1t4+I4ELyAMWCID5iZb?=
- =?us-ascii?Q?pVR4gHbb+miqzyrI0cpxsg5wB717KPyshifU5CcQ3NkcyxJOZ9m9nvUmplUp?=
- =?us-ascii?Q?GNur3TAxFZXKpVpdfAIJZzZbyR7kOq57eCOJEaCtYgwCOmVSkDS+L0GuPxAl?=
- =?us-ascii?Q?BTUYpjTiTLLkHYvZNKjfR+gFTm5m9o/sL/rI3fZe3GBxqvSoQpfs/UuJdPMK?=
- =?us-ascii?Q?WMXfm1rmuN/UhKtoUTsgET9SPi+U0TbjHH+gvyYoduYLtsU6txdEIeQnbm56?=
- =?us-ascii?Q?MPZQkmHF76mUlN6PsXQ5SdFw?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S231470AbhJNOn3 (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Thu, 14 Oct 2021 10:43:29 -0400
+X-Greylist: delayed 596 seconds by postgrey-1.27 at vger.kernel.org; Thu, 14 Oct 2021 10:43:27 EDT
+Received: by u164.east.ru (Postfix, from userid 1000)
+        id DC2E5CF7E2; Thu, 14 Oct 2021 17:31:23 +0300 (MSK)
+Date:   Thu, 14 Oct 2021 17:31:23 +0300
+From:   Anatoly Pugachev <matorola@gmail.com>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+        Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        cgroups@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, Sparc kernel list <sparclinux@vger.kernel.org>,
+        Linux Kernel list <linux-kernel@vger.kernel.org>
+Subject: [sparc64] kernel OOPS (was: [PATCH 4/5] block: move the bdi from the
+ request_queue to the gendisk)
+Message-ID: <20211014143123.GA22126@u164.east.ru>
+References: <20210809141744.1203023-1-hch@lst.de>
+ <20210809141744.1203023-5-hch@lst.de>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5750.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b04597d9-b085-4083-7728-08d98f0edfcd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2021 12:33:49.5748
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hZWs78Amc/ow0Nik+zEumk5poPkItCNwL3eGpt5WvY+2Hv4Vs8aIAm4bBI3d570nJTHvZsvowvLnohtNMkqytmGwnT/a4ltHiS+cMNfETx0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB3324
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210809141744.1203023-5-hch@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-> On Thu, Oct 14, 2021 at 07:27:42AM +0000, Reshetova, Elena wrote:
-> > > On Thu, Oct 14, 2021 at 06:32:32AM +0000, Reshetova, Elena wrote:
-> > > > > On Tue, Oct 12, 2021 at 06:36:16PM +0000, Reshetova, Elena wrote:
-> > > > > > > The 5.15 tree has something like ~2.4k IO accesses (including=
- MMIO and
-> > > > > > > others) in init functions that also register drivers (thanks =
-Elena for
-> > > > > > > the number)
-> > > > > >
-> > > > > > To provide more numbers on this. What I can see so far from a s=
-match-
-> based
-> > > > > > analysis, we have 409 __init style functions (.probe & builtin/=
-module_
-> > > > > > _platform_driver_probe excluded) for 5.15 with allyesconfig.
-> > > > >
-> > > > > I don't think we care about allyesconfig at all though.
-> > > > > Just don't do that.
-> > > > > How about allmodconfig? This is closer to what distros actually d=
-o.
-> > > >
-> > > > It does not make any difference really for the content of the /driv=
-ers/*:
-> > > > gives 408 __init style functions doing IO (.probe & builtin/module_
-> > > > > > _platform_driver_probe excluded) for 5.15 with allmodconfig:
-> > > >
-> > > > ['doc200x_ident_chip',
-> > > > 'doc_probe', 'doc2001_init', 'mtd_speedtest_init',
-> > > > 'mtd_nandbiterrs_init', 'mtd_oobtest_init', 'mtd_pagetest_init',
-> > > > 'tort_init', 'mtd_subpagetest_init', 'fixup_pmc551',
-> > > > 'doc_set_driver_info', 'init_amd76xrom', 'init_l440gx',
-> > > > 'init_sc520cdp', 'init_ichxrom', 'init_ck804xrom', 'init_esb2rom',
-> > > > 'probe_acpi_namespace_devices', 'amd_iommu_init_pci', 'state_next',
-> > > > 'arm_v7s_do_selftests', 'arm_lpae_run_tests', 'init_iommu_one',
-> > >
-> > > Um. ARM? Which architecture is this build for?
-> >
-> > The list of smatch IO findings is built for x86, but the smatch cross f=
-unction
-> > database covers all archs, so when queried for all potential function c=
-allers,
-> > it would show non x86 arch call chains also.
-> >
-> > Here is the original x86 finding and call chain for the 'arm_v7s_do_sel=
-ftests':
-> >
-> >   Detected low-level IO from arm_v7s_do_selftests in fun
-> > __iommu_queue_command_sync
-> >
-> > drivers/iommu/amd/iommu.c:1025 __iommu_queue_command_sync() error:
-> > {15002074744551330002}
-> >     'check_host_input' read from the host using function 'readl' to a
-> > member of the structure 'iommu->cmd_buf_head';
-> >
-> > __iommu_queue_command_sync()
-> >   iommu_completion_wait()
-> >     amd_iommu_domain_flush_complete()
-> >       iommu_v1_map_page()
-> >         arm_v7s_do_selftests()
-> >
-> > So, the results can be further filtered if you want a specified arch.
->=20
-> So what is it just for x86? Could you tell?
+On Mon, Aug 09, 2021 at 04:17:43PM +0200, Christoph Hellwig wrote:
+> The backing device information only makes sense for file system I/O,
+> and thus belongs into the gendisk and not the lower level request_queue
+> structure.  Move it there.
 
-I can probably figure out how to do additional filtering here, but does
-it really matter for the case that is being discussed here? Andi's point wa=
-s
-that there quite many existing places in the kernel when low-level IO
-happens before the probe stage. So I brought these numbers here.
-What do you plan to do with the pure x86 results?=20
 
-And here are the full results for allyesconfig, if anyone is interested (ju=
-st got permission to create
-the repository today):
-https://github.com/intel/ccc-linux-guest-hardening/tree/master/audit/sample=
-_output/5.15-rc1
-We will be pushing to this repo all the scripts and fuzzing setups we use a=
-s part of
-our Linux guest hardening effort for confidential cloud computing, but it i=
-s going to take
-some time to get all the approvals collected. =20
 
-Best Regards,
-Elena.
+Hello!
+
+Using util-linux/ test suite, got the following kernel OOPS:
+
+root@ttip:/home/mator# cd /1/mator/util-linux/tests
+root@ttip:/1/mator/util-linux/tests# uname -a
+Linux ttip 5.15.0-rc5 #280 SMP Mon Oct 11 12:50:27 MSK 2021 sparc64 GNU/Linux
+
+root@ttip:/1/mator/util-linux/tests# for i in {1..5}; do echo run $i; ./run.sh fdisk; done
+run 1
+
+-------------------- util-linux regression tests --------------------
+
+                    For development purpose only.
+                 Don't execute on production system!
+
+       kernel: 5.15.0-rc5
+
+      options: --srcdir=/1/mator/util-linux/tests/.. \
+               --builddir=/1/mator/util-linux/tests/..
+
+        fdisk: align 512/4K                   ... OK
+        fdisk: align 512/4K +alignment_offset ...
+
+^^ hangs
+
+(using bash 'for' cycle, since it's not always OOPS on the first run, but with probability of about 95%)
+
+console/kernel logs (5.15.0-rc5):
+
+[  151.232610] scsi_debug:sdebug_driver_probe: scsi_debug: trim poll_queues to 0. poll_q/nr_hw = (0/1)
+[  151.232680] scsi host0: scsi_debug: version 0190 [20200710]
+[  151.232680]   dev_size_mb=50, opts=0x0, submit_queues=1, statistics=0
+[  151.238292] scsi 0:0:0:0: Direct-Access     Linux    scsi_debug       0190 PQ: 0 ANSI: 7
+[  151.239514] sd 0:0:0:0: Attached scsi generic sg0 type 0
+[  151.240739] sd 0:0:0:0: Power-on or device reset occurred
+[  151.249191] sd 0:0:0:0: [sda] 102400 512-byte logical blocks: (52.4 MB/50.0 MiB)
+[  151.249226] sd 0:0:0:0: [sda] 4096-byte physical blocks
+[  151.253293] sd 0:0:0:0: [sda] Write Protect is off
+[  151.261403] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[  151.273553] sd 0:0:0:0: [sda] Optimal transfer size 524288 bytes
+[  151.443048] sd 0:0:0:0: [sda] Attached SCSI disk
+[  152.500133]  sda: sda1 sda2 sda3 sda4 < sda5 sda6 sda7 >
+[  152.772862] sd 0:0:0:0: [sda] Synchronizing SCSI cache
+[  153.136441] scsi_debug:sdebug_driver_probe: scsi_debug: trim poll_queues to 0. poll_q/nr_hw = (0/1)
+[  153.136509] scsi host0: scsi_debug: version 0190 [20200710]
+[  153.136509]   dev_size_mb=50, opts=0x0, submit_queues=1, statistics=0
+[  153.141634] scsi 0:0:0:0: Direct-Access     Linux    scsi_debug       0190 PQ: 0 ANSI: 7
+[  153.142777] sd 0:0:0:0: Attached scsi generic sg0 type 0
+[  153.143829] sd 0:0:0:0: Power-on or device reset occurred
+[  153.152034] sd 0:0:0:0: [sda] physical block alignment offset: 3584
+[  153.152246] sd 0:0:0:0: [sda] 102400 512-byte logical blocks: (52.4 MB/50.0 MiB)
+[  153.152277] sd 0:0:0:0: [sda] 4096-byte physical blocks
+[  153.156347] sd 0:0:0:0: [sda] Write Protect is off
+[  153.164454] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[  153.176605] sd 0:0:0:0: [sda] Optimal transfer size 524288 bytes
+[  153.334960] sd 0:0:0:0: [sda] Attached SCSI disk
+[  154.435981]  sda: sda1 sda2 sda3 sda4 < sda5 sda6 sda7 >
+[  154.708897] sd 0:0:0:0: [sda] Synchronizing SCSI cache
+[  154.766352] Unable to handle kernel NULL pointer dereference
+[  154.766391] tsk->{mm,active_mm}->context = 0000000000000206
+[  154.766418] tsk->{mm,active_mm}->pgd = fff800003cf98000
+[  154.766440]               \|/ ____ \|/
+[  154.766440]               "@'/ .. \`@"
+[  154.766440]               /_| \__/ |_\
+[  154.766440]                  \__U_/
+[  154.766488] swapper/0(0): Oops [#1]
+[  154.766508] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.15.0-rc5 #280
+[  154.766536] TSTATE: 0000004480001603 TPC: 00000000009b8b1c TNPC: 00000000009b8ec4 Y: 00000000    Not tainted
+[  154.766573] TPC: <latency_exceeded+0x1c/0x3e0>
+[  154.766600] g0: 8226a448beb34e3c g1: 0000000000000000 g2: 0000000000000000 g3: 0000000000000000
+[  154.766632] g4: 0000000000faf680 g5: fff800042963c000 g6: 0000000000f90000 g7: 000000000000ffff
+[  154.766663] o0: 0000000000000000 o1: 000000000000ffff o2: 000000000000000e o3: 0000000000f0c350
+[  154.766694] o4: 0000000001200768 o5: 000000000124b508 sp: fff800042f8671a1 ret_pc: 00000000009ca4a0
+[  154.766727] RPC: <_find_next_bit+0x160/0x1c0>
+[  154.766751] l0: 7fffffffffffffff l1: fff800042a803ea8 l2: fff800042a803f28 l3: fff800042a803fa8
+[  154.766783] l4: f6b5b5b4df3cd40c l5: 00000000014b5800 l6: 00000000014b5800 l7: fff800042f867c78
+[  154.766815] i0: fff8000047b97400 i1: fff800004fcd1980 i2: 0000000000000100 i3: 0000000000000100
+[  154.766846] i4: 0000000000000000 i5: 0000000000000000 i6: fff800042f867251 i7: 00000000009b8f10
+[  154.766877] I7: <wb_timer_fn+0x30/0x1c0>
+[  154.766897] Call Trace:
+[  154.766911] [<00000000009b8f10>] wb_timer_fn+0x30/0x1c0
+[  154.766934] [<000000000099b564>] blk_stat_timer_fn+0x184/0x1a0
+[  154.766962] [<00000000004fe90c>] call_timer_fn+0xec/0x200
+[  154.766987] [<00000000004fec6c>] __run_timers+0x24c/0x340
+[  154.767010] [<00000000004fed74>] run_timer_softirq+0x14/0x40
+[  154.767033] [<0000000000cada0c>] __do_softirq+0x1ac/0x3c0
+[  154.767061] [<000000000042bb74>] do_softirq_own_stack+0x34/0x60
+[  154.767090] [<000000000046c97c>] irq_exit+0x7c/0x120
+[  154.767116] [<0000000000cad6b8>] timer_interrupt+0x98/0xc0
+[  154.767140] [<00000000004209d4>] tl0_irq14+0x14/0x20
+[  154.767162] [<000000000042c384>] arch_cpu_idle+0xa4/0xc0
+[  154.767185] [<0000000000cab0d4>] default_idle_call+0xb4/0x160
+[  154.767208] [<00000000004a7414>] do_idle+0x114/0x1a0
+[  154.767234] [<00000000004a771c>] cpu_startup_entry+0x1c/0xa0
+[  154.767258] [<0000000000ca1f2c>] rest_init+0x14c/0x15c
+[  154.767285] [<00000000011469a8>] arch_call_rest_init+0xc/0x1c
+[  154.767314] Disabling lock debugging due to kernel taint
+[  154.767321] Caller[00000000009b8f10]: wb_timer_fn+0x30/0x1c0
+[  154.767330] Caller[000000000099b564]: blk_stat_timer_fn+0x184/0x1a0
+[  154.767339] Caller[00000000004fe90c]: call_timer_fn+0xec/0x200
+[  154.767347] Caller[00000000004fec6c]: __run_timers+0x24c/0x340
+[  154.767354] Caller[00000000004fed74]: run_timer_softirq+0x14/0x40
+[  154.767362] Caller[0000000000cada0c]: __do_softirq+0x1ac/0x3c0
+[  154.767371] Caller[000000000042bb74]: do_softirq_own_stack+0x34/0x60
+[  154.767379] Caller[000000000046c97c]: irq_exit+0x7c/0x120
+[  154.767388] Caller[0000000000cad6b8]: timer_interrupt+0x98/0xc0
+[  154.767396] Caller[00000000004209d4]: tl0_irq14+0x14/0x20
+[  154.767404] Caller[000000000042c370]: arch_cpu_idle+0x90/0xc0
+[  154.767412] Caller[0000000000cab0d4]: default_idle_call+0xb4/0x160
+[  154.767420] Caller[00000000004a7414]: do_idle+0x114/0x1a0
+[  154.767428] Caller[00000000004a771c]: cpu_startup_entry+0x1c/0xa0
+[  154.767436] Caller[0000000000ca1f2c]: rest_init+0x14c/0x15c
+[  154.767444] Caller[00000000011469a8]: arch_call_rest_init+0xc/0x1c
+[  154.767453] Caller[0000000001146f5c]: start_kernel+0x52c/0x544
+[  154.767462] Caller[0000000001149ff0]: start_early_boot+0x68/0x78
+[  154.767470] Caller[0000000000ca1dc0]: tlb_fixup_done+0x4c/0x6c
+[  154.767479] Caller[0000000000027414]: 0x27414
+[  154.767486] Instruction DUMP:
+[  154.767488]  fa5e2028
+[  154.767494]  c25860b0
+[  154.767499]  02c740eb
+[  154.767504] <f6586148>
+[  154.767509]  c25e2030
+[  154.767514]  22c040e9
+[  154.767519]  c45e2050
+[  154.767523]  7fed2bd5
+[  154.767528]  01000000
+[  154.767533]
+[  154.767542] Kernel panic - not syncing: Aiee, killing interrupt handler!
+[  154.768930] Press Stop-A (L1-A) from sun keyboard or send break
+[  154.768930] twice on console to return to the boot prom
+[  154.768940] ---[ end Kernel panic - not syncing: Aiee, killing interrupt handler! ]---
+
+
+bisected to the following kernel commit:
+
+linux-2.6$ git bisect bad
+edb0872f44ec9976ea6d052cb4b93cd2d23ac2ba is the first bad commit
+commit edb0872f44ec9976ea6d052cb4b93cd2d23ac2ba
+Author: Christoph Hellwig <hch@lst.de>
+Date:   Mon Aug 9 16:17:43 2021 +0200
+
+    block: move the bdi from the request_queue to the gendisk
+
+    The backing device information only makes sense for file system I/O,
+    and thus belongs into the gendisk and not the lower level request_queue
+    structure.  Move it there.
+
+    Signed-off-by: Christoph Hellwig <hch@lst.de>
+    Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+    Link: https://lore.kernel.org/r/20210809141744.1203023-5-hch@lst.de
+    Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+ block/bfq-iosched.c           |  4 ++--
+ block/blk-cgroup.c            |  7 +++----
+ block/blk-core.c              | 13 +++----------
+ block/blk-mq.c                |  2 +-
+ block/blk-settings.c          | 14 +++++++++-----
+ block/blk-sysfs.c             | 26 ++++++++++++--------------
+ block/blk-wbt.c               | 10 +++++-----
+ block/genhd.c                 | 23 ++++++++++++++---------
+ drivers/block/drbd/drbd_req.c |  5 ++---
+ drivers/block/pktcdvd.c       |  8 +++-----
+ fs/block_dev.c                |  4 ++--
+ fs/fat/fatent.c               |  1 +
+ include/linux/blkdev.h        |  3 ---
+ include/linux/genhd.h         |  1 +
+ 14 files changed, 58 insertions(+), 63 deletions(-)
+
+
+linux-2.6$ git bisect log
+git bisect start
+# good: [7d2a07b769330c34b4deabeed939325c77a7ec2f] Linux 5.14
+git bisect good 7d2a07b769330c34b4deabeed939325c77a7ec2f
+# bad: [6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f] Linux 5.15-rc1
+git bisect bad 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f
+# bad: [1b4f3dfb4792f03b139edf10124fcbeb44e608e6] Merge tag 'usb-serial-5.15-rc1' of https://git.kernel.org/pub/scm/linux/kernel/git/johan/usb-serial into usb-next
+git bisect bad 1b4f3dfb4792f03b139edf10124fcbeb44e608e6
+# good: [29ce8f9701072fc221d9c38ad952de1a9578f95c] Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+git bisect good 29ce8f9701072fc221d9c38ad952de1a9578f95c
+# bad: [e7c1bbcf0c315c56cd970642214aa1df3d8cf61d] Merge tag 'hwmon-for-v5.15' of git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging
+git bisect bad e7c1bbcf0c315c56cd970642214aa1df3d8cf61d
+# bad: [679369114e55f422dc593d0628cfde1d04ae59b3] Merge tag 'for-5.15/block-2021-08-30' of git://git.kernel.dk/linux-block
+git bisect bad 679369114e55f422dc593d0628cfde1d04ae59b3
+# good: [c7a5238ef68b98130fe36716bb3fa44502f56001] Merge tag 's390-5.15-1' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux
+git bisect good c7a5238ef68b98130fe36716bb3fa44502f56001
+# good: [e5e726f7bb9f711102edea7e5bd511835640e3b4] Merge tag 'locking-core-2021-08-30' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+git bisect good e5e726f7bb9f711102edea7e5bd511835640e3b4
+# bad: [158ee7b65653d9f841823c249014c2d0dfdeeb8f] block: mark blkdev_fsync static
+git bisect bad 158ee7b65653d9f841823c249014c2d0dfdeeb8f
+# bad: [b75f4aed88febe903bd40a6128b74edd2388417e] bcache: move the del_gendisk call out of bcache_device_free
+git bisect bad b75f4aed88febe903bd40a6128b74edd2388417e
+# good: [cf179948554a2e0d2b622317bf6bf33138ac36e5] block: add disk sequence number
+git bisect good cf179948554a2e0d2b622317bf6bf33138ac36e5
+# good: [89f871af1b26d98d983cba7ed0e86effa45ba5f8] dm: delay registering the gendisk
+git bisect good 89f871af1b26d98d983cba7ed0e86effa45ba5f8
+# bad: [99d26de2f6d79badc80f55b54bd90d4cb9d1ad90] writeback: make the laptop_mode prototypes available unconditionally
+git bisect bad 99d26de2f6d79badc80f55b54bd90d4cb9d1ad90
+# good: [1008162b2782a3624d12b0aee8da58bc75d12e19] block: add a queue_has_disk helper
+git bisect good 1008162b2782a3624d12b0aee8da58bc75d12e19
+# bad: [a11d7fc2d05fb509cd9e33d4093507d6eda3ad53] block: remove the bd_bdi in struct block_device
+git bisect bad a11d7fc2d05fb509cd9e33d4093507d6eda3ad53
+# bad: [edb0872f44ec9976ea6d052cb4b93cd2d23ac2ba] block: move the bdi from the request_queue to the gendisk
+git bisect bad edb0872f44ec9976ea6d052cb4b93cd2d23ac2ba
+# first bad commit: [edb0872f44ec9976ea6d052cb4b93cd2d23ac2ba] block: move the bdi from the request_queue to the gendisk
+
+
+kernel/console logs for 5.14.0-rc4-00051-gedb0872f44ec :
+
+ttip login: [   27.667716] SCSI subsystem initialized
+[   27.680003] scsi_debug:sdebug_driver_probe: scsi_debug: trim poll_queues to 0. poll_q/nr_hw = (0/1)
+[   27.680069] scsi host0: scsi_debug: version 0190 [20200710]
+[   27.680069]   dev_size_mb=50, opts=0x0, submit_queues=1, statistics=0
+[   27.685444] scsi 0:0:0:0: Direct-Access     Linux    scsi_debug       0190 PQ: 0 ANSI: 7
+[   27.692723] scsi 0:0:0:0: Attached scsi generic sg0 type 0
+[   27.699206] sd 0:0:0:0: Power-on or device reset occurred
+[   27.707641] sd 0:0:0:0: [sda] 102400 512-byte logical blocks: (52.4 MB/50.0 MiB)
+[   27.707676] sd 0:0:0:0: [sda] 4096-byte physical blocks
+[   27.711747] sd 0:0:0:0: [sda] Write Protect is off
+[   27.719862] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[   27.732012] sd 0:0:0:0: [sda] Optimal transfer size 524288 bytes
+[   27.882257] sd 0:0:0:0: [sda] Attached SCSI disk
+[   29.203392]  sda: sda1 sda2 sda3 sda4 < sda5 sda6 sda7 >
+[   29.486552] sd 0:0:0:0: [sda] Synchronizing SCSI cache
+[   29.517694] Unable to handle kernel NULL pointer dereference
+[   29.517722] tsk->{mm,active_mm}->context = 0000000000000422
+[   29.517748] tsk->{mm,active_mm}->pgd = fff800004b1c4000
+[   29.517770]               \|/ ____ \|/
+[   29.517770]               "@'/ .. \`@"
+[   29.517770]               /_| \__/ |_\
+[   29.517770]                  \__U_/
+[   29.517820] swapper/15(0): Oops [#1]
+[   29.517841] CPU: 15 PID: 0 Comm: swapper/15 Not tainted 5.14.0-rc4-00051-gedb0872f44ec #308
+[   29.517876] TSTATE: 0000004480001600 TPC: 00000000009af598 TNPC: 00000000009af59c Y: 00000000    Not tainted
+[   29.517913] TPC: <latency_exceeded+0x18/0x400>
+[   29.517942] g0: fff800003fdd86c0 g1: 0000000000000000 g2: 0000000000000000 g3: 0000000000000000
+[   29.517974] g4: fff8000034f013c0 g5: fff8000429a12000 g6: fff8000034f3c000 g7: 000000000000ffff
+[   29.518006] o0: 0000000000000000 o1: 000000000000ffff o2: 0000000000000000 o3: 0000000000ef8a50
+[   29.518038] o4: 00000000011ee728 o5: 0000000001238c88 sp: fff800042efef1a1 ret_pc: 00000000009c0d40
+[   29.518071] RPC: <_find_next_bit+0x160/0x1c0>
+[   29.518093] l0: fff800042abc7d88 l1: fff800042abc7ea8 l2: fff800042abc7f28 l3: fff800042abc7fa8
+[   29.518126] l4: f6b5b5b4df3cd40c l5: 00000000014a3800 l6: 00000000014a3800 l7: fff800042efefc78
+[   29.518158] i0: fff800004b071a00 i1: fff8000042589080 i2: 0000000000000100 i3: 0000000000000100
+[   29.518190] i4: 0000000000000000 i5: 0000000000000000 i6: fff800042efef251 i7: 00000000009af9b0
+[   29.518221] I7: <wb_timer_fn+0x30/0x1c0>
+[   29.518241] Call Trace:
+[   29.518255] [<00000000009af9b0>] wb_timer_fn+0x30/0x1c0
+[   29.518278] [<0000000000990024>] blk_stat_timer_fn+0x184/0x1a0
+[   29.518304] [<00000000004fdcec>] call_timer_fn+0xec/0x200
+[   29.518329] [<00000000004fe050>] __run_timers+0x250/0x340
+[   29.518352] [<00000000004fe154>] run_timer_softirq+0x14/0x40
+[   29.518376] [<0000000000c9e9ac>] __do_softirq+0x1ac/0x3c0
+[   29.518403] [<000000000042bbb4>] do_softirq_own_stack+0x34/0x60
+[   29.518432] [<000000000046c63c>] irq_exit+0x7c/0x120
+[   29.518456] [<0000000000c9e658>] timer_interrupt+0x98/0xc0
+[   29.518481] [<00000000004209d4>] tl0_irq14+0x14/0x20
+[   29.518504] [<000000000042c3c4>] arch_cpu_idle+0xa4/0xc0
+[   29.518528] [<0000000000c9c034>] default_idle_call+0xb4/0x160
+[   29.518552] [<00000000004a6bf8>] do_idle+0x118/0x1a0
+[   29.518575] [<00000000004a6efc>] cpu_startup_entry+0x1c/0xa0
+[   29.518599] [<000000000043fe2c>] smp_callin+0x10c/0x120
+[   29.518622] [<0000000000fa4fb4>] after_lock_tlb+0x1a8/0x1bc
+[   29.518649] Disabling lock debugging due to kernel taint
+[   29.518656] Caller[00000000009af9b0]: wb_timer_fn+0x30/0x1c0
+[   29.518664] Caller[0000000000990024]: blk_stat_timer_fn+0x184/0x1a0
+[   29.518673] Caller[00000000004fdcec]: call_timer_fn+0xec/0x200
+[   29.518681] Caller[00000000004fe050]: __run_timers+0x250/0x340
+[   29.518689] Caller[00000000004fe154]: run_timer_softirq+0x14/0x40
+[   29.518697] Caller[0000000000c9e9ac]: __do_softirq+0x1ac/0x3c0
+[   29.518706] Caller[000000000042bbb4]: do_softirq_own_stack+0x34/0x60
+[   29.518714] Caller[000000000046c63c]: irq_exit+0x7c/0x120
+[   29.518723] Caller[0000000000c9e658]: timer_interrupt+0x98/0xc0
+[   29.518731] Caller[00000000004209d4]: tl0_irq14+0x14/0x20
+[   29.518739] Caller[000000000042c3b0]: arch_cpu_idle+0x90/0xc0
+[   29.518747] Caller[0000000000c9c034]: default_idle_call+0xb4/0x160
+[   29.518756] Caller[00000000004a6bf8]: do_idle+0x118/0x1a0
+[   29.518764] Caller[00000000004a6efc]: cpu_startup_entry+0x1c/0xa0
+[   29.518772] Caller[000000000043fe2c]: smp_callin+0x10c/0x120
+[   29.518780] Caller[0000000000fa4fb4]: after_lock_tlb+0x1a8/0x1bc
+[   29.518788] Caller[0000000000000000]: 0x0
+[   29.518796] Instruction DUMP:
+[   29.518798]  c25e2060
+[   29.518804]  fa5e2028
+[   29.518809]  c25860c8
+[   29.518814] <c2586320>
+[   29.518819]  02c740ec
+[   29.518825]  f6586148
+[   29.518829]  c25e2030
+[   29.518834]  22c040ea
+[   29.518839]  c45e2050
+[   29.518844]
+[   29.518853] Kernel panic - not syncing: Aiee, killing interrupt handler!
+[   29.520474] Press Stop-A (L1-A) from sun keyboard or send break
+[   29.520474] twice on console to return to the boot prom
+[   29.520485] ---[ end Kernel panic - not syncing: Aiee, killing interrupt handler! ]---
+
+sparc64 kernel 5.14.0-rc4-00050-g1008162b2782 never hangs/OOPS on this
+util-linux fdisk test.
+
+PS: compiled with gcc-10 
+$ gcc --version
+gcc (Debian 10.3.0-11) 10.3.0
