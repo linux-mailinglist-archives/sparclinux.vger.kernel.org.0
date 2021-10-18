@@ -2,75 +2,156 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22E72431641
-	for <lists+sparclinux@lfdr.de>; Mon, 18 Oct 2021 12:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64FDB431879
+	for <lists+sparclinux@lfdr.de>; Mon, 18 Oct 2021 14:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbhJRKjn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 18 Oct 2021 06:39:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50760 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbhJRKjm (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 18 Oct 2021 06:39:42 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF0D6C06161C
-        for <sparclinux@vger.kernel.org>; Mon, 18 Oct 2021 03:37:31 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id g6so1413517ybb.3
-        for <sparclinux@vger.kernel.org>; Mon, 18 Oct 2021 03:37:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=GooFYphLvNLJ1IQPTdznFPQW3VngMF5oKH3yV+tlW3k=;
-        b=Phg2zCP3Jd3N60/YoVnq6B/3o+nXMU7fijtVe4nKEy3D5PVlB+M4vKrMfsI2sd6yWP
-         jFB7rQnNzlXrA8udvfVFgjOhBQVmtoRyW0rHbhlSb+NJqVGVeOkJ9Gwa1oS5Mc7R5DaE
-         ViRCFPoCtb9pdysuDZ+oz+npyvBZCkJNrnlTp5C/9qKRgNaYmFdrO9TDCOPk8FH5lBWz
-         WjxsbAdjCVBb4HEKnq2OBFdHPSFvSEyhkdyynT4k9UpPAu8hCfxhTeymdkWYTxz3/mVc
-         f8k1ZzaY8MboSfQ+3kK0xx0zIWDySmyw0zVIcDXsB0pOVajGoonBVGK9dWEZ6qDJ0KSu
-         cOeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=GooFYphLvNLJ1IQPTdznFPQW3VngMF5oKH3yV+tlW3k=;
-        b=X/5uRvBtN9hi21+SyGfNKWUsfXiUGcGC5vUuPpeUK9mLFbKZNwoeBiiqIUu4z4IzDi
-         g080yt6YsENSU+xO7YTm3NPCSWdeBkXiuLLqMNFP1oJNrK8o3mQqdRS3EUe+2iogV4Cq
-         VylH2fLWA9Lp2uZvBG7ekQQGxFTwYOYuUg5iQ+jr7a06JwaFoyrRFVzLbaVI6ohVAjfI
-         4ki+i2yF/glrCWudccogVka23dKSmmRpK19Eq1jIAi5JgCJyqfB7TYzuwgBViWVtJF27
-         xXwfe+7ET/9Hh3gCAXX4wxmMaxSm8JZ47DEtDh4G82OVbXQJbyYWRJGb4s35DTOyzHPX
-         NI7A==
-X-Gm-Message-State: AOAM531mLN1CDI9mKoN2BkdhY1ZqYBvr3z2A4wVGNy99IFxteWV76dc6
-        L63edWyD3Zs+N62KwClzZ7j0BX2wfdz9i2za9rs=
-X-Google-Smtp-Source: ABdhPJz41qEwhygdMETEe3Z0zV0roYyJlB+EAE0BNGhrjRyDXMxpDzz87J+Xnes0S2Ahr5rzN7/zY0OaDCPa9OYlUqo=
-X-Received: by 2002:a25:a089:: with SMTP id y9mr28718160ybh.474.1634553451043;
- Mon, 18 Oct 2021 03:37:31 -0700 (PDT)
+        id S230381AbhJRMKs (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 18 Oct 2021 08:10:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57970 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229519AbhJRMKr (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Mon, 18 Oct 2021 08:10:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6A32D60EFF;
+        Mon, 18 Oct 2021 12:08:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1634558916;
+        bh=vkWcBlEDJXGIxjZypm/BJbICnDvEF+3H0d23MuRGm0Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xFY0CQIXOwGC6S/lmBC22FQvTURuAJbwgyviVkrlrX8Mn/O9HkF0JIeIpzI+IH/lx
+         W6qI1WdW7TfVaU0Vrbbwe8qJBYNXdjvL3Akm8XpeqHPq/DcFsw1XJTuGpuaK9GQ+Ym
+         PR6IHySueEDqDoLJehztNpkbl1O34b4exMMmwGpY=
+Date:   Mon, 18 Oct 2021 14:08:33 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Andi Kleen <ak@linux.intel.com>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James E J Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter H Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        X86 ML <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        virtualization@lists.linux-foundation.org,
+        "Reshetova, Elena" <elena.reshetova@intel.com>
+Subject: Re: [PATCH v5 12/16] PCI: Add pci_iomap_host_shared(),
+ pci_iomap_host_shared_range()
+Message-ID: <YW1jwc44EIx6/VAu@kroah.com>
+References: <20211009003711.1390019-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20211009003711.1390019-13-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20211009053103-mutt-send-email-mst@kernel.org>
+ <CAPcyv4hDhjRXYCX_aiOboLF0eaTo6VySbZDa5NQu2ed9Ty2Ekw@mail.gmail.com>
+ <0e6664ac-cbb2-96ff-0106-9301735c0836@linux.intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7110:260b:b0:fa:5574:481 with HTTP; Mon, 18 Oct 2021
- 03:37:30 -0700 (PDT)
-Reply-To: mariaelisabethschaefflerr2222@gmail.com
-From:   Maria-Elisabeth <rashedatmayeloye@gmail.com>
-Date:   Mon, 18 Oct 2021 03:37:30 -0700
-Message-ID: <CAOJs44tR-aPg6gO7xqN-VLnwD_Q3GOJMYBUjQMSW+085kGb=Rg@mail.gmail.com>
-Subject: interested in my donation,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0e6664ac-cbb2-96ff-0106-9301735c0836@linux.intel.com>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
--- 
-Hi there,
+On Sun, Oct 10, 2021 at 03:11:23PM -0700, Andi Kleen wrote:
+> 
+> On 10/9/2021 1:39 PM, Dan Williams wrote:
+> > On Sat, Oct 9, 2021 at 2:53 AM Michael S. Tsirkin <mst@redhat.com> wrote:
+> > > On Fri, Oct 08, 2021 at 05:37:07PM -0700, Kuppuswamy Sathyanarayanan wrote:
+> > > > From: Andi Kleen <ak@linux.intel.com>
+> > > > 
+> > > > For Confidential VM guests like TDX, the host is untrusted and hence
+> > > > the devices emulated by the host or any data coming from the host
+> > > > cannot be trusted. So the drivers that interact with the outside world
+> > > > have to be hardened by sharing memory with host on need basis
+> > > > with proper hardening fixes.
+> > > > 
+> > > > For the PCI driver case, to share the memory with the host add
+> > > > pci_iomap_host_shared() and pci_iomap_host_shared_range() APIs.
+> > > > 
+> > > > Signed-off-by: Andi Kleen <ak@linux.intel.com>
+> > > > Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> > > So I proposed to make all pci mappings shared, eliminating the need
+> > > to patch drivers.
+> > > 
+> > > To which Andi replied
+> > >          One problem with removing the ioremap opt-in is that
+> > >          it's still possible for drivers to get at devices without going through probe.
+> > > 
+> > > To which Greg replied:
+> > > https://lore.kernel.org/all/YVXBNJ431YIWwZdQ@kroah.com/
+> > >          If there are in-kernel PCI drivers that do not do this, they need to be
+> > >          fixed today.
+> > > 
+> > > Can you guys resolve the differences here?
+> > I agree with you and Greg here. If a driver is accessing hardware
+> > resources outside of the bind lifetime of one of the devices it
+> > supports, and in a way that neither modrobe-policy nor
+> > device-authorization -policy infrastructure can block, that sounds
+> > like a bug report.
+> 
+> The 5.15 tree has something like ~2.4k IO accesses (including MMIO and
+> others) in init functions that also register drivers (thanks Elena for the
+> number)
+> 
+> Some are probably old drivers that could be fixed, but it's quite a few
+> legitimate cases. For example for platform or ISA drivers that's the only
+> way they can be implemented because they often have no other enumeration
+> mechanism. For PCI drivers it's rarer, but also still can happen. One
+> example that comes to mind here is the x86 Intel uncore drivers, which
+> support a mix of MSR, ioremap and PCI config space accesses all from the
+> same driver. This particular example can (and should be) fixed in other
+> ways, but similar things also happen in other drivers, and they're not all
+> broken. Even for the broken ones they're usually for some crufty old devices
+> that has very few users, so it's likely untestable in practice.
+> 
+> My point is just that the ecosystem of devices that Linux supports is messy
+> enough that there are legitimate exceptions from the "First IO only in probe
+> call only" rule.
 
-I'm Ms. Maria Elisabeth Schaeffler, a German business tycoon, investor
-and philanthropist. I am the chairman of Wipro Limited. I've given 35
-percent of my personal wealth to charity. And I also promised to give
-away the rest of 35% to individuals this year 2021. I have decided to
-donate 1,400,000.00 euros to you. If you are interested in my
-donation, please contact me for more information.
+No, there should not be for PCI drivers.  If there is, that is a bug
+that you can, and should, fix.
 
-You can also read more about me using the link below
+> And we can't just fix them all. Even if we could it would be hard to
+> maintain.
 
-https://en.wikipedia.org/wiki/Maria-Elisabeth_Schaeffler
+Not true at all, you can fix them, and write a simple coccinelle rule to
+prevent them from ever coming back in.
 
-Warm greeting
-CEO Wipro Limited
-Maria-Elisabeth_Schaeffler
-Email: Maria-Elisabeth-Schaeffler2222@gmail.com
+> Using a "firewall model" hooking into a few strategic points like we're
+> proposing here is much saner for everyone.
+
+No it is not.  It is "easier" for you because you all do not want to fix
+up all of the drivers and want to add additional code complexity on top
+of the current mess that we have and then you can claim that you have
+"hardened" the drivers you care about.
+
+Despite no one ever explaining exactly what "hardened" means to me.
+
+Again, fix the existing drivers, you have the whole source, if this is
+something that you all care about, it should not be hard to do.
+
+Stop making excuses.
+
+greg k-h
