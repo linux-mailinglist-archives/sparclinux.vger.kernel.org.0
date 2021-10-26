@@ -2,89 +2,75 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85A7943769C
-	for <lists+sparclinux@lfdr.de>; Fri, 22 Oct 2021 14:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF44243ADC1
+	for <lists+sparclinux@lfdr.de>; Tue, 26 Oct 2021 10:04:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230368AbhJVMUR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 22 Oct 2021 08:20:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52620 "EHLO
+        id S232818AbhJZIGy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 26 Oct 2021 04:06:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230366AbhJVMUR (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 22 Oct 2021 08:20:17 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6586C061766
-        for <sparclinux@vger.kernel.org>; Fri, 22 Oct 2021 05:17:59 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id y12so336018eda.4
-        for <sparclinux@vger.kernel.org>; Fri, 22 Oct 2021 05:17:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=gbhxMvAYGbSqfpcSxn09gxeDfjPDxDoohtl7lweoc/0=;
-        b=jNM9+RzSBmep8xKjzvzumAHbRc6mVjkvjveEi8VvmuIXuE8qLgxupaYqLZfcv0/tzj
-         FPnFK/Vj+gnKDbdnHfHKWy10/uV7Q+XLgllJWlv+Ui1hGG1pCX2ZPpnjeMIJGXzMGEFC
-         8KgBnnUIF1FaIB4lcGtLjoUQPiYNrqcx++J0egRad7b6t+o4ei8z/v55Z1O833Qwsyic
-         ykL1fqpdGCxD7/0f0ezQexmPHamp4Maos5Ep+lz1xcWFCvs8jr0ciKfiHq5Ol+fhgjSH
-         HvqxHAzyrWERlIXRnjhte9HPsP5sOfpVGTKGVK1H/fy4B8iQ9+HGFiUN87ovVHobTznq
-         XAdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=gbhxMvAYGbSqfpcSxn09gxeDfjPDxDoohtl7lweoc/0=;
-        b=Xyr9u5ampuxHUzSscPXWxkv521ONG+Hiff3lHonNywG1qiplkfwgpwYl2oM1OPQl5H
-         OIaas83IsC18IryyjFiagVCn/HrQ8bqMFLoyIiFu8QIXDKkp4yzn0t2FQK/aKsIw+3Sq
-         CV18vgjtQNXjY8U4ufqWq2GgouIFB3OPQJawg4CggFs8G0bAdFboDICctTLFv8iv5pA1
-         ZQN+nmP7aYdxwxD6UqcyRtkdxZ5/c/0c5MTQ597ISUKOK4IAoPi2rQXS/2R7dF2Nbp+7
-         DwVU6mAV0zUxrGdxN2MIyDOxAipcI+9fRS8krXDbJr0UlH+JwJhG8ohI9rKCd9vdUZPE
-         Ig2A==
-X-Gm-Message-State: AOAM532kfdLMZkNFuUjupIslPjfbW58Y6Iy+4RX35x8RoY/iiQGwFFi6
-        I5UFojMGxiKlkm3zR+tlYptaZc7BaLaxuzOxluA=
-X-Google-Smtp-Source: ABdhPJzDmOxt6Ew11JnXqv4vbRuguou+SX3+4N0rjj+/XJEQEhDijiomgOgh7hsUbwjMULpS+kh8EdVPYR/8WqdB71o=
-X-Received: by 2002:a50:9dca:: with SMTP id l10mr16715896edk.61.1634905078027;
- Fri, 22 Oct 2021 05:17:58 -0700 (PDT)
+        with ESMTP id S232308AbhJZIGy (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 26 Oct 2021 04:06:54 -0400
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7861BC061767
+        for <sparclinux@vger.kernel.org>; Tue, 26 Oct 2021 01:04:30 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:3ceb:3f52:2846:9a21])
+        by baptiste.telenet-ops.be with bizsmtp
+        id AY4U2600S4Ahxzd01Y4Uze; Tue, 26 Oct 2021 10:04:28 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mfHRc-007yQq-6a; Tue, 26 Oct 2021 10:04:28 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mfHRb-00AG0J-NS; Tue, 26 Oct 2021 10:04:27 +0200
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, sparclinux@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH] serial: sunzilog: Mark sunzilog_putchar() __maybe_unused
+Date:   Tue, 26 Oct 2021 10:04:26 +0200
+Message-Id: <20211026080426.2444756-1-geert@linux-m68k.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a05:6400:514:0:0:0:0 with HTTP; Fri, 22 Oct 2021 05:17:57
- -0700 (PDT)
-Reply-To: aabdulwalialhashmi@gmail.com
-From:   Abdulwali Alhashmi <ejekwufranku63@gmail.com>
-Date:   Fri, 22 Oct 2021 05:17:57 -0700
-Message-ID: <CA+ha9H1Kuz9gCOaZMXAnR+Cg6PKk0gCrzKyN_ZK0HG62_NoqeA@mail.gmail.com>
-Subject: CAN I TRUST YOU
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+If CONSOLE_POLL=n, CONFIG_SERIAL_SUNZILOG_CONSOLE=n, and CONFIG_SERIO=m:
+
+    drivers/tty/serial/sunzilog.c:1128:13: error: ‘sunzilog_putchar’ defined but not used [-Werror=unused-function]
+     1128 | static void sunzilog_putchar(struct uart_port *port, int ch)
+	  |             ^~~~~~~~~~~~~~~~
+
+Fix this by marking sunzilog_putchar() __maybe_unused.
+
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+One more casualty of CONFIG_WERROR=y.
+---
+ drivers/tty/serial/sunzilog.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/tty/serial/sunzilog.c b/drivers/tty/serial/sunzilog.c
+index 1a54e3e52ed630b6..b714b00d2dadd44f 100644
+--- a/drivers/tty/serial/sunzilog.c
++++ b/drivers/tty/serial/sunzilog.c
+@@ -1125,7 +1125,7 @@ static void sunzilog_free_tables(void)
+ 
+ #define ZS_PUT_CHAR_MAX_DELAY	2000	/* 10 ms */
+ 
+-static void sunzilog_putchar(struct uart_port *port, int ch)
++static void __maybe_unused sunzilog_putchar(struct uart_port *port, int ch)
+ {
+ 	struct zilog_channel __iomem *channel = ZILOG_CHANNEL_FROM_PORT(port);
+ 	int loops = ZS_PUT_CHAR_MAX_DELAY;
 -- 
-Greetings,
+2.25.1
 
-Firstly, I apologize for encroaching into your privacy in this manner
-as it may seem unethical though it is a matter of great importance.
-
-I am Abdulwali Alhashmi, I work with Cayman National Bank (Cayman Islands).
-
-I am contacting you because my status would not permit me to do this
-alone as it is concerning our customer and an investment placed under
-our bank's management over 5 years ago.
-
-I have a proposal I would love to discuss with you which will be very
-beneficial to both of us. It's regarding my late client who has a huge
-deposit with my bank.
-
-He is from your country and shares the same last name with you.
-
-I want to seek your consent to present you as the next of kin to my
-late client who died and left a huge deposit with my bank.
-
-I would respectfully request that you keep the contents of this mail
-confidential and respect the integrity of the information you come by
-as a result of this mail.
-
-Please kindly get back to me for more details if I can TRUST YOU.{
-aabdulwalialhashmi@gmail.com }
-
-Regards
-Abdulwali Alhashmi
-Treasury and Deposit Management,
-Cayman National Bank Cayman Islands.
