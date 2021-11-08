@@ -2,83 +2,81 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9752B44787D
-	for <lists+sparclinux@lfdr.de>; Mon,  8 Nov 2021 03:21:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CE68447D24
+	for <lists+sparclinux@lfdr.de>; Mon,  8 Nov 2021 10:57:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236396AbhKHCXo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 7 Nov 2021 21:23:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47060 "EHLO
+        id S237193AbhKHJ7u (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 8 Nov 2021 04:59:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229757AbhKHCXn (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 7 Nov 2021 21:23:43 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EF2EC061570
-        for <sparclinux@vger.kernel.org>; Sun,  7 Nov 2021 18:20:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=CJChvlJAKWa55QVSfeUfSnCGmGNB7IQg3OhvF2RrHJs=; b=fx2FkO39E+WoiZ2xNaVE/kbN1R
-        rDMIbPYEth1qnK/ZvjQ8LmnUDNGjD4kIQMaLsvzTBR6CrK0kST37t8EYsfHYEuE6Tru0pfYUZOw/j
-        YwwDOwfCESln9YEoZkjclVLMecQdOc+Uhyv2cKB5xMlnqkTHxq8QJme1kQS8Ghs6DuTl57yzKwqt2
-        TB6Eoxv8UvFP4/OqaA4v6p6sK8klOl+YbxBSSbQCQlHatNvTigSgZITNkA5HgTIvBhvXkeioEhnXR
-        cHFG8Ah8oHRh9G7fARWySqf/0RJcPZQIDqX5bwk8OVJnoPtsG73tvxubv2qOipPIZB5dqY9/QTjAP
-        u/Sqdjhg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mjuFt-0087RV-5s; Mon, 08 Nov 2021 02:19:47 +0000
-Date:   Mon, 8 Nov 2021 02:19:29 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     sparclinux@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH] Fix W=1 builds on sparc
-Message-ID: <YYiJMeWiCgK8ECGP@casper.infradead.org>
+        with ESMTP id S233943AbhKHJ7u (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 8 Nov 2021 04:59:50 -0500
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4033AC061714
+        for <sparclinux@vger.kernel.org>; Mon,  8 Nov 2021 01:57:06 -0800 (PST)
+Received: by mail-qv1-xf2a.google.com with SMTP id jo22so1706469qvb.13
+        for <sparclinux@vger.kernel.org>; Mon, 08 Nov 2021 01:57:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=UPFoFNXYaDLY0O3DVp5Pt1DL26C46DIUqVKtliH2N2k=;
+        b=qhVcog6ZHc46pTFUJZsSRWVF8s4m7hIJBy6Ud5/t4nP/kC8rO1y+LW0nK86Bf84G0m
+         ZwepoQqXkw33eCV28NgtWLKKfhVdaQwJ4AiS/IxDJscTxeZimjOjxGwx0kC/sCpiZwsb
+         EnzS1uoTzMYLMBn2BBVEmeN2PuvZlFbtJYMefo2ffPmtbsclrpzDMtTcRh6mZu0dzfPf
+         kY/DJ6/0FkXAzlxpNzTUnhx24hvrq066zE34/NIKCOcl/oMn+jmJiFScMYt5Fwcm2r8T
+         aKJUlQGmmoRmdJVz+U+ylYUGjEAokJcb4PjZ+1w8qbPjiA9jrZnH0SRtBO+XCcTEwlkg
+         xV6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=UPFoFNXYaDLY0O3DVp5Pt1DL26C46DIUqVKtliH2N2k=;
+        b=BX8+z3qzaGxcntZhsyvOX/bS5JVOwycvig1Dx5UccKj+GVOY8KRd/5XtH/ZgBAkUyt
+         AIiyD9+XordcblhNRiB5QFVJsLwLA5ymZjgkwYxS/0EoI80Qko9Gxer8lTmdRvltgeN+
+         AvRHhyvJr90CeYLE6MNzqToQK3erKdUqE0c6vvO+vwutNcV5hki8s80GC54XHagOqSxr
+         1FwD9PKdOqJiFYHfXHiF+HHel4CnbjaFExohSMT35stiTH188NKKEpzhHkxQ3Ttbi1vW
+         yvnvHRxY01QKlazn3U8IWwZfUiwET6EgAXjsWbn5vGZnZuJONqR00NuWeiuvMx1I87TB
+         OHDw==
+X-Gm-Message-State: AOAM533D9dg0xK1LocX6hDWIIdI5NcI4PoeIci5ok6soCh/66IRN9Fuc
+        zL690crMP7mOfVFZuFvdzTcaVG5pW4dA2nwMq1g=
+X-Google-Smtp-Source: ABdhPJxn5Q0jr6uIW2FJNIosV3KcgYIlo0N5dCdGMXIm55YPj7LPHNbQFf77aK13yO2v1oBXbGCdXTMIH7eDeScIxUg=
+X-Received: by 2002:a05:6214:334:: with SMTP id j20mr17392987qvu.15.1636365425225;
+ Mon, 08 Nov 2021 01:57:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ad4:4ea3:0:0:0:0:0 with HTTP; Mon, 8 Nov 2021 01:57:04 -0800 (PST)
+Reply-To: juliet_paul32@yahoo.com
+From:   Juliet Paul <julietpaul73@gmail.com>
+Date:   Mon, 8 Nov 2021 09:57:04 +0000
+Message-ID: <CACZ5AQRn7Zo9LRsw5=xsUo03=M6T3piYYjSt1fbwefLzVUGB2Q@mail.gmail.com>
+Subject: Investment proposal from Juliet Paul
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Running the following command:
+Investment proposal from Juliet Paul
+It's a pleasure to write to you after review, because I might
+could not see you face to face, first; please, I need yours
+help.
+one
+I'm Miss Juliet Paul. only daughter of the late Mr. Nguessan Paul,
+from the Ivory Coast. my father put the sum of
+($ 6,800,000.00) in a bank here on Ivory Coast before his death,
+he used my name as his relative and recipient of the money
+after his death he signed a bond with the bank that prevented me
+from access to the money here if they are not transferred abroad for
+investment purposes.
 
-$ make W=1 O=.sparc ARCH=sparc64 CROSS_COMPILE=sparc64-linux-gnu- mm/util.o
+Now I am looking for a reliable person to help me transfer and take
+against the money with his bank account abroad where I will have
+access the money and also work with the person for one
+lifetime investment abroad with the money.
 
-  CC      arch/sparc/kernel/asm-offsets.s
-../arch/sparc/kernel/asm-offsets.c:29:5: error: no previous prototype for ‘sparc64_foo’ [-Werror=missing-prototypes]
-../arch/sparc/kernel/asm-offsets.c:48:5: error: no previous prototype for ‘foo’ [-Werror=missing-prototypes]
+please reply me so that I can give you more information and
+discusses how we can benefit you and me in the future. We
+should discuss what becomes of your percentage after the transfer when
+you answer. Thanks for your consideration.
 
-These functions obviously aren't actually called from anywhere, so
-just silence the warning (and fix the build) by declaring them
-immediately before defining them.
-
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-
-diff --git a/arch/sparc/kernel/asm-offsets.c b/arch/sparc/kernel/asm-offsets.c
-index 5784f2df489a..354a4d4d7b37 100644
---- a/arch/sparc/kernel/asm-offsets.c
-+++ b/arch/sparc/kernel/asm-offsets.c
-@@ -19,6 +19,7 @@
- #include <asm/hibernate.h>
- 
- #ifdef CONFIG_SPARC32
-+int sparc32_foo(void);
- int sparc32_foo(void)
- {
- 	DEFINE(AOFF_thread_fork_kpsr,
-@@ -26,6 +27,7 @@ int sparc32_foo(void)
- 	return 0;
- }
- #else
-+int sparc64_foo(void);
- int sparc64_foo(void)
- {
- #ifdef CONFIG_HIBERNATION
-@@ -45,6 +47,7 @@ int sparc64_foo(void)
- }
- #endif
- 
-+int foo(void);
- int foo(void)
- {
- 	BLANK();
+Greetings,
+juliet pau
