@@ -2,122 +2,59 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A1C5449DE8
-	for <lists+sparclinux@lfdr.de>; Mon,  8 Nov 2021 22:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A59D444D13D
+	for <lists+sparclinux@lfdr.de>; Thu, 11 Nov 2021 06:07:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240021AbhKHVW1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 8 Nov 2021 16:22:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49682 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239990AbhKHVVk (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 8 Nov 2021 16:21:40 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F44C061570;
-        Mon,  8 Nov 2021 13:18:55 -0800 (PST)
-Received: from zn.tnic (p200300ec2f3311007827e440708b1099.dip0.t-ipconnect.de [IPv6:2003:ec:2f33:1100:7827:e440:708b:1099])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E3BE71EC051F;
-        Mon,  8 Nov 2021 22:18:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1636406333;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=AU7V4fSHGUK4yNvIX3QFWGgL2mpvsQwlJrzk1EYTZE4=;
-        b=HI4wHVqdPFUaTmLfTawRP0YuILjCSvy0XvR7UY6GhjpkLZ7Jcpensq3GPz/wKuSVQPh/ah
-        JjfisFcmsOLL77YybjTfUcF4SOtfsMptjoCY2iNpL/QAVX8IlmhT4tll2zqUciAF4fFC2q
-        GhOxoJIWWV9UKbtfg9ziQ2wDV7UERPU=
-Date:   Mon, 8 Nov 2021 22:18:47 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ayush Sawal <ayush.sawal@chelsio.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rohit Maheshwari <rohitm@chelsio.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        intel-gvt-dev@lists.freedesktop.org,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-edac@vger.kernel.org,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        linux-hyperv@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-leds <linux-leds@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        scsi <linux-scsi@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-staging@lists.linux.dev,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        linux-um <linux-um@lists.infradead.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>, netdev <netdev@vger.kernel.org>,
-        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
-        sparclinux <sparclinux@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v0 42/42] notifier: Return an error when callback is
- already registered
-Message-ID: <YYmUN69Y7z9xITas@zn.tnic>
-References: <20211108101157.15189-1-bp@alien8.de>
- <20211108101157.15189-43-bp@alien8.de>
- <CAMuHMdWH+txiSP_d7Jc4f_bU8Lf9iWpT4E3o5o7BJr-YdA6-VA@mail.gmail.com>
- <YYkyUEqcsOwQMb1S@zn.tnic>
- <CAMuHMdXiBEQyEXJagSfpH44hxVA2t0sDH7B7YubLGHrb2MJLLA@mail.gmail.com>
- <YYlJQYLiIrhjwOmT@zn.tnic>
- <CAMuHMdXHikGrmUzuq0WG5JRHUUE=5zsaVCTF+e4TiHpM5tc5kA@mail.gmail.com>
- <YYlOmd0AeA8DSluD@zn.tnic>
- <20211108205926.GA1678880@rowland.harvard.edu>
+        id S231951AbhKKFKH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Thu, 11 Nov 2021 00:10:07 -0500
+Received: from host-200-90-157-143.netpc.ec ([200.90.157.143]:53276 "EHLO
+        mail.gruponetpc.com" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
+        with ESMTP id S230339AbhKKFKF (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 11 Nov 2021 00:10:05 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.gruponetpc.com (Postfix) with ESMTP id 56DFFE10107;
+        Wed, 10 Nov 2021 08:37:34 -0500 (-05)
+Received: from mail.gruponetpc.com ([127.0.0.1])
+        by localhost (mail.gruponetpc.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id cU1-Hub_-Gv8; Wed, 10 Nov 2021 08:37:33 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.gruponetpc.com (Postfix) with ESMTP id 17998842C56;
+        Tue,  9 Nov 2021 22:22:12 -0500 (-05)
+X-Virus-Scanned: amavisd-new at gruponetpc.com
+Received: from mail.gruponetpc.com ([127.0.0.1])
+        by localhost (mail.gruponetpc.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id AL5eAKwu1lQx; Tue,  9 Nov 2021 22:22:11 -0500 (-05)
+Received: from [192.168.0.108] (unknown [93.182.105.113])
+        by mail.gruponetpc.com (Postfix) with ESMTPSA id 6BD378A5C65;
+        Tue,  9 Nov 2021 15:25:24 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211108205926.GA1678880@rowland.harvard.edu>
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: donation
+To:     Recipients <ecouso@mail.gruponetpc.com>
+From:   ecouso@mail.gruponetpc.com
+Date:   Tue, 09 Nov 2021 20:24:53 +0000
+Reply-To: stefanopessina35@gmail.com
+Message-Id: <20211109202524.6BD378A5C65@mail.gruponetpc.com>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Nov 08, 2021 at 03:59:26PM -0500, Alan Stern wrote:
-> Is there really any reason for returning an error code?  For example, is 
-> it anticipated that at some point in the future these registration calls 
-> might fail?
-> 
-> Currently, the only reason for failing...
 
-Right, I believe with not making it return void we're leaving the door
-open for some, *hypothetical* future return values if we decide we need
-to return them too, at some point.
 
-Yes, I can't think of another fact to state besides that the callback
-was already registered or return success but who knows what we wanna do
-in the future...
+Hallo,
 
-And so if we change them all to void now, I think it'll be a lot more
-churn to switch back to returning a non-void value and having the
-callers who choose to handle that value, do so again.
+Ich bin STEFANO PESSINA. Ich bin ein italienisch-monegassischer Milliardär und stellvertretender Vorsitzender, Chief Executive Officer (CEO) und größter Einzelaktionär der Walgreens Boots Alliance. Au   fgrund dieser aktuellen Situation (Corona-Virus), die sich auf der ganzen Welt ausbreitet, spenden ich selbst und andere 19 italienische Milliardäre mehr als 45 Millionen US-Dollar, um das Coronavirus in Italien zu bekämpfen. Ich habe auch zugesagt, 1.500.000,00 € an Einzelpersonen, Kirchen und Waisenhäuser usw. zu spenden. Ich habe mich entschieden, Ihnen 1.500.000,00 € zu spenden, da Ihre E-Mail-Adresse zu den glücklichen Gewinnern gehört. Wenn Sie an meiner Spende interessiert sind, kontaktieren Sie mich für weitere Informationen. Du kannst auch über den untenstehenden Link mehr über mich lesen
 
-So, long story short, keeping the retval - albeit not very useful right
-now - is probably easier.
+https://en.wikipedia.org/wiki/Stefano_Pessina
 
-I hope I'm making some sense here.
+Herzlicher Gruss
+Stellvertretender Vorsitzender und Geschäftsführer,
+Walgreens Boots-Allianz.
+Stefano Pessina
 
--- 
-Regards/Gruss,
-    Boris.
+E-Mail: stefanopessina35@gmail.com
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
+
