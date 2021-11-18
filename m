@@ -2,89 +2,63 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 588C3452DF7
-	for <lists+sparclinux@lfdr.de>; Tue, 16 Nov 2021 10:26:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A232A45549C
+	for <lists+sparclinux@lfdr.de>; Thu, 18 Nov 2021 07:11:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233090AbhKPJ2C (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 16 Nov 2021 04:28:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54392 "EHLO
+        id S243275AbhKRGO6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 18 Nov 2021 01:14:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233233AbhKPJ1k (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 16 Nov 2021 04:27:40 -0500
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC69CC061766
-        for <sparclinux@vger.kernel.org>; Tue, 16 Nov 2021 01:24:43 -0800 (PST)
-Received: by mail-lj1-x244.google.com with SMTP id u22so34965199lju.7
-        for <sparclinux@vger.kernel.org>; Tue, 16 Nov 2021 01:24:43 -0800 (PST)
+        with ESMTP id S242905AbhKRGO4 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 18 Nov 2021 01:14:56 -0500
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 716AEC061570
+        for <sparclinux@vger.kernel.org>; Wed, 17 Nov 2021 22:11:56 -0800 (PST)
+Received: by mail-lf1-x143.google.com with SMTP id y26so20459896lfa.11
+        for <sparclinux@vger.kernel.org>; Wed, 17 Nov 2021 22:11:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=gbhxMvAYGbSqfpcSxn09gxeDfjPDxDoohtl7lweoc/0=;
-        b=E+Yl5741SElmOfMuz42b8ncE3KmeySw/Z7gq1ufGB7VPyJ8hvrKGHNNJ0IA4HdE6xL
-         AC4KGbv1RMHUmu7ERVs1N9wXVAqh1Gj02rPhtDeWomcInpx4R7KHqPv/CUD/QWvAD7nh
-         2+Gt1SKM+9xRc+6FualsDmHjxNmVnvVyqARiFgXDsMCn/4bXyaNTBnfjdgRncs0HJ6eL
-         HqH4VczrUtmATuTciNWREhiuwxOwcUimGZ0NwbFCqQrnCq8IKjjEJ3aGHLFMmoBmFkiy
-         HF6vOAILtY31tqxXBaqOxhx3RoQbyFTTyjJf+hK9uAyWUCX0aG6NeMgVYM6yLE3d6m+6
-         QuMA==
+        bh=XgrCbNVzylroOlvo2CQOIauHcw5ZFFvNEkLGCnnRkHg=;
+        b=GHxhR2fBBDnuZR/NIW387L6ctZUjscjvcyCHkFGg0nJGi8vOE4z0rn/mGUM0DqOzKP
+         Nv46W0NYH2JJYwVRA/IU0oHBq7X+2W5ZpePsnlQE+2Kuvi6gbniOp+GV2KB8PZWO0BPr
+         xjMovRQYCJUHZ2/tMImSRO8t9kGk+0EnPBbERuvuSSraKAVkdI77ymnLjlEtWEQBb8n4
+         gA7GmMRmsySLtIxhku9stCzqDeBhhUwlMWMui4jH8ep1jECt3Z7EJkOPHrPS1P+0IyBJ
+         YRPhrqIfxCVcpbyg8dHAh+QsswAuYLDUhaIO4fuIg7V0S8Hrab9RE+Xf5SOpMpgyJE6Y
+         0Lpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
-        bh=gbhxMvAYGbSqfpcSxn09gxeDfjPDxDoohtl7lweoc/0=;
-        b=N5jFhf/HmXMqFc8nZmu8Syv+7asmxAqEfTj0oGXi/mM/e+Y5FT94CShJEvHwMCiiT4
-         qwvjobuUuL7DJq6psr/iuLF4CWDrMgXhYJfpC1dbjvhVw8a0IkMe0LLXNs+53vWD/WeW
-         siQlc6E4lUj+zCFjUM4hw7hqGbjJjjtPaln7cIZe6O4UeRMUH9azzkFLaz0TzUi49C/I
-         gTuSoEnofsJfv+7QTF1TcM1Rimn15wOEBKo+8iEggywhRZPfhKVVzRCteTJ9snYlU7tS
-         CwEXpIen2Ou7Ith520eKoz6Iv16gFnspEVBlUWMnnJLTUusvVwpGB+6nauALpP2DsxUR
-         TuxQ==
-X-Gm-Message-State: AOAM532jLPLuPWUelT8WOrE/ShdrP8oP0LjtvMl5is/Q3rTjujRhQNPf
-        IbQjKOb3VyWS7axF3MbqaoQwT4UHbm87nvfkPAU=
-X-Google-Smtp-Source: ABdhPJwTx/CoDsTDHQYDFMbEYmv5WKntgFhAytxtUtOxnKam8FXo7d7Y/KL/8Pi7JxslZaNbDqsqXWsyMHe3Fpa/mA0=
-X-Received: by 2002:a2e:7801:: with SMTP id t1mr5608280ljc.253.1637054682074;
- Tue, 16 Nov 2021 01:24:42 -0800 (PST)
+        bh=XgrCbNVzylroOlvo2CQOIauHcw5ZFFvNEkLGCnnRkHg=;
+        b=2yuk3LQNIgKut954GiY2Ba/W9FIezsszqQ0WyfXxd5JFHxKSrXshyi60oLStBrFpbx
+         BN/zWKj8zR92Yw92fsYTgnOJioy3QlDTaZkY2XoNszgn7tkaGCXgqlQKpZkKqJbeXyvc
+         hT4b9/pnvJAnETsyE9dMDoNHfb2qlllfhRUAcrt/Vp/tODG9izTMQkm7CIMnuYHQPZZ/
+         edqBAquo8EJcZjeEG0XFIBFwW3DbhHxGPbyUw8zB6KUUZ/47pinxRoygu02cYNCgMP4k
+         NI9heSkAzx5t6+ayhH3UcqyRlc1WnPQb31tEYMNSaFCQEWNeYwExqQT/yJ0Aw9ggR3kD
+         2Zbg==
+X-Gm-Message-State: AOAM530QPI5uHDc1+i0cf/Kit7xtHpTGCT2pf3RMcezvcOTvZJFvQi1Y
+        HvoEJY1Us8v9Nl0Yq25UMC3uNKHQmRKXGEmkxgI=
+X-Google-Smtp-Source: ABdhPJwDZuhDjR5HEoFsRNs5ph1qXdMA8RtyNxyy8ohQdilusfsM2P3jaJ0YvEUSNIC049Vv9ifyaz+f0XrGUBwJGgM=
+X-Received: by 2002:a05:6512:2341:: with SMTP id p1mr21748801lfu.204.1637215914690;
+ Wed, 17 Nov 2021 22:11:54 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:6512:927:0:0:0:0 with HTTP; Tue, 16 Nov 2021 01:24:41
+Received: by 2002:a2e:a44f:0:0:0:0:0 with HTTP; Wed, 17 Nov 2021 22:11:54
  -0800 (PST)
-Reply-To: aabdulwalialhashmi@gmail.com
-From:   Abdulwali Alhashmi <grogscott43@gmail.com>
-Date:   Tue, 16 Nov 2021 01:24:41 -0800
-Message-ID: <CAJTfFsO0iudbLAcFXO_kcuWk7YBR=JPAyoz-HJVeuGr0q6MmEw@mail.gmail.com>
-Subject: PLEASE GET BACK TO ME IF I CAN I TRUST YOU
+Reply-To: drandrewcardwell101@gmail.com
+From:   Dr Andrew Cardwell <drdicksonebe175@gmail.com>
+Date:   Wed, 17 Nov 2021 22:11:54 -0800
+Message-ID: <CAMo6OdyAXm9sHFJwws=YZz0H_Q0cHEAiGf2kvRxpZ-uPYPXn9Q@mail.gmail.com>
+Subject: hi
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
--- 
-Greetings,
+ My name is Dr Andrew Cardwell. I'm working as a Marketing
+Consultant/Supplier with an animal Farm Company here in
+England. I just glanced through your profile and decided to contact you.
 
-Firstly, I apologize for encroaching into your privacy in this manner
-as it may seem unethical though it is a matter of great importance.
-
-I am Abdulwali Alhashmi, I work with Cayman National Bank (Cayman Islands).
-
-I am contacting you because my status would not permit me to do this
-alone as it is concerning our customer and an investment placed under
-our bank's management over 5 years ago.
-
-I have a proposal I would love to discuss with you which will be very
-beneficial to both of us. It's regarding my late client who has a huge
-deposit with my bank.
-
-He is from your country and shares the same last name with you.
-
-I want to seek your consent to present you as the next of kin to my
-late client who died and left a huge deposit with my bank.
-
-I would respectfully request that you keep the contents of this mail
-confidential and respect the integrity of the information you come by
-as a result of this mail.
-
-Please kindly get back to me for more details if I can TRUST YOU.{
-aabdulwalialhashmi@gmail.com }
-
-Regards
-Abdulwali Alhashmi
-Treasury and Deposit Management,
-Cayman National Bank Cayman Islands.
+I wish to seek your consent for an urgent business dealing with my
+company. kindly get back to me for more info. Thank you!
