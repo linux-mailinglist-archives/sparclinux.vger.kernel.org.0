@@ -2,60 +2,85 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BABA8458271
-	for <lists+sparclinux@lfdr.de>; Sun, 21 Nov 2021 08:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77AC24582AF
+	for <lists+sparclinux@lfdr.de>; Sun, 21 Nov 2021 10:25:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbhKUHTm (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 21 Nov 2021 02:19:42 -0500
-Received: from mx07-00227901.pphosted.com ([185.132.182.185]:42862 "EHLO
-        mx08-00227901.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S230240AbhKUHTm (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Sun, 21 Nov 2021 02:19:42 -0500
-X-Greylist: delayed 159053 seconds by postgrey-1.27 at vger.kernel.org; Sun, 21 Nov 2021 02:19:41 EST
-Received: from pps.filterd (m0097675.ppops.net [127.0.0.1])
-        by mx07-.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AJALBmi013351;
-        Fri, 19 Nov 2021 12:00:53 +0100
-Received: from zbw2k16ex03.bardusch.net ([185.80.186.174])
-        by mx07-.pphosted.com (PPS) with ESMTPS id 3cdjtyh9gd-6
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 19 Nov 2021 12:00:52 +0100
-Received: from ZBW2K16EX01.bardusch.net (172.25.1.1) by
- zbw2k16ex03.bardusch.net (172.25.1.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.1.2308.20;
- Fri, 19 Nov 2021 12:00:38 +0100
-Received: from User (172.25.1.131) by ZBW2K16EX01.bardusch.net (172.25.1.1)
- with Microsoft SMTP Server id 15.1.2308.20 via Frontend Transport; Fri, 19
- Nov 2021 12:00:28 +0100
-Reply-To: <josechoondak@gmail.com>
-From:   Joseph Choondak <info@ndd.co.mz>
-Subject: I hope this email finds you well.
-Date:   Fri, 19 Nov 2021 03:00:41 -0800
+        id S237838AbhKUJ2M (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 21 Nov 2021 04:28:12 -0500
+Received: from szxga02-in.huawei.com ([45.249.212.188]:15845 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235298AbhKUJ2M (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 21 Nov 2021 04:28:12 -0500
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4HxlNS4C08z90xJ;
+        Sun, 21 Nov 2021 17:24:40 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Sun, 21 Nov 2021 17:25:04 +0800
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Sun, 21 Nov 2021 17:25:03 +0800
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+To:     <dennis@kernel.org>, <akpm@linux-foundation.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+CC:     <tj@kernel.org>, <gregkh@linuxfoundation.org>, <cl@linux.com>,
+        <catalin.marinas@arm.com>, <will@kernel.org>,
+        <tsbogend@alpha.franken.de>, <mpe@ellerman.id.au>,
+        <benh@kernel.crashing.org>, <paulus@samba.org>,
+        <paul.walmsley@sifive.com>, <palmer@dabbelt.com>,
+        <aou@eecs.berkeley.edu>, <davem@davemloft.net>,
+        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+        <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-ia64@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
+        <sparclinux@vger.kernel.org>, <x86@kernel.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH RFC 0/4] mm: percpu: Cleanup percpu first chunk funciton
+Date:   Sun, 21 Nov 2021 17:35:53 +0800
+Message-ID: <20211121093557.139034-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <ddc13a55-280f-4bf8-b4fb-57dc96ddfb1d@ZBW2K16EX01.bardusch.net>
-To:     Undisclosed recipients:;
-X-Proofpoint-ORIG-GUID: 05Kep0eY6BNyDXquxhmBbOxvoTbBamKi
-X-Proofpoint-GUID: 05Kep0eY6BNyDXquxhmBbOxvoTbBamKi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-19_09,2021-11-17_01,2020-04-07_01
-X-Proofpoint-Spam-Reason: orgsafe
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-May I please ask with considerable urgency for your kind assistance with the following matter.
-I'm a financial person, I think  I have something huge you might be interested in.
+When support page mapping percpu first chunk allocator on arm64, we
+found there are lots of duplicated codes in percpu embed/page first
+chunk allocator. This patchset is aimed to cleanup them and should
+no funciton change, only test on arm64.
 
-Looking forward to hearing from you.
+Kefeng Wang (4):
+  mm: percpu: Generalize percpu related config
+  mm: percpu: Add pcpu_fc_cpu_to_node_fn_t typedef
+  mm: percpu: Add generic pcpu_fc_alloc/free funciton
+  mm: percpu: Add generic pcpu_populate_pte() function
 
+ arch/arm64/Kconfig             |  20 +----
+ arch/ia64/Kconfig              |   9 +--
+ arch/mips/Kconfig              |  10 +--
+ arch/mips/mm/init.c            |  14 +---
+ arch/powerpc/Kconfig           |  17 +---
+ arch/powerpc/kernel/setup_64.c |  92 +--------------------
+ arch/riscv/Kconfig             |  10 +--
+ arch/sparc/Kconfig             |  12 +--
+ arch/sparc/kernel/smp_64.c     | 105 +-----------------------
+ arch/x86/Kconfig               |  17 +---
+ arch/x86/kernel/setup_percpu.c |  66 ++-------------
+ drivers/base/arch_numa.c       |  68 +---------------
+ include/linux/percpu.h         |  13 +--
+ mm/Kconfig                     |  12 +++
+ mm/percpu.c                    | 143 +++++++++++++++++++++++++--------
+ 15 files changed, 165 insertions(+), 443 deletions(-)
 
-Respectfully!!
-Joseph Choondak
-Account Executive.
+-- 
+2.26.2
+
