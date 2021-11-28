@@ -2,60 +2,60 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6DFD46082C
-	for <lists+sparclinux@lfdr.de>; Sun, 28 Nov 2021 18:53:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CEF2460C78
+	for <lists+sparclinux@lfdr.de>; Mon, 29 Nov 2021 02:51:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234143AbhK1R4U (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 28 Nov 2021 12:56:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52384 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345801AbhK1RyU (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 28 Nov 2021 12:54:20 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC9BC061574
-        for <sparclinux@vger.kernel.org>; Sun, 28 Nov 2021 09:51:04 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id x6so61945315edr.5
-        for <sparclinux@vger.kernel.org>; Sun, 28 Nov 2021 09:51:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=CScZ3wgwAoNcP2hDnqXlix5UDGrDiarDd6PNIGLyspo=;
-        b=A/+V7WufMbZSVkBldMXIVToPuiqAxpiyHjVffQMLY780NYDeEMsBpF2NJilk+cNiM1
-         AwKfFd3mlgdMizrSc55DyM3XOjzfW6AXrj1eEINAV5eL63DLo54vDvbzKUbVAOsIapeo
-         l+05Vv7dOZ9sc3zZRg6hvQ9xzF6L+ewIkWaoe3S26vCDwQnXLek3JKvXBaKcWhMy835J
-         yXSu2FSuGuDjehz8kJqH64/HtBm5m0rfGQJxlbcfzux5a7ZmWd5i8gqtV8fGzFna3YUb
-         C6hXSUz5neZuS93jUdu+L8AthcRpXRUjww+N5aBIefGgfNvH3YeSA9dvWy6KY8j4MDet
-         afYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=CScZ3wgwAoNcP2hDnqXlix5UDGrDiarDd6PNIGLyspo=;
-        b=Ptwv7fTeBwzu1gvqIVoEGbHqBEB4KTD+jAXrkboO1OlfR5Xwqrc9f/msjOgslYLpOk
-         YZN3FDpNSjE6k3agCnv4zHdxXVJQF37pYiBrCk39LvGrpFvucZkdGb7GcUmutmAmyBi4
-         WaXCo0zz0/f+avAGFjbHHC6TGnT6aBPGWWDPDqEEBqMW/35XwaE0J12b+ZF8CJXmocAu
-         8qzsnmR10d2qOQRoXK+g/6iousLK+dfItQbADnzajOEaG7qBN8LKsV+SkV6KW9XDANfm
-         60WXaBrcqgoK1FFrOueIHhYDXdw3yTFwsdVgR46m2HmzHue7iZnj18MX9pstCZK0FQpo
-         2q6Q==
-X-Gm-Message-State: AOAM533kSksL3lJ5IdTWkCg1NXKmx5/Q4Bodw6adUnJvAV6tZk0bWVNM
-        ehX8tfzQ3AD+TBukBO7vq2wiIdtiCu4u5jQmi3A=
-X-Google-Smtp-Source: ABdhPJw8y1KCXhiEhF3SiSZLLGlU8y3dmwz5WMJO87zvT11rPxWZ1DfFkyQfr/m+f58cP63ia0tmOx1m/O9VURs+v4A=
-X-Received: by 2002:a17:906:35d7:: with SMTP id p23mr54643644ejb.32.1638121862885;
- Sun, 28 Nov 2021 09:51:02 -0800 (PST)
+        id S229722AbhK2Byz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 28 Nov 2021 20:54:55 -0500
+Received: from mail.vallenar.cl ([200.54.241.89]:33086 "EHLO mail.vallenar.cl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234616AbhK2Bwy (ORCPT <rfc822;sparclinux@vger.kernel.org>);
+        Sun, 28 Nov 2021 20:52:54 -0500
+X-Greylist: delayed 23063 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Nov 2021 20:52:54 EST
+Received: from localhost (localhost [127.0.0.1])
+        by mail.vallenar.cl (Postfix) with ESMTP id 524601CAC384;
+        Sun, 28 Nov 2021 13:05:59 -0300 (-03)
+Received: from mail.vallenar.cl ([127.0.0.1])
+        by localhost (mail.vallenar.cl [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 9AgunHtePtKW; Sun, 28 Nov 2021 13:05:58 -0300 (-03)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.vallenar.cl (Postfix) with ESMTP id 085961CAB2A0;
+        Sun, 28 Nov 2021 12:37:32 -0300 (-03)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.vallenar.cl 085961CAB2A0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vallenar.cl;
+        s=EC098874-C7DE-11E7-B3B1-1A9A6030413E; t=1638113852;
+        bh=IQxUcKgLaEia+DMrVj9OEHbWOH8TffrzQMeZgAxYubI=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=Zfh7cBKXmmtHW+bZ5D1zrfsfb44kGdtoA+RWcBMVE1PEoBbgf3KPCoFA1qlHSqKDJ
+         32H6ChanJbe4ym+gL43LVgyaDLjywPfxDuL1zwgVIA+LgzLBsWCJS3siGVAHmR2nQa
+         5yXDHQfQXNwxQbuE70YSb/TvV3SehEZwAlg0BoN4Pjfx1qmT6uqWlZ0H07+qWzIcbk
+         lotdrdj+r5nEwZJyA56h5A/CVmC7qwaJoRlXdaF6BXnOuQruOBMe24xSkyJlHWIKWt
+         7HEvJAWzVcBa0cIggpLlbVbh7PUzJGJHglRCIBajY2o+8drN490c+g8AS8Ro7ftohI
+         Mem35KV2uRkRg==
+X-Virus-Scanned: amavisd-new at vallenar.cl
+Received: from mail.vallenar.cl ([127.0.0.1])
+        by localhost (mail.vallenar.cl [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id gPKXeajxgyol; Sun, 28 Nov 2021 12:37:31 -0300 (-03)
+Received: from [192.168.8.101] (unknown [105.0.3.102])
+        by mail.vallenar.cl (Postfix) with ESMTPSA id EEB4E1D095BF;
+        Sun, 28 Nov 2021 11:36:00 -0300 (-03)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Received: by 2002:a55:e509:0:b0:129:f100:fa57 with HTTP; Sun, 28 Nov 2021
- 09:51:02 -0800 (PST)
-Reply-To: mrsisabelladz@gmail.com
-From:   Mrs Isabella <edithgondo18@gmail.com>
-Date:   Sun, 28 Nov 2021 18:51:02 +0100
-Message-ID: <CAEmyRFDwK2=GgtPwCGzdzmDqMS4yVrZehQ=AqUc7VWDUA10E+A@mail.gmail.com>
-Subject: From Mrs. Isabella Dzsesszika
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: 2.000.000,00. Euro
+To:     Recipients <yperez@vallenar.cl>
+From:   "manuel franco" <yperez@vallenar.cl>
+Date:   Sun, 28 Nov 2021 16:43:30 +0200
+Reply-To: manuelfrancospende00@gmail.com
+Message-Id: <20211128143600.EEB4E1D095BF@mail.vallenar.cl>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-GOOD MORNING DEAR. MY NAME IS Isabella Dzsesszika. I AM CONTACTING YOU
-FOR IMPORTANT ISSUE I WILL LIKE TO DISCUS WITH YOU. PLEASE GET BACK TO
-ME IF YOU READ THIS MAIL.  YOURS, Isabella Dzsesszika
+Sie haben eine Spende von 2.000.000,00. Euro
+
+Mein Name ist Manuel Franco aus den Vereinigten Staaten.
+Ich habe die Amerika-Lotterie im Wert von 768 Millionen US-Dollar gewonnen =
+und spende einen Teil davon an nur 5 gl=FCckliche Menschen und ein paar Wai=
+senh=E4user als Wohlwollen f=FCr die Menschheit.
