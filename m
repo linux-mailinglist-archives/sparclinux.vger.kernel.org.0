@@ -2,103 +2,123 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7108F460CFB
-	for <lists+sparclinux@lfdr.de>; Mon, 29 Nov 2021 04:08:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 915E846102B
+	for <lists+sparclinux@lfdr.de>; Mon, 29 Nov 2021 09:29:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348021AbhK2DLo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 28 Nov 2021 22:11:44 -0500
-Received: from szxga08-in.huawei.com ([45.249.212.255]:28113 "EHLO
-        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239812AbhK2DJo (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 28 Nov 2021 22:09:44 -0500
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.56])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4J2VYG4jL9z1DJgC;
-        Mon, 29 Nov 2021 11:03:46 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Mon, 29 Nov 2021 11:06:24 +0800
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.20; Mon, 29 Nov 2021 11:06:23 +0800
-Message-ID: <073253ba-f5c5-c64c-f8cb-6fb39f35af0e@huawei.com>
-Date:   Mon, 29 Nov 2021 11:06:23 +0800
+        id S245755AbhK2Ick (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 29 Nov 2021 03:32:40 -0500
+Received: from 10.mo548.mail-out.ovh.net ([46.105.77.235]:40997 "EHLO
+        10.mo548.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345587AbhK2Iak (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 29 Nov 2021 03:30:40 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.108.20.7])
+        by mo548.mail-out.ovh.net (Postfix) with ESMTPS id D10AB2064C;
+        Mon, 29 Nov 2021 07:33:34 +0000 (UTC)
+Received: from kaod.org (37.59.142.103) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 29 Nov
+ 2021 08:33:33 +0100
+Authentication-Results: garm.ovh; auth=pass (GARM-103G0058ffb0110-7673-40ee-a51a-c9a65a45fa89,
+                    3279756C2EB34864E332BB908A933B747C53BE44) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <b1a6d267-c7b4-c4b9-ab0e-f5cc32bfe9bf@kaod.org>
+Date:   Mon, 29 Nov 2021 08:33:33 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH RFC 0/4] mm: percpu: Cleanup percpu first chunk funciton
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [patch 05/22] genirq/msi: Fixup includes
 Content-Language: en-US
-To:     Dennis Zhou <dennis@kernel.org>
-CC:     <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>, <tj@kernel.org>,
-        <gregkh@linuxfoundation.org>, <cl@linux.com>,
-        <catalin.marinas@arm.com>, <will@kernel.org>,
-        <tsbogend@alpha.franken.de>, <mpe@ellerman.id.au>,
-        <benh@kernel.crashing.org>, <paulus@samba.org>,
-        <paul.walmsley@sifive.com>, <palmer@dabbelt.com>,
-        <aou@eecs.berkeley.edu>, <davem@davemloft.net>,
-        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-        <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-ia64@vger.kernel.org>, <linux-mips@vger.kernel.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
-        <sparclinux@vger.kernel.org>, <x86@kernel.org>
-References: <20211121093557.139034-1-wangkefeng.wang@huawei.com>
- <4fecd1ac-6c0a-f0fa-1ffb-18f3f266809d@huawei.com> <YaRA6o0pHU6/206a@fedora>
-From:   Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <YaRA6o0pHU6/206a@fedora>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>
+CC:     <linux-hyperv@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
+        <sparclinux@vger.kernel.org>, Wei Liu <wei.liu@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>, Marc Zygnier <maz@kernel.org>,
+        <x86@kernel.org>, Christian Borntraeger <borntraeger@de.ibm.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Jason Gunthorpe <jgg@nvidia.com>, <linux-pci@vger.kernel.org>,
+        <xen-devel@lists.xenproject.org>, <ath11k@lists.infradead.org>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Megha Dey <megha.dey@intel.com>,
+        Juergen Gross <jgross@suse.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-mips@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
+References: <20211126222700.862407977@linutronix.de>
+ <20211126223824.382273262@linutronix.de>
+From:   =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20211126223824.382273262@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggeme710-chm.china.huawei.com (10.1.199.106) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+X-Originating-IP: [37.59.142.103]
+X-ClientProxiedBy: DAG1EX2.mxp5.local (172.16.2.2) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 67cb6c92-6833-4394-901b-34c8b386eb6d
+X-Ovh-Tracer-Id: 9389442276353674140
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrheekgdegjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeigedvffekgeeftedutddttdevudeihfegudffkeeitdekkeetkefhffelveelleenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+On 11/27/21 02:18, Thomas Gleixner wrote:
+> Remove the kobject.h include from msi.h as it's not required and add a
+> sysfs.h include to the core code instead.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
-On 2021/11/29 10:54, Dennis Zhou wrote:
-> On Mon, Nov 29, 2021 at 10:51:18AM +0800, Kefeng Wang wrote:
->> Hi Dennis and all maintainers, any comments about the changes, many thanks.
->>
->> On 2021/11/21 17:35, Kefeng Wang wrote:
->>> When support page mapping percpu first chunk allocator on arm64, we
->>> found there are lots of duplicated codes in percpu embed/page first
->>> chunk allocator. This patchset is aimed to cleanup them and should
->>> no funciton change, only test on arm64.
->>>
->>> Kefeng Wang (4):
->>>     mm: percpu: Generalize percpu related config
->>>     mm: percpu: Add pcpu_fc_cpu_to_node_fn_t typedef
->>>     mm: percpu: Add generic pcpu_fc_alloc/free funciton
->>>     mm: percpu: Add generic pcpu_populate_pte() function
->>>
->>>    arch/arm64/Kconfig             |  20 +----
->>>    arch/ia64/Kconfig              |   9 +--
->>>    arch/mips/Kconfig              |  10 +--
->>>    arch/mips/mm/init.c            |  14 +---
->>>    arch/powerpc/Kconfig           |  17 +---
->>>    arch/powerpc/kernel/setup_64.c |  92 +--------------------
->>>    arch/riscv/Kconfig             |  10 +--
->>>    arch/sparc/Kconfig             |  12 +--
->>>    arch/sparc/kernel/smp_64.c     | 105 +-----------------------
->>>    arch/x86/Kconfig               |  17 +---
->>>    arch/x86/kernel/setup_percpu.c |  66 ++-------------
->>>    drivers/base/arch_numa.c       |  68 +---------------
->>>    include/linux/percpu.h         |  13 +--
->>>    mm/Kconfig                     |  12 +++
->>>    mm/percpu.c                    | 143 +++++++++++++++++++++++++--------
->>>    15 files changed, 165 insertions(+), 443 deletions(-)
->>>
-> Hi Kefang,
->
-> I apologize for the delay. It's a holiday week in the US + I had some
-> personal things come up at the beginning of last week. I'll have it
-> reviewed by tomorrow.
-It's great to hear about your reply,  thanks.
->
-> Thanks,
-> Dennis
-> .
+
+This patch breaks compile on powerpc :
+
+   CC      arch/powerpc/kernel/msi.o
+In file included from ../arch/powerpc/kernel/msi.c:7:
+../include/linux/msi.h:410:65: error: ‘struct cpumask’ declared inside parameter list will not be visible outside of this definition or declaration [-Werror]
+   410 | int msi_domain_set_affinity(struct irq_data *data, const struct cpumask *mask,
+       |                                                                 ^~~~~~~
+cc1: all warnings being treated as errors
+
+Below is fix you can merge in patch 5.
+
+Thanks,
+
+C.
+
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -2,6 +2,7 @@
+  #ifndef LINUX_MSI_H
+  #define LINUX_MSI_H
+  
++#include <linux/cpumask.h>
+  #include <linux/list.h>
+  #include <asm/msi.h>
+
+> ---
+>   include/linux/msi.h |    1 -
+>   kernel/irq/msi.c    |    1 +
+>   2 files changed, 1 insertion(+), 1 deletion(-)
+> 
+> --- a/include/linux/msi.h
+> +++ b/include/linux/msi.h
+> @@ -2,7 +2,6 @@
+>   #ifndef LINUX_MSI_H
+>   #define LINUX_MSI_H
+>   
+> -#include <linux/kobject.h>
+>   #include <linux/list.h>
+>   #include <asm/msi.h>
+>   
+> --- a/kernel/irq/msi.c
+> +++ b/kernel/irq/msi.c
+> @@ -14,6 +14,7 @@
+>   #include <linux/irqdomain.h>
+>   #include <linux/msi.h>
+>   #include <linux/slab.h>
+> +#include <linux/sysfs.h>
+>   #include <linux/pci.h>
+>   
+>   #include "internals.h"
+> 
+
