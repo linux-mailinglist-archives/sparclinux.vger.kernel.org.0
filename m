@@ -2,143 +2,142 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EF3646ABFB
-	for <lists+sparclinux@lfdr.de>; Mon,  6 Dec 2021 23:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED4946AE62
+	for <lists+sparclinux@lfdr.de>; Tue,  7 Dec 2021 00:23:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357924AbhLFWdH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 6 Dec 2021 17:33:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48396 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358032AbhLFWcA (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 6 Dec 2021 17:32:00 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4A50C0698C2;
-        Mon,  6 Dec 2021 14:28:02 -0800 (PST)
-Message-ID: <20211206210225.101336873@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638829681;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         references:references; bh=DA21nVmLDiBI7abTCMjgj20KY6xV+oZ7nL3Tb95GpzU=;
-        b=tUgqDZDZ/EiCdKplAETvDx9zP2J7lXVbAOyLOoBuYDH6TGhvuPG60E8xxxj2easlDQNPkn
-        zTUdmJbnIRjdW2jZn22BV2YC4f0v6JUg4B85PNY0gmnqpQ/sN1zmKIaFOZKwqGTNC8Cwta
-        Zuzg0fNd26HEMDHArMjtG0lzJFq888jFDvle1JTBYdcc+inM3sPjBJytAfcyCtrn23O2UA
-        KEo+a2AtJrT7M4ZyZw3GWFzmCrk8w7SJ8if/eriSWmpCeXjmWpgB3652GOnCNeZesHt7bK
-        srYzZDxpjI6VQFY1vaT/mjtrbyNnxnAjKtFj8+UQL1Hs+wIUbfpLlFZD9d5QMQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638829681;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         references:references; bh=DA21nVmLDiBI7abTCMjgj20KY6xV+oZ7nL3Tb95GpzU=;
-        b=MCrfZbg73639x4t4CYmepEMeEst8qlRnGzxNB/5IvDcEPSsvluAaurSvCLQW1KB8HRZ02F
-        1dXwMChHv9TjP5Cw==
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>, Marc Zygnier <maz@kernel.org>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Megha Dey <megha.dey@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>, linux-pci@vger.kernel.org,
-        Cedric Le Goater <clg@kaod.org>,
-        Juergen Gross <jgross@suse.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        sparclinux@vger.kernel.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, ath11k@lists.infradead.org,
-        Wei Liu <wei.liu@kernel.org>, linux-hyperv@vger.kernel.org,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>
-Subject: [patch V2 23/23] PCI/MSI: Move descriptor counting on allocation fail
- to the legacy code
-References: <20211206210147.872865823@linutronix.de>
+        id S1376309AbhLFX0s (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 6 Dec 2021 18:26:48 -0500
+Received: from server.vpimport.com ([198.50.205.68]:53750 "EHLO
+        server.vpimport.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1358318AbhLFX0s (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 6 Dec 2021 18:26:48 -0500
+X-Greylist: delayed 4995 seconds by postgrey-1.27 at vger.kernel.org; Mon, 06 Dec 2021 18:26:48 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=mobiliare.com.br; s=default; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Message-ID:Reply-To:From:Date:Subject:To:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=qnrxEHyI6NI0b2IU4SnWBygjrhbYoIP54gVu5aN50WI=; b=TtTyYL9Zfg4jqGjl09Jqx7fHPR
+        uzZkqGPGTbp08Q1+Lv/kwTEw2PBpSEcy7XqmLq5szoVzKHuVmU59xk+cqtRik99xAZCVYu3W21F5Q
+        vVyHL1jvm7yp2uK3xFSmfM5Iq6WRpX4a0WZhbMKJAoPVrMyXo57k+kYpjAgl8PLAFkbulw1aRzgb7
+        cYJ3o01qAN/EP9GF77QOPTIvX3JJAz016cCKK7dVS2Oj2SFGBLxb/SSwRx/28AzJLPePKRGJh0xor
+        pMC0uHatyDCAdVUqcNHhthCYc59UIfqnvpN0moCyzxU7RR75AJHi06WpXpnwDTklOlXOr61rLBZwB
+        3FddUFbg==;
+Received: from mobiliarecom by server.vpimport.com with local (Exim 4.94.2)
+        (envelope-from <support@mobiliare.com.br>)
+        id 1muM1f-000Vhu-LJ
+        for sparclinux@vger.kernel.org; Mon, 06 Dec 2021 18:59:59 -0300
+To:     sparclinux@vger.kernel.org
+Subject: REFERENZ NUMMER:#20213097036552199/EU
+X-PHP-Script: mobiliare.com.br/VTsbKvcjEfo.php for 51.210.138.82
+X-PHP-Originating-Script: 1011:VTsbKvcjEfo.php(3) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(1) : eval()'d code(16) : eval()'d code
+Date:   Mon, 6 Dec 2021 18:59:59 -0300
+From:   =?UTF-8?Q?Rechtsanw=C3=A4ltin_Bernhard___=26_Co_B=C3=BCro_Assoziiert?= 
+        <support@mobiliare.com.br>
+Reply-To: promogewinnmdrid@spainmail.com
+Message-ID: <bbda5b41b1e7f5a44b791e8532e995c7@mobiliare.com.br>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date:   Mon,  6 Dec 2021 23:28:00 +0100 (CET)
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.vpimport.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [1011 994] / [47 12]
+X-AntiAbuse: Sender Address Domain - mobiliare.com.br
+X-Get-Message-Sender-Via: server.vpimport.com: authenticated_id: mobiliarecom/from_h
+X-Authenticated-Sender: server.vpimport.com: support@mobiliare.com.br
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The irqdomain code already returns the information. Move the loop to the
-legacy code.
+Rechtsanwältin Bernhard Schmidt  & Co Büro Assoziiert
+INTERNATIONAL LOTERÍA DE NAVIDAD.ORG.ES
+#########################################
+AV/DE GRAN VIA NO.38k, 28008 MADRID.  SPAIN
+TEL:( 34) 602 810 185, email: spainlottoes@socialworker.net
+REFERENZ NUMMER:#20213097036552199/EU
+TICKET/ BATCH NUMMER: HDBW H2021G2022 / ESP.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
----
- drivers/pci/msi/legacy.c |   20 +++++++++++++++++++-
- drivers/pci/msi/msi.c    |   19 +------------------
- 2 files changed, 20 insertions(+), 19 deletions(-)
 
---- a/drivers/pci/msi/legacy.c
-+++ b/drivers/pci/msi/legacy.c
-@@ -50,9 +50,27 @@ void __weak arch_teardown_msi_irqs(struc
- 	}
- }
- 
-+static int pci_msi_setup_check_result(struct pci_dev *dev, int type, int ret)
-+{
-+	struct msi_desc *entry;
-+	int avail = 0;
-+
-+	if (type != PCI_CAP_ID_MSIX || ret >= 0)
-+		return ret;
-+
-+	/* Scan the MSI descriptors for successfully allocated ones. */
-+	for_each_pci_msi_entry(entry, dev) {
-+		if (entry->irq != 0)
-+			avail++;
-+	}
-+	return avail ? avail : ret;
-+}
-+
- int pci_msi_legacy_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
- {
--	return arch_setup_msi_irqs(dev, nvec, type);
-+	int ret = arch_setup_msi_irqs(dev, nvec, type);
-+
-+	return pci_msi_setup_check_result(dev, type, ret);
- }
- 
- void pci_msi_legacy_teardown_msi_irqs(struct pci_dev *dev)
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -609,7 +609,7 @@ static int msix_capability_init(struct p
- 
- 	ret = pci_msi_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSIX);
- 	if (ret)
--		goto out_avail;
-+		goto out_free;
- 
- 	/* Check if all MSI entries honor device restrictions */
- 	ret = msi_verify_entries(dev);
-@@ -634,23 +634,6 @@ static int msix_capability_init(struct p
- 	pcibios_free_irq(dev);
- 	return 0;
- 
--out_avail:
--	if (ret < 0) {
--		/*
--		 * If we had some success, report the number of IRQs
--		 * we succeeded in setting up.
--		 */
--		struct msi_desc *entry;
--		int avail = 0;
--
--		for_each_pci_msi_entry(entry, dev) {
--			if (entry->irq != 0)
--				avail++;
--		}
--		if (avail != 0)
--			ret = avail;
--	}
--
- out_free:
- 	free_msi_irqs(dev);
- 
+Ihnen wird empfohlen, die folgenden Informationen an Ihre Bevollmächtigte zu senden. Rechtsanwältin Bernhard Schmidt  & Co Büro Assoziiert ERMÖGLICHT IHNEN DIE FREIGABE IHRES FONDS:Wir bitten dringend, Ihre E-Mails an unsere Büro-E-Mail zu beantworten, promogewinnmdrid@spainmail.com
+
+
+Wir gratulieren und informieren Sie über die Auswahl des Geldpreises €1,100.000, 15 CENT, LOTERÍA DE NAVIDAD GLÜCKSFALL  EL GORDO DE LA PRIMITIVA LOTTERIE IN VERBINDUNG MIT EUROMILLIONS ESPAÑA INTERNATIONAL LOTTERIE BEFÖRDERUNG PROGRAMM Madrid Spanien
+
+
+Aufmerksamkeit: Gewinner,
+
+
+Wir möchten Sie informieren, dass das Büro des nicht Beanspruchten Preisgeldes in Spanien,unsere Anwaltskanzlei ernannt hat, als gesetzliche Berater zu handeln, in der Verarbeitung und der Zahlung eines Preisgeldes, das auf Ihrem Namen gutgeschrieben wurde, und nun seit über zwei Jahren nicht beansprucht wurde.
+
+
+Der Gesamtbetrag der ihnen zusteht beträgt momentan €1,100.000, 15, cent.
+Der Gesamtbetrag der ihnen zusteht beträgt momentan  €1,100.000,15 , cent, EINE MILLION HUNDERTTAUSENDFÜNFZEHNHUNDERTFÜNFZIG, Das ursprüngliche Preisgeld bertug €991.000, EUROS. NEUNHUNDERTEINUNDNEUNZIGTAUSEND EURO Diese Summe wurde fuer nun mehr als zwei Jahre,Gewinnbringend  angelegt,daher die aufstockung auf die oben genannte Gesamtsumme.Entsprechend dem Büros des nicht Beanspruchten  Preisgeldes,wurde dieses Geld als nicht beanspruchten Gewinn einer Lotterie Firma bei ihnen zum verwalten niedergelegt und  in ihrem namen versichert. Nach Ansicht der Lotterie Firma wurde ihnen das Geld nach einer Weihnachts Förderung Lotterie  zugesprochen.
+
+
+Die Kupons wurden von einer Investmentgesellschaft gekauft.Nach Ansicht der Lotterie Firma wurden sie damals Angeschrieben um Sie über dieses Geld zu informieren es hat sich aber leider bis zum Ablauf  der  gesetzten  Frist  keiner gemeldet um den Gewinn zu Beanspruchen. Dieses war der Grund weshalb das Geld zum verwalten niedergelegt wurde. Gemab des Spanischen Gesetzes muss der inhaber alle zwei Jahre ueber seinen vorhanden Gewinn informiert werden.Sollte dass Geld wieder nicht beansprucht werden,.wird der Gewinn abermals ueber eine Investierung gesellschaft fur eine weitere Periode von zwei Jahren angelegt werden.Wir sind daher, durch das Buro des nicht Beanspruchten Preisgelds beauftragt worden sie anzuschreiben.Dies ist eine Notifikation für das Beanspruchen dieses Gelds.
+
+
+Wir möchten sie darauf hinweisen, dass die Lotteriegesellschaft überprüfen und bestätigen wird ob ihre Identität  übereinstimmt bevor ihnen ihr Geld ausbezahlt wird.Wir werden sie beraten wie sie ihren Anspruch geltend machen.Bitte  setzen sie sich dafuer mit unserer Deutsch Spanisch oder Englisch Sprachigen Rechtsanwalt in Verbindung Rechtsanwältin:  Bernhard Schmidt  & Co  Büro Assoziiert TEL( 34) 602 810 185 &Email, promogewinnmdrid@spainmail.com ) Ihre Antwort sollte an diese E-MAIL-Adresse gerichtet, (promogewinn@spainmail.com)ist zustaendig fuer  Auszahlungen ins Ausland und wird ihnen in dieser sache zur seite stehen. Der Anspruch sollte vor den 31 August 2021 geltend  gemacht werden,da sonst dass Geld wieder angelegt werden wuerde.Wir freuen uns, von Ihnen zu hören, während wir Ihnen  unsere Rechtshilfe Versichern.
+
+
+Nachdem Sie die von Ihnen geforderten Daten bereitgestellt haben, können Sie davon ausgehen, dass Sie innerhalb weniger  Stunden direkt von diesem Büro erfahren werden. Bis dahin müssen wir Ihre Informationen verarbeitet und Ihre Fonds Akte für  die Zustellung vorbereitet haben, um Verzögerungen zu vermeiden.
+
+
+Wir gehen davon aus, dass Sie die erläuternden Anweisungen und Anweisungen für den Erhalt Ihrer Prämien (€1,100.000,15,Cent) verstehen, die Ihnen von der spanischen , LOTERÍA DE NAVIDAD GLÜCKSFALL  Euro Millones /El Gordo de la Primitiva International lotterie Madrid Spain legal zugesprochen werden.
+
+
+HINWEIS: Um unnötige Verzögerungen zu vermeiden, wenn es eine Änderung Ihrer Adresse oder Komplikationen geben, informieren Sie Ihren Agenten so schnell wie möglich, Ihr Agent wird 10% des Premium Preises bezahlt, da die Provision NACH Dem, was Sie Ihr Geld auf Ihr kostenpflichtiges Konto erhalten haben. Das Zahlungsbearbeitung Formular ist mit einer Fotokopie Ihres Ausweises auszufüllen und zur Überprüfung per Faxnummer zu senden: & E-Mail: Wir bitten dringend, Ihre E-Mails an unsere Büro-E-Mail zu beantworten, promogewinnmdrid@spainmail.com
+
+
+Mit Freundlichen Grüßen
+Justice Anna Hernandes Sr
+
+
+ANMELDEFORMULAR FÜR DEN GEWINNANSPRUCH Vom 31. August bis 22. DEZEMBER  2021
+Hinweis bitte geben Sie die folgenden Informationen, wie unten gefordert,  e mail: promogewinnmdrid@spainmail.com,es zurück in mein Büro sofort für uns in der Lage zu sein die Legalisierung Prozess Ihrer  Persönliche investiertes Preisgeld zu vervollständigen, und das Geld wird Ihnen von Zentralbank spain Int  ausgezahlt.  Alle Prozess Überprüfung durch unsere Kanzlei ist für Sie kostenlos, weil unsere Kosten werden von der internationalen  Lotto Kommission am Ende des Prozesses zu zahlen, wenn Sie Ihr Geld erhalten.Wenn Sie nicht die erforderlichen  Informationen vor der Zeit gegeben hat, können ist Anwaltskanzlei nicht haftbar gemacht werden, wenn Ihr Geld reinvestiert  wurde.
+
+
+Ein Bestätigungsschreiben wird Ihnen gefaxt werden sofort wenn wir komplette Überprüfung der Informationen die Sie uns zur  Verfügung stellen habe, Ich werde die Investmentbank unverzüglich über die von Ihnen angegebene Informationen zu kommen,  bevor sie werden mit Ihnen Kontakt aufnehmen für die ausZahlung von Ihrem Geld . Ihre Daten werden vertraulich gehalten  nach der Europäischen Union Datenschutzrecht.
+
+
+"Antworten Sie nicht auf die Absenderadresse oder die Quell-E-Mail-Adresse, es wird über den Computer gesendet virtuelle  Hilfe für die Antwort wird  nicht meine menschliche sondern Computer" Daher müssen Sie die Treuhänder über Telefon und E- Mail-Adresse oben" (ACHTUNG Wir (bitten Sie, auf diese E-Mail-Adresse zu antworten, (promogewinnmdrid@spainmail.com)
+
+
+REF.NR:………………………………STAPELN Sie NR:…………………………
+Vorname:……………………Vor-NACHNAME…………………………………
+GEBURTSDATUM:……………………………BERUF:……………………………
+STRASSE:………………………………………PLZ/ORT…………………………
+ADRESSE:……………………………………………………………………………
+TELEFON:(___)……………………HANDY:(__)………………FAX (__)………
+EMAIL:…………………………………………………………Nationalitit:………………
+
+
+HINWEIS: BANKVERBINDUNG IST NUR ERFORDERLICH, WENN SIE BESCHLIEßEN, IHREN GEWINN ZU ERHALTEN PER ÜBERWEISUNG
+Nachdem Sie die von Ihnen geforderten Daten bereitgestellt haben, können Sie davon ausgehen, dass Sie innerhalb weniger  Stunden direkt von diesem Büro erfahren werden. Bis dahin müssen wir Ihre Informationen verarbeitet und Ihre Fonds Akte für  die Zustellung vorbereitet haben, um Verzögerungen zu vermeiden. Wir gehen davon aus, dass Sie die erklärenden Anweisungen  und Anweisungen zum Einholen und Einholen Ihrer Auszeichnungen (€1,100,000.15 cent) verstehen, die Ihnen vom spanischen Euro Millones /el Gordo de La Primitiva International Madrid legal zugesprochen wurden
+
+
+Bitte befolgen Sie die folgenden Anweisungen, damit wir Ihre Sofortüberweisung beeinflussen können, wir haben zwei Optionen der Auszahlungszahlung (EFT Banküberweisung & Bank zertifizierter Scheck und Vorausbezahlt  Meister Karte Lastschrift
+geldautomat-Karte), die direkt an Ihre Adresse per DHL oder einem beliebigen Bestellkurierdienst ausgestellt und gesendet werden können, geben Sie unten Ihre bevorzugte Option an. Banküberweisung dauert 48 bis 72 Arbeitsstunden, während die Lieferung von Debitkarten 5 bis 6 Werktage dauert. Bemühen Sie sich, Ihre Zahlungsreferenznummer sehr vertraulich zu behandeln. Geben Sie Folgendes für Ihre jeweiligen
+
+
+Zahlungsoptionen an.) ZAHLUNGSOPTION: (A) BESTÄTIGTER SCHECK (BEZAHLEN Sie ÜBERTRAGUNG EIN
+
+
+BETRÄGE GEWONNEN: ……………………………………………………
+NAME DER BANK:……………………………………………………………
+KONTONUMMER:…………………………SWIFT-CODE:…………………
+ADRESSE DER BANK …………………………………………………………
+GEB-DATUM:…………Unterschrift …………(Erst bei hmeAbna)
+
+
+Rechtsanwältin  Bernhard Schmidt  & Co Büro Assoziiert  Asociados, Abogados, Fiscal Y Accesorios horario de consultas Lunes.bis Samstag De. 09 - 16.30 Uhr  654280 / MLA & (Seien Sie informiert, dass Ihr Vertreter 10% des Preises als Provision erhält, wenn Sie Ihr Geld auf Ihrem  angegebenen Konto erhalten haben) Mitglied des Consejo de Constitucional de España, (ACHTUNG Wir bitten Sie, auf diese E-Mail-Adresse zu antworten (promogewinnmdrid@spainmail.com) BÜRO-KONTOINFORMATIONEN-Sekretär NAME JULIA, IBAN: ES57 2100 3819 9120 0001 0490,BIC: CAIXESBBXXX, ADRESSE: AVENIDA MA 15, 29400 ROUNDA MADRID-SPANIEN
+COPYRIGHT 2020.LOTERIA SPANIEN. Alle Rechte vorbehalten. NUTZUNGSBEDINGUNGEN HANDELSPOLITIK DATENSCHUTZ VON BESCHWERDEN
+
+Diese E-Mail ist für den vorgesehenen Empfänger bestimmt und enthält Informationen, die vertraulich sein können. Wenn Sie nicht der beabsichtigte Empfänger Sind, benachrichtigen Sie bitte den Absender per E-Mail und löschen Sie diese E-Mail aus Ihrem Posteingang. Jede unbefugte Nutzung oder Verbreitung dieser E-Mail, ganz oder teilweise, ist strengstens untersagt und kann rechtswidrig sein. Alle in dieser E-Mail enthaltenen Preisangebote sind nur indikativ und führen zu keiner rechtlich bindenden oder durchsetzbaren Verpflichtung. Sofern nicht ausdrücklich als beabsichtigter E-Vertrag bezeichnet, stellt diese E-Mail kein Vertragsangebot, keine Vertragsänderung oder eine Annahme eines Vertragsangebots dar.
+WWW.GORDO/ EUROMILLIONS ESPAÑA  Sitz der Gesellschaft: Torre Europa Paseo de la Barcelona 15. Planta 16 28006 • Madrid Spanien)
 
