@@ -2,92 +2,108 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3A2046CC13
-	for <lists+sparclinux@lfdr.de>; Wed,  8 Dec 2021 05:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1D5546D13A
+	for <lists+sparclinux@lfdr.de>; Wed,  8 Dec 2021 11:44:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbhLHERA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 7 Dec 2021 23:17:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41414 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244168AbhLHEQv (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 7 Dec 2021 23:16:51 -0500
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427CCC0617A1
-        for <sparclinux@vger.kernel.org>; Tue,  7 Dec 2021 20:13:20 -0800 (PST)
-Received: by mail-il1-x141.google.com with SMTP id l5so1057187ilv.7
-        for <sparclinux@vger.kernel.org>; Tue, 07 Dec 2021 20:13:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=w0n14T57zPuvlg1YaFYy3gRfrUPFN1bDHGIrct+fXgc=;
-        b=IhzYOc5TV5tRY8NA+oRQO6aAhcoLWjmDIiGp+agW0PuwWFWsW07ntJsVzV38I0OHqC
-         EzpNMp4ySTsTiHWjcoES1pDWfQa3hzEmTAjGEQsGKU00LGNUDJTNHWI4LldEus+S1mKT
-         dko5ukALMgi8bh7atGVs0Rt/fX7KXpplv23WbLhFzP1TfY2PPXBqFY9j53j/esPLibRX
-         1XRHyOwTiT/4tG9WZ3q4H7N/dOnVkB10wmKDHGYmk9qWEUW5JWqpdoVu6C7jO8de13Mw
-         Z0SLBzksJKYbu7/KIOlWOhfXUDnmMk6QWiigAfQd89OMRAg6NTmeD6n5AJpihkslyYUP
-         nSKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=w0n14T57zPuvlg1YaFYy3gRfrUPFN1bDHGIrct+fXgc=;
-        b=zNncp8O07dg069D9sTYx67SavCgHhSLyreAq3RqOmYsf4uO49oEwook6NrEsR+hrpR
-         n66fPcTN8l377V0fepZXfNB5uS62QP68QORey9iiGQPON4M3HsfJA0SceHNICybAZ47V
-         1/nDGBvOUZiRJx8Udv2PbHm0BjHfoda1uJRh9txJch7t1bwt13RpXCSiXUysHj4esHIZ
-         A/h+Z4S1AaJ3D3+LSDKIRRWAiaTMAa3kNW56x4tgiADpKgbAoXrF4HNuAojmNR/oNi84
-         J7mlJIyI3g6P66RyjemYH9RgsD2SAz4FECvSxi+aMlB2wmuj9U8s/plGA2tMMhjRBdyb
-         WDPg==
-X-Gm-Message-State: AOAM530N9CuJ1hXR8zDsQE85u27TESVx1+W0cFreJyzSQiJkY09gnrfH
-        TPeOtB1vIi2PvPxiIdVM2LXXeY/xuo5bpyfpfFY=
-X-Google-Smtp-Source: ABdhPJyRa63HXlstQIFzLUqJGv8AYgt9EsJ312gy8TgYauJosfme9E4HgsWb4N3jUnNwnaOH3Nf1ZFtOzW3RJg9WBQw=
-X-Received: by 2002:a92:cdac:: with SMTP id g12mr3699225ild.204.1638936799717;
- Tue, 07 Dec 2021 20:13:19 -0800 (PST)
+        id S231892AbhLHKsS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 8 Dec 2021 05:48:18 -0500
+Received: from smtpout4.mo529.mail-out.ovh.net ([217.182.185.173]:40633 "EHLO
+        smtpout4.mo529.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229449AbhLHKsR (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 8 Dec 2021 05:48:17 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.35])
+        by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4A0F4D092F09;
+        Wed,  8 Dec 2021 11:44:42 +0100 (CET)
+Received: from kaod.org (37.59.142.96) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Wed, 8 Dec
+ 2021 11:44:40 +0100
+Authentication-Results: garm.ovh; auth=pass (GARM-96R001f5056120-68a4-4c0a-bc06-f617410d6d7e,
+                    EB01F339838E5AA67C986A6C3251B49097B81903) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 86.201.172.254
+Message-ID: <e92f2bb3-b5e1-c870-8151-3917a789a640@kaod.org>
+Date:   Wed, 8 Dec 2021 11:44:39 +0100
 MIME-Version: 1.0
-Received: by 2002:a05:6e02:1a07:0:0:0:0 with HTTP; Tue, 7 Dec 2021 20:13:19
- -0800 (PST)
-Reply-To: dj0015639@gmail.com
-From:   David Jackson <enkenpaul@gmail.com>
-Date:   Wed, 8 Dec 2021 05:13:19 +0100
-Message-ID: <CAG7-cQ-YcFp0byqpLCXPRy0-4+-Zq7hzZMz6DzM5KzsbksYgog@mail.gmail.com>
-Subject: FEDERAL BUREAU OF INVESTIGATION
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [patch V2 01/23] powerpc/4xx: Remove MSI support which never
+ worked
+Content-Language: en-US
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        LKML <linux-kernel@vger.kernel.org>
+CC:     Bjorn Helgaas <helgaas@kernel.org>, Marc Zygnier <maz@kernel.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Megha Dey <megha.dey@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>, <linux-pci@vger.kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        <linuxppc-dev@lists.ozlabs.org>, Juergen Gross <jgross@suse.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        <linux-mips@vger.kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <sparclinux@vger.kernel.org>, <x86@kernel.org>,
+        <xen-devel@lists.xenproject.org>, <ath11k@lists.infradead.org>,
+        Wei Liu <wei.liu@kernel.org>, <linux-hyperv@vger.kernel.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>
+References: <20211206210147.872865823@linutronix.de>
+ <20211206210223.872249537@linutronix.de>
+ <8d1e9d2b-fbe9-2e15-6df6-03028902791a@kaod.org>
+ <87ilw0odel.fsf@mpe.ellerman.id.au>
+ <27f22e0e-8f84-a6d7-704b-d9eddc642d74@kaod.org> <8735n42lld.ffs@tglx>
+From:   =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <8735n42lld.ffs@tglx>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.96]
+X-ClientProxiedBy: DAG4EX1.mxp5.local (172.16.2.31) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: d54a9dd7-eba7-4e7f-a7a0-0dc7c43fc796
+X-Ovh-Tracer-Id: 10131410315672259365
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrjeekgddulecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeuveelvdejteegteefieevfeetffefvddvieekteevleefgeelgfeutedvfedvfeenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehhtggrsehlihhnuhigrdhisghmrdgtohhm
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Our Ref: RTB /SNT/STB
-To: Beneficiary
+On 12/7/21 21:42, Thomas Gleixner wrote:
+> Cedric,
+> 
+> On Tue, Dec 07 2021 at 16:50, Cédric Le Goater wrote:
+>> On 12/7/21 12:36, Michael Ellerman wrote:
+>>>
+>>> This patch should drop those selects I guess. Can you send an
+>>> incremental diff for Thomas to squash in?
+>>
+>> Sure.
+>>
+>>> Removing all the tendrils in various device tree files will probably
+>>> require some archaeology, and it should be perfectly safe to leave those
+>>> in the tree with the driver gone. So I think we can do that as a
+>>> subsequent patch, rather than in this series.
+>>
+>> Here are the changes. Compiled tested with ppc40x and ppc44x defconfigs.
+> 
+> < Lots of patch skipped />
+>> @@ -141,7 +138,6 @@ config REDWOOD
+>>    	select FORCE_PCI
+>>    	select PPC4xx_PCI_EXPRESS
+>>    	select PCI_MSI
+>> -	select PPC4xx_MSI
+>>    	help
+>>    	  This option enables support for the AMCC PPC460SX Redwood board.
+> 
+> While that is incremental it certainly is worth a patch on it's
+> own. Could you add a proper changelog and an SOB please?
 
-This is FBI special agents, David Jackson. I was delegated along side
-others by the United Nations to investigate scammers who has been in
-the business of swindling foreigners especially those that has one
-form of transaction/contracts and another. Please be informed that in
-the course of our investigation, we detected that your name and
-details in our Scammed Monitoring Network. We also found out that you
-were scammed of a huge sum of money by scammers via Western union and
-MoneyGram. Be informed here that in a bid to alleviate the suffering
-of scammed victims, the United Nations initiated this compensation
-program and therefore, you are entitled to the sum of Five Million Two
-Hundred Thousand United States Dollars ($5,200,000.00 USD) for being a
-victim.
+Here you are.
 
-Note that the said fund will be transfer to you via the Citibank being
-the paying bank mandated by the United Nations officials.
+  https://github.com/legoater/linux/commit/75d2764b11fe8f6d8bf50d60a3feb599ce27b16d
 
-However, we have to inform you that we have been able to arrest some
-of the swindlers who has been in this illicit business and will all be
-prosecuted accordingly. Be informed as well that we have limited time
-to stay back here, so we will advice that you urgently respond to this
-message ASAP. And do not inform any of the people that collected money
-from you before now about this new development to avoid jeopardizing
-our investigation. All you need to do is to follow our instruction and
-receive your compensation accordingly as directed by the United
-Nations.
+Thanks,
 
-We urgently wait to receive your response.
-
-Regards,
-DAVID JACKSON
-FEDERAL BUREAU OF INVESTIGATION
-INVESTIGATION ON ALL ONLINE WIRE TRANSFER
+C.
