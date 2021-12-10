@@ -2,81 +2,60 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E59846DD57
-	for <lists+sparclinux@lfdr.de>; Wed,  8 Dec 2021 21:56:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 173D84706CF
+	for <lists+sparclinux@lfdr.de>; Fri, 10 Dec 2021 18:15:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236370AbhLHVA1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 8 Dec 2021 16:00:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48054 "EHLO
+        id S244243AbhLJRTV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 10 Dec 2021 12:19:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235864AbhLHVA1 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 8 Dec 2021 16:00:27 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6293C0617A1;
-        Wed,  8 Dec 2021 12:56:54 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638997011;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=RI9goYiyaxxlyowVIy50GRXpRhCNUYZrM4r3seD1bKI=;
-        b=NIPhL0sgn8M0aJUIi890pmZGlk891yoUSSDMnC4hnbyawxG2Kyh7G1sHH/xsmtSWUM8FfZ
-        FyiBCPJVbWpXpFfMUl77mb1l8QqDIF5HigALgdn/RYqTMPCpOHMr0KIFCokDN7aLnrEdks
-        8rrnfZKCxcaetGnTQyHUg4mAfEc2N1sxXiIWn5IbWqnhikYmOYt6fknKqXzV7CdqL4P4H4
-        8ZS0DFKNdnSGea2HezKm7Hkc6llGKcBl9S+VI9FjnibvCSYHAcSlNTnETtfGbCxdf3f6N4
-        HjxoAKj0UnKj8JjZlpBFr0/NMCZQnVLvInv7aT9TCLkwNt6S0nNqOl/aBjfedw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638997011;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=RI9goYiyaxxlyowVIy50GRXpRhCNUYZrM4r3seD1bKI=;
-        b=KF19qqsUtSG+rWG9NpEYyzGIEvbq/ti9eoiMayWfd1iK3FYz9roP5HeWY227THj1hSYyZu
-        bO4E+0TC1Z5Br/AA==
-To:     Jason Gunthorpe <jgg@nvidia.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Marc Zygnier <maz@kernel.org>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Megha Dey <megha.dey@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>, linux-pci@vger.kernel.org,
-        Cedric Le Goater <clg@kaod.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org, Juergen Gross <jgross@suse.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        sparclinux@vger.kernel.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, ath11k@lists.infradead.org,
-        Wei Liu <wei.liu@kernel.org>, linux-hyperv@vger.kernel.org,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>
-Subject: Re: [patch V2 20/23] PCI/MSI: Move msi_lock to struct pci_dev
-In-Reply-To: <20211208152925.GU6385@nvidia.com>
-References: <20211206210147.872865823@linutronix.de>
- <20211206210224.925241961@linutronix.de>
- <20211208152925.GU6385@nvidia.com>
-Date:   Wed, 08 Dec 2021 21:56:50 +0100
-Message-ID: <871r2m24tp.ffs@tglx>
+        with ESMTP id S240541AbhLJRTU (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 10 Dec 2021 12:19:20 -0500
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99983C061746
+        for <sparclinux@vger.kernel.org>; Fri, 10 Dec 2021 09:15:45 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id f18-20020a17090aa79200b001ad9cb23022so8027363pjq.4
+        for <sparclinux@vger.kernel.org>; Fri, 10 Dec 2021 09:15:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=CScZ3wgwAoNcP2hDnqXlix5UDGrDiarDd6PNIGLyspo=;
+        b=D65lLwT1udt0ujDjCR41IdDY0KH0riwMKXStTkCPFJX8BxPDcnHDo9J9PjXpVpXoDw
+         ESHFSrEoEdRl8m8BqYDhD7ikC0wbktSLtq7Ngnpx4nEXK/id5/tWJy6354ikQVFy0HcI
+         7Sb6pSWNr5Uy6iaFtR7xVq04j33wvcLeANkp0NGCeFZR0TmTaYZN6EiBKH5KI/v+3zf0
+         gB6i2LDMu1EE29vZ0CesSOaFoMj1h9CVtdBFySL4663z1IYFvB2dxCKVtKS+Di1arReU
+         GDmUOXjyll5cpVmHWNyk4PznLPGb3k3B51u0PsJPvCDStrty13xf8v/16S5+/s2JFGB4
+         +F/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=CScZ3wgwAoNcP2hDnqXlix5UDGrDiarDd6PNIGLyspo=;
+        b=1nlx1VpwJCKNyWbDzTQkzw3jpB1Im4f0aA0XXEAJ7LzBJ6Lo4MAX1gDVeU5nObbogq
+         8Dub2Bh0UdA1NFtSH4ix1jvmWnlOD0jAvrQ92CbN2KptilWN/nicvijgdoU9nMQ2LAfi
+         KiSVl7fKumXwFAIWhGM24V5Cnay7AQOn1eQGML9UICzVy6NGhuFOWkVEwmf2oNPHRwrQ
+         XUA4oYRplZDHFCA6KmqdHkm6WaXIIuYEZT7kuQk54rruVurpsTsJHncElN0gYoGrSgDO
+         ezHcqd+b3jxOIoUVl9WLnGtgAyg3IcyiVbjkhXC2N4mqlYjuLWxYBNoKWU4EQTt/RmL0
+         fH3A==
+X-Gm-Message-State: AOAM5331KhubolYwVGGjGi/9Ew5JC/MJO8Kl7lG/NX4vQSlFWp52aq+O
+        rFmIMBzawxaYdnIXtdKqQl8/mb7rj4HHReDv6ak=
+X-Google-Smtp-Source: ABdhPJyymIfHkgtPh4WgHMwjYmhGc82Q51BrE2lonBsHV1LgaTi5ya7zeqWiF4FUsWfscY1fKU3Du8Vgpl6sqtrrF/w=
+X-Received: by 2002:a17:90a:fd13:: with SMTP id cv19mr25548238pjb.54.1639156542983;
+ Fri, 10 Dec 2021 09:15:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:a17:90a:9502:0:0:0:0 with HTTP; Fri, 10 Dec 2021 09:15:42
+ -0800 (PST)
+Reply-To: mrsisabelladz@gmail.com
+From:   Mrs Isabella <edith.gond17@gmail.com>
+Date:   Fri, 10 Dec 2021 18:15:42 +0100
+Message-ID: <CAA5Kjq=NEk6NruCCy8ECrsc9Ja+8qqZMa7-cw3h+shbMdz2tnA@mail.gmail.com>
+Subject: From Mrs. Isabella Dzsesszika
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Dec 08 2021 at 11:29, Jason Gunthorpe wrote:
-> On Mon, Dec 06, 2021 at 11:27:56PM +0100, Thomas Gleixner wrote:
->>  	if (!desc->pci.msi_attrib.can_mask)
->
-> It looks like most of the time this is called by an irq_chip, except
-> for a few special cases list pci_msi_shutdown()
->
-> Is this something that should ideally go away someday and use some
-> lock in the irq_chip - not unlike what we've thought is needed for
-> IMS?
-
-Some day we'll have that yes.
+GOOD MORNING DEAR. MY NAME IS Isabella Dzsesszika. I AM CONTACTING YOU
+FOR IMPORTANT ISSUE I WILL LIKE TO DISCUS WITH YOU. PLEASE GET BACK TO
+ME IF YOU READ THIS MAIL.  YOURS, Isabella Dzsesszika
