@@ -2,105 +2,73 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3951847A6EE
-	for <lists+sparclinux@lfdr.de>; Mon, 20 Dec 2021 10:23:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBD6C47AEDE
+	for <lists+sparclinux@lfdr.de>; Mon, 20 Dec 2021 16:05:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232852AbhLTJXr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 20 Dec 2021 04:23:47 -0500
-Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130]:52249 "EHLO
-        out30-130.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231521AbhLTJXd (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>);
-        Mon, 20 Dec 2021 04:23:33 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0V.B9zcn_1639992206;
-Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0V.B9zcn_1639992206)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Mon, 20 Dec 2021 17:23:27 +0800
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        linux-crypto@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org
-Cc:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Subject: [PATCH 5/5] crypto: s390/sha512 - Use macros instead of direct IV numbers
-Date:   Mon, 20 Dec 2021 17:23:18 +0800
-Message-Id: <20211220092318.5793-6-tianjia.zhang@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
-References: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
+        id S235037AbhLTPFe (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 20 Dec 2021 10:05:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37568 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240011AbhLTPD1 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 20 Dec 2021 10:03:27 -0500
+Received: from mail-qk1-x765.google.com (mail-qk1-x765.google.com [IPv6:2607:f8b0:4864:20::765])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE7EC09B107
+        for <sparclinux@vger.kernel.org>; Mon, 20 Dec 2021 06:52:19 -0800 (PST)
+Received: by mail-qk1-x765.google.com with SMTP id 132so9520814qkj.11
+        for <sparclinux@vger.kernel.org>; Mon, 20 Dec 2021 06:52:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tesca-id.20210112.gappssmtp.com; s=20210112;
+        h=message-id:mime-version:content-transfer-encoding
+         :content-description:subject:to:from:date:reply-to;
+        bh=sIGiGKGA0/ji9BGa6+j8EGrrn4Gri12dStZg3mSmgGU=;
+        b=DNAgrGCLIBDnuC43t8J7COEaz1wY6CNhNg7hh2krkdYzTE7IZ8Ab78/0sC6RO+dJKZ
+         vifcphAtfc+K9cYP1ZZdT1iJwbWEgVgoefu49IesNhCrN41PXf/RAcPTnlSOuJ+ng0eJ
+         EXYV6GlOtfARYJiCr20XvfXCDZ5w0Wu43/knc9L4L6c9zdOxwbj0pA26Yoy2dZ09NHzI
+         S0slmRztmg6oVwAVfkc/CY5LBrKm0RMMnrTZ7ZzLT6/0BuT7xejsAJCh/b2+STeir1Nr
+         Lw0mZLFfspLTp+T0cdQbtQm2s/DkNtGjVegSamnelbrR/pbywvaPGr9ZkM8a+v1/BFek
+         CX0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:mime-version
+         :content-transfer-encoding:content-description:subject:to:from:date
+         :reply-to;
+        bh=sIGiGKGA0/ji9BGa6+j8EGrrn4Gri12dStZg3mSmgGU=;
+        b=o+9h6n/xzyRYHJlmw2lNtUhRAlfOeS4M7BCLhrMoY8m/WQTvuGl1HverYzJtl1WhhU
+         jQIQp1DjjqVSSg3u5LhYnyBnbuW60XAdPzREB4wSQy5iO7hJRnLVwbY8FZVsz2QgUoQg
+         KW1gKHT9wnhE25XY+R7Uou6zJSKH12joXRfMW70S7/I5JY0wGNdVuqrnDi2eah+hQ5dA
+         rq+amtuDKJyvHMTOtcv9lxgO7Juziijjizcaj7qRBiUxxBuTrKbCsBNOQlYhT39cK4q9
+         fjmJGoYnCS9m19qGo3s3oqs8hJB0tbJJU+/3GTqRvxLtaVImDWYw28F21ETV6u/KC6qu
+         Flxw==
+X-Gm-Message-State: AOAM532QHnS1ebmHcI7BJ0819JhtVFdoONUpsZW41yjCiuPWfcv7NMN+
+        HlEY7sSJVxU/cp6CW6/0xelX8AdfkUq49uPNAGr96THQPT3e1w==
+X-Google-Smtp-Source: ABdhPJzgz1DOEWyuXZF/sri9UQwNSpbnjrY/BChyOsY4bKf5tozgKKYHcNQHe8IDjeMCzRjDSdYoHAeu59y1
+X-Received: by 2002:a05:620a:4081:: with SMTP id f1mr9453289qko.165.1640011938763;
+        Mon, 20 Dec 2021 06:52:18 -0800 (PST)
+Received: from [192.168.1.3] ([175.100.20.250])
+        by smtp-relay.gmail.com with ESMTPS id br13sm5537882qkb.6.2021.12.20.06.52.12
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Mon, 20 Dec 2021 06:52:18 -0800 (PST)
+X-Relaying-Domain: tesca.id
+Message-ID: <61c098a2.1c69fb81.6755.c884SMTPIN_ADDED_MISSING@mx.google.com>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: GOOD DAY
+To:     Recipients <no-reply@tesca.id>
+From:   "David Cheung" <no-reply@tesca.id>
+Date:   Mon, 20 Dec 2021 21:52:09 +0700
+Reply-To: da_cheung@aol.com
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-In the init functions of sha512 and sha384, the initial hash value
-use macros instead of numbers.
+Hello,
 
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
----
- arch/s390/crypto/sha512_s390.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+I'm David Cheung,A senior staff with public Bank in Cambodia. I have abusin=
+ess proposal to share with you.
 
-diff --git a/arch/s390/crypto/sha512_s390.c b/arch/s390/crypto/sha512_s390.c
-index 29a6bd404c59..43ce4956df73 100644
---- a/arch/s390/crypto/sha512_s390.c
-+++ b/arch/s390/crypto/sha512_s390.c
-@@ -22,14 +22,14 @@ static int sha512_init(struct shash_desc *desc)
- {
- 	struct s390_sha_ctx *ctx = shash_desc_ctx(desc);
- 
--	*(__u64 *)&ctx->state[0] = 0x6a09e667f3bcc908ULL;
--	*(__u64 *)&ctx->state[2] = 0xbb67ae8584caa73bULL;
--	*(__u64 *)&ctx->state[4] = 0x3c6ef372fe94f82bULL;
--	*(__u64 *)&ctx->state[6] = 0xa54ff53a5f1d36f1ULL;
--	*(__u64 *)&ctx->state[8] = 0x510e527fade682d1ULL;
--	*(__u64 *)&ctx->state[10] = 0x9b05688c2b3e6c1fULL;
--	*(__u64 *)&ctx->state[12] = 0x1f83d9abfb41bd6bULL;
--	*(__u64 *)&ctx->state[14] = 0x5be0cd19137e2179ULL;
-+	*(__u64 *)&ctx->state[0] = SHA512_H0;
-+	*(__u64 *)&ctx->state[2] = SHA512_H1;
-+	*(__u64 *)&ctx->state[4] = SHA512_H2;
-+	*(__u64 *)&ctx->state[6] = SHA512_H3;
-+	*(__u64 *)&ctx->state[8] = SHA512_H4;
-+	*(__u64 *)&ctx->state[10] = SHA512_H5;
-+	*(__u64 *)&ctx->state[12] = SHA512_H6;
-+	*(__u64 *)&ctx->state[14] = SHA512_H7;
- 	ctx->count = 0;
- 	ctx->func = CPACF_KIMD_SHA_512;
- 
-@@ -87,14 +87,14 @@ static int sha384_init(struct shash_desc *desc)
- {
- 	struct s390_sha_ctx *ctx = shash_desc_ctx(desc);
- 
--	*(__u64 *)&ctx->state[0] = 0xcbbb9d5dc1059ed8ULL;
--	*(__u64 *)&ctx->state[2] = 0x629a292a367cd507ULL;
--	*(__u64 *)&ctx->state[4] = 0x9159015a3070dd17ULL;
--	*(__u64 *)&ctx->state[6] = 0x152fecd8f70e5939ULL;
--	*(__u64 *)&ctx->state[8] = 0x67332667ffc00b31ULL;
--	*(__u64 *)&ctx->state[10] = 0x8eb44a8768581511ULL;
--	*(__u64 *)&ctx->state[12] = 0xdb0c2e0d64f98fa7ULL;
--	*(__u64 *)&ctx->state[14] = 0x47b5481dbefa4fa4ULL;
-+	*(__u64 *)&ctx->state[0] = SHA384_H0;
-+	*(__u64 *)&ctx->state[2] = SHA384_H1;
-+	*(__u64 *)&ctx->state[4] = SHA384_H2;
-+	*(__u64 *)&ctx->state[6] = SHA384_H3;
-+	*(__u64 *)&ctx->state[8] = SHA384_H4;
-+	*(__u64 *)&ctx->state[10] = SHA384_H5;
-+	*(__u64 *)&ctx->state[12] = SHA384_H6;
-+	*(__u64 *)&ctx->state[14] = SHA384_H7;
- 	ctx->count = 0;
- 	ctx->func = CPACF_KIMD_SHA_512;
- 
--- 
-2.32.0
+Kindly get back to me as soon as possible.
 
+Many thanks,
+David C =A9
