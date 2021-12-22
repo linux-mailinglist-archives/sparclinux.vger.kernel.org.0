@@ -2,73 +2,122 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD6C47AEDE
-	for <lists+sparclinux@lfdr.de>; Mon, 20 Dec 2021 16:05:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 425FE47D951
+	for <lists+sparclinux@lfdr.de>; Wed, 22 Dec 2021 23:35:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235037AbhLTPFe (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 20 Dec 2021 10:05:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37568 "EHLO
+        id S230435AbhLVWfh (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 22 Dec 2021 17:35:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240011AbhLTPD1 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 20 Dec 2021 10:03:27 -0500
-Received: from mail-qk1-x765.google.com (mail-qk1-x765.google.com [IPv6:2607:f8b0:4864:20::765])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE7EC09B107
-        for <sparclinux@vger.kernel.org>; Mon, 20 Dec 2021 06:52:19 -0800 (PST)
-Received: by mail-qk1-x765.google.com with SMTP id 132so9520814qkj.11
-        for <sparclinux@vger.kernel.org>; Mon, 20 Dec 2021 06:52:19 -0800 (PST)
+        with ESMTP id S229665AbhLVWff (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 22 Dec 2021 17:35:35 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53739C061574;
+        Wed, 22 Dec 2021 14:35:35 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id j11so6631130lfg.3;
+        Wed, 22 Dec 2021 14:35:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tesca-id.20210112.gappssmtp.com; s=20210112;
-        h=message-id:mime-version:content-transfer-encoding
-         :content-description:subject:to:from:date:reply-to;
-        bh=sIGiGKGA0/ji9BGa6+j8EGrrn4Gri12dStZg3mSmgGU=;
-        b=DNAgrGCLIBDnuC43t8J7COEaz1wY6CNhNg7hh2krkdYzTE7IZ8Ab78/0sC6RO+dJKZ
-         vifcphAtfc+K9cYP1ZZdT1iJwbWEgVgoefu49IesNhCrN41PXf/RAcPTnlSOuJ+ng0eJ
-         EXYV6GlOtfARYJiCr20XvfXCDZ5w0Wu43/knc9L4L6c9zdOxwbj0pA26Yoy2dZ09NHzI
-         S0slmRztmg6oVwAVfkc/CY5LBrKm0RMMnrTZ7ZzLT6/0BuT7xejsAJCh/b2+STeir1Nr
-         Lw0mZLFfspLTp+T0cdQbtQm2s/DkNtGjVegSamnelbrR/pbywvaPGr9ZkM8a+v1/BFek
-         CX0Q==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=509cil0OJ5qdfWw2ojcCOYSwHBJ9P8vwyQkD+G8mLLA=;
+        b=ddZKfL8FvoJ0XwnKMMmKWLGJ3VqFSFGglRVDb0+PqM2DxuwldMzReXdg0Ebtk9Yobi
+         AVztMug/XvayfxM3v8GOeWIfRsrkU3pfCylaBXUmoqsMO81lth0cxfRUKMa/jua7By8h
+         fSZ6R/sGKPh5nSmA0ASRGeLeb6wdCjfYNft0YG0y8ivi5U/BpBfokB9hcGa9coBwNOMN
+         Gg+cjCxIPhQ2b7TcbEc1gjiCTijvdkgEF9rXZGv3s6zgXp/f1hq5bp68059Gc1Z9wTvm
+         bIqvGf1ZD6DqjfSFh05rCeUC0528fcV+nKXNDyihLdVmnm+p0/XORPV26mvKGpvGa4Zb
+         OjAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:mime-version
-         :content-transfer-encoding:content-description:subject:to:from:date
-         :reply-to;
-        bh=sIGiGKGA0/ji9BGa6+j8EGrrn4Gri12dStZg3mSmgGU=;
-        b=o+9h6n/xzyRYHJlmw2lNtUhRAlfOeS4M7BCLhrMoY8m/WQTvuGl1HverYzJtl1WhhU
-         jQIQp1DjjqVSSg3u5LhYnyBnbuW60XAdPzREB4wSQy5iO7hJRnLVwbY8FZVsz2QgUoQg
-         KW1gKHT9wnhE25XY+R7Uou6zJSKH12joXRfMW70S7/I5JY0wGNdVuqrnDi2eah+hQ5dA
-         rq+amtuDKJyvHMTOtcv9lxgO7Juziijjizcaj7qRBiUxxBuTrKbCsBNOQlYhT39cK4q9
-         fjmJGoYnCS9m19qGo3s3oqs8hJB0tbJJU+/3GTqRvxLtaVImDWYw28F21ETV6u/KC6qu
-         Flxw==
-X-Gm-Message-State: AOAM532QHnS1ebmHcI7BJ0819JhtVFdoONUpsZW41yjCiuPWfcv7NMN+
-        HlEY7sSJVxU/cp6CW6/0xelX8AdfkUq49uPNAGr96THQPT3e1w==
-X-Google-Smtp-Source: ABdhPJzgz1DOEWyuXZF/sri9UQwNSpbnjrY/BChyOsY4bKf5tozgKKYHcNQHe8IDjeMCzRjDSdYoHAeu59y1
-X-Received: by 2002:a05:620a:4081:: with SMTP id f1mr9453289qko.165.1640011938763;
-        Mon, 20 Dec 2021 06:52:18 -0800 (PST)
-Received: from [192.168.1.3] ([175.100.20.250])
-        by smtp-relay.gmail.com with ESMTPS id br13sm5537882qkb.6.2021.12.20.06.52.12
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Mon, 20 Dec 2021 06:52:18 -0800 (PST)
-X-Relaying-Domain: tesca.id
-Message-ID: <61c098a2.1c69fb81.6755.c884SMTPIN_ADDED_MISSING@mx.google.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=509cil0OJ5qdfWw2ojcCOYSwHBJ9P8vwyQkD+G8mLLA=;
+        b=fPeJNrcjM0I21LFplQ6E42/HD1nBdO6KIBrT2hzIxhad8b4k2Yon4YRl15g0szmmPg
+         c6Z0VReoQToYgyNI0e8EirDlkXtDc5rKJMvlhqC+RFFF8NE43rE79aAP4WzSM2Px96cM
+         WVyxHH8I78qg1D1BFMSTzc7P5ai3RkHE1X7A+/dIFV4/Cuw2eu6xmtYV5LbjxKYh+Qw7
+         kbLiH3vL6MbxaUcfFWHmGcDxKxvuY4kUpsGfTnqFRrKj5M37p/uawi96DHpsq2/iX7p5
+         G4C8WAm40iW/1mP1vlEq4HZY5klMQcbeE2W4+C7K9tq8kLp6Gisk1Qi/mVm3vZrlFmzp
+         6Jjg==
+X-Gm-Message-State: AOAM532L3Jo3ZsQYkTP6XdfVAzOy0FX5nfBkvqDDQ5Na9hI9XfW8dzBh
+        alHtqg6JaY8sIRWgGJ9SeCcgyvC275L6/aAk89DsfBPvaUM=
+X-Google-Smtp-Source: ABdhPJyfufBHYdDFQz+ah/Iw/iZGRxjmctUcUf2op+2vKNZiQPXrZB6SUilBWwF8JJMaI1eDbZeGr+HUSlFNJ5XDS4Q=
+X-Received: by 2002:a05:6512:3486:: with SMTP id v6mr3634731lfr.483.1640212533273;
+ Wed, 22 Dec 2021 14:35:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: GOOD DAY
-To:     Recipients <no-reply@tesca.id>
-From:   "David Cheung" <no-reply@tesca.id>
-Date:   Mon, 20 Dec 2021 21:52:09 +0700
-Reply-To: da_cheung@aol.com
+References: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com> <20211220092318.5793-2-tianjia.zhang@linux.alibaba.com>
+In-Reply-To: <20211220092318.5793-2-tianjia.zhang@linux.alibaba.com>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Thu, 23 Dec 2021 09:35:21 +1100
+Message-ID: <CAGRGNgXE_5H20K+e9oejqybOGh8JezMpi2yrDJKqaZ4rWJkZdA@mail.gmail.com>
+Subject: Re: [PATCH 1/5] crypto: sha256 - remove duplicate generic hash init function
+To:     Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        linux-crypto@vger.kernel.org, linux-mips@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello,
+Hi Tianjia,
 
-I'm David Cheung,A senior staff with public Bank in Cambodia. I have abusin=
-ess proposal to share with you.
+On Mon, Dec 20, 2021 at 8:25 PM Tianjia Zhang
+<tianjia.zhang@linux.alibaba.com> wrote:
+>
+> crypto_sha256_init() and sha256_base_init() are the same repeated
+> implementations, remove the crypto_sha256_init() in generic
+> implementation, sha224 is the same process.
+>
+> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+> ---
+>  crypto/sha256_generic.c | 16 ++--------------
+>  1 file changed, 2 insertions(+), 14 deletions(-)
+>
+> diff --git a/crypto/sha256_generic.c b/crypto/sha256_generic.c
+> index 3b377197236e..bf147b01e313 100644
+> --- a/crypto/sha256_generic.c
+> +++ b/crypto/sha256_generic.c
+> @@ -72,7 +60,7 @@ EXPORT_SYMBOL(crypto_sha256_finup);
+>
+>  static struct shash_alg sha256_algs[2] = { {
+>         .digestsize     =       SHA256_DIGEST_SIZE,
+> -       .init           =       crypto_sha256_init,
+> +       .init           =       sha256_base_init,
+>         .update         =       crypto_sha256_update,
+>         .final          =       crypto_sha256_final,
+>         .finup          =       crypto_sha256_finup,
+> @@ -86,7 +74,7 @@ static struct shash_alg sha256_algs[2] = { {
+>         }
+>  }, {
+>         .digestsize     =       SHA224_DIGEST_SIZE,
+> -       .init           =       crypto_sha224_init,
+> +       .init           =       sha224_base_init,
+>         .update         =       crypto_sha256_update,
+>         .final          =       crypto_sha256_final,
+>         .finup          =       crypto_sha256_finup,
 
-Kindly get back to me as soon as possible.
+Aren't these two functions defined as static inline functions? It
+appears that these crypto_ wrappers were added so there's "actual"
+referenceable functions for these structs.
 
-Many thanks,
-David C =A9
+Did this actually compile?
+
+Thanks,
+
+-- 
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
