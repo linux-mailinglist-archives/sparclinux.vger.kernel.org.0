@@ -2,91 +2,105 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E52714930CA
-	for <lists+sparclinux@lfdr.de>; Tue, 18 Jan 2022 23:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72F8D4933F7
+	for <lists+sparclinux@lfdr.de>; Wed, 19 Jan 2022 05:08:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349966AbiARWdH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 18 Jan 2022 17:33:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55688 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237457AbiARWdG (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 18 Jan 2022 17:33:06 -0500
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7B9C061574
-        for <sparclinux@vger.kernel.org>; Tue, 18 Jan 2022 14:33:06 -0800 (PST)
-Received: by mail-pg1-x542.google.com with SMTP id t32so508627pgm.7
-        for <sparclinux@vger.kernel.org>; Tue, 18 Jan 2022 14:33:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=LItDhjmR2d37h3vhmRR6yZVzU+nJ6Up0d59+xltvf30=;
-        b=abO5qwhA+J7QYi0f1bVG65eB5ZXPd4GDEBxg48MhS2GpAvipJdxYdo+rqBDgAeVBle
-         v0q7UKQ5tVJRTiE/w1eMwqlpdUTPTILU5pG/KLJTmt/yFAB7ajg1c9QIA5OV0hR0Sk1u
-         2sUKS+6nN5oMwllGAX+fanEssr7Dx2kLvXA9l6fALrwz1EFcb5kZCsv8/AcdPd7s8L05
-         IFwJnUs+zAwpX2fuBErohNzHztj8L3oI2LMDIw4UIcrtHDYDbD6jXwT9B6ucJiq43CzN
-         6m3KP35+Fn2/x4vszJxGQ0J2UtA0k1F5qRpobiEyg3ag0faNto3estfHmZyBiwL1rrJz
-         XgRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=LItDhjmR2d37h3vhmRR6yZVzU+nJ6Up0d59+xltvf30=;
-        b=5Pr4STbCtMhxxITtV2rDrY+UDYZa9fnTgx3DJmp00P1luWBN7Q2JJiBZsqphqrLLEL
-         OZvGeDbF/o1d+yvnTWLtiBgF8cn82/3Wze/TQO8yJJBeW9rIWbvgsZm9+zaqKilw4MVC
-         yLoFf06HX0oFWfM4wnRl1pORptwTwsP7EVSRJfxbDAhtDhcSIenFXfqn47Va05ijNNoO
-         h/cQpycfao6lqfRL5zfdKaRibZv7ZZgisXg7Ztts17UREssrfhmmKq+tpKyAbZ7phLG5
-         TJIdURcHoUbyRrNomGbOb8RV6RfIym7iFCECOveaQ+BsMvi0ZWsn7hBN7R1AGBEfdaAR
-         ya4A==
-X-Gm-Message-State: AOAM530DumlT5Vx3wfmu43zVeoN6HAkKp5s+GneJBu/GE20UuEtSJT39
-        FRzIvtajHP5LWj/kKegf3SUR0Rc7K4lNOChKUc4=
-X-Google-Smtp-Source: ABdhPJwFD3LgWma5AZPUaNVSBTtZ4aXMP+r72Ur4vPEP487Hnk6C+LXZjL0CQaxkffyZzGWvQBG+d0tdcNxSdMDjOwA=
-X-Received: by 2002:a62:1dc2:0:b0:4be:3e22:5ee2 with SMTP id
- d185-20020a621dc2000000b004be3e225ee2mr27912931pfd.63.1642545185763; Tue, 18
- Jan 2022 14:33:05 -0800 (PST)
+        id S1351460AbiASEIA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 18 Jan 2022 23:08:00 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:41312 "EHLO
+        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1351481AbiASEHh (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>);
+        Tue, 18 Jan 2022 23:07:37 -0500
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20INx5iq012817;
+        Wed, 19 Jan 2022 04:06:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2021-07-09;
+ bh=bGCfCt6vCAi9RXyrfJqfylamdOtbNoBkaaat0IE/Mnw=;
+ b=lJnCGbChCBWiNCJ81/oD1H2AgQZqUQa5nCeYEKv3GgIDNnniyAqdpYR6Amtq5UVy85+S
+ bSf1F6fc782Zb3Hp+C/dNgfwXSix7WwLstwfNiw/46TSej1TijDQQYxcpVwee5QgPbXs
+ 7qRvvqYwp1E1ZgJdwTidvqkrmMa2mDn9jRoaeO55cbOsT0QqUIBAR9kF8p5ggelQCa3G
+ c12qT81DvBC9DrU2d50H1hksN5JKryq7e54/MdXUueGoXHOe0qsRXmf5/407TnolSx/k
+ mH6KSOS3qms9+4ReTKr2kzH+nGTE/NnAmFSQ7vRhRr/fL6whaOCHGPK4AnnXhPGdKH9a 5A== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3dnc4q3wwt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Jan 2022 04:06:19 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 20J42AEu091613;
+        Wed, 19 Jan 2022 04:06:18 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by userp3020.oracle.com with ESMTP id 3dkqqpnr7j-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Jan 2022 04:06:18 +0000
+Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 20J46HPx110383;
+        Wed, 19 Jan 2022 04:06:17 GMT
+Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
+        by userp3020.oracle.com with ESMTP id 3dkqqpnr68-1;
+        Wed, 19 Jan 2022 04:06:17 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     sreekanth.reddy@broadcom.com, mchehab@kernel.org, mdf@kernel.org,
+        mpe@ellerman.id.au, mporter@kernel.crashing.org, hch@infradead.org,
+        bhelgaas@google.com, airlied@linux.ie,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        benh@kernel.crashing.org, ink@jurassic.park.msu.ru,
+        davem@davemloft.net, akpm@linux-foundation.org, hao.wu@intel.com,
+        vkoul@kernel.org, sathya.prakash@broadcom.com, paulus@samba.org,
+        trix@redhat.com, arnd@arndb.de, yilun.xu@intel.com,
+        suganath-prabu.subramani@broadcom.com, alex.bou9@gmail.com,
+        awalls@md.metrocast.net, rth@twiddle.net, mattst88@gmail.com
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-alpha@vger.kernel.org, linux-fpga@vger.kernel.org,
+        MPT-FusionLinux.pdl@broadcom.com, linux-media@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-scsi@vger.kernel.org, dmaengine@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH 00/16] Remove usage of the deprecated "pci-dma-compat.h" API
+Date:   Tue, 18 Jan 2022 23:06:09 -0500
+Message-Id: <164256513502.31841.5177778968152773786.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+References: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:b712:0:0:0:0 with HTTP; Tue, 18 Jan 2022 14:33:05
- -0800 (PST)
-Reply-To: huiman43@hotmail.com
-From:   Yi Hiuman <kent.lisafinance@gmail.com>
-Date:   Tue, 18 Jan 2022 14:33:05 -0800
-Message-ID: <CACxhRE1JLcB9oowF5ZySeLBcn1++GzLNjeEKjpzaNEAYxQbBhA@mail.gmail.com>
-Subject: =?UTF-8?Q?Ich_habe_einen_Gesch=C3=A4ftsvorschlag_f=C3=BCr_Sie_=2F_I_have?=
-        =?UTF-8?Q?_a_business_proposal_for_you?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: kv-6XMqJc6gHKjMkAhgWOkvxgVt6FLHh
+X-Proofpoint-ORIG-GUID: kv-6XMqJc6gHKjMkAhgWOkvxgVt6FLHh
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hallo,
+On Thu, 6 Jan 2022 22:45:13 +0100, Christophe JAILLET wrote:
 
-Ich bin Herr Yi Huiman, ehemaliger Vorsitzender der Industrial and
-Commercial Bank of China (ICBC) und derzeitige China Securities
-Regulatory Commission (CSRC). Ich habe einen Gesch=C3=A4ftsvorschlag, von
-dem wir beide profitieren werden. Ich suche einen seri=C3=B6sen Partner, um
-eine Transaktion im Wert von 45.275.000,00 USD anzuvertrauen. Kann ich
-mich auf dich verlassen? Bitte kontaktieren Sie mich f=C3=BCr weitere
-Informationen =C3=BCber meine pers=C3=B6nliche E-Mail-Adresse:
-huiman43@hotmail.com
+> This serie axes all the remaining usages of the deprecated "pci-dma-compat.h"
+> API.
+> 
+> All these patches have already been posted.
+> 
+> They have been generated with a coccinelle script.
+> The tricky parts are patches that use dma_alloc_coherent() because the correct
+> GFP flag has to be used in place of the previous embedded GFP_ATOMIC.
+> 
+> [...]
 
-Yi Hiuman
+Applied to 5.17/scsi-queue, thanks!
 
+[10/16] scsi: message: fusion: Remove usage of the deprecated "pci-dma-compat.h" API
+        https://git.kernel.org/mkp/scsi/c/b114dda6f2f1
+[11/16] scsi: mptbase: Use dma_alloc_coherent() in 'mpt_alloc_fw_memory()'
+        https://git.kernel.org/mkp/scsi/c/2d50607260a6
+[12/16] scsi: mptbase: Use dma_alloc_coherent()
+        https://git.kernel.org/mkp/scsi/c/5c5e6b6f61e0
+[13/16] scsi: mptsas: Use dma_alloc_coherent() in mptsas_exp_repmanufacture_info()
+        https://git.kernel.org/mkp/scsi/c/7a960b3a5e37
+[14/16] scsi: mptsas: Use dma_alloc_coherent()
+        https://git.kernel.org/mkp/scsi/c/76a334d756c5
+[15/16] scsi: mptctl: Use dma_alloc_coherent()
+        https://git.kernel.org/mkp/scsi/c/706dc3b91989
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-
-
-Hello,
-
-I'm Mr. Yi Huiman, former chairman of the Industrial and Commercial
-Bank of China (ICBC) and current China Securities Regulatory
-Commission (CSRC).. I have a business proposal that will benefit both
-of us. I am looking for a serious partner to entrust a transaction
-worth $45,275,000.00 USD. Can i rely on you? Please contact me for
-more information via my personal email address: huiman43@hotmail.com
-
-Yi Hiuman
+-- 
+Martin K. Petersen	Oracle Linux Engineering
