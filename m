@@ -2,161 +2,75 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01D1649BC11
-	for <lists+sparclinux@lfdr.de>; Tue, 25 Jan 2022 20:28:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAFB249BDC3
+	for <lists+sparclinux@lfdr.de>; Tue, 25 Jan 2022 22:16:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230011AbiAYT2g (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 25 Jan 2022 14:28:36 -0500
-Received: from mail-pl1-f175.google.com ([209.85.214.175]:35700 "EHLO
-        mail-pl1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229950AbiAYT2c (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 25 Jan 2022 14:28:32 -0500
-Received: by mail-pl1-f175.google.com with SMTP id d18so7633582plg.2;
-        Tue, 25 Jan 2022 11:28:32 -0800 (PST)
+        id S232086AbiAYVQp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 25 Jan 2022 16:16:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47586 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232080AbiAYVQp (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 25 Jan 2022 16:16:45 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B42C06173B
+        for <sparclinux@vger.kernel.org>; Tue, 25 Jan 2022 13:16:44 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id u24so19614871eds.11
+        for <sparclinux@vger.kernel.org>; Tue, 25 Jan 2022 13:16:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=5qRcSiWYVZPeLOQtDxt+I8vSASVfNGyZI4wIHLpAlDo=;
+        b=oegrVpf8I/7hKns52n2krRFENFwoOCDoUGjy6S1xPUYSCE+mMl1YkZAY83CbTgrAUL
+         bg891HctSPz/rAfZKRjPVOgKCnEw/2FqnMq8HfmT58dNaYwP6PeHfoc/w3qs2RT6sglG
+         POX82sb+rMQn+m/xEiTVTc3YVY/XzSWtSVjTuBG42DIoCVSYtfjeOhEBmRR6NRMggbMy
+         k8Qehq3cnGrXbxpexVHKHaiRO4lNY7YDR/psoGRpIZlexS5gqjYk1AjxyAgJkADjJ0YF
+         h29lp6yeqjp89BzjRvbxDJGmlUiw0M0AEdeVH0Zz4Y+WBiwulD+zmtgZr80sF3q2ij0v
+         yqlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Rkz5i91jrZJto37j3RGSd05f/eRfvo2BCm796nin8Vs=;
-        b=XRSGOlm1VFqT3avvfzptjdr/V8D9yTVMulgMxGpZ7G7ejzNVUmBrSCSSzGdQIbyBGA
-         wLOATfMRkgFf7AKjLokOWmvQ71CTQzSyBSMu32dH9GIJwiRDS5KY51i2SYfY0XPneHL/
-         ryCWbdsIcvWIxwUcQruluk6MN1ULgD5779AyhvV50OPqRmw+gqJ494us1srnl3Ds/4Tw
-         FA+szLQkz+NTKT5gBSs8lhlo3if8ALpz98+fE8QN7vc+AWMtHB22xJKpNFyz/WEPjT5a
-         EUJbOhxxGarJRbtGkRONvQB963Qct9mbEQnP1NF+wi7cC9Cppqh/vlLxWz03d0sdhqgn
-         bGnA==
-X-Gm-Message-State: AOAM533sXRFtcUNigiJ0DQlIB32sZGa/bv9zSZa0r8EZkSOwfSQbHV9n
-        CPnYdKZ9giKc43jEewCH4OA=
-X-Google-Smtp-Source: ABdhPJyeNd/r+jQn3mMtMf9He8DTH104dq3dEwAvQtFQxWx1zXikeSDUCeamDKcdFDb0ku5F8bxZDQ==
-X-Received: by 2002:a17:902:6bc9:b0:149:fdf1:f031 with SMTP id m9-20020a1709026bc900b00149fdf1f031mr19734916plt.58.1643138906187;
-        Tue, 25 Jan 2022 11:28:26 -0800 (PST)
-Received: from localhost ([2601:647:5b00:ece0:aab:34ff:52ca:a7a5])
-        by smtp.gmail.com with ESMTPSA id qe15sm1162214pjb.47.2022.01.25.11.28.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jan 2022 11:28:25 -0800 (PST)
-Date:   Tue, 25 Jan 2022 11:28:24 -0800
-From:   Moritz Fischer <mdf@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     arnd@arndb.de, hch@infradead.org, akpm@linux-foundation.org,
-        rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        davem@davemloft.net, airlied@linux.ie, vkoul@kernel.org,
-        hao.wu@intel.com, trix@redhat.com, mdf@kernel.org,
-        yilun.xu@intel.com, awalls@md.metrocast.net, mchehab@kernel.org,
-        sathya.prakash@broadcom.com, sreekanth.reddy@broadcom.com,
-        suganath-prabu.subramani@broadcom.com, mporter@kernel.crashing.org,
-        alex.bou9@gmail.com, bhelgaas@google.com,
-        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-fpga@vger.kernel.org, linux-media@vger.kernel.org,
-        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 00/16] Remove usage of the deprecated "pci-dma-compat.h"
- API
-Message-ID: <YfBPWB9m5TWcZuFY@epycbox.lan>
-References: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=5qRcSiWYVZPeLOQtDxt+I8vSASVfNGyZI4wIHLpAlDo=;
+        b=1PSegJwYSuckDlBDZ4mERf0Rlm+JwBGh4mICnoLegGEQP7T6n1qW4sYG//fGqhb/fx
+         uT6UzjoUGxwXOy4Uuc5LN1ZvleaXDpSN1ptO93mGNN9FX6C65xhGvyj5p/wR8SNXRReW
+         66jdz18Mnct/uGgQocXqTndH4oU7b1nhGIx/WvK00EE53c7djH8eBI6TK6/vE/Ri4LsT
+         Nu6wORfTAn6CpHRnCWajLQwbgpNIYpD/xcHnnFW7rfgIDNWPC00wb8VJzy4XTz8f+Q0b
+         48lXQg7lDQ2jPFAaQ/DK95cWRvPFHMU9K3y21eY4/8KxJ1bhRsnvc00QI7Edc0jIElKc
+         49Yg==
+X-Gm-Message-State: AOAM532kBC7yhBcukpISMfvW5nEN7tOYE+arGbMCzEEgSVTVmuVrbfl9
+        xcd7JRcz6gYiG0mzd6kDuoA9+OJRwRg73x8VCog=
+X-Google-Smtp-Source: ABdhPJz3x+D+ZGMjXefKe5PqJzuJVtDA3IhGxtT9Ivd2qwgxNB5vtoMrPDfauPunGle1NpNCNXfxLkK8Ypal64bmfd0=
+X-Received: by 2002:aa7:d7d3:: with SMTP id e19mr13262613eds.74.1643145402995;
+ Tue, 25 Jan 2022 13:16:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+Received: by 2002:a17:906:7948:0:0:0:0 with HTTP; Tue, 25 Jan 2022 13:16:42
+ -0800 (PST)
+Reply-To: jennifermbaya38@gmail.com
+From:   Mrs Jennifer Mbaya <sergegladja@gmail.com>
+Date:   Tue, 25 Jan 2022 13:16:42 -0800
+Message-ID: <CAJ7Ma18EwwkELddv_AqJeiohNPqzHOK-SzbCh0fqgkRAcA-YEQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Kedvezm=C3=A9nyezett?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Thu, Jan 06, 2022 at 10:45:13PM +0100, Christophe JAILLET wrote:
-> This serie axes all the remaining usages of the deprecated "pci-dma-compat.h"
-> API.
-> 
-> All these patches have already been posted.
-> 
-> They have been generated with a coccinelle script.
-> The tricky parts are patches that use dma_alloc_coherent() because the correct
-> GFP flag has to be used in place of the previous embedded GFP_ATOMIC.
-> 
-> Patches 1-3 are already Reviewed. References to the corresponding mail is
-> given below the ---
-> 
-> Patch 1-2,4-10 are just generated from the coccinelle script. Only too long
-> lines have been hand modified. dma_alloc_coherent() modification are NOT part
-> of these patches.
-> 
-> Patch 3 also includes some 'dma_set_mask_and_coherent()' instead of
-> 'pci_set_dma_mask()/pci_set_consistent_dma_mask()'.
-> I've left this additional modification because it was reviewed with it.
-> 
-> Patch 10-15 are the tricky parts. Explanation of which GFP flag is the right one
-> is given in each patch. It has been divided in several patches to ease review.
-> 
-> Patch 15 is the only one I'm slighly unsure with. The old code was using a
-> GFP_USER flag in the function. I'm not familiar with it.
-> I *guess*  that GFP_KERNEL is fine, but maybe it should also be GFP_USER or left
-> as GFP_ATOMIC so that nothing is changed.
-> 
-> Patch 16 is the last step that remove "pci-dma-compat.h" and its only usage.
-> 
-> 
-> All patches, exept 1-2,6 that are architecture specific, have been compile tested.
-> 
-> 
-> After all that, a few rst files, 1 or 2 strings in error messages and some
-> error branching labels should still need some attention. 
-> This is some minor issues.
-> 
-> 
-> Only the cover letter is sent to every one. Each patch is sent to the
-> corresponding maintainer(s) + Andrew Morton, Christoph Hellwig and Arnd Bergmann.
-> 
-> 
-> Best regards.
-> 
-> 
-> Christophe JAILLET (16):
->   alpha: Remove usage of the deprecated "pci-dma-compat.h" API
->   floppy: Remove usage of the deprecated "pci-dma-compat.h" API
->   fpga: dfl: pci: Remove usage of the deprecated "pci-dma-compat.h" API
->   media: Remove usage of the deprecated "pci-dma-compat.h" API
->   agp/intel: Remove usage of the deprecated "pci-dma-compat.h" API
->   sparc: Remove usage of the deprecated "pci-dma-compat.h" API
->   dmaengine: pch_dma: Remove usage of the deprecated "pci-dma-compat.h"
->     API
->   rapidio/tsi721: Remove usage of the deprecated "pci-dma-compat.h" API
->   media: v4l2-pci-skeleton: Remove usage of the deprecated
->     "pci-dma-compat.h" API
->   scsi: message: fusion: Remove usage of the deprecated
->     "pci-dma-compat.h" API
->   scsi: mptbase: Use dma_alloc_coherent() in 'mpt_alloc_fw_memory()'
->   scsi: mptbase: Use dma_alloc_coherent()
->   scsi: mptsas: Use dma_alloc_coherent() in
->     mptsas_exp_repmanufacture_info()
->   scsi: mptsas: Use dma_alloc_coherent()
->   scsi: mptctl: Use dma_alloc_coherent()
->   PCI: Remove usage of the deprecated "pci-dma-compat.h" API
-> 
->  arch/alpha/include/asm/floppy.h     |   7 +-
->  arch/alpha/kernel/pci_iommu.c       |  12 +--
->  arch/powerpc/include/asm/floppy.h   |   8 +-
->  arch/sparc/kernel/ioport.c          |   2 +-
->  drivers/char/agp/intel-gtt.c        |  26 ++---
->  drivers/dma/pch_dma.c               |   2 +-
->  drivers/fpga/dfl-pci.c              |  14 +--
->  drivers/media/pci/cx18/cx18-queue.h |   6 +-
->  drivers/media/pci/ivtv/ivtv-queue.h |  25 +++--
->  drivers/media/pci/ivtv/ivtv-udma.h  |   8 +-
->  drivers/message/fusion/mptbase.c    | 149 ++++++++++++++++------------
->  drivers/message/fusion/mptctl.c     |  82 +++++++++------
->  drivers/message/fusion/mptlan.c     |  90 +++++++++--------
->  drivers/message/fusion/mptsas.c     |  94 +++++++++---------
->  drivers/rapidio/devices/tsi721.c    |   8 +-
->  include/linux/pci-dma-compat.h      | 129 ------------------------
->  include/linux/pci.h                 |   3 -
->  samples/v4l/v4l2-pci-skeleton.c     |   2 +-
->  18 files changed, 289 insertions(+), 378 deletions(-)
->  delete mode 100644 include/linux/pci-dma-compat.h
-> 
-> -- 
-> 2.32.0
-> 
-Applied [03/16] to linux-fpga for-next.
-
-Thanks,
-Moritz
+Az =C3=96n nev=C3=A9ben az Egyes=C3=BClt Nemzetek =C3=A9s az Eg=C3=A9szs=C3=
+=A9g=C3=BCgyi Vil=C3=A1gszervezet a
+nemzetk=C3=B6zi valutaalaphoz kapcsol=C3=B3dva d=C3=ADjat adom=C3=A1nyoz, a=
+melyben az =C3=96n
+e-mail c=C3=ADm=C3=A9t =C3=A9s p=C3=A9nzeszk=C3=B6z=C3=A9t =C3=A1tadtuk nek=
+=C3=BCnk az =C3=96n =C3=A1tutal=C3=A1sa =C3=A9rdek=C3=A9ben,
+k=C3=A9rj=C3=BCk, eros=C3=ADtse meg adatait az =C3=96n =C3=A1tutal=C3=A1sa =
+=C3=A9rdek=C3=A9ben.
+Azt az utas=C3=ADt=C3=A1st kaptuk, hogy minden f=C3=BCggoben l=C3=A9vo tran=
+zakci=C3=B3t vigy=C3=BCnk
+=C3=A1t a k=C3=B6vetkezo k=C3=A9t napon bel=C3=BCl, de ha megkapta az alapj=
+=C3=A1t, akkor
+hagyja figyelmen k=C3=ADv=C3=BCl ezt az =C3=BCzenetet, ha nem azonnal.
+S=C3=BCrgosen v=C3=A1laszolnia kell erre az =C3=BCzenetre, ez nem egy olyan
+internetes csal=C3=B3, ez a vil=C3=A1gj=C3=A1rv=C3=A1ny enyh=C3=ADt=C3=A9se=
+.
