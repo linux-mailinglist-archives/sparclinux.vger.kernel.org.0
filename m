@@ -2,75 +2,128 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAFB249BDC3
-	for <lists+sparclinux@lfdr.de>; Tue, 25 Jan 2022 22:16:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3438449CB32
+	for <lists+sparclinux@lfdr.de>; Wed, 26 Jan 2022 14:45:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232086AbiAYVQp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 25 Jan 2022 16:16:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47586 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232080AbiAYVQp (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 25 Jan 2022 16:16:45 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B42C06173B
-        for <sparclinux@vger.kernel.org>; Tue, 25 Jan 2022 13:16:44 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id u24so19614871eds.11
-        for <sparclinux@vger.kernel.org>; Tue, 25 Jan 2022 13:16:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=5qRcSiWYVZPeLOQtDxt+I8vSASVfNGyZI4wIHLpAlDo=;
-        b=oegrVpf8I/7hKns52n2krRFENFwoOCDoUGjy6S1xPUYSCE+mMl1YkZAY83CbTgrAUL
-         bg891HctSPz/rAfZKRjPVOgKCnEw/2FqnMq8HfmT58dNaYwP6PeHfoc/w3qs2RT6sglG
-         POX82sb+rMQn+m/xEiTVTc3YVY/XzSWtSVjTuBG42DIoCVSYtfjeOhEBmRR6NRMggbMy
-         k8Qehq3cnGrXbxpexVHKHaiRO4lNY7YDR/psoGRpIZlexS5gqjYk1AjxyAgJkADjJ0YF
-         h29lp6yeqjp89BzjRvbxDJGmlUiw0M0AEdeVH0Zz4Y+WBiwulD+zmtgZr80sF3q2ij0v
-         yqlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=5qRcSiWYVZPeLOQtDxt+I8vSASVfNGyZI4wIHLpAlDo=;
-        b=1PSegJwYSuckDlBDZ4mERf0Rlm+JwBGh4mICnoLegGEQP7T6n1qW4sYG//fGqhb/fx
-         uT6UzjoUGxwXOy4Uuc5LN1ZvleaXDpSN1ptO93mGNN9FX6C65xhGvyj5p/wR8SNXRReW
-         66jdz18Mnct/uGgQocXqTndH4oU7b1nhGIx/WvK00EE53c7djH8eBI6TK6/vE/Ri4LsT
-         Nu6wORfTAn6CpHRnCWajLQwbgpNIYpD/xcHnnFW7rfgIDNWPC00wb8VJzy4XTz8f+Q0b
-         48lXQg7lDQ2jPFAaQ/DK95cWRvPFHMU9K3y21eY4/8KxJ1bhRsnvc00QI7Edc0jIElKc
-         49Yg==
-X-Gm-Message-State: AOAM532kBC7yhBcukpISMfvW5nEN7tOYE+arGbMCzEEgSVTVmuVrbfl9
-        xcd7JRcz6gYiG0mzd6kDuoA9+OJRwRg73x8VCog=
-X-Google-Smtp-Source: ABdhPJz3x+D+ZGMjXefKe5PqJzuJVtDA3IhGxtT9Ivd2qwgxNB5vtoMrPDfauPunGle1NpNCNXfxLkK8Ypal64bmfd0=
-X-Received: by 2002:aa7:d7d3:: with SMTP id e19mr13262613eds.74.1643145402995;
- Tue, 25 Jan 2022 13:16:42 -0800 (PST)
+        id S241171AbiAZNpf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 26 Jan 2022 08:45:35 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:58226 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235305AbiAZNpe (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 26 Jan 2022 08:45:34 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7CE77B81E0F;
+        Wed, 26 Jan 2022 13:45:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9195C340E3;
+        Wed, 26 Jan 2022 13:45:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1643204731;
+        bh=aXQde9wq7cWvdCRLRrI1FIQr3++bEQ4exG2q/lhqD3E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=v+g8gUQjIt/c0ktBUQcit03sTj8G5mLw8FT+LXQqudlxh2iXfgafDrgsKIgJcd+6A
+         KW7BP0Pf7wtiKC9gzDKJw1Q0VKMx5apmABXH/60JK3d2VK/Sw93FHWeCcfYpb1QPrC
+         cxProUa3b1FFVLRT4j2tOajkb4EpxDNqSymszfjw=
+Date:   Wed, 26 Jan 2022 14:45:28 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Walt Drummond <walt@drummond.us>
+Cc:     agordeev@linux.ibm.com, arnd@arndb.de, benh@kernel.crashing.org,
+        borntraeger@linux.ibm.com, chris@zankel.net, davem@davemloft.net,
+        hca@linux.ibm.com, deller@gmx.de, ink@jurassic.park.msu.ru,
+        James.Bottomley@hansenpartnership.com, jirislaby@kernel.org,
+        mattst88@gmail.com, jcmvbkbc@gmail.com, mpe@ellerman.id.au,
+        paulus@samba.org, rth@twiddle.net, dalias@libc.org,
+        tsbogend@alpha.franken.de, gor@linux.ibm.com, ysato@users.osdn.me,
+        linux-kernel@vger.kernel.org, ar@cs.msu.ru,
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH 0/3] status: TTY status message request
+Message-ID: <YfFQeC1cUVFmISMK@kroah.com>
+References: <20220118044259.764945-1-walt@drummond.us>
 MIME-Version: 1.0
-Received: by 2002:a17:906:7948:0:0:0:0 with HTTP; Tue, 25 Jan 2022 13:16:42
- -0800 (PST)
-Reply-To: jennifermbaya38@gmail.com
-From:   Mrs Jennifer Mbaya <sergegladja@gmail.com>
-Date:   Tue, 25 Jan 2022 13:16:42 -0800
-Message-ID: <CAJ7Ma18EwwkELddv_AqJeiohNPqzHOK-SzbCh0fqgkRAcA-YEQ@mail.gmail.com>
-Subject: =?UTF-8?Q?Kedvezm=C3=A9nyezett?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220118044259.764945-1-walt@drummond.us>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Az =C3=96n nev=C3=A9ben az Egyes=C3=BClt Nemzetek =C3=A9s az Eg=C3=A9szs=C3=
-=A9g=C3=BCgyi Vil=C3=A1gszervezet a
-nemzetk=C3=B6zi valutaalaphoz kapcsol=C3=B3dva d=C3=ADjat adom=C3=A1nyoz, a=
-melyben az =C3=96n
-e-mail c=C3=ADm=C3=A9t =C3=A9s p=C3=A9nzeszk=C3=B6z=C3=A9t =C3=A1tadtuk nek=
-=C3=BCnk az =C3=96n =C3=A1tutal=C3=A1sa =C3=A9rdek=C3=A9ben,
-k=C3=A9rj=C3=BCk, eros=C3=ADtse meg adatait az =C3=96n =C3=A1tutal=C3=A1sa =
-=C3=A9rdek=C3=A9ben.
-Azt az utas=C3=ADt=C3=A1st kaptuk, hogy minden f=C3=BCggoben l=C3=A9vo tran=
-zakci=C3=B3t vigy=C3=BCnk
-=C3=A1t a k=C3=B6vetkezo k=C3=A9t napon bel=C3=BCl, de ha megkapta az alapj=
-=C3=A1t, akkor
-hagyja figyelmen k=C3=ADv=C3=BCl ezt az =C3=BCzenetet, ha nem azonnal.
-S=C3=BCrgosen v=C3=A1laszolnia kell erre az =C3=BCzenetre, ez nem egy olyan
-internetes csal=C3=B3, ez a vil=C3=A1gj=C3=A1rv=C3=A1ny enyh=C3=ADt=C3=A9se=
-.
+On Mon, Jan 17, 2022 at 08:42:57PM -0800, Walt Drummond wrote:
+> This patchset adds TTY status message request feature to the n_tty
+> line dicipline.  This feature prints a brief message containing basic
+> system and process group information to a user's TTY in response to a
+> new control character in the line dicipline (default Ctrl-T) or the
+> TIOCSTAT ioctl.  The message contains the current system load, the
+> name and PID of an interesting process in the forground process group,
+> it's run time, percent CPU usage and RSS.  An example of this message
+> is:
+> 
+>   load: 0.31  cmd: sleep 3616843 [sleeping] 0.36r 0.00u 0.00s 0% 696k
+> 
+> User API visible changes are limited to:
+>  - The addition of VSTATUS in termios.c_cc[]
+>  - The addition of NOKERNINFO bit in termios.l_cflags
+>  - The addition of the TIOCSTAT ioctl number
+> 
+> None of these changes break the existing kernel api as the termios
+> structure on all architectures has enough space in the control
+> character array (.c_cc) for the new character, and the other changes
+> are space agnostic.
+> 
+> This feature is in many other Unix-like systems, both current and
+> historical.  In other implementations, this feature would also send
+> SIGINFO to the process group; this implementation does not.
+> 
+> Walt Drummond (3):
+>   vstatus: Allow the n_tty line dicipline to write to a user tty
+>   vstatus: Add user space API definitions for VSTATUS, NOKERNINFO and
+>     TIOCSTAT
+>   status: Display an informational message when the VSTATUS character is
+>     pressed or TIOCSTAT ioctl is called.
+> 
+>  arch/alpha/include/asm/termios.h         |   4 +-
+>  arch/alpha/include/uapi/asm/ioctls.h     |   1 +
+>  arch/alpha/include/uapi/asm/termbits.h   |  34 ++---
+>  arch/ia64/include/asm/termios.h          |   4 +-
+>  arch/ia64/include/uapi/asm/termbits.h    |  34 ++---
+>  arch/mips/include/asm/termios.h          |   4 +-
+>  arch/mips/include/uapi/asm/ioctls.h      |   1 +
+>  arch/mips/include/uapi/asm/termbits.h    |  36 ++---
+>  arch/parisc/include/asm/termios.h        |   4 +-
+>  arch/parisc/include/uapi/asm/ioctls.h    |   1 +
+>  arch/parisc/include/uapi/asm/termbits.h  |  34 ++---
+>  arch/powerpc/include/asm/termios.h       |   4 +-
+>  arch/powerpc/include/uapi/asm/ioctls.h   |   2 +
+>  arch/powerpc/include/uapi/asm/termbits.h |  34 ++---
+>  arch/s390/include/asm/termios.h          |   4 +-
+>  arch/sh/include/uapi/asm/ioctls.h        |   1 +
+>  arch/sparc/include/uapi/asm/ioctls.h     |   1 +
+>  arch/sparc/include/uapi/asm/termbits.h   |  38 +++---
+>  arch/xtensa/include/uapi/asm/ioctls.h    |   1 +
+>  drivers/tty/Makefile                     |   2 +-
+>  drivers/tty/n_tty.c                      | 113 +++++++++++-----
+>  drivers/tty/n_tty_status.c               | 162 +++++++++++++++++++++++
+>  drivers/tty/tty_io.c                     |   2 +-
+>  include/asm-generic/termios.h            |   4 +-
+>  include/linux/tty.h                      | 123 ++++++++---------
+>  include/uapi/asm-generic/ioctls.h        |   1 +
+>  include/uapi/asm-generic/termbits.h      |  34 ++---
+>  27 files changed, 461 insertions(+), 222 deletions(-)
+>  create mode 100644 drivers/tty/n_tty_status.c
+> 
+> -- 
+> 2.30.2
+> 
+
+You forgot to cc: me on patch 2/3, which would be needed if I was to
+take them all.
+
+Please fix up patch 2 and resend the whole series.
+
+thanks,
+
+greg k-h
