@@ -2,107 +2,79 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93AEC4A35FE
-	for <lists+sparclinux@lfdr.de>; Sun, 30 Jan 2022 12:36:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C648F4A366F
+	for <lists+sparclinux@lfdr.de>; Sun, 30 Jan 2022 14:01:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354668AbiA3Lgp (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 30 Jan 2022 06:36:45 -0500
-Received: from mout.kundenserver.de ([212.227.126.135]:41545 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354655AbiA3Lgo (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 30 Jan 2022 06:36:44 -0500
-Received: from mail-oi1-f182.google.com ([209.85.167.182]) by
- mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MkpjD-1mX4CN3OxT-00mKSp; Sun, 30 Jan 2022 12:36:41 +0100
-Received: by mail-oi1-f182.google.com with SMTP id t199so4771640oie.10;
-        Sun, 30 Jan 2022 03:36:39 -0800 (PST)
-X-Gm-Message-State: AOAM5314Ox/BEinCAcq0fPV8cd3GKJu05gn1BFnwkD48soO66bExzH/x
-        8G4HgiWAuS46vCuxnRu+Kuk18wAjT0tMlFKJAdM=
-X-Google-Smtp-Source: ABdhPJx02/VRPT+lHqxP4cUEJpaptHk8IWYJlq+IlqFxgivaG7fXilNMey5++lAxG71rgAwjbfrXcV/NpMPlqrdhT2Y=
-X-Received: by 2002:aca:f03:: with SMTP id 3mr10491465oip.102.1643542598876;
- Sun, 30 Jan 2022 03:36:38 -0800 (PST)
+        id S243231AbiA3NBl (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 30 Jan 2022 08:01:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36300 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344898AbiA3NBk (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 30 Jan 2022 08:01:40 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 262DAC061714
+        for <sparclinux@vger.kernel.org>; Sun, 30 Jan 2022 05:01:40 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id b9so21298398lfq.6
+        for <sparclinux@vger.kernel.org>; Sun, 30 Jan 2022 05:01:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=CgVuoVLIjuzcWj6MipLYqTK/6LkGdPV3lWacS8r3PgQ=;
+        b=C/rVKnQb6H/H/JklmWPRiwhDf+6uORiuz4VuCDUi03VLXbEYHHdaFPKKLi6OPbvuLE
+         TcgtPlzqctlm80U546AbgdiOkckrsQm3//ymGIJftAye7rVFwV9Shv4nH1EWnn3wnlzv
+         VYgOiBBuCq33yDu3h67XV+Zo/9dB8CkG9qqY3eIHNm2HYDiVk3kaxTQ0hLJqd/SDQtTp
+         icavx679JmVigDuuA68E5Dff0iS1Jcj6Bn7Jg7v5TRElWO/LVtfbsQ7S5e4dQi3PuzPy
+         rbJucCwAmh0WJLfgqdobkCYbpidPwQjFZOgNIie+eFj8CBTdo3OZbVWekM16U/I4l4Uw
+         3Bqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=CgVuoVLIjuzcWj6MipLYqTK/6LkGdPV3lWacS8r3PgQ=;
+        b=33kK5Nsfn+4wfQrRu0XH3I0xN1B+F1k19Gb5ETFxk2CPyin0FXheGDHJ6UvtmCEoFV
+         41Zm4MGfA2jpOwO+KWwKhRad5GZTyFu6mybKp4O+pj3KaT6VFY9tWGw0jSdsmaStmjkv
+         brtdW5n5sC0VbKSMtOdi6YwPyA0ghtduBaBvYZ9DB/m/R6kwOVOpSytt/kxU+LnRU++Q
+         vzyGnA8Ppwdplnz4czXbhWuG/rkSA1JQNct/Zfrz/5Ztmt8gXPaKEilvG56/ciHKqaMm
+         waSYquWRO4xIHqwUqdO3pTCRF6biJBCagi00zgX231EzXYC84XbgHQCtnd/pqtzimNCy
+         ZBJg==
+X-Gm-Message-State: AOAM532L4dYV6K4Y+958ZolOyGQrP2+APW5eWiE9Bfbl+QbNP+mGiQrH
+        D9XLLF8MC17zr3a2+aPey+5TmMU7yO/rFuwPVoc=
+X-Google-Smtp-Source: ABdhPJxwPHd8Q0oGODKZw6vSr+/dVu1ouO8GRPmqHtywErN3oaDEylgMJU+a5CauOYogn68FOJWnph4FI85Ni6TZ2tI=
+X-Received: by 2002:ac2:5961:: with SMTP id h1mr12636976lfp.593.1643547698200;
+ Sun, 30 Jan 2022 05:01:38 -0800 (PST)
 MIME-Version: 1.0
-References: <20220129121728.1079364-1-guoren@kernel.org> <20220129121728.1079364-7-guoren@kernel.org>
- <CAK8P3a3_kVB78-26sxdsEjb3MMcco6U55tc7siCBFZbJjyH6Sw@mail.gmail.com> <CAJF2gTThb8_-T0iOFVZoJrvZqeFvjfWB+AdFyOwtGhN9aG-MQQ@mail.gmail.com>
-In-Reply-To: <CAJF2gTThb8_-T0iOFVZoJrvZqeFvjfWB+AdFyOwtGhN9aG-MQQ@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Sun, 30 Jan 2022 12:36:22 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3A9AMyv7ABRpUgrTo3sg+SogoDSG5cudR87iK+PifU4g@mail.gmail.com>
-Message-ID: <CAK8P3a3A9AMyv7ABRpUgrTo3sg+SogoDSG5cudR87iK+PifU4g@mail.gmail.com>
-Subject: Re: [PATCH V4 06/17] riscv: compat: Add basic compat date type implementation
-To:     Guo Ren <guoren@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Anup Patel <anup@brainfault.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>,
-        Drew Fustini <drew@beagleboard.org>,
-        Wang Junqiang <wangjunqiang@iscas.ac.cn>,
-        Christoph Hellwig <hch@lst.de>,
-        Christoph Hellwig <hch@infradead.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-csky@vger.kernel.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Guo Ren <guoren@linux.alibaba.com>
+Received: by 2002:a05:6520:2b86:b0:197:d0f2:9c7e with HTTP; Sun, 30 Jan 2022
+ 05:01:37 -0800 (PST)
+Reply-To: emestfraccis@gmail.com
+From:   "Mr.Emest Fraccis Groth" <ayazshaffiq35@gmail.com>
+Date:   Sun, 30 Jan 2022 14:01:37 +0100
+Message-ID: <CA+Hy+87GwA0TakpDDsZuH+Bn09hYJjHPADeN+Jv-Jb13QtjNDQ@mail.gmail.com>
+Subject: Private And Highly Confidential Business
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:qz/9sgDzB4qJJ3+Q/QIzZPuO+2NXM74KRntuyUyYRQ6Q82LLX8q
- 5m29nqq7hI8NgdOZpUSJcmmhtHRIaNk2664vaZqMavt08hkwW5EB1iMikbNA0WaUy2hhFZW
- igASxu07SEzkAuRIeHvw81hHl/RErbhtZDDstsb1vbS0ZVogd98vpQsePnLahyxNWuQp2bZ
- fycIk65CN+YPTIDl0XsEg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:t6t6eCcbCi0=:Ildz/xss/+/vz9314TtGHP
- p5xqRwsnhPF3BEgXuo72mHm3SouliMJOMjEvy06dYOOOxKhBk7kIJ0NVWx12x28p4hTxr6nBJ
- am7cCa2hw3wgUy/feRRX3NWojL9VDQ5Fw6NCmV3r/YusXy22pT47+k5M6r5aUhfXEYqeqGSsw
- Y9v7pDKL2ALNfeLqHVGjT4xzKZ0WkLPJrDrK4A8GTNm6f3S1GOIhQ+BKj64VZHIf7i0mW5oT5
- TJO0Cj/t9V4yPslgS/NIlpkP47wHVodUff0PF11I1MEr2cq+bAWdt7qAnNxdiTW3F8Dffwk4R
- FFNyz+pPAAceRtzIU5QcvEuE0zp3WuI+fK6Wu5OG7NOBozw81m5nRGjvyZZX++JKM1ci+hQ3S
- /JfLmJB5sfe+mAneuIluhOlS7o2CuXVtM/P0wyK5v12Z6Uexb8RDLS60CA7x6Vo9iKW50d2OG
- B1KuYUEbfT9nB92Pgpv2ozKCKfBB7Vo0szwOZ3jRRTYXVKeH8Q/us0q3fki7ugaTe0y0FdV2G
- m3gdHN6Y0kJAuzIJttE3nKkrV3CevGA4sbuPZqCJz6J6LXS0RD9wqDM/HyaBgb0rqPUQAzkqV
- htNDhdQuRIYl+kgf6GTl/e8rjsAa1Dj7QMwrjq1MFCIQsNC80wG05KAdWIumyb8uz2e5Z3l/D
- 6XGRsL33Gd0/9s/3IQbzaOnMmwRlLOE09sqaD3njZZ1Yd5eEwbgqcKke7tAM8iRlx+EridEVX
- eYpBI/r5xhKQh9yl+dcvKf5UrxnVn1xOXlztxuXdcpXaJ4jdnIG21kYM4naOoPbo/60N6dMvP
- 8dcM6MZQKj3xzQ4TEqXkBGxkqXUBxDLeBRXF+tmuq6oFu4Dyn0=
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun, Jan 30, 2022 at 6:47 AM Guo Ren <guoren@kernel.org> wrote:
->
-> On Sun, Jan 30, 2022 at 5:56 AM Arnd Bergmann <arnd@arndb.de> wrote:
-> >
-> > On Sat, Jan 29, 2022 at 1:17 PM <guoren@kernel.org> wrote:
-> > > +
-> > > +#define COMPAT_RLIM_INFINITY   0x7fffffff
-> > >
-> > > +#define F_GETLK64      12
-> > > +#define F_SETLK64      13
-> > > +#define F_SETLKW64     14
-> >
-> > These now come from the generic definitions I think. The flock definitions
-> > are just the normal ones,
-> Yes, it could be removed after Christoph Hellwig's patch merged.
+I am so sorry for sending you this unsolicited and unexpected email.
+I actually got your contact from your country website and l decided to
+contact you directly about this business venture.
 
-Rgiht, I keep forgetting that this is a separate series, so this is fine.
 
-> > and AFAICT the RLIM_INIFINITY definition here
-> > is actually wrong and should be the default 0xffffffffu to match the
-> > native (~0UL) definition.
-> Yes, native rv32 used ~0UL, although its task_size is only 2.4GB.
+I am contacting you in good faith and this business investment
+proposal will be of mutual benefit for us. I have a business proposal
+in a huge sum of (Eight Hundred & Twenty Million United States
+Dollars} to be transferred to any safe account with your assistance.
 
-The rlimit range has very little to do with the virtual memory address
-limits, it is used for a number of other things that are typically more
-limited in practice.
 
-> I would remove #define COMPAT_RLIM_INFINITY   0x7fffffff
+Contact me back via my email (emestfraccis@gmail.com) if you are
+interested in this business investment proposal and if you can be
+trusted for further briefing and details.
 
-Ok.
 
-       Arnd
+I look forward to hearing from you.
+
+
+Kind Regards.
+
+Mr.Emest Fraccis Groth
