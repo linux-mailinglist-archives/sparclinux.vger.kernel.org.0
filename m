@@ -2,90 +2,74 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 705E54A478C
-	for <lists+sparclinux@lfdr.de>; Mon, 31 Jan 2022 13:51:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 297894A47AE
+	for <lists+sparclinux@lfdr.de>; Mon, 31 Jan 2022 14:00:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244534AbiAaMv5 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 31 Jan 2022 07:51:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
+        id S1378445AbiAaNAj (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 31 Jan 2022 08:00:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240585AbiAaMv5 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 31 Jan 2022 07:51:57 -0500
-Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9EE8C061714
-        for <sparclinux@vger.kernel.org>; Mon, 31 Jan 2022 04:51:56 -0800 (PST)
-Received: by mail-yb1-xb42.google.com with SMTP id j2so26847687ybu.0
-        for <sparclinux@vger.kernel.org>; Mon, 31 Jan 2022 04:51:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=RcCyF58LaRxi/j1nHAT0ApLeXmQ9s66f3iMVqhPacvY=;
-        b=pYHSxGQuCcGuw7T47c5vqkMkB9ZIQbw6zUZ3HB+YSuOiHzrZSq6BNcQpVFeJrNHKDW
-         CCfyfwvPOyCcmQ2GzjqHaGEwmBXpzJ0zbbJiSyNjQVMplWNbYfBXU9qRRXWavrth1UMF
-         D38Kzc2T5eJjHRgeOwMCib1t4cI1bW8hGb6zbWtYZZaeSjNYoyG5a8w87po0aaK4AMG1
-         8pkdnVKZEQLb7ZSWo5/JZPBXDhvEKnaT/Bi9P0OCIQzezOWXroiMmI4ITqW3++GBM7nR
-         dRJGBRjr2FgFaGC1VwIiTMdGNn0LqIL2vLWS/c/H1+aend2UAAqgcBeqO9HLPPcEvMgZ
-         jusw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=RcCyF58LaRxi/j1nHAT0ApLeXmQ9s66f3iMVqhPacvY=;
-        b=7MZtywj4lLOXuEFkG4jzy5KUaMbk+mn6tnVdGzWNOvSFTlJsh7MOsVb/uTTm3v5BO9
-         CDwJGEawTny89SK36XosJTvvdR4dPydk/Qb6/TxduICs2rqu6oeNLWzL5lPitC21pzvm
-         KWliOnjHK6+V7EWUVBVzg/IhHWY9n9XoGciwY0rauCSdorgS9s5BHr3eSTrCfq9E2fYR
-         9tqXz83p4bco9WQPim8ecBGmEnNmXXIcOFxiFoWgR+SCQOcbPrLV+65sRTWGD+G4mRRl
-         vRtBZHU/dnw0F+duS7w/vns5s3y9c5qFYTnHcyH/u7nG+cr4sWOSDbV9MOjBf2cfG65E
-         BmFA==
-X-Gm-Message-State: AOAM532/Z97vXpLaxWOxUHv4f+bZMyr7fRe8xk27q1pqRN/Qp7v8bTI0
-        6cTAenl1GFvoUqRn/HwSN4PxEvcsLwHAYPNzvBE=
-X-Google-Smtp-Source: ABdhPJzZpt32gTLTlG/GVlCaSLPcHz1Vo3a3R4HRaIyPVdAPaE50kzWP/IMI52gaYyitCQanMXM/waxmJdsRKyvLeuA=
-X-Received: by 2002:a25:50cb:: with SMTP id e194mr27373770ybb.541.1643633516121;
- Mon, 31 Jan 2022 04:51:56 -0800 (PST)
+        with ESMTP id S1378383AbiAaNAi (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 31 Jan 2022 08:00:38 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C2AC06173B;
+        Mon, 31 Jan 2022 05:00:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=xQCGsDUYFp6pvF7xS5natfKk/35QMnRgqEC4IjicK74=; b=mHJI8Uwd/igPBdxzDh546BJtm0
+        3P8015UYpCjufDCns11sMr4x4XUTUoYmfCaooJOyET6T9puzam2oqO0WypPYwq2pKdcSuaPipjLiW
+        B54WN/m8CyjVD7EkWHu3Vcr4EKgt111QlQLPPpBGftjmVPXXBsrYAJm+SBrF6xwNxgjYaz6lsyyjl
+        OqMfckwxHhGtAK/jiXrwhjJ2LjgfPq0zeoIXQoShFWBQ+NXVmVKtZ3hKGJjxPERwP1qd2aL46jaf/
+        cSpxFYoFfUeKlCrE1Br5Do3/1Mq7ACbodTF9yJVCqzUUsSBFaHW2sQgwMV0hHULJwCSHU8zuCfWr+
+        /Yet86BQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nEWIG-009PaF-Ds; Mon, 31 Jan 2022 13:00:28 +0000
+Date:   Mon, 31 Jan 2022 05:00:28 -0800
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Christoph Hellwig <hch@infradead.org>, Guo Ren <guoren@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Anup Patel <anup@brainfault.org>,
+        gregkh <gregkh@linuxfoundation.org>,
+        liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>,
+        Drew Fustini <drew@beagleboard.org>,
+        Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-csky@vger.kernel.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Guo Ren <guoren@linux.alibaba.com>,
+        Anup Patel <anup.patel@wdc.com>
+Subject: Re: [PATCH V4 05/17] riscv: Fixup difference with defconfig
+Message-ID: <YffdbErmAjAWYuD9@infradead.org>
+References: <20220129121728.1079364-1-guoren@kernel.org>
+ <20220129121728.1079364-6-guoren@kernel.org>
+ <YffUqErSVDgbGLTu@infradead.org>
+ <CAK8P3a1jZyVBW70K6_u3mvXYNowV4DTBxivKc2L=HbRK8SgRXg@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7108:2bc9:0:0:0:0 with HTTP; Mon, 31 Jan 2022 04:51:55
- -0800 (PST)
-Reply-To: westerunion909@gmail.com
-From:   "Antonia Lloyd." <anthonylloydatmxxx08@gmail.com>
-Date:   Mon, 31 Jan 2022 04:51:55 -0800
-Message-ID: <CAKm0ww5pXRLb-kA24ioEWBgieM3RRVZYetJ1muXxR9wK+J_WCA@mail.gmail.com>
-Subject: Dear Email ID Owner.(USD$4000 IMF COMPENSATION FUND TO PICK UP TODAY).
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a1jZyVBW70K6_u3mvXYNowV4DTBxivKc2L=HbRK8SgRXg@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dear Email ID Owner.
+On Mon, Jan 31, 2022 at 01:48:58PM +0100, Arnd Bergmann wrote:
+> I thought that is what the patch does, there is already the normal 64-bit
+> defconfig, and the new makefile target makes this shared with 32-bit
+> to prevent them from diverging again.
 
-The IMF is compensating all the email address that was funds as one of
-the ward win Victims and your email address and your name is among the
-listed one of approved to pay the sum of $3.6 million U.S Dollars. We
-have concluded to effect your own payment through Western Union Money
-Transfer for easy pick-up of those funds in good condition,$4000 twice
-daily,till the $3.6 million is completely transferred to you.We now
-need your information where we will be sending the funds,such
-as;Receiver name(Your full Name)address and phone number.Contact
-Western Union agent with this Email: ( westerunion995@gmail.com  ) for
-your payment fund.
-
-Ms.Maria Zatto
-E-mail:westerunion995@gmail.com
-Telephone: +229 682 97 169
-
-Contact Ms.Maria,immediately you get this mail through western union
-email address above to enable her speed-up.your payment and release
-the $4000 dollars MTCN today for you to pick up the payment OK.
-
-You are expected to provide us with the details as prescribed below to
-enable safe and easy release of your funds today.
-
-(1)Your Full name:
-(2)Your Phone number:
-(3)Your Country:
-(4)Your Age:
-
-Thank you,
-Dr.Antonia Lloyd.
-Contact Dir.Western Union Money Transfer,
-Cotonou-Benin Republic.
+I ment using a common fragment and the deriving both 32-bit and 64-bit
+configs from it. The 64-bit specific fragment will be empty for now,
+but we will sooner or later have an option that can only go into the
+64-bit defconfig.
