@@ -2,64 +2,25 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E70634B5B0E
-	for <lists+sparclinux@lfdr.de>; Mon, 14 Feb 2022 21:40:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFAC04B5B45
+	for <lists+sparclinux@lfdr.de>; Mon, 14 Feb 2022 21:52:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbiBNUPM (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 14 Feb 2022 15:15:12 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:40656 "EHLO
+        id S229707AbiBNUqZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 14 Feb 2022 15:46:25 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:39114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbiBNUPM (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 14 Feb 2022 15:15:12 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 239421C9BEE
-        for <sparclinux@vger.kernel.org>; Mon, 14 Feb 2022 12:14:56 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id f37so6557579lfv.8
-        for <sparclinux@vger.kernel.org>; Mon, 14 Feb 2022 12:14:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dgwPr3jWEXZiHeYJRBUfKrH3C5wLRAnP7Z6R5s1EJ5U=;
-        b=ZcumWtnhggjMFDUHhywZOsPSWocj5WFiFD4wxX4meGi3Jv+FEek8bAx8wm544tPFuD
-         FZMy/4sQc4BwvneObDdXEv1mNtlI8GPACMt1JW8whp1hkRcRU1/uCicaO7g7UXSaSO+q
-         JQ0jz81cHBjFl3QlKdIkLJ7hR07DlS4kmaNNI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dgwPr3jWEXZiHeYJRBUfKrH3C5wLRAnP7Z6R5s1EJ5U=;
-        b=nLJ66Y32+oABrWGdjMqqx/rGVcr86cqdYi+DH7nvj/7ct4gaSlSKil1ZaRsJKY1744
-         2TnKmKxu7fIYQo0MbvmljAxujbztt0X00PiUXOGlMc609x0pFh3zDVihISSvHkIL5J5M
-         Cz44rVT0R6Zo4pgVmNCa9nOAokA2p5XGbpuQnge4LcyEzgvWQQza6Ehkgr6JgMQQvpiq
-         aZpK4J3KWN4Ze4FxrV+b0YvwU+IRWR75ZDy9959HEtjQcNcCTk/VZJZZOKRPy5p1qhc6
-         LTU2rryPp05gZyBQ97c/e8EVuU1p9iIWiYvcGC0pHAsBYtFOtzaCVtyuJT+q70FFvsI4
-         VzcQ==
-X-Gm-Message-State: AOAM533dXTMU6/HSEuzm18LZv1wFEKTX4Tc02XC96NHCDDf7F9glU7uG
-        3WKTRNHHRVFE/IgytEjPIkpz62ckDHC+Ibmyzg4=
-X-Google-Smtp-Source: ABdhPJypbEyZ32BTnBjp4qNnkjaB9eDteBZZVEDFUOpH0bnVl2embLOuLhogm6RMtqDnY43jNNZTKg==
-X-Received: by 2002:a05:6512:2506:: with SMTP id be6mr508099lfb.48.1644868895366;
-        Mon, 14 Feb 2022 12:01:35 -0800 (PST)
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
-        by smtp.gmail.com with ESMTPSA id 8sm1077643lfq.18.2022.02.14.12.01.21
-        for <sparclinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Feb 2022 12:01:32 -0800 (PST)
-Received: by mail-lj1-f170.google.com with SMTP id a42so8428376ljq.13
-        for <sparclinux@vger.kernel.org>; Mon, 14 Feb 2022 12:01:21 -0800 (PST)
-X-Received: by 2002:a2e:a231:: with SMTP id i17mr205093ljm.443.1644868881602;
- Mon, 14 Feb 2022 12:01:21 -0800 (PST)
-MIME-Version: 1.0
-References: <20220214163452.1568807-1-arnd@kernel.org> <20220214163452.1568807-5-arnd@kernel.org>
- <YgqLFYqIqkIsNC92@infradead.org> <CAK8P3a1F3JaYaJPy9bSCG1+YV6EN05PE0DbwpD_GT1qRwFSJ-w@mail.gmail.com>
-In-Reply-To: <CAK8P3a1F3JaYaJPy9bSCG1+YV6EN05PE0DbwpD_GT1qRwFSJ-w@mail.gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 14 Feb 2022 12:01:05 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whq6_Nh3cB3FieP481VcRyCu69X3=wO1yLHGmcZEj69SA@mail.gmail.com>
-Message-ID: <CAHk-=whq6_Nh3cB3FieP481VcRyCu69X3=wO1yLHGmcZEj69SA@mail.gmail.com>
-Subject: Re: [PATCH 04/14] x86: use more conventional access_ok() definition
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Christoph Hellwig <hch@infradead.org>,
+        with ESMTP id S229697AbiBNUp6 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 14 Feb 2022 15:45:58 -0500
+Received: from zeniv-ca.linux.org.uk (zeniv-ca.linux.org.uk [IPv6:2607:5300:60:148a::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 076FE23A1BA;
+        Mon, 14 Feb 2022 12:44:00 -0800 (PST)
+Received: from viro by zeniv-ca.linux.org.uk with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nJhmV-001mcz-Ba; Mon, 14 Feb 2022 20:17:07 +0000
+Date:   Mon, 14 Feb 2022 20:17:07 +0000
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
         Christoph Hellwig <hch@lst.de>,
         linux-arch <linux-arch@vger.kernel.org>,
         Linux-MM <linux-mm@kvack.org>,
@@ -79,7 +40,7 @@ Cc:     Christoph Hellwig <hch@infradead.org>,
         linux-s390 <linux-s390@vger.kernel.org>,
         Brian Cain <bcain@codeaurora.org>,
         Helge Deller <deller@gmx.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
         Russell King - ARM Linux <linux@armlinux.org.uk>,
         linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
@@ -105,39 +66,42 @@ Cc:     Christoph Hellwig <hch@infradead.org>,
         Richard Weinberger <richard@nod.at>,
         Andrew Morton <akpm@linux-foundation.org>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        David Miller <davem@davemloft.net>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        David Miller <davem@davemloft.net>
+Subject: Re: [PATCH 04/14] x86: use more conventional access_ok() definition
+Message-ID: <Ygq4wy9fikDYmuHU@zeniv-ca.linux.org.uk>
+References: <20220214163452.1568807-1-arnd@kernel.org>
+ <20220214163452.1568807-5-arnd@kernel.org>
+ <YgqLFYqIqkIsNC92@infradead.org>
+ <CAK8P3a1F3JaYaJPy9bSCG1+YV6EN05PE0DbwpD_GT1qRwFSJ-w@mail.gmail.com>
+ <CAHk-=whq6_Nh3cB3FieP481VcRyCu69X3=wO1yLHGmcZEj69SA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whq6_Nh3cB3FieP481VcRyCu69X3=wO1yLHGmcZEj69SA@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Feb 14, 2022 at 11:46 AM Arnd Bergmann <arnd@kernel.org> wrote:
->
-> As Al pointed out, they turned out to be necessary on sparc64, but the only
-> definitions are on sparc64 and x86, so it's possible that they serve a similar
-> purpose here, in which case changing the limit from TASK_SIZE to
-> TASK_SIZE_MAX is probably wrong as well.
+On Mon, Feb 14, 2022 at 12:01:05PM -0800, Linus Torvalds wrote:
+> On Mon, Feb 14, 2022 at 11:46 AM Arnd Bergmann <arnd@kernel.org> wrote:
+> >
+> > As Al pointed out, they turned out to be necessary on sparc64, but the only
+> > definitions are on sparc64 and x86, so it's possible that they serve a similar
+> > purpose here, in which case changing the limit from TASK_SIZE to
+> > TASK_SIZE_MAX is probably wrong as well.
+> 
+> x86-64 has always(*) used TASK_SIZE_MAX for access_ok(), and the
+> get_user() assembler implementation does the same.
+> 
+> I think any __range_not_ok() users that use TASK_SIZE are entirely
+> historical, and should be just fixed.
 
-x86-64 has always(*) used TASK_SIZE_MAX for access_ok(), and the
-get_user() assembler implementation does the same.
-
-I think any __range_not_ok() users that use TASK_SIZE are entirely
-historical, and should be just fixed.
-
-                 Linus
-
-(*) And by "always" I mean "as far back as I bothered to go". In the
-2.6.12 git import, we had
-
-    #define USER_DS          MAKE_MM_SEG(PAGE_OFFSET)
-
-so the user access limit was actually not really TASK_SIZE_MAX at all,
-but the beginning of the kernel mapping, which on x86-64 is much much
-higher.
+IIRC, that was mostly userland stack trace collection in perf.
+I'll try to dig in archives and see what shows up - it's been
+a while ago...
