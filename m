@@ -2,53 +2,40 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA15E4B7666
-	for <lists+sparclinux@lfdr.de>; Tue, 15 Feb 2022 21:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB004B77A3
+	for <lists+sparclinux@lfdr.de>; Tue, 15 Feb 2022 21:50:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242960AbiBOSR5 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 15 Feb 2022 13:17:57 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34876 "EHLO
+        id S243642AbiBOTUG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 15 Feb 2022 14:20:06 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242971AbiBOSR4 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 15 Feb 2022 13:17:56 -0500
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEBBE119F75
-        for <sparclinux@vger.kernel.org>; Tue, 15 Feb 2022 10:17:42 -0800 (PST)
-Received: by mail-pj1-x102e.google.com with SMTP id t14-20020a17090a3e4e00b001b8f6032d96so2847657pjm.2
-        for <sparclinux@vger.kernel.org>; Tue, 15 Feb 2022 10:17:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=rU/cr+2YS83r8ZzfG0ihHyfke5lY7dzNO33vRqwTRo0=;
-        b=BbY3zUMbpsKVLuD6QiFaFpnxej58wpxQPVVGisDcf+K+2coTsFmZNXGoWqBeKoLb1x
-         3ZptFg7el6LpqeSuHR1QjwuSCHfpkEX/T+XcjAHpaQzkvx2kHT7d0+kYGoaayuMfQhPV
-         CAs5kcpK7DDzn/NDlTFukbq1xe316LjUYcWLM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=rU/cr+2YS83r8ZzfG0ihHyfke5lY7dzNO33vRqwTRo0=;
-        b=fjjCOBerIiIRx3P0dgFxH+3sQAE7x8+QJS+ICZY+ck3BfDJQ2DV6mSd+/uwI0cmAft
-         6ICzcZXa7pO2flaziv0L8m602QNTD1utlZnlVJq061gYh7GYq5blluziho5USe4ZokZK
-         xEVLrVVEsinTkf2SxQdWQBrFO6LszF6L0wtMQPO+YjGfz30s7ZVS7DF6oEleNrCSaggV
-         +Xyw1OckaO/wcRHn47PD4GbGRod6aOwxa1hel+FRvInWi1yk9s2/T9v25BdEHSqfWbi7
-         jV0LadhaYzinXAPGaBWA6S5X9WRnee4I/d7tN+dUjSfcIWMi5EoS8sPl2yKCNAdUgZtv
-         o0YA==
-X-Gm-Message-State: AOAM530IQkFhITRtFk4ufEG11jScEA3yu13dG02y/hBSZdwTyNuQxSPb
-        59kT3LQkGt8i5pQDUjL6Mn53fQ==
-X-Google-Smtp-Source: ABdhPJwjJJkj0fC2gO+FdGjnaisWCk9FKkCf0qazg7PUuY4rrjoW+egyeLOWB+yCEr/MI5qa+9+dbA==
-X-Received: by 2002:a17:902:eb8f:: with SMTP id q15mr235036plg.67.1644949062021;
-        Tue, 15 Feb 2022 10:17:42 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id a186sm3157627pgc.70.2022.02.15.10.17.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Feb 2022 10:17:41 -0800 (PST)
-Date:   Tue, 15 Feb 2022 10:17:40 -0800
-From:   Kees Cook <keescook@chromium.org>
+        with ESMTP id S243580AbiBOTTv (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 15 Feb 2022 14:19:51 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CA2F10DA4E;
+        Tue, 15 Feb 2022 11:19:41 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C0F461773;
+        Tue, 15 Feb 2022 19:19:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76B9C340EB;
+        Tue, 15 Feb 2022 19:19:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644952780;
+        bh=RxAYLCqbUWlxjV9GFahzPwnkRBYKU9aVJMxo+INb+K8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oa82FKq0/HZo1Hieccox0xhuEOltsBpyNCb/oKWHfz9JimsfI5qrPFHosVG+Hw9KD
+         FqjMZvJ5BquXlsEM1IUTOugfyhHJjbL+NoooCvHgJp/wzFU4N6mJ3/+qfEy0h1bhbj
+         fv9Bo5w4LHHM1g+pM9OlS1+FV6MX0/N+Aa88X5OzELy65s1Xs5Q/258d9WBNoUp0fb
+         HMGG+vm/A6PvbbvtXJ00MB45hauRqyRZCekvmCmXYRktZmaEtd9qOIjTryp50cyo1/
+         0DT+ajNam/uql+1lfstz9xW/6FSdwogqLIyHb8bwuPl3b0gveaOfCnpwJkPBK0mL1q
+         tCTR2Et3rHU/g==
+Date:   Tue, 15 Feb 2022 21:19:29 +0200
+From:   Leon Romanovsky <leon@kernel.org>
 To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     GR-QLogic-Storage-Upstream@marvell.com,
+Cc:     Kees Cook <keescook@chromium.org>,
+        GR-QLogic-Storage-Upstream@marvell.com,
         linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
@@ -70,16 +57,18 @@ Cc:     GR-QLogic-Storage-Upstream@marvell.com,
         linux-perf-users@vger.kernel.org, linux-hardening@vger.kernel.org
 Subject: Re: [PATCH][next] treewide: Replace zero-length arrays with
  flexible-array members
-Message-ID: <202202151016.C0471D6E@keescook>
+Message-ID: <Ygv8wY75hNqS7zO6@unreal>
 References: <20220215174743.GA878920@embeddedor>
+ <202202151016.C0471D6E@keescook>
+ <20220215192110.GA883653@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220215174743.GA878920@embeddedor>
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+In-Reply-To: <20220215192110.GA883653@embeddedor>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -87,34 +76,45 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Feb 15, 2022 at 11:47:43AM -0600, Gustavo A. R. Silva wrote:
-> There is a regular need in the kernel to provide a way to declare
-> having a dynamically sized set of trailing elements in a structure.
-> Kernel code should always use “flexible array members”[1] for these
-> cases. The older style of one-element or zero-length arrays should
-> no longer be used[2].
+On Tue, Feb 15, 2022 at 01:21:10PM -0600, Gustavo A. R. Silva wrote:
+> On Tue, Feb 15, 2022 at 10:17:40AM -0800, Kees Cook wrote:
+> > On Tue, Feb 15, 2022 at 11:47:43AM -0600, Gustavo A. R. Silva wrote:
+> > > There is a regular need in the kernel to provide a way to declare
+> > > having a dynamically sized set of trailing elements in a structure.
+> > > Kernel code should always use “flexible array members”[1] for these
+> > > cases. The older style of one-element or zero-length arrays should
+> > > no longer be used[2].
+> > > 
+> > > This code was transformed with the help of Coccinelle:
+> > > (next-20220214$ spatch --jobs $(getconf _NPROCESSORS_ONLN) --sp-file script.cocci --include-headers --dir . > output.patch)
+> > > 
+> > > @@
+> > > identifier S, member, array;
+> > > type T1, T2;
+> > > @@
+> > > 
+> > > struct S {
+> > >   ...
+> > >   T1 member;
+> > >   T2 array[
+> > > - 0
+> > >   ];
+> > > };
+> > 
+> > These all look trivially correct to me. Only two didn't have the end of
+> > the struct visible in the patch, and checking those showed them to be
+> > trailing members as well, so:
+> > 
+> > Reviewed-by: Kees Cook <keescook@chromium.org>
 > 
-> This code was transformed with the help of Coccinelle:
-> (next-20220214$ spatch --jobs $(getconf _NPROCESSORS_ONLN) --sp-file script.cocci --include-headers --dir . > output.patch)
+> I'll add this to my -next tree.
+
+I would like to ask you to send mlx5 patch separately to netdev. We are working
+to delete that file completely and prefer to avoid from unnecessary merge conflicts.
+
+Thanks
+
 > 
-> @@
-> identifier S, member, array;
-> type T1, T2;
-> @@
-> 
-> struct S {
->   ...
->   T1 member;
->   T2 array[
-> - 0
->   ];
-> };
-
-These all look trivially correct to me. Only two didn't have the end of
-the struct visible in the patch, and checking those showed them to be
-trailing members as well, so:
-
-Reviewed-by: Kees Cook <keescook@chromium.org>
-
--- 
-Kees Cook
+> Thanks!
+> --
+> Gustavo
