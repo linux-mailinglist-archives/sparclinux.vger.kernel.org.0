@@ -2,152 +2,70 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93E9B4BBEFB
-	for <lists+sparclinux@lfdr.de>; Fri, 18 Feb 2022 19:07:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 229434BCFD9
+	for <lists+sparclinux@lfdr.de>; Sun, 20 Feb 2022 17:27:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238960AbiBRSHi (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 18 Feb 2022 13:07:38 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41808 "EHLO
+        id S239743AbiBTQ1x (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 20 Feb 2022 11:27:53 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238937AbiBRSHh (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 18 Feb 2022 13:07:37 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AD0B1DA0E1
-        for <sparclinux@vger.kernel.org>; Fri, 18 Feb 2022 10:07:20 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id c6so14108465edk.12
-        for <sparclinux@vger.kernel.org>; Fri, 18 Feb 2022 10:07:20 -0800 (PST)
+        with ESMTP id S235473AbiBTQ1x (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 20 Feb 2022 11:27:53 -0500
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C0D447043
+        for <sparclinux@vger.kernel.org>; Sun, 20 Feb 2022 08:27:31 -0800 (PST)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-2d68d519a33so113139277b3.7
+        for <sparclinux@vger.kernel.org>; Sun, 20 Feb 2022 08:27:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3DIqXxPmp6dtbTijOx2KTFQ/AdtfYUTWecKVh7q3dDI=;
-        b=5c/qRto3YK3Y6/Rhnnpp4RzKmf8QhiKseObhkqXIpnLfhpnv2ua8Z7YCExbmjSYUCG
-         SbBSycxSpm4FRe5zOaxst92xyRDLRie0B4d4p8x0W6snNr+dG6MghxLfcakTWMQA17Pf
-         gOp7JS9gIpdJumtDaMv9IluyX8dB5LI5eLR/YC2U+D7T5N3aQr9NOYHAOP982E02xanw
-         SC1uTLhbyKEp3+LiMa1bFSquyveVGLxTCPf/eSvmTiEZzxEI+wIe4AMdv5VgRD2GYf6G
-         kO3gnVVxKK1wWuKxjcQ5nhLyDgmj/c1nxTJoqfRQTmuVCBNlEZ4IpVOo74LURbiOVsEg
-         CBWA==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=5+oocItIt02OkdY+m5813Z7pgg3BMDr/tC5w+npdJZg=;
+        b=KDPfdK4oyA6zrP/PP71ScaB2wCG/7fS1seAchB3v857l/RtWUD2sFZ0MDol3AJeKHy
+         oqw7FqCIQsduWEecetKDBMiwcG3tZLhc1zXSN0SoiugwWLsuHMMtN44kf4lefsGF4heq
+         vDmZglqwWmNp6RFjZuqAZVgN60+7vKvG9KdNpDc9JEfZrD1IUUBCyRfLC7u6/112iWAx
+         ICCd+v4EXjh5bSqIKXPPKXfurXaxHwRsTStF5wa0mXCOv1JX03QpwuO+R7+aXRUC5tlR
+         Z9LQUBQw5qLSnXury1tXuRHrwjK3tJpt46UF9hj0PFO1DeiWV7YMb1KyPdjF+judDJEN
+         MMrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3DIqXxPmp6dtbTijOx2KTFQ/AdtfYUTWecKVh7q3dDI=;
-        b=X8rw0sZ82SHk3a7yjwJt7lKcT5dbKzrmLwdjHm1zxR3Lue/VKTxfKBqRFysiV+lVfY
-         V5bwA9+6ZNfCUee/Y1j5b7zgfqag4Q8FYnVL8Xs8Be5yH1Oh9O1z21rc1Ehduldk5kjS
-         OVfEteFR+zGZgIE9NkUDGmfMUQ23wHj2ZbCTpF5ajOdLo6qs4VLU+W32Jjc9ABbUobiX
-         TnzXLyx7KGt1dBYIxcH8SA29j2ipljN2JRb4asIawhIqqdCXfTpuRwz2ooP/zFXhaWJy
-         XxU+nhoQAMvAcyLGfx9DizwPaEjdabkAkQyAfFTithWuaiVOHawR9bv3991nZpRV+3M0
-         iKuQ==
-X-Gm-Message-State: AOAM531n+ADMHe80EwVJALgj/VSTG0v/q0PVn3OVv+23QCO5v9Hyrthr
-        U3ZhI++OjJFPAVnkaJ8J6DGq5Jwx8fbHuYe7vUvOgQ==
-X-Google-Smtp-Source: ABdhPJzKi9/dAquBFvy+ZlpESpcVBT1I3X4XtLJClo2SaEqFpqb8kdqwnL9Fphl8e/qcsjqeDfp/tX4JIrAspWajnck=
-X-Received: by 2002:a05:6402:430f:b0:410:a082:c6da with SMTP id
- m15-20020a056402430f00b00410a082c6damr9386454edc.438.1645207638871; Fri, 18
- Feb 2022 10:07:18 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=5+oocItIt02OkdY+m5813Z7pgg3BMDr/tC5w+npdJZg=;
+        b=7pTYVuhN282L9ovkFJZ5LBZAzs8wXVdfio3pn6LgNCQkAzERRzV9ow9S90rnvFlqV+
+         h0FYjFZyiL5LgS4foG8FqJFeH7Kc4uV93uXMouL54qTmcfJCw6unBznhWaom7VZq2VCK
+         8gaIPJwlBauxlV2HLIRqbcnRfPvSHZfTZtRZ33voBq2YqIn2x6owyxMv+626VEFqGENh
+         zfkLNboc97u5WnwdZFbGXQR8eRS6rGVrusgO6U0mrS0tcWVkUB5YfMkMbwNd+HL4d00m
+         GWHOBzXqoal5yryVOozRk+iixxHxUKwnOSHCxAOC151YM7wmoGUhiBDNPm0KWiglbRCz
+         fUGw==
+X-Gm-Message-State: AOAM532fne9R+apb+OW5PzC47OdS1hixDT0InSnsgKXkrWWq81z/iJL6
+        KcLL7xYempJmv/7FbJ7wdaxAazBWThaOFTceFDk=
+X-Google-Smtp-Source: ABdhPJz82/XYy2TvnjauS7apO1VrtCslY+sQ9cO1ycBYRJN6zNKAq8CRbT8XLhkaV6r6OMt6OqLafhZay7Qn5VIQyNU=
+X-Received: by 2002:a0d:fb45:0:b0:2d0:d09a:576c with SMTP id
+ l66-20020a0dfb45000000b002d0d09a576cmr16334943ywf.447.1645374450737; Sun, 20
+ Feb 2022 08:27:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20220216131332.1489939-1-arnd@kernel.org> <20220216131332.1489939-14-arnd@kernel.org>
- <CALCETrVOvYPN4_6hS8wpm2v9bGZupZ5x4=vZAseG57OUgvLGfw@mail.gmail.com> <93a1ee797e9d4f789dff85a3c0f0c232@AcuMS.aculab.com>
-In-Reply-To: <93a1ee797e9d4f789dff85a3c0f0c232@AcuMS.aculab.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Fri, 18 Feb 2022 10:07:07 -0800
-Message-ID: <CALCETrWTB65vJXsQTPd_o7BRoSU=uqD0pFzKS+r4YgDuiCCqaQ@mail.gmail.com>
-Subject: Re: [PATCH v2 13/18] uaccess: generalize access_ok()
-To:     David Laight <David.Laight@aculab.com>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
-        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-        "will@kernel.org" <will@kernel.org>,
-        "guoren@kernel.org" <guoren@kernel.org>,
-        "bcain@codeaurora.org" <bcain@codeaurora.org>,
-        "geert@linux-m68k.org" <geert@linux-m68k.org>,
-        "monstr@monstr.eu" <monstr@monstr.eu>,
-        "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
-        "nickhu@andestech.com" <nickhu@andestech.com>,
-        "green.hu@gmail.com" <green.hu@gmail.com>,
-        "dinguyen@kernel.org" <dinguyen@kernel.org>,
-        "shorne@gmail.com" <shorne@gmail.com>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "hca@linux.ibm.com" <hca@linux.ibm.com>,
-        "dalias@libc.org" <dalias@libc.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "richard@nod.at" <richard@nod.at>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "jcmvbkbc@gmail.com" <jcmvbkbc@gmail.com>,
-        "ebiederm@xmission.com" <ebiederm@xmission.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "ardb@kernel.org" <ardb@kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-snps-arc@lists.infradead.org" 
-        <linux-snps-arc@lists.infradead.org>,
-        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>
+Received: by 2002:a05:7000:a122:0:0:0:0 with HTTP; Sun, 20 Feb 2022 08:27:30
+ -0800 (PST)
+Reply-To: fatibaro01@yahoo.com
+From:   Fatimah Baro <fatsano@gmail.com>
+Date:   Sun, 20 Feb 2022 17:27:30 +0100
+Message-ID: <CAPvh8TpzSmBjOx019GA3fZjC3q_9hDG2N=w_+y9cmhVvAsf81w@mail.gmail.com>
+Subject: Business invitation
+To:     fatsano <fatsano@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=2.8 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Feb 18, 2022 at 1:30 AM David Laight <David.Laight@aculab.com> wrote:
->
-> From: Andy Lutomirski
-> > Sent: 17 February 2022 19:15
-> ...
-> > This isn't actually optimal.  On x86, TASK_SIZE_MAX is a bizarre
-> > constant that has a very specific value to work around a bug^Wdesign
-> > error^Wfeature of Intel CPUs.  TASK_SIZE_MAX is the maximum address at
-> > which userspace is permitted to allocate memory, but there is a huge
-> > gap between user and kernel addresses, and any value in the gap would
-> > be adequate for the comparison.  If we wanted to optimize this, simply
-> > checking the high bit (which x86 can do without any immediate
-> > constants at all) would be sufficient and, for an access known to fit
-> > in 32 bits, one could get even fancier and completely ignore the size
-> > of the access.  (For accesses not known to fit in 32 bits, I suspect
-> > some creativity could still come up with a construction that's
-> > substantially faster than the one in your patch.)
-> >
-> > So there's plenty of room for optimization here.
-> >
-> > (This is not in any respect a NAK -- it's just an observation that
-> > this could be even better.)
->
-> For 64bit arch that use the top bit to separate user/kernel
-> you can test '(addr | size) >> 62)'.
-> The compiler optimises out constant sizes.
->
-> This has all been mentioned a lot of times.
-> You do get different fault types.
->
-> OTOH an explicit check for constant size (less than something big)
-> can use the cheaper test of the sign bit.
-> Big constant sizes could be compile time errors.
-
-The different fault type issue may well be a real problem.  Right now
-the core x86 fault code reserves the right to grouch if we get #GP
-instead of #PF.  We could change that.
+Greetings from Burkina Faso,
+I need you to stand as my foreign partner for investment in your
+country. Please reply immediately if you are interested, so that I can
+give you more information.
+Fatimah Baro
