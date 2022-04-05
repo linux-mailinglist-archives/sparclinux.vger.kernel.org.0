@@ -2,195 +2,243 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 374AC4F484A
-	for <lists+sparclinux@lfdr.de>; Wed,  6 Apr 2022 02:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE2324F4874
+	for <lists+sparclinux@lfdr.de>; Wed,  6 Apr 2022 02:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229752AbiDEVe3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 5 Apr 2022 17:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38314 "EHLO
+        id S234629AbiDEVec (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 5 Apr 2022 17:34:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1449985AbiDEPu7 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 5 Apr 2022 11:50:59 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5761C1700AD;
-        Tue,  5 Apr 2022 07:36:41 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id EA076210E5;
-        Tue,  5 Apr 2022 14:36:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1649169399; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=kSbep7KEvKMw5NA9dGHZ82B+/h6ENrK0h+ktGBnoonA=;
-        b=HkEw9NRuL/3L34R2MOn6s81P7RCjKI+svCy8UEL8/p1egYa/TLjM/Di4T8JbZ+JWkLZbbY
-        8KCdOqQyeK7SiD6m2NSd31cOFh+hO2QZg7v7aoibmkdtF5eErEqoWcx8YM6b9t+4AtAH2Q
-        6g6UQ1Lw5l0W97aLfm5OXZUcrL+Q3BI=
-Received: from suse.cz (unknown [10.100.224.162])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 17E6DA3B93;
-        Tue,  5 Apr 2022 14:36:38 +0000 (UTC)
-Date:   Tue, 5 Apr 2022 16:36:38 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     Lecopzer Chen <lecopzer.chen@mediatek.com>
-Cc:     acme@kernel.org, akpm@linux-foundation.org,
-        alexander.shishkin@linux.intel.com, catalin.marinas@arm.com,
-        davem@davemloft.net, jolsa@redhat.com, jthierry@redhat.com,
-        keescook@chromium.org, kernelfans@gmail.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-perf-users@vger.kernel.org, mark.rutland@arm.com,
-        masahiroy@kernel.org, matthias.bgg@gmail.com, maz@kernel.org,
-        mcgrof@kernel.org, mingo@redhat.com, namhyung@kernel.org,
-        nixiaoming@huawei.com, peterz@infradead.org,
-        sparclinux@vger.kernel.org, sumit.garg@linaro.org,
-        wangqing@vivo.com, will@kernel.org, yj.chiang@mediatek.com
-Subject: Re: [PATCH v3 5/5] arm64: Enable perf events based hard lockup
- detector
-Message-ID: <YkxT9plntP0VeMl4@alley>
-References: <20220404141709.GA26840@pathway.suse.cz>
- <20220405125304.3762-1-lecopzer.chen@mediatek.com>
+        with ESMTP id S1446274AbiDEPoY (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 5 Apr 2022 11:44:24 -0400
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34A92E6C78;
+        Tue,  5 Apr 2022 07:13:10 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-2eb43ad7909so85992257b3.2;
+        Tue, 05 Apr 2022 07:13:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0m0X8qD7jgaOpFhSCX1pI9/lBF4aFgFkK0POJ3FtM5M=;
+        b=oop02PYzQjf4I81Lgk4YHXpzi42n6WQveIpvF1+LxhlRXlBzom659lzoHZVZW8RA4f
+         i9VrfhAx+htfKK6+HHav6cGsfp4pSaozu8Y6va4FPwBKBNMvEfW+HIzvD+s/5zv6kcAW
+         VScgyYuKNHatNNWNwYAwo6vDB7QMJuXlQTtcVWaNAvf6kQ8oldpg8FL6M4jmKQigbaMn
+         ef4nPOFy981kzrUeawhcNAkHuyoSdOROd6truwdQ7qTV638O5j5Cy3JEpNKaudeHfSxw
+         yZyz733yGUe1tlEMIjAQ2fw6FmB5P7yGvYAP4M9tiFmwZcQlN/RSGjWE5DSu/pPna7AN
+         D3tA==
+X-Gm-Message-State: AOAM533eKEhvmfbZ+W3FKVOMlBuGOh9pe6H4UDEObRCxRmXaINPnLL0u
+        s0AWfQ4CEYNywmH6p/kDPe/lNr1oHF8ud6O3NpwSivjT
+X-Google-Smtp-Source: ABdhPJxwMh75H+q2lMm7lfhlZkhQSxK3Xl3vxLiAsuHwCOepfUfgE7YhAm+UQ8tjNWYOfmUWiErC4e6KhAn6L+k5ZXk=
+X-Received: by 2002:a81:1257:0:b0:2eb:97cf:a4a2 with SMTP id
+ 84-20020a811257000000b002eb97cfa4a2mr2865951yws.149.1649167989258; Tue, 05
+ Apr 2022 07:13:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220405125304.3762-1-lecopzer.chen@mediatek.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220403054822.16868-1-rdunlap@infradead.org> <20220403054822.16868-2-rdunlap@infradead.org>
+In-Reply-To: <20220403054822.16868-2-rdunlap@infradead.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 5 Apr 2022 16:12:58 +0200
+Message-ID: <CAJZ5v0gZvd_Uw02_K7fWGYFtTncSTxdeoR6z=PQ5e0DM255k8A@mail.gmail.com>
+Subject: Re: [PATCH 1/3 v3] Docs: admin/kernel-parameters: edit a few boot options
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        linux-s390@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        linux-ia64@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>, Len Brown <lenb@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue 2022-04-05 20:53:04, Lecopzer Chen wrote:
->  
-> > On Thu 2022-03-24 22:14:05, Lecopzer Chen wrote:
-> > > With the recent feature added to enable perf events to use pseudo NMIs
-> > > as interrupts on platforms which support GICv3 or later, its now been
-> > > possible to enable hard lockup detector (or NMI watchdog) on arm64
-> > > platforms. So enable corresponding support.
-> > > 
-> > > One thing to note here is that normally lockup detector is initialized
-> > > just after the early initcalls but PMU on arm64 comes up much later as
-> > > device_initcall(). To cope with that, overriding watchdog_nmi_probe() to
-> > > let the watchdog framework know PMU not ready, and inform the framework
-> > > to re-initialize lockup detection once PMU has been initialized.
-> > > 
-> > > [1]: http://lore.kernel.org/linux-arm-kernel/1610712101-14929-1-git-send-email-sumit.garg@linaro.org
-> > > 
-> > > --- /dev/null
-> > > +++ b/arch/arm64/kernel/watchdog_hld.c
-> > > @@ -0,0 +1,37 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +#include <linux/nmi.h>
-> > > +#include <linux/cpufreq.h>
-> > > +#include <linux/perf/arm_pmu.h>
-> > > +
-> > > +/*
-> > > + * Safe maximum CPU frequency in case a particular platform doesn't implement
-> > > + * cpufreq driver. Although, architecture doesn't put any restrictions on
-> > > + * maximum frequency but 5 GHz seems to be safe maximum given the available
-> > > + * Arm CPUs in the market which are clocked much less than 5 GHz. On the other
-> > > + * hand, we can't make it much higher as it would lead to a large hard-lockup
-> > > + * detection timeout on parts which are running slower (eg. 1GHz on
-> > > + * Developerbox) and doesn't possess a cpufreq driver.
-> > > + */
-> > > +#define SAFE_MAX_CPU_FREQ	5000000000UL // 5 GHz
-> > > +u64 hw_nmi_get_sample_period(int watchdog_thresh)
-> > > +{
-> > > +	unsigned int cpu = smp_processor_id();
-> > > +	unsigned long max_cpu_freq;
-> > > +
-> > > +	max_cpu_freq = cpufreq_get_hw_max_freq(cpu) * 1000UL;
-> > > +	if (!max_cpu_freq)
-> > > +		max_cpu_freq = SAFE_MAX_CPU_FREQ;
-> > > +
-> > > +	return (u64)max_cpu_freq * watchdog_thresh;
-> > > +}
-> > 
-> > This change is not mentioned in the commit message.
-> > Please, put it into a separate patch.
-> 
-> 
-> Actully, This cames from
-> [1]: http://lore.kernel.org/linux-arm-kernel/1610712101-14929-1-git-send-email-sumit.garg@linaro.org
-> And I didn't touch the commit message from the origin patch.
-> But of course, I could imporve it with proper description if
-> anyone thinks it's not good enough.
-
-I see.
-
-> Would you mean put this function hw_nmi_get_sample_period() in patch
-> 6th?
-> In the view of "arm64 uses delayed init with all the functionality it need to set up",
-> IMO, this make sense for me to put into a single patch.
-
-Or you could split it in two patches and add
-hw_nmi_get_sample_period() in the earlier patch.
-
-
-> But if you still think this should put into a separate patch, I'll do it:)
-
-It is always better to split the changes whenever possible. It makes
-the review easier. And it also helps to find the real culprit of
-a regression using bisection.
-
-
-> > > +int __init watchdog_nmi_probe(void)
-> > > +{
-> > > +	if (!allow_lockup_detector_init_retry)
-> > > +		return -EBUSY;
-> > 
-> > How do you know that you should return -EBUSY
-> > when retry in not enabled?
-> > 
-> > I guess that it is an optimization to make it fast
-> > during the first call. But the logic is far from
-> > obvious.
-> > 
-> 
-> Yes, you can see this as an optimization, because arm64 PMU is not ready
-> during lockup_detector_init(), so the watchdog_nmi_probe() must fail.
+On Sun, Apr 3, 2022 at 7:48 AM Randy Dunlap <rdunlap@infradead.org> wrote:
 >
-> Thus we only want to do watchdog_nmi_probe() in delayed init,
-> so if not in the state (allow_lockup_detector_init_retry=true), just tell
-> 
-> if it's unclear
-
-Yes, it is far from obvious.
-
-> maybe a brief comment can be add like this:
-> 
-> +	/* arm64 is only able to initialize lockup detecor during delayed init */
-> +	if (!allow_lockup_detector_init_retry)
-> +		return -EBUSY;
-
-No, please, remove this optimization. It just makes problems:
-
-   + it requires a comment here because the logic is far from obvious.
-
-   + it is the reason why we need another variable to avoid the race in
-     lockup_detector_check(), see the discussion about the 4th patch.
-
-
-> > > +
-> > > +	if (!arm_pmu_irq_is_nmi())
-> > > +		return -ENODEV;
-> > > +
-> > > +	return hardlockup_detector_perf_init();
-> > > +}
-> > 
-> For arm_pmu_irq_is_nmi() checking, we do need it, becasue arm64 needs
-> explictly turns on Pseudo-NMI to support base function for NMI.
+> Clean up some of admin-guide/kernel-parameters.txt:
 >
-> hardlockup_detector_perf_init() will success even if we haven't had
-> Pseudo-NMI turns on, however, the pmu interrupts will act like a
-> normal interrupt instead of NMI and the hardlockup detector would be broken.
+> a. "smt" should be "smt=" (S390)
+> b. (dropped)
+> c. Sparc supports the vdso= boot option
+> d. make the tp_printk options (2) formatting similar to other options
+>    by adding spacing
+> e. add "trace_clock=" with a reference to Documentation/trace/ftrace.rst
+> f. use [IA-64] as documented instead of [ia64]
+> g. fix formatting and text for test_suspend=
+> h. fix formatting for swapaccount=
+> i. fix formatting and grammar for video.brightness_switch_enabled=
+>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Heiko Carstens <hca@linux.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+> Cc: Sven Schnelle <svens@linux.ibm.com>
+> Cc: linux-s390@vger.kernel.org
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: sparclinux@vger.kernel.org
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linux-ia64@vger.kernel.org
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-acpi@vger.kernel.org
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-doc@vger.kernel.org
 
-I see. Please, explain this in a comment. It is another thing
-that is far from obvious.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Best Regards,
-Petr
+for the test_suspend and ACPI video pieces.
+
+> ---
+> v3: add trace_clock= specifics (Steven)
+> v2: drop "smt-enabled" for arch/powerpc/ (Michael)
+>
+>  Documentation/admin-guide/kernel-parameters.txt |   47 ++++++++++----
+>  1 file changed, 36 insertions(+), 11 deletions(-)
+>
+> --- linux-next-20220331.orig/Documentation/admin-guide/kernel-parameters.txt
+> +++ linux-next-20220331/Documentation/admin-guide/kernel-parameters.txt
+> @@ -2814,7 +2814,7 @@
+>                         different yeeloong laptops.
+>                         Example: machtype=lemote-yeeloong-2f-7inch
+>
+> -       max_addr=nn[KMG]        [KNL,BOOT,ia64] All physical memory greater
+> +       max_addr=nn[KMG]        [KNL,BOOT,IA-64] All physical memory greater
+>                         than or equal to this physical address is ignored.
+>
+>         maxcpus=        [SMP] Maximum number of processors that an SMP kernel
+> @@ -3057,7 +3057,7 @@
+>
+>         mga=            [HW,DRM]
+>
+> -       min_addr=nn[KMG]        [KNL,BOOT,ia64] All physical memory below this
+> +       min_addr=nn[KMG]        [KNL,BOOT,IA-64] All physical memory below this
+>                         physical address is ignored.
+>
+>         mini2440=       [ARM,HW,KNL]
+> @@ -5388,7 +5388,7 @@
+>                                 1: Fast pin select (default)
+>                                 2: ATC IRMode
+>
+> -       smt             [KNL,S390] Set the maximum number of threads (logical
+> +       smt=            [KNL,S390] Set the maximum number of threads (logical
+>                         CPUs) to use per physical CPU on systems capable of
+>                         symmetric multithreading (SMT). Will be capped to the
+>                         actual hardware limit.
+> @@ -5774,8 +5774,9 @@
+>                         This parameter controls use of the Protected
+>                         Execution Facility on pSeries.
+>
+> -       swapaccount=[0|1]
+> -                       [KNL] Enable accounting of swap in memory resource
+> +       swapaccount=    [KNL]
+> +                       Format: [0|1]
+> +                       Enable accounting of swap in memory resource
+>                         controller if no parameter or 1 is given or disable
+>                         it if 0 is given (See Documentation/admin-guide/cgroup-v1/memory.rst)
+>
+> @@ -5821,7 +5822,8 @@
+>
+>         tdfx=           [HW,DRM]
+>
+> -       test_suspend=   [SUSPEND][,N]
+> +       test_suspend=   [SUSPEND]
+> +                       Format: { "mem" | "standby" | "freeze" }[,N]
+>                         Specify "mem" (for Suspend-to-RAM) or "standby" (for
+>                         standby suspend) or "freeze" (for suspend type freeze)
+>                         as the system sleep state during system startup with
+> @@ -5908,6 +5910,28 @@
+>         trace_buf_size=nn[KMG]
+>                         [FTRACE] will set tracing buffer size on each cpu.
+>
+> +       trace_clock=    [FTRACE] Set the clock used for tracing events
+> +                       at boot up.
+> +                       local - Use the per CPU time stamp counter
+> +                               (converted into nanoseconds). Fast, but
+> +                               depending on the architecture, may not be
+> +                               in sync between CPUs.
+> +                       global - Event time stamps are synchronize across
+> +                               CPUs. May be slower than the local clock,
+> +                               but better for some race conditions.
+> +                       counter - Simple counting of events (1, 2, ..)
+> +                               note, some counts may be skipped due to the
+> +                               infrastructure grabbing the clock more than
+> +                               once per event.
+> +                       uptime - Use jiffies as the time stamp.
+> +                       perf - Use the same clock that perf uses.
+> +                       mono - Use ktime_get_mono_fast_ns() for time stamps.
+> +                       mono_raw - Use ktime_get_raw_fast_ns() for time
+> +                               stamps.
+> +                       boot - Use ktime_get_boot_fast_ns() for time stamps.
+> +                       Architectures may add more clocks. See
+> +                       Documentation/trace/ftrace.rst for more details.
+> +
+>         trace_event=[event-list]
+>                         [FTRACE] Set and start specified trace events in order
+>                         to facilitate early boot debugging. The event-list is a
+> @@ -5930,7 +5954,7 @@
+>                         See also Documentation/trace/ftrace.rst "trace options"
+>                         section.
+>
+> -       tp_printk[FTRACE]
+> +       tp_printk       [FTRACE]
+>                         Have the tracepoints sent to printk as well as the
+>                         tracing ring buffer. This is useful for early boot up
+>                         where the system hangs or reboots and does not give the
+> @@ -5952,7 +5976,7 @@
+>                         frequency tracepoints such as irq or sched, can cause
+>                         the system to live lock.
+>
+> -       tp_printk_stop_on_boot[FTRACE]
+> +       tp_printk_stop_on_boot [FTRACE]
+>                         When tp_printk (above) is set, it can cause a lot of noise
+>                         on the console. It may be useful to only include the
+>                         printing of events during boot up, as user space may
+> @@ -6301,7 +6325,7 @@
+>                                         HIGHMEM regardless of setting
+>                                         of CONFIG_HIGHPTE.
+>
+> -       vdso=           [X86,SH]
+> +       vdso=           [X86,SH,SPARC]
+>                         On X86_32, this is an alias for vdso32=.  Otherwise:
+>
+>                         vdso=1: enable VDSO (the default)
+> @@ -6327,11 +6351,12 @@
+>         video=          [FB] Frame buffer configuration
+>                         See Documentation/fb/modedb.rst.
+>
+> -       video.brightness_switch_enabled= [0,1]
+> +       video.brightness_switch_enabled= [ACPI]
+> +                       Format: [0|1]
+>                         If set to 1, on receiving an ACPI notify event
+>                         generated by hotkey, video driver will adjust brightness
+>                         level and then send out the event to user space through
+> -                       the allocated input device; If set to 0, video driver
+> +                       the allocated input device. If set to 0, video driver
+>                         will only send out the event without touching backlight
+>                         brightness level.
+>                         default: 1
