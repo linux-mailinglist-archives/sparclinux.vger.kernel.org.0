@@ -2,142 +2,100 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3483B51B0A6
-	for <lists+sparclinux@lfdr.de>; Wed,  4 May 2022 23:31:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60D7451B3E2
+	for <lists+sparclinux@lfdr.de>; Thu,  5 May 2022 02:08:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358276AbiEDVf2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 4 May 2022 17:35:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47256 "EHLO
+        id S233890AbiEEAGi (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 4 May 2022 20:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347126AbiEDVf0 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 4 May 2022 17:35:26 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BFB84838E;
-        Wed,  4 May 2022 14:31:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CAD48B829E8;
-        Wed,  4 May 2022 21:31:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D62C385BF;
-        Wed,  4 May 2022 21:31:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651699906;
-        bh=zFvzT8pCm+1ful8W/hZ4LOb35c/AZPHiTAR5f5uq/tc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=psHr6IyS0tCkPqNjtn0h6gBlwY40lOhbh/uw16bstSHWVYnmtHqEoZ532Dc9rtOal
-         DUtXfgn3DdLZgWPENyY+MDgzz08W+auqjcYPklLCUJDhHdzEXeeuxWe7LpvbPQY9kJ
-         FOxNi34XKyPTNO9nguLWvf12if7tv0axSjj5zB31OByn/knBsjbgNK9SEZoOb9mk2H
-         8Mi5Plsbv3ClcTw6udErx8u6A9v1Ng1bHEjpGoMpucB2QcZFN6TMAvSYQ6IMdui25o
-         P6nUGl1dzSr93wmpQQ9rPDjMiV7wf6pGhiZS8ljqSo0VQ8Lm9E+/x0iZSoSI081EGu
-         qotf+DUD3i/vA==
-Received: by mail-wr1-f51.google.com with SMTP id k2so3657498wrd.5;
-        Wed, 04 May 2022 14:31:46 -0700 (PDT)
-X-Gm-Message-State: AOAM530m3z7+Lq1wthZl3Ou4DDusfe+YzKGwkK3E99iNDWFIQi4smzAh
-        db83aG6SCEY16rFZw+Bo71+iWvSUabbsMWpWX3Y=
-X-Google-Smtp-Source: ABdhPJxAVZcK+UbsrIHV3UqhufeJ7C2MWsg9y8caQR3XP4mze6wyb/qHpchpXkh4iCCt0pJlSodAlnXDA871Nj1pC0U=
-X-Received: by 2002:adf:e106:0:b0:20a:b31b:213d with SMTP id
- t6-20020adfe106000000b0020ab31b213dmr17558428wrz.219.1651699904306; Wed, 04
- May 2022 14:31:44 -0700 (PDT)
+        with ESMTP id S1355110AbiEDX6y (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 4 May 2022 19:58:54 -0400
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A647546A0
+        for <sparclinux@vger.kernel.org>; Wed,  4 May 2022 16:54:18 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id 88-20020a9d0ee1000000b005d0ae4e126fso1949546otj.5
+        for <sparclinux@vger.kernel.org>; Wed, 04 May 2022 16:54:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
+        b=jG1k/bO0Nq5OpfddybGyQMOWQigENT/JFNekaKtm1E/HZ1a8FuNBrgE9fRE7gcHC8O
+         1kvgjim+YyPR4q8yTYXW90TRFMvMtD3eFdFmlzCVzkwSKdd7AyHudhbo4nNGRQcu/Har
+         zU3zphNWQ6lSCdG6gYbEoPfZ9KDbFp7PnHYnN0rBoPuWowQiYjRuat0gViGMFTu3V0RP
+         J9hqm8PqQhnlG6nJCbOivw+BF52aXpQBxk6hfyTrbqQSdM97zI7NJJ1KcU0LFzvtHCOc
+         Mz3Ce7R6uc6NL7bBGz/4sYD+R48TcX34R4EupJw8ycmUAbR5uqKN5wNKBWPj7yY5Uynx
+         q5mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
+        b=g6+6hjqDcDkZPL4CLm9jZqe1Jby+fPYe/T5JXQFbJQXHALJIU0oohQbXFZv8gJuH4L
+         NYgP75v1HL62CEbR80MYS/AAh/7xWkJ+GhGMH0ZIHOJR+wi8s81TmlVlQMpWvkjOJNUp
+         ynqmBc03vlNFSEH+Fsclrs6riPiherpx+GJvbGwtikEx+KQkR9yptPiwVHn1d1c10jTS
+         sI2tunpoWfE0p2eJaPUcxjxKEUpagXBY5sidn3pkhSRUTJFc2iXiFmr4WgB+IRwkr2NO
+         +Du6D3r7N1uA8ALkhHMhjAbGB6JiPtMfveWBj34fbNNSzxx5+6zZf7pTgLpd0gW0beuU
+         tcUw==
+X-Gm-Message-State: AOAM533qJ6NEzDWpB7ztpKpDBMrKMHT5b6XmTgaJKrStGP7npW+0SSmq
+        WKfmkMltYNspYBOa2CGpuOasWF5amCDx/BTnf5Y=
+X-Google-Smtp-Source: ABdhPJyobZJlcsZ6zCytgK5JW+Q09o0HYFp1zwLPWaFfYXPyjmVGzEvNCr+16hunmHPMGASL3FJ/dZw/arR6sb3w6PU=
+X-Received: by 2002:a9d:400c:0:b0:605:f835:974c with SMTP id
+ m12-20020a9d400c000000b00605f835974cmr8455450ote.269.1651708457384; Wed, 04
+ May 2022 16:54:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220429135108.2781579-2-schnelle@linux.ibm.com> <20220504210840.GA469916@bhelgaas>
-In-Reply-To: <20220504210840.GA469916@bhelgaas>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Wed, 4 May 2022 23:31:28 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0sJgMSpZB_Butx2gO0hapYZy-Dm_QH-hG5rOaq_ZgsXg@mail.gmail.com>
-Message-ID: <CAK8P3a0sJgMSpZB_Butx2gO0hapYZy-Dm_QH-hG5rOaq_ZgsXg@mail.gmail.com>
-Subject: Re: [RFC v2 01/39] Kconfig: introduce HAS_IOPORT option and select it
- as necessary
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Niklas Schnelle <schnelle@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        "open list:IA64 (Itanium) PLATFORM" <linux-ia64@vger.kernel.org>,
-        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
-        "open list:MIPS" <linux-mips@vger.kernel.org>,
-        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
-        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
-        <linuxppc-dev@lists.ozlabs.org>,
-        "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        "open list:SPARC + UltraSPARC (sparc/sparc64)" 
-        <sparclinux@vger.kernel.org>
+Received: by 2002:a05:6802:1a9:0:0:0:0 with HTTP; Wed, 4 May 2022 16:54:17
+ -0700 (PDT)
+Reply-To: ortegainvestmmentforrealinvest@gmail.com
+From:   Info <joybhector64@gmail.com>
+Date:   Thu, 5 May 2022 05:24:17 +0530
+Message-ID: <CAP7KLYghodqQ8mxOwNTzCK_KCfu7gm5og-TXWb9cWgFAR7i9XQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:344 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [joybhector64[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [joybhector64[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, May 4, 2022 at 11:08 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> On Fri, Apr 29, 2022 at 03:49:59PM +0200, Niklas Schnelle wrote:
-> > We introduce a new HAS_IOPORT Kconfig option to indicate support for
-> > I/O Port access. In a future patch HAS_IOPORT=n will disable compilation
-> > of the I/O accessor functions inb()/outb() and friends on architectures
-> > which can not meaningfully support legacy I/O spaces such as s390 or
-> > where such support is optional.
->
-> So you plan to drop inb()/outb() on architectures where I/O port space
-> is optional?  So even platforms that have I/O port space may not be
-> able to use it?
->
-> This feels like a lot of work where the main benefit is to keep
-> Kconfig from offering drivers that aren't of interest on s390.
->
-> Granted, there may be issues where inb()/outb() does the wrong thing
-> such as dereferencing null pointers when I/O port space isn't
-> implemented.  I think that's a defect in inb()/outb() and could be
-> fixed there.
+-- 
+I am an investor. I came from the USA and I have many investments all
+over the world.
 
-The current implementation in asm-generic/io.h implements inb()/outb()
-using readb()/writeb() with a fixed architecture specific offset.
-
-There are three possible things that can happen here:
-
-a) there is a host bridge driver that maps its I/O ports to this window,
-    and everything works
-b) the address range is reserved and accessible but no host bridge
-   driver has mapped its registers there, so an access causes a
-   page fault
-c) the architecture does not define an offset, and accessing low I/O
-    ports ends up as a NULL pointer dereference
-
-The main goal is to avoid c), which is what happens on s390, but
-can also happen elsewhere. Catching b) would be nice as well,
-but is much harder to do from generic code as you'd need an
-architecture specific inline asm statement to insert a ex_table
-fixup, or a runtime conditional on each access.
-
-         Arnd
+I want you to partner with me to invest in your country I am into many
+investment such as real Estate or buying of properties i can also
+invest money in any of existing business with equity royalty or by %
+percentage so on,
+Warm regards
