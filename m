@@ -2,104 +2,231 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67507522B63
-	for <lists+sparclinux@lfdr.de>; Wed, 11 May 2022 06:43:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3C0523061
+	for <lists+sparclinux@lfdr.de>; Wed, 11 May 2022 12:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234545AbiEKEnf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 11 May 2022 00:43:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56142 "EHLO
+        id S240999AbiEKKMM (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 11 May 2022 06:12:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233395AbiEKEnd (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 11 May 2022 00:43:33 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F128FA0D09
-        for <sparclinux@vger.kernel.org>; Tue, 10 May 2022 21:43:31 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d17so798263plg.0
-        for <sparclinux@vger.kernel.org>; Tue, 10 May 2022 21:43:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=cATSTZkJ3ihDr7kmGJT5peIk4WzATgziNlLDQUaQF0UjlDqgoEEuGaUrbUqldJ31oR
-         vabmbeFahRwl3lPbxxDBTmLTUVgtoY1muM2STFJtAzdS2/uSXQL/RgxLgwTMgi6wZC5y
-         9jgvSsXhPDebEC+KeA4Yp5ZuYqS0IZCNAwEYvRF90XYQCKM/5RYtpKtYGDwmBfroTwaV
-         1kjYRadfleXzzdkACPIOP5V24SpiU9H+uY4/l89+6jdTamZt/dBupBOYqgZ1ZOGcp0Kc
-         rHgsvHxiWrGCkefizlgJ1/E5wTpZjYmPWzkULzoPVy/TUF5Wl3VJLwp8t2mpFTdixXxi
-         RXbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=o9uJcJ/iOJA3KFEqTObwVLmUSVGJJrnoKJ88nwIQDVz6Aw3EDXtZv3DXqVLcKT17Ip
-         XoFHLJUMqe9iBWBbA/0ZcBOA5q4PRExfNASGW1w7tx0yHxCofIDWwVC06kzTArdI/Jib
-         cFinKfgA+LjfBQNNfXjo9hVePPwM1TzFF+JGNC2mMOjXpISvLr75b0JOoUIZpQU7HTJh
-         QwJG+gg/S6xNN1DjF7x7CbvFrCkcu1LZhzed4GO9Evsk61LR60Sh5RlV3N296LXzb4oW
-         rgaEhiw8ifftbifh/ySegb/Z+7y3InQ2iDhgKVMqgpf23qY+NSxROmX/EIgs/57ELRyh
-         ddPA==
-X-Gm-Message-State: AOAM530IbwmdZh95iMZWcgKVS64/9KbK8+ogWUIS7ZuDMvwkfepZoUOX
-        5jhmPLuSzfDCF96J2DspwIFjd9vQ/v20AuFxHrM=
-X-Google-Smtp-Source: ABdhPJxm5feB8ZFgWHkCEpggtBzqg6dLDwsr8iBU2Yy9cypEMDQj02HE7vMvH1ARhebCA2i8QIBvAnFPu1l+uxcE0Lc=
-X-Received: by 2002:a17:903:2287:b0:15e:99b4:9b0a with SMTP id
- b7-20020a170903228700b0015e99b49b0amr23702716plh.43.1652244211258; Tue, 10
- May 2022 21:43:31 -0700 (PDT)
+        with ESMTP id S241058AbiEKKL6 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 11 May 2022 06:11:58 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A36DD219351;
+        Wed, 11 May 2022 03:11:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652263917; x=1683799917;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qT65tmCMfEijFl2TpJ4TUU4guEKfSaXmRy66uEBzzr4=;
+  b=gNbXcXavBUiUaKwMxkj3cq9N0J2CTPbttXn9nM/Ing3Y3ujIVjRJ0zsU
+   HSX2tSJq/0eiT5XW/wUkUV0faQgP9c+oSsfhOWbYsI0NSn92h8VfUWG0s
+   3gNfv7Pjn11Ix5KAiK35gZ/KosDUf1MVTetxjCsGX3/ZqUtvOnuMbNbAD
+   zD7qdsuPS2+jyl4z8dNuPK6sbj93xhD4k8P4k8mwXoVu/tp2eA6AS1cTT
+   Cl/yWZmrY9gQ1CjIfbrhhouNOcDzlX3xSnTFM0XsRsKvzaOQmNotwxJpn
+   8Wf4V5WtQo8jSMlkow+IuA8KUUif/jp14pQl3ADcWp+oTpsIg4Wo6XI88
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10343"; a="269590606"
+X-IronPort-AV: E=Sophos;i="5.91,216,1647327600"; 
+   d="scan'208";a="269590606"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2022 03:11:56 -0700
+X-IronPort-AV: E=Sophos;i="5.91,216,1647327600"; 
+   d="scan'208";a="594049570"
+Received: from meliyahx-mobl2.ger.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.252.32.210])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2022 03:11:52 -0700
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     linux-serial@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Oliver Neukum <oneukum@suse.com>,
+        Johan Hovold <johan@kernel.org>, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-usb@vger.kernel.org
+Cc:     =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 1/5] tty/termbits: remove #ifdef CMSPAR that is always defined
+Date:   Wed, 11 May 2022 13:11:35 +0300
+Message-Id: <20220511101139.5306-2-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220511101139.5306-1-ilpo.jarvinen@linux.intel.com>
+References: <20220511101139.5306-1-ilpo.jarvinen@linux.intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:43:30
- -0700 (PDT)
-From:   Private Mail <privatemail1961@gmail.com>
-Date:   Tue, 10 May 2022 21:43:30 -0700
-Message-ID: <CANjAOAjhJ4ieJMmzRZUBxfOb_bWq+QvWGKAj5_rzjwB5+n510w@mail.gmail.com>
-Subject: Have you had this? It is for your Benefit
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
-        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Our Ref: BG/WA0151/2022
+CMSPAR is defined by all architectures.
 
-Dear Beneficiary
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+---
+ drivers/char/pcmcia/synclink_cs.c   | 2 --
+ drivers/tty/amiserial.c             | 2 --
+ drivers/tty/serial/8250/8250_port.c | 2 --
+ drivers/tty/serial/jsm/jsm_cls.c    | 6 ------
+ drivers/tty/serial/jsm/jsm_neo.c    | 6 ------
+ drivers/tty/serial/sunsu.c          | 2 --
+ drivers/usb/class/cdc-acm.h         | 8 --------
+ drivers/usb/serial/ark3116.c        | 3 +--
+ drivers/usb/serial/whiteheat.c      | 4 ----
+ 9 files changed, 1 insertion(+), 34 deletions(-)
 
-Subject: An Estate of US$15.8 Million
+diff --git a/drivers/char/pcmcia/synclink_cs.c b/drivers/char/pcmcia/synclink_cs.c
+index 78baba55a8b5..c20f2cb784e8 100644
+--- a/drivers/char/pcmcia/synclink_cs.c
++++ b/drivers/char/pcmcia/synclink_cs.c
+@@ -1432,10 +1432,8 @@ static void mgslpc_change_params(MGSLPC_INFO *info, struct tty_struct *tty)
+ 			info->params.parity = ASYNC_PARITY_ODD;
+ 		else
+ 			info->params.parity = ASYNC_PARITY_EVEN;
+-#ifdef CMSPAR
+ 		if (cflag & CMSPAR)
+ 			info->params.parity = ASYNC_PARITY_SPACE;
+-#endif
+ 	}
+ 
+ 	/* calculate number of jiffies to transmit a full
+diff --git a/drivers/tty/amiserial.c b/drivers/tty/amiserial.c
+index 533d02b38e02..afb2d373dd47 100644
+--- a/drivers/tty/amiserial.c
++++ b/drivers/tty/amiserial.c
+@@ -588,10 +588,8 @@ static void change_speed(struct tty_struct *tty, struct serial_state *info,
+ 	}
+ 	if (!(cflag & PARODD))
+ 		cval |= UART_LCR_EPAR;
+-#ifdef CMSPAR
+ 	if (cflag & CMSPAR)
+ 		cval |= UART_LCR_SPAR;
+-#endif
+ 
+ 	/* Determine divisor based on baud rate */
+ 	baud = tty_get_baud_rate(tty);
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index 5591f18f2ea9..78b6dedc43e6 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2620,10 +2620,8 @@ static unsigned char serial8250_compute_lcr(struct uart_8250_port *up,
+ 	}
+ 	if (!(c_cflag & PARODD))
+ 		cval |= UART_LCR_EPAR;
+-#ifdef CMSPAR
+ 	if (c_cflag & CMSPAR)
+ 		cval |= UART_LCR_SPAR;
+-#endif
+ 
+ 	return cval;
+ }
+diff --git a/drivers/tty/serial/jsm/jsm_cls.c b/drivers/tty/serial/jsm/jsm_cls.c
+index 444f233ebd1f..046b624e5f71 100644
+--- a/drivers/tty/serial/jsm/jsm_cls.c
++++ b/drivers/tty/serial/jsm/jsm_cls.c
+@@ -723,14 +723,8 @@ static void cls_param(struct jsm_channel *ch)
+ 	if (!(ch->ch_c_cflag & PARODD))
+ 		lcr |= UART_LCR_EPAR;
+ 
+-	/*
+-	 * Not all platforms support mark/space parity,
+-	 * so this will hide behind an ifdef.
+-	 */
+-#ifdef CMSPAR
+ 	if (ch->ch_c_cflag & CMSPAR)
+ 		lcr |= UART_LCR_SPAR;
+-#endif
+ 
+ 	if (ch->ch_c_cflag & CSTOPB)
+ 		lcr |= UART_LCR_STOP;
+diff --git a/drivers/tty/serial/jsm/jsm_neo.c b/drivers/tty/serial/jsm/jsm_neo.c
+index 110696cdaa1d..0cf586c10688 100644
+--- a/drivers/tty/serial/jsm/jsm_neo.c
++++ b/drivers/tty/serial/jsm/jsm_neo.c
+@@ -997,14 +997,8 @@ static void neo_param(struct jsm_channel *ch)
+ 	if (!(ch->ch_c_cflag & PARODD))
+ 		lcr |= UART_LCR_EPAR;
+ 
+-	/*
+-	 * Not all platforms support mark/space parity,
+-	 * so this will hide behind an ifdef.
+-	 */
+-#ifdef CMSPAR
+ 	if (ch->ch_c_cflag & CMSPAR)
+ 		lcr |= UART_LCR_SPAR;
+-#endif
+ 
+ 	if (ch->ch_c_cflag & CSTOPB)
+ 		lcr |= UART_LCR_STOP;
+diff --git a/drivers/tty/serial/sunsu.c b/drivers/tty/serial/sunsu.c
+index c31389114b86..fff50b5b82eb 100644
+--- a/drivers/tty/serial/sunsu.c
++++ b/drivers/tty/serial/sunsu.c
+@@ -798,10 +798,8 @@ sunsu_change_speed(struct uart_port *port, unsigned int cflag,
+ 		cval |= UART_LCR_PARITY;
+ 	if (!(cflag & PARODD))
+ 		cval |= UART_LCR_EPAR;
+-#ifdef CMSPAR
+ 	if (cflag & CMSPAR)
+ 		cval |= UART_LCR_SPAR;
+-#endif
+ 
+ 	/*
+ 	 * Work around a bug in the Oxford Semiconductor 952 rev B
+diff --git a/drivers/usb/class/cdc-acm.h b/drivers/usb/class/cdc-acm.h
+index 3aa7f0a3ad71..d26ecd15be60 100644
+--- a/drivers/usb/class/cdc-acm.h
++++ b/drivers/usb/class/cdc-acm.h
+@@ -7,14 +7,6 @@
+  *
+  */
+ 
+-/*
+- * CMSPAR, some architectures can't have space and mark parity.
+- */
+-
+-#ifndef CMSPAR
+-#define CMSPAR			0
+-#endif
+-
+ /*
+  * Major and minor numbers.
+  */
+diff --git a/drivers/usb/serial/ark3116.c b/drivers/usb/serial/ark3116.c
+index c0e4df87ff22..39eaa7b97c40 100644
+--- a/drivers/usb/serial/ark3116.c
++++ b/drivers/usb/serial/ark3116.c
+@@ -208,10 +208,9 @@ static void ark3116_set_termios(struct tty_struct *tty,
+ 		lcr |= UART_LCR_PARITY;
+ 	if (!(cflag & PARODD))
+ 		lcr |= UART_LCR_EPAR;
+-#ifdef CMSPAR
+ 	if (cflag & CMSPAR)
+ 		lcr |= UART_LCR_SPAR;
+-#endif
++
+ 	/* handshake control */
+ 	hcr = (cflag & CRTSCTS) ? 0x03 : 0x00;
+ 
+diff --git a/drivers/usb/serial/whiteheat.c b/drivers/usb/serial/whiteheat.c
+index 06aad0d727dd..332fb92ae575 100644
+--- a/drivers/usb/serial/whiteheat.c
++++ b/drivers/usb/serial/whiteheat.c
+@@ -30,10 +30,6 @@
+ #include <linux/usb/ezusb.h>
+ #include "whiteheat.h"			/* WhiteHEAT specific commands */
+ 
+-#ifndef CMSPAR
+-#define CMSPAR 0
+-#endif
+-
+ /*
+  * Version Information
+  */
+-- 
+2.30.2
 
-Blount and Griffin Genealogical Investigators specializes in probate
-research to locate missing heirs and beneficiaries to estates in the
-United Kingdom and Europe.
-
-We can also help you find wills, obtain copies of certificates, help
-you to administer an estate, as well as calculating how an estate,
-intestacy or trust should be distributed.
-
-You may be entitled to a large pay out for an inheritance in Europe
-worth US$15.8 million. We have discovered an estate belonging to the
-late Depositor has remained unclaimed since he died in 2011 and we
-have strong reasons to believe you are the closest living relative to
-the deceased we can find.
-
-You may unknowingly be the heir of this person who died without
-leaving a will (intestate). We will conduct a probate research to
-prove your entitlement, and can submit a claim on your behalf all at
-no risk to yourselves.
-
-Our service fee of 10% will be paid to us after you have received the estate.
-
-The estate transfer process should take just a matter of days as we
-have the mechanism and expertise to get this done very quickly. This
-message may come to you as a shock, however we hope to work with you
-to transfer the estate to you as quickly as possible.
-
-Feel free to email our senior case worker Mr. Malcolm Casey on email:
-malcolmcasey68@yahoo.com for further discussions.
-
-With warm regards,
-
-Mr. Blount W. Gort, CEO.
-Blount and Griffin Associates Inc
