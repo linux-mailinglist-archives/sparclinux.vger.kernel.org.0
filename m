@@ -2,89 +2,72 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09974524A31
-	for <lists+sparclinux@lfdr.de>; Thu, 12 May 2022 12:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0886525193
+	for <lists+sparclinux@lfdr.de>; Thu, 12 May 2022 17:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348349AbiELKXO convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Thu, 12 May 2022 06:23:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49480 "EHLO
+        id S1352141AbiELPs5 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 12 May 2022 11:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242164AbiELKXM (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 12 May 2022 06:23:12 -0400
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B4976B671
-        for <sparclinux@vger.kernel.org>; Thu, 12 May 2022 03:23:10 -0700 (PDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1np5yO-001F9o-8w; Thu, 12 May 2022 12:23:08 +0200
-Received: from p57bd9f81.dip0.t-ipconnect.de ([87.189.159.129] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1np5yB-002Lz4-HS; Thu, 12 May 2022 12:23:08 +0200
-Message-ID: <596c7c03-f49a-ddab-417e-c88b1ce0dfef@physik.fu-berlin.de>
-Date:   Thu, 12 May 2022 12:22:55 +0200
+        with ESMTP id S1349369AbiELPs4 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 12 May 2022 11:48:56 -0400
+Received: from mail.pekanbaru.go.id (mail.pekanbaru.go.id [103.131.245.194])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28551C9EF1
+        for <sparclinux@vger.kernel.org>; Thu, 12 May 2022 08:48:56 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.pekanbaru.go.id (Postfix) with ESMTP id 8F73892E0DD;
+        Thu, 12 May 2022 10:45:52 +0700 (WIB)
+Received: from mail.pekanbaru.go.id ([127.0.0.1])
+        by localhost (mail.pekanbaru.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id AzcziW7HSaG2; Thu, 12 May 2022 10:45:52 +0700 (WIB)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.pekanbaru.go.id (Postfix) with ESMTP id 067E296C991;
+        Thu, 12 May 2022 10:45:51 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.pekanbaru.go.id 067E296C991
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pekanbaru.go.id;
+        s=EA5C5C9E-4206-11EC-835B-1ADACEA726A0; t=1652327151;
+        bh=WgQd2bW8hb2KeIDNbeIeW1Bb4lp6m29iibMhAQT/egc=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=lAu0mKpSLQX7Egl+sDQjiLRisbW9RBVaf8GVKhQ74nlKhlHveWug6ABTDSrK5B8Gc
+         ibVv/xG/k8P3IZlykvAFP0QzjrsP2IL7aZbwXukj3pANUIoTBcnT8OcnPWqQvzd6Xm
+         z08E4dPt4TVqznu2ERAmPuI7YI/oMMp6P95cgSJAUkoFc7NVrG8P3gpqdPT4oUp0OS
+         mqVAaN4LhMRa2hJempYqnh/PJW/n0CZomcsf0sNFt07UYjCyEBXVWEqHiQQUjHAjTj
+         Ri5S/BLbRl5CAJ1+KfgA9BpDkeIHU61W33U+FnzVgQRp3kE5sA3Hl00b6g1JMq8Gxv
+         idXMQ7OcG9Adg==
+X-Virus-Scanned: amavisd-new at mail.pekanbaru.go.id
+Received: from mail.pekanbaru.go.id ([127.0.0.1])
+        by localhost (mail.pekanbaru.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id FvhhXI7UyUEA; Thu, 12 May 2022 10:45:50 +0700 (WIB)
+Received: from [192.168.15.101] (unknown [41.79.219.176])
+        by mail.pekanbaru.go.id (Postfix) with ESMTPSA id B167E98AE0D;
+        Thu, 12 May 2022 10:45:41 +0700 (WIB)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Content-Language: en-US
-To:     Sparc kernel list <sparclinux@vger.kernel.org>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: newfstatat available on sparc64?
-Cc:     debian-sparc <debian-sparc@lists.debian.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.159.129
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Awaiting your response 
+To:     Recipients <waterproject@pekanbaru.go.id>
+From:   waterproject@pekanbaru.go.id
+Date:   Thu, 12 May 2022 04:45:33 +0100
+Reply-To: test@hostnextdoor.com
+Message-Id: <20220512034541.B167E98AE0D@mail.pekanbaru.go.id>
+X-Spam-Status: No, score=3.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_BL_SPAMCOP_NET,
+        RCVD_IN_SBL,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi!
-
-LLVM has been failing to build on sparc64 for some weeks with the following error
-which indicates that the syscall newfstatat is not available on sparc64 (see below).
-
-Looking at [1] it seems to be missing. Can it be wired up?
-
-Adrian
-
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/sparc/kernel/syscalls/syscall.tbl
-
-FAILED: projects/compiler-rt/lib/sanitizer_common/CMakeFiles/RTSanitizerCommonNoHooks.sparcv9.dir/sanitizer_linux.cpp.o 
-/usr/bin/c++ -DHAVE_RPC_XDR_H=0 -D_DEBUG -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -I/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/stage1/projects/compiler-rt/lib/sanitizer_common -I/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common -I/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/stage1/include -I/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/llvm/include -I/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/.. -fPIC -fno-semantic-interposition -fvisibility-inlines-hidden -Werror=date-time -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-maybe-uninitialized -Wno-class-memaccess -Wno-redundant-move -Wno-pessimizing-move -Wno-noexcept-type -Wdelete-non-virtual-dtor -Wsuggest-override -Wno-comment -Wmisleading-indentation -fdiagnostics-color -ffunction-sections -fdata-sections -Wall -std=c++14 -Wno-unused-parameter -O3 -DNDEBUG  -m64 -fPIC -fno-builtin -fno-exceptions -fomit-frame-pointer -funwind-tables -fno-stack-protector -fvisibility=hidden -fno-lto -O3 -g -Wno-variadic-macros -nostdinc++ -Wno-format -fno-rtti -Wframe-larger-than=570 -DSANITIZER_SUPPORTS_WEAK_HOOKS=0 -UNDEBUG -std=c++14 -MD -MT projects/compiler-rt/lib/sanitizer_common/CMakeFiles/RTSanitizerCommonNoHooks.sparcv9.dir/sanitizer_linux.cpp.o -MF projects/compiler-rt/lib/sanitizer_common/CMakeFiles/RTSanitizerCommonNoHooks.sparcv9.dir/sanitizer_linux.cpp.o.d -o projects/compiler-rt/lib/sanitizer_common/CMakeFiles/RTSanitizerCommonNoHooks.sparcv9.dir/sanitizer_linux.cpp.o -c /var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp
-In file included from /var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp:191:
-/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp: In function ‘__sanitizer::uptr __sanitizer::internal_stat(const char*, void*)’:
-/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/sanitizer_syscall_generic.inc:19:24: error: ‘__NR_newfstatat’ was not declared in this scope
-   19 | # define SYSCALL(name) __NR_ ## name
-      |                        ^~~~~
-/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp:347:27: note: in expansion of macro ‘SYSCALL’
-  347 |   return internal_syscall(SYSCALL(newfstatat), AT_FDCWD, (uptr)path, (uptr)buf,
-      |                           ^~~~~~~
-/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp: In function ‘__sanitizer::uptr __sanitizer::internal_lstat(const char*, void*)’:
-/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/sanitizer_syscall_generic.inc:19:24: error: ‘__NR_newfstatat’ was not declared in this scope
-   19 | # define SYSCALL(name) __NR_ ## name
-      |                        ^~~~~
-/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp:370:27: note: in expansion of macro ‘SYSCALL’
-  370 |   return internal_syscall(SYSCALL(newfstatat), AT_FDCWD, (uptr)path, (uptr)buf,
-      |                           ^~~~~~~
-/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp: In member function ‘__sanitizer::SignalContext::WriteFlag __sanitizer::SignalContext::GetWriteFlag() const’:
-/var/lib/buildbot/workers/debian-stadler-sparc64/clang-sparc64-linux-multistage/llvm/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp:1818:12: warning: unused variable ‘ucontext’ [-Wunused-variable]
- 1818 |   Context *ucontext = (Context *)context;
-      |            ^~~~~~~~
+Hi =
 
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Did you get my previous email? I have attempted over 3 times to open up com=
+munication with you. Please acknowledge if you receive this email. =
+
+
+Regards
+Morten Friis
