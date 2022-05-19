@@ -2,92 +2,147 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77C6D52C751
-	for <lists+sparclinux@lfdr.de>; Thu, 19 May 2022 01:07:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B289B52CC65
+	for <lists+sparclinux@lfdr.de>; Thu, 19 May 2022 09:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230125AbiERXHc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 18 May 2022 19:07:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58716 "EHLO
+        id S234528AbiESHEF (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 19 May 2022 03:04:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229590AbiERXH3 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 18 May 2022 19:07:29 -0400
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 208628FD7F
-        for <sparclinux@vger.kernel.org>; Wed, 18 May 2022 16:07:28 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-2ef5380669cso40139167b3.9
-        for <sparclinux@vger.kernel.org>; Wed, 18 May 2022 16:07:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
-        b=IHuIf4EIxXSHvbh9YSLfH3cuq9fp8qJfrVIbbBXlb8kcLSkvX/WB/sYpoXCW5A/L7j
-         go/lVSIVUmhhjI+SbqiA1kWVkpMZNoL/6Jcl0OZmKyYpxrcZW1DZjmDfyarEnUFyYWkH
-         +BpsxbuSIH6ns0ChgVceCa8AJ5vEf2QoEomcsVh7obwHnPmmseLjP4pwcMeXqBCh0WOh
-         bIl0YH1nU9H4ujrnOYDJGWK7qVG6vvT1MPbGoMqxZTPHtOFSFKf0tawu+RGELGv83FRd
-         /3sEQrHnkg/N4263b+A806v/dD/pCtT/vhq4U4B7wB00br9BvJ5sl1Qi0eb+PK+KP+wp
-         RBCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
-        b=YNAuU60ZmJSfdnP8wMs/Q/7OILhFUYckfsaCCG2X9VSmdJVerIKTaVBeVJkMlreoWv
-         m79KNZxA3xO1p5Z9CHi0qVgzUX4Cyn9nnbkPY0WKSyxOzMun19JAIZocILSH5W9ifJ0S
-         IWW96Z9K5Y7xF2i+HA1GaQhZjMzDz9Lz9FQWJNoTFor7E5i3MOyddtjK9hjwssH3wKfp
-         i9KLVyFbSr4QENF6B8T00/8SqlaVeYm27fiqiW2fuU7Rwnz0WUF1pr93OKbojMXomObG
-         1/BGgo03yZL8a42ysRHzQ7tTYCm7sNF3jIkHHZ1vpTHy/m+D6a/5+SWqvpErCLBs1IW4
-         icfQ==
-X-Gm-Message-State: AOAM5302Nkut7zGdLN6GZoj1KD1egzF4j/GKrtPuuO3DoBgj4kn6dJIK
-        yiza6/bC2eMftuayNUWlOYovrzZDLfHvM5Fv9ys=
-X-Google-Smtp-Source: ABdhPJxS8PEoadptK5zqKbFf9Mb0Gh4elzjumj/xLvKPS18HnZIvvGoFcy0PlWlghVJy3h6t5iEZBVd3WfaHC3LuB1g=
-X-Received: by 2002:a0d:e444:0:b0:2fb:94f3:73b5 with SMTP id
- n65-20020a0de444000000b002fb94f373b5mr1843227ywe.59.1652915247377; Wed, 18
- May 2022 16:07:27 -0700 (PDT)
+        with ESMTP id S229850AbiESHEB (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 19 May 2022 03:04:01 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B09CC275;
+        Thu, 19 May 2022 00:04:00 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id CF6261F9DC;
+        Thu, 19 May 2022 07:03:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1652943838; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=395st/CngVntAAOn5uSBsdHcf6UJsehUQOcbe6ab9wI=;
+        b=qJ/FgyV3p4LuXUdkZjoAbs2+ewn4o7aNZN0S67D2rC96Mde70WoKxt5D1iYy3vIxFGNywX
+        NYQFStO7xXozlUSKqQPZCblT/M2McgEFa5ttVGDSrZzFsBjH4DUBLxqHsrlOhubnXz8Ip9
+        VRfQAfc3f6HDJx77hS/XQSQpNXuMeJQ=
+Received: from suse.cz (unknown [10.100.201.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by relay2.suse.de (Postfix) with ESMTPS id 813A52C141;
+        Thu, 19 May 2022 07:03:55 +0000 (UTC)
+Date:   Thu, 19 May 2022 09:03:52 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc:     David Gow <davidgow@google.com>, Evan Green <evgreen@chromium.org>,
+        Julius Werner <jwerner@chromium.org>,
+        Scott Branden <scott.branden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        akpm@linux-foundation.org, bhe@redhat.com,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, netdev@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        x86@kernel.org, kernel-dev@igalia.com, kernel@gpiccoli.net,
+        halves@canonical.com, fabiomirmar@gmail.com,
+        alejandro.j.jimenez@oracle.com, andriy.shevchenko@linux.intel.com,
+        arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
+        d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
+        dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
+        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
+        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
+        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
+        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
+        senozhatsky@chromium.org, stern@rowland.harvard.edu,
+        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
+        will@kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dexuan Cui <decui@microsoft.com>,
+        Doug Berger <opendmb@gmail.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Justin Chen <justinpopo6@gmail.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mihai Carabas <mihai.carabas@oracle.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+        Shile Zhang <shile.zhang@linux.alibaba.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Wang ShaoBo <bobo.shaobowang@huawei.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        zhenwei pi <pizhenwei@bytedance.com>
+Subject: Re: [PATCH 19/30] panic: Add the panic hypervisor notifier list
+Message-ID: <YoXr2AD+Jc/ukUhJ@alley>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-20-gpiccoli@igalia.com>
+ <YoJZVZl/MH0KiE/J@alley>
+ <ad082ce7-db50-13bb-3dbb-9b595dfa78be@igalia.com>
+ <YoOpyW1+q+Z5as78@alley>
+ <YoSnGmBJ3kYs5WMf@alley>
+ <fbbd0a8d-2ef4-4a39-4b75-354918e85778@igalia.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7000:7143:0:0:0:0 with HTTP; Wed, 18 May 2022 16:07:26
- -0700 (PDT)
-Reply-To: tonywenn@asia.com
-From:   Tony Wen <weboutloock4@gmail.com>
-Date:   Thu, 19 May 2022 07:07:26 +0800
-Message-ID: <CAE2_YrBdO7G_4aQKNsCA0f9Xj9O0oBFqLv4chv5gYhMs8GX22g@mail.gmail.com>
-Subject: engage
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:112d listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4951]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [weboutloock4[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [weboutloock4[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.4 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fbbd0a8d-2ef4-4a39-4b75-354918e85778@igalia.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Can I engage your services?
+On Wed 2022-05-18 10:16:20, Guilherme G. Piccoli wrote:
+> On 18/05/2022 04:58, Petr Mladek wrote:
+> > [...]
+> >> I does similar things like kmsg_dump() so it should be called in
+> >> the same location (after info notifier list and before kdump).
+> >>
+> >> A solution might be to put it at these notifiers at the very
+> >> end of the "info" list or make extra "dump" notifier list.
+> > 
+> > I just want to point out that the above idea has problems.
+> > Notifiers storing kernel log need to be treated as kmsg_dump().
+> > In particular, we would  need to know if there are any.
+> > We do not need to call "info" notifier list before kdump
+> > when there is no kernel log dumper registered.
+> > 
+> 
+> Notifiers respect the priority concept, which is just a number that
+> orders the list addition (and the list is called in order).
+> 
+> I've used the last position to panic_print() [in patch 25] - one idea
+> here is to "reserve" the last position (represented by INT_MIN) for
+> notifiers that act like kmsg_dump(). I couldn't find any IIRC, but that
+> doesn't prevent us to save this position and comment about that.
+
+I would ignore it for now. If anyone would want to safe the log
+then they would need to read it. They will most likely use
+the existing kmsg_dump() infastructure. In fact, they should
+use it to avoid a code duplication.
+
+Best Regards,
+Petr
