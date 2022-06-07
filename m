@@ -2,68 +2,141 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4646A53F7FB
-	for <lists+sparclinux@lfdr.de>; Tue,  7 Jun 2022 10:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14BDB53FA9B
+	for <lists+sparclinux@lfdr.de>; Tue,  7 Jun 2022 11:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234715AbiFGIP6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 7 Jun 2022 04:15:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36700 "EHLO
+        id S235180AbiFGJ6H (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 7 Jun 2022 05:58:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232078AbiFGIP6 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 7 Jun 2022 04:15:58 -0400
-X-Greylist: delayed 557 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Jun 2022 01:15:56 PDT
-Received: from mail.westfry.pl (mail.westfry.pl [37.235.53.118])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE856CEB84
-        for <sparclinux@vger.kernel.org>; Tue,  7 Jun 2022 01:15:56 -0700 (PDT)
-Received: by mail.westfry.pl (Postfix, from userid 1001)
-        id AFBC24173E; Tue,  7 Jun 2022 10:06:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=westfry.pl; s=mail;
-        t=1654589173; bh=EtF+nCh55wqMJxxxoUxVlnM4mMblZyUsAf5+QjAo6CE=;
-        h=Date:From:To:Subject:From;
-        b=WaPT5YcGXWSOBVzcvMjwH1O2YX1HmJgIXkJp1+cBeuN0lwKxAUOv+RvMZj5IJMqA0
-         lBXKlmGzChNgX+SSOxr3bfZa52CKS0i8RwwndeLasg7cW8DLJZ28DUX7GemhmgGSLi
-         LLTfCny0hUBEialgR8kEKPsBc3K0kTo/TGbrWbifiUS8Fu/9xYKGLMtFIBOd70L/EN
-         x6ll1aerFSfBUxi9Wcgv+VweFiFrWb7h2hcjkkuKkjBU8NV49qth6UtnxuvtLHGouX
-         CYEtzkoomxRjjCB1H15Lz/H9zKqhT3GIM7wx5838wJshNKXquKrsEiiWGAjMUfPXCY
-         G/c2cCNyAbHsQ==
-Received: by mail.westfry.pl for <sparclinux@vger.kernel.org>; Tue,  7 Jun 2022 08:06:08 GMT
-Message-ID: <20220607084500-0.1.2y.9n6l.0.9n687b9pgc@westfry.pl>
-Date:   Tue,  7 Jun 2022 08:06:08 GMT
-From:   "Kamil Torek" <kamil.torek@westfry.pl>
-To:     <sparclinux@vger.kernel.org>
-Subject: Zabezpieczenie prawne
-X-Mailer: mail.westfry.pl
+        with ESMTP id S240570AbiFGJ5d (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 7 Jun 2022 05:57:33 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A862338A6
+        for <sparclinux@vger.kernel.org>; Tue,  7 Jun 2022 02:57:28 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id s6so27423179lfo.13
+        for <sparclinux@vger.kernel.org>; Tue, 07 Jun 2022 02:57:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=p7cyveT4bvEtCVZfKnt9HMSBuDucwLXScRMPEQg6smQ=;
+        b=l/YsjZQg0p30jPUAUm8kTjUCdIA50ncJWKKc/2E78ekHZRQPtYma/9GPhV2HZA2knr
+         2/vTu0dXjFICYd/oGBbhcVi8k7DrbogMwGejkDVzHqgUIWcNz0zzR9SDm1FnlfKYAOEP
+         KJj+aIEtXxkPj4kguAEAIAHbqvkADvhLMAT/ur0lwBjbKZGC4C5HfEVq1+S4TCDB6qU+
+         ds+qRUrKyj217rIsZxsJnRByGxDATv32j2iGj7oG9wDEX4h+wvPxcEvgvbrii1tBvAx3
+         IZ2f00T7DZBCntZjbs6I3DjTWNbSYCkpXX05GJ69QS2x3Okg1hl224zLO7hude0nZVWv
+         gCvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=p7cyveT4bvEtCVZfKnt9HMSBuDucwLXScRMPEQg6smQ=;
+        b=LTqp9TSSBFGNFQSxN2D5BEgYOS/UQE5bTJfim2fgXORh4fMVC0zDidu5HYuHPENWIN
+         cDBMCk8yAZp1tkWMrwpws361oxWwWH7OeNi3mtCkW9UBvJDsvKQDj7iYL/rf5dwaYCm1
+         8lrU73olNHpWdR6QWTWQYk3u6l61JNzDz2/Dw3U/HxwljVOMhoRHDxbvlpR77vWzjqvc
+         pFIFTihDpbysqKEZ2tmRPlVydfywLCb5AIcoIq0Ag70fpWM4lcFORTH7qadYkVev6lGj
+         wwHY+0X+Kr4IYn8QIA3I7xQD3IcUTglgmng1lb36b4oEp1xFme+SUx2sGmIlnynokrnU
+         Vt5w==
+X-Gm-Message-State: AOAM532pg7rbDdO71hJAy70q8adAU45tkx4kD0x8diIzwfsNchAL2Us7
+        oEBTeKEdh4kSAhYRw1eaGw/aNfxgIa9iPywj7sI=
+X-Google-Smtp-Source: ABdhPJw5mpyrWjrxX5kQICjkKkIRHF9dgqdgYy48cIlkf5WL3R7enNpG6oe+Lv86cW9JuXpVezFOXL1A5YGe4FtqgBw=
+X-Received: by 2002:a05:6512:128d:b0:479:41ca:f07 with SMTP id
+ u13-20020a056512128d00b0047941ca0f07mr6711463lfs.308.1654595846626; Tue, 07
+ Jun 2022 02:57:26 -0700 (PDT)
 MIME-Version: 1.0
+Received: by 2002:a05:6504:51d0:b0:1cf:9a7b:1066 with HTTP; Tue, 7 Jun 2022
+ 02:57:25 -0700 (PDT)
+Reply-To: robertbaileys_spende@aol.com
+From:   Robert Baileys <mrnazy58@gmail.com>
+Date:   Tue, 7 Jun 2022 11:57:25 +0200
+Message-ID: <CAKTXsVkAme3w9DAO8zR++EX8Oo06PO6Z+bEDhBKvoXJEwK4aiA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=6.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:12d listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [mrnazy58[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mrnazy58[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+--=20
+Sehr geehrter Beg=C3=BCnstigter,
 
-jako Kancelaria specjalizuj=C4=85ca si=C4=99 w prawie budowlanym minimali=
-zujemy ryzyko wynikaj=C4=85ce z podejmowanych przez przedsi=C4=99biorc=C3=
-=B3w realizacji budowlanych.
+Sie erhalten diese E-Mail von der Robert Baileys Foundation. Ich bin
+ein pensionierter Regierungsangestellter aus Harlem und ein Powerball
+Lotterie-Jackpot-Gewinner von 343,8 Millionen US-Dollar. Ich bin der
+gr=C3=B6=C3=9Fte Jackpot-Gewinner in der Geschichte der New York Lottery in
+Amerika. Ich habe diese Lotterie am 27. Oktober 2018 gewonnen und
+m=C3=B6chte Ihnen mitteilen, dass Google in Zusammenarbeit mit Microsoft
+f=C3=BCr eine zuf=C3=A4llige ''E-Mail-Adresse'' 3 Millionen Pfund ausgibt. =
+Ich
+glaube fest an "Geben w=C3=A4hrend des Lebens".
+Ich spende diese 3 Millionen Pfund an Sie, um auch
+Wohlt=C3=A4tigkeitsorganisationen und armen Menschen in Ihrer Gemeinde zu
+helfen, damit wir die Welt zu einem besseren Ort zum Leben machen
+k=C3=B6nnen. Um mehr Informationen in meinem Gewinn zu erhalten, k=C3=B6nne=
+n Sie
+die Website besuchen, also k=C3=B6nnen Sie skeptisch sein es .
+https://nypost.com/2018/11/14/meet-the-winner-of-the-biggest-lottery-jackpo=
+t-in-new-york-history/Sie
+Sie k=C3=B6nnen auch auf meinem YouTube nach weiteren Best=C3=A4tigungen su=
+chen:
+https://www.youtube.com/watch?v=3DH5vT18Ysavc
+ Ich hatte eine Idee, die sich nie ge=C3=A4ndert hat: dass Sie Ihr Verm=C3=
+=B6gen
+verwenden sollten, um Menschen zu helfen, und ich habe beschlossen,
+heimlich { 3000.000 =C2=A3} an ausgew=C3=A4hlte Menschen auf der ganzen Wel=
+t zu
+spenden, Menschen, die einen gro=C3=9Fen Einfluss auf die Gesellschaft
+hatten durch Verhalten. Nach Erhalt dieser E-Mail sollten Sie sich als
+gl=C3=BCckliche Person betrachten und daher berechtigt sein, ein
+Beg=C3=BCnstigter zu sein.
+Bitte beachten Sie, dass alle Antworten an
+(robertbaileys_spende@aol.com) gesendet werden sollten, und erhalten
+Sie weitere Informationen dar=C3=BCber, wie Sie diese Spende auf Ihr
+Bankkonto erhalten.
 
-Zapewniamy rzetelne podej=C5=9Bcie do ka=C5=BCdej sprawy zwi=C4=85zanej z=
- prawem budowlanym, jak procesy inwestycyjne, prawo pracy, ustawy dewelop=
-erskie, prawo zwi=C4=85zane z nieruchomo=C5=9Bciami czy tworzenie i anali=
-za prawomocnych um=C3=B3w (np. umowy o roboty budowlane).
+KONTAKT-E-MAIL: robertbaileys_spende@aol.com
 
-Doradzamy przy wyborze najkorzystniejszej formy realizacji inwestycji, ne=
-gocjujemy najkorzystniejsze warunki kontrakt=C3=B3w zapis=C3=B3w, nadzoru=
-jemy wykonanie i rozliczamy inwestycj=C4=99 pod k=C4=85tem ewentualnych r=
-oszcze=C5=84 (lub obrony przed nimi).
-
-Czy mog=C4=99 przedstawi=C4=87 zakres naszego wsparcia dla Pa=C5=84stwa f=
-irmy?
-
-
-Z powa=C5=BCaniem
-Kamil Torek
+Gr=C3=BC=C3=9Fe,
+Robert Bailey
+* * * * * * * * * * * * * * * * * * * *
+Powerball-Jackpot-Gewinner
+E-Mail: robertbaileys_spende@aol.com
