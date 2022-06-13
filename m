@@ -2,63 +2,77 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A68C6549B2A
-	for <lists+sparclinux@lfdr.de>; Mon, 13 Jun 2022 20:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27DF4549B6B
+	for <lists+sparclinux@lfdr.de>; Mon, 13 Jun 2022 20:24:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230507AbiFMSKz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 13 Jun 2022 14:10:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52610 "EHLO
+        id S239951AbiFMSYd (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 13 Jun 2022 14:24:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243811AbiFMSKl (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 13 Jun 2022 14:10:41 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C93A58B0B7;
-        Mon, 13 Jun 2022 07:00:15 -0700 (PDT)
-X-UUID: 4136d6dae5cb4660b2009d8b6c414e4f-20220613
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.6,REQID:73075fc4-2b93-41a0-9788-7c114e647621,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:-5
-X-CID-META: VersionHash:b14ad71,CLOUDID:3b1069c6-12ba-4305-bfdf-9aefbdc32516,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: 4136d6dae5cb4660b2009d8b6c414e4f-20220613
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <lecopzer.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 828423086; Mon, 13 Jun 2022 22:00:08 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Mon, 13 Jun 2022 22:00:01 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Mon, 13 Jun 2022 22:00:01 +0800
-From:   Lecopzer Chen <lecopzer.chen@mediatek.com>
-To:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <pmladek@suse.com>, <acme@kernel.org>, <akpm@linux-foundation.org>,
-        <alexander.shishkin@linux.intel.com>, <catalin.marinas@arm.com>,
-        <davem@davemloft.net>, <jolsa@redhat.com>, <jthierry@redhat.com>,
-        <keescook@chromium.org>, <kernelfans@gmail.com>,
-        <lecopzer.chen@mediatek.com>, <linux-mediatek@lists.infradead.org>,
-        <linux-perf-users@vger.kernel.org>, <mark.rutland@arm.com>,
-        <masahiroy@kernel.org>, <matthias.bgg@gmail.com>, <maz@kernel.org>,
-        <mcgrof@kernel.org>, <mingo@redhat.com>, <namhyung@kernel.org>,
-        <nixiaoming@huawei.com>, <peterz@infradead.org>,
-        <sparclinux@vger.kernel.org>, <sumit.garg@linaro.org>,
-        <wangqing@vivo.com>, <will@kernel.org>, <yj.chiang@mediatek.com>
-Subject: [PATCH v5 6/6] arm64: Enable perf events based hard lockup detector
-Date:   Mon, 13 Jun 2022 21:59:56 +0800
-Message-ID: <20220613135956.15711-7-lecopzer.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220613135956.15711-1-lecopzer.chen@mediatek.com>
-References: <20220613135956.15711-1-lecopzer.chen@mediatek.com>
+        with ESMTP id S230507AbiFMSXH (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 13 Jun 2022 14:23:07 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34436ABF4B;
+        Mon, 13 Jun 2022 07:32:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655130745; x=1686666745;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Ujiwlsqt2KBvF1qvv4tJ1iHQFhwag7L0iIc7Ytjnd0s=;
+  b=lsUuFmEZ1hsnq4DkDDWYnAH+0vL3lI1K0PJ+FEMnm7NEjCvk/HkEeGJa
+   X9UWYbHa0Rxm5JHw9PA47BoHbCyxLOU5ZWlC9ivwPSEAt7zJnTSH/LLEe
+   ajIwmWbkbg2RA6DEyMFhal+zn7ehfpubB++WUWpvuCYtANGQgNDmDEZpw
+   OCHHoQrv5w3a2CaLCjwYSLKrwrn6HrcCnElNyyeNxveKwgJDLStApYXHX
+   rP9sxl9Cz3s0vxstU3NajnA3+eLtSYVkvkectRZRV9VRv5dIaFPbWX3Vy
+   DeI6eVNqHQJsrbk+lQeEc0KgZvAwkOOa97MiHNqMJ8B504IGrkVOn2WcG
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="275831886"
+X-IronPort-AV: E=Sophos;i="5.91,297,1647327600"; 
+   d="scan'208";a="275831886"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2022 07:32:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,297,1647327600"; 
+   d="scan'208";a="673325163"
+Received: from irvmail001.ir.intel.com ([10.43.11.63])
+  by FMSMGA003.fm.intel.com with ESMTP; 13 Jun 2022 07:32:09 -0700
+Received: from newjersey.igk.intel.com (newjersey.igk.intel.com [10.102.20.203])
+        by irvmail001.ir.intel.com (8.14.3/8.13.6/MailSET/Hub) with ESMTP id 25DEW7CD026902;
+        Mon, 13 Jun 2022 15:32:07 +0100
+From:   Alexander Lobakin <alexandr.lobakin@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Alexander Lobakin <alexandr.lobakin@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Yury Norov <yury.norov@gmail.com>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Brian Cain <bcain@quicinc.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Kees Cook <keescook@chromium.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/6] bitops: define const_*() versions of the non-atomics
+Date:   Mon, 13 Jun 2022 16:30:34 +0200
+Message-Id: <20220613143034.1176680-1-alexandr.lobakin@intel.com>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <YqNNjKRja7KelljA@smile.fi.intel.com>
+References: <20220610113427.908751-1-alexandr.lobakin@intel.com> <20220610113427.908751-5-alexandr.lobakin@intel.com> <YqNNjKRja7KelljA@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,140 +80,37 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-With the recent feature added to enable perf events to use pseudo NMIs
-as interrupts on platforms which support GICv3 or later, its now been
-possible to enable hard lockup detector (or NMI watchdog) on arm64
-platforms. So enable corresponding support.
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Fri, 10 Jun 2022 16:56:28 +0300
 
-One thing to note here is that normally lockup detector is initialized
-just after the early initcalls but PMU on arm64 comes up much later as
-device_initcall(). To cope with that, overriding watchdog_nmi_probe() to
-let the watchdog framework know PMU not ready, and inform the framework
-to re-initialize lockup detection once PMU has been initialized.
+> On Fri, Jun 10, 2022 at 01:34:25PM +0200, Alexander Lobakin wrote:
+> > Define const_*() variants of the non-atomic bitops to be used when
+> > the input arguments are compile-time constants, so that the compiler
+> > will be always to resolve those to compile-time constants as well.
+> > Those are mostly direct aliases for generic_*() with one exception
+> > for const_test_bit(): the original one is declared atomic-safe and
+> > thus doesn't discard the `volatile` qualifier, so in order to let
+> > optimize the code, define it separately disregarding the qualifier.
+> > Add them to the compile-time type checks as well just in case.
+> 
+> ...
+> 
+> >  /* Check that the bitops prototypes are sane */
+> >  #define __check_bitop_pr(name)						\
+> > -	static_assert(__same_type(arch_##name, generic_##name) &&	\
+> > +	static_assert(__same_type(const_##name, generic_##name) &&	\
+> > +		      __same_type(arch_##name, generic_##name) &&	\
+> >  		      __same_type(name, generic_##name))
+> 
+> Can't it be a one line change and actually keeping ordering at the same time?
 
-[1]: http://lore.kernel.org/linux-arm-kernel/1610712101-14929-1-git-send-email-sumit.garg@linaro.org
+Sure. Wanted to sort them "semantically", but it doesn't really make
+any sense in here.
 
-Co-developed-by: Sumit Garg <sumit.garg@linaro.org>
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-Co-developed-by: Pingfan Liu <kernelfans@gmail.com>
-Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
-Signed-off-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
----
- arch/arm64/Kconfig               |  2 ++
- arch/arm64/kernel/perf_event.c   | 12 ++++++++++--
- arch/arm64/kernel/watchdog_hld.c | 14 ++++++++++++++
- drivers/perf/arm_pmu.c           |  5 +++++
- include/linux/perf/arm_pmu.h     |  2 ++
- 5 files changed, 33 insertions(+), 2 deletions(-)
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 1652a9800ebe..a0dc5097b609 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -187,12 +187,14 @@ config ARM64
- 	select HAVE_FUNCTION_ERROR_INJECTION
- 	select HAVE_FUNCTION_GRAPH_TRACER
- 	select HAVE_GCC_PLUGINS
-+	select HAVE_HARDLOCKUP_DETECTOR_PERF if PERF_EVENTS && HAVE_PERF_EVENTS_NMI
- 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
- 	select HAVE_IRQ_TIME_ACCOUNTING
- 	select HAVE_KVM
- 	select HAVE_NMI
- 	select HAVE_PATA_PLATFORM
- 	select HAVE_PERF_EVENTS
-+	select HAVE_PERF_EVENTS_NMI if ARM64_PSEUDO_NMI
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
- 	select HAVE_PREEMPT_DYNAMIC_KEY
-diff --git a/arch/arm64/kernel/perf_event.c b/arch/arm64/kernel/perf_event.c
-index cb69ff1e6138..d9eec8911bf0 100644
---- a/arch/arm64/kernel/perf_event.c
-+++ b/arch/arm64/kernel/perf_event.c
-@@ -23,6 +23,7 @@
- #include <linux/platform_device.h>
- #include <linux/sched_clock.h>
- #include <linux/smp.h>
-+#include <linux/nmi.h>
- 
- /* ARMv8 Cortex-A53 specific event types. */
- #define ARMV8_A53_PERFCTR_PREF_LINEFILL				0xC2
-@@ -1390,10 +1391,17 @@ static struct platform_driver armv8_pmu_driver = {
- 
- static int __init armv8_pmu_driver_init(void)
- {
-+	int ret;
-+
- 	if (acpi_disabled)
--		return platform_driver_register(&armv8_pmu_driver);
-+		ret = platform_driver_register(&armv8_pmu_driver);
- 	else
--		return arm_pmu_acpi_probe(armv8_pmuv3_pmu_init);
-+		ret = arm_pmu_acpi_probe(armv8_pmuv3_pmu_init);
-+
-+	if (!ret)
-+		retry_lockup_detector_init();
-+
-+	return ret;
- }
- device_initcall(armv8_pmu_driver_init)
- 
-diff --git a/arch/arm64/kernel/watchdog_hld.c b/arch/arm64/kernel/watchdog_hld.c
-index de43318e4dd6..c9c6ec889c15 100644
---- a/arch/arm64/kernel/watchdog_hld.c
-+++ b/arch/arm64/kernel/watchdog_hld.c
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
-+#include <linux/nmi.h>
- #include <linux/cpufreq.h>
-+#include <linux/perf/arm_pmu.h>
- 
- /*
-  * Safe maximum CPU frequency in case a particular platform doesn't implement
-@@ -23,3 +25,15 @@ u64 hw_nmi_get_sample_period(int watchdog_thresh)
- 	return (u64)max_cpu_freq * watchdog_thresh;
- }
- 
-+int __init watchdog_nmi_probe(void)
-+{
-+	/*
-+	 * hardlockup_detector_perf_init() will success even if Pseudo-NMI turns off,
-+	 * however, the pmu interrupts will act like a normal interrupt instead of
-+	 * NMI and the hardlockup detector would be broken.
-+	 */
-+	if (!arm_pmu_irq_is_nmi())
-+		return -ENODEV;
-+
-+	return hardlockup_detector_perf_init();
-+}
-diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
-index 59d3980b8ca2..ceee2c55d436 100644
---- a/drivers/perf/arm_pmu.c
-+++ b/drivers/perf/arm_pmu.c
-@@ -697,6 +697,11 @@ static int armpmu_get_cpu_irq(struct arm_pmu *pmu, int cpu)
- 	return per_cpu(hw_events->irq, cpu);
- }
- 
-+bool arm_pmu_irq_is_nmi(void)
-+{
-+	return has_nmi;
-+}
-+
- /*
-  * PMU hardware loses all context when a CPU goes offline.
-  * When a CPU is hotplugged back in, since some hardware registers are
-diff --git a/include/linux/perf/arm_pmu.h b/include/linux/perf/arm_pmu.h
-index 0407a38b470a..29c56c92bab7 100644
---- a/include/linux/perf/arm_pmu.h
-+++ b/include/linux/perf/arm_pmu.h
-@@ -171,6 +171,8 @@ void kvm_host_pmu_init(struct arm_pmu *pmu);
- #define kvm_host_pmu_init(x)	do { } while(0)
- #endif
- 
-+bool arm_pmu_irq_is_nmi(void);
-+
- /* Internal functions only for core arm_pmu code */
- struct arm_pmu *armpmu_alloc(void);
- struct arm_pmu *armpmu_alloc_atomic(void);
--- 
-2.25.1
-
+Thanks,
+Olek
