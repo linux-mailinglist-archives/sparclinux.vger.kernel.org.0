@@ -2,77 +2,80 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 596C654CA76
-	for <lists+sparclinux@lfdr.de>; Wed, 15 Jun 2022 15:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32C1354CB81
+	for <lists+sparclinux@lfdr.de>; Wed, 15 Jun 2022 16:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237659AbiFON5D (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 15 Jun 2022 09:57:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39708 "EHLO
+        id S1345876AbiFOOh6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 15 Jun 2022 10:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240208AbiFON5A (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Jun 2022 09:57:00 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE3827B12;
-        Wed, 15 Jun 2022 06:56:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655301419; x=1686837419;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=l3Dz9pCGYsKL9M71ANGJFS/yhgtgmIg63N13O2SpgOE=;
-  b=ZIWSrq97lWkxdwWPN3eRZs8ibstsomDnaF3tgvvIEHOvnq1xblOCBrCp
-   yk5n80X3PULcZ7WzqL9rQzrdP+t/gG5jhMkIXhb0DZYLlqw0KtqoHxg1g
-   M9+RGxjdrYrjV+cVsvtVrcEqv1QXat75qk2orzn/iCY3T1iEr0nunDk0P
-   a98fp6N4xWTpZGaqosb7MECLSJG/66B71mhSQ7frw9gvmpIZjyyEqYV72
-   YGNPTGgLlZXqAQvELv5WIGBhbPgh+WSERTM2vkRx/N/dFcQEtrsAdoubK
-   +NledGY7xj20xztT7FGKKbcsybIsXEL10tpCYoX681H2ZWtK8GB+Y4Tlu
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10378"; a="277760300"
-X-IronPort-AV: E=Sophos;i="5.91,302,1647327600"; 
-   d="scan'208";a="277760300"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 06:56:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,302,1647327600"; 
-   d="scan'208";a="727403523"
-Received: from irvmail001.ir.intel.com ([10.43.11.63])
-  by fmsmga001.fm.intel.com with ESMTP; 15 Jun 2022 06:56:53 -0700
-Received: from newjersey.igk.intel.com (newjersey.igk.intel.com [10.102.20.203])
-        by irvmail001.ir.intel.com (8.14.3/8.13.6/MailSET/Hub) with ESMTP id 25FDupkt019852;
-        Wed, 15 Jun 2022 14:56:51 +0100
-From:   Alexander Lobakin <alexandr.lobakin@intel.com>
-To:     Yury Norov <yury.norov@gmail.com>
-Cc:     Alexander Lobakin <alexandr.lobakin@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Brian Cain <bcain@quicinc.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/6] bitops: define const_*() versions of the non-atomics
-Date:   Wed, 15 Jun 2022 15:55:06 +0200
-Message-Id: <20220615135506.1264880-1-alexandr.lobakin@intel.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <YqlKpwjQ4Hu+Lr8u@yury-laptop>
-References: <20220610113427.908751-1-alexandr.lobakin@intel.com> <20220610113427.908751-5-alexandr.lobakin@intel.com> <YqlKpwjQ4Hu+Lr8u@yury-laptop>
+        with ESMTP id S230160AbiFOOhz (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Jun 2022 10:37:55 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4708D13CE1;
+        Wed, 15 Jun 2022 07:37:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=75kgVCcqOPOLeu4JBiLLFab/dM4uNZ1dcLuvpDx9ZCg=; b=kAIWl67VuUe8cBDkmFOZTh4b+J
+        Uy6PgE2+CwIEzhFEfsXCTAadcMkk5TefuTIBHvgzxNrjmUz+/r/f3fMBR5i8mMC7UweLMh9MkeJoD
+        97gkOJRUGibA77qDy9s4vL7NkQkS1Sv+TX4WpruLFHmbGvImVgE9LeYadgdIraA8AGxMlB+PxaWy/
+        1adKvJuvvpCbTsZosCqi5SMDlMupfKEgEY7JpKMS8HhvbF7gyowCTheRqW0YX0S9D05qpW9G1fKLt
+        DJUWQ6k8Tz/HxaHb6kuJRSWnDBXrsJA/DQco3hh/lFSm8XLWvSeNFNfH2bKr+ugXM0hH/Gw2zl2s+
+        laFslj7w==;
+Received: from 179.red-81-39-194.dynamicip.rima-tde.net ([81.39.194.179] helo=[192.168.15.167])
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1o1U8m-002LYs-SW; Wed, 15 Jun 2022 16:37:04 +0200
+Message-ID: <362f6520-8209-1721-823c-11928338f57d@igalia.com>
+Date:   Wed, 15 Jun 2022 11:36:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH 24/30] panic: Refactor the panic path
+Content-Language: en-US
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     bhe@redhat.com, d.hatayama@jp.fujitsu.com,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Mark Rutland <mark.rutland@arm.com>, mikelley@microsoft.com,
+        vkuznets@redhat.com, akpm@linux-foundation.org,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        netdev@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+        rcu@vger.kernel.org, sparclinux@vger.kernel.org,
+        xen-devel@lists.xenproject.org, x86@kernel.org,
+        kernel-dev@igalia.com, kernel@gpiccoli.net, halves@canonical.com,
+        fabiomirmar@gmail.com, alejandro.j.jimenez@oracle.com,
+        andriy.shevchenko@linux.intel.com, arnd@arndb.de, bp@alien8.de,
+        corbet@lwn.net, dave.hansen@linux.intel.com, dyoung@redhat.com,
+        feng.tang@intel.com, gregkh@linuxfoundation.org,
+        hidehiro.kawai.ez@hitachi.com, jgross@suse.com,
+        john.ogness@linutronix.de, keescook@chromium.org, luto@kernel.org,
+        mhiramat@kernel.org, mingo@redhat.com, paulmck@kernel.org,
+        peterz@infradead.org, rostedt@goodmis.org,
+        senozhatsky@chromium.org, stern@rowland.harvard.edu,
+        tglx@linutronix.de, vgoyal@redhat.com, will@kernel.org
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-25-gpiccoli@igalia.com>
+ <87fskzuh11.fsf@email.froward.int.ebiederm.org>
+ <0d084eed-4781-c815-29c7-ac62c498e216@igalia.com> <Yqic0R8/UFqTbbMD@alley>
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <Yqic0R8/UFqTbbMD@alley>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,96 +83,20 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-From: Yury Norov <yury.norov@gmail.com>
-Date: Tue, 14 Jun 2022 19:57:43 -0700
+Perfect Petr, thanks for your feedback!
 
-> On Fri, Jun 10, 2022 at 01:34:25PM +0200, Alexander Lobakin wrote:
-> > Define const_*() variants of the non-atomic bitops to be used when
-> > the input arguments are compile-time constants, so that the compiler
-> > will be always to resolve those to compile-time constants as well.
-> 
-> will be always able?
+I'll be out for some weeks, but after that what I'm doing is to split
+the series in 2 parts:
 
-Right, ooops.
+(a) The general fixes, which should be reviewed by subsystem maintainers
+and even merged individually by them.
 
-> 
-> > Those are mostly direct aliases for generic_*() with one exception
-> > for const_test_bit(): the original one is declared atomic-safe and
-> > thus doesn't discard the `volatile` qualifier, so in order to let
-> > optimize the code, define it separately disregarding the qualifier.
-> > Add them to the compile-time type checks as well just in case.
-> > 
-> > Suggested-by: Marco Elver <elver@google.com>
-> > Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
-> > ---
-> >  .../asm-generic/bitops/generic-non-atomic.h   | 31 +++++++++++++++++++
-> >  include/linux/bitops.h                        |  3 +-
-> >  2 files changed, 33 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/include/asm-generic/bitops/generic-non-atomic.h b/include/asm-generic/bitops/generic-non-atomic.h
-> > index 3ce0fa0ab35f..9a77babfff35 100644
-> > --- a/include/asm-generic/bitops/generic-non-atomic.h
-> > +++ b/include/asm-generic/bitops/generic-non-atomic.h
-> > @@ -121,4 +121,35 @@ generic_test_bit(unsigned long nr, const volatile unsigned long *addr)
-> >  	return 1UL & (addr[BIT_WORD(nr)] >> (nr & (BITS_PER_LONG-1)));
-> >  }
-> >  
-> > +/*
-> > + * const_*() definitions provide good compile-time optimizations when
-> > + * the passed arguments can be resolved at compile time.
-> > + */
-> > +#define const___set_bit			generic___set_bit
-> > +#define const___clear_bit		generic___clear_bit
-> > +#define const___change_bit		generic___change_bit
-> > +#define const___test_and_set_bit	generic___test_and_set_bit
-> > +#define const___test_and_clear_bit	generic___test_and_clear_bit
-> > +#define const___test_and_change_bit	generic___test_and_change_bit
-> > +
-> > +/**
-> > + * const_test_bit - Determine whether a bit is set
-> > + * @nr: bit number to test
-> > + * @addr: Address to start counting from
-> > + *
-> > + * A version of generic_test_bit() which discards the `volatile` qualifier to
-> > + * allow the compiler to optimize code harder. Non-atomic and to be used only
-> > + * for testing compile-time constants, e.g. from the corresponding macro, or
-> > + * when you really know what you are doing.
-> 
-> Not sure I understand the last sentence... Can you please rephrase?
+(b) The proper panic refactor, which includes the notifiers list split,
+etc. I'll think about what I consider the best solution for the
+crash_dump required ones, and will try to split in very simple patches
+to make it easier to review.
 
-I basically want to tell that there potentinally might be cases for
-using those outside of the actual macros from 6/6. But it might be
-redundant at all to mention this.
+Cheers,
 
-> 
-> > + */
-> > +static __always_inline bool
-> > +const_test_bit(unsigned long nr, const volatile unsigned long *addr)
-> > +{
-> > +	const unsigned long *p = (const unsigned long *)addr + BIT_WORD(nr);
-> > +	unsigned long mask = BIT_MASK(nr);
-> > +	unsigned long val = *p;
-> > +
-> > +	return !!(val & mask);
-> > +}
-> > +
-> >  #endif /* __ASM_GENERIC_BITOPS_GENERIC_NON_ATOMIC_H */
-> > diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-> > index 87087454a288..51c22b8667b4 100644
-> > --- a/include/linux/bitops.h
-> > +++ b/include/linux/bitops.h
-> > @@ -36,7 +36,8 @@ extern unsigned long __sw_hweight64(__u64 w);
-> >  
-> >  /* Check that the bitops prototypes are sane */
-> >  #define __check_bitop_pr(name)						\
-> > -	static_assert(__same_type(arch_##name, generic_##name) &&	\
-> > +	static_assert(__same_type(const_##name, generic_##name) &&	\
-> > +		      __same_type(arch_##name, generic_##name) &&	\
-> >  		      __same_type(name, generic_##name))
-> >  
-> >  __check_bitop_pr(__set_bit);
-> > -- 
-> > 2.36.1
 
-Thanks,
-Olek
+Guilherme
