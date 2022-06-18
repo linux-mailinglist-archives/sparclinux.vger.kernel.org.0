@@ -2,77 +2,84 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 568FC550372
-	for <lists+sparclinux@lfdr.de>; Sat, 18 Jun 2022 10:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27FF5550448
+	for <lists+sparclinux@lfdr.de>; Sat, 18 Jun 2022 13:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230109AbiFRIJ0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 18 Jun 2022 04:09:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44168 "EHLO
+        id S233739AbiFRLtZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 18 Jun 2022 07:49:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbiFRIJZ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 18 Jun 2022 04:09:25 -0400
-X-Greylist: delayed 1887 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 18 Jun 2022 01:09:23 PDT
-Received: from mail-m965.mail.126.com (mail-m965.mail.126.com [123.126.96.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3F9AB2AE0E
-        for <sparclinux@vger.kernel.org>; Sat, 18 Jun 2022 01:09:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=cwvrM
-        twwaf2eGhHlVdwPwEDf4EW4aPt9uaNxslFq5Iw=; b=AtTFpsS6NRsz6EmMRKouh
-        FFIeJbtaM85094GmIAs4K4+wMLl4w44kaU7Uf1oIeRPQUp8y1WCNVfoof1C9fTRm
-        RPquwtVvXxqDsL/qdXzjgjUV59S9ByVBUZ7/ARs05oUhRJZYVHSLcTgsAqG3LkM/
-        qwgqBoVnEBk2aMJ8W3FqiI=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-        by smtp10 (Coremail) with SMTP id NuRpCgCH51vLgK1iiG+cEw--.30712S2;
-        Sat, 18 Jun 2022 15:37:47 +0800 (CST)
-From:   Liang He <windhl@126.com>
-To:     davem@davemloft.net
-Cc:     windhl@126.com, sparclinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] sbus: char: Fix refcount leak bug in openrom.c
-Date:   Sat, 18 Jun 2022 15:37:46 +0800
-Message-Id: <20220618073746.4059541-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S234011AbiFRLsb (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 18 Jun 2022 07:48:31 -0400
+X-Greylist: delayed 437 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 18 Jun 2022 04:48:30 PDT
+Received: from relay05.pair.com (relay05.pair.com [216.92.24.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C0E31C135;
+        Sat, 18 Jun 2022 04:48:30 -0700 (PDT)
+Received: from orac.inputplus.co.uk (unknown [84.51.159.244])
+        by relay05.pair.com (Postfix) with ESMTP id 84EB51A2879;
+        Sat, 18 Jun 2022 07:41:12 -0400 (EDT)
+Received: from orac.inputplus.co.uk (orac.inputplus.co.uk [IPv6:::1])
+        by orac.inputplus.co.uk (Postfix) with ESMTP id 61EC71F981;
+        Sat, 18 Jun 2022 12:41:11 +0100 (BST)
+To:     Nate Karstens <nate.karstens@garmin.com>
+cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        David Laight <David.Laight@aculab.com>,
+        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Changli Gao <xiaosuo@gmail.com>
+Subject: Re: [PATCH v2] Implement close-on-fork
+From:   Ralph Corderoy <ralph@inputplus.co.uk>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: NuRpCgCH51vLgK1iiG+cEw--.30712S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZrW8Jr1fCF45WF1fCrW5trb_yoWxtrb_CF
-        1xXryxtr1ktFsxC3sFvws3uryFyF1FgrZYvFnIqa45t3WYqrWfWryjvr95WryUAFW8Jry7
-        A39rZFyrArnrtjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUU3fH5UUUUU==
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi2gskF1uwMOngXAAAss
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-reply-to: <20200515152321.9280-1-nate.karstens@garmin.com>
+References: <20200515152321.9280-1-nate.karstens@garmin.com>
+Date:   Sat, 18 Jun 2022 12:41:11 +0100
+Message-Id: <20220618114111.61EC71F981@orac.inputplus.co.uk>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-In opiocgetnext(), we need a of_node_put() to keep refcount balance
-for device_node pointer returned by of_find_node_by_phandle() or
-of_find_node_by_path().
+Hi Nate,
 
-Signed-off-by: Liang He <windhl@126.com>
----
- drivers/sbus/char/openprom.c | 1 +
- 1 file changed, 1 insertion(+)
+> One manifestation of this is a race conditions in system(), which
+> (depending on the implementation) is non-atomic in that it first calls
+> a fork() and then an exec().
 
-diff --git a/drivers/sbus/char/openprom.c b/drivers/sbus/char/openprom.c
-index 30b9751aad30..701978db0f0f 100644
---- a/drivers/sbus/char/openprom.c
-+++ b/drivers/sbus/char/openprom.c
-@@ -518,6 +518,7 @@ static int opiocgetnext(unsigned int cmd, void __user *argp)
- 	}
- 	if (dp)
- 		nd = dp->phandle;
-+	of_node_put(dp);
- 	if (copy_to_user(argp, &nd, sizeof(phandle)))
- 		return -EFAULT;
- 
+The need for O_CLOFORK might be made more clear by looking at a
+long-standing Go issue, i.e. unrelated to system(3), which was started
+in 2017 by Russ Cox when he summed up the current race-condition
+behaviour of trying to execve(2) a newly created file:
+https://github.com/golang/go/issues/22315.  I raised it on linux-kernel
+in 2017, https://marc.info/?l=linux-kernel&m=150834137201488, and linked
+to a proposed patch from 2011, ‘[PATCH] fs: add FD_CLOFORK and
+O_CLOFORK’ by Changli Gao.  As I said, long-standing.
+
+The Go issue is worth a read.  Russ wondered ‘What would Java do’ only
+to find that Java already had an issue open for the same problem since
+2014.
+
+I think the kernel is the place to fix the problem, just as with
+FD_CLOEXEC/O_CLOEXEC.  Ian Lance Taylor says on the Go issue that it
+looks like ‘Solaris and macOS and OpenBSD have O_CLOFORK already.
+Hopefully it will catch on further’.
+
 -- 
-2.25.1
-
+Cheers, Ralph.
