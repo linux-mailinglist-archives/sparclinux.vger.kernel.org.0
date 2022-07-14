@@ -2,126 +2,97 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F05157346C
-	for <lists+sparclinux@lfdr.de>; Wed, 13 Jul 2022 12:38:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED0FF574735
+	for <lists+sparclinux@lfdr.de>; Thu, 14 Jul 2022 10:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229627AbiGMKib (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 13 Jul 2022 06:38:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60788 "EHLO
+        id S236385AbiGNIh6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 14 Jul 2022 04:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229613AbiGMKia (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 13 Jul 2022 06:38:30 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA40FD51C;
-        Wed, 13 Jul 2022 03:38:22 -0700 (PDT)
-X-UUID: 8e25dad35ffc4f0592d46075c10dd7cb-20220713
-X-CID-UNFAMILIAR: 1
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:ace90e29-5bbf-4620-98e5-2e6e35d8a559,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:54,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:54
-X-CID-INFO: VERSION:1.1.8,REQID:ace90e29-5bbf-4620-98e5-2e6e35d8a559,OB:0,LOB:
-        0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:54,FILE:0,RULE:Release_HamU,ACTI
-        ON:release,TS:54
-X-CID-META: VersionHash:0f94e32,CLOUDID:a60d61d7-5d6d-4eaf-a635-828a3ee48b7c,C
-        OID:0e45bc946b18,Recheck:0,SF:28|16|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:1,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 8e25dad35ffc4f0592d46075c10dd7cb-20220713
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <lecopzer.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 761655014; Wed, 13 Jul 2022 18:38:16 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Wed, 13 Jul 2022 18:38:14 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 13 Jul 2022 18:38:14 +0800
-From:   Lecopzer Chen <lecopzer.chen@mediatek.com>
-To:     <lecopzer.chen@mediatek.com>
-CC:     <acme@kernel.org>, <akpm@linux-foundation.org>,
-        <alexander.shishkin@linux.intel.com>, <catalin.marinas@arm.com>,
-        <davem@davemloft.net>, <jolsa@redhat.com>, <jthierry@redhat.com>,
-        <keescook@chromium.org>, <kernelfans@gmail.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-perf-users@vger.kernel.org>, <mark.rutland@arm.com>,
-        <masahiroy@kernel.org>, <matthias.bgg@gmail.com>, <maz@kernel.org>,
-        <mcgrof@kernel.org>, <mingo@redhat.com>, <namhyung@kernel.org>,
-        <nixiaoming@huawei.com>, <peterz@infradead.org>,
-        <pmladek@suse.com>, <sparclinux@vger.kernel.org>,
-        <sumit.garg@linaro.org>, <wangqing@vivo.com>, <will@kernel.org>,
-        <yj.chiang@mediatek.com>
-Subject: RE: [PATCH v6 0/6] Support hld delayed init based on Pseudo-NMI for arm64
-Date:   Wed, 13 Jul 2022 18:38:14 +0800
-Message-ID: <20220713103814.16826-1-lecopzer.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220617040740.25631-1-lecopzer.chen@mediatek.com>
-References: <20220617040740.25631-1-lecopzer.chen@mediatek.com>
+        with ESMTP id S236756AbiGNIhP (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 14 Jul 2022 04:37:15 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2C1402C5
+        for <sparclinux@vger.kernel.org>; Thu, 14 Jul 2022 01:37:13 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id n18so1667659lfq.1
+        for <sparclinux@vger.kernel.org>; Thu, 14 Jul 2022 01:37:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
+        b=eOKhIHPUU5qPTZbjyQcWfvRUY0zDAP8hnIUzGBjF2Jn5DfdNsbEWN2bt7ALPYmKFVp
+         Dxr1gDHkbIBW6Zt+nHPJYVynuk8AW0yQZ/Zbg6Hs/Db/0s9SnaRXX8dPxs4FUxGCTJqt
+         PUYZva9zdBfTCaw+ACjLsUUgRvbYiV1yKAF3EhOBh+YW55bYBsAw2vjNobpxCrdB648X
+         A9Vj0WSfJubet8viXTg/I9X1Zmn6KwP7YNCJiSogQMOb5VTL9XQBYGsxHSC28kklqMwQ
+         Xqm1mx/as6lOSd/UexvuUJPMkR0uIfSfLSUsGSd7SP6mXh7BeziDYVk18AfHAMhcFado
+         ZNLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
+        b=rqqe/6sXV/q68M+AH8gt5Kp5Uby8hD5yMEuUJnuTJNROtNzTB0R4wltWQ40bli/Nlg
+         GWSZ2jbaYrw2mvfB7xhCuwOjUJ7yIi9P373udINfjyqOudPu28eJVy09xrvUtwc5oSXY
+         QTrxXb8eoFZEZMB71i0lLbcdRsPJniExJnhaTKqzcdmtk4iaqNkJYopp2qEcsQtR2jSv
+         HMVkLdCikGNJAEqR5EBQO3b+xYs/VgGayaRcIO9Kjs/Eq3U87GzlNsgxfyPENkm7kWu2
+         S4T4FR9UQNuey2yuXYsB6U+II+P1VgjGAeB1S5mJjxJ/0sum4/qgbIA53nzpD280MqvB
+         mBTA==
+X-Gm-Message-State: AJIora8fYc2RbCOF6a4q6dJi4BC+qcSp/ZBQZiyG/5ycxa4W6VOxMBRm
+        aXlTBagekStmoqS/Ni+m+A4jeVeVdgeiD7p0GJg=
+X-Google-Smtp-Source: AGRyM1suH6kpL0bxxrdPqBdRw7fjg6QmbYsIJ5KtUWeYknhIH8CIkHpjEQ1bnLxbFcENJg0E8wYhVlYhJeESVTPizkI=
+X-Received: by 2002:a05:6512:12c8:b0:489:efbf:18d1 with SMTP id
+ p8-20020a05651212c800b00489efbf18d1mr4734610lfg.192.1657787832538; Thu, 14
+ Jul 2022 01:37:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a2e:9041:0:0:0:0:0 with HTTP; Thu, 14 Jul 2022 01:37:11
+ -0700 (PDT)
+Reply-To: abdwabbomaddahm@gmail.com
+From:   Abdwabbo Maddah <abdwabbomaddah746@gmail.com>
+Date:   Thu, 14 Jul 2022 09:37:11 +0100
+Message-ID: <CAFC-3icPrpmNqEMcqzAOFvzCPc-r5yv89mNAZ9SsCQvcOZ=+9g@mail.gmail.com>
+Subject: Get back to me... URGENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:12c listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4973]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [abdwabbomaddah746[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [abdwabbomaddah746[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi Will, Mark
- 
-Sorry for another ping,
-but would you please help review this or comment about it?
-
-
-Thanks a lot.
-
- 
-> Hi Will, Mark
->
-> Could you help review arm parts of this patchset, please?
-> 
-> For the question mention in both [1] and [2],
-> 
-> > I'd still like Mark's Ack on this, as the approach you have taken doesn't
-> > really sit with what he was suggesting.
-> >
-> > I also don't understand how all the CPUs get initialised with your patch,
-> > since the PMU driver will be initialised after SMP is up and running.
-> 
-> The hardlock detector utilizes the softlockup_start_all() to start all
-> the cpu on watchdog_allowed_mask, which will do watchdog_nmi_enable()
-> that registers perf event on each CPUs.
-> Thus we simply need to retry lockup_detector_init() in a single cpu which
-> will reconfig and call to softlockup_start_all().
-> 
-> Also, the CONFIG_HARDLOCKUP_DETECTOR_PERF selects SOFTLOCKUP_DETECTOR,
-> IMO, this shows that hardlockup detector supports from softlockup.
-> 
-> 
-> > We should know whether pNMIs are possible once we've completed
-> > setup_arch() (and possibly init_IRQ()), long before SMP, so so I reckon
-> > we should have all the information available once we get to
-> > lockup_detector_init(), even if that requires some preparatory rework.
-> 
-> Hardlockup depends on PMU driver , I think the only way is moving
-> pmu driver at setup_arch() or any point which is earlier than
-> lockup_detector_init(), and I guess we have to reorganize the architecture
-> of arm PMU.
-> 
-> The retry function should benifit all the arch/ not only for arm64.
-> Any arch who needs to probe its pmu as module can use this without providing
-> a chance to mess up the setup order. 
-> 
-> 
-> Please let me know if you have any concern about this, thank you
-> 
-> 
-> [1] https://lore.kernel.org/all/CAFA6WYPPgUvHCpN5=EpJ2Us5h5uVWCbBA59C-YwYQX2ovyVeEw@mail.gmail.com/
-> [2] https://lore.kernel.org/linux-arm-kernel/20210419170331.GB31045@willie-the-truck/
-> 
-> 
+-- 
+Dear,
+I had sent you a mail but i don't think you received it that's why am
+writing you again.It is important you get back to me as soon as you
+can.
+Abd-Wabbo Maddah
