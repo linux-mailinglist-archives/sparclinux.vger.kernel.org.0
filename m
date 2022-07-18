@@ -2,72 +2,78 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43E44578252
-	for <lists+sparclinux@lfdr.de>; Mon, 18 Jul 2022 14:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB410578B45
+	for <lists+sparclinux@lfdr.de>; Mon, 18 Jul 2022 21:54:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234459AbiGRM2i (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 18 Jul 2022 08:28:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50160 "EHLO
+        id S233533AbiGRTyY (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 18 Jul 2022 15:54:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbiGRM2d (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 18 Jul 2022 08:28:33 -0400
-Received: from smtpbg.qq.com (biz-43-154-54-12.mail.qq.com [43.154.54.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C38B25E8D;
-        Mon, 18 Jul 2022 05:28:28 -0700 (PDT)
-X-QQ-mid: bizesmtp62t1658147295tjonkhrc
-Received: from localhost.localdomain ( [171.223.96.21])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Mon, 18 Jul 2022 20:28:14 +0800 (CST)
-X-QQ-SSF: 01000000002000E0U000C00A0000020
-X-QQ-FEAT: 4rCmCcmdMHf21FkghsKkD9U1bfbfRHIEFGsJSAc68J4bW5HbM3c3skKotsThN
-        QXIhAYkp8Kzkxs7vVWXego9VLz0jB5TWVUhqvFOGw/00AfPTs5SGviv9b9Joo90SGMDIl6E
-        XzxotuTPSQPpksDyAzloE//ooyt6gBYPRa0tgL3pvbF3DQY6JKFBtLH5t761TIwOxqkgj0l
-        xt7KWzb063OIgiwsV/q9ke5wxDFHd23zHkMGGCDGiOfiJh5n6xLbhQNzRXFdivaSYD8IhvW
-        d7vqpZ3V2aNgASa6BNc+7caBA+9sf/oqz2DXFS83bN5A2eUj5yekFyDDQrf7kyc3jzy0/4q
-        uNer8Y+jhWTxfqxLTRae3ArcylxWA7WFZKm1xdUipDoAwSCg2Svn78uoB8bYIh9sqBrAcRP
-X-QQ-GoodBg: 0
-From:   Jason Wang <wangborong@cdjrlc.com>
-To:     davem@davemloft.net
-Cc:     schnelle@linux.ibm.com, oohall@gmail.com, bhelgaas@google.com,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jason Wang <wangborong@cdjrlc.com>
-Subject: [PATCH] sparc: Fix comment typo
-Date:   Fri, 15 Jul 2022 12:26:10 +0800
-Message-Id: <20220715042610.14570-1-wangborong@cdjrlc.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S231416AbiGRTyQ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 18 Jul 2022 15:54:16 -0400
+Received: from mail-yw1-x1142.google.com (mail-yw1-x1142.google.com [IPv6:2607:f8b0:4864:20::1142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABC9D6319
+        for <sparclinux@vger.kernel.org>; Mon, 18 Jul 2022 12:54:15 -0700 (PDT)
+Received: by mail-yw1-x1142.google.com with SMTP id 00721157ae682-31e0d4ad6caso58504537b3.10
+        for <sparclinux@vger.kernel.org>; Mon, 18 Jul 2022 12:54:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=ci7wONf9pbkTyztfvrJbnIxicssRcOKokyL+cpSfhlw517IdNzBLbJfaAqQ+6v9O0H
+         KvA0P5alEU0N51eg24Cjw1JQDkQg24m6UKgZLEfEFdztEmdBnf6Jionr4MYAfYKHt3qd
+         NO7uFz7C5eIwd+qabJcvXvZU7GPOo2K8KRd5JHPgif0Hj1z2jIeRd9hiTYRKbWQ6CSj6
+         /kWNW+VB3IclVcjl7daAt5z4Go2+pVx2i96xE200B+83iZhDjfr1CFG0tGzFSu2fuRvA
+         Jd/ZzyFv1AMmp/rIjrSTuUTdYiRv7NJeAeGYJmRhyAA+xFIgAvzC/Nd0HyWCZbNr7SqN
+         SmcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=iNm6oezw1LeFQyz1Y5UIh9chgb2YQJ1792OWB9hO8V43GTnFUzx24+1T7G51k66V1W
+         KwpddrRx4V3joeou8EJhv2koGnxpxlc3i0vzPXfLHFjfBvPMykVNcumW54+0VGyoMqJh
+         HoOcDP2GMjxLrRZbQh6IVYFdTAMLc+1B8BZFI33E+dNJBGVvLzxZRSOp151ZBi032aLY
+         uoHK92qdoPjWf2gInx1cFIBLsE2NGB983J7ubsgbl35LRVo0V4apPD5+QCqZ7VHGpY3G
+         BJisRZLvOHZZb4WPYXcloNUNX4SyQboiZFcT1lHdDOWsXMVeSsJUFGfvNo/6kuzsMPw1
+         bS9A==
+X-Gm-Message-State: AJIora+Z+yy9JeB9EDMQLEk06wvNYxsxiC7hG+zG1TzO3DYlROY6LvRV
+        cikaYWt+SVN7kHW1xLr3d5oRqlyhx9NX9II+CA0=
+X-Google-Smtp-Source: AGRyM1uUNv3fqicYqPdXvUZ5lZYgf+Yk0Fzo4C0C6mlJLsNDiK3eWT49DYGSOGf1gkkuLo7LC1b1vRlkWy1tocYIv40=
+X-Received: by 2002:a81:548a:0:b0:31c:b7d6:b3ca with SMTP id
+ i132-20020a81548a000000b0031cb7d6b3camr32204749ywb.500.1658174054764; Mon, 18
+ Jul 2022 12:54:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr6
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,RDNS_DYNAMIC,
-        SPF_PASS,T_SPF_HELO_TEMPERROR autolearn=no autolearn_force=no
-        version=3.4.6
+Received: by 2002:a05:7000:34dd:0:0:0:0 with HTTP; Mon, 18 Jul 2022 12:54:14
+ -0700 (PDT)
+Reply-To: lilywilliam989@gmail.com
+From:   Lily William <rayimemogn@gmail.com>
+Date:   Mon, 18 Jul 2022 11:54:14 -0800
+Message-ID: <CAMefwTOESE_6e01NcDxppEtFUZxEpc65+gUOnJrat31YND0mdA@mail.gmail.com>
+Subject: Hi Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The double `the' is duplicated in line 313, remove one.
+Hi Dear,
 
-Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
----
- arch/sparc/kernel/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+My name is Dr Lily William from the United States.I am a French and
+American nationality (dual) living in the U.S and sometimes in France
+for Work Purpose.
 
-diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
-index 31b0c1983286..385c61d199cd 100644
---- a/arch/sparc/kernel/pci.c
-+++ b/arch/sparc/kernel/pci.c
-@@ -310,7 +310,7 @@ static struct pci_dev *of_create_pci_dev(struct pci_pbm_info *pbm,
- 	/* We can't actually use the firmware value, we have
- 	 * to read what is in the register right now.  One
- 	 * reason is that in the case of IDE interfaces the
--	 * firmware can sample the value before the the IDE
-+	 * firmware can sample the value before the IDE
- 	 * interface is programmed into native mode.
- 	 */
- 	pci_read_config_dword(dev, PCI_CLASS_REVISION, &class);
--- 
-2.35.1
+I hope you consider my friend request. I will share some of my pics
+and more details about myself when I get your response.
 
+Thanks
+
+With love
+Lily
