@@ -2,229 +2,209 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F9855A8724
-	for <lists+sparclinux@lfdr.de>; Wed, 31 Aug 2022 21:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E010F5ABE03
+	for <lists+sparclinux@lfdr.de>; Sat,  3 Sep 2022 11:35:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230257AbiHaT6N (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 31 Aug 2022 15:58:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48126 "EHLO
+        id S233150AbiICJe4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 3 Sep 2022 05:34:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232176AbiHaT6A (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 31 Aug 2022 15:58:00 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ADE6EEF0A
-        for <sparclinux@vger.kernel.org>; Wed, 31 Aug 2022 12:57:58 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id bq23so21456387lfb.7
-        for <sparclinux@vger.kernel.org>; Wed, 31 Aug 2022 12:57:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=QVTNaIYBhiuycd3PwwoP/BD0jxZNuHmPig2lyVhzDnw=;
-        b=l8850VPsSeXsvFGYgMio5LFv6TIM0tsuqOkGpkq7ma5M47ovkCvzbWgezqUWxRkLny
-         bg6EEoNyDWCH9cp/jMXHPZJ/Xoffw71XsYXDqRFy0qFNx98fzsMUaPFic18wFpqvH8Bm
-         KsxxoAhH5ub8ylMWuUnznWAq2C8wIXf6pUaoi1xublrXxmpJHO6Rtqhu6Bto7As2HrOT
-         pIC3kkQ1PZ3raMd9fCQpqipPpdfYXReARAD2idfKh0NqbppkKe8e39QgTdpkYIvPU+HA
-         an1C3nDHN87K7+ztWgA2jPkfTTJBPuU08Eg+gtUmUUEHMrRhP/AtEBoSbRx/0xUagRF4
-         YzCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=QVTNaIYBhiuycd3PwwoP/BD0jxZNuHmPig2lyVhzDnw=;
-        b=EUo/T0/QserE26rWQYOuBoU+C/sy+Kf2P0wnyvhX+reMVNN5SE6nJqEBlolgZiSQyV
-         OevHqrSTPlQU/F7n7sUfrHaakd31C2p0NAotCfRz3APR6rzY1uJW8L9Df0xF1XtjKnND
-         sgh1cR+BmL6h4YCpwyZCPRAAxiQqOafqG+MhpMS0RiNxOy1lux2T5UEXRfGVXTCm067M
-         h9oO0r/8kKvZ9F1VQlMHHpdsOQZxvWc8ag9dtO8CYh3kZ+kQbEobn1MCKETilvuR1vC6
-         bupFDqj544vIXtzSUYFN1m5AwX5TYdfPWPf55Htg/4EEGQRQm1r1PXTnjjE0+Jv3ve4l
-         535Q==
-X-Gm-Message-State: ACgBeo1bf4xHgiKYVD6EGMchlQ99v7zAx8qUtvX0FIq2buyRIIex1HzK
-        Fgdkh8qlPnNT29uTC9T1e9hX/w==
-X-Google-Smtp-Source: AA6agR7WW9WUzcNpYPnkKDIbXUbn0iXKOUbJbtfLt9BaQbOkMUrTQ64CmqPlNmHQraXRfDBrfQIN8Q==
-X-Received: by 2002:a05:6512:a88:b0:492:ea6a:12bc with SMTP id m8-20020a0565120a8800b00492ea6a12bcmr9483482lfu.229.1661975876821;
-        Wed, 31 Aug 2022 12:57:56 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id j8-20020a2e6e08000000b0025fe7f33bc4sm2223068ljc.49.2022.08.31.12.57.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Aug 2022 12:57:56 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     "David S . Miller" <davem@davemloft.net>
-Cc:     sparclinux@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        kernel test robot <lkp@intel.com>,
-        linux-arch@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v2] sparc: Fix the generic IO helpers
-Date:   Wed, 31 Aug 2022 21:55:53 +0200
-Message-Id: <20220831195553.129866-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.37.2
+        with ESMTP id S233087AbiICJew (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 3 Sep 2022 05:34:52 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB67421260;
+        Sat,  3 Sep 2022 02:34:37 -0700 (PDT)
+X-UUID: 8f5aa7cec44e4bf88f5fbc40a7def764-20220903
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=85nido2etOpg9jJYQFbRVZv19oAO9gLaQLHV39+tA4A=;
+        b=j0rdHukpRWvpqeCt8hUsYqHVEetSP5RR1GNE9uoN4CNyXiGBmusScEWlGArFomwOYG2zIzDN8Vl/FxOPRVGsAaDCSNBtuBjKHM2v4onZwJbI/SWgHrw196pNLxDL3XO0Q942hnZPhxC1qRuUnahpUgiMm93FGu3OUdP6DCGVvrA=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.10,REQID:ef36b599-93fc-4bca-a97b-ead363518b4c,OB:0,L
+        OB:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release
+        _Ham,ACTION:release,TS:95
+X-CID-INFO: VERSION:1.1.10,REQID:ef36b599-93fc-4bca-a97b-ead363518b4c,OB:0,LOB
+        :0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS98
+        1B3D,ACTION:quarantine,TS:95
+X-CID-META: VersionHash:84eae18,CLOUDID:d46f0521-1c20-48a5-82a0-25f9c331906d,C
+        OID:e6d5d1283953,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 8f5aa7cec44e4bf88f5fbc40a7def764-20220903
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
+        (envelope-from <lecopzer.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 5461367; Sat, 03 Sep 2022 17:34:18 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Sat, 3 Sep 2022 17:34:16 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Sat, 3 Sep 2022 17:34:16 +0800
+From:   Lecopzer Chen <lecopzer.chen@mediatek.com>
+To:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-perf-users@vger.kernel.org>,
+        <mark.rutland@arm.com>, <will@kernel.org>
+CC:     <lecopzer.chen@mediatek.com>, <acme@kernel.org>,
+        <akpm@linux-foundation.org>, <alexander.shishkin@linux.intel.com>,
+        <catalin.marinas@arm.com>, <davem@davemloft.net>,
+        <jolsa@redhat.com>, <jthierry@redhat.com>, <keescook@chromium.org>,
+        <kernelfans@gmail.com>, <masahiroy@kernel.org>,
+        <matthias.bgg@gmail.com>, <maz@kernel.org>, <mcgrof@kernel.org>,
+        <mingo@redhat.com>, <namhyung@kernel.org>, <nixiaoming@huawei.com>,
+        <peterz@infradead.org>, <pmladek@suse.com>,
+        <sparclinux@vger.kernel.org>, <sumit.garg@linaro.org>,
+        <wangqing@vivo.com>, <yj.chiang@mediatek.com>
+Subject: [PATCH v7 0/6] Support hld delayed init based on Pseudo-NMI for
+Date:   Sat, 3 Sep 2022 17:34:09 +0800
+Message-ID: <20220903093415.15850-1-lecopzer.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,
+        URIBL_CSS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-This enables the Sparc to use <asm-generic/io.h> to fill in the
-missing (undefined) [read|write]sq I/O accessor functions.
+As we already used hld internally for arm64 since 2020, there still
+doesn't have a proper commit on the upstream and we badly need it.
 
-This is needed if Sparc[64] ever wants to uses CONFIG_REGMAP_MMIO
-which has been patches to use accelerated _noinc accessors
-such as readsq/writesq that Sparc64, while being a 64bit platform,
-as of now not yet provide.
+This serise rework on 5.17 from [1] and the origin author is
+Pingfan Liu <kernelfans@gmail.com>
+Sumit Garg <sumit.garg@linaro.org>
 
-This comes with the requirement that everything the architecture
-already provides needs to be defined, rather than just being,
-say, static inline functions.
+Qoute from [1]:
 
-Bite the bullet and just provide the definitions and make it work.
-Compile-tested on sparc32 and sparc64.
+> Hard lockup detector is helpful to diagnose unpaired irq
+> enable/disable.
+> But the current watchdog framework can not cope with arm64 hw perf
+> event
+> easily.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/linux-arm-kernel/202208201639.HXye3ke4-lkp@intel.com/
-Cc: David S. Miller <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: linux-arch@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-ChangeLog v1->v2:
-- Move defines in proximity of defined functions
-- Test compile also on sparc32
----
- arch/sparc/include/asm/io.h    |  2 ++
- arch/sparc/include/asm/io_64.h | 22 ++++++++++++++++++++++
- 2 files changed, 24 insertions(+)
+> On arm64, when lockup_detector_init()->watchdog_nmi_probe(), PMU is
+> not
+> ready until device_initcall(armv8_pmu_driver_init).  And it is deeply
+> integrated with the driver model and cpuhp. Hence it is hard to push
+> the
+> initialization of armv8_pmu_driver_init() before smp_init().
 
-diff --git a/arch/sparc/include/asm/io.h b/arch/sparc/include/asm/io.h
-index 2eefa526b38f..2dad9be9ec75 100644
---- a/arch/sparc/include/asm/io.h
-+++ b/arch/sparc/include/asm/io.h
-@@ -19,4 +19,6 @@
- #define writel_be(__w, __addr)	__raw_writel(__w, __addr)
- #define writew_be(__l, __addr)	__raw_writew(__l, __addr)
- 
-+#include <asm-generic/io.h>
-+
- #endif
-diff --git a/arch/sparc/include/asm/io_64.h b/arch/sparc/include/asm/io_64.h
-index 5ffa820dcd4d..9303270b22f3 100644
---- a/arch/sparc/include/asm/io_64.h
-+++ b/arch/sparc/include/asm/io_64.h
-@@ -9,6 +9,7 @@
- #include <asm/page.h>      /* IO address mapping routines need this */
- #include <asm/asi.h>
- #include <asm-generic/pci_iomap.h>
-+#define pci_iomap pci_iomap
- 
- /* BIO layer definitions. */
- extern unsigned long kern_base, kern_size;
-@@ -239,38 +240,51 @@ static inline void outl(u32 l, unsigned long addr)
- void outsb(unsigned long, const void *, unsigned long);
- void outsw(unsigned long, const void *, unsigned long);
- void outsl(unsigned long, const void *, unsigned long);
-+#define outsb outsb
-+#define outsw outsw
-+#define outsl outsl
- void insb(unsigned long, void *, unsigned long);
- void insw(unsigned long, void *, unsigned long);
- void insl(unsigned long, void *, unsigned long);
-+#define insb insb
-+#define insw insw
-+#define insl insl
- 
- static inline void readsb(void __iomem *port, void *buf, unsigned long count)
- {
- 	insb((unsigned long __force)port, buf, count);
- }
-+#define readsb readsb
-+
- static inline void readsw(void __iomem *port, void *buf, unsigned long count)
- {
- 	insw((unsigned long __force)port, buf, count);
- }
-+#define readsw readsw
- 
- static inline void readsl(void __iomem *port, void *buf, unsigned long count)
- {
- 	insl((unsigned long __force)port, buf, count);
- }
-+#define readsl readsl
- 
- static inline void writesb(void __iomem *port, const void *buf, unsigned long count)
- {
- 	outsb((unsigned long __force)port, buf, count);
- }
-+#define writesb writesb
- 
- static inline void writesw(void __iomem *port, const void *buf, unsigned long count)
- {
- 	outsw((unsigned long __force)port, buf, count);
- }
-+#define writesw writesw
- 
- static inline void writesl(void __iomem *port, const void *buf, unsigned long count)
- {
- 	outsl((unsigned long __force)port, buf, count);
- }
-+#define writesl writesl
- 
- #define ioread8_rep(p,d,l)	readsb(p,d,l)
- #define ioread16_rep(p,d,l)	readsw(p,d,l)
-@@ -344,6 +358,7 @@ static inline void memset_io(volatile void __iomem *dst, int c, __kernel_size_t
- 		d++;
- 	}
- }
-+#define memset_io memset_io
- 
- static inline void sbus_memcpy_fromio(void *dst, const volatile void __iomem *src,
- 				      __kernel_size_t n)
-@@ -369,6 +384,7 @@ static inline void memcpy_fromio(void *dst, const volatile void __iomem *src,
- 		src++;
- 	}
- }
-+#define memcpy_fromio memcpy_fromio
- 
- static inline void sbus_memcpy_toio(volatile void __iomem *dst, const void *src,
- 				    __kernel_size_t n)
-@@ -395,6 +411,7 @@ static inline void memcpy_toio(volatile void __iomem *dst, const void *src,
- 		d++;
- 	}
- }
-+#define memcpy_toio memcpy_toio
- 
- #ifdef __KERNEL__
- 
-@@ -412,7 +429,9 @@ static inline void __iomem *ioremap(unsigned long offset, unsigned long size)
- static inline void __iomem *ioremap_np(unsigned long offset, unsigned long size)
- {
- 	return NULL;
-+
- }
-+#define ioremap_np ioremap_np
- 
- static inline void iounmap(volatile void __iomem *addr)
- {
-@@ -432,10 +451,13 @@ static inline void iounmap(volatile void __iomem *addr)
- /* Create a virtual mapping cookie for an IO port range */
- void __iomem *ioport_map(unsigned long port, unsigned int nr);
- void ioport_unmap(void __iomem *);
-+#define ioport_map ioport_map
-+#define ioport_unmap ioport_unmap
- 
- /* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
- struct pci_dev;
- void pci_iounmap(struct pci_dev *dev, void __iomem *);
-+#define pci_iounmap pci_iounmap
- 
- static inline int sbus_can_dma_64bit(void)
- {
+> But it is easy to take an opposite approach by enabling watchdog_hld
+> to
+> get the capability of PMU async. 
+> The async model is achieved by expanding watchdog_nmi_probe() with
+> -EBUSY, and a re-initializing work_struct which waits on a
+> wait_queue_head.
+
+Provide an API - retry_lockup_detector_init() for anyone who needs
+to delayed init lockup detector.
+
+The original assumption is: nobody should use delayed probe after
+lockup_detector_check() (which has __init attribute).
+That is, anyone uses this API must call between lockup_detector_init()
+and lockup_detector_check(), and the caller must have __init attribute
+
+The delayed init flow is:
+1. lockup_detector_init() -> watchdog_nmi_probe() get non-zero retun,
+   then set allow_lockup_detector_init_retry to true which means it's
+   able to do delayed probe later.
+
+2. PMU arch code init done, call retry_lockup_detector_init().
+
+3. retry_lockup_detector_init() queue the work only when
+   allow_lockup_detector_init_retry is true which means nobody should
+call
+   this before lockup_detector_init().
+
+4. the work lockup_detector_delay_init() is doing without wait event.
+   if probe success, set allow_lockup_detector_init_retry to false.
+
+5. at late_initcall_sync(), lockup_detector_check() set
+   allow_lockup_detector_init_retry to false first to avoid any later
+retry,
+   and then flush_work() to make sure the __init section won't be freed
+   before the work done.
+
+[1]
+https://lore.kernel.org/lkml/20211014024155.15253-1-kernelfans@gmail.com/
+
+v7:
+  rebase on v6.0-rc3
+
+v6:
+  fix build failed reported by kernel test robot <lkp@intel.com>
+https://lore.kernel.org/lkml/20220614062835.7196-1-lecopzer.chen@mediatek.com/
+
+v5:
+  1. rebase on v5.19-rc2
+  2. change to proper schedule api
+  3. return value checking before retry_lockup_detector_init()
+https://lore.kernel.org/lkml/20220613135956.15711-1-lecopzer.chen@mediatek.com/
+
+v4:
+  1. remove -EBUSY protocal, let all the non-zero value from
+     watchdog_nmi_probe() be able to retry.
+  2. separate arm64 part patch into hw_nmi_get_sample_period and retry
+     delayed init
+  3. tweak commit msg that we don't have to limit to -EBUSY  
+  4. rebase on v5.18-rc4
+https://lore.kernel.org/lkml/20220427161340.8518-1-lecopzer.chen@mediatek.com/
+
+v3:
+  1. Tweak commit message in patch 04 
+	2. Remove wait event
+  3. s/lockup_detector_pending_init/allow_lockup_detector_init_retry/
+  4. provide api retry_lockup_detector_init() 
+https://lore.kernel.org/lkml/20220324141405.10835-1-lecopzer.chen@mediatek.com/ 
+
+v2:
+  1. Tweak commit message in patch 01/02/04/05 
+  2. Remove vobose WARN in patch 04 within watchdog core.
+  3. Change from three states variable: detector_delay_init_state to
+     two states variable: allow_lockup_detector_init_retry
+
+     Thanks Petr Mladek <pmladek@suse.com> for the idea.
+     > 1.  lockup_detector_work() called before lockup_detector_check().
+     >     In this case, wait_event() will wait until
+     >     lockup_detector_check()
+     >     clears detector_delay_pending_init and calls wake_up().
+
+     > 2. lockup_detector_check() called before lockup_detector_work().
+     >    In this case, wait_even() will immediately continue because
+     >    it will see cleared detector_delay_pending_init.
+  4. Add comment in code in patch 04/05 for two states variable
+changing.
+https://lore.kernel.org/lkml/20220307154729.13477-1-lecopzer.chen@mediatek.com/
+
+
+Lecopzer Chen (5):
+  kernel/watchdog: remove WATCHDOG_DEFAULT
+  kernel/watchdog: change watchdog_nmi_enable() to void
+  kernel/watchdog: Adapt the watchdog_hld interface for async model
+  arm64: add hw_nmi_get_sample_period for preparation of lockup detector
+  arm64: Enable perf events based hard lockup detector
+
+Pingfan Liu (1):
+  kernel/watchdog_hld: Ensure CPU-bound context when creating hardlockup
+    detector event
+
+ arch/arm64/Kconfig               |  2 +
+ arch/arm64/kernel/Makefile       |  1 +
+ arch/arm64/kernel/perf_event.c   | 12 +++++-
+ arch/arm64/kernel/watchdog_hld.c | 39 +++++++++++++++++
+ arch/sparc/kernel/nmi.c          |  8 ++--
+ drivers/perf/arm_pmu.c           |  5 +++
+ include/linux/nmi.h              |  4 +-
+ include/linux/perf/arm_pmu.h     |  2 +
+ kernel/watchdog.c                | 72 +++++++++++++++++++++++++++++---
+ kernel/watchdog_hld.c            |  8 +++-
+ 10 files changed, 139 insertions(+), 14 deletions(-)
+ create mode 100644 arch/arm64/kernel/watchdog_hld.c
+
 -- 
-2.37.2
+2.25.1
 
