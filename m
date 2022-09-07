@@ -2,151 +2,113 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 056A45AF979
-	for <lists+sparclinux@lfdr.de>; Wed,  7 Sep 2022 03:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 349E45B06C9
+	for <lists+sparclinux@lfdr.de>; Wed,  7 Sep 2022 16:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbiIGBvx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 6 Sep 2022 21:51:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47840 "EHLO
+        id S230296AbiIGOcV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 7 Sep 2022 10:32:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbiIGBvw (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 6 Sep 2022 21:51:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0D9F80E99;
-        Tue,  6 Sep 2022 18:51:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 800A5616EB;
-        Wed,  7 Sep 2022 01:51:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE50FC43148;
-        Wed,  7 Sep 2022 01:51:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662515509;
-        bh=ALcTG3mOVuLLio4WhI2L2jJkbp5XvNqkTSaJ5wmwyeM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KD4YkRAGIO3nhCBJBkD2pwrs2ava5BAoX9wtcgu3IFRoQVjrtiZuB4R9MgbpEzsxq
-         KW4AFCVtiUZlgB2+cstExwawru05w/BuMHDhwnpc7WjQGj+QVhkknLUVfBDmKGedGD
-         99jvlAe7BYgLqXHlUmDho9+hJ1g+JDEgK63SfRqWTf36g22O56vOPdF29EpBYq/p8b
-         dtek3UzHb1QYIE+Jy4pecoCJYlNRkpFOMwxlx+Mb+1LMdMCgPvlJIOZQE3xh2MIUwq
-         tR/PZy8WV7Tq4lJxm3DRN05aNFEm2H8PKdO2xzn+gkLKBPu+bFQhwgcCWo9JIcLYAj
-         kJ4OnuZ6o3Ctw==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-127ba06d03fso9079218fac.3;
-        Tue, 06 Sep 2022 18:51:49 -0700 (PDT)
-X-Gm-Message-State: ACgBeo33eMSFNqgev5qm16SohsXvBqtm6nn2sWT/xYZyddz/j6hjcjYS
-        5OYyywvpH/0/Yu5sMXPtkhDbiv9SOxY5nINGIn8=
-X-Google-Smtp-Source: AA6agR5wU71q9oB13ta4xOEzTPcP8MJegkjW8lQNxzqUr3gEPcisWNIZ8cv6sJH9sEHuSDJ+obWgGJ+KHlsomjMI+dE=
-X-Received: by 2002:a05:6808:150f:b0:343:3202:91cf with SMTP id
- u15-20020a056808150f00b00343320291cfmr10871221oiw.112.1662515508882; Tue, 06
- Sep 2022 18:51:48 -0700 (PDT)
+        with ESMTP id S230302AbiIGOb5 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 7 Sep 2022 10:31:57 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3B44371A8
+        for <sparclinux@vger.kernel.org>; Wed,  7 Sep 2022 07:31:53 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id lz22so9963387ejb.3
+        for <sparclinux@vger.kernel.org>; Wed, 07 Sep 2022 07:31:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=hlX5LG70Pfi5xUfXCm2C7WvkXcJVP5UakJZVNodPOy7vNkSXQuxkM6JMnL0NkwpmEx
+         GApIDchppryVktOBo5G41BqVss7NVeWmLRXcOx2bAZqQ+LAYFz8ePbLc684sFXT4Nmqj
+         OcoPmJYuvMlwncvSBL0BFnkvuWLyKibj/n8A5QS+qmy30Nhg7xyf0NkI/q67juR/h0tY
+         bD/nOML45bK21IZjrLP4cVfkyGYdsdvh6OJ7KPKPWGwDpi4WDdxiFiQ5bptV3cHn11YY
+         R2/ccByiK1oIAZVOw3mE9dymIO7CzllUwLBF2JbmBffIhO2NpTaaNqhGzBB+XMxejIE1
+         VDsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=7DuHzSDNVZI/tahHQfE9M0KsZTEOPvWCtUatAfuxliMofU/nV/naJOaewV5vN0lScs
+         nKHSdUC0asRJ4b27K1uGZMPkSOJMJl5ozY0OH9S+LII15zR4wcoscaZ+Upw4/3QPhJ3j
+         nhQvItZrVl+Uwjr59TnQTUtptqC34PeBSoA9B/EUYYyxaWEL28DStD6Lw5i/0KcnifkA
+         YvGiVoqbSHzaO7mzCyfZHDYIMWGKG8lyleCb4kJqM9oztCJjx9+6mxHnkGfNjTvah1nZ
+         grLs2bxm1uU/P6H0BxnJp1BUzFAmB5NbPKCYqS8FVw1JBEncT+5EmAqcgGJSJrs5qDmn
+         vEpA==
+X-Gm-Message-State: ACgBeo3ZojClcr7SIqbYA4Bh2ipMIbpGAUo7KBoZPmvZ68IWaTcempNq
+        a0uz/n6meH++TjaKmy1c0VPGsHklBK7YLprmrM8=
+X-Google-Smtp-Source: AA6agR4pyZsB+xbbjgKGlrl2+RDjPAQ7wWCMdSGS3qWC1Sv629AIX++hkd3miN/bJlP1/yRRoX5bdHKo53e2l2Vr/Xc=
+X-Received: by 2002:a17:906:38f:b0:742:1f68:7058 with SMTP id
+ b15-20020a170906038f00b007421f687058mr2510502eja.743.1662561112231; Wed, 07
+ Sep 2022 07:31:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220903162328.1952477-1-guoren@kernel.org> <20220828135407.3897717-1-xianting.tian@linux.alibaba.com>
- <6c48657c-04df-132d-6167-49ed293dea44@microchip.com>
-In-Reply-To: <6c48657c-04df-132d-6167-49ed293dea44@microchip.com>
-From:   Guo Ren <guoren@kernel.org>
-Date:   Wed, 7 Sep 2022 09:51:36 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQvPpXwrfS_fTo+Pn=nufeCWE_tCcmPB-YZAZjdt9GbvA@mail.gmail.com>
-Message-ID: <CAJF2gTQvPpXwrfS_fTo+Pn=nufeCWE_tCcmPB-YZAZjdt9GbvA@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: Add STACKLEAK erasing the kernel stack at the end
- of syscalls
-To:     Conor.Dooley@microchip.com
-Cc:     oleg@redhat.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        monstr@monstr.eu, dinguyen@kernel.org, palmer@dabbelt.com,
-        davem@davemloft.net, arnd@arndb.de, shorne@gmail.com,
-        paul.walmsley@sifive.com, aou@eecs.berkeley.edu, ardb@kernel.org,
-        heiko@sntech.de, daolu@rivosinc.com, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-snps-arc@lists.infradead.org, sparclinux@vger.kernel.org,
-        openrisc@lists.librecores.org, xianting.tian@linux.alibaba.com,
-        linux-efi@vger.kernel.org
+Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:31:51 -0700 (PDT)
+Reply-To: lumar.casey@outlook.com
+From:   LUMAR CASEY <miriankushrat@gmail.com>
+Date:   Wed, 7 Sep 2022 16:31:51 +0200
+Message-ID: <CAO4StN23CjT73+kAZo3jW6NA7B_rVMGFz9vZYzq4Gs86AZgN6A@mail.gmail.com>
+Subject: ATTENTION/PROPOSAL
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:641 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5021]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [miriankushrat[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi all,
+ATTENTION
 
-How about the generic_entry version:
+BUSINESS PARTNER,
 
-https://lore.kernel.org/lkml/20220907014809.919979-1-guoren@kernel.org/
+I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
+MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
+PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
+DIPLOMATIC OUTLET.
 
-On Wed, Sep 7, 2022 at 1:35 AM <Conor.Dooley@microchip.com> wrote:
->
-> On 03/09/2022 17:23, guoren@kernel.org wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> >
-> > From: Xianting Tian <xianting.tian@linux.alibaba.com>
-> >
-> > This adds support for the STACKLEAK gcc plugin to RISC-V and disables
-> > the plugin in EFI stub code, which is out of scope for the protection.
-> >
-> > For the benefits of STACKLEAK feature, please check the commit
-> > afaef01c0015 ("x86/entry: Add STACKLEAK erasing the kernel stack at the end of syscalls")
-> >
-> > Performance impact (tested on qemu env with 1 riscv64 hart, 1GB mem)
-> >     hackbench -s 512 -l 200 -g 15 -f 25 -P
-> >     2.0% slowdown
-> >
-> > Signed-off-by: Xianting Tian <xianting.tian@linux.alibaba.com>
->
-> What changed since Xianting posted it himself a week ago:
-> https://lore.kernel.org/linux-riscv/20220828135407.3897717-1-xianting.tian@linux.alibaba.com/
->
-> There's an older patch from Du Lao adding STACKLEAK too:
-> https://lore.kernel.org/linux-riscv/20220615213834.3116135-1-daolu@rivosinc.com/
->
-> But since there's been no activity there since June...
->
-> > ---
-> >  arch/riscv/Kconfig                    | 1 +
-> >  arch/riscv/include/asm/processor.h    | 4 ++++
-> >  arch/riscv/kernel/entry.S             | 3 +++
-> >  drivers/firmware/efi/libstub/Makefile | 2 +-
-> >  4 files changed, 9 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> > index ed66c31e4655..61fd0dad4463 100644
-> > --- a/arch/riscv/Kconfig
-> > +++ b/arch/riscv/Kconfig
-> > @@ -85,6 +85,7 @@ config RISCV
-> >         select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
-> >         select HAVE_ARCH_THREAD_STRUCT_WHITELIST
-> >         select HAVE_ARCH_VMAP_STACK if MMU && 64BIT
-> > +       select HAVE_ARCH_STACKLEAK
-> >         select HAVE_ASM_MODVERSIONS
-> >         select HAVE_CONTEXT_TRACKING_USER
-> >         select HAVE_DEBUG_KMEMLEAK
-> > diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> > index d0537573501e..5e1fc4f82883 100644
-> > --- a/drivers/firmware/efi/libstub/Makefile
-> > +++ b/drivers/firmware/efi/libstub/Makefile
-> > @@ -25,7 +25,7 @@ cflags-$(CONFIG_ARM)          := $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
-> >                                    -fno-builtin -fpic \
-> >                                    $(call cc-option,-mno-single-pic-base)
-> >  cflags-$(CONFIG_RISCV)         := $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
-> > -                                  -fpic
-> > +                                  -fpic $(DISABLE_STACKLEAK_PLUGIN)
-> >
-> >  cflags-$(CONFIG_EFI_GENERIC_STUB) += -I$(srctree)/scripts/dtc/libfdt
-> >
-> > --
-> > 2.17.1
-> >
-> >
-> > _______________________________________________
-> > linux-riscv mailing list
-> > linux-riscv@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-riscv
->
+I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
+PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
+YOUR COUNTRY.
 
+I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
 
--- 
-Best Regards
- Guo Ren
+REGARDS,
+
+LUMAR CASEY
