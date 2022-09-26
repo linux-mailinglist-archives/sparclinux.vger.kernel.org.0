@@ -2,106 +2,201 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E21C5EB153
-	for <lists+sparclinux@lfdr.de>; Mon, 26 Sep 2022 21:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B68A95EB1BF
+	for <lists+sparclinux@lfdr.de>; Mon, 26 Sep 2022 22:00:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229958AbiIZTa0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 26 Sep 2022 15:30:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47352 "EHLO
+        id S229816AbiIZUAJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 26 Sep 2022 16:00:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229907AbiIZTaY (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 26 Sep 2022 15:30:24 -0400
-Received: from mail-oa1-x41.google.com (mail-oa1-x41.google.com [IPv6:2001:4860:4864:20::41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C21A83BC79
-        for <sparclinux@vger.kernel.org>; Mon, 26 Sep 2022 12:30:22 -0700 (PDT)
-Received: by mail-oa1-x41.google.com with SMTP id 586e51a60fabf-127ba06d03fso10593244fac.3
-        for <sparclinux@vger.kernel.org>; Mon, 26 Sep 2022 12:30:22 -0700 (PDT)
+        with ESMTP id S229971AbiIZUAI (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 26 Sep 2022 16:00:08 -0400
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 558BD1AD80
+        for <sparclinux@vger.kernel.org>; Mon, 26 Sep 2022 13:00:06 -0700 (PDT)
+Received: by mail-pj1-x104a.google.com with SMTP id g15-20020a17090a708f00b00203a68c9acaso3464936pjk.8
+        for <sparclinux@vger.kernel.org>; Mon, 26 Sep 2022 13:00:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date;
-        bh=rA5xeXD0TyjUhjvsrx6ejmOzOVqFLC9Uf1Of+5mK/os=;
-        b=gphcxxEMn90zrJiwxd+Tzx4hPLJ6ARFvHuMWuASeYcvRsTXBWJF9nLniPC9na4y2z1
-         9a3iRwQvIgnvaoaeTozFR4byJaOT+pVlJ7o2hQLCqRV2Lsmhx8leX+8RyLg1kYM2oxLR
-         cVVgzwsOJvXG4zHEOeEOwL7vwIfcKnTc7WeZsuI6Ftw0I3pjgCqdhIk1GFsCXHowNwUo
-         +7PTL96GM14NoE9snttptEHJ/Wdgx9Hp+pv2FWsmfv7tbYs2DsNPUwIwXDBY0Wo1RCR3
-         L5TrVdDBagqgP0tmy2lhoshBIW8oM/SHYNY3y3xju5u0fNCMRT6D/IJ0nj/gLcNqCXGY
-         WOWQ==
+        d=google.com; s=20210112;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date;
+        bh=u8rmArpPmicN7r7IqqfOH58XS1KpMBR85FAb+1BiVJU=;
+        b=C6QG8W0A2jE6D9CQn2zjFYStoqzefhTb8kQ0+ijebpJ1iSqL6VRR47hdRXsQpQZRVi
+         ZOj5ZWqu7FVHPGLKRJAWVuGzZn23oT10mF9H0WOIU0KpWTD8WN80nUS552n8T4H/yEBZ
+         rMhciPLFY9Je4vstINLc/UQ/85IuMlR7kYYAymiC0v4Hao/DMK81RACr0ZE4nAzyFP9V
+         aD++IHQNCyi0epayDNuUvnT/hxLpafzq+rCUieYLFH+PgLPrllui+HqgROCEF4rQJUne
+         rtqFcIJMzjUQ9VpxXKNRzWBxH1E1W/migdx00pRZO5ak5EfRPMTN54xKK0uC98ljG4IJ
+         g71g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=rA5xeXD0TyjUhjvsrx6ejmOzOVqFLC9Uf1Of+5mK/os=;
-        b=Z8A9JnVuMEXYVlY3XXBtr3++sFbz6MuxEykcDSXibT300hEksinuBoOwKWUVd5TdJI
-         b0ZT6tzg+YFJpQImO1OfxMGKKL5Q5mDiIF/pniKGWUoKlcfgA/cLIvdIf+SgcpZw+GiF
-         GhyPQLinXIGj+YG+8WXq7FbPpf44TAJXzkbWROhOO0226GibVKXhNRV5Oxrf7FzQUgxw
-         Vk25zhJO0o9zdw6N2xIRYmA8DEUelqQHq8+EvZqav2qEGsG52RGA2I1etvfz3G3WsMi0
-         BUt2rGWxKXAZzI0i+u+riwKwFJ6+sV55biojLS9Q3WRx5y+eNC1hnp9sbLtCJ8kjS0TZ
-         BZzQ==
-X-Gm-Message-State: ACrzQf2+pBzQqYwrv7oGDgYZkuq1kb573vep+i2q3tUHp7LQn9McgAwV
-        7oSzSosghUl7W4GinN4/sk6O5CJC9BKw3SZOYFY=
-X-Google-Smtp-Source: AMsMyM6W6PAcWorxaMwG5LQ/ZIUWafx7mO8th7lDN18N4aqQA4KxbYHhmKGLYYDuTS+TYZyDcZ6UU64ckTJ4ghF2CPA=
-X-Received: by 2002:a05:6870:783:b0:11c:7d1c:6ede with SMTP id
- en3-20020a056870078300b0011c7d1c6edemr151616oab.239.1664220622029; Mon, 26
- Sep 2022 12:30:22 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a05:6358:7253:b0:c7:f373:780 with HTTP; Mon, 26 Sep 2022
- 12:30:21 -0700 (PDT)
-Reply-To: pointerscott009@gmail.com
-From:   Aminuind Aabawa <aminuindabawa00@gmail.com>
-Date:   Mon, 26 Sep 2022 20:30:21 +0100
-Message-ID: <CAP_Jfyq5V1pweG2VSZ=xQe4B=TsvP6Qu5GuwXwCg28oLvXNrOw@mail.gmail.com>
-Subject: =?UTF-8?Q?Bussines_offer_Gesch=C3=A4ftsangebot=2E?=
-To:     undisclosed-recipients:;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=u8rmArpPmicN7r7IqqfOH58XS1KpMBR85FAb+1BiVJU=;
+        b=JxH+mrDloa8+tC6qI4jCqbqSPOS9RaWmRnNs7xa82k15ogiaIH5RwSkwklilq4FNGr
+         sduK1mcf2x06kH0vW/oinfDsZk/JRD6Yrpoo9T+1gHgSAliDzEEabcks8V699BSYM3s1
+         oTfpaFnPv9ocIF8Ct+7+6VYnv1uYsSgBxyFOulTL+HpgMTIaebpKsM6dzttBt10Csh8x
+         pL0jfSC0eL/CGPvw9Ml0D5kgeTPLeedwbC6MMUVcBc5aL48S+hOXjgtpk06a80B+ksGD
+         /SMf5/qU5YbzWjyZCPbOS3CgD016PVHgYuYgdhRo3b9pbKnIEzna4fvKN0CNQPVTx+/8
+         9/XA==
+X-Gm-Message-State: ACrzQf37lymGjTSdFY6kcEDm+CRnk2uLmRRTZ40DopdpNQoZkRTiaT8L
+        WxdVtH7riorxTLccYwTFgE8OcddEyvplDQ==
+X-Google-Smtp-Source: AMsMyM72e61Isv3ASb63QLAzd7GvOLG+tEJK6e7CFKXgBs5ZWj9r2NR1UKykIJb3sCI21UgLY3T5MyF00bC9xw==
+X-Received: from shakeelb.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:262e])
+ (user=shakeelb job=sendgmr) by 2002:a05:6a00:9a9:b0:541:787f:f2c with SMTP id
+ u41-20020a056a0009a900b00541787f0f2cmr25633816pfg.12.1664222405512; Mon, 26
+ Sep 2022 13:00:05 -0700 (PDT)
+Date:   Mon, 26 Sep 2022 19:59:31 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.37.3.998.g577e59143f-goog
+Message-ID: <20220926195931.2497968-1-shakeelb@google.com>
+Subject: [PATCH] Revert "net: set proper memcg for net_init hooks allocations"
+From:   Shakeel Butt <shakeelb@google.com>
+To:     Johannes Weiner <hannes@cmpxchg.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Muchun Song <songmuchun@bytedance.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     "=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>,
+        cgroups@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Shakeel Butt <shakeelb@google.com>,
+        Anatoly Pugachev <matorola@gmail.com>,
+        Vasily Averin <vvs@openvz.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        sparclinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2001:4860:4864:20:0:0:0:41 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [pointerscott009[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [aminuindabawa00[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [aminuindabawa00[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+This reverts commit 1d0403d20f6c281cb3d14c5f1db5317caeec48e9.
+
+Anatoly Pugachev reported that the commit 1d0403d20f6c ("net: set proper
+memcg for net_init hooks allocations") is somehow causing the sparc64
+VMs failed to boot and the VMs boot fine with that patch reverted. So,
+revert the patch for now and later we can debug the issue.
+
+Reported-by: Anatoly Pugachev <matorola@gmail.com>
+Signed-off-by: Shakeel Butt <shakeelb@google.com>
+Cc: Vasily Averin <vvs@openvz.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Michal Koutn=C3=BD <mkoutny@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: cgroups@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+---
+ include/linux/memcontrol.h | 45 --------------------------------------
+ net/core/net_namespace.c   |  7 ------
+ 2 files changed, 52 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index ef479e554253..e1644a24009c 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1787,42 +1787,6 @@ static inline void count_objcg_event(struct obj_cgro=
+up *objcg,
+ 	rcu_read_unlock();
+ }
+=20
+-/**
+- * get_mem_cgroup_from_obj - get a memcg associated with passed kernel obj=
+ect.
+- * @p: pointer to object from which memcg should be extracted. It can be N=
+ULL.
+- *
+- * Retrieves the memory group into which the memory of the pointed kernel
+- * object is accounted. If memcg is found, its reference is taken.
+- * If a passed kernel object is uncharged, or if proper memcg cannot be fo=
+und,
+- * as well as if mem_cgroup is disabled, NULL is returned.
+- *
+- * Return: valid memcg pointer with taken reference or NULL.
+- */
+-static inline struct mem_cgroup *get_mem_cgroup_from_obj(void *p)
+-{
+-	struct mem_cgroup *memcg;
+-
+-	rcu_read_lock();
+-	do {
+-		memcg =3D mem_cgroup_from_obj(p);
+-	} while (memcg && !css_tryget(&memcg->css));
+-	rcu_read_unlock();
+-	return memcg;
+-}
+-
+-/**
+- * mem_cgroup_or_root - always returns a pointer to a valid memory cgroup.
+- * @memcg: pointer to a valid memory cgroup or NULL.
+- *
+- * If passed argument is not NULL, returns it without any additional check=
+s
+- * and changes. Otherwise, root_mem_cgroup is returned.
+- *
+- * NOTE: root_mem_cgroup can be NULL during early boot.
+- */
+-static inline struct mem_cgroup *mem_cgroup_or_root(struct mem_cgroup *mem=
+cg)
+-{
+-	return memcg ? memcg : root_mem_cgroup;
+-}
+ #else
+ static inline bool mem_cgroup_kmem_disabled(void)
+ {
+@@ -1879,15 +1843,6 @@ static inline void count_objcg_event(struct obj_cgro=
+up *objcg,
+ {
+ }
+=20
+-static inline struct mem_cgroup *get_mem_cgroup_from_obj(void *p)
+-{
+-	return NULL;
+-}
+-
+-static inline struct mem_cgroup *mem_cgroup_or_root(struct mem_cgroup *mem=
+cg)
+-{
+-	return NULL;
+-}
+ #endif /* CONFIG_MEMCG_KMEM */
+=20
+ #if defined(CONFIG_MEMCG_KMEM) && defined(CONFIG_ZSWAP)
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index 6b9f19122ec1..0ec2f5906a27 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -18,7 +18,6 @@
+ #include <linux/user_namespace.h>
+ #include <linux/net_namespace.h>
+ #include <linux/sched/task.h>
+-#include <linux/sched/mm.h>
+ #include <linux/uidgid.h>
+ #include <linux/cookie.h>
+=20
+@@ -1144,13 +1143,7 @@ static int __register_pernet_operations(struct list_=
+head *list,
+ 		 * setup_net() and cleanup_net() are not possible.
+ 		 */
+ 		for_each_net(net) {
+-			struct mem_cgroup *old, *memcg;
+-
+-			memcg =3D mem_cgroup_or_root(get_mem_cgroup_from_obj(net));
+-			old =3D set_active_memcg(memcg);
+ 			error =3D ops_init(ops, net);
+-			set_active_memcg(old);
+-			mem_cgroup_put(memcg);
+ 			if (error)
+ 				goto out_undo;
+ 			list_add_tail(&net->exit_list, &net_exit_list);
 --=20
-Hello, Do you have a projects that need urgent loan??
-Granting out loans today in 10,000 / 500 Million to Interested
-Investors, Companies & Private Individuals.
-Revert back if you interested.
+2.37.3.998.g577e59143f-goog
 
-
-Hallo, haben Sie Projekte, die dringend einen Kredit ben=C3=B6tigen?
-Vergeben Sie heute Kredite in H=C3=B6he von 10.000 / 500 Millionen an
-interessierte Investoren, Unternehmen und Privatpersonen. Kommen Sie
-zur=C3=BCck, wenn Sie interessiert sind.
