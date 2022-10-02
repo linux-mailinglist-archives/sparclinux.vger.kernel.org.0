@@ -2,94 +2,100 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53A535F02B4
-	for <lists+sparclinux@lfdr.de>; Fri, 30 Sep 2022 04:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C30135F22CD
+	for <lists+sparclinux@lfdr.de>; Sun,  2 Oct 2022 13:08:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229902AbiI3CVY (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 29 Sep 2022 22:21:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49442 "EHLO
+        id S229686AbiJBLIV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 2 Oct 2022 07:08:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229735AbiI3CVN (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 29 Sep 2022 22:21:13 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07E33EBD7F
-        for <sparclinux@vger.kernel.org>; Thu, 29 Sep 2022 19:21:09 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id w10so2765487pll.11
-        for <sparclinux@vger.kernel.org>; Thu, 29 Sep 2022 19:21:09 -0700 (PDT)
+        with ESMTP id S229592AbiJBLIV (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 2 Oct 2022 07:08:21 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48B693B952
+        for <sparclinux@vger.kernel.org>; Sun,  2 Oct 2022 04:08:20 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id m3so11160014eda.12
+        for <sparclinux@vger.kernel.org>; Sun, 02 Oct 2022 04:08:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=FXFqlQxnzn1RAyuY90QGDEaTvBKFU5j4Xh7//yYY9xU=;
-        b=I69w6qHuv2FrBDUxW3wRGIzd1evwxaO5pfHf+ya81O6Ht13tLf0MWMAhfhrqNnz/9l
-         PQS96gXei6wrpSys8pYz5zQFLPTvYhzmUV1PCuTk7iTN0/TB5k/j9ZthTYwo71LPBGpM
-         EhJBe5r3IfE2B8+xIrnROCwkE1tTu5nzoS5Eg=
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=oClIBQNFH9oQ3kpZrYmwtJxcYon8I01m2XVgaF3n/q8=;
+        b=DnAK2+ErNkTorQShZlyenmoHs4fIvgndG35Z6HKbHFoHitX+GLXD6wrIipfUGAVbyb
+         ibMOo/rs3LTU6Ov5vg4f+HoKA0f/mMRJJz1WlTYw9xs1G+KLuvLYEr5NDRMqdU/1IjCa
+         0lVE0Phdp+g3nhzZBgfl6WkBWi5fFjbozWDi3M3jyweKqVloCjCUAPoqVQ6qyp2s+p2V
+         vZm1nBN/fsqmeE0fyE/5+8IKW2CGvmdabY4oYuKFe5ILXUa9G/Uwwn4fDdu3TDlAu9H6
+         ESjdfo3ba6fOBlH6hWfOR3LKpKI96VTXIFFcB3QId9XxajTTBTV8zqb7o0vFzveI/HhQ
+         8iew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=FXFqlQxnzn1RAyuY90QGDEaTvBKFU5j4Xh7//yYY9xU=;
-        b=5CPfxjfqJoCXOtE+aBcNdwhEv5R9Yf6EtCN6Yi8Uee2R+0ZDNMKqiy+rzxkismBEfR
-         qKqy0baDyDVfuOJRYiiS41VZ+ia7/IC4l5j1LUJm2iotLl4iCZtgz6hzRICA68pGrpD/
-         KgjMyMSCHz6E5uFPWVxSPM32KnWofyHgLqAqIyW63vpeMAvOMMMroor8lU+kCuJru8iq
-         R6KI1q4mHJVJ+kv3Z5vb9Yv6N8gJHTUjVsEgkSr0hL99CQ+99aV7YHlJ+TEtGBN4+psB
-         hTtrsZ1E6oRRmXvl+LZhTcnINjJEaXP1QZhlqe9grrh0pBzj4ONy1iLpEceKL238Ctpv
-         hVVw==
-X-Gm-Message-State: ACrzQf28PM7zhMQ+52neKE3TIawazPL+hvURuanHJL8r011Bvg3MvSrH
-        gJKu/dGn3OniifXRiEPyq9/Hmg==
-X-Google-Smtp-Source: AMsMyM4gpmuyrSC++Qd5ou8hrSjlKA6Kn0/7pH58+uU5n3ZfXLqUfb5qB3f17ZCIPasUNavUqToZuQ==
-X-Received: by 2002:a17:90b:19ce:b0:203:182d:2c77 with SMTP id nm14-20020a17090b19ce00b00203182d2c77mr19789003pjb.45.1664504469294;
-        Thu, 29 Sep 2022 19:21:09 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id m5-20020a62a205000000b0054087e1aea4sm424396pff.15.2022.09.29.19.21.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Sep 2022 19:21:08 -0700 (PDT)
-From:   Kees Cook <keescook@chromium.org>
-To:     davem@davemloft.net, bvanassche@acm.org
-Cc:     Kees Cook <keescook@chromium.org>, sparclinux@vger.kernel.org,
-        gustavoars@kernel.org
-Subject: Re: [PATCH] sparc: Unbreak the build
-Date:   Thu, 29 Sep 2022 19:20:21 -0700
-Message-Id: <166450440458.2153982.8042224641635890359.b4-ty@chromium.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220830205854.1918026-1-bvanassche@acm.org>
-References: <20220830205854.1918026-1-bvanassche@acm.org>
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=oClIBQNFH9oQ3kpZrYmwtJxcYon8I01m2XVgaF3n/q8=;
+        b=6VWfoHB6lk+JY0FJ/Ta8ysPuiUaCFRZWMX2OcM+u00LWw+3l0SZeGaagNYIQFhGo5Q
+         iHmRoIC3bd9RGAfURcZdznMqQFeedlStbsE26naiElyOuMG08nA+js6zZMQnbtDv6t+T
+         KqDcGrWHyfkguirOiEJKX8wra+vkalBS7oPQMOH0NHHaHRFuRSExTtVBD4o9haaXjAYe
+         csslwoSvz+crMQS/M1OrXd19g9cG0RrWj+CaujuFEpLkjciuWcUZEvggrvXfVKgxrfAH
+         +zR88Idnzlg2Y6NQLj3EYo1PHpeIWwfxEr58IwxRaKUl8khyNDFCOaYH3oW0URMU+fo2
+         WoZg==
+X-Gm-Message-State: ACrzQf08Kr0EFgoRtOm57jCjKfMhna8hcn7G3f50io5d+VvWsUz0Hkqf
+        HYhqzIMnGue89/Rx2G060kOwY12VCtfJoX1WlR0=
+X-Google-Smtp-Source: AMsMyM4xKmYX00X2Em4Jot+J8i5YVX0L//98jV6hWqppMGrflG4Oujo/daGFQ9Q0PwD1xCq9L47rF2ZVQJOu158Dcds=
+X-Received: by 2002:a05:6402:2146:b0:458:15d7:b99a with SMTP id
+ bq6-20020a056402214600b0045815d7b99amr14747172edb.24.1664708898652; Sun, 02
+ Oct 2022 04:08:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:640c:2cc1:b0:183:efa7:9980 with HTTP; Sun, 2 Oct 2022
+ 04:08:17 -0700 (PDT)
+Reply-To: mayaomur393@gmail.com
+From:   "Mrs. Maya omur" <harrisondebra01@gmail.com>
+Date:   Sun, 2 Oct 2022 11:08:17 +0000
+Message-ID: <CADzfT8RNPZHsua7=bsSZj8owbExT2nN6APhtKRvzJXDAGFqZJQ@mail.gmail.com>
+Subject: GOD IS WITH US
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_HK_NAME_FM_MR_MRS,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:529 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5004]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mayaomur393[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [harrisondebra01[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [harrisondebra01[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, 30 Aug 2022 13:58:42 -0700, Bart Van Assche wrote:
-> Fix the following build errors:
-> 
-> arch/sparc/mm/srmmu.c: In function ‘smp_flush_page_for_dma’:
-> arch/sparc/mm/srmmu.c:1639:13: error: cast between incompatible function types from ‘void (*)(long unsigned int)’ to ‘void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)’ [-Werror=cast-function-type]
->  1639 |         xc1((smpfunc_t) local_ops->page_for_dma, page);
->       |             ^
-> arch/sparc/mm/srmmu.c: In function ‘smp_flush_cache_mm’:
-> arch/sparc/mm/srmmu.c:1662:29: error: cast between incompatible function types from ‘void (*)(struct mm_struct *)’ to ‘void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)’ [-Werror=cast-function-type]
->  1662 |                         xc1((smpfunc_t) local_ops->cache_mm, (unsigned long) mm);
->       |
-> [ ... ]
-> 
-> [...]
-
-I can take this, since it's related to the the hardening work. Dave,
-let me know if you'd rather I drop it.
-
-Applied to for-next/hardening, thanks!
-
-[1/1] sparc: Unbreak the build
-      https://git.kernel.org/kees/c/3052b17c604c
-
--- 
-Kees Cook
-
+How are you doing I have a proposal for Am waiting to hear from you
+get back to me with this email   mayaomur6@gmail.com
+God bless you
