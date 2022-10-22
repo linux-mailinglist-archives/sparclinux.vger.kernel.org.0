@@ -2,36 +2,38 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 538E8608CE9
+	by mail.lfdr.de (Postfix) with ESMTP id B773D608CEA
 	for <lists+sparclinux@lfdr.de>; Sat, 22 Oct 2022 13:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229832AbiJVLpR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        id S229847AbiJVLpR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
         Sat, 22 Oct 2022 07:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34398 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229910AbiJVLpO (ORCPT
+        with ESMTP id S229912AbiJVLpO (ORCPT
         <rfc822;sparclinux@vger.kernel.org>); Sat, 22 Oct 2022 07:45:14 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 185D85A839
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 186555A8C9
         for <sparclinux@vger.kernel.org>; Sat, 22 Oct 2022 04:45:11 -0700 (PDT)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.56])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MvfXP3VvTz15Lxb;
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MvfXP36tgzmV91;
         Sat, 22 Oct 2022 19:40:21 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2375.31; Sat, 22 Oct 2022 19:45:09 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
  (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Sat, 22 Oct
- 2022 19:45:08 +0800
+ 2022 19:45:09 +0800
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <sparclinux@vger.kernel.org>
 CC:     <davem@davemloft.net>, <yangyingliang@huawei.com>
-Subject: [PATCH 1/2] sparc/of: fix possible memory leak in scan_one_device()
-Date:   Sat, 22 Oct 2022 19:44:13 +0800
-Message-ID: <20221022114414.3430637-1-yangyingliang@huawei.com>
+Subject: [PATCH 2/2] sparc64/of: fix possible memory leak in scan_one_device()
+Date:   Sat, 22 Oct 2022 19:44:14 +0800
+Message-ID: <20221022114414.3430637-2-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20221022114414.3430637-1-yangyingliang@huawei.com>
+References: <20221022114414.3430637-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -55,14 +57,14 @@ And add op_dev_release() to free platform device.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- arch/sparc/kernel/of_device_32.c | 8 +++++++-
+ arch/sparc/kernel/of_device_64.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sparc/kernel/of_device_32.c b/arch/sparc/kernel/of_device_32.c
-index 4ebf51e6e78e..c93f5077a4cc 100644
---- a/arch/sparc/kernel/of_device_32.c
-+++ b/arch/sparc/kernel/of_device_32.c
-@@ -185,6 +185,11 @@ static struct of_bus *of_match_bus(struct device_node *np)
+diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
+index 5a9f86b1d4e7..7496c8af12a6 100644
+--- a/arch/sparc/kernel/of_device_64.c
++++ b/arch/sparc/kernel/of_device_64.c
+@@ -239,6 +239,11 @@ static struct of_bus *of_match_bus(struct device_node *np)
  	return NULL;
  }
  
@@ -74,8 +76,8 @@ index 4ebf51e6e78e..c93f5077a4cc 100644
  static int __init build_one_resource(struct device_node *parent,
  				     struct of_bus *bus,
  				     struct of_bus *pbus,
-@@ -384,10 +389,11 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
- 
+@@ -677,10 +682,11 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
+ 		dev_set_name(&op->dev, "%08x", dp->phandle);
  	op->dev.coherent_dma_mask = DMA_BIT_MASK(32);
  	op->dev.dma_mask = &op->dev.coherent_dma_mask;
 +	op->dev.release = op_dev_release;
