@@ -2,70 +2,91 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F2F0608472
-	for <lists+sparclinux@lfdr.de>; Sat, 22 Oct 2022 07:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 538E8608CE9
+	for <lists+sparclinux@lfdr.de>; Sat, 22 Oct 2022 13:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbiJVFPN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 22 Oct 2022 01:15:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56502 "EHLO
+        id S229832AbiJVLpR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 22 Oct 2022 07:45:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbiJVFPM (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 22 Oct 2022 01:15:12 -0400
-Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.155.67.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D6E67C1C5;
-        Fri, 21 Oct 2022 22:15:06 -0700 (PDT)
-X-QQ-mid: bizesmtp88t1666415691tlr96z3b
-Received: from localhost.localdomain ( [182.148.15.254])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Sat, 22 Oct 2022 13:14:50 +0800 (CST)
-X-QQ-SSF: 01000000000000C0E000000A0000000
-X-QQ-FEAT: 6PjtIMncaiyHpM31v3JygrPU0itsxZQYzgFTkgePxl0bBZkKtsF/tdbMnsAkf
-        k3GjjjqwWVZxcUsrJzUW1bGR8IyYbwc1e8QzCqGW0xJZJ/lXaMTx7iLoH238vYIBHHWrJ+j
-        jBLmeBQExLp6DThUxv4GZ9GSwfzFjxlrlYNsZAgt0QVSwq16Ydp7n1QO1LX7gNIFw92FlxU
-        3Z5RgY/PM5d5i5VJ3ImoJ+JOJGmshQ6Pm5PmAKwGnfGLu6NgYqwvpAKm7m17LscQ4UVkMjg
-        Lwk6NYPG6nKeY4vG+UmRLtJKkzxPee7AuS4J0hS3hvIlELz6UVNrEzCG+sGUSdyndBawErr
-        Nh2+19bJB1Al+xsf64uvRbz+b+bn1jkA0kFZ/v9
-X-QQ-GoodBg: 0
-From:   wangjianli <wangjianli@cdjrlc.com>
-To:     davem@davemloft.net
-Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        wangjianli <wangjianli@cdjrlc.com>
-Subject: [PATCH] sparc/kernel: fix repeated words in comments
-Date:   Sat, 22 Oct 2022 13:14:43 +0800
-Message-Id: <20221022051443.1336-1-wangjianli@cdjrlc.com>
-X-Mailer: git-send-email 2.36.1
+        with ESMTP id S229910AbiJVLpO (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 22 Oct 2022 07:45:14 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 185D85A839
+        for <sparclinux@vger.kernel.org>; Sat, 22 Oct 2022 04:45:11 -0700 (PDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MvfXP3VvTz15Lxb;
+        Sat, 22 Oct 2022 19:40:21 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Sat, 22 Oct 2022 19:45:09 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Sat, 22 Oct
+ 2022 19:45:08 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <sparclinux@vger.kernel.org>
+CC:     <davem@davemloft.net>, <yangyingliang@huawei.com>
+Subject: [PATCH 1/2] sparc/of: fix possible memory leak in scan_one_device()
+Date:   Sat, 22 Oct 2022 19:44:13 +0800
+Message-ID: <20221022114414.3430637-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr7
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Delete the redundant word 'the'.
+dev_set_name() in scan_one_device() allocates memory for name,
+it need be freed when of_device_register() fails, call put_device()
+to give up the reference that hold in device_initialize(), so that
+it can be freed in kobject_cleanup() when the refcount hit to 0.
+And add op_dev_release() to free platform device.
 
-Signed-off-by: wangjianli <wangjianli@cdjrlc.com>
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- arch/sparc/kernel/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sparc/kernel/of_device_32.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
-index 31b0c1983286..385c61d199cd 100644
---- a/arch/sparc/kernel/pci.c
-+++ b/arch/sparc/kernel/pci.c
-@@ -310,7 +310,7 @@ static struct pci_dev *of_create_pci_dev(struct pci_pbm_info *pbm,
- 	/* We can't actually use the firmware value, we have
- 	 * to read what is in the register right now.  One
- 	 * reason is that in the case of IDE interfaces the
--	 * firmware can sample the value before the the IDE
-+	 * firmware can sample the value before the IDE
- 	 * interface is programmed into native mode.
- 	 */
- 	pci_read_config_dword(dev, PCI_CLASS_REVISION, &class);
+diff --git a/arch/sparc/kernel/of_device_32.c b/arch/sparc/kernel/of_device_32.c
+index 4ebf51e6e78e..c93f5077a4cc 100644
+--- a/arch/sparc/kernel/of_device_32.c
++++ b/arch/sparc/kernel/of_device_32.c
+@@ -185,6 +185,11 @@ static struct of_bus *of_match_bus(struct device_node *np)
+ 	return NULL;
+ }
+ 
++static void op_dev_release(struct device *dev)
++{
++	kfree(to_platform_device(dev));
++}
++
+ static int __init build_one_resource(struct device_node *parent,
+ 				     struct of_bus *bus,
+ 				     struct of_bus *pbus,
+@@ -384,10 +389,11 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
+ 
+ 	op->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+ 	op->dev.dma_mask = &op->dev.coherent_dma_mask;
++	op->dev.release = op_dev_release;
+ 
+ 	if (of_device_register(op)) {
+ 		printk("%pOF: Could not register of device.\n", dp);
+-		kfree(op);
++		put_device(&op->dev);
+ 		op = NULL;
+ 	}
+ 
 -- 
-2.36.1
+2.25.1
 
