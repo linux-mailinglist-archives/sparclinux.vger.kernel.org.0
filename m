@@ -2,128 +2,76 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8F9561F048
-	for <lists+sparclinux@lfdr.de>; Mon,  7 Nov 2022 11:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B23E661F76C
+	for <lists+sparclinux@lfdr.de>; Mon,  7 Nov 2022 16:18:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231542AbiKGKWB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 7 Nov 2022 05:22:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32938 "EHLO
+        id S231481AbiKGPSf (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 7 Nov 2022 10:18:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231614AbiKGKVu (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 7 Nov 2022 05:21:50 -0500
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 457C81658C
-        for <sparclinux@vger.kernel.org>; Mon,  7 Nov 2022 02:21:27 -0800 (PST)
-Received: by mail-oi1-x241.google.com with SMTP id n186so11625320oih.7
-        for <sparclinux@vger.kernel.org>; Mon, 07 Nov 2022 02:21:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=L9okY7Icb0Gf5ctoFsS3m7Ms6FyffuhIG/wumllqb99pGSDM0eKoVdXRomu4k2Vvje
-         vaAAA5b5CG4T9vL3DYzTbt6i7ilTYVRiZHeAf51qWroCKMi/06UV8twkwYbbvcb58b0c
-         O8aiXYIeKLPGKFxD8AeTNjdm9XiiwAwYXXYnxXnBzQtt4ZaPQYbu2mn3d4/wBF5dq0sI
-         fYgKey8dWac3TMQ3pm+aZLL8XgADS0c8wc9DQhJYDoGLimjkDspSigMMA/pe1/be4Mmf
-         FTMTprRtatoAeN10/4e16TIuQYPcJ6zZ7AsqjnUqg8Bde3BWUPkO4V20s/KjpolOjYbD
-         1dVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=XTcv3JvpkP589wS+TGD7u6bcnQTadVrjotyBz71S5cVXg/BdTeCp3mKnSjCfKE+xcO
-         HlFSM4wdOdFbvrHB7wo4rtR3dy0Zy9NW4mRZcHHtAYpxgfQMtTsu0x+wVZn0XCHyU3mf
-         0vlE9r8PWaV/5Pzq0ulTPXHcUoLBEJoOURmc1KM5Zogn+n3SoxQDtvTl8x6BDocr8Sip
-         jwu5nxfiWf//FHVXID6n2GiY95CY5zOelJs02Zg06oLorPYZyMm0F5ugtQaWecEov/Mw
-         jAnFyK/GGt/V4LxmCoPQxpNb7P0O2px7mprvek1cJ37PRD2mnXFdC8WWYLPwFjPhIPf2
-         6zuQ==
-X-Gm-Message-State: ACrzQf33P9vhCOCPdKIvB4+RWi+p2UuOAIPSvdDD1C46uonG9D2vOhqx
-        9PVe2kw1AJCJ1pQU7z6bdw8e8RXN7QLImIZ55wyhp5defgg=
-X-Google-Smtp-Source: AMsMyM4Z92xjGZXgCyg2wym9Bu3/u65n6EL2ZpWI9kWf7s8xWZden0QG/zdZVfFd3uCVmOfceIs+YigxV7lXSF4Af+Y=
-X-Received: by 2002:a17:90b:2393:b0:213:ecb2:2e04 with SMTP id
- mr19-20020a17090b239300b00213ecb22e04mr38944517pjb.100.1667816475223; Mon, 07
- Nov 2022 02:21:15 -0800 (PST)
+        with ESMTP id S232833AbiKGPSd (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 7 Nov 2022 10:18:33 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7423101A;
+        Mon,  7 Nov 2022 07:18:29 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6527161175;
+        Mon,  7 Nov 2022 15:18:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F181C433D7;
+        Mon,  7 Nov 2022 15:18:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667834308;
+        bh=AnnreFD0cOvjlr58KEWYY82PgAKKww7aoT8x4brf1EU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jLd5uAPiCOvWXKrYzcJptWZaW9+0RZr1WUOv3ulrwfs+pbPvIsGXSPtdcsA2qtpX5
+         o5CGyWn9hDSKaoLYgwpiQacUbP/n6+7wPFVJnGf78t15bMUjw/HUofrV70iQkR3V5I
+         0CXcpRD4zP1pVVrdorilN6IGopRyt8ZyENGWuTXB9ctCGI8GvYogoDbKGB0q5NaGpX
+         0kjGx3pb4oP78kWstUJr5gpD6PuYDy2kNKEfi2P48MDFVJfpV/0jq7jzUx10vuGKQZ
+         wuqNKWPcGu5s5HSrogsvgRSaApuQyqEUhhqchC6XaJnSHp4pte+GAWxJw2OVVTtx1K
+         E2JEFMH/d5z1Q==
+Date:   Mon, 7 Nov 2022 15:18:20 +0000
+From:   Will Deacon <will@kernel.org>
+To:     Lecopzer Chen <lecopzer.chen@mediatek.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, mark.rutland@arm.com,
+        acme@kernel.org, akpm@linux-foundation.org,
+        alexander.shishkin@linux.intel.com, catalin.marinas@arm.com,
+        davem@davemloft.net, jolsa@redhat.com, jthierry@redhat.com,
+        keescook@chromium.org, kernelfans@gmail.com, masahiroy@kernel.org,
+        matthias.bgg@gmail.com, maz@kernel.org, mcgrof@kernel.org,
+        mingo@redhat.com, namhyung@kernel.org, nixiaoming@huawei.com,
+        peterz@infradead.org, pmladek@suse.com, sparclinux@vger.kernel.org,
+        sumit.garg@linaro.org, wangqing@vivo.com, yj.chiang@mediatek.com
+Subject: Re: [PATCH v7 0/6] Support hld delayed init based on Pseudo-NMI for
+Message-ID: <20221107151819.GA21002@willie-the-truck>
+References: <20220903093415.15850-1-lecopzer.chen@mediatek.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
- 02:21:14 -0800 (PST)
-Reply-To: contact@ammico.it
-From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
-Date:   Mon, 7 Nov 2022 11:21:14 +0100
-Message-ID: <CAHAXD+Z_SoFK+TjW_6apBCCLtc_awXEjaqOdf77jdLRxxup3TA@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_40,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:241 listed in]
-        [list.dnswl.org]
-        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
-        *      [score: 0.3844]
-        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [977638ib[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220903093415.15850-1-lecopzer.chen@mediatek.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hei ja miten voit?
-Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
- toivolla
-v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
-leikkaus
-t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
-suudet selviyty=C3=A4.
-Mutta ennen kuin min=C3=A4
-Tee toinen vaarallinen operaatio, annan sen sinulle
-Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
-sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
-voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
-iden auttamista
-ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
-=C3=A4 minulla ei ole niit=C3=A4
-kenelt=C3=A4 perii rahaa.
-Vastaa minulle nopeasti
-terveisi=C3=A4
-Rouva Monika Evereen
-Florida, Amerikan Yhdysvallat
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-Hi and how are you?
-My name is Mrs. Evereen, I am sending this message with great hope for
-an immediate response, as I have to undergo heart reoperation in my
-current poor health with little chance of survival. But before I
-undertake the second dangerous operation, I will give you the
-$6,550,000 I have in my US bank account to invest well, manage and use
-the profits to run a charity project for me. I count helping the sick
-and the poor as my last wish on earth, because I have no one to
-inherit money from.
-Please give me a quick reply
-regards
-Mrs. Monika Evereen
-Florida, United States of America
+On Sat, Sep 03, 2022 at 05:34:09PM +0800, Lecopzer Chen wrote:
+> As we already used hld internally for arm64 since 2020, there still
+> doesn't have a proper commit on the upstream and we badly need it.
+> 
+> This serise rework on 5.17 from [1] and the origin author is
+> Pingfan Liu <kernelfans@gmail.com>
+> Sumit Garg <sumit.garg@linaro.org>
+
+I'd definitely want Mark's ack on this, as he previously had suggestions
+when we reverted the old broken code back in:
+
+https://lore.kernel.org/r/20210113130235.GB19011@C02TD0UTHF1T.local
+
+Will
