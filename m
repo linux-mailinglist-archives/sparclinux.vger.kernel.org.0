@@ -2,60 +2,58 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42A046288AD
-	for <lists+sparclinux@lfdr.de>; Mon, 14 Nov 2022 19:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08E7362B203
+	for <lists+sparclinux@lfdr.de>; Wed, 16 Nov 2022 05:03:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236546AbiKNS6R (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 14 Nov 2022 13:58:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44024 "EHLO
+        id S231410AbiKPEDL (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 15 Nov 2022 23:03:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236318AbiKNS6L (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 14 Nov 2022 13:58:11 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 025F11D33C;
-        Mon, 14 Nov 2022 10:58:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668452289; x=1699988289;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BZMLhTwKqFLidxOVtwWq081cCaNo7ow4HF5ovB57GGE=;
-  b=GppoaM+AeBp3THbC30cQaYtJRZEhR9Bow3agyfVCEymlXZT04nkSUfCD
-   mw4b2xegRjaRphDpIwI1QrwTgYEjHrL0FLVujEYahf/V1BiQxDIZjb/I8
-   wm5QIx3yBjhv83yx38PoslQ2/yvHxKPfQPD2PSDPhuNfpRQSboPBvWB6u
-   PzX2E0QEq0NP4PpejxFDllRUt1OuQFHPn7+3DN1SWFIGVBbXlg91YU8NI
-   JsgdAjcvLjnEPttsOSwiq63F/2B1jgN8LV0+Zhc+9E8YxekRC1b3+P70I
-   PoIhQxiyLsEoZwhaMVbHz6yF0R9s9U31s/4fFYkDQ2RGQdlrBYOjuIVvK
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="338843407"
-X-IronPort-AV: E=Sophos;i="5.96,164,1665471600"; 
-   d="scan'208";a="338843407"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2022 10:58:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="638607286"
-X-IronPort-AV: E=Sophos;i="5.96,164,1665471600"; 
-   d="scan'208";a="638607286"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga002.jf.intel.com with ESMTP; 14 Nov 2022 10:58:00 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id EECC2348; Mon, 14 Nov 2022 20:58:24 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+        with ESMTP id S229958AbiKPEDK (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 15 Nov 2022 23:03:10 -0500
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C44391E3EC;
+        Tue, 15 Nov 2022 20:03:09 -0800 (PST)
+Received: by mail-pl1-f171.google.com with SMTP id g24so15310949plq.3;
+        Tue, 15 Nov 2022 20:03:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1zIzDKHHVNaVurdU/es7VrrKvHMyE/kDIQtf0pEpjIw=;
+        b=D+Dlj71vTioFw5aoFSqADw++/kUzanUTlYOQ7fNeSSjMyycrCR5pZhMeEJnkbqejcL
+         LCCSFSnafpI5ssaa8POK0gcuW/Pw2DoQXy3ETf5PhEBkMpA7JxjClb0TQCXu2Wa34FNU
+         paxEH9ZS+Smwlv0g1rjPoaXrow8a/svdMvaXfNRidTkqKBrFWYad/XgPkl6zJsV8VsDe
+         ktLzqza/cEzYtGUx74382Cx01ZOtKLKnJQzlcTeXkB5TSprKJ3jLyCQH8Haaa+4SiKtE
+         RmvJ+DvB7CJwQ75cNo6yH8rme3Eh9bGnpCXc6lr7VCy0DMpwD3MIByKOGAnmtW3WLsCq
+         f3qA==
+X-Gm-Message-State: ANoB5plbaNnxF6tUPO7irZmLJYu/BThk6sbTxnIKk+p0P70RfRudN0jn
+        5Vs+jCTJiw6fbpcB5ggOi8U=
+X-Google-Smtp-Source: AA0mqf6hyhoq112sIKQo2v/k51nNvfWIgxwNBEvlAx1Pthk/+MTebE7MSfBKsrWrQE5FLsqcaK8YIQ==
+X-Received: by 2002:a17:90a:3f89:b0:217:90e0:3f8c with SMTP id m9-20020a17090a3f8900b0021790e03f8cmr1687555pjc.192.1668571388739;
+        Tue, 15 Nov 2022 20:03:08 -0800 (PST)
+Received: from rocinante (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id nl8-20020a17090b384800b0020d48bc6661sm390550pjb.31.2022.11.15.20.03.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Nov 2022 20:03:08 -0800 (PST)
+Date:   Wed, 16 Nov 2022 13:03:01 +0900
+From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Arnd Bergmann <arnd@arndb.de>,
         Bjorn Helgaas <helgaas@kernel.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
         Juergen Gross <jgross@suse.com>,
         Dominik Brodowski <linux@dominikbrodowski.net>,
         linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Miguel Ojeda <ojeda@kernel.org>,
         Richard Henderson <richard.henderson@linaro.org>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
@@ -67,78 +65,45 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
         Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Subject: [PATCH v3 4/4] pcmcia: Convert to use pci_bus_for_each_resource_p()
-Date:   Mon, 14 Nov 2022 20:58:22 +0200
-Message-Id: <20221114185822.65038-5-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221114185822.65038-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v3 0/4] PCI: Add pci_dev_for_each_resource() helper and
+Message-ID: <Y3Rg9dGmzZl4GJU5@rocinante>
 References: <20221114185822.65038-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20221114185822.65038-1-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-The pci_bus_for_each_resource_p() hides the iterator loop since
-it may be not used otherwise. With this, we may drop that iterator
-variable definition.
+Hello,
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Dominik Brodowski <linux@dominikbrodowski.net>
----
- drivers/pcmcia/rsrc_nonstatic.c | 9 +++------
- drivers/pcmcia/yenta_socket.c   | 3 +--
- 2 files changed, 4 insertions(+), 8 deletions(-)
+> Provide two new helper macros to iterate over PCI device resources and
+> convert users.
+> 
+> Looking at it, refactor existing pci_bus_for_each_resource() and convert
+> users accordingly.
+> 
+> This applies on top of this patch Mika sent out earlier:
+> https://lore.kernel.org/r/20221114115953.40236-1-mika.westerberg@linux.intel.com
+> 
+> Changelog v3:
+> - rebased on top of v2 by Mika, see above
+> - added tag to pcmcia patch (Dominik)
+[...]
 
-diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
-index ad1141fddb4c..9d92d4bb6239 100644
---- a/drivers/pcmcia/rsrc_nonstatic.c
-+++ b/drivers/pcmcia/rsrc_nonstatic.c
-@@ -934,7 +934,7 @@ static int adjust_io(struct pcmcia_socket *s, unsigned int action, unsigned long
- static int nonstatic_autoadd_resources(struct pcmcia_socket *s)
- {
- 	struct resource *res;
--	int i, done = 0;
-+	int done = 0;
- 
- 	if (!s->cb_dev || !s->cb_dev->bus)
- 		return -ENODEV;
-@@ -960,12 +960,9 @@ static int nonstatic_autoadd_resources(struct pcmcia_socket *s)
- 	 */
- 	if (s->cb_dev->bus->number == 0)
- 		return -EINVAL;
--
--	for (i = 0; i < PCI_BRIDGE_RESOURCE_NUM; i++) {
--		res = s->cb_dev->bus->resource[i];
--#else
--	pci_bus_for_each_resource(s->cb_dev->bus, res, i) {
- #endif
-+
-+	pci_bus_for_each_resource_p(s->cb_dev->bus, res) {
- 		if (!res)
- 			continue;
- 
-diff --git a/drivers/pcmcia/yenta_socket.c b/drivers/pcmcia/yenta_socket.c
-index 3966a6ceb1ac..b200f2b99a7a 100644
---- a/drivers/pcmcia/yenta_socket.c
-+++ b/drivers/pcmcia/yenta_socket.c
-@@ -673,9 +673,8 @@ static int yenta_search_res(struct yenta_socket *socket, struct resource *res,
- 			    u32 min)
- {
- 	struct resource *root;
--	int i;
- 
--	pci_bus_for_each_resource(socket->dev->bus, root, i) {
-+	pci_bus_for_each_resource_p(socket->dev->bus, root) {
- 		if (!root)
- 			continue;
- 
--- 
-2.35.1
+Thank you Andy for all the improvements and Mika for the idea!
 
+For the whole series:
+  Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
+
+Looks very nice!
+
+	Krzysztof
