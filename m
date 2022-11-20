@@ -2,260 +2,174 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B313D630F22
-	for <lists+sparclinux@lfdr.de>; Sat, 19 Nov 2022 15:20:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80B27631331
+	for <lists+sparclinux@lfdr.de>; Sun, 20 Nov 2022 10:25:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230466AbiKSOUe (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 19 Nov 2022 09:20:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36452 "EHLO
+        id S229526AbiKTJZc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 20 Nov 2022 04:25:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230387AbiKSOUd (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 19 Nov 2022 09:20:33 -0500
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AAF48CFC0
-        for <sparclinux@vger.kernel.org>; Sat, 19 Nov 2022 06:20:31 -0800 (PST)
-Received: by mail-il1-x130.google.com with SMTP id i5so3801698ilc.12
-        for <sparclinux@vger.kernel.org>; Sat, 19 Nov 2022 06:20:31 -0800 (PST)
+        with ESMTP id S229519AbiKTJZb (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 20 Nov 2022 04:25:31 -0500
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 956EE92092
+        for <sparclinux@vger.kernel.org>; Sun, 20 Nov 2022 01:25:30 -0800 (PST)
+Received: by mail-ot1-x344.google.com with SMTP id cn2-20020a056830658200b0066c74617e3dso5732897otb.2
+        for <sparclinux@vger.kernel.org>; Sun, 20 Nov 2022 01:25:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=yiIrO3QJ9FqGI1W8MgeqZveRlXgYO7d04pOinsw5OS4=;
-        b=0WGBdTMsp56KBqqY+suna+fbNqVkNRBcNRo/3cUJS8yQnuf7sqWHfjSAEx7vxXyXHr
-         s1BY1rGymPPt4Sxhh2qqE0ACnxv5jxNdd14B/nqCLbt+RcP7oiBYO+0lxRHK4+PpN1l9
-         iP/cQePD4nqmRsDY23HsilrXpJ4+ImjyF7VI9xdPPrPkIRDHWE4dDdRGNVtNV3Hs3kfg
-         PjrXTPjsgAEGqDQI57OjmxhM+g8I0mGUGoBKSr6kqoY8Yj2zKMfL5j3xPdovATQEhLWn
-         vcQICwWuqPacArQzonyKxdgbCNFeQ5I0I8VryS/m5+yrHALQx7kdtee2UJj5JRgcX2Yf
-         503w==
+        bh=C0WAXL/WoyqTz2Jf0nTKwtsmkHBQXNbIJoVmQc6EvvQ=;
+        b=eufLgmxUEwclPqElBlRh924wV9u4TyKHksAx7cW4IGxMJPVzwZpIlYsjWIILzpV4YP
+         4Eze/YVXwk77xLBDSAznaBgCn8BqLKZKeheFWA3dhu7dvOAXvOWFO1GAm5nWaMnyFc9J
+         s2IuhownOSEbr1HNxsJAelP1kOT/EQRo/1vMPdEyVFCRj1SIo1FU6DgWR9aRY8tX+JOr
+         5lf2wZ9JnxYC1pbVUtfvp6ZMPh6PRev56lE1BgfBPatvxUed5brlsG8rsgpT5vz2kXRj
+         7w9p9bC/JNSArKmSxnt7wVjO6wW9qtk3GSaPLf20BZB3Wr8G2a2NaxHy5AEAp99slfrN
+         /ZNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yiIrO3QJ9FqGI1W8MgeqZveRlXgYO7d04pOinsw5OS4=;
-        b=fA3eL3CgU52xxIhirST1WXuy5DExkPzL3iCPqAkO7el+SMqyCqSHZXQLdy+WLX+m62
-         vMt3ens5ImQbbYJxAc1Kc7ShypmBIvUsh/jszB17DGEjgnboXBhQTCMq6KCvH6FTRPR+
-         lVHKQ2NFjjDuQ/wYltXGbyZYumMx676i47RPpYjkkoJ4aTRMYSTwYRG6xlKcl66ED+oA
-         B5qrh/8hxC/ZkF7VaLnNNnGHYGf7/yxz6YZSJW3bW7+CllhjkUKBie1VGquhNh1dGlTV
-         q/8plW4g4CExrJmI1iQCidUxFQAbax+NNVmBy/UjV/LSjN13MYgTVXgGsOHglZPZx5wx
-         a52Q==
-X-Gm-Message-State: ANoB5plkOZA78W+9SWTo8KYrFiYDkCeOcU8Nqn1WQWYu6ZFpSr7MkxOM
-        3nBgeJFe2JvUA1+qPOsyFvk96R51050uxVKl/14VqQ==
-X-Google-Smtp-Source: AA0mqf7sY1uF76oTP19CbgpTLmeIV7GhdUPEPCH/OAhw2wNsU60oPlA2YjRv3hFu3eMl08xwgD843RHy4uGgDqYQ8T4=
-X-Received: by 2002:a92:c691:0:b0:302:75c9:5d55 with SMTP id
- o17-20020a92c691000000b0030275c95d55mr5171218ilg.34.1668867630758; Sat, 19
- Nov 2022 06:20:30 -0800 (PST)
+        bh=C0WAXL/WoyqTz2Jf0nTKwtsmkHBQXNbIJoVmQc6EvvQ=;
+        b=GJbybfMc7GR6RZTINFx/WOObipQUBPhtLnH/6rba4eb+O1YzZ7EUl6Qlj4D5gUJAP5
+         sqi5v7NX8dCjCZGZIY7E1cvocvb5enNd+nyFzFOfIpLqWAeU0j28Y0phVGg1u+dujY0A
+         7w7EW1+0E9dXfwekZwOykZRyEKkFsXn1eKHpr6SUvvXoKaCcF7SuzubZB5CTnfpCNBzx
+         whKoNYOOlWEeVjzt4Ijl+xXVg7tP3tyW+ox/opjj+a8EzbE6kxgwGWUZApvot5MkA5nw
+         K3rHGdvIVju3rLOw3wrMDfVwgwf04YB7NNymDxaIS+T3jApAGjZ5F3SIvIiHg3dMthu3
+         YCZQ==
+X-Gm-Message-State: ANoB5plCx7vooMPLQnMdWYnaMrZ2wDdB/mYP2FYr0KKi/Mg91+TC6Kka
+        aAwafbyHkuxoH0OaviEAwdfBVV2lEydxtd4cdS0=
+X-Google-Smtp-Source: AA0mqf7w/SRuk25HPcXTJwmr+PUGctD1SLUWRLIPnzRo4Q5Yexsp+hWYy98CUfpAbfeqBxqzr5uHd+hSHztrdFF5Bzc=
+X-Received: by 2002:a9d:4e97:0:b0:66d:b346:7a30 with SMTP id
+ v23-20020a9d4e97000000b0066db3467a30mr7282802otk.56.1668936329664; Sun, 20
+ Nov 2022 01:25:29 -0800 (PST)
 MIME-Version: 1.0
-References: <20221117042532.4064448-1-chenhuacai@loongson.cn>
- <Y3ZPRx/VUoVvujNa@x1n> <Y3aDQKwGDLXtWRJu@x1n>
-In-Reply-To: <Y3aDQKwGDLXtWRJu@x1n>
-From:   hev <r@hev.cc>
-Date:   Sat, 19 Nov 2022 22:20:20 +0800
-Message-ID: <CAHirt9itKO_K_HPboXh5AyJtt16Zf0cD73PtHvM=na39u_ztxA@mail.gmail.com>
-Subject: Re: [PATCH 04/47] LoongArch: Set _PAGE_DIRTY only if _PAGE_WRITE is
- set in {pmd,pte}_mkdirty()
-To:     Peter Xu <peterx@redhat.com>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
+Sender: mrseunicedafia01@gmail.com
+Received: by 2002:a05:6830:349e:0:0:0:0 with HTTP; Sun, 20 Nov 2022 01:25:29
+ -0800 (PST)
+From:   "Mrs.Rose Raya" <yeetybayarmaa@gmail.com>
+Date:   Sun, 20 Nov 2022 09:25:29 +0000
+X-Google-Sender-Auth: NgPwpZsHfUAJr8TYgCcTGMQEvX0
+Message-ID: <CABh9dEe_Y497RTG+izrPubnwU-o48V6AjJz+n4a5V0jHY9tR_w@mail.gmail.com>
+Subject: FROM MRS JOSEPHINE KARINE MIKAEL
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=7.8 required=5.0 tests=ADVANCE_FEE_5_NEW_FRM_MNY,
+        BAYES_99,BAYES_999,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FILL_THIS_FORM,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,
+        MONEY_FORM,MONEY_FRAUD_8,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        SUBJ_ALL_CAPS,T_FILL_THIS_FORM_FRAUD_PHISH,T_FILL_THIS_FORM_LOAN,
+        T_HK_NAME_FM_MR_MRS,T_MONEY_PERCENT,UNDISC_MONEY,URG_BIZ autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:344 listed in]
+        [list.dnswl.org]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 0.9992]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 0.9992]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [mrseunicedafia01[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [yeetybayarmaa[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.6 URG_BIZ Contains urgent matter
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
+        *  0.0 FILL_THIS_FORM Fill in a form with personal information
+        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
+        *  0.0 MONEY_FORM Lots of money if you fill out a form
+        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+        *  0.0 T_FILL_THIS_FORM_FRAUD_PHISH Answer suspicious question(s)
+        *  0.0 ADVANCE_FEE_5_NEW_FRM_MNY Advance Fee fraud form and lots of
+        *      money
+        *  2.9 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hi, Peter,
+My Dearest Beloved One.
 
-On Fri, Nov 18, 2022 at 2:53 AM Peter Xu <peterx@redhat.com> wrote:
->
-> On Thu, Nov 17, 2022 at 10:12:07AM -0500, Peter Xu wrote:
-> > Hi, Huacai,
-> >
-> > On Thu, Nov 17, 2022 at 12:25:32PM +0800, Huacai Chen wrote:
-> > > Now {pmd,pte}_mkdirty() set _PAGE_DIRTY bit unconditionally, this causes
-> > > random segmentation fault after commit 0ccf7f168e17bb7e ("mm/thp: carry
-> > > over dirty bit when thp splits on pmd").
-> > >
-> > > The reason is: when fork(), parent process use pmd_wrprotect() to clear
-> > > huge page's _PAGE_WRITE and _PAGE_DIRTY (for COW);
-> >
-> > Is it safe to drop dirty bit when wr-protect?  It means the mm can reclaim
-> > the page directly assuming the page contains rubbish.
-> >
-> > Consider after fork() and memory pressure kicks the kswapd, I don't see
-> > anything stops the kswapd from recycling the pages and lose the data in
-> > both processes.
->
-> Feel free to ignore this question..  I think I got an answer from Hev (and
-> I then got a follow up question):
->
-> https://lore.kernel.org/all/Y3Z9Zf0jARMOkFBq@x1n/
->
-> >
-> > > then pte_mkdirty() set
-> > > _PAGE_DIRTY as well as _PAGE_MODIFIED while splitting dirty huge pages;
-> > > once _PAGE_DIRTY is set, there will be no tlb modify exception so the COW
-> > > machanism fails; and at last memory corruption occurred between parent
-> > > and child processes.
-> > >
-> > > So, we should set _PAGE_DIRTY only when _PAGE_WRITE is set in {pmd,pte}_
-> > > mkdirty().
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Cc: Peter Xu <peterx@redhat.com>
-> > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > ---
-> > > Note: CC sparc maillist because they have similar issues.
-> >
-> > I also had a look on sparc64, it seems to not do the same as loongarch
-> > here (not removing dirty in wr-protect):
-> >
-> > static inline pmd_t pmd_wrprotect(pmd_t pmd)
-> > {
-> >       pte_t pte = __pte(pmd_val(pmd));
-> >
-> >       pte = pte_wrprotect(pte);
-> >
-> >       return __pmd(pte_val(pte));
-> > }
-> >
-> > static inline pte_t pte_wrprotect(pte_t pte)
-> > {
-> >       unsigned long val = pte_val(pte), tmp;
-> >
-> >       __asm__ __volatile__(
-> >       "\n661: andn            %0, %3, %0\n"
-> >       "       nop\n"
-> >       "\n662: nop\n"
-> >       "       nop\n"
-> >       "       .section        .sun4v_2insn_patch, \"ax\"\n"
-> >       "       .word           661b\n"
-> >       "       sethi           %%uhi(%4), %1\n"
-> >       "       sllx            %1, 32, %1\n"
-> >       "       .word           662b\n"
-> >       "       or              %1, %%lo(%4), %1\n"
-> >       "       andn            %0, %1, %0\n"
-> >       "       .previous\n"
-> >       : "=r" (val), "=r" (tmp)
-> >       : "0" (val), "i" (_PAGE_WRITE_4U | _PAGE_W_4U),
-> >         "i" (_PAGE_WRITE_4V | _PAGE_W_4V));
-> >
-> >       return __pte(val);
-> > }
->
-> (Same here; I just overlooked what does _PAGE_W_4U meant..)
->
-> >
-> > >
-> > >  arch/loongarch/include/asm/pgtable.h | 8 ++++++--
-> > >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
-> > > index 946704bee599..debbe116f105 100644
-> > > --- a/arch/loongarch/include/asm/pgtable.h
-> > > +++ b/arch/loongarch/include/asm/pgtable.h
-> > > @@ -349,7 +349,9 @@ static inline pte_t pte_mkclean(pte_t pte)
-> > >
-> > >  static inline pte_t pte_mkdirty(pte_t pte)
-> > >  {
-> > > -   pte_val(pte) |= (_PAGE_DIRTY | _PAGE_MODIFIED);
-> > > +   pte_val(pte) |= _PAGE_MODIFIED;
-> > > +   if (pte_val(pte) & _PAGE_WRITE)
-> > > +           pte_val(pte) |= _PAGE_DIRTY;
-> >
-> > I'm not sure whether mm has rule to always set write bit then set dirty
-> > bit, need to be careful here because the outcome may differ when use:
-> >
-> >   pte_mkdirty(pte_mkwrite(pte))
-> >   (expected)
-> >
-> > VS:
-> >
-> >   pte_mkwrite(pte_mkdirty(pte))
-> >   (dirty not set)
-> >
-> > I had a feeling I miss some arch-specific details here on why loongarch
-> > needs such implementation, but I can't quickly tell.
->
-> After a closer look I think it's fine for loongarch as pte_mkwrite will
-> also set the dirty bit unconditionally, so at least the two ways will still
-> generate the same pte (DIRTY+MODIFIED+WRITE).
->
-> But this whole thing is still confusing to me.  It'll still be great if
-> anyone can help explain why the _DIRTY cannot be set only in pte_mkwrite()
-> if that's the solo place in charge of "whether the pte is writable".
->
-> The other follow up question is: how do we mark "this pte contains valid
-> data" (the common definition of "dirty bit"), while "this pte is not
-> writable" on loongarch?
->
-> It can happen when we're installing a page with non-zero data meanwhile
-> wr-protected.  That's actually a valid case for userfaultfd wr-protect mode
-> where user specified UFFDIO_COPY ioctl with flag UFFDIO_COPY_MODE_WP, where
-> we'll install a non-zero page from user buffer but don't grant write bit.
->
-> From code-wise, I think it can be done currently with this on loongarch:
->
->   pte_wrprotect(pte_mkwrite(pte_mkdirty(pte)))
->
-> Where pte_wrprotect(pte_mkwrite(pte)) is not a no-op but applying MODIFIED.
+Please pardon my manners of contacting you this way, I am Mrs.
+Josephine Karine Mikael, from Denmark but based in Republic of Burkina
+Faso Western Africa for other 14 years now, I am married to Dr. Mikael
+=C2=A0Ibrahim, who died on January 16th=C2=A0=C2=A0 2015. We were married f=
+or eleven
+years without a child and we were both born again Christians, which
+made since his death I decided not to re-marry or get a Child outside
+my matrimonial home.
 
-We would like to note that on LoongArch (for misunderstanding naming):
-* _PAGE_DIRTY meaning hardware writable.
-* _PAGE_WRITE meaning software writable.
-* _PAGE_MODIFIED meaning software dirty, this page contains updated valid data.
+=C2=A0Why I contacted you is because I have a Very important and urgent
+request to make; I was diagnosed with Ovarian Cancer Disease, of which
+I am in the Hospital with the Palliative Care Team and the doctors
+have confirmed to me that I have only few days to leave this Earth,
+Now that I=E2=80=99m ending the race like this, without any family members =
+and
+no child of my own, Been a business woman from Denmark dealing with
+gold exportation here in Republic of Burkina Faso Western Africa. I
+have decided to hand over the sum of ($10.5 Million Dollars) in my
+account to you, yes for the help of Orphanage Homes/the needy and
+helpless people in your location, doing that is to fulfill my last
+wish on Earth. But before handing over my data=E2=80=99s to you, kindly ass=
+ure
+me that you will take only 50% of the funds and share the rest to
+orphanage homes/the needy and helpless people in your country or if
+possible you can build an Orphanage Home in my name.
 
-PTE APIs:
-* pte_mkwrite: Allow to write, only needs set _PAGE_WRITE.
-* pte_mkdirty: Mark as dirty, only needs set _PAGE_MODIFIED.
-* pte_dirty: Test is dirty, only test _PAGE_MODIFIED.
-* pte_wrprotect: Clear both writable, force to raise exception to
-handle_mm_fault.
+Please always be Prayerful all through your life and reply me on time,
+because any delay in your reply will give me room in searching for
+someone else, I will not want the situation whereby I will have words
+on this project with more than one person, Please assure me that you
+will act accordingly as I stated herein and after your reply I will
+send you my proof of international passport, my sick photos and the
+documents proof about the funds.
 
-If a pte is only set _PAGE_WRITE without _PAGE_DIRTY by pte_mkwrite,
-then a write memory access will cause mmu exception, and the
-(_PAGE_DIRTY|_PAGE_MODIFIED) will be set in this exception handler. I
-think the _PAGE_DIRTY is also possible to set in pte_mkwrite for
-speedup, then _PAGE_MODIFIED must be set at the same time. To avoid
-the page data being modified but not detected by pte_dirty. (Current
-code may needs to fix
+PLEASE REPLY ME WITH THE ANSWERS TO THOSE QUESTIONS CONFIRMATION BELOW .
 
-pte_mkdirty mark pte as dirty is the main function, It can also make
-pte writeable by hardware(_PAGE_DIRTY) for speedup (too) if and only
-if the pte is writable(_PAGE_WRITE). (mkdirty sets _PAGE_DIRTY
-unconditionally is the root cause of the huge page COW issue.
+1. FULL NAME:
 
-For write-protection, pte_wrprotect will clear both writable(software
-and hardware) in pte to force a MMU exception to handle_mm_fault.
+2. YOUR AGE:
 
-So yeah, the pte marked as dirty(_PAGE_MODIFIED) and without any
-writable in the following code:
+3. SEX:
 
-  pte_wrprotect(pte_mkwrite(pte_mkdirty(pte)))
+4. NATIONALITY:
 
-Regards,
-Ray
+5. COUNTRY OF RESIDENCE:
 
->
-> While on many other archs it'll be as simple as:
->
->   pte_mkdirty(pte)
->
-> But that's really error-prone and not obvious.
->
-> Copying Hev too.
->
-> Thanks,
->
-> --
-> Peter Xu
->
+6. TELEPHONE NUMBER:
+
+7. YOUR MARITAL STATUS:
+
+8. YOUR OCCUPATION:
+
+9. SEND TO ME YOUR PICTURE:
+
+
+
+Reply back to me urgently to enable me forward to you the Bank contact
+details and the vital documents needed to proceed for the claim of
+funds from the Bank, Reply me now that I have access to Internet in
+the hospital to enable you contact the bank.
+
+Sincerely thanks and God bless you.
+
+Mrs. Josephine Karine Mikael.
