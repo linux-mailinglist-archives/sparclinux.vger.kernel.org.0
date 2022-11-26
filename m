@@ -2,146 +2,122 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C87B6639004
-	for <lists+sparclinux@lfdr.de>; Fri, 25 Nov 2022 19:43:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09C566392E3
+	for <lists+sparclinux@lfdr.de>; Sat, 26 Nov 2022 01:56:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbiKYSng (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 25 Nov 2022 13:43:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52780 "EHLO
+        id S229972AbiKZA4t (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 25 Nov 2022 19:56:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbiKYSnf (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 25 Nov 2022 13:43:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21AD41B79F
-        for <sparclinux@vger.kernel.org>; Fri, 25 Nov 2022 10:42:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1669401760;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=oualrKRDDf0lFn/7Xv9q0zEvBMrRXi9BI43GVn40pF4=;
-        b=jMIdQ72+tX/SwVURh5lDmOWcLimL7Udd13b9ouofolFcPCZyQxUJjIwCRt7/s5A9yi5ROM
-        HXgihOc138xHo8RWdParxOh6+FCrxk5eJ7xNQwGVEqisNgDwcTqJ4aTAUky+8djX50c2Cn
-        PyErjmnGSb7bfVFgCL2h9ZcAyYY24CQ=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-586-vQAOYpCbN-WmTv4rD-P8NA-1; Fri, 25 Nov 2022 13:42:39 -0500
-X-MC-Unique: vQAOYpCbN-WmTv4rD-P8NA-1
-Received: by mail-qv1-f72.google.com with SMTP id ob12-20020a0562142f8c00b004c6c72bf1d0so4285133qvb.9
-        for <sparclinux@vger.kernel.org>; Fri, 25 Nov 2022 10:42:39 -0800 (PST)
+        with ESMTP id S229570AbiKZA4r (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 25 Nov 2022 19:56:47 -0500
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A605985A
+        for <sparclinux@vger.kernel.org>; Fri, 25 Nov 2022 16:56:46 -0800 (PST)
+Received: by mail-wr1-x444.google.com with SMTP id x5so8929977wrt.7
+        for <sparclinux@vger.kernel.org>; Fri, 25 Nov 2022 16:56:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=KLS2zcruSlKyOQ1OBKYSyr+7+6zj0YKBqr4fpDhq6DI=;
+        b=BFUxhzdGypKWJtumQ73i5S91+q5ZT0i3SdmhDtMtpQmsmoduPpQqcFLeSa/h2xR1Dg
+         c5FFQsbFD5pYvnrJrVZmYMH/jFXRAVbtAC1u93eCIOkG3LtLfaerOwoDmBqjkSIpkJgv
+         sTIwyXq625KZAnMZul0NltAkrne281quCIWXmBRzxEmc86LcWhupVvp2fHPvbcn7wk1r
+         NyWO1nLbb7P7xLPfOf7hZLN11tdpvi4pa4NMrJybnNg3ucIvRghsH1enuvdzcG9zz4hU
+         gSOGlKib6XIZicEibIeJbULZ+PhU9IvFIkqjqyx8Tm6P9Bd5DQFJYyAc9fuTJ0ZNoPzh
+         PY0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oualrKRDDf0lFn/7Xv9q0zEvBMrRXi9BI43GVn40pF4=;
-        b=uI8DT7mXL7YXHQv8KsJElmhw6R3Uxn3rlrwfSjI6hmqHwDXHKKGaJ20JSSEF/BargV
-         F4YrLxL9zSuW44CjZJz6gCOBlWacgFhIfCylUm1aou2FhbQcTU8PWcZ1wZSFVS8z+QQO
-         RJBANeWokrQ/YW3WXK4AbLMKDrtHZVLHMtKmc42CX+nVNXItiES/GGsCzJgPSIugnoRs
-         cRJyemJWRRVS9m/HeIYJpmmu9ODhKLWjMTkIU3VD/q/ukV+xO6rxu3m/OtFb0XuA9wI0
-         3i4DgWHpQ2s67Yq7HMay0cegfiXTB/RTtirE67JmbLqZ3pR/i/29Ju8LA3nvdDvwDDIq
-         3Rxw==
-X-Gm-Message-State: ANoB5pmFW1V4gqmY2P4HBCQObzI5jcp1UWvarJQfWA+r8h/G+qRm+fum
-        c8Tck1uzMCgG6Hg9XOUVLu5yD7plP+MmZE+iXy1Ocz3WrpppW4q6wWK13PT2xKApdmUdpK7uKw+
-        Pb2Xu9HRT1YX1d0XZaL6guQ==
-X-Received: by 2002:a0c:c3ca:0:b0:4bb:93b8:ef1c with SMTP id p10-20020a0cc3ca000000b004bb93b8ef1cmr26142587qvi.103.1669401758110;
-        Fri, 25 Nov 2022 10:42:38 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf7i65clZj7lCw/dYMc+dXk3OnMDFGdYdSo5GonSQ2rsAw6malshv/ckO5F4O0oDweedDgFMIw==
-X-Received: by 2002:a0c:c3ca:0:b0:4bb:93b8:ef1c with SMTP id p10-20020a0cc3ca000000b004bb93b8ef1cmr26142561qvi.103.1669401757856;
-        Fri, 25 Nov 2022 10:42:37 -0800 (PST)
-Received: from x1n (bras-base-aurron9127w-grc-46-70-31-27-79.dsl.bell.ca. [70.31.27.79])
-        by smtp.gmail.com with ESMTPSA id br7-20020a05620a460700b006faa2c0100bsm3205819qkb.110.2022.11.25.10.42.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Nov 2022 10:42:37 -0800 (PST)
-Date:   Fri, 25 Nov 2022 13:42:36 -0500
-From:   Peter Xu <peterx@redhat.com>
-To:     hev <r@hev.cc>
-Cc:     Anatoly Pugachev <matorola@gmail.com>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Sparc kernel list <sparclinux@vger.kernel.org>,
-        linux-mm <linux-mm@kvack.org>
-Subject: Re: Test case for "mm/thp: carry over dirty bit when thp splits on
- pmd"
-Message-ID: <Y4EMnNiLdC7G+oKu@x1n>
-References: <CAHirt9gr7oL87co3y1hCs3Ux4utzFP5oj6GFOFMZuJR2Vv8+rA@mail.gmail.com>
- <CADxRZqxqb7f_WhMh=jweZP+ynf_JwGd-0VwbYgp4P+T0-AXosw@mail.gmail.com>
- <Y3vJt+im60gTCNJi@x1n>
- <CAHirt9jjjcj9FdhiJZJLhA-7iNRrWgsMYDYPpyOc0a_k7NhGqA@mail.gmail.com>
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KLS2zcruSlKyOQ1OBKYSyr+7+6zj0YKBqr4fpDhq6DI=;
+        b=XpqdrYEGwDaCijyhiXppW5k52R7UICF6YcQPdkfSVgyJGF24emg6aOOWjnCYcaRANU
+         /xmgDeDONRi2vuh1PRhXkQdjVF3EB2d7IP4eKVGP19RupR5fRLYlnpstEyeuWfVIc2uk
+         9VneCsK8+fDZGuEKpF4FmbOLg9L6YO5HukIf/flW27Ud050t7Qevqp2xUFDJkYcGfW3I
+         RmIFbrZPjkqQlcyhzIeJTmAw6UXcEYSlp5nrfjZTlii6uAVb91wv1GzO0Hsh3ZoeTFjA
+         YzMiRmLJsLJoKHUJ2iidFKu0ofCKk8Fpt2VvlP13FGysZ6CWaauX5ClIQu3cuWggYO0I
+         Vzow==
+X-Gm-Message-State: ANoB5pkSR8jVXtcZdS8BMKCoSFB1QprYy0CnxE9AbHZszsqa2QVofqQI
+        09JM/j9cVW+Z92q/Pg21/N8gVjWsA7qcn8PWrC4=
+X-Google-Smtp-Source: AA0mqf70wduBs5l9eFsy30Mc6a4cmsbMZ8c9KtO/AD/2EUjXjNOLehZdI1GH/BahEDHNatBP3xAf5UiEsCk5qWoJGIk=
+X-Received: by 2002:adf:ebce:0:b0:22e:4acd:cc89 with SMTP id
+ v14-20020adfebce000000b0022e4acdcc89mr27055075wrn.76.1669424206309; Fri, 25
+ Nov 2022 16:56:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHirt9jjjcj9FdhiJZJLhA-7iNRrWgsMYDYPpyOc0a_k7NhGqA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:adf:d1cf:0:0:0:0:0 with HTTP; Fri, 25 Nov 2022 16:56:45
+ -0800 (PST)
+Reply-To: samsonvichisunday@gmail.com
+From:   Aminu Bello <aminuadamuvitaform@gmail.com>
+Date:   Sat, 26 Nov 2022 01:56:45 +0100
+Message-ID: <CADwEiStw6JaX+325nV-bwKsfBdp8Kpdwhg8TG=5AQ5Zi66mBGA@mail.gmail.com>
+Subject: INVITATION TO THE GREAT ILLUMINATI SOCIETY.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FILL_THIS_FORM,
+        FILL_THIS_FORM_LONG,FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_FILL_THIS_FORM_LOAN,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:444 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5070]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [aminuadamuvitaform[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 FILL_THIS_FORM Fill in a form with personal information
+        *  2.0 FILL_THIS_FORM_LONG Fill in a form with personal information
+        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Nov 25, 2022 at 07:38:36PM +0800, hev wrote:
-> On Tue, Nov 22, 2022 at 2:55 AM Peter Xu <peterx@redhat.com> wrote:
-> >
-> > Hi, Anatoly (or/and Hev),
-> >
-> > On Wed, Nov 16, 2022 at 01:45:15PM +0300, Anatoly Pugachev wrote:
-> > > On Wed, Nov 16, 2022 at 11:49 AM hev <r@hev.cc> wrote:
-> > > >
-> > > > Hello Peter,
-> > > >
-> > > > I see a random crash issue  on the LoongArch system, that is caused by
-> > > > commit 0ccf7f1 ("mm/thp: carry over dirty bit when thp splits on
-> > > > pmd").
-> > > >
-> > > > Now, the thing is already resolved. The root cause is arch's mkdirty
-> > > > is set hardware writable bit in unconditional. That breaks
-> > > > write-protect and then breaks COW.
-> > > >
-> > > > Here is a simple and fast testcase (It may be helpful for sparc64):
-> > > > https://gist.github.com/heiher/72919fae6b53f04cac606a9631100506
-> > > > (assertion: c sum == 0)
-> > >
-> > > Just tried on my sparc64 VM -  fixed vs old (non-patched) kernels...
-> > >
-> > > fixed kernel (6.1.0-rc5) running ./a.out:
-> > > mator@ttip:~$ ./a.out
-> > > c sum: 0
-> > > p sum: 35184372088832
-> > > c sum: 0
-> > > p sum: 35184372088832
-> > > c sum: 0
-> > > p sum: 35184372088832
-> > > c sum: 0
-> > > p sum: 35184372088832
-> > > c sum: 0
-> > > p sum: 35184372088832
-> > > ...
-> > >
-> > > old (non-patched) kernel (6.1.0-rc4) :
-> > > mator@ttip:~$ ./a.out
-> > > c sum: 35150012350464
-> > > p sum: 35184372088832
-> > > c sum: 35150012350464
-> > > p sum: 35184372088832
-> > > ...
-> >
-> > I've got another patch attached that might be nicer to fix this same
-> > problem for both archs but without dropping the dirty bit, could you help
-> > check whether it works?
-> 
-> The tesecase PASSED with this patch and without:
->  * "Partly revert "mm/thp: carry over dirty bit when thp splits on pmd"
->  * "LoongArch: Set _PAGE_DIRTY only if _PAGE_WRITE is set in
-> {pmd,pte}_mkdirty()"
-
-My fault to not have noticed that the partly revert patch already landed
-6.1-rc5, so it'll need to be another patch upon it.
-
-I'll post a formal patch.  Thanks Hev.
-
--- 
-Peter Xu
-
+--=20
+INVITATION TO THE GREAT ILLUMINATI SOCIETY
+CONGRATULATIONS TO YOU....
+You have been chosen among the people given the opportunity this
+November to become rich and popular by joining the Great ILLUMINATI.
+This is an open invitation for you to become part of the world's
+biggest conglomerate and reach the peak of your career. a worthy goal
+and motivation to reach those upper layers of the pyramid to become
+one among the most Successful, Richest, Famous, Celebrated, Powerful
+and most decorated Personalities in the World???
+If you are interested, please respond to this message now with =E2=80=9CI
+ACCEPT" and fill the below details to get the step to join the
+Illuminati.
+KINDLY FILL BELOW DETAILS AND RETURN NOW.....
+Full names: ....................
+Your Country: .................
+State/ City: .............
+Age: ....................
+Marital status: ....................
+Occupation: ....................
+Monthly income: ....................
+WhatsApp Number: ......
+Postal Code: .....
+Home / House Address: .....
+NOTE: That you are not forced to join us, it is on your decision to
+become part of the world's biggest conglomerate and reach the peak of
+your career.
+Distance is not a barrier.
