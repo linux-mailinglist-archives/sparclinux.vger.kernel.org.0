@@ -2,75 +2,78 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD833639364
-	for <lists+sparclinux@lfdr.de>; Sat, 26 Nov 2022 03:30:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BD35639604
+	for <lists+sparclinux@lfdr.de>; Sat, 26 Nov 2022 14:05:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230161AbiKZCaF (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 25 Nov 2022 21:30:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58470 "EHLO
+        id S229446AbiKZNFg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 26 Nov 2022 08:05:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbiKZCaD (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 25 Nov 2022 21:30:03 -0500
-X-Greylist: delayed 1043 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 25 Nov 2022 18:30:01 PST
-Received: from mail.rrk.ir (mail.rrk.ir [46.209.19.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE393136D;
-        Fri, 25 Nov 2022 18:30:01 -0800 (PST)
-Received: from localhost (mail.rrk.ir [127.0.0.1])
-        by mail.rrk.ir (Postfix) with ESMTP id EA9C439713E;
-        Sat, 26 Nov 2022 05:42:33 +0330 (+0330)
-X-Virus-Scanned: Debian amavisd-new at mail.rrk.ir
-Received: from mail.rrk.ir ([127.0.0.1])
-        by localhost (mail.rrk.ir [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id IzeIoOj2fku4; Sat, 26 Nov 2022 05:42:24 +0330 (+0330)
-Content-Type: text/plain; charset="iso-8859-1"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=rrk.ir; s=rrk;
-        t=1669401265; bh=Tek/QbFshVvW3DxuEJIWlwCvxszEYuMod+HhVGwXvdw=;
-        h=Subject:To:From:Date:Reply-To:From;
-        b=XsaGpSI2+BPsPsnjXM4yFUsvvZtG2D3G4mu7WrXewlWGtdJtiw/lhxot1OPNVFGVf
-         KfOjnF6/wtoPXS4GV7gMJGL7wUBB61LKZzEz3ekcgyUmTkcWAb6+q2MbfNaI8W7y8D
-         FAhONqYUnRm167ahaXs6fewXFePk7acVbtylF5Z4=
+        with ESMTP id S229436AbiKZNFg (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 26 Nov 2022 08:05:36 -0500
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D0318346
+        for <sparclinux@vger.kernel.org>; Sat, 26 Nov 2022 05:05:35 -0800 (PST)
+Received: by mail-lf1-x144.google.com with SMTP id g7so10679653lfv.5
+        for <sparclinux@vger.kernel.org>; Sat, 26 Nov 2022 05:05:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8wlb4SYlCkKFrC3vDbrNKcnlsbFr9aWDknzVh2AdUFE=;
+        b=JbhyNt4U66Yw4JpKNEI24OopNiQfz4MgA8Q2mEX7WZPcUtLt81q5OvHcSqrvPbmGBv
+         FbFzAJSjEwgateJpYTAiiOGEYnebq5EeR08QlmJRDTmF+MahB0hWsV3ryeNM9rFjA7pf
+         CI7bnaA+Z5FMXKq85DOcQi0tVwjkpxT2m33C9OKgP0isiYfHMOfY+cHxItyApyzZWBgS
+         rxLHZkjorF1cp06h8D8wpXQHZc5bdK+c7t99MMNs9geOCW4ufiSO8Vm3fWnv9A+XHF+b
+         X0UtHQvmyHBfowgi1vAiUgvg/QPiHA2zncRPTyQF7Ap186EtDK4FuI9mO5Rzg1IZD3Vp
+         /QnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8wlb4SYlCkKFrC3vDbrNKcnlsbFr9aWDknzVh2AdUFE=;
+        b=lYmDhQEUF+iqYqhqkwU5x0wrCwZguw6mA6rOh9P7siPNCX4ePs7LnG0ZcIizG6W/ic
+         CTrXGR662V7OecBWUU+J1PXfCyjLkbhnDtS9vERVQyD603MF2RHBEFDoVp5agZ/JW3tG
+         cEb9Rej/eQI4r6YS6yVFTcmaQL6SvPLc8n7/WSZXNa29JKRkEM7wj5Gh+ybcC3iSg5iy
+         W9pfQFFyziSMaW/93vbfMpMa1FiQ0GOe0RUmtoSB77MFY/sN4Aci2iHhUn/PKRnHp4js
+         Nqiq7ngJ8eVUGVWNNJyWObcWr5o2RKKYWt1K4o+vykE/aS3Ru/py1OW4cFNQ9TlaP3F7
+         UlhQ==
+X-Gm-Message-State: ANoB5pl16O999PNL8AwZ4rxR0JMmu8oLIIRxvl3jSyFUs8iED1CUOtWt
+        38W2V8kFzShEt2txpJA+hVXpPmK5Y0qpHEekpwE=
+X-Google-Smtp-Source: AA0mqf7YwfnTLMnI1UzxOBiKvLVJ5SMRBAN30J/IOt/1UYdw33/nvWEddXUBEetPPV0ZIhSk/3eoZdtszDRQEke426Q=
+X-Received: by 2002:a05:6512:34c6:b0:4a4:71b5:cbd3 with SMTP id
+ w6-20020a05651234c600b004a471b5cbd3mr15365122lfr.518.1669467932694; Sat, 26
+ Nov 2022 05:05:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Re: Liaison Officer Needed In Your State...  
-To:     Recipients <firewall@rrk.ir>
-From:   "Ms. Kelvin Lin " <firewall@rrk.ir>
-Date:   Fri, 25 Nov 2022 10:34:12 -0800
-Reply-To: mail@gukaimail.com
-Message-Id: <20221126021233.EA9C439713E@mail.rrk.ir>
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_99,BAYES_999,
-        DATE_IN_PAST_06_12,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  1.5 DATE_IN_PAST_06_12 Date: is 6 to 12 hours before Received: date
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-X-Spam-Level: *****
+Received: by 2002:a2e:9256:0:0:0:0:0 with HTTP; Sat, 26 Nov 2022 05:05:32
+ -0800 (PST)
+Reply-To: ninacoulibaly03@hotmail.com
+From:   nina coulibaly <info.ninacoulibaly11@gmail.com>
+Date:   Sat, 26 Nov 2022 13:05:32 +0000
+Message-ID: <CAKjR=UTLjO6-h=RKAO+am6=SeEEOF+D8G1j90OJuwHvTUp96VQ@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello,
+-- 
+Dear,
 
+I am interested to invest with you in your country with total trust
+and i hope you will give me total support, sincerity and commitment.
+Please get back to me as soon as possible so that i can give you my
+proposed details of funding and others.
 
-A reputable pharmaceutical company from Vietnam is in need of a reliable in=
-dividual or corporate entity in your state to act as their Liaison; this wi=
-ll not affect your current job or business operations in anyway.  If intere=
-sted, reply for more information.
+Best Regards.
 
-
-Sincerely,
-Ms. Kelvin Lin
-CC
+Mrs Nina Coulibaly
