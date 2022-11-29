@@ -2,164 +2,69 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E31063BCBE
-	for <lists+sparclinux@lfdr.de>; Tue, 29 Nov 2022 10:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F26C63C92F
+	for <lists+sparclinux@lfdr.de>; Tue, 29 Nov 2022 21:20:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230358AbiK2JRS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 29 Nov 2022 04:17:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51974 "EHLO
+        id S235494AbiK2UU1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 29 Nov 2022 15:20:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230185AbiK2JRQ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 29 Nov 2022 04:17:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C0F56573
-        for <sparclinux@vger.kernel.org>; Tue, 29 Nov 2022 01:15:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1669713326;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kLZwFc2T16+VzxzvdeqP7dZ+DZAGfAAiD+u0EUrSQ8s=;
-        b=OvXTU6p0Ct0GG3VEsw6AOZSjwusuY/Ng6cuNku1asLSrx9F6Mc66uLvd7qxMRAZbOAL+J5
-        Q8DdnyjmltiPLfDTqjLE3SaozLtbjrW5pWS5w+X7WF2iZ/48KkE540YFRqNv9Zfo0kmyyh
-        pze47cOZYmn8QXjChvz5wyc79I3BaI4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-395-5qrDqcDiPXWU7zwmSgCVbg-1; Tue, 29 Nov 2022 04:15:24 -0500
-X-MC-Unique: 5qrDqcDiPXWU7zwmSgCVbg-1
-Received: by mail-wm1-f71.google.com with SMTP id ay19-20020a05600c1e1300b003cf758f1617so9893153wmb.5
-        for <sparclinux@vger.kernel.org>; Tue, 29 Nov 2022 01:15:24 -0800 (PST)
+        with ESMTP id S235356AbiK2UU0 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 29 Nov 2022 15:20:26 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B46111173
+        for <sparclinux@vger.kernel.org>; Tue, 29 Nov 2022 12:20:26 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id d6so23797762lfs.10
+        for <sparclinux@vger.kernel.org>; Tue, 29 Nov 2022 12:20:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=khQUKJy5QTqMS02ZgUug6ZvJpGPRzKhqnVKP/ihMew714Twm4Vt0bJ1RDH7JkJx1vK
+         QPIr+wY5mJdKsp4MTVnvr62BKuSqhUlw9YzOiwc6aSZn3RyMpwZRV8rPzsz02lndF6l8
+         Z44IieKGZ9+wKPcb6Y9KU+TVD9LogV6bWt7ooUjlujuOtVx1m6gZG7ojogSZH0uNQ+Cj
+         MpXwGwdcJbOjIH8AbYeYeHV03C2zw0NJI4DmUKbpFT+ixW0z/Kh2VFy58SxfviLi0BUQ
+         KgVTqGuPZkNigtujnhrgPLmx9tpZAbOM+IF0FKtRRWJNP1sqB0c1+eg9FFvpZwFir8AW
+         D7Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kLZwFc2T16+VzxzvdeqP7dZ+DZAGfAAiD+u0EUrSQ8s=;
-        b=xUt1mjYwZNIsz+xzHP2PPuQjk1S6uPEyHO3nD1gKkmizKAjdJyvIf8uAW31k86q0lI
-         nsNP/h/Mh6jYUn2YT+Y4JA0oQMRjjtIL/DtKsAbFIxiYn9J2l63WO6bcH3a+lhtKVzpm
-         6gxB6dy3RRB1XaZp1TB3TgvMcQBOlJbO68Iq5FkoYt+jR8EGLbskqCBhQx+qNv+FMUJ2
-         Fqsp6pR0WrNdhV9fJEzfFIbYWxf5SoyxBnCQY9gCBe0ipqy3O+OVNRa+7k4Rw+8s5Jsm
-         bztaW/F3RrWNRJ7wT5y8gV7962krbEm31E9SSJFNZn03OJ2Hj/0vipG/v9DrYEowkHBH
-         4Zcg==
-X-Gm-Message-State: ANoB5pnk+nPM3YwExfu7XP1y2aTTEaNWZOcdwhqshH4A9jpjav7LJ5mh
-        gAXBSBdSFtuA5XRGl+GrB6BIb7QhgT8wi4o7MvBgvAon9SLQEG1NNVz6A8jzHz1v3wugMtwflyp
-        gPmQ336XuHUwk3E+E6W/3jA==
-X-Received: by 2002:a05:600c:430c:b0:3cf:8ed7:7124 with SMTP id p12-20020a05600c430c00b003cf8ed77124mr42243436wme.140.1669713323606;
-        Tue, 29 Nov 2022 01:15:23 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf5aMoFyhfTZRz6WGw0GcgDkcONZAiRyZAh+e0PFHXmVnEtFtgvwKaxuOXbIxhdoVgI1OB8H+Q==
-X-Received: by 2002:a05:600c:430c:b0:3cf:8ed7:7124 with SMTP id p12-20020a05600c430c00b003cf8ed77124mr42243382wme.140.1669713323266;
-        Tue, 29 Nov 2022 01:15:23 -0800 (PST)
-Received: from ?IPV6:2003:cb:c705:ca00:3fb8:c253:3bf7:b60e? (p200300cbc705ca003fb8c2533bf7b60e.dip0.t-ipconnect.de. [2003:cb:c705:ca00:3fb8:c253:3bf7:b60e])
-        by smtp.gmail.com with ESMTPSA id n26-20020a05600c3b9a00b003c6b70a4d69sm1498998wms.42.2022.11.29.01.15.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Nov 2022 01:15:22 -0800 (PST)
-Message-ID: <abcba252-13a0-50aa-79ec-28b649c892cd@redhat.com>
-Date:   Tue, 29 Nov 2022 10:15:20 +0100
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=SQQJRK3GvmzX1mfvvItj89l6eWRVQel1c3s5lSzQrB8+/O3CtIdW+2yH2xksxphXIo
+         JYIOtO2DoX4Va4bHqzaXpOiuxahJeNFrN4vnktSkHX6/wEGgkl7AbT+HrZpRP2rsd9AU
+         32uKUWltcO6G1EQ2PNTCXTl58It55Z/MaO+2yDmvr1SriQcbS7PaPLGouXDhwm/wlQZd
+         woscGbxOfRisxW4QKhPoeIN02vJ+gn1OcVqo7dTutiHgYDseY7CFvX7ySjUzELIJCj+v
+         HsVVvtOK9I8KrjdWvFUf2L9NfKxsKpGfTg04gOFtbDb6nf1eYtq6fLJtWESJaaPJO5D+
+         q4kA==
+X-Gm-Message-State: ANoB5pkRHB7NmEwMtvUNHTvFndQzT0DyFZ98AbKJdGN1B314KZiUNJgp
+        FLMSHocJjbPeap2iNDDbzkNdaR/fPOy7HnkRHqo=
+X-Google-Smtp-Source: AA0mqf5lvI1ZDLITXh5wnUbdaaVhInlvl0S8nDoSQ5168883B7Eghk1zoYL79Emt0arAXgVojWBZdZToEFXHFH434hQ=
+X-Received: by 2002:ac2:4e0a:0:b0:4a2:2aab:5460 with SMTP id
+ e10-20020ac24e0a000000b004a22aab5460mr13813732lfr.62.1669753224182; Tue, 29
+ Nov 2022 12:20:24 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [PATCH mm-unstable v1 16/20] mm/frame-vector: remove FOLL_FORCE
- usage
-Content-Language: en-US
-To:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, etnaviv@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-samsung-soc@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-perf-users@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Peter Xu <peterx@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Hugh Dickins <hughd@google.com>, Nadav Amit <namit@vmware.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Matthew Wilcox <willy@infradead.org>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        David Airlie <airlied@gmail.com>,
-        Oded Gabbay <ogabbay@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Christoph Hellwig <hch@infradead.org>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-References: <20221116102659.70287-1-david@redhat.com>
- <20221116102659.70287-17-david@redhat.com>
- <81fb0fa3-2e06-b765-56ac-a7d981194e59@redhat.com>
- <08b65ac6-6786-1080-18f8-d2be109c85fc@xs4all.nl>
- <9d0bf98a-3d6a-1082-e992-1338e1525935@redhat.com>
- <20221128145927.df895bf1966cfa125cae9668@linux-foundation.org>
- <22b1107b-0acc-5772-a883-8f3c4682eb1b@redhat.com>
- <c2681582-1e24-7ed9-e4fb-e2dd17a93aed@xs4all.nl>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <c2681582-1e24-7ed9-e4fb-e2dd17a93aed@xs4all.nl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:a05:6520:1d6:b0:22e:e610:6979 with HTTP; Tue, 29 Nov 2022
+ 12:20:23 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <chiogb002@gmail.com>
+Date:   Tue, 29 Nov 2022 20:20:23 +0000
+Message-ID: <CAHoLJnkGu+S8DpzcYVkTJt-WQCbZ2RHr9n1SS2ht3g44tusinQ@mail.gmail.com>
+Subject: hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 29.11.22 10:08, Hans Verkuil wrote:
-> On 29/11/2022 09:48, David Hildenbrand wrote:
->> On 28.11.22 23:59, Andrew Morton wrote:
->>> On Mon, 28 Nov 2022 09:18:47 +0100 David Hildenbrand <david@redhat.com> wrote:
->>>
->>>>> Less chances of things going wrong that way.
->>>>>
->>>>> Just mention in the v2 cover letter that the first patch was added to
->>>>> make it easy to backport that fix without being hampered by merge
->>>>> conflicts if it was added after your frame_vector.c patch.
->>>>
->>>> Yes, that's the way I would naturally do, it, however, Andrew prefers
->>>> delta updates for minor changes.
->>>>
->>>> @Andrew, whatever you prefer!
->>>
->>> I'm inclined to let things sit as they are.  Cross-tree conflicts
->>> happen, and Linus handles them.  I'll flag this (very simple) conflict
->>> in the pull request, if MM merges second.  If v4l merges second then
->>> hopefully they will do the same.  But this one is so simple that Linus
->>> hardly needs our help.
-> 
-> It's not about cross-tree conflicts, it's about the fact that my patch is
-> a fix that needs to be backported to older kernels. It should apply cleanly
-> to those older kernels if my patch goes in first, but if it is the other way
-> around I would have to make a new patch for the stable kernels.
-
-IIUC, the conflict will be resolved at merge time and the merge 
-resolution will be part of the merge commit. It doesn't matter in which 
-order the patches go upstream, the merge commit resolves the problematic 
-overlap.
-
-So your patch will be upstream as intended, where it can be cleanly 
-backported.
-
-Hope I am not twisting reality ;)
-
--- 
-Thanks,
-
-David / dhildenb
-
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham
