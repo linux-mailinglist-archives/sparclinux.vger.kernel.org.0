@@ -2,69 +2,89 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA8EE63C931
-	for <lists+sparclinux@lfdr.de>; Tue, 29 Nov 2022 21:21:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69D0563CFE9
+	for <lists+sparclinux@lfdr.de>; Wed, 30 Nov 2022 08:53:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235210AbiK2UVa (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 29 Nov 2022 15:21:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59674 "EHLO
+        id S234202AbiK3HxT (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 30 Nov 2022 02:53:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232988AbiK2UV3 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 29 Nov 2022 15:21:29 -0500
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A1912662
-        for <sparclinux@vger.kernel.org>; Tue, 29 Nov 2022 12:21:29 -0800 (PST)
-Received: by mail-ej1-x642.google.com with SMTP id fy37so36501891ejc.11
-        for <sparclinux@vger.kernel.org>; Tue, 29 Nov 2022 12:21:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=NCdvtJveHDYFqzUSKnhMRlpxiMaloDGt/VpZEwPBQhjQMXUBWdnaYDjqlXrbg+Bikl
-         FKSgttC7iaOmfhSEF008UFCXLlQxo2EwPt/Fad2W2xWj6oKPBSnTPaxqLrPTiomtnKtO
-         ur0+U8h7iHUwHaycqReg0t0CMc1Dszu/SLG/8eCgpoN0USvRyjwqzLuOEKoI8t0f9mlg
-         g3elQGqk8d8B1w5+Y32fux/b7kFF0/QD3IBevKg59D9gi88gbe5N8cT3zu85UD9r7W0V
-         tJEyBOSuRU7DlkfVm7ySxjJTo33yivwbsJhjNcGj2jUbOR5AB2zC5zYVa95MlVRrZbr3
-         DwKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=gwxX5jvZGldRqkWZW9F+xkk+x5x3KQH7coTCHGwkm/HvHdBm/19VLsSb+n8e2Sfg9g
-         a0Yyj0z8hZGIIUvpZDb9UOotWFnv10GFxH9P67ZdPZovvGckaUkj/RdNOPJZRSZEcoX7
-         733ybF9zQXzJOoyWt5+jfz41VuK7yBtLWLFLFlvWHn1uE9XnOttzPfygxph8qIZJVz1Y
-         FOTFSGVlRYKDRTvtPpfzDEoAONiiwLBqqgo5Adqb5WE6BZ0GNcJ6SDYjWmUl/tbcXDuQ
-         yEAjaSx0OOwmNtDLfjRWB8b0tqJrM7ElSkLVkZWCKhQYj8UPxbrxwldgphnsu17PRqbR
-         NF9g==
-X-Gm-Message-State: ANoB5pl6DGjdhcgS0sRqhOzoPR7s+Ukv0dT6696twwn5VfU3sq6PMZJd
-        l8TzXvDnmBJKtoBnmTXlV8eInDstzh1Dh+C4AJ8=
-X-Google-Smtp-Source: AA0mqf5+auc+byiHC0rSIpN0xdxvm0HS8q7hFcXAT+IBk2Hh61ZU8jPNCbiXQ9nYEoYcn4h0bcsglNpWmAPyV5wo+0E=
-X-Received: by 2002:a17:906:1d59:b0:7c0:5496:4f1b with SMTP id
- o25-20020a1709061d5900b007c054964f1bmr8915717ejh.715.1669753287568; Tue, 29
- Nov 2022 12:21:27 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a17:906:bfe7:b0:78c:cad3:6a2f with HTTP; Tue, 29 Nov 2022
- 12:21:26 -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham" <chiogb003@gmail.com>
-Date:   Tue, 29 Nov 2022 20:21:26 +0000
-Message-ID: <CABa6Gn=-hQGaeUozi=1PmGLoywO6sMGqRWVc8NVxm7AkJKYXBg@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+        with ESMTP id S232267AbiK3HxS (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 30 Nov 2022 02:53:18 -0500
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4D87FD3C;
+        Tue, 29 Nov 2022 23:53:16 -0800 (PST)
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4NMWfM4ghVz8RTZK;
+        Wed, 30 Nov 2022 15:53:15 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.40.50])
+        by mse-fl2.zte.com.cn with SMTP id 2AU7r4l0003483;
+        Wed, 30 Nov 2022 15:53:04 +0800 (+08)
+        (envelope-from zhang.songyi@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+        by mapi (Zmail) with MAPI id mid31;
+        Wed, 30 Nov 2022 15:53:06 +0800 (CST)
+Date:   Wed, 30 Nov 2022 15:53:06 +0800 (CST)
+X-Zmail-TransId: 2af963870be2fffffffffea666c9
+X-Mailer: Zmail v1.0
+Message-ID: <202211301553066158367@zte.com.cn>
+Mime-Version: 1.0
+From:   <zhang.songyi@zte.com.cn>
+To:     <davem@davemloft.net>
+Cc:     <zhang.songyi@zte.com.cn>, <sparclinux@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHRdIHNwYXJjOiBsZW9uOiBncnBjaTE6IHVzZSBkZXZtX3BsYXRmb3JtX2lvcmVtYXBfcmVzb3VyY2UoKQ==?=
+Content-Type: text/plain;
+        charset="UTF-8"
+X-MAIL: mse-fl2.zte.com.cn 2AU7r4l0003483
+X-Fangmail-Gw-Spam-Type: 0
+X-FangMail-Miltered: at cgslv5.04-192.168.250.137.novalocal with ID 63870BEB.000 by FangMail milter!
+X-FangMail-Envelope: 1669794795/4NMWfM4ghVz8RTZK/63870BEB.000/10.5.228.133/[10.5.228.133]/mse-fl2.zte.com.cn/<zhang.songyi@zte.com.cn>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 63870BEB.000/4NMWfM4ghVz8RTZK
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+From: zhang songyi <zhang.songyi@zte.com.cn>
+
+Use the devm_platform_ioremap_resource() helper instead of
+calling platform_get_resource() and devm_ioremap_resource()
+separately
+
+Signed-off-by: zhang songyi <zhang.songyi@zte.com.cn>
+---
+ arch/sparc/kernel/leon_pci_grpci1.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/arch/sparc/kernel/leon_pci_grpci1.c b/arch/sparc/kernel/leon_pci_grpci1.c
+index e6935d0ac1ec..bbe9c95541e0 100644
+--- a/arch/sparc/kernel/leon_pci_grpci1.c
++++ b/arch/sparc/kernel/leon_pci_grpci1.c
+@@ -515,7 +515,6 @@ static int grpci1_of_probe(struct platform_device *ofdev)
+        int err, len;
+        const int *tmp;
+        u32 cfg, size, err_mask;
+-       struct resource *res;
+
+        if (grpci1priv) {
+                dev_err(&ofdev->dev, "only one GRPCI1 supported\n");
+@@ -536,8 +535,7 @@ static int grpci1_of_probe(struct platform_device *ofdev)
+        priv->dev = &ofdev->dev;
+
+        /* find device register base address */
+-       res = platform_get_resource(ofdev, IORESOURCE_MEM, 0);
+-       regs = devm_ioremap_resource(&ofdev->dev, res);
++       regs = devm_platform_ioremap_resource(ofdev, 0);
+        if (IS_ERR(regs))
+                return PTR_ERR(regs);
+
+--
+2.15.2
