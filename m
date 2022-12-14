@@ -2,117 +2,197 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A41E64C555
-	for <lists+sparclinux@lfdr.de>; Wed, 14 Dec 2022 09:54:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07ABD64C7DA
+	for <lists+sparclinux@lfdr.de>; Wed, 14 Dec 2022 12:23:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237821AbiLNIyg (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 14 Dec 2022 03:54:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56740 "EHLO
+        id S238232AbiLNLXx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 14 Dec 2022 06:23:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237818AbiLNIyf (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 14 Dec 2022 03:54:35 -0500
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C493E201A1
-        for <sparclinux@vger.kernel.org>; Wed, 14 Dec 2022 00:54:33 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id tz12so20206179ejc.9
-        for <sparclinux@vger.kernel.org>; Wed, 14 Dec 2022 00:54:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nuvBIf2lT6ew8E3Gonh9xI5Qgd+TLMqmI33+g9gdqOQ=;
-        b=bXfQSWappV+oMt2zOE3D04ORvc8ThhcUJxSxqRQ4gCHBSw/1+N7zmTvjjQ7ai5RC3w
-         LMpdn6X/ooh4wvUMAPVWFiswrqQ45GCXDOSZqrdV1UdxCGZMboYohVMo3w9MBqyLurwq
-         LEeaCc9vw1uCdCKHiCN8HntOoTrWypJA/otzP+2HoMNV/fcBr/uMLib0MEQHePf4zJ1x
-         +ziEnuNMJkUFiYQUUU3Q7g+BHWdiwHFHZp4XiB2b6heLPVMJCXjHrVyrPlQMkZRcbURu
-         urjUNs/WevVoq90XxNM4AA+oodji8Wnh6TPRq3Y8zPzWWHrhG9UzXw96nAxEPF++Gyfs
-         AlxQ==
+        with ESMTP id S238043AbiLNLXn (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 14 Dec 2022 06:23:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDE582DFA
+        for <sparclinux@vger.kernel.org>; Wed, 14 Dec 2022 03:22:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1671016975;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yxc01zNwMiugjthmgVOlTrtXQnLfLvXjRGMFtbZZLpc=;
+        b=TRsRFy5HWKRJqqxwbSC38MkkVL+pzQVaN48RIhRUvbQBZyedt24vDxP9faiB3QhLUvtPSW
+        jUDazLShTTjthZ9qY/reRE4y5Cap5trYiKq0KlvknrQ+4PgoYPXpD9HQWOo6Qg6rAtYfiW
+        /1ZfU7LhfXDdM3IHhUpPVAiJXEkDOlY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-186-CnWOtodfOVuw7i28U33V5w-1; Wed, 14 Dec 2022 06:22:54 -0500
+X-MC-Unique: CnWOtodfOVuw7i28U33V5w-1
+Received: by mail-wm1-f72.google.com with SMTP id r67-20020a1c4446000000b003d09b0fbf54so7094366wma.3
+        for <sparclinux@vger.kernel.org>; Wed, 14 Dec 2022 03:22:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nuvBIf2lT6ew8E3Gonh9xI5Qgd+TLMqmI33+g9gdqOQ=;
-        b=eAio+nrr5q2GB26/fk4sqVYS4CkCiFT+jdS5w94Zgg4uc4/jQvvgY9XWaDFhy8hoIq
-         G5bMfjYAu5+HfwXVl6YHZenxuCFVa4AyeG2LSyUW/FJuf8g6Js6g59K6dqryVKEEhTNy
-         mG8UuEvK0WqYcUtS6wXioBp5ypfMBlF1lCk5WICpVjIv6Cj9KDDrzKN1N12ROUJXVikr
-         CaaxpNXCm9d9IpNjlJazVkmdACtkCQv/RvhG2FvXWfalD17nHGhnYsSG0cFIKLkr40Iy
-         ltfGbjFdpZ4C134Oy2oc/YBxHSwOAzYfSCdZ70nUFi65zZm5zTDinCrjPq5wOdH509I/
-         E/qw==
-X-Gm-Message-State: ANoB5plbnRmisC1MoBREk6kbFzaRFnHpX6ZC4QUqc1SwrOsd6fs/uMnV
-        w1Bj6OK1526G8iPP5LwPLwsHjRIdCEV6+dwApXk=
-X-Google-Smtp-Source: AA0mqf6pibOZ2TQg1vu59P3kuuPg1G3kivHuCyYckjMgWXKI6Htbs787eHUVcx4yxB6kcrwHULCA4YSGOHjlC1Mfj6E=
-X-Received: by 2002:a17:906:52c8:b0:7ad:ba1e:1bac with SMTP id
- w8-20020a17090652c800b007adba1e1bacmr82867865ejn.528.1671008072266; Wed, 14
- Dec 2022 00:54:32 -0800 (PST)
+        bh=yxc01zNwMiugjthmgVOlTrtXQnLfLvXjRGMFtbZZLpc=;
+        b=C4mOmWWBBvricML3yw3RmtiVW0L2zFuF4GzXP9hm1F2xiWT8sqU4UIAbC6TpcDPReJ
+         FgWj0q5mKsxiXpouWTLbnUt9QAN4lWerQFmktgMsAeJqRDtsB0PfiOFAvOuL6GFBBMnG
+         N2iKePJDCvoJBfSXrWb3R/xvEBYWeP5+NYMGEgQjqRYwR45JjQTFvabScf/mQcb39jYY
+         R6cCZACeDrr3WC65zLgH6sdUXhE2w3sXO8DYtJFrU4aylJMjkpYc1w+u7XI5/9rDXCrY
+         noF3NJRlBl26gAkd9K/fQIjq0P0VqNIhbYoFqz7m9TA8qscM08GTbRsWFlGBcozftVBJ
+         ulzw==
+X-Gm-Message-State: ANoB5pn8blCqYbLkIvLB9Jyq6nIbhCsjgk9WAjBqv6Z1CCY6yC/xbCyC
+        aS8O0/lHAtEG0R8Qa2gz7BWwfa4r+I+dMNdTvU1v7MQ3JZnbWZxVU3Oxdr4r+IYmb+hi5+ititD
+        p5AVioqo8yVtV4mHMADUBHw==
+X-Received: by 2002:a05:600c:1da2:b0:3cf:5fd2:87a0 with SMTP id p34-20020a05600c1da200b003cf5fd287a0mr17488535wms.40.1671016973466;
+        Wed, 14 Dec 2022 03:22:53 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf4UNUk6/OXN07sN3FMRll3MrS2ehO8GnTfEO+JQv3BigUvXvNgLJLKqkas5vWijxjr/1KiucA==
+X-Received: by 2002:a05:600c:1da2:b0:3cf:5fd2:87a0 with SMTP id p34-20020a05600c1da200b003cf5fd287a0mr17488468wms.40.1671016973157;
+        Wed, 14 Dec 2022 03:22:53 -0800 (PST)
+Received: from ?IPV6:2003:cb:c703:7700:dd7c:92f8:481f:b96b? (p200300cbc7037700dd7c92f8481fb96b.dip0.t-ipconnect.de. [2003:cb:c703:7700:dd7c:92f8:481f:b96b])
+        by smtp.gmail.com with ESMTPSA id o3-20020a05600c510300b003cfa3a12660sm8504320wms.1.2022.12.14.03.22.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Dec 2022 03:22:52 -0800 (PST)
+Message-ID: <10bd4fc0-4fc0-bd98-6926-7d721a3bb12e@redhat.com>
+Date:   Wed, 14 Dec 2022 12:22:49 +0100
 MIME-Version: 1.0
-Received: by 2002:a05:6f02:3b6:b0:27:90e6:e1d1 with HTTP; Wed, 14 Dec 2022
- 00:54:31 -0800 (PST)
-Reply-To: plml47@hotmail.com
-From:   Philip Manul <alomassou1972@gmail.com>
-Date:   Wed, 14 Dec 2022 00:54:31 -0800
-Message-ID: <CA+_U6tiP-MF=py7x22n-YPNUasJK19kieMgXxQ-mSY1ZSX35mQ@mail.gmail.com>
-Subject: REP:
-To:     in <in@proposal.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.5 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNCLAIMED_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:631 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [plml47[at]hotmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [alomassou1972[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [alomassou1972[at]gmail.com]
-        *  2.4 UNCLAIMED_MONEY BODY: People just leave money laying around
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  3.0 ADVANCE_FEE_3_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-X-Spam-Level: *******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [PATCH mm-unstable RFC 00/26] mm: support
+ __HAVE_ARCH_PTE_SWP_EXCLUSIVE on all architectures with swap PTEs
+Content-Language: en-US
+To:     linux-kernel@vger.kernel.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Hugh Dickins <hughd@google.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Yang Shi <shy828301@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Nadav Amit <namit@vmware.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@quicinc.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Chris Zankel <chris@zankel.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Simek <monstr@monstr.eu>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rich Felker <dalias@libc.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vineet Gupta <vgupta@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+References: <20221206144730.163732-1-david@redhat.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20221206144730.163732-1-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
---=20
-Guten tag,
-Mein Name ist Philip Manul. Ich bin von Beruf Rechtsanwalt. Ich habe
-einen verstorbenen Kunden, der zuf=C3=A4llig denselben Namen mit Ihnen
-teilt. Ich habe alle Papierdokumente in meinem Besitz. Ihr Verwandter,
-mein verstorbener Kunde, hat hier in meinem Land einen nicht
-beanspruchten Fonds zur=C3=BCckgelassen. Ich warte auf Ihre Antwort zum
-Verfahren.
-Philip Manul.
+On 06.12.22 15:47, David Hildenbrand wrote:
+> This is the follow-up on [1]:
+> 	[PATCH v2 0/8] mm: COW fixes part 3: reliable GUP R/W FOLL_GET of
+> 	anonymous pages
+> 
+> After we implemented __HAVE_ARCH_PTE_SWP_EXCLUSIVE on most prominent
+> enterprise architectures, implement __HAVE_ARCH_PTE_SWP_EXCLUSIVE on all
+> remaining architectures that support swap PTEs.
+> 
+> This makes sure that exclusive anonymous pages will stay exclusive, even
+> after they were swapped out -- for example, making GUP R/W FOLL_GET of
+> anonymous pages reliable. Details can be found in [1].
+> 
+> This primarily fixes remaining known O_DIRECT memory corruptions that can
+> happen on concurrent swapout, whereby we can lose DMA reads to a page
+> (modifying the user page by writing to it).
+> 
+> To verify, there are two test cases (requiring swap space, obviously):
+> (1) The O_DIRECT+swapout test case [2] from Andrea. This test case tries
+>      triggering a race condition.
+> (2) My vmsplice() test case [3] that tries to detect if the exclusive
+>      marker was lost during swapout, not relying on a race condition.
+> 
+> 
+> For example, on 32bit x86 (with and without PAE), my test case fails
+> without these patches:
+> 	$ ./test_swp_exclusive
+> 	FAIL: page was replaced during COW
+> But succeeds with these patches:
+> 	$ ./test_swp_exclusive
+> 	PASS: page was not replaced during COW
+> 
+> 
+> Why implement __HAVE_ARCH_PTE_SWP_EXCLUSIVE for all architectures, even
+> the ones where swap support might be in a questionable state? This is the
+> first step towards removing "readable_exclusive" migration entries, and
+> instead using pte_swp_exclusive() also with (readable) migration entries
+> instead (as suggested by Peter). The only missing piece for that is
+> supporting pmd_swp_exclusive() on relevant architectures with THP
+> migration support.
+> 
+> As all relevant architectures now implement __HAVE_ARCH_PTE_SWP_EXCLUSIVE,,
+> we can drop __HAVE_ARCH_PTE_SWP_EXCLUSIVE in the last patch.
+> 
+> 
+> RFC because some of the swap PTE layouts are really tricky and I really
+> need some feedback related to deciphering these layouts and "using yet
+> unused PTE bits in swap PTEs". I tried cross-compiling all relevant setups
+> (phew, I might only miss some power/nohash variants), but only tested on
+> x86 so far.
 
-***************************************************
+As I was messing with sparc64 either way and got debian to boot under 
+QEMU, I verified that the sparc64 change also seems to work as expected 
+(under sun4u).
 
-Good day,
-My name is Philip Manul. I am a lawyer by profession. I have a
-deceased client who happens to share the same surname with you. I have
-all paper documents in my possession. Your relative my late client
-left an unclaimed fund here in my country. I await your reply for
-Procedure.
-Philip Manul.
+-- 
+Thanks,
+
+David / dhildenb
+
