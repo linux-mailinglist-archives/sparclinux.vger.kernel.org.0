@@ -2,81 +2,88 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17E29660B31
-	for <lists+sparclinux@lfdr.de>; Sat,  7 Jan 2023 02:04:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0733A660B8C
+	for <lists+sparclinux@lfdr.de>; Sat,  7 Jan 2023 02:39:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235233AbjAGBEG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 6 Jan 2023 20:04:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57962 "EHLO
+        id S229870AbjAGBjs (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 6 Jan 2023 20:39:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236478AbjAGBEA (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 6 Jan 2023 20:04:00 -0500
-Received: from mail-oa1-x43.google.com (mail-oa1-x43.google.com [IPv6:2001:4860:4864:20::43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E611E7FEF1
-        for <sparclinux@vger.kernel.org>; Fri,  6 Jan 2023 17:03:59 -0800 (PST)
-Received: by mail-oa1-x43.google.com with SMTP id 586e51a60fabf-14455716674so3418568fac.7
-        for <sparclinux@vger.kernel.org>; Fri, 06 Jan 2023 17:03:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C56Q+YV0i1VwzqpPgsaApjf/2tDIDNvnJyLhwVpmM08=;
-        b=Ui1nZAQwen1JZHhk/UNb1oDDJUikJKWwSFDQT7fDxIdrjTsFTfnr65aD0MQpJxZuMF
-         RmyXYHMc9Ky4LUKKCV35cfXeVKg9kcUaSr4tiVZgaqF5EFPOnEzUzKBi95ahnFWEJuB/
-         wikAeNAEQCrGUuHayT33w+2rQ4+HBUUxhxKBasC1xNVeOOKwbrPJi4n0XGoiGNV0Ta5k
-         CclCoy5QAcIdpNT2BCRseJKd9epac9YGs66Cgc9nZMojVBhKvtImHmE+ZbhBIfigRiBi
-         98nZh86gtiJqweGJlylRyzSsCuKNMTFPzlfmr38W444ZCFDfVUVeCB+li6CwVFx/Asvw
-         l86g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C56Q+YV0i1VwzqpPgsaApjf/2tDIDNvnJyLhwVpmM08=;
-        b=fOz7ZpJ75DUbmb2nj/lpXd6QIk+mv+Ewasj5k/XnXS9uT8xjrFp98a3ycueuAkuu9v
-         2S4qAAWIPBO521tb3hnYjvoeTgcxdiPMhlLPxM7sRzc3mrWPXENJqYtaHWncw8q/wAt2
-         HCJ5/PXMe5Z14IiKnsnC6XyTDryFBswBKFdi0sWgj5j6s764LBxCi1tHYu/7S26/N08j
-         9dZ8CGpJU4MHDuVs3bqDCZkWAJla6I5QwXN9oHlm0MDfNa+3vA27hfO6x+KscMIz/m+M
-         AbQ/1qWnrIkqqkBRlfDhn8+UCPlkKYkhyddIKQSvJ3qIKVmcDu8ZChFr2FNyDU9YaW4f
-         9GLg==
-X-Gm-Message-State: AFqh2kpyxb4HoGByAeQNHwI09+/88ZnNRDZa6DE6TYaO32IVaMf3qjax
-        xFijaBxzEmJcThF4X9D3i9JTOlJSCn/3orPY674=
-X-Google-Smtp-Source: AMrXdXuy6RV5DBW3idauFhx1utsKIy/tzX1PwuIHZiENrh5zCMKQgqD9oBX+tZBveG7/3LbSFusOjNssMxTFlJ2Y1NU=
-X-Received: by 2002:a05:6870:4b8d:b0:14f:d35e:b7fa with SMTP id
- lx13-20020a0568704b8d00b0014fd35eb7famr3510003oab.222.1673053439258; Fri, 06
- Jan 2023 17:03:59 -0800 (PST)
+        with ESMTP id S229751AbjAGBjr (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 6 Jan 2023 20:39:47 -0500
+X-Greylist: delayed 206 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 Jan 2023 17:39:46 PST
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 499307D9FD;
+        Fri,  6 Jan 2023 17:39:45 -0800 (PST)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1pDy88-001Dtj-Oh; Sat, 07 Jan 2023 02:36:16 +0100
+Received: from p57bd9807.dip0.t-ipconnect.de ([87.189.152.7] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1pDy88-002IA8-GA; Sat, 07 Jan 2023 02:36:16 +0100
+Message-ID: <800d35d9-4ced-052e-aebe-683f431356ae@physik.fu-berlin.de>
+Date:   Sat, 7 Jan 2023 02:36:15 +0100
 MIME-Version: 1.0
-Received: by 2002:a05:6808:2387:0:0:0:0 with HTTP; Fri, 6 Jan 2023 17:03:58
- -0800 (PST)
-Reply-To: jamesaissy13@gmail.com
-From:   James AISSY <samueltia200@gmail.com>
-Date:   Fri, 6 Jan 2023 17:03:58 -0800
-Message-ID: <CAOD2y7mxfJEiJcw8zGx8n6ktU0yeDj2shbDio9PsogOVj9NGZQ@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH net-next 0/7] Remove three Sun net drivers
+Content-Language: en-US
+To:     Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>,
+        netdev@vger.kernel.org
+Cc:     linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-mips@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org, Leon Romanovsky <leon@kernel.org>
+References: <20230106220020.1820147-1-anirudh.venkataramanan@intel.com>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+In-Reply-To: <20230106220020.1820147-1-anirudh.venkataramanan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.152.7
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello My Dear,
+Hello!
 
-I hope this message finds you in good Health.
+On 1/6/23 23:00, Anirudh Venkataramanan wrote:
+> This series removes the Sun Cassini, LDOM vswitch and sunvnet drivers.
 
-My name is Mr. James AISSY. I am looking for a partner who is willing to
-team up with me for potential investment opportunities. I shall provide the
-FUND for the investment, and upon your acknowledgment of receiving this
-Message I will therefore enlighten you with the Full Details of my
-investment proposal.
+This would affect a large number of Linux on SPARC users. Please don't!
 
-I'm awaiting your Response.
+We're still maintaining an active sparc64 port for Debian, see [1]. So
+does Gentoo [2].
 
-My regards,
-Mr. James AISSY.
+> In a recent patch series that touched these drivers [1], it was suggested
+> that these drivers should be removed completely. git logs suggest that
+> there hasn't been any significant feature addition, improvement or fixes
+> to user-visible bugs in a while. A web search didn't indicate any recent
+> discussions or any evidence that there are users out there who care about
+> these drivers.
+
+Well, these drivers just work and I don't see why there should be regular
+discussions about them or changes.
+
+Adrian
+
+> [1] https://cdimage.debian.org/cdimage/ports/snapshots/2022-12-09/
+> [2] https://www.gentoo.org/downloads/
+
+-- 
+  .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
+
