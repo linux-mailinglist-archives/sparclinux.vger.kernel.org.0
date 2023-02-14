@@ -2,59 +2,59 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64469695C0F
-	for <lists+sparclinux@lfdr.de>; Tue, 14 Feb 2023 09:06:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B995F695C28
+	for <lists+sparclinux@lfdr.de>; Tue, 14 Feb 2023 09:07:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231724AbjBNIGo (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 14 Feb 2023 03:06:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40240 "EHLO
+        id S231771AbjBNIHe (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 14 Feb 2023 03:07:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231787AbjBNIG0 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 14 Feb 2023 03:06:26 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 041522D4F
-        for <sparclinux@vger.kernel.org>; Tue, 14 Feb 2023 00:06:25 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id bg5-20020a05600c3c8500b003e00c739ce4so10865849wmb.5
-        for <sparclinux@vger.kernel.org>; Tue, 14 Feb 2023 00:06:24 -0800 (PST)
+        with ESMTP id S231855AbjBNIHV (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 14 Feb 2023 03:07:21 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 816AE233C4
+        for <sparclinux@vger.kernel.org>; Tue, 14 Feb 2023 00:07:07 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id o15so11404687wrc.9
+        for <sparclinux@vger.kernel.org>; Tue, 14 Feb 2023 00:07:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=CexkYCgiU8jqIy3gLQMuVr94YSYODTF1ZIZpmznHWI0=;
-        b=oq8fELe1ypAvc08FOz5CbHNTQBld5o23Jvdy+nLY0zG/DnFqza+VDZVuxwBfk8xIVm
-         ImZ0fQYX3iD2kpEI2wrrJJ+EOv/ECI1pGCu4gDD9IhpbKAyXQe2Gg+36UgHDi0uWRsxw
-         QKFTlhrsHNwTjUGRfM18bUeuqZqenYwJ9+lXPP+TIJmtJqj3qO11s6scjudecRVlXd8G
-         yx+52LcS4QzLrkx17Mf0iokjziy/G8h1s4OnVBPi13160Z/MlgxAwmyWSoN4FxAoR886
-         R7GzWQlscuhv0+syQCFg7BJqUBMsODphxlVZ4n5BE8SY37bZ4PSRi5tZBcsQ8dac5j5Y
-         pIYA==
+        bh=Ciz48yn0bC9pSOawr6J2EVonTfRljnaqRRwbx5UW/W0=;
+        b=TIQ23jpnzQarzd1RIe9VRIRAG/Spi2nIIoQJ/TneQakxj6QFyv7ubfVNIbXnkNccLI
+         9YHADgP0ZcuahSTpp0itHxB0vnxid9R3STW2gWzzjJJRY3KVMZwyjGmKniKDMGXJnD/6
+         hDCyLOAQegB/dwr9q127CSBA2/hqxOG01KsSqmOE86OrEQspfFq+Z3AKGUE1cclZrXkJ
+         f+EqgIFwlzxpbPLrsLQTru1Q/+CAIVzIK+aLJtFBqFOqcw6/nRciSXI/ohQrTMnNTXcW
+         9hI2Cm3He0kpAaFodIU30P6FToJ/AvzSfa+UmY2I7DpLnZCKW3ePhquo9Mo0AfQ0lt9E
+         DdXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CexkYCgiU8jqIy3gLQMuVr94YSYODTF1ZIZpmznHWI0=;
-        b=LxaUxhDi72ryp0xIuNBRdx7Uzk1zKIqamWYGdAVqZIn7VVPJ44XowCSICXDth9Q6NT
-         8xe4OBqglfu+BdwzcKH1D75WgSgvejUKvDrfhf5OT77ZsXuliwMCZWglim7sof5oSvH4
-         gFhIyKOGqF/DxTat8LAoGgjblCBxCrEHhR8xDjMCdDNI3VWry4/5BjvoQLE9WmI58UM+
-         gARW0DpIj6Dp0oBYuYeldF7WxIdQnNz6tySncqp3DSMz6D7CZwhGjMRJ4PtogTtgEnZZ
-         btiWAKfruf52RmSGqu4+JBE++yGQ09olNNTH96RE3vUohDF5GrnJTCA/+1nHY1/hl0Q6
-         LyXA==
-X-Gm-Message-State: AO0yUKXEV6QSCmOJfvKlZnxFwS13FHoZTDB0yYRSPPGb6hWkSDoAFKB6
-        qliLVne45UpPQk8URnDu2pWOkQ==
-X-Google-Smtp-Source: AK7set/UWPyupxpQUXAnyOBo4TUryVO/JI+oWwYyspwHedd26Hv1CWYJdsr5ZpbLTAOsriaer/Ifsg==
-X-Received: by 2002:a05:600c:a698:b0:3db:bc5:b2ae with SMTP id ip24-20020a05600ca69800b003db0bc5b2aemr1053106wmb.41.1676361983644;
-        Tue, 14 Feb 2023 00:06:23 -0800 (PST)
+        bh=Ciz48yn0bC9pSOawr6J2EVonTfRljnaqRRwbx5UW/W0=;
+        b=pCl1NgoH5EaZeYeTirNQoHQm+vIX2/9QQLP/AmbMfdYBqF2Ibo3m83eC5IMn4oCBLF
+         GRb8tXJk+c6JWho3V1tMVz9OCkXDrCJ5tb5/BZ3actbaB3Rl/31+T1NICrWEt8yC/lij
+         qJTvPsQOZw0tk7im18GDFRKULqTbAfNGs5VuQKGgEmKw0oQUs2T5Sku1np5UZzQ5qtzz
+         5Nw5Cu6gdepni+Qfyq5jB8lOiVnB7Jp6Z53t7PTWUZzjI8HP8EbMXREimBrpJXoox8Id
+         DnBVuDT1b36SSV64r2myB7Rc+S5W/bZH5BdrZmgXs5wM3INMJJ3BG+1bkGnRkw+MC4k2
+         Osdw==
+X-Gm-Message-State: AO0yUKVNwkBo0v/Wz/UDEIUcgOIWGzhoBF4H5MbUW8R7SrbndC3mOCuU
+        WdOtkoSV4Y624sS/0Iu4RE2SDA==
+X-Google-Smtp-Source: AK7set/qu7AARZd3PE61K+4RewTMhIGOBtMo65cTnHm+ATiqbV6nbjgYgV5TQbegZ2uwdy9X7E8sUQ==
+X-Received: by 2002:adf:e54e:0:b0:2bf:c09a:c60e with SMTP id z14-20020adfe54e000000b002bfc09ac60emr1274577wrm.2.1676362026121;
+        Tue, 14 Feb 2023 00:07:06 -0800 (PST)
 Received: from [192.168.30.216] ([81.0.6.76])
-        by smtp.gmail.com with ESMTPSA id he7-20020a05600c540700b003e1f6e18c95sm773496wmb.21.2023.02.14.00.06.20
+        by smtp.gmail.com with ESMTPSA id u13-20020a5d514d000000b002c3f50228afsm12138404wrt.3.2023.02.14.00.07.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Feb 2023 00:06:23 -0800 (PST)
-Message-ID: <fa2028d1-501f-523e-7b83-2e72d374812c@linaro.org>
-Date:   Tue, 14 Feb 2023 09:06:20 +0100
+        Tue, 14 Feb 2023 00:07:05 -0800 (PST)
+Message-ID: <6c4fc38a-ba24-fff8-7bdd-b633a79200db@linaro.org>
+Date:   Tue, 14 Feb 2023 09:07:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.7.2
-Subject: Re: [PATCH v2 08/24] loongarch/cpu: Mark play_dead() __noreturn
+Subject: Re: [PATCH v2 06/24] ia64/cpu: Mark play_dead() __noreturn
 Content-Language: en-US
 To:     Josh Poimboeuf <jpoimboe@kernel.org>, linux-kernel@vger.kernel.org
 Cc:     jgross@suse.com, richard.henderson@linaro.org,
@@ -78,14 +78,15 @@ Cc:     jgross@suse.com, richard.henderson@linaro.org,
         mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
         paulmck@kernel.org
 References: <cover.1676358308.git.jpoimboe@kernel.org>
- <4da55acfdec8a9132c4e21ffb7edb1f846841193.1676358308.git.jpoimboe@kernel.org>
+ <7575bb38417bd8bcb5be980443f99cab29319342.1676358308.git.jpoimboe@kernel.org>
 From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <4da55acfdec8a9132c4e21ffb7edb1f846841193.1676358308.git.jpoimboe@kernel.org>
+In-Reply-To: <7575bb38417bd8bcb5be980443f99cab29319342.1676358308.git.jpoimboe@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -98,9 +99,8 @@ On 14/2/23 08:05, Josh Poimboeuf wrote:
 > 
 > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 > ---
->   arch/loongarch/include/asm/smp.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   arch/ia64/kernel/process.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
 
