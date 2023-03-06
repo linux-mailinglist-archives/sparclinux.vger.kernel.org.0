@@ -2,75 +2,152 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58CA06ABC10
-	for <lists+sparclinux@lfdr.de>; Mon,  6 Mar 2023 11:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 251676AC09D
+	for <lists+sparclinux@lfdr.de>; Mon,  6 Mar 2023 14:19:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbjCFKZN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 6 Mar 2023 05:25:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56870 "EHLO
+        id S231191AbjCFNTZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 6 Mar 2023 08:19:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229918AbjCFKZL (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 6 Mar 2023 05:25:11 -0500
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94950222C7
-        for <sparclinux@vger.kernel.org>; Mon,  6 Mar 2023 02:25:09 -0800 (PST)
-Received: by mail-ua1-x934.google.com with SMTP id f17so6056962uax.7
-        for <sparclinux@vger.kernel.org>; Mon, 06 Mar 2023 02:25:09 -0800 (PST)
+        with ESMTP id S231183AbjCFNTY (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 6 Mar 2023 08:19:24 -0500
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0FE12A6D1
+        for <sparclinux@vger.kernel.org>; Mon,  6 Mar 2023 05:19:21 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id j19-20020a05600c1c1300b003e9b564fae9so8172873wms.2
+        for <sparclinux@vger.kernel.org>; Mon, 06 Mar 2023 05:19:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678098308;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vh7FN/ulAdnmY8O0LKz7bqpIFk4oOSQ9iCZ8VQ/AkNo=;
-        b=XLGWJIk9ngr+DzzO288LuvJaM4tXJNvPNwQ2aS9Ags44qiVmrxsinzlSTI373SWvQL
-         +6SgUcT0EwDOIVN2f57batbL6WGkZ2VjHiZD2U0ZfoB3ufKNwLox0AmmmOFBlt9HJ6RH
-         OS5dvcaELSOGwrw7xfZFJ2NbgVH7MQKiyCspd7sI5fG3WOcHvbeWf9pH0zYeQabOYzn3
-         yw9gnSfWn+YHaL2P9olrtireCVfXlHXeG4tpX1ltR43P7LxaSqE8ArqnuABg3RgkQyVT
-         NPOLZ1x9kR7oCsOGhR6lezPY8aiclxT9jA/o8x8OVtbG9/bfL0WUzRZuLJI8IqemKCfK
-         Id5A==
+        d=linaro.org; s=google; t=1678108760;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vrJgxYarH7I6tNp9lZXR/Ac4rjm0j3spQFQq/MBh93Y=;
+        b=jHFLuIxja1G7FgaKieMDho79j97bJcJzl5r6JSUNDsV4mA/2T7Rt4dEtFe+mJ68fX4
+         BeL12/7YXldN+W+jMsW2lzMpm7r3Yib7HB15R0q1heNbBxPxEhqAIyFb3CQ8yqwvxO6o
+         BJurB4kLXa0lNndbLzZFaNMuolqgLqLKrQAR20V3xF0z74ogRkWYyf9Fn6yc2fhFf5Yt
+         FkCUzXT6yQqa29dR6x7uYhnNqncplW9W2fbLvSLNfHc7S5X+e6Ao0YebH65T7dKnNa3q
+         Jy+sBKs6+/mTsBRIAlMv1Y4l4Lt9r2RJbnY6D7RgudRSTAB6XHrXBh5KlORUW46XFdOz
+         u/1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678098308;
-        h=to:subject:message-id:date:from:reply-to:mime-version
+        d=1e100.net; s=20210112; t=1678108760;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vh7FN/ulAdnmY8O0LKz7bqpIFk4oOSQ9iCZ8VQ/AkNo=;
-        b=EdwPvIbZ6+ozRTyPhvBK5WM8jGNig+OJjc7xhCBgD9qBZldeyPF3jUYtbgNGyDoqMt
-         etlhq2xQ86W9TdSaCVnmVkQy+x4ByzBnKVCIitZIK7ayymcYGd05FiqBY+b+H3xidJUj
-         6vhOf61ABP/1FAN5X/XAoNmSPxzaAYmpQEhL9C2qvVBj10Wtn5gkfRbzfT8jtoIf5JPk
-         cqRpaqZySDRr+4hcW1cQ/iTJVcv6siXb8HwQ5ew44xCTlJVR/Nm/lsA94pl0sFY7cUe8
-         0o/oTE/T3Q4p2MirHbbvU54lN/qjU2osguGjO7LVvys8g3unDKOACSqskxwS/GW2rkkt
-         KSlw==
-X-Gm-Message-State: AO0yUKUkm3sZp89Wf2BiU9Zbwf+H2O1+MgJRCqN8/jlEAXkeatrdGHmL
-        C8ftNLdxGJ3ofagDKgiYPHEo/pGyXz23dzIs2Kw=
-X-Google-Smtp-Source: AK7set+HbxOG8fRWYdSd2Spe8YgeAHrZJbrwpyn/MCNLktCdTFpedrqR91TU0+OXtW6ZaqP/6B7py4FyO7omWVyWxwo=
-X-Received: by 2002:a1f:1752:0:b0:401:f65:99c2 with SMTP id
- 79-20020a1f1752000000b004010f6599c2mr6566336vkx.3.1678098308425; Mon, 06 Mar
- 2023 02:25:08 -0800 (PST)
+        bh=vrJgxYarH7I6tNp9lZXR/Ac4rjm0j3spQFQq/MBh93Y=;
+        b=vNn0F/RhyMSZR0PO258qrW7qk+DV4lIuvcIgvn0HLzbKhPSLIBFbFT6OzCU5/P9L1v
+         u7TOi7rlz4jb/yt18cg1pKCO4lbnZr0w+8fr3Ebw2+4RB1emPsMdxFO/QwpPzkLbqD34
+         CrsiGwYC0T6mejQBOvYMJM35oa1hdtNDE5QYNTP1giI6omJxHJlGCN14NTb+ClBJ52vz
+         5BxIqI/gDio6T3rHlF91XJX0yFDpyUddaN7fjPARbySA8gH5p/Expfuy4ZCpDp4Cq1LF
+         oc307BkgFgoe+UkdCmwEaDCuFSUN0ZWtS6sVes11nLH+DsHPrvdCrTsc+AIQJK87IFF0
+         C+qg==
+X-Gm-Message-State: AO0yUKXP8Cic8PG+io0vIEjSuNNLxX5dyqhTlGd9UV0Athc12wcZvrtB
+        ArTkybp03Juw2qcChc49e8I6vg==
+X-Google-Smtp-Source: AK7set/GCxEC4IkWKnP9EDEQUMxesVbqKr+YvF+/CM/XdLiZbcIHy+xB1RCNFt5QnRqORoMSq/nNOw==
+X-Received: by 2002:a05:600c:1548:b0:3e2:1f00:bff7 with SMTP id f8-20020a05600c154800b003e21f00bff7mr7424203wmg.12.1678108760216;
+        Mon, 06 Mar 2023 05:19:20 -0800 (PST)
+Received: from [192.168.30.216] ([81.0.6.76])
+        by smtp.gmail.com with ESMTPSA id f21-20020a1c6a15000000b003e733a973d2sm13613044wmc.39.2023.03.06.05.19.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Mar 2023 05:19:19 -0800 (PST)
+Message-ID: <e1fa23ff-951e-176b-1a84-cbaab34ed44d@linaro.org>
+Date:   Mon, 6 Mar 2023 14:19:15 +0100
 MIME-Version: 1.0
-Received: by 2002:a59:ce6f:0:b0:3ae:930b:3e70 with HTTP; Mon, 6 Mar 2023
- 02:25:08 -0800 (PST)
-Reply-To: madis.scarl@terlera.it
-From:   "Ms Eve from U.N" <denisagotou@gmail.com>
-Date:   Mon, 6 Mar 2023 11:25:08 +0100
-Message-ID: <CAD6bNBj=acZn6jpkuAhuMAxbq=prud3DvWJUd6YsqM0swBt35Q@mail.gmail.com>
-Subject: Re: Claim of Fund:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_SCAM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.8.0
+Subject: Re: [PATCH v5 00/26] Remove COMMAND_LINE_SIZE from uapi
+Content-Language: en-US
+To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H . Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org
+References: <20230306100508.1171812-1-alexghiti@rivosinc.com>
+From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230306100508.1171812-1-alexghiti@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello Good Morning,
-This is to bring to your notice that all our efforts to contact you
-through this your email ID failed Please Kindly contact Barrister.
-Steven Mike { mbarrsteven@gmail.com } on his private email for the
-claim of your compensation entitlement
+On 6/3/23 11:04, Alexandre Ghiti wrote:
+> This all came up in the context of increasing COMMAND_LINE_SIZE in the
+> RISC-V port.  In theory that's a UABI break, as COMMAND_LINE_SIZE is the
+> maximum length of /proc/cmdline and userspace could staticly rely on
+> that to be correct.
+> 
+> Usually I wouldn't mess around with changing this sort of thing, but
+> PowerPC increased it with a5980d064fe2 ("powerpc: Bump COMMAND_LINE_SIZE
+> to 2048").  There are also a handful of examples of COMMAND_LINE_SIZE
+> increasing, but they're from before the UAPI split so I'm not quite sure
+> what that means: e5a6a1c90948 ("powerpc: derive COMMAND_LINE_SIZE from
+> asm-generic"), 684d2fd48e71 ("[S390] kernel: Append scpdata to kernel
+> boot command line"), 22242681cff5 ("MIPS: Extend COMMAND_LINE_SIZE"),
+> and 2b74b85693c7 ("sh: Derive COMMAND_LINE_SIZE from
+> asm-generic/setup.h.").
+> 
+> It seems to me like COMMAND_LINE_SIZE really just shouldn't have been
+> part of the uapi to begin with, and userspace should be able to handle
+> /proc/cmdline of whatever length it turns out to be.  I don't see any
+> references to COMMAND_LINE_SIZE anywhere but Linux via a quick Google
+> search, but that's not really enough to consider it unused on my end.
+> 
+> This issue was already considered in s390 and they reached the same
+> conclusion in commit 622021cd6c56 ("s390: make command line
+> configurable").
+> 
+> The feedback on the v1 seemed to indicate that COMMAND_LINE_SIZE really
+> shouldn't be part of uapi, so this now touches all the ports.  I've
+> tried to split this all out and leave it bisectable, but I haven't
+> tested it all that aggressively.
 
-Note: You have to pay for the delivery fee.
-Yours Sincerely
-Mrs EVE LEWIS
+Series:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
