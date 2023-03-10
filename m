@@ -2,64 +2,57 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D87E6B33C5
-	for <lists+sparclinux@lfdr.de>; Fri, 10 Mar 2023 02:46:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1F156B46F5
+	for <lists+sparclinux@lfdr.de>; Fri, 10 Mar 2023 15:47:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229956AbjCJBq0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 9 Mar 2023 20:46:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36020 "EHLO
+        id S233109AbjCJOrw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 10 Mar 2023 09:47:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbjCJBqZ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 9 Mar 2023 20:46:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7186F4D8C
-        for <sparclinux@vger.kernel.org>; Thu,  9 Mar 2023 17:45:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1678412737;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=RtJkfRI7AXY3SogCgOFRi4FhIfSeTbcT8pIq6VJrULQ=;
-        b=XQs0wVhezjUDRgOwE5RpHxXoRUL8CT5G6JzAQXzngU16YVsWkMF9xc8sLFkYDyqNAzWrd0
-        I4hUqrFLKaJS8naIzK3HP7WlwrCCBg8o9Thka/EK+wz5yGb9ZNmim0uTqZZySq9jpnxXyo
-        ZtkqJHwEUuc+BujuPpYbbPInHeokYDE=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-86-woUwnrrKNFetIWSKVrCPTA-1; Thu, 09 Mar 2023 20:45:34 -0500
-X-MC-Unique: woUwnrrKNFetIWSKVrCPTA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B7D531C0518D;
-        Fri, 10 Mar 2023 01:45:33 +0000 (UTC)
-Received: from localhost (ovpn-12-184.pek2.redhat.com [10.72.12.184])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id BDB654010E36;
-        Fri, 10 Mar 2023 01:45:32 +0000 (UTC)
-Date:   Fri, 10 Mar 2023 09:45:28 +0800
-From:   Baoquan He <bhe@redhat.com>
-To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, arnd@arndb.de, mpe@ellerman.id.au,
-        geert@linux-m68k.org, mcgrof@kernel.org, hch@infradead.org,
-        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] arch/*/io.h: remove ioremap_uc in some
- architectures
-Message-ID: <ZAqLuNrPng9i0rZV@MiWiFi-R3L-srv>
-References: <20230308130710.368085-1-bhe@redhat.com>
- <20230308130710.368085-4-bhe@redhat.com>
- <20230309143621.GA12350@alpha.franken.de>
+        with ESMTP id S233039AbjCJOr0 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 10 Mar 2023 09:47:26 -0500
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DB9BA402D;
+        Fri, 10 Mar 2023 06:47:08 -0800 (PST)
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-17671fb717cso6048527fac.8;
+        Fri, 10 Mar 2023 06:47:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678459626;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3Mxp++3M/xdGxspwUzy62aP4jiUX2gCDYtnUV4UMARw=;
+        b=iJK/N6/O8xD7aaHFusbGb5htfxET0MkMS1lnWZegz9LbMrG2Tzs2yYdHGSSQp7TYH/
+         z6rlW4jR4vaF1AGUQJh5Ci3wcs519t1oqhCQd2TCMEbnChJ+7IHpPhRvysWSndf7IjPJ
+         n8a6NbxfTBzk/TDDRrmwDAq6kx8iz+ulEGFyVAGEP9CZv6N5MP16BpAJMjHHFDoA6muf
+         yGhB4WvKVfWxfi2nNlcj3s7Znm+XJ7PmmAZaqvUB2vUfSj3oOFv8a2w3Xts13I0SO7Ah
+         BN+eZDY7SPcqV8YS8A4ZUNdRngrB0QfGdT2mO6W92+fDirni00u+1szR4Av3lP0+FYxv
+         zZXg==
+X-Gm-Message-State: AO0yUKWu1Dl7AJ/vr6bbQeh7M4Fb16mwQsOjz9Bw5Js/QiXPQVNrvApH
+        w5lhJ8JPKLz8Nqnkq2TL4TNKizGFJQ==
+X-Google-Smtp-Source: AK7set9VvIYu2/mX/Ddsr37S3WO3p4+3gpV8Esm/Df+5J5CGsGTCA212TN+8lbj1lvu+O700qeh1ew==
+X-Received: by 2002:a05:6870:560a:b0:176:448f:4ccd with SMTP id m10-20020a056870560a00b00176448f4ccdmr17022548oao.51.1678459625853;
+        Fri, 10 Mar 2023 06:47:05 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id d44-20020a056870d2ac00b001727d62899bsm95690oae.26.2023.03.10.06.47.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Mar 2023 06:47:05 -0800 (PST)
+Received: (nullmailer pid 1541302 invoked by uid 1000);
+        Fri, 10 Mar 2023 14:46:59 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     "David S. Miller" <davem@davemloft.net>
+Cc:     devicetree@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] sparc: Use of_property_present() for testing DT property presence
+Date:   Fri, 10 Mar 2023 08:46:59 -0600
+Message-Id: <20230310144659.1541247-1-robh@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230309143621.GA12350@alpha.franken.de>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,54 +60,114 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On 03/09/23 at 03:36pm, Thomas Bogendoerfer wrote:
-> On Wed, Mar 08, 2023 at 09:07:09PM +0800, Baoquan He wrote:
-> > ioremap_uc() is only meaningful on old x86-32 systems with the PAT
-> > extension, and on ia64 with its slightly unconventional ioremap()
-> > behavior. So remove the ioremap_uc() definition in architecutures
-> > other than x86 and ia64. These architectures all have asm-generic/io.h
-> > included and will have the default ioremap_uc() definition which
-> > returns NULL.
-> > 
-> > This changes the existing behaviour, while no need to worry about
-> > any breakage because in the only callsite of ioremap_uc(), code
-> > has been adjusted to eliminate the impact. Please see
-> > atyfb_setup_generic() of drivers/video/fbdev/aty/atyfb_base.c.
-> > 
-> > If any new invocation of ioremap_uc() need be added, please consider
-> > using ioremap() intead or adding a ARCH specific version if necessary.
-> > 
-> > Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Signed-off-by: Baoquan He <bhe@redhat.com>
-> > Cc: linux-alpha@vger.kernel.org
-> > Cc: linux-hexagon@vger.kernel.org
-> > Cc: linux-m68k@lists.linux-m68k.org
-> > Cc: linux-mips@vger.kernel.org
-> > Cc: linux-parisc@vger.kernel.org
-> > Cc: linuxppc-dev@lists.ozlabs.org
-> > Cc: linux-sh@vger.kernel.org
-> > Cc: sparclinux@vger.kernel.org
-> > ---
-> >  Documentation/driver-api/device-io.rst | 9 +++++----
-> >  arch/alpha/include/asm/io.h            | 1 -
-> >  arch/hexagon/include/asm/io.h          | 3 ---
-> >  arch/m68k/include/asm/kmap.h           | 1 -
-> >  arch/mips/include/asm/io.h             | 1 -
-> >  arch/parisc/include/asm/io.h           | 2 --
-> >  arch/powerpc/include/asm/io.h          | 1 -
-> >  arch/sh/include/asm/io.h               | 2 --
-> >  arch/sparc/include/asm/io_64.h         | 1 -
-> >  9 files changed, 5 insertions(+), 16 deletions(-)
-> 
-> this doesn't apply to v6.3-rc1... what tree is this based on ?
+It is preferred to use typed property access functions (i.e.
+of_property_read_<type> functions) rather than low-level
+of_get_property/of_find_property functions for reading properties. As
+part of this, convert of_get_property/of_find_property calls to the
+recently added of_property_present() helper when we just want to test
+for presence of a property and nothing more.
 
-Sorry, I forgot mentioning this in cover letter. This series is
-followup of below patchset, so it's on top of below patchset and based
-on v6.3-rc1.
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ arch/sparc/kernel/of_device_32.c     | 4 ++--
+ arch/sparc/kernel/of_device_64.c     | 6 +++---
+ arch/sparc/kernel/of_device_common.c | 2 +-
+ arch/sparc/kernel/prom_64.c          | 2 +-
+ arch/sparc/kernel/time_32.c          | 2 +-
+ 5 files changed, 8 insertions(+), 8 deletions(-)
 
-https://lore.kernel.org/all/20230301034247.136007-1-bhe@redhat.com/T/#u
-[PATCH v5 00/17] mm: ioremap:  Convert architectures to take GENERIC_IOREMAP way
-
-Thanks
-Baoquan
+diff --git a/arch/sparc/kernel/of_device_32.c b/arch/sparc/kernel/of_device_32.c
+index 4ebf51e6e78e..b60f58e04164 100644
+--- a/arch/sparc/kernel/of_device_32.c
++++ b/arch/sparc/kernel/of_device_32.c
+@@ -29,7 +29,7 @@ static int of_bus_pci_match(struct device_node *np)
+ 		 * parent as-is, not with the PCI translate
+ 		 * method which chops off the top address cell.
+ 		 */
+-		if (!of_find_property(np, "ranges", NULL))
++		if (!of_property_present(np, "ranges"))
+ 			return 0;
+ 
+ 		return 1;
+@@ -223,7 +223,7 @@ static int __init build_one_resource(struct device_node *parent,
+ static int __init use_1to1_mapping(struct device_node *pp)
+ {
+ 	/* If we have a ranges property in the parent, use it.  */
+-	if (of_find_property(pp, "ranges", NULL) != NULL)
++	if (of_property_present(pp, "ranges"))
+ 		return 0;
+ 
+ 	/* Some SBUS devices use intermediate nodes to express
+diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
+index 5a9f86b1d4e7..5b5143e17ba3 100644
+--- a/arch/sparc/kernel/of_device_64.c
++++ b/arch/sparc/kernel/of_device_64.c
+@@ -58,7 +58,7 @@ static int of_bus_pci_match(struct device_node *np)
+ 		 * parent as-is, not with the PCI translate
+ 		 * method which chops off the top address cell.
+ 		 */
+-		if (!of_find_property(np, "ranges", NULL))
++		if (!of_property_present(np, "ranges"))
+ 			return 0;
+ 
+ 		return 1;
+@@ -78,7 +78,7 @@ static int of_bus_simba_match(struct device_node *np)
+ 	 * simba.
+ 	 */
+ 	if (of_node_name_eq(np, "pci")) {
+-		if (!of_find_property(np, "ranges", NULL))
++		if (!of_property_present(np, "ranges"))
+ 			return 1;
+ 	}
+ 
+@@ -283,7 +283,7 @@ static int __init build_one_resource(struct device_node *parent,
+ static int __init use_1to1_mapping(struct device_node *pp)
+ {
+ 	/* If we have a ranges property in the parent, use it.  */
+-	if (of_find_property(pp, "ranges", NULL) != NULL)
++	if (of_property_present(pp, "ranges"))
+ 		return 0;
+ 
+ 	/* If the parent is the dma node of an ISA bus, pass
+diff --git a/arch/sparc/kernel/of_device_common.c b/arch/sparc/kernel/of_device_common.c
+index e717a56efc5d..60f86b837658 100644
+--- a/arch/sparc/kernel/of_device_common.c
++++ b/arch/sparc/kernel/of_device_common.c
+@@ -162,7 +162,7 @@ int of_bus_sbus_match(struct device_node *np)
+ 		 * don't have some intervening real bus that provides
+ 		 * ranges based translations.
+ 		 */
+-		if (of_find_property(dp, "ranges", NULL) != NULL)
++		if (of_property_present(dp, "ranges"))
+ 			break;
+ 
+ 		dp = dp->parent;
+diff --git a/arch/sparc/kernel/prom_64.c b/arch/sparc/kernel/prom_64.c
+index f883a50fa333..998aa693d491 100644
+--- a/arch/sparc/kernel/prom_64.c
++++ b/arch/sparc/kernel/prom_64.c
+@@ -502,7 +502,7 @@ static void *fill_in_one_cpu(struct device_node *dp, int cpuid, int arg)
+ 	struct device_node *portid_parent = NULL;
+ 	int portid = -1;
+ 
+-	if (of_find_property(dp, "cpuid", NULL)) {
++	if (of_property_present(dp, "cpuid")) {
+ 		int limit = 2;
+ 
+ 		portid_parent = dp;
+diff --git a/arch/sparc/kernel/time_32.c b/arch/sparc/kernel/time_32.c
+index 8a08830e4a65..958c2cf4479b 100644
+--- a/arch/sparc/kernel/time_32.c
++++ b/arch/sparc/kernel/time_32.c
+@@ -277,7 +277,7 @@ static int clock_probe(struct platform_device *op)
+ 		return -ENODEV;
+ 
+ 	/* Only the primary RTC has an address property */
+-	if (!of_find_property(dp, "address", NULL))
++	if (!of_property_present(dp, "address"))
+ 		return -ENODEV;
+ 
+ 	m48t59_rtc.resource = &op->resource[0];
+-- 
+2.39.2
 
