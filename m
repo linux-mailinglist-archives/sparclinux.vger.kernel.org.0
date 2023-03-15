@@ -2,62 +2,80 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61DE66BAAE3
-	for <lists+sparclinux@lfdr.de>; Wed, 15 Mar 2023 09:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DFF06BAD38
+	for <lists+sparclinux@lfdr.de>; Wed, 15 Mar 2023 11:13:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231154AbjCOIg2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 15 Mar 2023 04:36:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37052 "EHLO
+        id S231253AbjCOKNG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 15 Mar 2023 06:13:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231367AbjCOIg1 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Mar 2023 04:36:27 -0400
-Received: from mail.penmade.pl (mail.penmade.pl [94.177.230.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1766A738BC
-        for <sparclinux@vger.kernel.org>; Wed, 15 Mar 2023 01:36:03 -0700 (PDT)
-Received: by mail.penmade.pl (Postfix, from userid 1001)
-        id 83E2B83B1C; Wed, 15 Mar 2023 08:35:57 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=penmade.pl; s=mail;
-        t=1678869361; bh=CSKXLMgcdpWkXuTgJn5+jsCVobtU9JEF4vCnS5z6McM=;
-        h=Date:From:To:Subject:From;
-        b=rPeSCXA+xMvwDFb+JKFdBPFDIgLgObhV/xFxJVSWxnmqPjGBhyzWtk7+p197e1BEm
-         kllA0sIe7jP20ocvptgxdM+ITQuxV1FM60FXjEnVOd6RlA/Tzl2RVcwnhuer+bzouA
-         f9CzTiV7N+/xhW70ZXDyOnotwAqE1uVE+2kUp01UxqYF4AUJKFmbch/9QtYH9rfFPK
-         vUBk1mtXno9+hxIQDfsqRwbHzxTVJpouGnACarqV5aftZ0mKjZuyxe5yDQK96ahE9T
-         ZhPWX5q4SNLV8P0E5VH7kNrikIFqG8lEr7GhWGhO3voB5U1zFBHe3mYymuJ9EMWXWm
-         ZDTFWcJB8pvtQ==
-Received: by mail.penmade.pl for <sparclinux@vger.kernel.org>; Wed, 15 Mar 2023 08:35:50 GMT
-Message-ID: <20230315074502-0.1.2z.aj1b.0.h16n3fiwqs@penmade.pl>
-Date:   Wed, 15 Mar 2023 08:35:50 GMT
-From:   "Wiktor Nurek" <wiktor.nurek@penmade.pl>
-To:     <sparclinux@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.penmade.pl
+        with ESMTP id S232231AbjCOKMl (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Mar 2023 06:12:41 -0400
+Received: from 126.com (m126.mail.126.com [220.181.12.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 92B8A6286C
+        for <sparclinux@vger.kernel.org>; Wed, 15 Mar 2023 03:12:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+        s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
+        Message-ID; bh=i1mEHr7gUy5HbS6seVo2TktN4IwVeNpwIUic9vXFYYg=; b=f
+        uW/+4T+iFwgvxv1cfi3m804zFig9ApFfqR14UQ45RQ1QthNucPmDrs5Hyniy9vnL
+        QkyLD1b5zYj7Qd4HlFiyFFZX6P2cNmu5yYSLV9U5k6iXYTh5Jphu+wTgsaAfgw2I
+        3K1Hpv77AcRQkl81Qy0uMvcti9waAN6xkY8wiYy6x4=
+Received: from windhl$126.com ( [124.16.139.61] ) by ajax-webmail-wmsvr1
+ (Coremail) ; Wed, 15 Mar 2023 17:39:10 +0800 (CST)
+X-Originating-IP: [124.16.139.61]
+Date:   Wed, 15 Mar 2023 17:39:10 +0800 (CST)
+From:   "Liang He" <windhl@126.com>
+To:     "Greg KH" <gregkh@linuxfoundation.org>
+Cc:     davem@davemloft.net, jirislaby@kernel.org,
+        sparclinux@vger.kernel.org
+Subject: Re:Re: [PATCH] tty: vcc: add check for mdesc_grab()
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
+ Copyright (c) 2002-2023 www.mailtech.cn 126com
+In-Reply-To: <ZBFmlu/iKFPdUaPy@kroah.com>
+References: <20230315061121.1741454-1-windhl@126.com>
+ <ZBFmlu/iKFPdUaPy@kroah.com>
+X-NTES-SC: AL_QuycCvScvEku5iiZYekXnkwQhu05Ucq4u/8l1YVVP5E0sinN6x8iQ0dTAEHp79iIOR+riCC+Xyhh7fZ8eahSY6CahST7qOjXJJ1ruCCRKoi/
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Message-ID: <416fdd67.312b.186e4a34561.Coremail.windhl@126.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: _____wA3+J0_khFk2PcFAA--.18318W
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiHgAzF2IxqIPIawACsj
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dzie=C5=84 dobry,
-
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
-
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
-
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
-
-
-Pozdrawiam serdecznie,
-Wiktor Nurek
+CkF0IDIwMjMtMDMtMTUgMTQ6MzI6NTQsICJHcmVnIEtIIiA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlv
+bi5vcmc+IHdyb3RlOgo+T24gV2VkLCBNYXIgMTUsIDIwMjMgYXQgMDI6MTE6MjFQTSArMDgwMCwg
+TGlhbmcgSGUgd3JvdGU6Cj4+IEluIHZjY19wcm9iZSgpLCB3ZSBzaG91bGQgY2hlY2sgdGhlIHJl
+dHVybiB2YWx1ZSBvZgo+PiBtZGVzY19ncmFiKCkgYXMgaXQgbWF5IHJldHVybiBOVUxMLiBXaGls
+ZSB0aGUKPj4gdmlvX3ZkZXZfbm9kZSgpIGhhcyB0aGUgTlVMTC1jaGVjaywgYnV0IGlmIHRoZXJl
+Cj4+IGlzIHN0aWxsIGEgY2FsbCB0byBtZGVzY19yZWxlYXNlKCkgd2hpY2ggbWF5IGNhdXNlCj4+
+IGEgTlBEIGJ1Zy4KPgo+SGF2ZSB5b3UgYWN0dWFsbHkgdHJpZ2dlcmVkIHRoaXMgaXNzdWU/ICBJ
+ZiBzbywgaG93Pwo+CgpIaSwgR3JlZywKVGhhbmtzIHZlcnkgbXVjaCBmb3IgeW91ciByZXBseS4K
+CkluIGZhY3QsIEkgaGF2ZSBub3QgYWN0dWFsbHkgdHJpZ2dlcmVkIHRoaXMgaXNzdWUsIApidXQg
+SSBpbmRlZWQgbWVldCBsb3RzIG9mIGNoZWNrcyBpbiBvdGhlciAqX2luaXQgZnVuY3Rpb25zLCBl
+LmcuLCBtZGVzY19hZGlfaW5pdCgpL2xkY19pbml0KCkuCgpIb3dldmVyLCBpZiB3ZSBjYW4gbWFr
+ZSBzdXJlIHRoZSByZXR1cm4gdmFsdWUgY2FuIG5ldmVyIGJlIE5VTEwgCndoZW4gb3VyIGtlcm5l
+bCBleGVjdXRlIGludG8gdGhlc2UgKl9wcm9iZSBmdW5jdGlvbnMsIG15IHBhdGNocyBhcmUgaW5k
+ZWVkIHVzZWxlc3MuCgpUaGFua3MgYW5kIHNvcnJ5IGZvciBhbnkgcG90ZW50aWFsIHRyb3VibGUu
+CgpMaWFuZyAKCj4+IEZpeGVzOiA1ZDE3MTA1MGUyOGYgKCJzcGFyYzY0OiB2Y2M6IEVuYWJsZSBW
+Q0MgcG9ydCBwcm9iZSBhbmQgcmVtb3ZhbCIpCj4+IFNpZ25lZC1vZmYtYnk6IExpYW5nIEhlIDx3
+aW5kaGxAMTI2LmNvbT4KPj4gLS0tCj4+ICBkcml2ZXJzL3R0eS92Y2MuYyB8IDMgKysrCj4+ICAx
+IGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspCj4+IAo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy90dHkvdmNjLmMgYi9kcml2ZXJzL3R0eS92Y2MuYwo+PiBpbmRleCAzNGJhNmU1NDc4OWEuLmUz
+YmE2M2QwYTkxZiAxMDA2NDQKPj4gLS0tIGEvZHJpdmVycy90dHkvdmNjLmMKPj4gKysrIGIvZHJp
+dmVycy90dHkvdmNjLmMKPj4gQEAgLTYxMCw2ICs2MTAsOSBAQCBzdGF0aWMgaW50IHZjY19wcm9i
+ZShzdHJ1Y3QgdmlvX2RldiAqdmRldiwgY29uc3Qgc3RydWN0IHZpb19kZXZpY2VfaWQgKmlkKQo+
+PiAgCj4+ICAJaHAgPSBtZGVzY19ncmFiKCk7Cj4+ICAKPj4gKwlpZiAoIWhwKQo+PiArCQlyZXR1
+cm4gLUVOT0RFVjsKPgo+VGhpcyBjaGFuZ2UgaXMgb2J2aW91c2x5IG5vdCBjb3JyZWN0IGFuZCBo
+YXMgbm90IGJlZW4gdGVzdGVkLCBzb3JyeS4KPlBsZWFzZSBkbyBub3QgbWFrZSBjaGFuZ2VzIGxp
+a2UgdGhpcyB3aXRob3V0IHByb3Blcmx5IHZhbGlkYXRpbmcgdGhlbS4KPgo+Z3JlZyBrLWgK
