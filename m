@@ -2,80 +2,183 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DFF06BAD38
-	for <lists+sparclinux@lfdr.de>; Wed, 15 Mar 2023 11:13:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A1D26BAD33
+	for <lists+sparclinux@lfdr.de>; Wed, 15 Mar 2023 11:12:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231253AbjCOKNG (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 15 Mar 2023 06:13:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50492 "EHLO
+        id S232288AbjCOKM2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 15 Mar 2023 06:12:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232231AbjCOKMl (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Mar 2023 06:12:41 -0400
-Received: from 126.com (m126.mail.126.com [220.181.12.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 92B8A6286C
-        for <sparclinux@vger.kernel.org>; Wed, 15 Mar 2023 03:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
-        Message-ID; bh=i1mEHr7gUy5HbS6seVo2TktN4IwVeNpwIUic9vXFYYg=; b=f
-        uW/+4T+iFwgvxv1cfi3m804zFig9ApFfqR14UQ45RQ1QthNucPmDrs5Hyniy9vnL
-        QkyLD1b5zYj7Qd4HlFiyFFZX6P2cNmu5yYSLV9U5k6iXYTh5Jphu+wTgsaAfgw2I
-        3K1Hpv77AcRQkl81Qy0uMvcti9waAN6xkY8wiYy6x4=
-Received: from windhl$126.com ( [124.16.139.61] ) by ajax-webmail-wmsvr1
- (Coremail) ; Wed, 15 Mar 2023 17:39:10 +0800 (CST)
-X-Originating-IP: [124.16.139.61]
-Date:   Wed, 15 Mar 2023 17:39:10 +0800 (CST)
-From:   "Liang He" <windhl@126.com>
-To:     "Greg KH" <gregkh@linuxfoundation.org>
-Cc:     davem@davemloft.net, jirislaby@kernel.org,
-        sparclinux@vger.kernel.org
-Subject: Re:Re: [PATCH] tty: vcc: add check for mdesc_grab()
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2023 www.mailtech.cn 126com
-In-Reply-To: <ZBFmlu/iKFPdUaPy@kroah.com>
-References: <20230315061121.1741454-1-windhl@126.com>
- <ZBFmlu/iKFPdUaPy@kroah.com>
-X-NTES-SC: AL_QuycCvScvEku5iiZYekXnkwQhu05Ucq4u/8l1YVVP5E0sinN6x8iQ0dTAEHp79iIOR+riCC+Xyhh7fZ8eahSY6CahST7qOjXJJ1ruCCRKoi/
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+        with ESMTP id S231603AbjCOKMA (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Mar 2023 06:12:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBC9472018;
+        Wed, 15 Mar 2023 03:11:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 882A561CD3;
+        Wed, 15 Mar 2023 10:11:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4955C433EF;
+        Wed, 15 Mar 2023 10:11:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678875094;
+        bh=2YGepKnUPthEHs7BQ3Q+GQKbEKurUEPs7Ce+pm8dnSY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bi4WlO+P3WmbfFnHs3sAxtbjF+f9YngYjr6v4pXaWK9RWakpxCbwRcTOpzkhoa4Wg
+         j1ypCrLwRfVf6xfDBFZ507BCzqNSJkeb/n/z+yyyFMKVbJYRl5rwhhAvjfdBV90GAB
+         6/6VFINYnVs90LOu+8AE/1lyqs6ON1wpU95b0S4Cy+El5lmlIVouaSicrJRA+HR/bf
+         sNj06iDNDmSJfpEsOEQ6rBOl6tCUA4sjMsFjrRSUAFuGvOvmFynFAT8gc7abFuw7kq
+         nqViw81tQ94e5w0JBezD/KNYw4hahde/BS8kvvpw5/lOnxBcKukgiOLw1+iEGbyVci
+         aYgevpUdgY3bQ==
+Date:   Wed, 15 Mar 2023 12:11:21 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc:     linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v4 24/36] sparc32: Implement the new page table range API
+Message-ID: <ZBGZyYOE3CXFwwbZ@kernel.org>
+References: <20230315051444.3229621-1-willy@infradead.org>
+ <20230315051444.3229621-25-willy@infradead.org>
 MIME-Version: 1.0
-Message-ID: <416fdd67.312b.186e4a34561.Coremail.windhl@126.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: _____wA3+J0_khFk2PcFAA--.18318W
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiHgAzF2IxqIPIawACsj
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230315051444.3229621-25-willy@infradead.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-CkF0IDIwMjMtMDMtMTUgMTQ6MzI6NTQsICJHcmVnIEtIIiA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlv
-bi5vcmc+IHdyb3RlOgo+T24gV2VkLCBNYXIgMTUsIDIwMjMgYXQgMDI6MTE6MjFQTSArMDgwMCwg
-TGlhbmcgSGUgd3JvdGU6Cj4+IEluIHZjY19wcm9iZSgpLCB3ZSBzaG91bGQgY2hlY2sgdGhlIHJl
-dHVybiB2YWx1ZSBvZgo+PiBtZGVzY19ncmFiKCkgYXMgaXQgbWF5IHJldHVybiBOVUxMLiBXaGls
-ZSB0aGUKPj4gdmlvX3ZkZXZfbm9kZSgpIGhhcyB0aGUgTlVMTC1jaGVjaywgYnV0IGlmIHRoZXJl
-Cj4+IGlzIHN0aWxsIGEgY2FsbCB0byBtZGVzY19yZWxlYXNlKCkgd2hpY2ggbWF5IGNhdXNlCj4+
-IGEgTlBEIGJ1Zy4KPgo+SGF2ZSB5b3UgYWN0dWFsbHkgdHJpZ2dlcmVkIHRoaXMgaXNzdWU/ICBJ
-ZiBzbywgaG93Pwo+CgpIaSwgR3JlZywKVGhhbmtzIHZlcnkgbXVjaCBmb3IgeW91ciByZXBseS4K
-CkluIGZhY3QsIEkgaGF2ZSBub3QgYWN0dWFsbHkgdHJpZ2dlcmVkIHRoaXMgaXNzdWUsIApidXQg
-SSBpbmRlZWQgbWVldCBsb3RzIG9mIGNoZWNrcyBpbiBvdGhlciAqX2luaXQgZnVuY3Rpb25zLCBl
-LmcuLCBtZGVzY19hZGlfaW5pdCgpL2xkY19pbml0KCkuCgpIb3dldmVyLCBpZiB3ZSBjYW4gbWFr
-ZSBzdXJlIHRoZSByZXR1cm4gdmFsdWUgY2FuIG5ldmVyIGJlIE5VTEwgCndoZW4gb3VyIGtlcm5l
-bCBleGVjdXRlIGludG8gdGhlc2UgKl9wcm9iZSBmdW5jdGlvbnMsIG15IHBhdGNocyBhcmUgaW5k
-ZWVkIHVzZWxlc3MuCgpUaGFua3MgYW5kIHNvcnJ5IGZvciBhbnkgcG90ZW50aWFsIHRyb3VibGUu
-CgpMaWFuZyAKCj4+IEZpeGVzOiA1ZDE3MTA1MGUyOGYgKCJzcGFyYzY0OiB2Y2M6IEVuYWJsZSBW
-Q0MgcG9ydCBwcm9iZSBhbmQgcmVtb3ZhbCIpCj4+IFNpZ25lZC1vZmYtYnk6IExpYW5nIEhlIDx3
-aW5kaGxAMTI2LmNvbT4KPj4gLS0tCj4+ICBkcml2ZXJzL3R0eS92Y2MuYyB8IDMgKysrCj4+ICAx
-IGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspCj4+IAo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy90dHkvdmNjLmMgYi9kcml2ZXJzL3R0eS92Y2MuYwo+PiBpbmRleCAzNGJhNmU1NDc4OWEuLmUz
-YmE2M2QwYTkxZiAxMDA2NDQKPj4gLS0tIGEvZHJpdmVycy90dHkvdmNjLmMKPj4gKysrIGIvZHJp
-dmVycy90dHkvdmNjLmMKPj4gQEAgLTYxMCw2ICs2MTAsOSBAQCBzdGF0aWMgaW50IHZjY19wcm9i
-ZShzdHJ1Y3QgdmlvX2RldiAqdmRldiwgY29uc3Qgc3RydWN0IHZpb19kZXZpY2VfaWQgKmlkKQo+
-PiAgCj4+ICAJaHAgPSBtZGVzY19ncmFiKCk7Cj4+ICAKPj4gKwlpZiAoIWhwKQo+PiArCQlyZXR1
-cm4gLUVOT0RFVjsKPgo+VGhpcyBjaGFuZ2UgaXMgb2J2aW91c2x5IG5vdCBjb3JyZWN0IGFuZCBo
-YXMgbm90IGJlZW4gdGVzdGVkLCBzb3JyeS4KPlBsZWFzZSBkbyBub3QgbWFrZSBjaGFuZ2VzIGxp
-a2UgdGhpcyB3aXRob3V0IHByb3Blcmx5IHZhbGlkYXRpbmcgdGhlbS4KPgo+Z3JlZyBrLWgK
+On Wed, Mar 15, 2023 at 05:14:32AM +0000, Matthew Wilcox (Oracle) wrote:
+> Add PFN_PTE_SHIFT, update_mmu_cache_range(), flush_dcache_folio() and
+> flush_icache_pages().
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: sparclinux@vger.kernel.org
+
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+
+> ---
+>  arch/sparc/include/asm/cacheflush_32.h |  9 +++++++--
+>  arch/sparc/include/asm/pgtable_32.h    |  8 ++++----
+>  arch/sparc/mm/init_32.c                | 13 +++++++++++--
+>  3 files changed, 22 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/sparc/include/asm/cacheflush_32.h b/arch/sparc/include/asm/cacheflush_32.h
+> index adb6991d0455..8dba35d63328 100644
+> --- a/arch/sparc/include/asm/cacheflush_32.h
+> +++ b/arch/sparc/include/asm/cacheflush_32.h
+> @@ -16,6 +16,7 @@
+>  	sparc32_cachetlb_ops->cache_page(vma, addr)
+>  #define flush_icache_range(start, end)		do { } while (0)
+>  #define flush_icache_page(vma, pg)		do { } while (0)
+> +#define flush_icache_pages(vma, pg, nr)		do { } while (0)
+>  
+>  #define copy_to_user_page(vma, page, vaddr, dst, src, len) \
+>  	do {							\
+> @@ -35,11 +36,15 @@
+>  #define flush_page_for_dma(addr) \
+>  	sparc32_cachetlb_ops->page_for_dma(addr)
+>  
+> -struct page;
+>  void sparc_flush_page_to_ram(struct page *page);
+> +void sparc_flush_folio_to_ram(struct folio *folio);
+>  
+>  #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+> -#define flush_dcache_page(page)			sparc_flush_page_to_ram(page)
+> +#define flush_dcache_folio(folio)		sparc_flush_folio_to_ram(folio)
+> +static inline void flush_dcache_page(struct page *page)
+> +{
+> +	flush_dcache_folio(page_folio(page));
+> +}
+>  #define flush_dcache_mmap_lock(mapping)		do { } while (0)
+>  #define flush_dcache_mmap_unlock(mapping)	do { } while (0)
+>  
+> diff --git a/arch/sparc/include/asm/pgtable_32.h b/arch/sparc/include/asm/pgtable_32.h
+> index d4330e3c57a6..7514611d14d3 100644
+> --- a/arch/sparc/include/asm/pgtable_32.h
+> +++ b/arch/sparc/include/asm/pgtable_32.h
+> @@ -101,8 +101,6 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
+>  	srmmu_swap((unsigned long *)ptep, pte_val(pteval));
+>  }
+>  
+> -#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
+> -
+>  static inline int srmmu_device_memory(unsigned long x)
+>  {
+>  	return ((x & 0xF0000000) != 0);
+> @@ -256,6 +254,7 @@ static inline pte_t pte_mkyoung(pte_t pte)
+>  	return __pte(pte_val(pte) | SRMMU_REF);
+>  }
+>  
+> +#define PFN_PTE_SHIFT			(PAGE_SHIFT - 4)
+>  #define pfn_pte(pfn, prot)		mk_pte(pfn_to_page(pfn), prot)
+>  
+>  static inline unsigned long pte_pfn(pte_t pte)
+> @@ -268,7 +267,7 @@ static inline unsigned long pte_pfn(pte_t pte)
+>  		 */
+>  		return ~0UL;
+>  	}
+> -	return (pte_val(pte) & SRMMU_PTE_PMASK) >> (PAGE_SHIFT-4);
+> +	return (pte_val(pte) & SRMMU_PTE_PMASK) >> PFN_PTE_SHIFT;
+>  }
+>  
+>  #define pte_page(pte)	pfn_to_page(pte_pfn(pte))
+> @@ -318,6 +317,7 @@ void mmu_info(struct seq_file *m);
+>  #define FAULT_CODE_USER     0x4
+>  
+>  #define update_mmu_cache(vma, address, ptep) do { } while (0)
+> +#define update_mmu_cache_range(vma, address, ptep, nr) do { } while (0)
+>  
+>  void srmmu_mapiorange(unsigned int bus, unsigned long xpa,
+>                        unsigned long xva, unsigned int len);
+> @@ -422,7 +422,7 @@ static inline int io_remap_pfn_range(struct vm_area_struct *vma,
+>  ({									  \
+>  	int __changed = !pte_same(*(__ptep), __entry);			  \
+>  	if (__changed) {						  \
+> -		set_pte_at((__vma)->vm_mm, (__address), __ptep, __entry); \
+> +		set_pte(__ptep, __entry);				  \
+>  		flush_tlb_page(__vma, __address);			  \
+>  	}								  \
+>  	__changed;							  \
+> diff --git a/arch/sparc/mm/init_32.c b/arch/sparc/mm/init_32.c
+> index 9c0ea457bdf0..d96a14ffceeb 100644
+> --- a/arch/sparc/mm/init_32.c
+> +++ b/arch/sparc/mm/init_32.c
+> @@ -297,11 +297,20 @@ void sparc_flush_page_to_ram(struct page *page)
+>  {
+>  	unsigned long vaddr = (unsigned long)page_address(page);
+>  
+> -	if (vaddr)
+> -		__flush_page_to_ram(vaddr);
+> +	__flush_page_to_ram(vaddr);
+>  }
+>  EXPORT_SYMBOL(sparc_flush_page_to_ram);
+>  
+> +void sparc_flush_folio_to_ram(struct folio *folio)
+> +{
+> +	unsigned long vaddr = (unsigned long)folio_address(folio);
+> +	unsigned int i, nr = folio_nr_pages(folio);
+> +
+> +	for (i = 0; i < nr; i++)
+> +		__flush_page_to_ram(vaddr + i * PAGE_SIZE);
+> +}
+> +EXPORT_SYMBOL(sparc_flush_folio_to_ram);
+> +
+>  static const pgprot_t protection_map[16] = {
+>  	[VM_NONE]					= PAGE_NONE,
+>  	[VM_READ]					= PAGE_READONLY,
+> -- 
+> 2.39.2
+> 
+> 
+
+-- 
+Sincerely yours,
+Mike.
