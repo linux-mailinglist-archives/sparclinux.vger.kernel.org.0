@@ -2,110 +2,67 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 666306BE43A
-	for <lists+sparclinux@lfdr.de>; Fri, 17 Mar 2023 09:48:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B585E6BF60B
+	for <lists+sparclinux@lfdr.de>; Sat, 18 Mar 2023 00:13:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230434AbjCQIr7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 17 Mar 2023 04:47:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46558 "EHLO
+        id S229887AbjCQXNR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 17 Mar 2023 19:13:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230341AbjCQIrg (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 17 Mar 2023 04:47:36 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282931F489;
-        Fri, 17 Mar 2023 01:46:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CAF1EB824C8;
-        Fri, 17 Mar 2023 08:46:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B0AC433D2;
-        Fri, 17 Mar 2023 08:46:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679042789;
-        bh=eZNvNwV6QaJLpDQt/LL3N1gO2o4a3oCnClv1PSM9XeM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uJzYOtsVjg8yXxg3J2EU7rYSRGVMTNdq+xiS1UKbgTt4yAo4AWLckqLIAUmAi6f/Y
-         colg1stCYv54Uf1/5mYpRAwYTuuQLcZAlBo7yfcCvTDo7w3AtCDBuE/ASeou95rihG
-         MlxFnldm04gfXJUCE0HKonnt6tXFsIsgy3vXERRXiKWs1638wS1pMNquvxoQb/g5av
-         jBC9Ai1maPLR0XzOmDA0fZ2Ar1n86fFOdhBJE6PPU5Qm4prbB8BBChvuTuiFTsdEc8
-         9tJ/NDCx4fRxgo/g8bxqh7rnJ+QGKvvqcQ1/S+MkB6g3vykNLK60/14vHCo+BU3QxI
-         8dP2atFEEH+eA==
-Date:   Fri, 17 Mar 2023 10:46:14 +0200
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Mike Kravetz <mike.kravetz@oracle.com>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mel Gorman <mgorman@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
-        David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        sparclinux@vger.kernel.org, David Miller <davem@davemloft.net>
-Subject: Re: [PATCH 01/10] sparc/mm: Fix MAX_ORDER usage in tsb_grow()
-Message-ID: <ZBQo1rUXmTrFgCsR@kernel.org>
-References: <20230315113133.11326-1-kirill.shutemov@linux.intel.com>
- <20230315113133.11326-2-kirill.shutemov@linux.intel.com>
- <20230316030437.GD3092@monkey>
+        with ESMTP id S229783AbjCQXNQ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 17 Mar 2023 19:13:16 -0400
+Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 597531B2C9
+        for <sparclinux@vger.kernel.org>; Fri, 17 Mar 2023 16:13:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
+         h=mime-version:content-type:content-transfer-encoding:date:from
+        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
+        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=oEWTL2q/7Jmej24uL/ff3evr
+        z3cwsJWRCEBXOgqRpr8fKdslZOWKnVfT5q7A2a0tWoCVL3cHDFkII7UfYW0vFMrT
+        xJ+Rpil7e4mw9kxm2uK/Lg4Tq0ipKMX8VAd+Da+RAhYIOe4exusgJm2SANlNC/Ut
+        tHV7teO740wzmKVDmdCqsCfwbWtNFv+7iKlTVqbAqCeMi5Mea2GUU4AgGSPmk2dP
+        /6vJGESz6tW0LwDze8pzy304QbKgJn/TrOxNyLhsghqPsVR8855Ph9SjyCSgoe8x
+        cxYMGiVihMQF+KzSAISHbufeB3zQ4bFHoThCF3quuAL3zgq/a9sj9CGjttWb2w==
+Received: (qmail 61686 invoked from network); 15 Mar 2023 02:02:01 -0000
+Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
+  by localhost with SMTP; 15 Mar 2023 02:02:01 -0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230316030437.GD3092@monkey>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 14 Mar 2023 19:02:00 -0700
+From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
+To:     undisclosed-recipients:;
+Subject: LOAN OPPORTUNITY AT LOW-INTEREST RATE.!
+Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Message-ID: <e1dc64b6e17990adb6c12ac4eb5dfec1@sragenkab.go.id>
+X-Sender: jurnalsukowati@sragenkab.go.id
+User-Agent: Roundcube Webmail/0.8.1
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_MONEY,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, Mar 15, 2023 at 08:04:37PM -0700, Mike Kravetz wrote:
-> On 03/15/23 14:31, Kirill A. Shutemov wrote:
-> > MAX_ORDER is not inclusive: the maximum allocation order buddy allocator
-> > can deliver is MAX_ORDER-1.
-> > 
-> > Fix MAX_ORDER usage in tsb_grow().
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Cc: sparclinux@vger.kernel.org
-> > Cc: David Miller <davem@davemloft.net>
-> > ---
-> >  arch/sparc/mm/tsb.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/sparc/mm/tsb.c b/arch/sparc/mm/tsb.c
-> > index 912205787161..dba8dffe2113 100644
-> > --- a/arch/sparc/mm/tsb.c
-> > +++ b/arch/sparc/mm/tsb.c
-> > @@ -402,8 +402,8 @@ void tsb_grow(struct mm_struct *mm, unsigned long tsb_index, unsigned long rss)
-> >  	unsigned long new_rss_limit;
-> >  	gfp_t gfp_flags;
-> >  
-> > -	if (max_tsb_size > (PAGE_SIZE << MAX_ORDER))
-> > -		max_tsb_size = (PAGE_SIZE << MAX_ORDER);
-> > +	if (max_tsb_size > (PAGE_SIZE << (MAX_ORDER - 1)))
-> > +		max_tsb_size = (PAGE_SIZE << (MAX_ORDER - 1));
-> >  
-> >  	new_cache_index = 0;
-> >  	for (new_size = 8192; new_size < max_tsb_size; new_size <<= 1UL) {
-> > 
-> 
-> Fortunately, I think this only comes into play if MAX_ORDER <= 7.
- 
-I think it's unlikely that such low ARCH_FORCE_MAX_ORDER is ever used.
 
-Judging by c88c545bf320 ("sparc64: Add FORCE_MAX_ZONEORDER and default to
-13") log the option to override MAX_ORDER was added to "request large (32M)
-contiguous memory during boot for creating IOTSB backing store", so it was
-about to increase MAX_ORDER.
-
-Generally, we may restrict sparc::ARCH_FORCE_MAX_ORDER to be above 7 and
-drop this check entirely
-
-> Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
-> -- 
-> Mike Kravetz
-> 
 
 -- 
-Sincerely yours,
-Mike.
+Greetings,
+   I am contacting you based on the Investment/Loan opportunity for 
+companies in need of financing a project/business, We have developed a 
+new method of financing that doesn't take long to receive financing from 
+our clients.
+    If you are looking for funds to finance your project/Business or if 
+you are willing to work as our agent in your country to find clients in 
+need of financing and earn commissions, then get back to me for more 
+details.
+
+Regards,
+Ibrahim Tafa
+ABIENCE INVESTMENT GROUP FZE, United Arab Emirates
