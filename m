@@ -2,67 +2,95 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 067786BE187
-	for <lists+sparclinux@lfdr.de>; Fri, 17 Mar 2023 07:48:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CE4C6BE3CF
+	for <lists+sparclinux@lfdr.de>; Fri, 17 Mar 2023 09:37:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230025AbjCQGsr (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 17 Mar 2023 02:48:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37070 "EHLO
+        id S230435AbjCQIhV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 17 Mar 2023 04:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230171AbjCQGsq (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 17 Mar 2023 02:48:46 -0400
-Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 96A50B788D
-        for <sparclinux@vger.kernel.org>; Thu, 16 Mar 2023 23:48:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
-         h=mime-version:content-type:content-transfer-encoding:date:from
-        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
-        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=zKREKC2xJMJ273cI0jRwZw8A
-        9YEa6wA4NkFFtpEKmdsfefLnnPjrVfV0rBzBI4wbJ8x0HBqz5G0V2kR9E0DWKaTN
-        FcK1E8mUUEZrAy+pWfvVM6g1HuRTUmSpMFIyLaVn3uozhXiuVoFePfv8hoepybP0
-        9V7RKqaWcMe8waRF15+ZO24GPYOc1OqqRN8OL283t5gnKXslBiV90x32BT53jqrv
-        KAoA9kofvQrmK11pwwIAB/LSP5kRjOLhHBOX9gkIAT6PNtI510b3t/Tvxyjeo77V
-        hA2P7IY3bQ2e/9i5zROGqw3+R5a7Qp6XLLjbYqjWEvGvQ90ZhN2jdlIu1z3P6A==
-Received: (qmail 63985 invoked from network); 14 Mar 2023 19:51:07 -0000
-Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
-  by localhost with SMTP; 14 Mar 2023 19:51:07 -0000
+        with ESMTP id S230421AbjCQIg6 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 17 Mar 2023 04:36:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42FD265C7D;
+        Fri, 17 Mar 2023 01:36:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6BF462226;
+        Fri, 17 Mar 2023 08:35:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765A3C433EF;
+        Fri, 17 Mar 2023 08:35:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679042159;
+        bh=0U8d1LMWaEZQgafPkPZom810OpVwizNioSkYu9Ua+ns=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=K+Oan4h2AJGsMePeKGlfKytnhkDM1qtdUfuMAeZSwnfAVazgO72kZeLCVwsg4vkH4
+         NQjtcIYPbxm09chvEPyyjV8agLCk1qrZtLaBGjEF2ZnStax/I91MJ80mGg9ijXI3m9
+         +bKY320hHoUFifi3bJRO0JVWMN0M2uTQVSZSe6DdHZSQ2lg1SmWRVi2YGXEm2lOYbo
+         RcC5XWa2trUVyNudNZzXWg7mIPfrGFeBHkwUtwPwvpUMZRz+ND1MEZ+ruqTW9BO5KL
+         pOBP3AvRts4ikjdVX5kIcsacITLSX5l27sDwuCAPXixR0Hbl7Ud4huCS5Cxi9xvrpd
+         HOdKFnktWuJVw==
+Date:   Fri, 17 Mar 2023 10:35:46 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Mel Gorman <mgorman@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
+        David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org, David Miller <davem@davemloft.net>
+Subject: Re: [PATCH 01/10] sparc/mm: Fix MAX_ORDER usage in tsb_grow()
+Message-ID: <ZBQmYhCpSTLMP28Z@kernel.org>
+References: <20230315113133.11326-1-kirill.shutemov@linux.intel.com>
+ <20230315113133.11326-2-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 14 Mar 2023 12:51:06 -0700
-From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
-To:     undisclosed-recipients:;
-Subject: LOAN OPPORTUNITY AT LOW-INTEREST RATE>/
-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Message-ID: <11771ddb8e306d95f5b3116ea710d3df@sragenkab.go.id>
-X-Sender: jurnalsukowati@sragenkab.go.id
-User-Agent: Roundcube Webmail/0.8.1
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_MONEY,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230315113133.11326-2-kirill.shutemov@linux.intel.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+On Wed, Mar 15, 2023 at 02:31:24PM +0300, Kirill A. Shutemov wrote:
+> MAX_ORDER is not inclusive: the maximum allocation order buddy allocator
+> can deliver is MAX_ORDER-1.
+> 
+> Fix MAX_ORDER usage in tsb_grow().
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Cc: sparclinux@vger.kernel.org
+> Cc: David Miller <davem@davemloft.net>
 
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+
+> ---
+>  arch/sparc/mm/tsb.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/sparc/mm/tsb.c b/arch/sparc/mm/tsb.c
+> index 912205787161..dba8dffe2113 100644
+> --- a/arch/sparc/mm/tsb.c
+> +++ b/arch/sparc/mm/tsb.c
+> @@ -402,8 +402,8 @@ void tsb_grow(struct mm_struct *mm, unsigned long tsb_index, unsigned long rss)
+>  	unsigned long new_rss_limit;
+>  	gfp_t gfp_flags;
+>  
+> -	if (max_tsb_size > (PAGE_SIZE << MAX_ORDER))
+> -		max_tsb_size = (PAGE_SIZE << MAX_ORDER);
+> +	if (max_tsb_size > (PAGE_SIZE << (MAX_ORDER - 1)))
+> +		max_tsb_size = (PAGE_SIZE << (MAX_ORDER - 1));
+>  
+>  	new_cache_index = 0;
+>  	for (new_size = 8192; new_size < max_tsb_size; new_size <<= 1UL) {
+> -- 
+> 2.39.2
+> 
 
 -- 
-Greetings,
-   I am contacting you based on the Investment/Loan opportunity for 
-companies in need of financing a project/business, We have developed a 
-new method of financing that doesn't take long to receive financing from 
-our clients.
-    If you are looking for funds to finance your project/Business or if 
-you are willing to work as our agent in your country to find clients in 
-need of financing and earn commissions, then get back to me for more 
-details.
-
-Regards,
-Ibrahim Tafa
-ABIENCE INVESTMENT GROUP FZE, United Arab Emirates
+Sincerely yours,
+Mike.
