@@ -2,78 +2,79 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FB0C6C9BFE
-	for <lists+sparclinux@lfdr.de>; Mon, 27 Mar 2023 09:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D31D86C9CF6
+	for <lists+sparclinux@lfdr.de>; Mon, 27 Mar 2023 09:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232525AbjC0HaB (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 27 Mar 2023 03:30:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58972 "EHLO
+        id S232911AbjC0H4w (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 27 Mar 2023 03:56:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230135AbjC0HaA (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 27 Mar 2023 03:30:00 -0400
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC65F18E
-        for <sparclinux@vger.kernel.org>; Mon, 27 Mar 2023 00:29:59 -0700 (PDT)
-Received: from ramsan.of.borg ([84.195.187.55])
-        by baptiste.telenet-ops.be with bizsmtp
-        id dKVx2900j1C8whw01KVxHD; Mon, 27 Mar 2023 09:29:58 +0200
-Received: from geert (helo=localhost)
-        by ramsan.of.borg with local-esmtp (Exim 4.95)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1pghIj-00ExIC-Qs;
-        Mon, 27 Mar 2023 09:29:57 +0200
-Date:   Mon, 27 Mar 2023 09:29:57 +0200 (CEST)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     linux-kernel@vger.kernel.org
-cc:     linux-wireless@vger.kernel.org,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        sparclinux@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.3-rc4
-In-Reply-To: <20230327072641.3591802-1-geert@linux-m68k.org>
-Message-ID: <eb55ca34-ca71-ed19-dae2-6e5e87c170@linux-m68k.org>
-References: <CAHk-=whcaHLNpb7Mu_QX7ABwPgyRyfW-V8=v4Mv0S22fpjY4JQ@mail.gmail.com> <20230327072641.3591802-1-geert@linux-m68k.org>
+        with ESMTP id S232925AbjC0H4q (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 27 Mar 2023 03:56:46 -0400
+Received: from mail.penmade.pl (mail.penmade.pl [94.177.230.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543C3559F
+        for <sparclinux@vger.kernel.org>; Mon, 27 Mar 2023 00:56:29 -0700 (PDT)
+Received: by mail.penmade.pl (Postfix, from userid 1001)
+        id C5A7A83184; Mon, 27 Mar 2023 08:55:51 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=penmade.pl; s=mail;
+        t=1679903785; bh=CSKXLMgcdpWkXuTgJn5+jsCVobtU9JEF4vCnS5z6McM=;
+        h=Date:From:To:Subject:From;
+        b=M84R4ikWedDuLe3E3S8gCvX5gXQezOCV3RbZG+il3LIZpCXcdGSFoRVVvIF9PZS/G
+         Or3WhhS/znYPqxfD7Pz3NFr9qIiuES/Rdb02+KLIr9gX/YZhAVaLlnIDdUHFwfEN5f
+         V0Ew0Qr6siJeKekYa5Z5pXB3p/u4wl3GgubqCzpm+aoZSDQbh+NXbX13ZCzyfA9zRO
+         SetaSWbl1mcdnRh4Gv969v4JxY9BWxbYRDCFJo34lVuaYo8TIBy0ocL/PgqQ88fCkM
+         O1BnDmsMwwVVf2BKTvDvFnEDbHazSaM9gdRzrwTAgjQeYz9H65xeR3AIKExggYw+Pq
+         AOeom4vAr2BhQ==
+Received: by mail.penmade.pl for <sparclinux@vger.kernel.org>; Mon, 27 Mar 2023 07:55:22 GMT
+Message-ID: <20230327074501-0.1.38.e9qp.0.n5b17ik9gf@penmade.pl>
+Date:   Mon, 27 Mar 2023 07:55:22 GMT
+From:   "Wiktor Nurek" <wiktor.nurek@penmade.pl>
+To:     <sparclinux@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.penmade.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Status: No, score=-0.7 required=5.0 tests=RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
+        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: penmade.pl]
+        *  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [94.177.230.163 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: penmade.pl]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, 27 Mar 2023, Geert Uytterhoeven wrote:
-> JFYI, when comparing v6.3-rc4[1] to v6.3-rc3[3], the summaries are:
->  - build errors: +9/-1
+Dzie=C5=84 dobry,
 
-   + /kisskb/src/drivers/net/wireless/cisco/airo.c: error: 'status_rid.currentXmitRate' is used uninitialized [-Werror=uninitialized]:  => 6163:45
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
 
-sh4-gcc11/sh-allmodconfig
-seen before
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
 
-   + error: modpost: "ebus_dma_enable" [drivers/parport/parport_pc.ko] undefined!:  => N/A
-   + error: modpost: "ebus_dma_irq_enable" [drivers/parport/parport_pc.ko] undefined!:  => N/A
-   + error: modpost: "ebus_dma_prepare" [drivers/parport/parport_pc.ko] undefined!:  => N/A
-   + error: modpost: "ebus_dma_register" [drivers/parport/parport_pc.ko] undefined!:  => N/A
-   + error: modpost: "ebus_dma_request" [drivers/parport/parport_pc.ko] undefined!:  => N/A
-   + error: modpost: "ebus_dma_residue" [drivers/parport/parport_pc.ko] undefined!:  => N/A
-   + error: modpost: "ebus_dma_unregister" [drivers/parport/parport_pc.ko] undefined!:  => N/A
-   + error: modpost: "ns87303_lock" [drivers/parport/parport_pc.ko] undefined!:  => N/A
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
 
-sparc64-gcc11/sparc-allmodconfig
-seen before
 
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/197b6b60ae7bc51dd0814953c562833143b292aa/ (all 152 configs)
-> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/e8d018dd0257f744ca50a729e3d042cf2ec9da65/ (all 152 configs)
-
-Gr{oetje,eeting}s,
-
- 						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
- 							    -- Linus Torvalds
+Pozdrawiam serdecznie,
+Wiktor Nurek
