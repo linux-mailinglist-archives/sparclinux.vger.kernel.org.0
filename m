@@ -2,54 +2,129 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0901F6DB0D7
-	for <lists+sparclinux@lfdr.de>; Fri,  7 Apr 2023 18:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AA5B6CEE88
+	for <lists+sparclinux@lfdr.de>; Wed, 29 Mar 2023 18:03:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229598AbjDGQrm convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Fri, 7 Apr 2023 12:47:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56654 "EHLO
+        id S230052AbjC2QDS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Wed, 29 Mar 2023 12:03:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjDGQrl (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 7 Apr 2023 12:47:41 -0400
-X-Greylist: delayed 50514 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 07 Apr 2023 09:47:40 PDT
-Received: from mail.thepenbay.com.tw (mail.thepenbay.com.tw [210.61.229.150])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C876A47;
-        Fri,  7 Apr 2023 09:47:39 -0700 (PDT)
-Received: from [191.101.130.246] (191-101-130-246-hostedby.bcr.host [191.101.130.246] (may be forged))
-        (authenticated bits=0)
-        by mail.thepenbay.com.tw (8.14.4/8.14.4/hgmail=1) with ESMTP id 32E0JsRc006740;
-        Tue, 14 Mar 2023 13:17:26 +0800
-Message-Id: <202303140517.32E0JsRc006740@mail.thepenbay.com.tw>
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S229918AbjC2QCK (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 29 Mar 2023 12:02:10 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86A7E7D8C
+        for <sparclinux@vger.kernel.org>; Wed, 29 Mar 2023 09:01:01 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id d13so14487534pjh.0
+        for <sparclinux@vger.kernel.org>; Wed, 29 Mar 2023 09:01:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680105349;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=62ZIWkSy5tZoUHv/2BRxXjvjKExsY1hv+Zfd9ZYJQ4E=;
+        b=qlxh+86RXbCopQuOGzMLW7Fyfrbpsk21kKjou7QaYqaceP9aCH3dtbghF3O0zN1uo6
+         4C/IPd9PFzfPz0245JmXvXlujy1fbbHAs16fMHBIQ52mZUE1AO2rkm6eyqP3oe8+tWJI
+         TzErVGEzn3DEWlhivKyb7RMKHeCynbeste+uKvq8qQ+BUDd7fky7Z+1/8YIjw/BqmV80
+         d9OwqWtqaUJeNvLNtAIw/DyyyqGuo1vCD3lwXs4QxG40DlsTsj8Mg8vS+TKxoCEGPJ+d
+         keyTxao1cFayKnrlZFWZHNEeaDXkPGNa9BUyBjA7IRZk+2638qePHv8LiCAUHCaMhIK5
+         WKTw==
+X-Gm-Message-State: AAQBX9c24VczX88OpdEbDOT1nvRF6RM4HGE2CyOts4QLcfHDqSapuRag
+        VE3g81Mv4Pq4PN/4ZVuR9uJ5t8cC54JGrwiX3SbEs+dI74TnqzihKDmdRA==
+X-Google-Smtp-Source: AKy350aLDH5YR9t419L5OiinTR+6vLBCDmWiJH85fFWabTVqFHlXOqvkdPLNLHEa0183i9K3F9W0CuWctZ/RgFAniww=
+X-Received: by 2002:a17:902:c3c6:b0:1a1:b318:2776 with SMTP id
+ j6-20020a170902c3c600b001a1b3182776mr7729184plj.0.1680105349103; Wed, 29 Mar
+ 2023 08:55:49 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230325060828.2662773-1-rppt@kernel.org> <20230325060828.2662773-3-rppt@kernel.org>
+In-Reply-To: <20230325060828.2662773-3-rppt@kernel.org>
+From:   Justin Forbes <jforbes@fedoraproject.org>
+Date:   Wed, 29 Mar 2023 10:55:37 -0500
+Message-ID: <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
+Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guo Ren <guoren@kernel.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Rich Felker <dalias@libc.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Zi Yan <ziy@nvidia.com>, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mm@kvack.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Congratulations,
-To:     Recipients <noreply@un.org>
-From:   "UN" <noreply@un.org>
-Date:   Mon, 13 Mar 2023 22:16:56 -0700
-Reply-To: noreply@un.org
-X-Spam-Status: No, score=2.4 required=5.0 tests=LOTS_OF_MONEY,MONEY_FRAUD_3,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=no
+X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
-X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-United Nations General for Economic Development.
+On Sat, Mar 25, 2023 at 1:09 AM Mike Rapoport <rppt@kernel.org> wrote:
+>
+> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+>
+> It is not a good idea to change fundamental parameters of core memory
+> management. Having predefined ranges suggests that the values within
+> those ranges are sensible, but one has to *really* understand
+> implications of changing MAX_ORDER before actually amending it and
+> ranges don't help here.
+>
+> Drop ranges in definition of ARCH_FORCE_MAX_ORDER and make its prompt
+> visible only if EXPERT=y
 
-Congratulations,
+I do not like suddenly hiding this behind EXPERT for a couple of
+reasons.  Most importantly, it will silently change the config for
+users building with an old kernel config.  If a user has for instance
+"13" set and building with 4K pages, as is the current configuration
+for Fedora and RHEL aarch64 builds, an oldconfig build will now set it
+to 10 with no indication that it is doing so.  And while I think that
+10 is a fine default for many aarch64 users, there are valid reasons
+for choosing other values. Putting this behind expert makes it much
+less obvious that this is an option.
 
-Your email was randomly selected for the 2023 Relief Compensation of $1.5M Package for First Quarter United Nations Reimbursement program 2023. This is to support individuals; businesses and corporate boodies. Please reach Dr. Lami Bello for more information.
+Justin
 
-Contact Name: Dr. Lami Bello
-Email: lamibello@naver.com 
-
-Regards,
-
-Nicolas Ellis 
-Assistant Secretary General-Mr. Elliott Harris
-General for Economic Development
+> Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> ---
+>  arch/arm64/Kconfig | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index e60baf7859d1..7324032af859 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1487,11 +1487,9 @@ config XEN
+>  # 16K |       27          |      14      |       13        |         11         |
+>  # 64K |       29          |      16      |       13        |         13         |
+>  config ARCH_FORCE_MAX_ORDER
+> -       int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
+> +       int "Maximum zone order" if EXPERT && (ARM64_4K_PAGES || ARM64_16K_PAGES)
+>         default "13" if ARM64_64K_PAGES
+> -       range 11 13 if ARM64_16K_PAGES
+>         default "11" if ARM64_16K_PAGES
+> -       range 10 15 if ARM64_4K_PAGES
+>         default "10"
+>         help
+>           The kernel memory allocator divides physically contiguous memory
+> --
+> 2.35.1
+>
+>
