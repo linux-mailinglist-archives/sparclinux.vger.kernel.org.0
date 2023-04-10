@@ -2,87 +2,55 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09B7E6DC244
-	for <lists+sparclinux@lfdr.de>; Mon, 10 Apr 2023 03:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78B776DD417
+	for <lists+sparclinux@lfdr.de>; Tue, 11 Apr 2023 09:27:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229546AbjDJBN2 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 9 Apr 2023 21:13:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39904 "EHLO
+        id S229940AbjDKH1B convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Tue, 11 Apr 2023 03:27:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229661AbjDJBN1 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 9 Apr 2023 21:13:27 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24A1335A7;
-        Sun,  9 Apr 2023 18:13:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=cg1S3XoU3SPVIhEQjqsExfl3vAbSc03YUdI51frBIwo=; b=ihxSGen1Mdtj9zPUVP70jaRoFS
-        jMkwJJ0+UbW1zpkqIlDrT69e58N0usHXr1ZvlWsqdl6eWt1EMfTYMQoi4Lzg+ki0TwsQhuafFw5rV
-        E6LPC8k8x4r8p/UhokWeUrWFZ8mKnkg7kyH+pRsakwcyYw84cpecFtcrYeGoon/neG0UppLClZiat
-        9TgmC11sJRG0itlxR27r2vwQPrEGmrxUY0s44flobNfleMtRncFY1OlWacepG1SYX4ao9xst9+xot
-        2OprWMTPDaqaunoJcEV9Xkon1Pp0YIYzx8hZcIx+HqaO8HaaJ1Y0JInURGhNrIAEZ8AIHa4Os0W3f
-        5moEquOw==;
-Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1plg5t-00EPci-1A;
-        Mon, 10 Apr 2023 01:13:17 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH v2] sparc: allow sparc32 alias for archhelp
-Date:   Sun,  9 Apr 2023 18:13:16 -0700
-Message-Id: <20230410011316.26564-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.40.0
+        with ESMTP id S229946AbjDKH07 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 11 Apr 2023 03:26:59 -0400
+Received: from zimbra-dc.paul-scerri.ch (dc.paul-scerri.ch [62.220.130.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 811C210D
+        for <sparclinux@vger.kernel.org>; Tue, 11 Apr 2023 00:26:58 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra-dc.paul-scerri.ch (Postfix) with ESMTP id 1E08B587850;
+        Mon, 10 Apr 2023 22:26:19 +0200 (CEST)
+Received: from zimbra-dc.paul-scerri.ch ([127.0.0.1])
+        by localhost (zimbra-dc.paul-scerri.ch [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id xUzbFWr2n0oG; Mon, 10 Apr 2023 22:26:18 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra-dc.paul-scerri.ch (Postfix) with ESMTP id 6F14D5F4037;
+        Mon, 10 Apr 2023 22:13:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at zimbra-dc.paul-scerri.ch
+Received: from zimbra-dc.paul-scerri.ch ([127.0.0.1])
+        by localhost (zimbra-dc.paul-scerri.ch [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id dpMqH9jirnKQ; Mon, 10 Apr 2023 22:13:47 +0200 (CEST)
+Received: from [185.169.4.108] (unknown [185.169.4.108])
+        by zimbra-dc.paul-scerri.ch (Postfix) with ESMTPSA id 798BC598D34;
+        Mon, 10 Apr 2023 21:54:03 +0200 (CEST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Re
+To:     Recipients <wiki@paul-scerri.ch>
+From:   "Maria-Elisabeth Schaeffler" <wiki@paul-scerri.ch>
+Date:   Mon, 10 Apr 2023 12:54:01 -0700
+Reply-To: mariaelisabeths457@gmail.com
+Message-Id: <20230410195403.798BC598D34@zimbra-dc.paul-scerri.ch>
+X-Spam-Status: No, score=2.8 required=5.0 tests=FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Currently, entering
-$ make ARCH=sparc32 help
-prints the archhelp text for sparc64.
+Your email account has been selected for a donation of €1,700,000. Please contact for more information.
 
-Since "sparc32" is documented (Documentation/kbuild/kbuild.rst)
-to be a recognized alias for 32-bit sparc, also support that
-string in sparc's archhelp by allowing either ARCH=sparc or
-ARCH=sparc32 for sparc32 archhelp.
-
-Fixes: 5e53879008b9 ("sparc,sparc64: unify Makefile")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
----
-v2: rebase/resend; add Masahiro to Cc: list
-
- arch/sparc/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff -- a/arch/sparc/Makefile b/arch/sparc/Makefile
---- a/arch/sparc/Makefile
-+++ b/arch/sparc/Makefile
-@@ -83,7 +83,7 @@ vdso_install:
- KBUILD_IMAGE := $(boot)/zImage
- 
- # Don't use tabs in echo arguments.
--ifeq ($(ARCH),sparc)
-+ifeq ($(ARCH),$(filter $(ARCH),sparc sparc32))
- define archhelp
-   echo  '* image        - kernel image ($(boot)/image)'
-   echo  '* zImage       - stripped kernel image ($(boot)/zImage)'
+Mrs Maria Elisabeth Schaeffler
+CEO SCHAEFFLER.
