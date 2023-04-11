@@ -2,55 +2,79 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 917436DDD7C
-	for <lists+sparclinux@lfdr.de>; Tue, 11 Apr 2023 16:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FFE86DDD99
+	for <lists+sparclinux@lfdr.de>; Tue, 11 Apr 2023 16:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbjDKORR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 11 Apr 2023 10:17:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48256 "EHLO
+        id S230373AbjDKOUU (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 11 Apr 2023 10:20:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229907AbjDKORO (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 11 Apr 2023 10:17:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F7746B2
-        for <sparclinux@vger.kernel.org>; Tue, 11 Apr 2023 07:15:50 -0700 (PDT)
+        with ESMTP id S230223AbjDKOUH (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 11 Apr 2023 10:20:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63F2312A
+        for <sparclinux@vger.kernel.org>; Tue, 11 Apr 2023 07:19:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1681222549;
+        s=mimecast20190719; t=1681222742;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qzK4ogixuaREht4MpkiqqhFPvzGg6ALQmBRRBO9bEhw=;
-        b=O5HGANU+qF5d0nfHuGXP1gE7dUSNt4oVGnJE9KFv6eVEqJt20zepVUtn+JGnF+YovExWUt
-        mbBMO8izAy6NGUWXXj0E9CmyRUeySHXPJXfI9gGFLq8FRdCaEjC7zDQwl7/nPoRWI+wtIf
-        31EsKixb0WNGQwNK/AdDLD/BblM9gH8=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-371-Ckkwz92eO7-IkeIGQlURJg-1; Tue, 11 Apr 2023 10:15:45 -0400
-X-MC-Unique: Ckkwz92eO7-IkeIGQlURJg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 17DDE1C12991;
-        Tue, 11 Apr 2023 14:15:45 +0000 (UTC)
-Received: from t480s.redhat.com (unknown [10.39.194.95])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9240D400F281;
-        Tue, 11 Apr 2023 14:15:43 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
+        bh=oAltGiW0DBDAeNvmuGpEYB8uc7AKLZpAtOjrnOVCND0=;
+        b=U6l53ih84Dvkj/sm1paqNwL0r4dDBjC1j4G3cm1cPp82BtN1Agh9r06AW6gVt8FXjuc9Ub
+        CMTUmEH0qUP5/iCmeNDWee+ju67swtxbT0ima1dzhCaUKx2enDw/GOizyPGV4Ss2CcyT6G
+        PNarD+J75VPvIxpH1l2ubUSxm2tYfnQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-490-C2-4uelANBy92GryT8f2tw-1; Tue, 11 Apr 2023 10:19:00 -0400
+X-MC-Unique: C2-4uelANBy92GryT8f2tw-1
+Received: by mail-wr1-f71.google.com with SMTP id o26-20020adfa11a000000b002dd3986083bso1195312wro.12
+        for <sparclinux@vger.kernel.org>; Tue, 11 Apr 2023 07:18:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681222739; x=1683814739;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oAltGiW0DBDAeNvmuGpEYB8uc7AKLZpAtOjrnOVCND0=;
+        b=woyy5TB1q/LTadgd9g4zIGIZesXBKJwJgiWDeTcu0iGuQFQKKxdH4qx9FTZpwGvgBh
+         aXd7S68QuVIK0u4oDFh6mRewD0IJBfe7dpjyfCuWu26l1PHL/JIiIzLBdSLK1wiZD9yZ
+         v08kGuR0xCObhgoknkl/I/YSRau6vqQNdrR6oMrVdWJaKC022Lf0Hi9DdTapo8VbjygN
+         Z7JbD9bMSy/2vdcZowX45ZHMtWykrHmk22YTvN+dXshB7mczXslNU78adzkCpbdAewhf
+         iTRYyde1DPAxwVcNtIqcDfuvDmGk/r+wfJA2S+R5nuMczHdMtMIh10v1khaVrgWyV9Co
+         TxWg==
+X-Gm-Message-State: AAQBX9d3xGkIw2ecrUsYryKXILCoZY7KOC/4ECC0SbWtYU2k8yuqEunH
+        LGu7UV9ST3TJf3LJzzcoFc4DO02GpnCd4nuO9yzCI1wg1rZlX0IvsCdN3gI5VSnmnN8T4iHHK9H
+        R1SMZ018Uker7oKROMXCsmw==
+X-Received: by 2002:a5d:470d:0:b0:2d7:4c98:78fe with SMTP id y13-20020a5d470d000000b002d74c9878femr8621097wrq.34.1681222738937;
+        Tue, 11 Apr 2023 07:18:58 -0700 (PDT)
+X-Google-Smtp-Source: AKy350bY0p0lov10ncoRRjudSkgQbnGcBkbDWJtshXja6yULgw6jQWdjzluLhiX0b55T0sA76SToJg==
+X-Received: by 2002:a5d:470d:0:b0:2d7:4c98:78fe with SMTP id y13-20020a5d470d000000b002d74c9878femr8621084wrq.34.1681222738612;
+        Tue, 11 Apr 2023 07:18:58 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c706:1300:6f08:1748:eba7:b2a9? (p200300cbc70613006f081748eba7b2a9.dip0.t-ipconnect.de. [2003:cb:c706:1300:6f08:1748:eba7:b2a9])
+        by smtp.gmail.com with ESMTPSA id n4-20020a5d51c4000000b002efb55de21dsm10542399wrv.103.2023.04.11.07.18.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Apr 2023 07:18:58 -0700 (PDT)
+Message-ID: <81a2070a-f7aa-2185-8211-26b57815e968@redhat.com>
+Date:   Tue, 11 Apr 2023 16:18:57 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH] mm/huge_memory: conditionally call maybe_mkwrite() and
+ drop pte_wrprotect() in __split_huge_pmd_locked()
+Content-Language: en-US
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-        sparclinux@vger.kernel.org, David Hildenbrand <david@redhat.com>
-Subject: [PATCH v1 6/6] mm/huge_memory: conditionally call maybe_mkwrite() and drop pte_wrprotect() in __split_huge_pmd_locked()
-Date:   Tue, 11 Apr 2023 16:15:29 +0200
-Message-Id: <20230411141529.428991-8-david@redhat.com>
-In-Reply-To: <20230411141529.428991-1-david@redhat.com>
+        sparclinux@vger.kernel.org
 References: <20230411141529.428991-1-david@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230411141529.428991-1-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,48 +83,34 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-No need to call maybe_mkwrite() to then wrprotect if the source PMD was not
-writable.
+On 11.04.23 16:15, David Hildenbrand wrote:
+> No need to call maybe_mkwrite() to then wrprotect if the source PMD was not
+> writable.
+> 
+> It's worth nothing that this now allows for PTEs to be writable even if
+> the source PMD was not writable: if vma->vm_page_prot includes write
+> permissions.
+> 
+> As documented in commit 931298e103c2 ("mm/userfaultfd: rely on
+> vma->vm_page_prot in uffd_wp_range()"), any mechanism that intends to
+> have pages wrprotected (COW, writenotify, mprotect, uffd-wp, softdirty,
+> ...) has to properly adjust vma->vm_page_prot upfront, to not include
+> write permissions. If vma->vm_page_prot includes write permissions, the
+> PTE/PMD can be writable as default.
+> 
+> This now mimics the handling in mm/migrate.c:remove_migration_pte() and in
+> mm/huge_memory.c:remove_migration_pmd(), which has been in place for a
+> long time (except that 96a9c287e25d ("mm/migrate: fix wrongly apply write
+> bit after mkdirty on sparc64") temporarily changed it).
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
 
-It's worth nothing that this now allows for PTEs to be writable even if
-the source PMD was not writable: if vma->vm_page_prot includes write
-permissions.
+Ignore this one, it's a duplicate of 6/6 and I forgot to delete that 
+patch before triggering git send-email ...
 
-As documented in commit 931298e103c2 ("mm/userfaultfd: rely on
-vma->vm_page_prot in uffd_wp_range()"), any mechanism that intends to
-have pages wrprotected (COW, writenotify, mprotect, uffd-wp, softdirty,
-...) has to properly adjust vma->vm_page_prot upfront, to not include
-write permissions. If vma->vm_page_prot includes write permissions, the
-PTE/PMD can be writable as default.
-
-This now mimics the handling in mm/migrate.c:remove_migration_pte() and in
-mm/huge_memory.c:remove_migration_pmd(), which has been in place for a
-long time (except that 96a9c287e25d ("mm/migrate: fix wrongly apply write
-bit after mkdirty on sparc64") temporarily changed it).
-
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- mm/huge_memory.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 6f3af65435c8..8332e16ac97b 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2235,11 +2235,10 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 				entry = pte_swp_mkuffd_wp(entry);
- 		} else {
- 			entry = mk_pte(page + i, READ_ONCE(vma->vm_page_prot));
--			entry = maybe_mkwrite(entry, vma);
-+			if (write)
-+				entry = maybe_mkwrite(entry, vma);
- 			if (anon_exclusive)
- 				SetPageAnonExclusive(page + i);
--			if (!write)
--				entry = pte_wrprotect(entry);
- 			if (!young)
- 				entry = pte_mkold(entry);
- 			/* NOTE: this may set soft-dirty too on some archs */
 -- 
-2.39.2
+Thanks,
+
+David / dhildenb
 
