@@ -2,138 +2,79 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E18F6DCE65
-	for <lists+sparclinux@lfdr.de>; Tue, 11 Apr 2023 02:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 214786DD4AD
+	for <lists+sparclinux@lfdr.de>; Tue, 11 Apr 2023 09:55:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229746AbjDKANy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 10 Apr 2023 20:13:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33908 "EHLO
+        id S230099AbjDKHzx (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 11 Apr 2023 03:55:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229591AbjDKANx (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 10 Apr 2023 20:13:53 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 437971FF3;
-        Mon, 10 Apr 2023 17:13:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=GY9ABpgWynxNjhU1lLhJVk+AzfLMtcrMxKPhxZiWpFg=; b=bSpSMsIQQrUOiqQrUhzq7wcT9D
-        pOhKxkKQJmfvdNEYpzFSTq0p1aizrJEavDyRhmEigqI26Vrci0m6EOtJzWUmQcp4aVP4WXPzcQYMz
-        dU184bwZW1hnyKXc249ZOjH1jkHclnUUs+1WDBSO4dXApfBQHYW2W2Bze7Dmkyog9qXKWvoeE2rfv
-        x0kj0GiyoXkcbzwgFR71sBtECFmY1BkygEf5mXyi1zSbd6l0CWuWleVPKa2P5Nbh4rQEK0IeU2Du5
-        yfk9rj4QbHOTqohtpdNruf4e3gXV5S9f/LOtSdsAOoYdnWO2yJE+pPS88pYM0YoH1UHmx7SZ3QQ9m
-        MAllYgHg==;
-Received: from [2601:1c2:980:9ec0::2764]
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1pm1dn-00G8e4-2D;
-        Tue, 11 Apr 2023 00:13:43 +0000
-Message-ID: <bc86a2c3-7562-9d98-5ab0-f875ca9dbfff@infradead.org>
-Date:   Mon, 10 Apr 2023 17:13:41 -0700
+        with ESMTP id S229745AbjDKHzw (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 11 Apr 2023 03:55:52 -0400
+Received: from mail.penmade.pl (mail.penmade.pl [94.177.230.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D3A22D6D
+        for <sparclinux@vger.kernel.org>; Tue, 11 Apr 2023 00:55:49 -0700 (PDT)
+Received: by mail.penmade.pl (Postfix, from userid 1001)
+        id 2A20E82DB7; Tue, 11 Apr 2023 08:55:35 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=penmade.pl; s=mail;
+        t=1681199747; bh=CSKXLMgcdpWkXuTgJn5+jsCVobtU9JEF4vCnS5z6McM=;
+        h=Date:From:To:Subject:From;
+        b=lne8c4MDLRxCB85FFUIbIPNz5AtNp3IjYeMYECJzror/srj/vDnMB7SpwdQceU3Xq
+         TbuglWyL/nkEZucYBQF68igqblwF/gVxuOCn0Y+TeBQNwQn7zOLlYD3H5tCvAeyB1C
+         Dw28544NS3n9tujC1keu0nxHHIIdJdqsQbdn2McQNYCOJPOLRmAt8I1+CouXtPlSNK
+         bwBnUPJDKOSqWiQvwYq2Bvo+AIoEmw0OI90qczvsGRwkpgF9RalyMtYe8Sogyo3e6R
+         VjOM7c7TpBw5qT01LfWQsn48cvKZCKPvtsozPlAfwhv4SbVaHdSONbF0BSO0A453mh
+         uWw0zhLn4D8Hg==
+Received: by mail.penmade.pl for <sparclinux@vger.kernel.org>; Tue, 11 Apr 2023 07:55:19 GMT
+Message-ID: <20230411074501-0.1.3i.e9qp.0.r3xm78r6ih@penmade.pl>
+Date:   Tue, 11 Apr 2023 07:55:19 GMT
+From:   "Wiktor Nurek" <wiktor.nurek@penmade.pl>
+To:     <sparclinux@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.penmade.pl
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v2] sparc: allow sparc32 alias for archhelp
-Content-Language: en-US
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20230410011316.26564-1-rdunlap@infradead.org>
- <CAK7LNAQGqF-9Tw1ZQQUTcn23P8AKy8YQwVy1BJtc5eX-WEZkUw@mail.gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <CAK7LNAQGqF-9Tw1ZQQUTcn23P8AKy8YQwVy1BJtc5eX-WEZkUw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
+        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: penmade.pl]
+        *  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [94.177.230.163 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: penmade.pl]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
+Dzie=C5=84 dobry,
+
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
+
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
+
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
 
 
-On 4/10/23 16:45, Masahiro Yamada wrote:
-> On Mon, Apr 10, 2023 at 10:13 AM Randy Dunlap <rdunlap@infradead.org> wrote:
->>
->> Currently, entering
->> $ make ARCH=sparc32 help
->> prints the archhelp text for sparc64.
->>
->> Since "sparc32" is documented (Documentation/kbuild/kbuild.rst)
->> to be a recognized alias for 32-bit sparc, also support that
->> string in sparc's archhelp by allowing either ARCH=sparc or
->> ARCH=sparc32 for sparc32 archhelp.
->>
->> Fixes: 5e53879008b9 ("sparc,sparc64: unify Makefile")
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->> Cc: Sam Ravnborg <sam@ravnborg.org>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: sparclinux@vger.kernel.org
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Acked-by: Sam Ravnborg <sam@ravnborg.org>
->> Cc: Masahiro Yamada <masahiroy@kernel.org>
->> ---
->> v2: rebase/resend; add Masahiro to Cc: list
->>
->>  arch/sparc/Makefile |    2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff -- a/arch/sparc/Makefile b/arch/sparc/Makefile
->> --- a/arch/sparc/Makefile
->> +++ b/arch/sparc/Makefile
->> @@ -83,7 +83,7 @@ vdso_install:
->>  KBUILD_IMAGE := $(boot)/zImage
->>
->>  # Don't use tabs in echo arguments.
->> -ifeq ($(ARCH),sparc)
->> +ifeq ($(ARCH),$(filter $(ARCH),sparc sparc32))
->>  define archhelp
->>    echo  '* image        - kernel image ($(boot)/image)'
-> 
-> 
-> BTW, this is strange.
-> 
-> 
-> The asterisk means it is built by 'all'.
-> 
-> 
-> But, I only see the following in this Makefile.
-> 
-> 
-> # Default target
-> all: zImage
-> 
-> 
-> 
-> 
-> 
-> Seeing arch/sparc/boot/Makefile,
-> it is true $(boot)/image is generated
-> as a side-effect of zImage, but it it true for
-> both 32-bit and 64-bit.
-> 
-> I think it is even better to rewrite archhelp
-> to unify the 32/64 bits.
-> 
-
-Yeah, I had thought of that also. I'll do that and resend it.
-
-Thanks.
-
-> 
-> 
-> 
-> 
->>    echo  '* zImage       - stripped kernel image ($(boot)/zImage)'
-> 
-> 
-> 
-
--- 
-~Randy
+Pozdrawiam serdecznie,
+Wiktor Nurek
