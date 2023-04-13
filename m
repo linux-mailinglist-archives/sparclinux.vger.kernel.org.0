@@ -2,70 +2,65 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 615906E0090
-	for <lists+sparclinux@lfdr.de>; Wed, 12 Apr 2023 23:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0E1B6E08BC
+	for <lists+sparclinux@lfdr.de>; Thu, 13 Apr 2023 10:15:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229900AbjDLVPM (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 12 Apr 2023 17:15:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45282 "EHLO
+        id S230374AbjDMIPy (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 13 Apr 2023 04:15:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229721AbjDLVPL (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 12 Apr 2023 17:15:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 664D05244;
-        Wed, 12 Apr 2023 14:15:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02BC261262;
-        Wed, 12 Apr 2023 21:15:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04321C433D2;
-        Wed, 12 Apr 2023 21:15:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1681334109;
-        bh=rUARulnjOQ307xRRVyKm5Rnu9uPFHJQRoc2s3q/8t0c=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Rrr0D4OWLyVLCRnjgYHThscFy+m3+ZBz+6ThAEp6ELd27jTeFGBOxTC5RicER1VCc
-         TJu63jqtoYpV3rjCG/PhpJXDF4U08MrhJP7it6C2b36t/6y265PSgpNR80rSn/PybW
-         cAuNxVHam5iVXb/KudaCh6BzpcsjET3APwu6m2fc=
-Date:   Wed, 12 Apr 2023 14:15:08 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Sam Ravnborg <sam@ravnborg.org>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Peter Xu <peterx@redhat.com>, Hugh Dickins <hughd@google.com>,
-        Shuah Khan <shuah@kernel.org>, Yu Zhao <yuzhao@google.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH v1 RESEND 3/6] sparc/mm: don't unconditionally set HW
- writable bit when setting PTE dirty on 64bit
-Message-Id: <20230412141508.d91f9e07df9dd840219098ed@linux-foundation.org>
-In-Reply-To: <de93ddc4-29ff-6113-a146-bc278dcce5f9@redhat.com>
-References: <20230411142512.438404-1-david@redhat.com>
-        <20230411142512.438404-4-david@redhat.com>
-        <20230411193548.GA2094947@ravnborg.org>
-        <de93ddc4-29ff-6113-a146-bc278dcce5f9@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230377AbjDMIPt (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 13 Apr 2023 04:15:49 -0400
+Received: from mail.arenig.pl (mail.arenig.pl [217.61.104.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94FBA768D
+        for <sparclinux@vger.kernel.org>; Thu, 13 Apr 2023 01:15:36 -0700 (PDT)
+Received: by mail.arenig.pl (Postfix, from userid 1001)
+        id 5C7E0A3913; Thu, 13 Apr 2023 09:15:24 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=arenig.pl; s=mail;
+        t=1681373734; bh=LTrFku/ToeGnnqiqyaN86kCQQkxkwCY5tVpcGX1QBNI=;
+        h=Date:From:To:Subject:From;
+        b=XlBLeXNoZXUauQ+ULtEd1rznrSccVvWmZXiCpSTI1kko3F2TQO0lIxH9SluWETaJO
+         3bciQ5EpWyVgqLwioLKsgBol5XuqyGSIlBY01ezOzf+E0SoSOrEnGTQYY0utlMxqJ+
+         PB4ivJdC/7m4obZ0tp1/4KY+4Iwi96XHgAquxi+SJqrj+FAS0Tursc7xw81d6IGcDK
+         QYC1JyRBEQ7YilZqX8hqofMcFJTZpZruuIFAvYzjHCRv4+tqPIOsyE1M7QkukN9zCm
+         e6x1bH616CNYF/KTRYhT8nevOVxX4Q0TS5PHLYk5xCUPeo/6g1R9MaMzegeIHnxPiK
+         IRDstu1NYL5uQ==
+Received: by mail.arenig.pl for <sparclinux@vger.kernel.org>; Thu, 13 Apr 2023 08:15:21 GMT
+Message-ID: <20230413074500-0.1.8z.w9n4.0.f0d60r61mg@arenig.pl>
+Date:   Thu, 13 Apr 2023 08:15:21 GMT
+From:   =?UTF-8?Q? "Aleksandra_Kami=C5=84ska" ?= 
+        <aleksandra.kaminska@arenig.pl>
+To:     <sparclinux@vger.kernel.org>
+Subject: Nowe lakiery hybrydowe do oferty
+X-Mailer: mail.arenig.pl
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Wed, 12 Apr 2023 11:48:15 +0200 David Hildenbrand <david@redhat.com> wrote:
+Dzie=C5=84 dobry,
 
-> >> We have to move pte_dirty() and pte_dirty() up. The code patching
-> > One of the pte_dirty() should be replaced with pte_write().
-> > 
-> 
-> Indeed, thanks. I assume Andrew can change the latter to pte_write(). 
+w bran=C5=BCy lakier=C3=B3w hybrydowych ro=C5=9Bnie popularno=C5=9B=C4=87=
+ produkt=C3=B3w wielozadaniowych, kt=C3=B3re skracaj=C4=85 czas wykonania=
+ manicure.
 
-It was a struggle, but I managed to do this ;)
+Opracowali=C5=9Bmy now=C4=85 linie lakier=C3=B3w, kt=C3=B3re spe=C5=82nia=
+j=C4=85 wsp=C3=B3=C5=82czesne wymagania w tym zakresie, dlatego ciesz=C4=85=
+ si=C4=99 rosn=C4=85cym zainteresowaniem na rynku.
+
+Produkty dostarczamy do drogerii, sieci zakupowych, handlowych, hurtowni =
+i dystrybutor=C3=B3w, kt=C3=B3rzy osi=C4=85gaj=C4=85 wy=C5=BCsze ni=C5=BC=
+ dotychczas zyski ze sprzeda=C5=BCy tego typu rozwi=C4=85za=C5=84.
+
+Chc=C4=85 Pa=C5=84stwo pozna=C4=87 propozycj=C4=99 wsp=C3=B3=C5=82pracy?
+
+
+Z pozdrowieniami
+Aleksandra Kami=C5=84ska
