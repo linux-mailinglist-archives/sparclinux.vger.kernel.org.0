@@ -2,56 +2,175 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CDBB6F966D
-	for <lists+sparclinux@lfdr.de>; Sun,  7 May 2023 03:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD1A36F9D2F
+	for <lists+sparclinux@lfdr.de>; Mon,  8 May 2023 03:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230131AbjEGBPL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Sat, 6 May 2023 21:15:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43026 "EHLO
+        id S232052AbjEHBE6 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 7 May 2023 21:04:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229712AbjEGBPK (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 6 May 2023 21:15:10 -0400
-X-Greylist: delayed 334 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 06 May 2023 18:15:04 PDT
-Received: from smtp03.aussiebb.com.au (smtp03.aussiebb.com.au [IPv6:2403:5800:3:25::1003])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2068D132A2
-        for <sparclinux@vger.kernel.org>; Sat,  6 May 2023 18:15:04 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by smtp03.aussiebb.com.au (Postfix) with ESMTP id A60391A1652
-        for <sparclinux@vger.kernel.org>; Sun,  7 May 2023 11:09:25 +1000 (AEST)
-X-Virus-Scanned: Debian amavisd-new at smtp03.aussiebb.com.au
-Received: from smtp03.aussiebb.com.au ([127.0.0.1])
-        by localhost (smtp03.aussiebb.com.au [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id l7Cx04g0ili4 for <sparclinux@vger.kernel.org>;
-        Sun,  7 May 2023 11:09:25 +1000 (AEST)
-Received: by smtp03.aussiebb.com.au (Postfix, from userid 119)
-        id 8BFBB1A1654; Sun,  7 May 2023 11:09:25 +1000 (AEST)
+        with ESMTP id S232050AbjEHBE6 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 7 May 2023 21:04:58 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E03CF1160E;
+        Sun,  7 May 2023 18:04:55 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-24df4ef05d4so3555147a91.2;
+        Sun, 07 May 2023 18:04:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683507895; x=1686099895;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L+PPFKXX425r8vzKPVM6Zic55f59QA5mguBoW8dBKWo=;
+        b=g6nKyzCdl7wTzFzj0LPDCvxv55Fy7TfpGWgO3pV6ij+uOoq81YB2jNTSX5iaFONC1a
+         2mmifmqG7gTqnR60RJOMRKTGxfC1MPZOBDnxBxC8EfLhTHJL8AhE1/n2yUOJyPMLC9o/
+         uuml0GrB72oOnQcqwCMNQfB2MRnFdMZQT3rB+TP3y0CeS4NjZ5eUYbvjHqlpvDWij0mY
+         +Rsmlbec0zcoH6AhBTwgJ1Kv0dXBCznV96/reb0frVyB8K6Y485zWs34lthhXNKMQ7fk
+         dmwcTIP128fzDg1lcXBtIwm0yEzMGvicYdNfyIwQCmGboUqYj0oPhBVNRspiaZjXGsoc
+         yQQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683507895; x=1686099895;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=L+PPFKXX425r8vzKPVM6Zic55f59QA5mguBoW8dBKWo=;
+        b=Rwn1gDs9Ux87sCcOre1k4ysdM8AdA2GoHVqsnPXWw09eav5Dwyb2uZKyEORPbFqDYp
+         8yF0AqyX1Xp2lLH+DAn3xWndfrFcVwOU5RjWqUYBcAimXuvdZjeCR8kHkArDKX/FVkqU
+         T6fwK1lWctr0DTzQR/TdwOQma9seevf+JmcMEAjoqfMnbVjcwRAAohYltkWDE/BXXaQ6
+         QmPeFC2xY+yDb6Jn+FXSwEdweXYYZcQtlbPh/i+MoPS8k/HGuGO2/L6r1WbIXd62HGGE
+         gpGY7tMjkYjMeye2ILJ+3ZD8Pepj2lkrz28HAXwI0SB5nGXG4/zINM4vARjEMBoXXw9J
+         lPng==
+X-Gm-Message-State: AC+VfDzfmDhcP+Zqcbj4FaZx3yIIAE+JqqUcaUuWvY1MoV0F1OGm2iRC
+        S5/jeZskQyuiELDLrg+iVbg=
+X-Google-Smtp-Source: ACHHUZ59icTjTc2OdzI15EfiZxFSZ69uNN4QwbtfViigDNmld+b2odQxDB6B0BmyEFVXN9x050Oztw==
+X-Received: by 2002:a17:90b:3142:b0:246:f8d7:3083 with SMTP id ip2-20020a17090b314200b00246f8d73083mr8577679pjb.16.1683507895288;
+        Sun, 07 May 2023 18:04:55 -0700 (PDT)
+Received: from localhost (58-6-235-78.tpgi.com.au. [58.6.235.78])
+        by smtp.gmail.com with ESMTPSA id ie14-20020a17090b400e00b0024e1172c1d3sm11713201pjb.32.2023.05.07.18.04.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 May 2023 18:04:54 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 08 May 2023 11:04:40 +1000
+Message-Id: <CSGHQJAJHWVS.1UAJOF8P5UXSK@wheely>
+From:   "Nicholas Piggin" <npiggin@gmail.com>
+To:     "Doug Anderson" <dianders@chromium.org>
+Cc:     "Petr Mladek" <pmladek@suse.com>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        "Sumit Garg" <sumit.garg@linaro.org>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        "Matthias Kaehlcke" <mka@chromium.org>,
+        "Stephane Eranian" <eranian@google.com>,
+        "Stephen Boyd" <swboyd@chromium.org>, <ricardo.neri@intel.com>,
+        "Tzung-Bi Shih" <tzungbi@chromium.org>,
+        "Lecopzer Chen" <lecopzer.chen@mediatek.com>,
+        <kgdb-bugreport@lists.sourceforge.net>,
+        "Masayoshi Mizuma" <msys.mizuma@gmail.com>,
+        "Guenter Roeck" <groeck@chromium.org>,
+        "Pingfan Liu" <kernelfans@gmail.com>,
+        "Andi Kleen" <ak@linux.intel.com>,
+        "Ian Rogers" <irogers@google.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-perf-users@vger.kernel.org>, <ito-yuichi@fujitsu.com>,
+        "Randy Dunlap" <rdunlap@infradead.org>,
+        "Chen-Yu Tsai" <wens@csie.org>, <christophe.leroy@csgroup.eu>,
+        <davem@davemloft.net>, <sparclinux@vger.kernel.org>,
+        <mpe@ellerman.id.au>, "Will Deacon" <will@kernel.org>,
+        <ravi.v.shankar@intel.com>, <linuxppc-dev@lists.ozlabs.org>,
+        "Marc Zyngier" <maz@kernel.org>,
+        "Catalin Marinas" <catalin.marinas@arm.com>,
+        "Daniel Thompson" <daniel.thompson@linaro.org>,
+        "Colin Cross" <ccross@android.com>
+Subject: Re: [PATCH v4 13/17] watchdog/hardlockup: detect hard lockups using
+ secondary (buddy) CPUs
+X-Mailer: aerc 0.14.0
+References: <20230504221349.1535669-1-dianders@chromium.org>
+ <20230504151100.v4.13.I6bf789d21d0c3d75d382e7e51a804a7a51315f2c@changeid>
+ <CSDZSKA38AEF.FY7J3JXBJX4I@wheely>
+ <CAD=FV=XDfbx3UaP7DV63tASE5Md7siS-EnORD_3T-4yYaEQ7ww@mail.gmail.com>
+In-Reply-To: <CAD=FV=XDfbx3UaP7DV63tASE5Md7siS-EnORD_3T-4yYaEQ7ww@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: **
-X-Spam-Status: No, score=2.2 required=5.0 tests=BAYES_50,LOTS_OF_MONEY,
-        RCVD_IN_SBL,SPF_FAIL,SPF_HELO_NONE,TO_EQ_FM_DOM_SPF_FAIL,
-        TO_EQ_FM_SPF_FAIL,T_SCC_BODY_TEXT_LINE,URIBL_ABUSE_SURBL,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
-Received: from gatekeeper.dcruze.org (180-150-94-126.b4965e.per.static.aussiebb.net [180.150.94.126])
-        by smtp03.aussiebb.com.au (Postfix) with ESMTP id A54CE1A163D
-        for <sparclinux@vger.kernel.org>; Sun,  7 May 2023 11:09:24 +1000 (AEST)
-Received: by gatekeeper.dcruze.org (Postfix, from userid 103)
-        id E0BCD36458BD; Fri,  5 May 2023 18:56:15 +0800 (AWST)
-Received: from [46.148.41.90] (unknown [46.148.41.90])
-        (Authenticated sender: test@gatekeeper.dcruze.org)
-        by gatekeeper.dcruze.org (Postfix) with ESMTPSA id 791F93451C92;
-        Fri,  5 May 2023 15:53:16 +0800 (AWST)
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Bitcoin Deposit
-To:     Recipients <support@cito-pro.ru>
-From:   "Bitcoin Admin" <support@cito-pro.ru>
-Date:   Fri, 05 May 2023 00:53:00 -0700
-Message-Id: <20230505140739.E0BCD36458BD@gatekeeper.dcruze.org>
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello Dave Robert, we have deposited the 39 BTC which amount to ( $1,133,912 USD ) as you requested into your bitcoin portfolio at www.coinlaps.net Customer Id: 71624030, Password: KLY22M483
+On Sat May 6, 2023 at 2:35 AM AEST, Doug Anderson wrote:
+> Hi,
+>
+> On Thu, May 4, 2023 at 7:36=E2=80=AFPM Nicholas Piggin <npiggin@gmail.com=
+> wrote:
+> >
+> > On Fri May 5, 2023 at 8:13 AM AEST, Douglas Anderson wrote:
+> > > From: Colin Cross <ccross@android.com>
+> > >
+> > > Implement a hardlockup detector that doesn't doesn't need any extra
+> > > arch-specific support code to detect lockups. Instead of using
+> > > something arch-specific we will use the buddy system, where each CPU
+> > > watches out for another one. Specifically, each CPU will use its
+> > > softlockup hrtimer to check that the next CPU is processing hrtimer
+> > > interrupts by verifying that a counter is increasing.
+> >
+> > Powerpc's watchdog has an SMP checker, did you see it?
+>
+> No, I wasn't aware of it. Interesting, it seems to basically enable
+> both types of hardlockup detectors together. If that really catches
+> more lockups, it seems like we could do the same thing for the buddy
+> system.
+
+It doesn't catch more lockups. On powerpc we don't have a reliable
+periodic NMI hence the SMP checker. But it is preferable that a CPU
+detects its own lockup because NMI IPIs can result in crashes if
+they are taken in certain critical sections.
+
+> If people want, I don't think it would be very hard to make
+> the buddy system _not_ exclusive of the perf system. Instead of having
+> the buddy system implement the "weak" functions I could just call the
+> buddy functions in the right places directly and leave the "weak"
+> functions for a more traditional hardlockup detector to implement.
+> Opinions?
+>
+> Maybe after all this lands, the powerpc watchdog could move to use the
+> common code? As evidenced by this patch series, there's not really a
+> reason for the SMP detection to be platform specific.
+
+The powerpc SMP checker could certainly move to common code if
+others wanted to use it.
+
+> > It's all to
+> > all rather than buddy which makes it more complicated but arguably
+> > bit better functionality.
+>
+> Can you come up with an example crash where the "all to all" would
+> work better than the simple buddy system provided by this patch?
+
+CPU2                     CPU3
+spin_lock_irqsave(A)     spin_lock_irqsave(B)
+spin_lock_irqsave(B)     spin_lock_irqsave(A)
+
+CPU1 will detect the lockup on CPU2, but CPU3's lockup won't be
+detected so we don't get the trace that can diagnose the bug.
+
+Another thing I actually found it useful for is you can easily
+see if a core (i.e., all threads in the core) or a chip has
+died. Maybe more useful when doing presilicon and bring up work
+or firmware hacking, but still useful.
+
+Thanks,
+Nick
+
+> It
+> seems like they would be equivalent, but I could be missing something.
+> Specifically they both need at least one non-locked-up CPU to detect a
+> problem. If one or more CPUs is locked up then we'll always detect it.
+> I suppose maybe you could provide a better error message at lockup
+> time saying that several CPUs were locked up and that could be
+> helpful. For now, I'd keep the current buddy system the way it is and
+> if you want to provide a patch improving things to be "all-to-all" in
+> the future that would be interesting to review.
+
