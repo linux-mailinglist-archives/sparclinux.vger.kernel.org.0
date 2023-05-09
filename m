@@ -2,112 +2,126 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 708856FCA6E
-	for <lists+sparclinux@lfdr.de>; Tue,  9 May 2023 17:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3631B6FCDA6
+	for <lists+sparclinux@lfdr.de>; Tue,  9 May 2023 20:21:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235526AbjEIPoM (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 9 May 2023 11:44:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55490 "EHLO
+        id S234410AbjEISV3 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 9 May 2023 14:21:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235799AbjEIPoL (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 9 May 2023 11:44:11 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E98F30E1
-        for <sparclinux@vger.kernel.org>; Tue,  9 May 2023 08:44:10 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id 38308e7fff4ca-2ad819ab8a9so35581701fa.0
-        for <sparclinux@vger.kernel.org>; Tue, 09 May 2023 08:44:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683647049; x=1686239049;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9MgH2yk3oKPfzsyrz/5pM854nV5ZPzia2UxJXZBDwzc=;
-        b=dEpK+kvVxC8O2ZDEenyr2QYIaz6MRmDDLjnJzXJAMELqW9jcqerGGSiXuccLXr0WaY
-         pamq+9Wo2MqJFY1rYryMzRtzjEfg7+WXMga2nZ49BOmrxSnDSSdSKpErOXcCdK/V2aNk
-         c585sp6euVyJeFFcV4JKUFlrN3nQKKRVErEAhm7cbwcMeQQLeeUTGR7VIPolwf8caKPx
-         iNUuH9Oef1BJTzJaDDZX0QWAmOxz1EcrZZiyOPyjRgePy/JnXMGaJKNfQTHpDQGNplcv
-         zuvEgrCHx1WSUxkvAhu56f4H0HFMMse8bwJZ7BIiimYQY7U6W2hreIE1xIzyPSh4BrnK
-         R86A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683647049; x=1686239049;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9MgH2yk3oKPfzsyrz/5pM854nV5ZPzia2UxJXZBDwzc=;
-        b=KUQ2Fn+yoMbRf6aQe1wr/155m07bSBkTVMhOQOOs4AWNUcwbiH3qSbEjks17urYFfn
-         zYewh6PZE+ON2ETyVg10TqN2e31TGDryiYlG2M90FXLIFmO3JqRFmOSnBr+8S+9HjGjT
-         3pR3c6syv2dbMnLs2WOj1vBg0ShPeePN1QxPNlIFuBxphRaiYX44eAZiuVe6szq9WDdy
-         dB3aRflIuPxMwFNxWL+hA0hnAHQdpOQrP6BS4PWX3fGbOnoI1IZtyA6PqW1/XskUWGdR
-         3v3RU9hGqJqjBq5DEwgkhQWTe3SYC0TfVnXZqv1R9gX8415c6p94uhwVsJCw606PNbam
-         zxqw==
-X-Gm-Message-State: AC+VfDyX4nrwhSsKSnf1QHHElLB2XTk66zRvNhkGTp26r6YfZ0iYfbaE
-        dUsr77xA4UyKPRn86/I7vYnCy4sUfEsQCidDZ+Q=
-X-Google-Smtp-Source: ACHHUZ5RE7NFJkUL/tIyq+cw4BmfEAlws1nqYDayfX/28kZoVQefbh9tn+pB13aw63jPvMR+s2tEv4mc9CTIdJEOf5k=
-X-Received: by 2002:a2e:2d12:0:b0:2ad:8929:e8f4 with SMTP id
- t18-20020a2e2d12000000b002ad8929e8f4mr892233ljt.43.1683647048699; Tue, 09 May
- 2023 08:44:08 -0700 (PDT)
+        with ESMTP id S229543AbjEISV1 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 9 May 2023 14:21:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327EF4C2D;
+        Tue,  9 May 2023 11:21:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB6FA6132C;
+        Tue,  9 May 2023 18:21:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE77FC433EF;
+        Tue,  9 May 2023 18:21:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683656484;
+        bh=wTrGWZ/prXac+ksuuHC0df7jUrXSG9zBg0tuZm4eZAk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=eWEhqVADxc/GqJSwXnOQ3JLmV9EVm67GRKXU/8kCH+e7bYAn4tbjZ8OZRHVaX3ZcO
+         S0xv0AhCQd5NINM++YJU/lVWNxRqARJ2JdTZgkf8DKQ/aBVDAb43Y4DpvrsggmiDhc
+         VLuK4RypC1++gIMHtYJwDcVU3u+My56Q4IZYK0at1LgOku1qb8yZmqculMrILZXTXZ
+         neG8vnzAeERR8/VCvqWmCzd1JtSknWdohvz8yYije8I6fBKpAtZuUigoK/yqxiyRiQ
+         4E280Lp7b1rI5aQ6wbmUv7nAdHleWjJ8JY7/fVD00VEW304Ke/w4PCv+lqMsKKDnXi
+         XzOdVIUpJ2dRg==
+Date:   Tue, 9 May 2023 13:21:22 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        linux-pci@vger.kernel.org,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>,
+        Anatolij Gustschin <agust@denx.de>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Juergen Gross <jgross@suse.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kernel@vger.kernel.org,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
+ users
+Message-ID: <20230509182122.GA1259567@bhelgaas>
 MIME-Version: 1.0
-Received: by 2002:ab2:4893:0:b0:1bf:d4c2:935e with HTTP; Tue, 9 May 2023
- 08:44:07 -0700 (PDT)
-Reply-To: rhsheikhalhamed@gmail.com
-From:   Abu Dhabi Investment Authority <nhngb.bsfsdh@gmail.com>
-Date:   Tue, 9 May 2023 16:44:07 +0100
-Message-ID: <CAD-Sc3KWZ6WWt2U+Uf90fpf90UwV8w8f3+aNPCXH77=9Ob7R6w@mail.gmail.com>
-Subject: Salam Alaikum /ADIA LOAN OFFER
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.4 required=5.0 tests=BAYES_50,DEAR_SOMETHING,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:243 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [nhngb.bsfsdh[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  2.0 DEAR_SOMETHING BODY: Contains 'Dear (something)'
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.8 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230404161101.GA3554747@bhelgaas>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dear Sir/Madam,
+On Tue, Apr 04, 2023 at 11:11:01AM -0500, Bjorn Helgaas wrote:
+> On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
+> > Provide two new helper macros to iterate over PCI device resources and
+> > convert users.
 
-We are a United Arab Emirates based investment company known as Abu
-Dhabi Investment Authority working on expanding its portfolio globally
-and financing projects.
+> Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
 
-We are offering Corporate and Personal Loan at 3.5% Interest Rate for
-a duration of 5 to 10 years.
+This is 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
+upstream now.
 
-Contact us on Email: rhsheikhalhamed@gmail.com ,for more information
-and proceeding!
+Coverity complains about each use, sample below from
+drivers/pci/vgaarb.c.  I didn't investigate at all, so it might be a
+false positive; just FYI.
 
-We also give 2% commission to consultants and brokers who introduce
-project owners for finance or other opportunities.
+	  1. Condition screen_info.capabilities & (2U /* 1 << 1 */), taking true branch.
+  556        if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
+  557                base |= (u64)screen_info.ext_lfb_base << 32;
+  558
+  559        limit = base + size;
+  560
+  561        /* Does firmware framebuffer belong to us? */
+	  2. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+	  3. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+	  6. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+	  7. cond_at_most: Checking __b < PCI_NUM_RESOURCES implies that __b may be up to 16 on the true branch.
+	  8. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+	  11. incr: Incrementing __b. The value of __b may now be up to 17.
+	  12. alias: Assigning: r = &pdev->resource[__b]. r may now point to as high as element 17 of pdev->resource (which consists of 17 64-byte elements).
+	  13. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+	  14. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+  562        pci_dev_for_each_resource(pdev, r) {
+	  4. Condition resource_type(r) != 512, taking true branch.
+	  9. Condition resource_type(r) != 512, taking true branch.
 
-
-Yours truly,
-Mahmoud Al Hamoud
-(Personal Assistant)
-Abu Dhabi Investment Authority
-211 Corniche, PO Box 3600
-Abu Dhabi,United Arab Emirates
+  CID 1529911 (#1 of 1): Out-of-bounds read (OVERRUN)
+  15. overrun-local: Overrunning array of 1088 bytes at byte offset 1088 by dereferencing pointer r. [show details]
+  563                if (resource_type(r) != IORESOURCE_MEM)
+	  5. Continuing loop.
+	  10. Continuing loop.
+  564                        continue;
