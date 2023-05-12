@@ -2,76 +2,96 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEAC0700563
-	for <lists+sparclinux@lfdr.de>; Fri, 12 May 2023 12:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A95AE700611
+	for <lists+sparclinux@lfdr.de>; Fri, 12 May 2023 12:56:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240651AbjELKZW (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 12 May 2023 06:25:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
+        id S240910AbjELK4u (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 12 May 2023 06:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240756AbjELKYz (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 12 May 2023 06:24:55 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 205B91160A;
-        Fri, 12 May 2023 03:24:51 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 8A46E2285C;
-        Fri, 12 May 2023 10:24:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1683887089; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TsCcOGz5betxsl/z3gg1DELmwbMOiMUYFQ0FPGwVwok=;
-        b=ckOic6Y9CZxZNqNruxJPc64gJXNyDImWkmR6oxIhC89WsX4d+Q7Rj/DdiQ75cODaEqCvga
-        VL/AXgIllwXu0rl3QrEd855mo2hZ6ehYUNhPrCDzzWv0RKsv1uCLpdembpVdveseQe59sr
-        hsveTVLmid82r8cqirHFQOLJVqkrCA8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1683887089;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TsCcOGz5betxsl/z3gg1DELmwbMOiMUYFQ0FPGwVwok=;
-        b=4DQaoZVnPVJqKMM5RAM0aiiI0GTW6uNcGd06Sc0n7MkQZMMaWwt6D/j2xT/Ptnq8wYyArm
-        xGVbYEyk7nsXEqAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1103A13A0A;
-        Fri, 12 May 2023 10:24:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id CKgzA/ETXmS5XwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Fri, 12 May 2023 10:24:49 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     deller@gmx.de, geert@linux-m68k.org, javierm@redhat.com,
-        daniel@ffwll.ch, vgupta@kernel.org, chenhuacai@kernel.org,
-        kernel@xen0n.name, davem@davemloft.net,
-        James.Bottomley@HansenPartnership.com, arnd@arndb.de,
-        sam@ravnborg.org, suijingfeng@loongson.cn
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arch@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v7 7/7] fbdev: Rename fb_mem*() helpers
-Date:   Fri, 12 May 2023 12:24:44 +0200
-Message-Id: <20230512102444.5438-8-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230512102444.5438-1-tzimmermann@suse.de>
-References: <20230512102444.5438-1-tzimmermann@suse.de>
+        with ESMTP id S240880AbjELK4p (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 12 May 2023 06:56:45 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA1CFE;
+        Fri, 12 May 2023 03:56:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683889004; x=1715425004;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aTme5qDkFV7Mcp0uaOboKBbeV5ze/dqrLO9cBA/tElE=;
+  b=RXB9WXpjC1DvMlJbCHHDAAU+YudODiVQi5nCUUCI8S6qBwG2alUG5t0G
+   FdgMNayGjwIxKv9jVzWaNRENfLBuDWbpR155MyDVLlNqhaae6Xvb9Zet2
+   ICNJZIQgOBm8M2kKwWMOtUkoxyr2TVlS/2f/HRsBgcjSCAuTYpYba913/
+   LayD8z/z5D1/vsIUbnTyeVGyaWtX6iIsWsMTtL8+DNppjRUtf64y3cGxj
+   3JWBvpumkJ25j99MM8FHwtsxdC/LpZQ8ElKNva092BJ5SVlJ4Fe2+bnpw
+   4HaILCrxhJT82KnW2H6sapvFdku/lJop06VVALUZWmbO+u0kgzTzEEPvi
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="414132446"
+X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
+   d="scan'208";a="414132446"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 03:56:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="812041055"
+X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
+   d="scan'208";a="812041055"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 12 May 2023 03:56:34 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pxQRq-0004Zv-0i;
+        Fri, 12 May 2023 13:56:30 +0300
+Date:   Fri, 12 May 2023 13:56:29 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        linux-pci@vger.kernel.org,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>,
+        Anatolij Gustschin <agust@denx.de>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Juergen Gross <jgross@suse.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kernel@vger.kernel.org,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
+ users
+Message-ID: <ZF4bXaz2r75dlA5g@smile.fi.intel.com>
+References: <20230404161101.GA3554747@bhelgaas>
+ <20230509182122.GA1259567@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230509182122.GA1259567@bhelgaas>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,291 +99,56 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Update the names of the fb_mem*() helpers to be consistent with their
-regular counterparts. Hence, fb_memset() now becomes fb_memset_io(),
-fb_memcpy_fromfb() now becomes fb_memcpy_fromio() and fb_memcpy_tofb()
-becomes fb_memcpy_toio(). No functional changes.
+On Tue, May 09, 2023 at 01:21:22PM -0500, Bjorn Helgaas wrote:
+> On Tue, Apr 04, 2023 at 11:11:01AM -0500, Bjorn Helgaas wrote:
+> > On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
+> > > Provide two new helper macros to iterate over PCI device resources and
+> > > convert users.
+> 
+> > Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
+> 
+> This is 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
+> upstream now.
+> 
+> Coverity complains about each use,
 
-v6:
-	* update new file fb_io_fops.c
+It needs more clarification here. Use of reduced variant of the macro or all of
+them? If the former one, then I can speculate that Coverity (famous for false
+positives) simply doesn't understand `for (type var; var ...)` code.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
----
- arch/ia64/include/asm/fb.h              | 12 ++++++------
- arch/loongarch/include/asm/fb.h         | 12 ++++++------
- arch/sparc/include/asm/fb.h             | 12 ++++++------
- drivers/video/fbdev/aty/mach64_cursor.c |  2 +-
- drivers/video/fbdev/chipsfb.c           |  2 +-
- drivers/video/fbdev/core/fb_io_fops.c   |  4 ++--
- drivers/video/fbdev/kyro/fbdev.c        |  2 +-
- drivers/video/fbdev/pvr2fb.c            |  2 +-
- drivers/video/fbdev/sstfb.c             |  2 +-
- drivers/video/fbdev/stifb.c             |  4 ++--
- drivers/video/fbdev/tdfxfb.c            |  2 +-
- include/asm-generic/fb.h                | 16 ++++++++--------
- 12 files changed, 36 insertions(+), 36 deletions(-)
+>	sample below from
+> drivers/pci/vgaarb.c.  I didn't investigate at all, so it might be a
+> false positive; just FYI.
+> 
+> 	  1. Condition screen_info.capabilities & (2U /* 1 << 1 */), taking true branch.
+>   556        if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
+>   557                base |= (u64)screen_info.ext_lfb_base << 32;
+>   558
+>   559        limit = base + size;
+>   560
+>   561        /* Does firmware framebuffer belong to us? */
+> 	  2. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+> 	  3. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+> 	  6. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+> 	  7. cond_at_most: Checking __b < PCI_NUM_RESOURCES implies that __b may be up to 16 on the true branch.
+> 	  8. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+> 	  11. incr: Incrementing __b. The value of __b may now be up to 17.
+> 	  12. alias: Assigning: r = &pdev->resource[__b]. r may now point to as high as element 17 of pdev->resource (which consists of 17 64-byte elements).
+> 	  13. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+> 	  14. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+>   562        pci_dev_for_each_resource(pdev, r) {
+> 	  4. Condition resource_type(r) != 512, taking true branch.
+> 	  9. Condition resource_type(r) != 512, taking true branch.
+> 
+>   CID 1529911 (#1 of 1): Out-of-bounds read (OVERRUN)
+>   15. overrun-local: Overrunning array of 1088 bytes at byte offset 1088 by dereferencing pointer r. [show details]
+>   563                if (resource_type(r) != IORESOURCE_MEM)
+> 	  5. Continuing loop.
+> 	  10. Continuing loop.
+>   564                        continue;
 
-diff --git a/arch/ia64/include/asm/fb.h b/arch/ia64/include/asm/fb.h
-index bcf982043a5c..1717b26fd423 100644
---- a/arch/ia64/include/asm/fb.h
-+++ b/arch/ia64/include/asm/fb.h
-@@ -20,23 +20,23 @@ static inline void fb_pgprotect(struct file *file, struct vm_area_struct *vma,
- }
- #define fb_pgprotect fb_pgprotect
- 
--static inline void fb_memcpy_fromfb(void *to, const volatile void __iomem *from, size_t n)
-+static inline void fb_memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
- {
- 	memcpy(to, (void __force *)from, n);
- }
--#define fb_memcpy_fromfb fb_memcpy_fromfb
-+#define fb_memcpy_fromio fb_memcpy_fromio
- 
--static inline void fb_memcpy_tofb(volatile void __iomem *to, const void *from, size_t n)
-+static inline void fb_memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
- {
- 	memcpy((void __force *)to, from, n);
- }
--#define fb_memcpy_tofb fb_memcpy_tofb
-+#define fb_memcpy_toio fb_memcpy_toio
- 
--static inline void fb_memset(volatile void __iomem *addr, int c, size_t n)
-+static inline void fb_memset_io(volatile void __iomem *addr, int c, size_t n)
- {
- 	memset((void __force *)addr, c, n);
- }
--#define fb_memset fb_memset
-+#define fb_memset fb_memset_io
- 
- #include <asm-generic/fb.h>
- 
-diff --git a/arch/loongarch/include/asm/fb.h b/arch/loongarch/include/asm/fb.h
-index c6fc7ef374a4..0b218b10a9ec 100644
---- a/arch/loongarch/include/asm/fb.h
-+++ b/arch/loongarch/include/asm/fb.h
-@@ -8,23 +8,23 @@
- #include <linux/compiler.h>
- #include <linux/string.h>
- 
--static inline void fb_memcpy_fromfb(void *to, const volatile void __iomem *from, size_t n)
-+static inline void fb_memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
- {
- 	memcpy(to, (void __force *)from, n);
- }
--#define fb_memcpy_fromfb fb_memcpy_fromfb
-+#define fb_memcpy_fromio fb_memcpy_fromio
- 
--static inline void fb_memcpy_tofb(volatile void __iomem *to, const void *from, size_t n)
-+static inline void fb_memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
- {
- 	memcpy((void __force *)to, from, n);
- }
--#define fb_memcpy_tofb fb_memcpy_tofb
-+#define fb_memcpy_toio fb_memcpy_toio
- 
--static inline void fb_memset(volatile void __iomem *addr, int c, size_t n)
-+static inline void fb_memset_io(volatile void __iomem *addr, int c, size_t n)
- {
- 	memset((void __force *)addr, c, n);
- }
--#define fb_memset fb_memset
-+#define fb_memset fb_memset_io
- 
- #include <asm-generic/fb.h>
- 
-diff --git a/arch/sparc/include/asm/fb.h b/arch/sparc/include/asm/fb.h
-index 077da91aeba1..572ecd3e1cc4 100644
---- a/arch/sparc/include/asm/fb.h
-+++ b/arch/sparc/include/asm/fb.h
-@@ -18,23 +18,23 @@ static inline void fb_pgprotect(struct file *file, struct vm_area_struct *vma,
- int fb_is_primary_device(struct fb_info *info);
- #define fb_is_primary_device fb_is_primary_device
- 
--static inline void fb_memcpy_fromfb(void *to, const volatile void __iomem *from, size_t n)
-+static inline void fb_memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
- {
- 	sbus_memcpy_fromio(to, from, n);
- }
--#define fb_memcpy_fromfb fb_memcpy_fromfb
-+#define fb_memcpy_fromio fb_memcpy_fromio
- 
--static inline void fb_memcpy_tofb(volatile void __iomem *to, const void *from, size_t n)
-+static inline void fb_memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
- {
- 	sbus_memcpy_toio(to, from, n);
- }
--#define fb_memcpy_tofb fb_memcpy_tofb
-+#define fb_memcpy_toio fb_memcpy_toio
- 
--static inline void fb_memset(volatile void __iomem *addr, int c, size_t n)
-+static inline void fb_memset_io(volatile void __iomem *addr, int c, size_t n)
- {
- 	sbus_memset_io(addr, c, n);
- }
--#define fb_memset fb_memset
-+#define fb_memset fb_memset_io
- 
- #include <asm-generic/fb.h>
- 
-diff --git a/drivers/video/fbdev/aty/mach64_cursor.c b/drivers/video/fbdev/aty/mach64_cursor.c
-index 4ad0331a8c57..971355c2cd7e 100644
---- a/drivers/video/fbdev/aty/mach64_cursor.c
-+++ b/drivers/video/fbdev/aty/mach64_cursor.c
-@@ -153,7 +153,7 @@ static int atyfb_cursor(struct fb_info *info, struct fb_cursor *cursor)
- 	    u8 m, b;
- 
- 	    // Clear cursor image with 1010101010...
--	    fb_memset(dst, 0xaa, 1024);
-+	    fb_memset_io(dst, 0xaa, 1024);
- 
- 	    offset = align - width*2;
- 
-diff --git a/drivers/video/fbdev/chipsfb.c b/drivers/video/fbdev/chipsfb.c
-index 7799d52a651f..2a27ba94f652 100644
---- a/drivers/video/fbdev/chipsfb.c
-+++ b/drivers/video/fbdev/chipsfb.c
-@@ -332,7 +332,7 @@ static const struct fb_var_screeninfo chipsfb_var = {
- 
- static void init_chips(struct fb_info *p, unsigned long addr)
- {
--	fb_memset(p->screen_base, 0, 0x100000);
-+	fb_memset_io(p->screen_base, 0, 0x100000);
- 
- 	p->fix = chipsfb_fix;
- 	p->fix.smem_start = addr;
-diff --git a/drivers/video/fbdev/core/fb_io_fops.c b/drivers/video/fbdev/core/fb_io_fops.c
-index f5299d50f33b..5985e5e1b040 100644
---- a/drivers/video/fbdev/core/fb_io_fops.c
-+++ b/drivers/video/fbdev/core/fb_io_fops.c
-@@ -42,7 +42,7 @@ ssize_t fb_io_read(struct fb_info *info, char __user *buf, size_t count, loff_t
- 	while (count) {
- 		c  = (count > PAGE_SIZE) ? PAGE_SIZE : count;
- 		dst = buffer;
--		fb_memcpy_fromfb(dst, src, c);
-+		fb_memcpy_fromio(dst, src, c);
- 		dst += c;
- 		src += c;
- 
-@@ -117,7 +117,7 @@ ssize_t fb_io_write(struct fb_info *info, const char __user *buf, size_t count,
- 		}
- 		c -= trailing;
- 
--		fb_memcpy_tofb(dst, src, c);
-+		fb_memcpy_toio(dst, src, c);
- 		dst += c;
- 		src += c;
- 		*ppos += c;
-diff --git a/drivers/video/fbdev/kyro/fbdev.c b/drivers/video/fbdev/kyro/fbdev.c
-index 0596573ef140..3f277bdb3a32 100644
---- a/drivers/video/fbdev/kyro/fbdev.c
-+++ b/drivers/video/fbdev/kyro/fbdev.c
-@@ -737,7 +737,7 @@ static int kyrofb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			       info->var.bits_per_pixel);
- 	size *= info->var.yres_virtual;
- 
--	fb_memset(info->screen_base, 0, size);
-+	fb_memset_io(info->screen_base, 0, size);
- 
- 	if (register_framebuffer(info) < 0)
- 		goto out_unmap;
-diff --git a/drivers/video/fbdev/pvr2fb.c b/drivers/video/fbdev/pvr2fb.c
-index 550fdb5b4d41..c692cd597ce3 100644
---- a/drivers/video/fbdev/pvr2fb.c
-+++ b/drivers/video/fbdev/pvr2fb.c
-@@ -801,7 +801,7 @@ static int __maybe_unused pvr2fb_common_init(void)
- 		goto out_err;
- 	}
- 
--	fb_memset(fb_info->screen_base, 0, pvr2_fix.smem_len);
-+	fb_memset_io(fb_info->screen_base, 0, pvr2_fix.smem_len);
- 
- 	pvr2_fix.ypanstep	= nopan  ? 0 : 1;
- 	pvr2_fix.ywrapstep	= nowrap ? 0 : 1;
-diff --git a/drivers/video/fbdev/sstfb.c b/drivers/video/fbdev/sstfb.c
-index da296b2ab54a..582324f5d869 100644
---- a/drivers/video/fbdev/sstfb.c
-+++ b/drivers/video/fbdev/sstfb.c
-@@ -335,7 +335,7 @@ static int sst_calc_pll(const int freq, int *freq_out, struct pll_timing *t)
- static void sstfb_clear_screen(struct fb_info *info)
- {
- 	/* clear screen */
--	fb_memset(info->screen_base, 0, info->fix.smem_len);
-+	fb_memset_io(info->screen_base, 0, info->fix.smem_len);
- }
- 
- 
-diff --git a/drivers/video/fbdev/stifb.c b/drivers/video/fbdev/stifb.c
-index baca6974e288..01363dccfdaf 100644
---- a/drivers/video/fbdev/stifb.c
-+++ b/drivers/video/fbdev/stifb.c
-@@ -527,8 +527,8 @@ rattlerSetupPlanes(struct stifb_info *fb)
- 	fb->id = saved_id;
- 
- 	for (y = 0; y < fb->info.var.yres; ++y)
--		fb_memset(fb->info.screen_base + y * fb->info.fix.line_length,
--			0xff, fb->info.var.xres * fb->info.var.bits_per_pixel/8);
-+		fb_memset_io(fb->info.screen_base + y * fb->info.fix.line_length,
-+			     0xff, fb->info.var.xres * fb->info.var.bits_per_pixel/8);
- 
- 	CRX24_SET_OVLY_MASK(fb);
- 	SETUP_FB(fb);
-diff --git a/drivers/video/fbdev/tdfxfb.c b/drivers/video/fbdev/tdfxfb.c
-index d17e5e1472aa..cdf8e9fe9948 100644
---- a/drivers/video/fbdev/tdfxfb.c
-+++ b/drivers/video/fbdev/tdfxfb.c
-@@ -1116,7 +1116,7 @@ static int tdfxfb_cursor(struct fb_info *info, struct fb_cursor *cursor)
- 		u8 *mask = (u8 *)cursor->mask;
- 		int i;
- 
--		fb_memset(cursorbase, 0, 1024);
-+		fb_memset_io(cursorbase, 0, 1024);
- 
- 		for (i = 0; i < cursor->image.height; i++) {
- 			int h = 0;
-diff --git a/include/asm-generic/fb.h b/include/asm-generic/fb.h
-index 0540eccdbeca..bb7ee9c70e60 100644
---- a/include/asm-generic/fb.h
-+++ b/include/asm-generic/fb.h
-@@ -108,28 +108,28 @@ static inline void fb_writeq(u64 b, volatile void __iomem *addr)
- #endif
- #endif
- 
--#ifndef fb_memcpy_fromfb
--static inline void fb_memcpy_fromfb(void *to, const volatile void __iomem *from, size_t n)
-+#ifndef fb_memcpy_fromio
-+static inline void fb_memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
- {
- 	memcpy_fromio(to, from, n);
- }
--#define fb_memcpy_fromfb fb_memcpy_fromfb
-+#define fb_memcpy_fromio fb_memcpy_fromio
- #endif
- 
--#ifndef fb_memcpy_tofb
--static inline void fb_memcpy_tofb(volatile void __iomem *to, const void *from, size_t n)
-+#ifndef fb_memcpy_toio
-+static inline void fb_memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
- {
- 	memcpy_toio(to, from, n);
- }
--#define fb_memcpy_tofb fb_memcpy_tofb
-+#define fb_memcpy_toio fb_memcpy_toio
- #endif
- 
- #ifndef fb_memset
--static inline void fb_memset(volatile void __iomem *addr, int c, size_t n)
-+static inline void fb_memset_io(volatile void __iomem *addr, int c, size_t n)
- {
- 	memset_io(addr, c, n);
- }
--#define fb_memset fb_memset
-+#define fb_memset fb_memset_io
- #endif
- 
- #endif /* __ASM_GENERIC_FB_H_ */
 -- 
-2.40.1
+With Best Regards,
+Andy Shevchenko
+
 
