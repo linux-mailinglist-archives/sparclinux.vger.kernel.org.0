@@ -2,74 +2,110 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B06D7707D86
-	for <lists+sparclinux@lfdr.de>; Thu, 18 May 2023 12:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6211C7080D5
+	for <lists+sparclinux@lfdr.de>; Thu, 18 May 2023 14:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229906AbjERKHt (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 18 May 2023 06:07:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41070 "EHLO
+        id S230459AbjERMMb (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 18 May 2023 08:12:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjERKHs (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 18 May 2023 06:07:48 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11FC81716
-        for <sparclinux@vger.kernel.org>; Thu, 18 May 2023 03:07:48 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-2535d86a41bso463146a91.3
-        for <sparclinux@vger.kernel.org>; Thu, 18 May 2023 03:07:48 -0700 (PDT)
+        with ESMTP id S230514AbjERMMI (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 18 May 2023 08:12:08 -0400
+Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED6A186
+        for <sparclinux@vger.kernel.org>; Thu, 18 May 2023 05:12:06 -0700 (PDT)
+Received: by mail-qv1-xf30.google.com with SMTP id 6a1803df08f44-6239144bd59so2963196d6.3
+        for <sparclinux@vger.kernel.org>; Thu, 18 May 2023 05:12:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684404467; x=1686996467;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4jlL8pzL6NVZbuVjV4h5KPilkuQmPMJRpXcDIhZ2tX0=;
-        b=gFd1I1rBwPnySs0/HEJEh+2y3LOZuptJeO6utUrjEuWW7aSojcIuJMSDhICRFcy959
-         YE6KmeXXEosT0qw8hBmfxXxzAEHlDp7Z/8NlQ/LSET8ogd3IaJy3f/oCn9AJUdHuqO+I
-         CnSfOCtBxdP4jXczLpVjz0Hsb20KdEiTlt8n//sV5bK+aeyxGbmkBu8CvtGR3OKJC9WM
-         nnV/YGxJchFQiaEHLkUq8RAxm5rGckxg5m4hPsEyBpl2UsWzMqmbnGMUNWKBGaMg0iSw
-         0j4BQLrB5HlCjFXMUCTtDxVCdEbwHTyDWwonfByvPTfII34zhO+n1Xy+fY9/uaer0mNa
-         3Rtg==
+        d=ziepe.ca; s=google; t=1684411926; x=1687003926;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=b1LVde9eD9hiDa72aXFp01UeitZcx1XKK5VRIQwwJ4w=;
+        b=f1WIjix4LVO2qoUadyymiNEwWX8LVYnKjiZJmHZsA00vpgp8OzN7fLeOXwmxyAsNjQ
+         sHOCKYtaHjUeBnmA70xUS7m11Y8GXRs0HF7i7PVSFcwvUzQVx0yAXlGLYQrw7yq7y3KH
+         MBoMqwZGJTzwuItitFkcFv88cqBCrBWri+DUGp8Fc0eAqXpc1sD7lY1vf9Zu0c1UnHTi
+         g1NSzolGSvoeoheQrwHIwMvc3Rso4DvQpoRRtvFDk7J6iY3SLf6NCCF8S9IRrkOXhhUV
+         HRuCy/CUe+KQ4Lk9dlGX7GSjHNglFJk4MTFkm4joUr1QsJe7so9IrOlgfq/tmei89LyY
+         B2xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684404467; x=1686996467;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4jlL8pzL6NVZbuVjV4h5KPilkuQmPMJRpXcDIhZ2tX0=;
-        b=Ss5IryfQqftjNR64shnAT4GsvSBkFVWO5fCuKsxwa5HmuwPljoMLeg4XBc+qQo/DvI
-         JUyGMCwb1D8cnu3M41gaJp0ckUuVTAU8eu7nigbOodCkQMs4IUE7eTLH746dp2+0PlDm
-         8TztQbhq6Ka2xA+1jEm4+6X278NWUQNIxGgfUQhNKe8ZHnuw/W2jVe1VbjE5cBjYrPCr
-         18s3ulrR+uhrBRfmdItOJH9jRdhcbLVLtwmbX4sGLqaIXLThTy30J+FThsT2p9BsLHxw
-         wiG05GbRBndsdFLKWexu7dC5Wzy1UR5Jp2TRVVpdYrpxh1NNv9h2ySXKJX0qDp2OznHI
-         9GTA==
-X-Gm-Message-State: AC+VfDw8O3uU0VAj+fwWNmU0m3qGh82pIYe1dnR3fbtuyjYwIy4YkK6L
-        JkoBjaa0ZsYzDgk6I5gsqKb7n58h77Bux5lRJks=
-X-Google-Smtp-Source: ACHHUZ7oz2xwHc+ZkwngVzZTDjYikhU3irAyv7oLfbZO4QkuD8hNt6SuWIsIMtSLXjcdqdCx2JTeE/WG2riySM0syJk=
-X-Received: by 2002:a17:90a:728f:b0:253:2f58:fe62 with SMTP id
- e15-20020a17090a728f00b002532f58fe62mr2006496pjg.19.1684404467448; Thu, 18
- May 2023 03:07:47 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684411926; x=1687003926;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b1LVde9eD9hiDa72aXFp01UeitZcx1XKK5VRIQwwJ4w=;
+        b=Pz7bPCckEjIyqXJ+t+Ur62NcUrHXTYAgtByIbHT5H0VvQBlyzoNb12tIV01ZXIqosN
+         hd0E7f9RiFO9RQiDv54HIow1WqlyxeO7RiOfWyLcO4iHHgPB6B1nrrv9q/RgDy8QGV/P
+         ET6EBXeBhlxek5fK2Dwt9eGXuedc6K9VMi/6H37Kmm3JeVC5x6alsJLH9cTn5EnEbfF+
+         yDgUnRRIIfomCZm8V1ZEG7VKM4AAWTwl8p4PM9Oc06Py4EfWs/Iq3ROhZtM4T0wl8aiX
+         7ewquHNEnypx5XknsmPGnweVRgeaVZkMOqRv6lZzKpbxDUuGL4K1tNr1oMNMYqgLzA0h
+         0QuA==
+X-Gm-Message-State: AC+VfDz1CPlvqvJhzFO9f64O9kDHk76M6tSQayEEVyZvQ+4zf96yZYa7
+        Y7deffGa1ekjUwFY04pPLDHD8Q==
+X-Google-Smtp-Source: ACHHUZ7wZ7lgCFFjWmWBQuc0tx+WGJVC/VREvoop6Vbqh2gPTjnAeer0zQN00cudqqAWi4mVPLtPKg==
+X-Received: by 2002:a05:6214:2486:b0:5fd:7701:88c5 with SMTP id gi6-20020a056214248600b005fd770188c5mr5974330qvb.6.1684411925806;
+        Thu, 18 May 2023 05:12:05 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
+        by smtp.gmail.com with ESMTPSA id w8-20020a0562140b2800b006215c5bb2e9sm476635qvj.70.2023.05.18.05.12.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 May 2023 05:12:05 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1pzcUG-0055VE-PF;
+        Thu, 18 May 2023 09:12:04 -0300
+Date:   Thu, 18 May 2023 09:12:04 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        David Hildenbrand <david@redhat.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Richard Weinberger <richard@nod.at>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v2 00/34] Split ptdesc from struct page
+Message-ID: <ZGYWFIfyDtdpeWg1@ziepe.ca>
+References: <20230501192829.17086-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7300:1481:b0:bc:c778:1d6d with HTTP; Thu, 18 May 2023
- 03:07:47 -0700 (PDT)
-Reply-To: ninacoulibaly03@hotmail.com
-From:   nina coulibaly <ninacoulibaly213@gmail.com>
-Date:   Thu, 18 May 2023 03:07:47 -0700
-Message-ID: <CAL52byYe_NPFWgRKY2+wWtJq5=kMKGb3Uzg0GuHBU2i+pSJXvg@mail.gmail.com>
-Subject: from nina coulibaly
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230501192829.17086-1-vishal.moola@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dear,
+On Mon, May 01, 2023 at 12:27:55PM -0700, Vishal Moola (Oracle) wrote:
+> The MM subsystem is trying to shrink struct page. This patchset
+> introduces a memory descriptor for page table tracking - struct ptdesc.
+> 
+> This patchset introduces ptdesc, splits ptdesc from struct page, and
+> converts many callers of page table constructor/destructors to use ptdescs.
 
-Please grant me permission to share a very crucial discussion with
-you.I am looking forward to hearing from you at your earliest
-convenience.
+Lightly related food for future thought - based on some discussions at
+LSF/MM it would be really nice if an end result of this was that a
+rcu_head was always available in the ptdesc so we don't need to
+allocate memory to free a page table.
 
-Mrs. Nina Coulibaly
+Jason
