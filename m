@@ -2,70 +2,63 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C6AD70B790
-	for <lists+sparclinux@lfdr.de>; Mon, 22 May 2023 10:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D159470D18A
+	for <lists+sparclinux@lfdr.de>; Tue, 23 May 2023 04:45:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbjEVIZ7 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 22 May 2023 04:25:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55276 "EHLO
+        id S234906AbjEWCp2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+sparclinux@lfdr.de>); Mon, 22 May 2023 22:45:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbjEVIZ7 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 22 May 2023 04:25:59 -0400
-X-Greylist: delayed 447 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 22 May 2023 01:25:57 PDT
-Received: from mail.bizcodes.pl (mail.bizcodes.pl [151.80.57.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0BFB4
-        for <sparclinux@vger.kernel.org>; Mon, 22 May 2023 01:25:57 -0700 (PDT)
-Received: by mail.bizcodes.pl (Postfix, from userid 1002)
-        id E3835A5B3C; Mon, 22 May 2023 08:16:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bizcodes.pl; s=mail;
-        t=1684743431; bh=5QPMt7jNntM5ZbstM20BWsHIeLbmRE8lVU4Iu89IleQ=;
-        h=Date:From:To:Subject:From;
-        b=fvfnB1DklSsXKqZy2KYSesHACqc01zdFGwfD+DBajIzGLj6s4wJDn/5K7VI5VOfh1
-         petpH4jVsQpynhl+4y8yeIAmVsYQcleSSXVBX2vi7RK7W8xh0vnqGZU49RLXHjq4pF
-         J3w36zAJatpryHviFbzN05tcTQLPDbMyUbwpiMGCLfhScTU0p8eN3AzlD9Ynv9LBIc
-         bzMOU8vqGXBBr9sd9KtsadCnEWQBWS8DtSA/D8+ow5cM6czUN11V/f+9Pyl7cIMmA8
-         Y2fZ2QSkyb3rV7uIZQmCz4PrdiLhnFKx9GQna91txlRUMTGLFRGOIk3U3kpYRcvhb+
-         YuyGNqsBFh3lw==
-Received: by mail.bizcodes.pl for <sparclinux@vger.kernel.org>; Mon, 22 May 2023 08:16:15 GMT
-Message-ID: <20230522064500-0.1.9e.111yv.0.jt0ij3b8kz@bizcodes.pl>
-Date:   Mon, 22 May 2023 08:16:15 GMT
-From:   "Marcin Chruszcz" <marcin.chruszcz@bizcodes.pl>
-To:     <sparclinux@vger.kernel.org>
-Subject: Prezentacja
-X-Mailer: mail.bizcodes.pl
+        with ESMTP id S234918AbjEWCp1 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 22 May 2023 22:45:27 -0400
+Received: from mail.weeksenterprises.net (unknown [173.161.249.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0BB7AE6
+        for <sparclinux@vger.kernel.org>; Mon, 22 May 2023 19:45:25 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.weeksenterprises.net (Postfix) with ESMTP id 7976A6001164;
+        Mon, 22 May 2023 20:20:30 -0400 (EDT)
+Received: from mail.weeksenterprises.net ([127.0.0.1])
+        by localhost (weeksenterprises.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id byQYjnPyKKz5; Mon, 22 May 2023 20:20:28 -0400 (EDT)
+Received: from [212.162.149.204] (unknown [212.162.149.204])
+        by mail.weeksenterprises.net (Postfix) with ESMTPA id B578A5FFA3C4;
+        Mon, 22 May 2023 19:26:09 -0400 (EDT)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Re:
+To:     Recipients <gtonn@wodistrict.org>
+From:   "Advance Funding LTD" <gtonn@wodistrict.org>
+Date:   Mon, 22 May 2023 16:24:14 -0700
+Reply-To: aflimited@secretary.net
+Message-Id: <20230522232609.B578A5FFA3C4@mail.weeksenterprises.net>
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,KHOP_HELO_FCRDNS,LOTS_OF_MONEY,
+        MONEY_FREEMAIL_REPTO,RCVD_IN_MSPIKE_H2,SPF_FAIL,SPF_HELO_NONE,
+        TO_EQ_FM_DOM_SPF_FAIL,TO_EQ_FM_SPF_FAIL,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_FAIL SPF: sender does not match SPF record (fail)
+        *      [SPF failed: Please see http://www.openspf.org/Why?s=mfrom;id=gtonn%40wodistrict.org;ip=173.161.249.211;r=lindbergh.monkeyblade.net]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
+        *      [173.161.249.211 listed in wl.mailspike.net]
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+        *  1.8 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.0 TO_EQ_FM_DOM_SPF_FAIL To domain == From domain and external SPF
+        *       failed
+        *  0.0 TO_EQ_FM_SPF_FAIL To == From and external SPF failed
+        *  0.4 KHOP_HELO_FCRDNS Relay HELO differs from its IP's reverse DNS
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dzie=C5=84 dobry!
-
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
-=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
-zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
-
-Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
-=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
-dostaw.
-
-Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
-nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
- co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
-
-Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
-=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
-zania w Pa=C5=84stwa firmie.
-
-
-Pozdrawiam
-Marcin Chruszcz
+Wir sind ein erstklassiges Finanzinstitut, das interessierten Privatpersonen oder Unternehmen flexible Kredite in der Größenordnung von 10.000 bis 10 Millionen Euro zu einem Zinssatz von 2 % anbietet. E-Mail:aflimited@secretary.net
