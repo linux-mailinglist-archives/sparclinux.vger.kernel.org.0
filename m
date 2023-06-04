@@ -2,15 +2,15 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C803721D21
+	by mail.lfdr.de (Postfix) with ESMTP id 35801721D20
 	for <lists+sparclinux@lfdr.de>; Mon,  5 Jun 2023 06:26:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232053AbjFEE0E convert rfc822-to-8bit (ORCPT
+        id S231271AbjFEE0E convert rfc822-to-8bit (ORCPT
         <rfc822;lists+sparclinux@lfdr.de>); Mon, 5 Jun 2023 00:26:04 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
         with ESMTP id S230386AbjFEE0D (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Mon, 5 Jun 2023 00:26:03 -0400
+        <rfc822;sparclinux@vger.kernel.org.>); Mon, 5 Jun 2023 00:26:03 -0400
 Received: from geo.di.uminho.pt (geo.di.uminho.pt [193.136.19.136])
         by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24B1C7;
         Sun,  4 Jun 2023 21:26:00 -0700 (PDT)
