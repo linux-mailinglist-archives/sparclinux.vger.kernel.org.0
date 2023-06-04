@@ -2,68 +2,87 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35801721D20
-	for <lists+sparclinux@lfdr.de>; Mon,  5 Jun 2023 06:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8595572190D
+	for <lists+sparclinux@lfdr.de>; Sun,  4 Jun 2023 20:03:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231271AbjFEE0E convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Mon, 5 Jun 2023 00:26:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51594 "EHLO
+        id S232193AbjFDSDA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 4 Jun 2023 14:03:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230386AbjFEE0D (ORCPT
-        <rfc822;sparclinux@vger.kernel.org.>); Mon, 5 Jun 2023 00:26:03 -0400
-Received: from geo.di.uminho.pt (geo.di.uminho.pt [193.136.19.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24B1C7;
-        Sun,  4 Jun 2023 21:26:00 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by geo.di.uminho.pt (Postfix) with ESMTP id AF93F71A3B1;
-        Sun,  4 Jun 2023 09:08:39 +0100 (WEST)
-X-Virus-Scanned: Debian amavisd-new at geo.di.uminho.pt
-Received: from geo.di.uminho.pt ([127.0.0.1])
-        by localhost (geo.di.uminho.pt [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id ncZwsWOwCL6L; Sun,  4 Jun 2023 09:08:39 +0100 (WEST)
-Received: from [194.87.151.39] (unknown [194.87.151.39])
-        (Authenticated sender: andrade.rocha@activeng.pt)
-        by geo.di.uminho.pt (Postfix) with ESMTPSA id 19C3E71A3A8;
-        Sun,  4 Jun 2023 09:08:37 +0100 (WEST)
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S232242AbjFDSC6 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 4 Jun 2023 14:02:58 -0400
+Received: from out-18.mta1.migadu.com (out-18.mta1.migadu.com [IPv6:2001:41d0:203:375::12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3A73E9
+        for <sparclinux@vger.kernel.org>; Sun,  4 Jun 2023 11:02:55 -0700 (PDT)
+Date:   Sun, 4 Jun 2023 14:02:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1685901772;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=8eVzj7/BTcLqy7wFCwl6xnZsISP/KN6jro+z/mha3Xk=;
+        b=PqQAVjJ04ndqRoRQANhzjXtWIXqTHWREPNCE9YGBCSItM5aGzg9r4emrFDvZxP/xuQ2bpU
+        DTvQnUtepgxbciT5z6M6Z+EoNGC8g2gnKTdxk1x+F2TTQDaLu6DFNHuJfLzV07K3aFkiY5
+        e/eoFzp+TyP07cOwDSzIUjGa6eo5mqQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Kent Overstreet <kent.overstreet@linux.dev>
+To:     Song Liu <song@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-modules@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org,
+        Puranjay Mohan <puranjay12@gmail.com>
+Subject: Re: [PATCH 00/13] mm: jit/text allocator
+Message-ID: <ZHzRxE5V6YzGVsHy@moria.home.lan>
+References: <20230601101257.530867-1-rppt@kernel.org>
+ <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
+ <ZHjgIH3aX9dCvVZc@moria.home.lan>
+ <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
+ <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Bitcoin Deposit
-To:     Recipients <andrade.rocha@activeng.pt>
-From:   "Bitcoin Admin" <andrade.rocha@activeng.pt>
-Date:   Sun, 04 Jun 2023 01:08:34 -0700
-Message-Id: <20230604080839.AF93F71A3B1@geo.di.uminho.pt>
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,LOTS_OF_MONEY,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_BL,
-        RCVD_IN_MSPIKE_L4,RCVD_IN_SBL,SCC_BODY_URI_ONLY,SPF_HELO_NONE,
-        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE,URIBL_BLACK autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -2.3 RCVD_IN_DNSWL_MED RBL: Sender listed at https://www.dnswl.org/,
-        *       medium trust
-        *      [193.136.19.136 listed in list.dnswl.org]
-        *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?194.87.151.39>]
-        *  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
-        *      [URIs: swancoins.net]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *      [194.87.151.39 listed in zen.spamhaus.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.7 RCVD_IN_MSPIKE_L4 RBL: Bad reputation (-4)
-        *      [193.136.19.136 listed in bl.mailspike.net]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
-        *  0.0 RCVD_IN_MSPIKE_BL Mailspike blocklisted
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  1.4 SCC_BODY_URI_ONLY No description available.
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello Dave Robert, we have deposited the 39 BTC which amount to ( $1,054,912 USD ) as you requested into your bitcoin portfolio at www.swancoins.net Customer Id: 71624030, Password: KLY22M483
+On Fri, Jun 02, 2023 at 11:20:58AM -0700, Song Liu wrote:
+> IIUC, arm64 uses VMALLOC address space for BPF programs. The reason
+> is each BPF program uses at least 64kB (one page) out of the 128MB
+> address space. Puranjay Mohan (CC'ed) is working on enabling
+> bpf_prog_pack for arm64. Once this work is done, multiple BPF programs
+> will be able to share a page. Will this improvement remove the need to
+> specify a different address range for BPF programs?
+
+Can we please stop working on BPF specific sub page allocation and focus
+on doing this in mm/? This never should have been in BPF in the first
+place.
