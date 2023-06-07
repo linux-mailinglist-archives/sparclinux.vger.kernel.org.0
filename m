@@ -2,211 +2,158 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D37872528C
-	for <lists+sparclinux@lfdr.de>; Wed,  7 Jun 2023 05:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71A7472646B
+	for <lists+sparclinux@lfdr.de>; Wed,  7 Jun 2023 17:26:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240850AbjFGDtV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 6 Jun 2023 23:49:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33762 "EHLO
+        id S241447AbjFGP00 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 7 Jun 2023 11:26:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240840AbjFGDtT (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 6 Jun 2023 23:49:19 -0400
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C00519B9
-        for <sparclinux@vger.kernel.org>; Tue,  6 Jun 2023 20:49:17 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-565e8d575cbso64310287b3.3
-        for <sparclinux@vger.kernel.org>; Tue, 06 Jun 2023 20:49:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686109756; x=1688701756;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=z7egDDp6MmQZCbbodxJ12b9UShhbnTUq6PVtm9aM+04=;
-        b=Pqkuvwjf09O59UPXdhhO7tjU33/VqFu4i39Q1X5ngvz5wkjB5jztMKPW4Oy+gYaN7f
-         ryMo/pvFu2ihp6hoUNLGrxxJwEg8cYMz5y/fZ40STo2ayOGik+sBKWhCpCfn0AUciN7G
-         u/GoJh9IbWauEReNRcuISo1bdmXC0fxzeRJsQoJjK/V1wht50c5ITiIrEruEX8FLCjD2
-         dukvUd3PuNbqeJ+lutclQGH56tlKSgwPULdPaCAne7DDEI6NLUhCoAXG+BWCQuQ+cPUd
-         LuL0hGsrAkgsHjfC8Mobph1RQY6cg81EchUXYFPmRFE9lQLqL6vwX8Y9XC9AJeP/FN6P
-         1U9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686109756; x=1688701756;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z7egDDp6MmQZCbbodxJ12b9UShhbnTUq6PVtm9aM+04=;
-        b=Je7qE+FPI0uBfCsGz+bmQ7AYbyPrvAkyzqtoWZWuw06CRWQJvPvnqDit9eX5DlUDA6
-         hfHg1kzvWtzfRTAFsjvNBsW4cr0Fpn6SIKMwdb8b7vjaT3D8yY+3s1hX0MSaXoDesFlc
-         34I0OJyxVgirw10akpkOiBnQHSPs7qBzjzKOH8ePTAj5IiXduOtsxkRVhV7DCbZSjkAN
-         Wwv/B8zIGgwR7tqg7Y8Mk11CyCLxOWuWZgEGaVPIBwvnNp8Txnna+NJ4tee876jLhMHt
-         bTdikOI2nnfUlDnWWjVBElYCfx7C8XXZMVZ9ti54GK9B04VjA+phzyHoJzgGQeye+3jR
-         PUwg==
-X-Gm-Message-State: AC+VfDy2rxmutFO7dvmfhHxAWTZlWIQXp3m8L7hxMqB3mIoaoUEnG0dc
-        bpR/vms70QkBgjjWI9CGIJIuuA==
-X-Google-Smtp-Source: ACHHUZ6FeY70tXV92DFudQ4t5nR7rwwIAGb4bJwe8V5V4ANCDpC/kaCGZoHb9LVSkohk9DbNmeTmEg==
-X-Received: by 2002:a0d:cb47:0:b0:565:c96b:f526 with SMTP id n68-20020a0dcb47000000b00565c96bf526mr4712606ywd.19.1686109756614;
-        Tue, 06 Jun 2023 20:49:16 -0700 (PDT)
-Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id s11-20020a81bf4b000000b00555df877a4csm4446640ywk.102.2023.06.06.20.49.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jun 2023 20:49:15 -0700 (PDT)
-Date:   Tue, 6 Jun 2023 20:49:04 -0700 (PDT)
-From:   Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@ripple.attlocal.net
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-cc:     Peter Xu <peterx@redhat.com>, Hugh Dickins <hughd@google.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Yang Shi <shy828301@gmail.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>, Yu Zhao <yuzhao@google.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Ralph Campbell <rcampbell@nvidia.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Steven Price <steven.price@arm.com>,
-        SeongJae Park <sj@kernel.org>,
-        Naoya Horiguchi <naoya.horiguchi@nec.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Zack Rusin <zackr@vmware.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Miaohe Lin <linmiaohe@huawei.com>,
-        Minchan Kim <minchan@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Song Liu <song@kernel.org>,
-        Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
+        with ESMTP id S241313AbjFGP0H (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 7 Jun 2023 11:26:07 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C7892699;
+        Wed,  7 Jun 2023 08:25:34 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id 764C421A0A;
+        Wed,  7 Jun 2023 15:25:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1686151501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=3dXGf7k+4oTYlBaWumJNU4jR3nmmEHJWtnu0vSLVKpY=;
+        b=B+PBZJXThYIOntzOMYJN1M7HOWKlcyfHTjqwYAzKeYBeg7N4H53o02U8FpcHbdfxQS/12F
+        pD2SxjHz7edW0+GtChSdSrs+u54G5UDKluEkn024K10JO0UxcGtR6rRHIiyWQ7rmD6W5Wk
+        GvOPqUkg6P2Kqu+RevoP90n3lOrnJZQ=
+Received: from alley.suse.cz (unknown [10.100.201.202])
+        by relay2.suse.de (Postfix) with ESMTP id 6C3A12C141;
+        Wed,  7 Jun 2023 15:24:59 +0000 (UTC)
+From:   Petr Mladek <pmladek@suse.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Douglas Anderson <dianders@chromium.org>
+Cc:     kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+        Nicholas Piggin <npiggin@gmail.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Jann Horn <jannh@google.com>,
-        linux-arm-kernel@lists.infradead.org, sparclinux@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 05/12] powerpc: add pte_free_defer() for pgtables sharing
- page
-In-Reply-To: <ZH+EMp9RuEVOjVNb@ziepe.ca>
-Message-ID: <9130acb-193-6fdd-f8df-75766e663978@google.com>
-References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com> <28eb289f-ea2c-8eb9-63bb-9f7d7b9ccc11@google.com> <ZHSwWgLWaEd+zi/g@casper.infradead.org> <ZHn6n5eVTsr4Wl8x@ziepe.ca> <4df4909f-f5dd-6f94-9792-8f2949f542b3@google.com> <ZH95oobIqN0WO5MK@ziepe.ca>
- <ZH+DAxLhIYpTlIFc@x1n> <ZH+EMp9RuEVOjVNb@ziepe.ca>
+        linuxppc-dev@lists.ozlabs.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        sparclinux@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-perf-users@vger.kernel.org, Petr Mladek <pmladek@suse.com>
+Subject: [PATCH 0/7] watchdog/hardlockup: Cleanup configuration of hardlockup detectors
+Date:   Wed,  7 Jun 2023 17:24:25 +0200
+Message-Id: <20230607152432.5435-1-pmladek@suse.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, 6 Jun 2023, Jason Gunthorpe wrote:
-> On Tue, Jun 06, 2023 at 03:03:31PM -0400, Peter Xu wrote:
-> > On Tue, Jun 06, 2023 at 03:23:30PM -0300, Jason Gunthorpe wrote:
-> > > On Mon, Jun 05, 2023 at 08:40:01PM -0700, Hugh Dickins wrote:
-> > > 
-> > > > diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
-> > > > index 20652daa1d7e..e4f58c5fc2ac 100644
-> > > > --- a/arch/powerpc/mm/pgtable-frag.c
-> > > > +++ b/arch/powerpc/mm/pgtable-frag.c
-> > > > @@ -120,3 +120,54 @@ void pte_fragment_free(unsigned long *table, int kernel)
-> > > >  		__free_page(page);
-> > > >  	}
-> > > >  }
-> > > > +
-> > > > +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> > > > +#define PTE_FREE_DEFERRED 0x10000 /* beyond any PTE_FRAG_NR */
-> > > > +
-> > > > +static void pte_free_now(struct rcu_head *head)
-> > > > +{
-> > > > +	struct page *page;
-> > > > +	int refcount;
-> > > > +
-> > > > +	page = container_of(head, struct page, rcu_head);
-> > > > +	refcount = atomic_sub_return(PTE_FREE_DEFERRED - 1,
-> > > > +				     &page->pt_frag_refcount);
-> > > > +	if (refcount < PTE_FREE_DEFERRED) {
-> > > > +		pte_fragment_free((unsigned long *)page_address(page), 0);
-> > > > +		return;
-> > > > +	}
-> > > 
-> > > From what I can tell power doesn't recycle the sub fragment into any
-> > > kind of free list. It just waits for the last fragment to be unused
-> > > and then frees the whole page.
+Hi,
 
-Yes, it's relatively simple in that way: not as sophisticated as s390.
+this patchset is supposed to replace the last patch in the patchset cleaning
+up after introducing the buddy detector, see
+https://lore.kernel.org/r/20230526184139.10.I821fe7609e57608913fe05abd8f35b343e7a9aae@changeid
 
-> > > 
-> > > So why not simply go into pte_fragment_free() and do the call_rcu directly:
-> > > 
-> > > 	BUG_ON(atomic_read(&page->pt_frag_refcount) <= 0);
-> > > 	if (atomic_dec_and_test(&page->pt_frag_refcount)) {
-> > > 		if (!kernel)
-> > > 			pgtable_pte_page_dtor(page);
-> > > 		call_rcu(&page->rcu_head, free_page_rcu)
-> > 
-> > We need to be careful on the lock being freed in pgtable_pte_page_dtor(),
-> > in Hugh's series IIUC we need the spinlock being there for the rcu section
-> > alongside the page itself.  So even if to do so we'll need to also rcu call 
-> > pgtable_pte_page_dtor() when needed.
+There are four possible variants of hardlockup detectors:
 
-Thanks, Peter, yes that's right.
+  + buddy: available when SMP is set.
 
-> 
-> Er yes, I botched that, the dtor and the free_page should be in a the
-> rcu callback function
+  + perf: available when HAVE_HARDLOCKUP_DETECTOR_PERF is set.
 
-But it was just a botched detail, and won't have answered Jason's doubt.
+  + arch-specific: available when HAVE_HARDLOCKUP_DETECTOR_ARCH is set.
 
-I had three (or perhaps it amounts to two) reasons for doing it this way:
-none of which may seem good enough reasons to you.  Certainly I'd agree
-that the way it's done seems... arcane.
+  + sparc64 special variant: available when HAVE_NMI_WATCHDOG is set
+	and HAVE_HARDLOCKUP_DETECTOR_ARCH is not set.
 
-One, as I've indicated before, I don't actually dare to go all
-the way into RCU freeing of all page tables for powerpc (or any other):
-I should think it's a good idea that everyone wants in the end, but I'm
-limited by my time and competence - and dread of losing my way in the
-mmu_gather TLB #ifdef maze.  It's work for someone else not me.
+Only one hardlockup detector can be compiled in. The selection is done
+using quite complex dependencies between several CONFIG variables.
+The following patches will try to make it more straightforward.
 
-(pte_free_defer() do as you suggest, without changing pte_fragment_free()
-itself?  No, that doesn't work out when defer does, say, the decrement of
-pt_frag_refcount from 2 to 1, then pte_fragment_free() does the decrement
-from 1 to 0: page freed without deferral.)
+Before, the decision was done using the following variables:
 
-Two, this was the code I'd worked out before, and was used in production,
-so I had confidence in it - it was just my mistake that I'd forgotten the
-single rcu_head issue, and thought I could avoid it in the initial posting.
-powerpc has changed around since then, but apparently not in any way that
-affects this.  And it's too easy to agree in review that something can be
-simpler, without bringing back to mind why the complications are there.
+	+ HAVE_HARDLOCKUP_DETECTOR_PERF
+	+ HAVE_HARDLOCKUP_DETECTOR_BUDDY
+	+ HAVE_HARDLOCKUP_DETECTOR_ARCH
+	+ HAVE_NMI_WATCHDOG
+ 
+	+ HARDLOCKUP_DETECTOR
+	+ HARDLOCKUP_DETECTOR_PREFER_BUDDY
 
-Three (just an explanation of why the old code was like this), powerpc
-relies on THP's page table deposit+withdraw protocol, even for shmem/
-file THPs.  I've skirted that issue in this series, by sticking with
-retract_page_tables(), not attempting to insert huge pmd immediately.
-But if huge pmd is inserted to replace ptetable pmd, then ptetable must
-be deposited: pte_free_defer() as written protects the deposited ptetable
-from then being freed without deferral (rather like in the example above).
+	+ HAVE_HARDLOCKUP_DETECTOR_NON_ARCH
+	+ HARDLOCKUP_DETECTOR_NON_ARCH
 
-But does not protect it from being withdrawn and reused within that
-grace period.  Jann has grave doubts whether that can ever be allowed
-(or perhaps I should grant him certainty, and examples that it cannot).
-I did convince myself, back in the day, that it was safe here: but I'll
-have to put in a lot more thought to re-justify it now, and on the way
-may instead be completely persuaded by Jann.
+	+ HARDLOCKUP_DETECTOR_PERF
+	+ HARDLOCKUP_DETECTOR_BUDDY
 
-Not very good reasons: good enough, or can you supply a better patch?
+   and the particular watchdog was used when the following variables were set:
 
-Thanks,
-Hugh
+	+ perf:		 HARDLOCKUP_DETECTOR_PERF
+	+ buddy:	 HARDLOCKUP_DETECTOR_BUDDY
+	+ arch-specific: HAVE_HARDLOCKUP_DETECTOR_ARCH
+	+ sparc64:	 HAVE_NMI_WATCHDOG && !HAVE_HARDLOCKUP_DETECTOR_ARCH
+
+
+After, the decision is done using the following variables:
+
+	+ HAVE_HARDLOCKUP_DETECTOR_PERF
+	+ HAVE_HARDLOCKUP_DETECTOR_BUDDY
+	+ HAVE_HARDLOCKUP_DETECTOR_ARCH
+	+ HAVE_HARDLOCKUP_DETECTOR_SPARC64
+ 
+	+ HARDLOCKUP_DETECTOR
+	+ HARDLOCKUP_DETECTOR_PREFER_BUDDY
+
+	+ HARDLOCKUP_DETECTOR_PERF
+	+ HARDLOCKUP_DETECTOR_BUDDY
+	+ HARDLOCKUP_DETECTOR_ARCH
+	+ HARDLOCKUP_DETECTOR_SPARC64
+
+   and the particular watchdog is used when one of these variables is set:
+
+	+ perf:		 HARDLOCKUP_DETECTOR_PERF
+	+ buddy:	 HARDLOCKUP_DETECTOR_BUDDY
+	+ arch-specific: HARDLOCKUP_DETECTOR_ARCH
+	+ sparc64:	 HARDLOCKUP_DETECTOR_SPARC64
+
+
+Plus, many checks are more straightforward and even self-explanatory.
+
+I build and run tested it on x86_64. I only checked the generated
+.config after using sparc_defconfig, sparc64_defconfig, ppc64_defconfig,
+and ppc40x_defconfig.
+
+Best Regards,
+Petr
+
+Petr Mladek (7):
+  watchdog/hardlockup: Sort hardlockup detector related config values a
+    logical way
+  watchdog/hardlockup: Make the config checks more straightforward
+  watchdog/hardlockup: Declare arch_touch_nmi_watchdog() only in
+    linux/nmi.h
+  watchdog/hardlockup: Enable HAVE_NMI_WATCHDOG only on sparc64
+  watchdog/sparc64: Rename HAVE_NMI_WATCHDOG to
+    HAVE_HARDLOCKUP_WATCHDOG_SPARC64
+  watchdog/sparc64: Define HARDLOCKUP_DETECTOR_SPARC64
+  watchdog/hardlockup: Define HARDLOCKUP_DETECTOR_ARCH
+
+ arch/Kconfig                   |  17 ++---
+ arch/powerpc/Kconfig           |   5 +-
+ arch/powerpc/include/asm/nmi.h |   2 -
+ arch/sparc/Kconfig             |   2 +-
+ arch/sparc/Kconfig.debug       |  20 ++++++
+ arch/sparc/include/asm/nmi.h   |   1 -
+ include/linux/nmi.h            |  14 ++--
+ kernel/watchdog.c              |   2 +-
+ lib/Kconfig.debug              | 115 +++++++++++++++++++--------------
+ 9 files changed, 104 insertions(+), 74 deletions(-)
+
+-- 
+2.35.3
+
