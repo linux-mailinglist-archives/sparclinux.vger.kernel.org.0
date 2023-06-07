@@ -2,173 +2,156 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04A53727242
-	for <lists+sparclinux@lfdr.de>; Thu,  8 Jun 2023 00:55:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8073F72730A
+	for <lists+sparclinux@lfdr.de>; Thu,  8 Jun 2023 01:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233249AbjFGWzK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 7 Jun 2023 18:55:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54152 "EHLO
+        id S229614AbjFGXej (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 7 Jun 2023 19:34:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233286AbjFGWzF (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 7 Jun 2023 18:55:05 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE26926A3
-        for <sparclinux@vger.kernel.org>; Wed,  7 Jun 2023 15:54:56 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9788554a8c9so1071766b.2
-        for <sparclinux@vger.kernel.org>; Wed, 07 Jun 2023 15:54:56 -0700 (PDT)
+        with ESMTP id S229822AbjFGXeh (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 7 Jun 2023 19:34:37 -0400
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B15902689
+        for <sparclinux@vger.kernel.org>; Wed,  7 Jun 2023 16:34:36 -0700 (PDT)
+Received: by mail-io1-xd2d.google.com with SMTP id ca18e2360f4ac-775ebe161c5so359484939f.1
+        for <sparclinux@vger.kernel.org>; Wed, 07 Jun 2023 16:34:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686178495; x=1688770495;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
-        b=ISCokn/+UIjmwzb6Qqen8aovmGAMcufN2mg1vGaVQi8JA8vZVBoPrpfg9FKEMyYA93
-         F57+n8LpDPJ4hKvYa+mB3Qpd/5wSmCE+u9rnSzcRcdxcqA1ThVsA2GVhO8NhufTEIDDo
-         +AJF+xfN2v4uPSaV7my+CeYbBAi+c9iv67JdLUZveeT2LRG0G9ifmy1A4hDBa7dCPKKn
-         QcFFwZlcW9xjzdCCTjcFdSGgnC40/mtVnpsd5mTQ2ZIQz2DTj76AqN+YyrBlAL/Jzzuq
-         8qtTKibIx9QF/94MEfHxXYku+7yxCA1MQd0USYrXUo2RAqhk0OdEwoUaorDUJyV0+gvT
-         dfcA==
+        d=chromium.org; s=google; t=1686180874; x=1688772874;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oKEziAGkCW2jO8QMx9VTvzfLmO/bLdAIdfdMBgrtF0Q=;
+        b=F6wdPzX5FUDEq0AnubAA0X0oRetMIiPWDnCmAd7XJ7qbkBXIQqOUAfDYB/XoT80xhV
+         3geAQrbCc6Er52EjNMUsfbQc3ILUnH0//avnz8c5O+0MdNWqhWcsMkG8UX69MmVNxvFJ
+         vkkbkVW1pnxPONFY6dZLVQpGAhXMjj2z4mswI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686178495; x=1688770495;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
-        b=DCJS1h7WqDjiHoFVj9YOI0PkYPUP18M08PsrtCkUAJU3KvftN8ptPxeyvoo9xeJd4P
-         drmQ9kqDxaGuzTBm7ZszVhESQa+GNq9aMWbrpVQbupu3a9PpazI2uAneCo4lJj6Km7dQ
-         mIYjpAQ0PvFE7x8NG9InJKIZEosGUmSOtZ0F23Vrv76nbfgUXmxAVWjsOpEaelpH60k4
-         coOPIcLZNBPLDaXBOAjeQgu691XGxxAUJ5iCznvY7+IQVK0kg7YVel6BaX2Mcwb1O1kZ
-         I+4T3Epi9f4gt3PrEntW6+9s4gw/dcfUmIT7TVu2e3ZdCjiLzCmJlXIvKJVK1PphwRwo
-         p83w==
-X-Gm-Message-State: AC+VfDycMUuscDWYggyKAad4rxjzIWtre7y2hpicobquM2s7NCT4qeYZ
-        0bo+4k6OHoatzYXJcubYhTSU5NrCqzSq6Axo4ZX+EMUnauxNjg==
-X-Google-Smtp-Source: ACHHUZ7J0yv2Uy0Ff3URHHllMh6dn7geAOftATdUjaOMCSCEm6sdR3gpAsqx+SgrMGXj3gnAhFPKaDZy027dlMN9Xtw=
-X-Received: by 2002:a17:907:783:b0:94a:6de2:ba9 with SMTP id
- xd3-20020a170907078300b0094a6de20ba9mr6600647ejb.68.1686178474547; Wed, 07
- Jun 2023 15:54:34 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686180874; x=1688772874;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oKEziAGkCW2jO8QMx9VTvzfLmO/bLdAIdfdMBgrtF0Q=;
+        b=knIr5Z4+eX4CzyC+yf7baLwHbF2LFC4UDvk2keiAY7Tb9ld7VnJNPfLuzn6c9bokUF
+         VtdzzDrxeJhqGKE2ow80amrC1TTVAdfLAqJHNNi49yLFgJnq80JyplA3BUjwVugKY2cX
+         D7EZ2zwWEilVvAtBNf/eAHPO/lIUux0nTe9SZTADnKwMJZ+nmfTHsx58Qp4ZL+ry9F2t
+         28R6bJ0MeXhqQM8eWlvDB59RZHtEKAgP237Qq7lYFSEQH0vZm7E0dLdio1b4yqeUKIcp
+         Rz8giwWRAY0bPRWgwzY4dPovBg70jbF2W3LvuuygzBQPB60C/4J/W6YlEsjN7FmnFomQ
+         HGew==
+X-Gm-Message-State: AC+VfDynU7+j8aoocnGCVle2tcQnWEbeoszOlz2nMZzksEM7p5PLMeMB
+        PP1znJXMan+JV2fPyAR7M3yBdMt9KvxykEnF/00=
+X-Google-Smtp-Source: ACHHUZ54nwRPFs1xhPCSYTnMEUHPug8HW9248TnGdxKsxeCcjAN1uGPteR1VHt7hm75SqZZDXJqd7w==
+X-Received: by 2002:a5d:8611:0:b0:77a:c494:b4be with SMTP id f17-20020a5d8611000000b0077ac494b4bemr3202731iol.19.1686180874163;
+        Wed, 07 Jun 2023 16:34:34 -0700 (PDT)
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com. [209.85.166.182])
+        by smtp.gmail.com with ESMTPSA id q8-20020a0566380ec800b0041f4c9f2064sm2849660jas.178.2023.06.07.16.34.33
+        for <sparclinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jun 2023 16:34:33 -0700 (PDT)
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-33dea7d5424so25985ab.1
+        for <sparclinux@vger.kernel.org>; Wed, 07 Jun 2023 16:34:33 -0700 (PDT)
+X-Received: by 2002:a92:c26d:0:b0:338:9f6a:d54a with SMTP id
+ h13-20020a92c26d000000b003389f6ad54amr93121ild.24.1686180872621; Wed, 07 Jun
+ 2023 16:34:32 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a54:2409:0:b0:217:72a9:f646 with HTTP; Wed, 7 Jun 2023
- 15:54:33 -0700 (PDT)
-Reply-To: unitednationcompensationcoordinatortreasury@hotmail.com
-From:   "UNITED NATION DEPUTY SECRETARY-GENERAL (U.N)" 
-        <successikolo@gmail.com>
-Date:   Wed, 7 Jun 2023 15:54:33 -0700
-Message-ID: <CADFNGJ9M60ti_yHcUzQD8BP2Qji_qiW+6MK-iYxt_qf8B830+w@mail.gmail.com>
-Subject: CONTACT DHL OFFICE IMMEDIATELY FOR YOUR ATM MASTER CARD 1.5 MILLION,
-To:     undisclosed-recipients:;
+References: <20230607152432.5435-1-pmladek@suse.com> <20230607152432.5435-2-pmladek@suse.com>
+In-Reply-To: <20230607152432.5435-2-pmladek@suse.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Wed, 7 Jun 2023 16:34:20 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=X4Sp=ZE4DWob-W0NzRm00K7wOWxyyCCaHUHNPPinsjhg@mail.gmail.com>
+Message-ID: <CAD=FV=X4Sp=ZE4DWob-W0NzRm00K7wOWxyyCCaHUHNPPinsjhg@mail.gmail.com>
+Subject: Re: [PATCH 1/7] watchdog/hardlockup: Sort hardlockup detector related
+ config values a logical way
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linuxppc-dev@lists.ozlabs.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        sparclinux@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-perf-users@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_3_NEW_FRM_MNY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FILL_THIS_FORM,FORM_FRAUD_5,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FORM,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:629 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [successikolo[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 FILL_THIS_FORM Fill in a form with personal information
-        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
-        *  0.0 MONEY_FORM Lots of money if you fill out a form
-        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_3_NEW_FRM_MNY Advance Fee fraud form and lots of
-        *      money
-        *  0.2 MONEY_FRAUD_5 Lots of money and many fraud phrases
-        *  0.0 FORM_FRAUD_5 Fill a form and many fraud phrases
-X-Spam-Level: ******
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-UNITED NATION DEPUTY SECRETARY-GENERAL.
+Hi,
 
-This is to official inform you that we have been having meetings for
-the past three (3) weeks which ended two days ago with MR. JIM YONG
-KIM the world bank president and other seven continent presidents on
-the congress we treated on solution to scam victim problems.
+On Wed, Jun 7, 2023 at 8:25=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrote=
+:
+>
+> There are four possible variants of hardlockup detectors:
+>
+>   + buddy: available when SMP is set.
+>
+>   + perf: available when HAVE_HARDLOCKUP_DETECTOR_PERF is set.
+>
+>   + arch-specific: available when HAVE_HARDLOCKUP_DETECTOR_ARCH is set.
+>
+>   + sparc64 special variant: available when HAVE_NMI_WATCHDOG is set
+>         and HAVE_HARDLOCKUP_DETECTOR_ARCH is not set.
+>
+> Only one hardlockup detector can be compiled in. The selection is done
+> using quite complex dependencies between several CONFIG variables.
+> The following patches will try to make it more straightforward.
+>
+> As a first step, reorder the definitions of the various CONFIG variables.
+> The logical order is:
+>
+>    1. HAVE_* variables define available variants. They are typically
+>       defined in the arch/ config files.
+>
+>    2. HARDLOCKUP_DETECTOR y/n variable defines whether the hardlockup
+>       detector is enabled at all.
+>
+>    3. HARDLOCKUP_DETECTOR_PREFER_BUDDY y/n variable defines whether
+>       the buddy detector should be preferred over the perf one.
+>       Note that the arch specific variants are always preferred when
+>       available.
+>
+>    4. HARDLOCKUP_DETECTOR_PERF/BUDDY variables define whether the given
+>       detector is enabled in the end.
+>
+>    5. HAVE_HARDLOCKUP_DETECTOR_NON_ARCH and HARDLOCKUP_DETECTOR_NON_ARCH
+>       are temporary variables that are going to be removed in
+>       a followup patch.
+>
+> The patch just shuffles the definitions. It should not change the existin=
+g
+> behavior.
+>
+> Signed-off-by: Petr Mladek <pmladek@suse.com>
+> ---
+>  lib/Kconfig.debug | 112 +++++++++++++++++++++++-----------------------
+>  1 file changed, 56 insertions(+), 56 deletions(-)
 
- Note: we have decided to contact you following the reports we
-received from anti-fraud international monitoring group your
-name/email has been submitted to us therefore the united nations have
-agreed to compensate you with the sum of (USD$ 1.5 Million) this
-compensation is also including international business that failed you
-in the past due to government problems etc.
+I don't really have any strong opinions, so I'm fine with this. In
+general I think the ordering I picked tried to match the existing
+"style" which generally tried to list configs and then select them
+below. To me the existing style makes more sense when thinking about
+writing C code without having to put a pile of prototypes at the top
+of your file: you define things higher in the file and reference them
+below. For instance, the old style (before any of my patches) had:
 
- We have arranged your payment through our ATM Master Card and
-deposited it in DHL Office to deliver it to you which is the latest
-instruction from the World Bank president MR. JIM YONG KIM, For your
-information=E2=80=99s, the delivery charges already paid by U.N treasury, t=
-he
-only money you will send to DHL office south Korea is
-($500). for security keeping fee, U.N coordinator already paid for
-others charges fees for delivery except the security keeping fee, the
-director of DHL refused to collect the security keeping fee from U.N
-coordinator, the Director of DHL office said that they don=E2=80=99t know
-exactly time you will contact them to reconfirm your details to avoid
-counting demur-rage that is why they refused collecting the ($500) .
-for security keeping fee.
+config SOFTLOCKUP_DETECTOR:
+  ... blah blah blah ...
 
- Therefore be advice to contact DHL Office agent south Korea. Rev:John
-Lee Tae-seok
-who is in position to deliver your ATM
-Master Card to your location address, contact DHL Office immediately
-with the bellow email & phone number as listed below.
+config HARDLOCKUP_DETECTOR_PERF:
+  select SOFTLOCKUP_DETECTOR
 
- Contact name: John Lee Tae-seok
+config HARDLOCKUP_DETECTOR:
+  ... blah blah blah ...
+  select LOCKUP_DETECTOR
+  select HARDLOCKUP_DETECTOR_PERF if HAVE_HARDLOCKUP_DETECTOR_PERF
 
- Email:( dhlgeneralheadquartersrepublic@gmail.com )
+Your new style seems to be the opposite of that.
 
- Do not hesitate to Contact Rev: John Lee Tae-seok, as soon as you
-
- read this message. Email:( dhlgeneralheadquartersrepublic@gmail.com )
-
- Make sure you reconfirmed DHL Office your details ASAP as stated
-below to avoid wrong delivery.
-
- Your full name..........
-
- Home address:.........
-
- Your country...........
-
- Your city..............
-
- Telephone......
-
- Occupation:.......
-
- Age:=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
-
- Let us know as soon as possible you receive your ATM MasterCard
-for proper verification.
-
- Regards,
-
- Mrs Vivian kakadu.
-
- DEPUTY SECRETARY-GENERAL (U.N)
+-Doug
