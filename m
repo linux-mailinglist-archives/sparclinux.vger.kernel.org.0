@@ -2,142 +2,108 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAE79736B5E
-	for <lists+sparclinux@lfdr.de>; Tue, 20 Jun 2023 13:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B5BC736F39
+	for <lists+sparclinux@lfdr.de>; Tue, 20 Jun 2023 16:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232792AbjFTLqR (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 20 Jun 2023 07:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37498 "EHLO
+        id S232707AbjFTOxV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 20 Jun 2023 10:53:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232798AbjFTLqF (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 20 Jun 2023 07:46:05 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 026491BDD
-        for <sparclinux@vger.kernel.org>; Tue, 20 Jun 2023 04:45:50 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-666edfc50deso2251700b3a.0
-        for <sparclinux@vger.kernel.org>; Tue, 20 Jun 2023 04:45:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1687261549; x=1689853549;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eWdugmL7jiCCazRwRTiCxhXSGGIdZDMM/iY0UbvTdUM=;
-        b=cnn8IRs9UEV2IyxM2/dyNE8Ybbqmsnj6tLoR8M1bmXQAVunFEwC20TKu6DUOVKG4AB
-         L2Yp6/XPUf6F5Xy+nc7uJZfoC02InmQWSMblYoG/4uAdrA9GIFvL7kwUb/yEeNhYFGr1
-         bkwG9DCJKJm7UPMDVOHOR7oHEfHhzz1mYZlMGy4Z2i7tBudfceWk0OsWq4cf8C2qfKpV
-         w9kz4Q6fy8cbK1P9tLY7jnan9hyd8ZaBomTDWQJ4IaOPbEXOkOCCXRQOiThAn1UjmjTv
-         PMpNa0lpCABevs0dIyQN5iH+zWSS9D1PjlkqlJwomy4rRdkHiQnPe7pPZunP1WQZBtR3
-         zPdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687261549; x=1689853549;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eWdugmL7jiCCazRwRTiCxhXSGGIdZDMM/iY0UbvTdUM=;
-        b=ey6XKFq0v4ydWJ4k5OmTwtmVtKupTrl+injkPZBJmlzPvv41aR4AWm5JUf0yXWDxdW
-         xYwkSk1/NsEEOFuCmBkyTBCpOOxWri2Joga/rFxRFHKeE7YUOQuRSi/IoguPu6dja07E
-         sjI/ILyDTECRbDfi+bw3SGqE8HjXLol+AspL55A3IbpjeYrVe2ZlHosT7N502riqlRRe
-         NNycXa4Fplcdd31SaHToekbiJSAY04Tlb6UQkcG1Rc3jlorGykreLA9VGcr96siw11Gz
-         7AXZY5lGJVXg4o7cxim/ESU7UrFQB5bQtX5yjNi7xjZC/Ap1jo1TjJQH1l8h4ChV/vhX
-         VMXA==
-X-Gm-Message-State: AC+VfDzKtESQPOpBXJmaGtE9vJgoFbPToi2wiG1Fvy7Nf5syHtZX2cfa
-        DjzETXdxCrRxmCIVneKtG13Yow==
-X-Google-Smtp-Source: ACHHUZ4X6nDwRKfeDuMyEgMyTrD6VgfsYjM5cSKUHYx3cAu4vDqqHRc1ln2Pqg94YC+C6bvDGfs7/g==
-X-Received: by 2002:a05:6a00:1820:b0:668:732d:7d9f with SMTP id y32-20020a056a00182000b00668732d7d9fmr10033336pfa.2.1687261549460;
-        Tue, 20 Jun 2023 04:45:49 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
-        by smtp.gmail.com with ESMTPSA id d17-20020aa78e51000000b0062d859a33d1sm1207199pfr.84.2023.06.20.04.45.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 04:45:48 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1qBZnv-007KSY-BA;
-        Tue, 20 Jun 2023 08:45:47 -0300
-Date:   Tue, 20 Jun 2023 08:45:47 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Hugh Dickins <hughd@google.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        David Hildenbrand <david@redhat.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Yang Shi <shy828301@gmail.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Peter Xu <peterx@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>, Yu Zhao <yuzhao@google.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Ralph Campbell <rcampbell@nvidia.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Steven Price <steven.price@arm.com>,
-        SeongJae Park <sj@kernel.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Huang Ying <ying.huang@intel.com>,
-        Naoya Horiguchi <naoya.horiguchi@nec.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Zack Rusin <zackr@vmware.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Miaohe Lin <linmiaohe@huawei.com>,
-        Minchan Kim <minchan@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Song Liu <song@kernel.org>,
-        Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David Sc. Miller" <davem@davemloft.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Jann Horn <jannh@google.com>,
-        Vishal Moola <vishal.moola@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        linux-arm-kernel@lists.infradead.org, sparclinux@vger.kernel.org,
+        with ESMTP id S232854AbjFTOxT (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 20 Jun 2023 10:53:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 060FF1AC
+        for <sparclinux@vger.kernel.org>; Tue, 20 Jun 2023 07:52:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1687272753;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=No1ZAzXRenHK6Spay7fCIW5zNaUlPsGtRXWs40EaAkg=;
+        b=Q/2JIcXzyL0t+ejrpLvxGHWwzFNNPYFu8AZYSbY97Kn8h+LoI0cJE3GrR9TeZKYCzmV0RH
+        KLfsRayeA5kn7THVf7W3DGJS4x1zUEvK/bFNdwYHNcG7hOQ3SSTrLH7RswOaf1mIi04ERp
+        g573oo/NHF95z70/+3NOpb9UdgkgynM=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-400-9hW9-9gWM06uUSep_ULxGA-1; Tue, 20 Jun 2023 10:52:31 -0400
+X-MC-Unique: 9hW9-9gWM06uUSep_ULxGA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4169729DD9A3;
+        Tue, 20 Jun 2023 14:46:34 +0000 (UTC)
+Received: from ypodemsk.tlv.csb (unknown [10.39.195.147])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 863679E9C;
+        Tue, 20 Jun 2023 14:46:25 +0000 (UTC)
+From:   Yair Podemsky <ypodemsk@redhat.com>
+To:     mtosatti@redhat.com, ppandit@redhat.com, david@redhat.com,
+        linux@armlinux.org.uk, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        hpa@zytor.com, keescook@chromium.org, paulmck@kernel.org,
+        frederic@kernel.org, will@kernel.org, peterz@infradead.org,
+        ardb@kernel.org, samitolvanen@google.com,
+        juerg.haefliger@canonical.com, arnd@arndb.de,
+        rmk+kernel@armlinux.org.uk, geert+renesas@glider.be,
+        linus.walleij@linaro.org, akpm@linux-foundation.org,
+        sebastian.reichel@collabora.com, rppt@kernel.org,
+        aneesh.kumar@linux.ibm.com, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 05/12] powerpc: add pte_free_defer() for pgtables
- sharing page
-Message-ID: <ZJGRa4zvsXfc43vB@ziepe.ca>
-References: <54cb04f-3762-987f-8294-91dafd8ebfb0@google.com>
- <5cd9f442-61da-4c3d-eca-b7f44d22aa5f@google.com>
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc:     ypodemsk@redhat.com
+Subject: [PATCH v2 0/2] send tlb_remove_table_smp_sync IPI only to necessary CPUs
+Date:   Tue, 20 Jun 2023 17:46:16 +0300
+Message-Id: <20230620144618.125703-1-ypodemsk@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5cd9f442-61da-4c3d-eca-b7f44d22aa5f@google.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Tue, Jun 20, 2023 at 12:47:54AM -0700, Hugh Dickins wrote:
-> Add powerpc-specific pte_free_defer(), to call pte_free() via call_rcu().
-> pte_free_defer() will be called inside khugepaged's retract_page_tables()
-> loop, where allocating extra memory cannot be relied upon.  This precedes
-> the generic version to avoid build breakage from incompatible pgtable_t.
-> 
-> This is awkward because the struct page contains only one rcu_head, but
-> that page may be shared between PTE_FRAG_NR pagetables, each wanting to
-> use the rcu_head at the same time: account concurrent deferrals with a
-> heightened refcount, only the first making use of the rcu_head, but
-> re-deferring if more deferrals arrived during its grace period.
+Currently the tlb_remove_table_smp_sync IPI is sent to all CPUs
+indiscriminately, this causes unnecessary work and delays notable in
+real-time use-cases and isolated cpus.
+By limiting the IPI to only be sent to cpus referencing the effected
+mm.
+a config to differentiate architectures that support mm_cpumask from
+those that don't will allow safe usage of this feature.
 
-You didn't answer my question why we can't just move the rcu to the
-actual free page?
+changes from -v1:
+- Previous version included a patch to only send the IPI to CPU's with
+context_tracking in the kernel space, this was removed due to race 
+condition concerns.
+- for archs that do not maintain mm_cpumask the mask used should be
+ cpu_online_mask (Peter Zijlstra).
+ 
+ v1: https://lore.kernel.org/all/20230404134224.137038-1-ypodemsk@redhat.com/
 
-Since PPC doesn't recycle the frags, we don't need to carefully RCU
-free each frag, we just need to RCU free the entire page when it
-becomes eventually free?
+Yair Podemsky (2):
+  arch: Introduce ARCH_HAS_CPUMASK_BITS
+  mm/mmu_gather: send tlb_remove_table_smp_sync IPI only to MM CPUs
 
-Jason
+ arch/Kconfig              |  8 ++++++++
+ arch/arm/Kconfig          |  1 +
+ arch/powerpc/Kconfig      |  1 +
+ arch/s390/Kconfig         |  1 +
+ arch/sparc/Kconfig        |  1 +
+ arch/x86/Kconfig          |  1 +
+ include/asm-generic/tlb.h |  4 ++--
+ mm/khugepaged.c           |  4 ++--
+ mm/mmu_gather.c           | 17 ++++++++++++-----
+ 9 files changed, 29 insertions(+), 9 deletions(-)
+
+-- 
+2.39.3
+
