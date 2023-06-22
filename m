@@ -2,49 +2,49 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5AC073ACFB
-	for <lists+sparclinux@lfdr.de>; Fri, 23 Jun 2023 01:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB2B73AD26
+	for <lists+sparclinux@lfdr.de>; Fri, 23 Jun 2023 01:24:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230135AbjFVXO0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 22 Jun 2023 19:14:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42364 "EHLO
+        id S231282AbjFVXYV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 22 Jun 2023 19:24:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231486AbjFVXO0 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 22 Jun 2023 19:14:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59BFA2955;
-        Thu, 22 Jun 2023 16:13:57 -0700 (PDT)
+        with ESMTP id S231368AbjFVXYU (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 22 Jun 2023 19:24:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59F331992;
+        Thu, 22 Jun 2023 16:24:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E69E6192D;
-        Thu, 22 Jun 2023 23:13:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0E3C433C0;
-        Thu, 22 Jun 2023 23:13:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E647D61710;
+        Thu, 22 Jun 2023 23:24:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1527C433C0;
+        Thu, 22 Jun 2023 23:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687475636;
-        bh=F5fKLwWsn2Ex3oJMKpK31v1vclgJv3wOl/KwcKpYG/M=;
+        s=k20201202; t=1687476258;
+        bh=9l3yT4c7WDuIVAHRSLpHtSAsORZMZ/UnIYSe9gs3Uow=;
         h=Date:From:To:Cc:Subject:From;
-        b=ucx7W2ABWTBywvvU1AWEZ1mSnVbGErmem/s7WNHKglONcK+802866X9mZvB40h7+i
-         CDuqaE6crrY8gdVxhdEthcYq2ZhQVG1CTqnzdjCcneLKgFVWVgQzTWYWF2j6REESPf
-         Le0YlrKLx8VkZRn7H3KESPzkw+J1vSy1gv1dsW5Djdqiz8YMclYV5Lkeueem1TVhyA
-         d/xYBfmgGsMVY8GxkjBmQGknX5CBNxu36mZDVghqhn0wY4SibTunxnV7/P00huAPxz
-         Q1vFpaBHEI0EAYOoqC2/n90I6RedksmmZm8e+/P5am8elM7U0nBL2HSsXV7fQwgalK
-         dIh56o1a/KMZg==
-Date:   Thu, 22 Jun 2023 17:14:51 -0600
+        b=W3NOkPNsCMY+YwGljyypyg75v94Gd2jlwQfDRAS9jcgmYQQlUoUeVbWsmlPGOZ3UQ
+         Vb9jtdUeL+kCqJ3pZYs+8KHmTNU2OlvmwZvYUbv4cZicZUlfFhn7FV/e5m4BxzHzWg
+         OT/Klv8LrZSZ9Gum4BtI6hwSyAUcrL3Ik94sPqBRigmjRTVKrOnOnz8Vc1AnNKYskR
+         KhoemsdFBkaQpFjUmjTFb1QHdlMfjgf0fjmgR5x/I2RUJoRgS1gomvl74z6NJ/Ok3e
+         TsjCVhJenROERDFCwPkBYqfubrI5ePd6yHpF0eKp6CTsQL/S1pYG73GXByeI9sRESq
+         sMNwO3i9iDXRg==
+Date:   Thu, 22 Jun 2023 17:25:13 -0600
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
 To:     "David S. Miller" <davem@davemloft.net>
 Cc:     sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         linux-hardening@vger.kernel.org
-Subject: [PATCH][next] sparc: openpromio: Address -Warray-bounds warning
-Message-ID: <ZJTV61z4+lsKlzQG@work>
+Subject: [PATCH][next] openprom: Use struct_size() helper
+Message-ID: <ZJTYWQ5NA726baWK@work>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,53 +53,40 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-One-element arrays are deprecated, and we are replacing them with flexible
-array members instead. So, replace one-element array with flexible-array
-member in struct openpromio.
+Prefer struct_size() over open-coded versions.
 
-Address the following warning found after building (with GCC-13) sparc
-with sparc64_defconfig:
-In function 'opromgetprop',
-    inlined from 'openprom_sunos_ioctl.isra' at drivers/sbus/char/openprom.c:312:11:
-drivers/sbus/char/openprom.c:141:24: warning: array subscript 1 is above array bounds of 'char[1]' [-Warray-bounds=]
-  141 |         op->oprom_array[len] = '\0';
-      |         ~~~~~~~~~~~~~~~^~~~~
-In file included from drivers/sbus/char/openprom.c:31:
-arch/sparc/include/uapi/asm/openpromio.h: In function 'openprom_sunos_ioctl.isra':
-arch/sparc/include/uapi/asm/openpromio.h:16:17: note: while referencing 'oprom_array'
-   16 |         char    oprom_array[1];         /* Holds property names and values. */
-      |                 ^~~~~~~~~~~
-
-This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
-routines on memcpy() and help us make progress towards globally
-enabling -Warray-bounds.
-
-This results in no differences in binary output.
-
-Link: https://github.com/KSPP/linux/issues/79
-Link: https://github.com/KSPP/linux/issues/322
+Link: https://github.com/KSPP/linux/issues/160
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- arch/sparc/include/uapi/asm/openpromio.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/sbus/char/openprom.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sparc/include/uapi/asm/openpromio.h b/arch/sparc/include/uapi/asm/openpromio.h
-index d4494b679e99..2a73ec77aba6 100644
---- a/arch/sparc/include/uapi/asm/openpromio.h
-+++ b/arch/sparc/include/uapi/asm/openpromio.h
-@@ -10,10 +10,9 @@
-  * were chosen to be exactly equal to the SunOS equivalents.
-  */
+diff --git a/drivers/sbus/char/openprom.c b/drivers/sbus/char/openprom.c
+index 30b9751aad30..de56c8fec373 100644
+--- a/drivers/sbus/char/openprom.c
++++ b/drivers/sbus/char/openprom.c
+@@ -76,7 +76,9 @@ static int copyin(struct openpromio __user *info, struct openpromio **opp_p)
+ 	if (bufsize > OPROMMAXPARAM)
+ 		bufsize = OPROMMAXPARAM;
  
--struct openpromio
--{
-+struct openpromio {
- 	unsigned int oprom_size;	/* Actual size of the oprom_array. */
--	char	oprom_array[1];		/* Holds property names and values. */
-+	char	oprom_array[];		/* Holds property names and values. */
- };
+-	if (!(*opp_p = kzalloc(sizeof(int) + bufsize + 1, GFP_KERNEL)))
++	*opp_p = kzalloc(struct_size(*opp_p, oprom_array, bufsize + 1),
++			 GFP_KERNEL);
++	if (!*opp_p)
+ 		return -ENOMEM;
  
- #define	OPROMMAXPARAM	4096		/* Maximum size of oprom_array. */
+ 	if (copy_from_user(&(*opp_p)->oprom_array,
+@@ -95,7 +97,9 @@ static int getstrings(struct openpromio __user *info, struct openpromio **opp_p)
+ 	if (!info || !opp_p)
+ 		return -EFAULT;
+ 
+-	if (!(*opp_p = kzalloc(sizeof(int) + OPROMMAXPARAM + 1, GFP_KERNEL)))
++	*opp_p = kzalloc(struct_size(*opp_p, oprom_array, OPROMMAXPARAM + 1),
++			 GFP_KERNEL);
++	if (!*opp_p)
+ 		return -ENOMEM;
+ 
+ 	(*opp_p)->oprom_size = 0;
 -- 
 2.34.1
 
