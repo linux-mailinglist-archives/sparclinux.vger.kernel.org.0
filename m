@@ -2,83 +2,190 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92BE7743AD8
-	for <lists+sparclinux@lfdr.de>; Fri, 30 Jun 2023 13:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92972743B8D
+	for <lists+sparclinux@lfdr.de>; Fri, 30 Jun 2023 14:07:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232460AbjF3LaV (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 30 Jun 2023 07:30:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37042 "EHLO
+        id S232480AbjF3MHJ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 30 Jun 2023 08:07:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232516AbjF3LaT (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 30 Jun 2023 07:30:19 -0400
-Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A59C210C
-        for <sparclinux@vger.kernel.org>; Fri, 30 Jun 2023 04:30:17 -0700 (PDT)
-Received: by mail-vs1-xe31.google.com with SMTP id ada2fe7eead31-44350ef5831so642221137.2
-        for <sparclinux@vger.kernel.org>; Fri, 30 Jun 2023 04:30:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688124616; x=1690716616;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=McLvC/BdAMJgehwJSCTheKdORY5tmlZPMKftPiwQpvY=;
-        b=YSLagMxxKjsJ+i3UJpuuu7la20b7p6jP+hAYJwSgJ9ztRvLVo3JezZwp5mTJ9Licah
-         mQAn4zp8RTiFEmDod4MjZX7YXl2AHbxjCHqOCgtl/Eo/qZtoRiKlUWqwDhBxvvOghk1a
-         Gqh5aGwWNbIx9NOWJQQBUd/pmELNehEc4Wjd8U/wP8hYdmKe+R3Y/7nMJzwX5E1XNBib
-         cy3O4h8ykSc/hRHVeF2co0ZIHNhNt+pB4TIvvl5d7kavZrhC0sAfvVj2WBTi/D6z7106
-         vqvnv4H0cDuM8yv780TjgOYC+rUDLplqLBzDbeHdM1V6fbmEqvvQJYlO9BHdrN3YYa82
-         sBmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688124616; x=1690716616;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=McLvC/BdAMJgehwJSCTheKdORY5tmlZPMKftPiwQpvY=;
-        b=V6Lxn09e2A6rB+14veySnVu1alsRN5xDg0cMBtzDS3lVoKPZTzUlUdQcVb+pfitj1v
-         6g9aTNyY/uVVl+FY5yXKdEsLTfyDh9k1W119bfyEMAao7URma42rH/UFKKjyzwLYDl0l
-         q1WHmVCWLphmaBKwzVSEf5HGjDoL9CeBPeOF68lfRRt+HqYH0W3znSYPnhigzxLYbBnx
-         pmuW3ggYWnHS6qRqwBzEvHVjR+5kgyDZB/FK4Uc/k9l6OrW9/iUlO4qGJEmMtyj6KcGz
-         MZlvr0BUMSUCXs6K57g2iKuCpj5QQI6JSUnvKBThdT5hVYjWnfDwtW/WU93G3ec9o9pU
-         Mciw==
-X-Gm-Message-State: ABy/qLbBySNCs8g+ofk74ZNdEwBpccm4jcDFLn3AYVd6ACiFtvbpvNBj
-        X/aSW//I+fG05Xo6FG4ILZXxojzfI7ecBibgywk=
-X-Google-Smtp-Source: APBJJlFpEbNIVmtzHcr0AbCNo+tohLFYvnGMTdGClq1GZOFiURms540G5bwsHwWtHb0nLJUICKicgcI9GjOHTJWz36k=
-X-Received: by 2002:a67:f645:0:b0:443:65d5:74c3 with SMTP id
- u5-20020a67f645000000b0044365d574c3mr1702371vso.23.1688124616706; Fri, 30 Jun
- 2023 04:30:16 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a59:503:0:b0:3ea:a0c8:8921 with HTTP; Fri, 30 Jun 2023
- 04:30:16 -0700 (PDT)
-Reply-To: stefanopessina_1@outlook.com
-From:   Stefano <margaretbeyer56@gmail.com>
-Date:   Fri, 30 Jun 2023 04:30:16 -0700
-Message-ID: <CANod5kGUe+DVcNV-hcOp9A6RychseHCrvLPPVx9Q6Fv42LpN+g@mail.gmail.com>
-Subject: Loan Offer
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        with ESMTP id S232981AbjF3MG0 (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 30 Jun 2023 08:06:26 -0400
+X-Greylist: delayed 725 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 30 Jun 2023 05:05:52 PDT
+Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com [66.111.4.221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57A41449E;
+        Fri, 30 Jun 2023 05:05:51 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailnew.nyi.internal (Postfix) with ESMTP id C8F845842A1;
+        Fri, 30 Jun 2023 07:53:45 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Fri, 30 Jun 2023 07:53:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1688126025; x=1688133225; bh=ya
+        Hy0NgB4QI7znLtjDpufXmMXzZcSHw23m7h8BkLYBc=; b=10KOp+CzUmojO7ZSQ7
+        q9c3tAJBmOd76hg6sonOk40OjKAR6/QOPiz7XUomr8IP6aN19s7N9Q20gnTBA8OU
+        H+ET1KWhVc0oqozGAYUdc7B70SAPMdGIyEmEipUjQs98dHfF9mAUgsaeXHru8OlA
+        Z6b+3BUsGbAouqrpsuvP8THkbsAzAbWArrjQjssrDfLJHYAxMJ1nD0US1BwUxLpH
+        Khsbp9i0wfMK4NjF83UPBZQU2Xe9X8o6q5JmvVGPeBGgXYJSti5i4d4Vr++XzGjN
+        1deBUgFU/w8tfA/bjpGKl2V8A3IgBHPWHWftg2j80IDtUUtjFI/5ldbjH9jVYmeY
+        G2pw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1688126025; x=1688133225; bh=yaHy0NgB4QI7z
+        nLtjDpufXmMXzZcSHw23m7h8BkLYBc=; b=VLzmPefoROKUnYgyH59xLO28GGD4n
+        I4lte/pn3WzX95H4eQRtTSBAb90fH5FqIscW92NizI9x3K9rvYkB4k9q6ajV1EbD
+        VxE8AOWeA5gd3Truhe/A9kaDx6LrP7Tl4Y9XFamiioeruNo4WJqflkjaHJ0nsHcv
+        J2r4IJGTVqOt1B1dMbybj/sbd/LzIbl5CzvfvEtuw8uPdvo7PAFEKVHhv2+1X9Xd
+        qEBjQf6xoQoJmFw77YwpNSZG5Kn1KzEpYegVmCRAHDr3owvr/EeqaPrEmVGD6Gmw
+        mfm5v+sxS/9Ml4UMUnNpdnRbqLCJ6zjTnHpvZojc13GhJnUu+kDlq3vDg==
+X-ME-Sender: <xms:SMKeZCxMqe5zxyzHHEyo_jowh1NvQkg3HAWm1oxMk5pEwCXuDt8nPQ>
+    <xme:SMKeZOQSC2GjFmKEVBEJ34bdcsM63u6r5Bbn1HzIVxPff5ENjvEYekcilieyCztL0
+    OOiy6d_8S9V2AG4VWM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeigdeggecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:SMKeZEU7QF7lH3eivuj7P9AQVrp-KepGLUxX15AeZTjz07bNrMm_5Q>
+    <xmx:SMKeZIimGJWbUJHe4AXjoJoG2-DRyW8QkepPJWqWF6Y-rgF7svHorw>
+    <xmx:SMKeZEDcwFLycbP_cRSrtSET1YHYJvelMIMgwIjYVgEhFWn2ec6cwQ>
+    <xmx:ScKeZMj8q19ja7k4QwyGQviRl-VaDcpKWJEn2nnWWhOtIymUXjLwrw>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 94900B60093; Fri, 30 Jun 2023 07:53:44 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-499-gf27bbf33e2-fm-20230619.001-gf27bbf33
+Mime-Version: 1.0
+Message-Id: <dd5aa01e-afad-48d2-bf4c-4a58b74f1644@app.fastmail.com>
+In-Reply-To: <ef7b3899-7d18-8018-47fa-aac0efaa61f4@suse.de>
+References: <20230629121952.10559-1-tzimmermann@suse.de>
+ <20230629121952.10559-8-tzimmermann@suse.de>
+ <80e3a583-805e-4e8f-a67b-ebe2e4b9a7e5@app.fastmail.com>
+ <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
+ <0dbbdfc4-0e91-4be4-9ca0-d8ba6f18453d@app.fastmail.com>
+ <ef7b3899-7d18-8018-47fa-aac0efaa61f4@suse.de>
+Date:   Fri, 30 Jun 2023 13:53:24 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Thomas Zimmermann" <tzimmermann@suse.de>,
+        "Helge Deller" <deller@gmx.de>, "Daniel Vetter" <daniel@ffwll.ch>,
+        "Dave Airlie" <airlied@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Kees Cook" <keescook@chromium.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Peter Zijlstra" <peterz@infradead.org>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        "Frederic Weisbecker" <frederic@kernel.org>,
+        "Nicholas Piggin" <npiggin@gmail.com>,
+        "Ard Biesheuvel" <ardb@kernel.org>,
+        "Sami Tolvanen" <samitolvanen@google.com>,
+        "Juerg Haefliger" <juerg.haefliger@canonical.com>
+Subject: Re: [PATCH 07/12] arch/x86: Declare edid_info in <asm/screen_info.h>
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
--- 
-Are you in need of Personal Or Business Loan If yes contact:
-stefanopessina_1@outlook.com
+On Fri, Jun 30, 2023, at 09:46, Thomas Zimmermann wrote:
+> Am 29.06.23 um 15:21 schrieb Arnd Bergmann:
+>> On Thu, Jun 29, 2023, at 15:01, Thomas Zimmermann wrote:
+>>> Am 29.06.23 um 14:35 schrieb Arnd Bergmann:
+>>>> On Thu, Jun 29, 2023, at 13:45, Thomas Zimmermann wrote:
+>
+>>>
+>>> FIRMWARE_EDID is a user-selectable feature, while ARCH_HAS_EDID_INFO
+>>> announces an architecture feature. They do different things.
+>> 
+>> I still have trouble seeing the difference.
+>
+> The idea here is that ARCH_HAS_ signals the architecture's support for 
+> the feature.  Drivers set 'depends on' in their Kconfig.
+>
+> Another Kconfig token, VIDEO_SCREEN_INFO or FIRMWARE_EDID, would then 
+> actually enable the feature.  Drivers select VIDEO_SCREEN_INFO or 
+> FIRMWARE_EDID and the architectures contains code like
 
-Name
-Country
-Amount
-Duration
-Phone
+Fair enough. In that case, I guess FIRMWARE_EDID will just depend on
+ARCH_HAS_EDID_INFO, or possibly "depends on FIRMWARE_EDID || EFI"
+after it starts calling into an EFI specific function, right?
 
-Direct your reply to stefanopessina_1@outlook.com
+> #ifdef VIDEO_SCREEN_INFO
+> struct screen_info screen_info = {
+> 	/* set values here */
+> }
+> #endif
+>
+> This allows us to disable code that requires screen_info/edid_info, but 
+> also disable screen_info/edid_info unless such code has been enabled in 
+> the kernel config.
+>
+> Some architectures currently mimic this by guarding screen_info with 
+> ifdef CONFIG_VT or similar. I'd like to make this more flexible. The 
+> cost of a few more internal Kconfig tokens seems negligible.
 
-Regards
+I definitely get it for the screen_info, which needs the complexity.
+For ARCHARCH_HAS_EDID_INFO I would hope that it's never selected by
+anything other than x86, so I would still go with just a dependency
+on x86 for simplicity, but I don't mind having the extra symbol if that
+keeps it more consistent with how the screen_info is handled.
 
-Stefano.
+>> I suppose you could use FIRMWARE_EDID on EFI or OF systems without
+>> the need for a global edid_info structure, but that would not
+>> share any code with the current fb_firmware_edid() function.
+>
+> The current code is build on top of screen_info and edid_info. I'd 
+> preferably not replace that, if possible.
+
+One way I could imagine this looking in the end would be
+something like
+
+struct screen_info *fb_screen_info(struct device *dev)
+{
+      struct screen_info *si = NULL;
+
+      if (IS_ENABLED(CONFIG_EFI))
+            si = efi_get_screen_info(dev);
+
+      if (IS_ENABLED(CONFIG_ARCH_HAS_SCREEN_INFO) && !si)
+            si = screen_info;
+
+      return si;
+}
+
+corresponding to fb_firmware_edid(). With this, any driver
+that wants to access screen_info would call this function
+instead of using the global pointer, plus either NULL pointer
+check or a CONFIG_ARCH_HAS_SCREEN_INFO dependency.
+
+This way we could completely eliminate the global screen_info
+on arm64, riscv, and loongarch but still use the efi and
+hyperv framebuffer/drm drivers.
+
+    Arnd
