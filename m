@@ -2,179 +2,76 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F23574FE7D
-	for <lists+sparclinux@lfdr.de>; Wed, 12 Jul 2023 06:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA6B974FFDE
+	for <lists+sparclinux@lfdr.de>; Wed, 12 Jul 2023 09:07:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231728AbjGLEs5 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 12 Jul 2023 00:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58388 "EHLO
+        id S231202AbjGLHHT (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 12 Jul 2023 03:07:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230285AbjGLEs4 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 12 Jul 2023 00:48:56 -0400
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 916DE100
-        for <sparclinux@vger.kernel.org>; Tue, 11 Jul 2023 21:48:54 -0700 (PDT)
-Received: by mail-qk1-x72e.google.com with SMTP id af79cd13be357-765a5b93b5bso611467685a.3
-        for <sparclinux@vger.kernel.org>; Tue, 11 Jul 2023 21:48:54 -0700 (PDT)
+        with ESMTP id S230241AbjGLHHS (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 12 Jul 2023 03:07:18 -0400
+Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA57B1
+        for <sparclinux@vger.kernel.org>; Wed, 12 Jul 2023 00:07:17 -0700 (PDT)
+Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-1b38121a011so5390102fac.2
+        for <sparclinux@vger.kernel.org>; Wed, 12 Jul 2023 00:07:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689137333; x=1691729333;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=V0zmjk3m732t/eWPq5qXNEJLvruggBsecgrKanNe5l4=;
-        b=tAltrJ8qMr5yXVnQZuMMmsi4IPuKxAEYvXvmeooSI3v5NqdP6qPUWbcm4zb7tBU4h0
-         936uy7Nm9V74iqdYDFyZwMLGwgOGnmghXNT5lAvkazM3oPgRlzOU3kBQMNJKMKWtzkws
-         ZatO7SnXXoLC90BYBdzQ4WBYmqP0ctRk/0Hc+tF1GdsKEFAQeyvKQs86n+DiFjeYhpmk
-         XRCMyCpcHGCSuZBRElORlA2grjvaFnRdFuAQT1Yla1Xs8yZi7vEIkUka7t7lT4f5IA/C
-         Nz/zbna6jWOHljpIWs1q8ROPrfRJMrX036XcNg8uGpFIBpPpSv0XdZ4EIxr1ptLpLNuX
-         DVDQ==
+        d=gmail.com; s=20221208; t=1689145637; x=1691737637;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f1ViolND3wkoes1QthBmyxMEvqbmFO9WyQp/Qum2Iq0=;
+        b=rCxPRY/IeD9aKMr8U1YLGrmnsi6QwoGQ14NaLnByZWuAgEANbotIPvEh5ChacWj2Wk
+         iaH+gAG9dsyOzipBq80G10RAaHHkJ01IxbQJhJ/cl6mmPp3xkLuDNKxgVtMWENOCT2fS
+         yYJ5iJV+WiskE/31iuYGuJDMyvHD8aRJfYvx9kR6Ci+U2+v7oEVn72Il5TU1SQNE7yEd
+         E7fjgJSZbdKdIP2C3iIVQwi+HtF0Jm1F85V8hcVXLbMhaofULOEzEh8xr4SqDSb9PfuH
+         m9VxwcUOVUw52ISL2+ZDUrI2bJatepnPtu6ZeAZTRV0oAKaLB+kb9KfS584NyMkWysXr
+         q+hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689137333; x=1691729333;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V0zmjk3m732t/eWPq5qXNEJLvruggBsecgrKanNe5l4=;
-        b=c9tzd+eMon0rrSuFx1b8p6LSH/qULzK9RO3txw0ugW6bBAAS5fvW7IU0koYR7N+DN/
-         hopMLbFNLJzhZnBjTDm+L6aJZtW6NnSZ160mIS0K1zyC1k6E+nOKMpQDg35R+2qbReaZ
-         Q3vktEchLxIcXto8yBn6WC2dz6rElVfcegfHzWrFXn0Oe5kjKEy3M89+07glkx8273+f
-         H8BgaIvM32tyMAcYW7dUX9frBt691qMX0okA6kXNZQLjYoCyzEWxCMp4jbX2ivEi8z/H
-         rqDxBecMi5vAqV94SWIGGdVvSrVgkgGNCd6KlLrL3Aqmq7tzdChXiNiz14EYSth43N2f
-         uvsg==
-X-Gm-Message-State: ABy/qLarWHski2VJ1OJIYJFnMC9TZ4N8VR1dkwnf0ojK2wdSttlVXuIf
-        pk6irEqornrYjA4HZLcqrhaqPA==
-X-Google-Smtp-Source: APBJJlEFW7pAKJkrMMZ7so7H+6qQo4Zhl/O905ULRzoeoCUXWypLVpWBJRwEwG5/0JeTCh7gTt6reA==
-X-Received: by 2002:a05:620a:404e:b0:767:3fa7:2ae9 with SMTP id i14-20020a05620a404e00b007673fa72ae9mr19722823qko.12.1689137333537;
-        Tue, 11 Jul 2023 21:48:53 -0700 (PDT)
-Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id m124-20020a817182000000b0056d0709e0besm972906ywc.129.2023.07.11.21.48.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 21:48:53 -0700 (PDT)
-Date:   Tue, 11 Jul 2023 21:48:48 -0700 (PDT)
-From:   Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@ripple.attlocal.net
-To:     Andrew Morton <akpm@linux-foundation.org>
-cc:     Mike Kravetz <mike.kravetz@oracle.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        David Hildenbrand <david@redhat.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Yang Shi <shy828301@gmail.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Peter Xu <peterx@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>, Yu Zhao <yuzhao@google.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Ralph Campbell <rcampbell@nvidia.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Steven Price <steven.price@arm.com>,
-        SeongJae Park <sj@kernel.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Huang Ying <ying.huang@intel.com>,
-        Naoya Horiguchi <naoya.horiguchi@nec.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Zack Rusin <zackr@vmware.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Miaohe Lin <linmiaohe@huawei.com>,
-        Minchan Kim <minchan@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Song Liu <song@kernel.org>,
-        Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Jann Horn <jannh@google.com>,
-        Vishal Moola <vishal.moola@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
-        linux-arm-kernel@lists.infradead.org, sparclinux@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH mm 12/13] mm: delete mmap_write_trylock() and
- vma_try_start_write()
-In-Reply-To: <728dae79-5110-e3c4-df27-ce3df525aaef@google.com>
-Message-ID: <4e6db3d-e8e-73fb-1f2a-8de2dab2a87c@google.com>
-References: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com> <728dae79-5110-e3c4-df27-ce3df525aaef@google.com>
+        d=1e100.net; s=20221208; t=1689145637; x=1691737637;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f1ViolND3wkoes1QthBmyxMEvqbmFO9WyQp/Qum2Iq0=;
+        b=RALUVRy8xEBoA0HorH80dtN0FRp9o462/AmMbJB4Tc518ssDyzileIVPKq+J/0p0c3
+         6j5RPz0gBCtItWxaE1lhyuN4kt643x3T+lGMsiS8YBG4837BG/0rCdbW8QzVgHUVEnvz
+         lqw4P6mEpIzzPneIi+5F5KRvEgo3xyN+/nEpqtUXCaURrUDyhif+jGlJ0bJFoCPpwXgD
+         dQZGf6H99H6XkcbfNNO1zv4eyVpaZreFkYNmANtJKRr1eLJvPb6aKpe+U2blWd7jWgzm
+         EttH8VujZJzAa+g8b6LnWRyGnT3EXaYISrGWt5z8x8ZgHDNzzTWuAOrsp7SWUS4g5j7U
+         soUg==
+X-Gm-Message-State: ABy/qLYXclOG0ah/NHPch9yUO21C3qDufOLVe0HcA9h2WtDNmzgsV9DF
+        OY5GMg6Jp/lBYDRUw7knLx6kAFnIiBg33lT9czQ=
+X-Google-Smtp-Source: APBJJlHYdQ48NZb3UJ6sTzYPV9FNC4iexCPvVgysjtlmcCMDLydfGKKsLRXRj4p5nb67/0dPKdUNy5E6Q+YpwwutiiA=
+X-Received: by 2002:a05:6870:5692:b0:1b0:3821:f09e with SMTP id
+ p18-20020a056870569200b001b03821f09emr16209545oao.18.1689145636899; Wed, 12
+ Jul 2023 00:07:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:a05:6359:6086:b0:134:74b6:809c with HTTP; Wed, 12 Jul 2023
+ 00:07:16 -0700 (PDT)
+Reply-To: ninacoulibaly03@hotmail.com
+From:   nina coulibaly <ninacoulibaly10.info@gmail.com>
+Date:   Wed, 12 Jul 2023 07:07:16 +0000
+Message-ID: <CAMnOr-oh8vUZoXn7nr554WSx-B61-=pWKeY=wPSyfyyP2rU2vg@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-mmap_write_trylock() and vma_try_start_write() were added just for
-khugepaged, but now it has no use for them: delete.
+Dear ,
 
-Signed-off-by: Hugh Dickins <hughd@google.com>
----
-This is the version which applies to mm-unstable or linux-next.
+Please grant me the permission to share important discussion with
+you.I am looking forward to hearing from you at your earliest
+convenience.
 
- include/linux/mm.h        | 17 -----------------
- include/linux/mmap_lock.h | 10 ----------
- 2 files changed, 27 deletions(-)
+Best Regards.
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -692,21 +692,6 @@ static inline void vma_start_write(struc
- 	up_write(&vma->vm_lock->lock);
- }
- 
--static inline bool vma_try_start_write(struct vm_area_struct *vma)
--{
--	int mm_lock_seq;
--
--	if (__is_vma_write_locked(vma, &mm_lock_seq))
--		return true;
--
--	if (!down_write_trylock(&vma->vm_lock->lock))
--		return false;
--
--	vma->vm_lock_seq = mm_lock_seq;
--	up_write(&vma->vm_lock->lock);
--	return true;
--}
--
- static inline void vma_assert_locked(struct vm_area_struct *vma)
- {
- 	int mm_lock_seq;
-@@ -758,8 +743,6 @@ static inline bool vma_start_read(struct
- 		{ return false; }
- static inline void vma_end_read(struct vm_area_struct *vma) {}
- static inline void vma_start_write(struct vm_area_struct *vma) {}
--static inline bool vma_try_start_write(struct vm_area_struct *vma)
--		{ return true; }
- static inline void vma_assert_write_locked(struct vm_area_struct *vma) {}
- static inline void vma_mark_detached(struct vm_area_struct *vma,
- 				     bool detached) {}
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -112,16 +112,6 @@ static inline int mmap_write_lock_killab
- 	return ret;
- }
- 
--static inline bool mmap_write_trylock(struct mm_struct *mm)
--{
--	bool ret;
--
--	__mmap_lock_trace_start_locking(mm, true);
--	ret = down_write_trylock(&mm->mmap_lock) != 0;
--	__mmap_lock_trace_acquire_returned(mm, true, ret);
--	return ret;
--}
--
- static inline void mmap_write_unlock(struct mm_struct *mm)
- {
- 	__mmap_lock_trace_released(mm, true);
+Mrs Nina Coulibaly
