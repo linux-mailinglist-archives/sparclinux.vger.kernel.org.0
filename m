@@ -2,59 +2,94 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EED57540A1
-	for <lists+sparclinux@lfdr.de>; Fri, 14 Jul 2023 19:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B40F75416E
+	for <lists+sparclinux@lfdr.de>; Fri, 14 Jul 2023 19:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235945AbjGNRlZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 14 Jul 2023 13:41:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56586 "EHLO
+        id S236756AbjGNRx4 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 14 Jul 2023 13:53:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236101AbjGNRlR (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 14 Jul 2023 13:41:17 -0400
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806D94217;
-        Fri, 14 Jul 2023 10:40:53 -0700 (PDT)
-Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3465ec72cc8so10181395ab.0;
-        Fri, 14 Jul 2023 10:40:53 -0700 (PDT)
+        with ESMTP id S236499AbjGNRxm (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 14 Jul 2023 13:53:42 -0400
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899EB3C0F;
+        Fri, 14 Jul 2023 10:53:04 -0700 (PDT)
+Received: by mail-il1-x136.google.com with SMTP id e9e14a558f8ab-3458a08310aso9710035ab.3;
+        Fri, 14 Jul 2023 10:53:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689356452; x=1691948452;
+        d=1e100.net; s=20221208; t=1689357049; x=1691949049;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CXMKUxaoJdVuKThpyxnw1WopjFcHSAjuBXw6F+dEEZg=;
-        b=TPacPvbYGGq8/Q3ME4/drBSRXBOurSfVcl9YazDbTm3Vdr5hJt5HPeyea87hgKpK42
-         HZ/D17m8Pdzg/FbAQg0DdCA8iGsuTLJ/yMXKVBsHuXngRUiDlELCzUlyNhqjsTtdDKQE
-         Kavml9fCbihHCFd8Wwl0tXOjfrr1FeK2w6eBaa9heTJHylX6kz+bcP5HTmD7BO8vqEvg
-         xhvt9LYbmlHSd17v+IQxkNfxUyAHtNYyYmFw9OJOL0FlLwNzupidlPtZ0iHdc6RRqiNr
-         oKdcyl2GFMPfp5AWNkwzBbqrjUbdzDuwRMF0FeX1SN2KZ8Mlk6pgjQZI+RUyIrzmOCkv
-         fkHg==
-X-Gm-Message-State: ABy/qLbIC2uAF5PYjBNOfOrxpTaOkXSpCJu03tzbO6qwpIhmhUmb1tyS
-        w0pNbISQi5o06vapTEQcYzpZGRBmVw==
-X-Google-Smtp-Source: APBJJlG6CBStNwYWoQBlrAwomM+ldpZiejo2s+nE3X/4kN4YdcfHvYo1KJt+l/iurPs7/rXKsIjz/g==
-X-Received: by 2002:a92:d181:0:b0:341:e2aa:3552 with SMTP id z1-20020a92d181000000b00341e2aa3552mr4846643ilz.4.1689356452587;
-        Fri, 14 Jul 2023 10:40:52 -0700 (PDT)
+        bh=iaw00yMxGJGRJdIygNJuXQl3uxTjHBXTV1DPEy5+uDw=;
+        b=CBhXIXHRZyvDDOh36JH/ADPb6D1E4nAOJUMHEvfuN92/PDA4rAYLY77ExTMlBQx+a9
+         H3n0DVjE/wIP9oEPRqvSGt4LpM3N+owxrv61axuoQImk73mgI7p96VpLQJqmU3OYeJj3
+         UiZ/B57wrzbMp+LHPvbCOTRAHIxKdXKpXIirpEGAfenrBln0dSk/e++eSepyuWA/VA/r
+         0m5zi4KLz6jHrn5eBU2j1/NkJ/5MHZOqSK2Ky7XmmwQBO13OImEnbBrHUbuCYpLAzsVE
+         OWzWuf58SO0er1V+N5PasszUl7o4mzd1zDLkmS5phJrX53Tz2h6+NJJFo3RliLBrH42t
+         XFjg==
+X-Gm-Message-State: ABy/qLaFJyhhDCzTcl4SBhKqBc0x4dJymNI1fzJ5wc2hytj1ZZs1yEci
+        RztPDwhV+ZboQQSGJ9LDaQ==
+X-Google-Smtp-Source: APBJJlEhNUc2vuMNMCUh8zw4wj/1hFpPNMRrjB7AN15Zunw1zSYsxrlp1muY9M9wVP9ot13KbIk8Jw==
+X-Received: by 2002:a92:ce0d:0:b0:342:512a:ccec with SMTP id b13-20020a92ce0d000000b00342512accecmr4305890ilo.31.1689357048989;
+        Fri, 14 Jul 2023 10:50:48 -0700 (PDT)
 Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id f3-20020a056638022300b0042b39b2289asm2825851jaq.102.2023.07.14.10.40.51
+        by smtp.gmail.com with ESMTPSA id e7-20020a056638020700b0042b03d40279sm2814768jaq.80.2023.07.14.10.50.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jul 2023 10:40:51 -0700 (PDT)
-Received: (nullmailer pid 4040813 invoked by uid 1000);
-        Fri, 14 Jul 2023 17:40:50 -0000
+        Fri, 14 Jul 2023 10:50:48 -0700 (PDT)
+Received: (nullmailer pid 4064914 invoked by uid 1000);
+        Fri, 14 Jul 2023 17:50:18 -0000
 From:   Rob Herring <robh@kernel.org>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     devicetree@vger.kernel.org, linux-crypto@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] sparc: Explicitly include correct DT includes
-Date:   Fri, 14 Jul 2023 11:40:46 -0600
-Message-Id: <20230714174048.4040702-1-robh@kernel.org>
+To:     Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Richard Genoud <richard.genoud@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Karol Gugala <kgugala@antmicro.com>,
+        Mateusz Holenko <mholenko@antmicro.com>,
+        Gabriel Somlo <gsomlo@gmail.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Jacky Huang <ychuang3@nuvoton.com>,
+        Shan-Chun Hung <schung@nuvoton.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Peter Korsgaard <jacmet@sunsite.dk>,
+        Timur Tabi <timur@kernel.org>
+Cc:     devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Subject: [PATCH] tty: Explicitly include correct DT includes
+Date:   Fri, 14 Jul 2023 11:50:11 -0600
+Message-Id: <20230714175013.4064763-1-robh@kernel.org>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -72,489 +107,420 @@ explicitly include the correct includes.
 
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- arch/sparc/crypto/crop_devid.c       | 2 +-
- arch/sparc/include/asm/floppy_32.h   | 2 +-
- arch/sparc/include/asm/floppy_64.h   | 2 +-
- arch/sparc/include/asm/parport.h     | 3 ++-
- arch/sparc/kernel/apc.c              | 2 +-
- arch/sparc/kernel/auxio_32.c         | 1 -
- arch/sparc/kernel/auxio_64.c         | 3 ++-
- arch/sparc/kernel/central.c          | 2 +-
- arch/sparc/kernel/chmc.c             | 3 ++-
- arch/sparc/kernel/ioport.c           | 2 +-
- arch/sparc/kernel/leon_kernel.c      | 2 --
- arch/sparc/kernel/leon_pci.c         | 3 ++-
- arch/sparc/kernel/leon_pci_grpci1.c  | 3 ++-
- arch/sparc/kernel/leon_pci_grpci2.c  | 4 +++-
- arch/sparc/kernel/of_device_32.c     | 1 +
- arch/sparc/kernel/of_device_64.c     | 2 ++
- arch/sparc/kernel/of_device_common.c | 3 ++-
- arch/sparc/kernel/pci.c              | 3 ++-
- arch/sparc/kernel/pci_common.c       | 3 ++-
- arch/sparc/kernel/pci_fire.c         | 3 ++-
- arch/sparc/kernel/pci_impl.h         | 1 -
- arch/sparc/kernel/pci_msi.c          | 2 ++
- arch/sparc/kernel/pci_psycho.c       | 4 +++-
- arch/sparc/kernel/pci_sun4v.c        | 3 ++-
- arch/sparc/kernel/pmc.c              | 2 +-
- arch/sparc/kernel/power.c            | 3 ++-
- arch/sparc/kernel/prom_irqtrans.c    | 1 +
- arch/sparc/kernel/psycho_common.c    | 1 +
- arch/sparc/kernel/sbus.c             | 3 ++-
- arch/sparc/kernel/time_32.c          | 1 -
- arch/sparc/mm/io-unit.c              | 3 ++-
- arch/sparc/mm/iommu.c                | 5 +++--
- 32 files changed, 49 insertions(+), 29 deletions(-)
+ drivers/tty/hvc/hvc_opal.c             | 2 +-
+ drivers/tty/serial/8250/8250_early.c   | 1 -
+ drivers/tty/serial/8250/8250_ingenic.c | 1 -
+ drivers/tty/serial/8250/8250_omap.c    | 1 -
+ drivers/tty/serial/amba-pl011.c        | 2 +-
+ drivers/tty/serial/apbuart.c           | 3 ---
+ drivers/tty/serial/atmel_serial.c      | 1 -
+ drivers/tty/serial/fsl_linflexuart.c   | 2 +-
+ drivers/tty/serial/fsl_lpuart.c        | 2 +-
+ drivers/tty/serial/imx.c               | 1 -
+ drivers/tty/serial/lantiq.c            | 3 ++-
+ drivers/tty/serial/liteuart.c          | 3 +--
+ drivers/tty/serial/ma35d1_serial.c     | 2 +-
+ drivers/tty/serial/mps2-uart.c         | 1 -
+ drivers/tty/serial/mxs-auart.c         | 2 +-
+ drivers/tty/serial/pic32_uart.c        | 1 -
+ drivers/tty/serial/qcom_geni_serial.c  | 1 -
+ drivers/tty/serial/serial-tegra.c      | 1 -
+ drivers/tty/serial/sh-sci.c            | 1 -
+ drivers/tty/serial/sunhv.c             | 4 ++--
+ drivers/tty/serial/sunsab.c            | 3 ++-
+ drivers/tty/serial/sunsu.c             | 4 ++--
+ drivers/tty/serial/sunzilog.c          | 4 ++--
+ drivers/tty/serial/tegra-tcu.c         | 1 -
+ drivers/tty/serial/uartlite.c          | 3 ---
+ drivers/tty/serial/ucc_uart.c          | 3 ++-
+ drivers/tty/serial/vt8500_serial.c     | 2 +-
+ 27 files changed, 20 insertions(+), 35 deletions(-)
 
-diff --git a/arch/sparc/crypto/crop_devid.c b/arch/sparc/crypto/crop_devid.c
-index 83fc4536dcd5..93f4e0fdd38c 100644
---- a/arch/sparc/crypto/crop_devid.c
-+++ b/arch/sparc/crypto/crop_devid.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
-+#include <linux/mod_devicetable.h>
+diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
+index 794c7b18aa06..992e199e0ea8 100644
+--- a/drivers/tty/hvc/hvc_opal.c
++++ b/drivers/tty/hvc/hvc_opal.c
+@@ -14,7 +14,7 @@
+ #include <linux/console.h>
+ #include <linux/of.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/export.h>
+ #include <linux/interrupt.h>
+ 
+diff --git a/drivers/tty/serial/8250/8250_early.c b/drivers/tty/serial/8250/8250_early.c
+index 4299a8bd83d9..9837a27739fd 100644
+--- a/drivers/tty/serial/8250/8250_early.c
++++ b/drivers/tty/serial/8250/8250_early.c
+@@ -27,7 +27,6 @@
+ #include <linux/init.h>
+ #include <linux/console.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/serial_reg.h>
+ #include <linux/serial.h>
+ #include <linux/serial_8250.h>
+diff --git a/drivers/tty/serial/8250/8250_ingenic.c b/drivers/tty/serial/8250/8250_ingenic.c
+index 617b8ce60d6b..4c4c4da73ad0 100644
+--- a/drivers/tty/serial/8250/8250_ingenic.c
++++ b/drivers/tty/serial/8250/8250_ingenic.c
+@@ -13,7 +13,6 @@
  #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
 -#include <linux/of_device.h>
- 
- /* This is a dummy device table linked into all of the crypto
-  * opcode drivers.  It serves to trigger the module autoloading
-diff --git a/arch/sparc/include/asm/floppy_32.h b/arch/sparc/include/asm/floppy_32.h
-index e10ab9ad3097..836f6575aa1d 100644
---- a/arch/sparc/include/asm/floppy_32.h
-+++ b/arch/sparc/include/asm/floppy_32.h
-@@ -8,7 +8,7 @@
- #define __ASM_SPARC_FLOPPY_H
- 
+ #include <linux/platform_device.h>
+ #include <linux/serial_8250.h>
+ #include <linux/serial_core.h>
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index d48a82f1634e..26dd089d8e82 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -18,7 +18,6 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
  #include <linux/of.h>
 -#include <linux/of_device.h>
-+#include <linux/of_platform.h>
- #include <linux/pgtable.h>
- 
- #include <asm/idprom.h>
-diff --git a/arch/sparc/include/asm/floppy_64.h b/arch/sparc/include/asm/floppy_64.h
-index 070c8c1f5c8f..6efeb24b0a92 100644
---- a/arch/sparc/include/asm/floppy_64.h
-+++ b/arch/sparc/include/asm/floppy_64.h
+ #include <linux/of_gpio.h>
+ #include <linux/of_irq.h>
+ #include <linux/delay.h>
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index c5c3f4674459..a1e594b79890 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -20,6 +20,7 @@
+ #include <linux/ioport.h>
+ #include <linux/init.h>
+ #include <linux/console.h>
++#include <linux/platform_device.h>
+ #include <linux/sysrq.h>
+ #include <linux/device.h>
+ #include <linux/tty.h>
+@@ -36,7 +37,6 @@
+ #include <linux/delay.h>
+ #include <linux/types.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/sizes.h>
+ #include <linux/io.h>
+diff --git a/drivers/tty/serial/apbuart.c b/drivers/tty/serial/apbuart.c
+index 915ee4b0d594..f3defc6da3df 100644
+--- a/drivers/tty/serial/apbuart.c
++++ b/drivers/tty/serial/apbuart.c
+@@ -22,9 +22,6 @@
+ #include <linux/kthread.h>
+ #include <linux/device.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+-#include <linux/of_platform.h>
+-#include <linux/of_irq.h>
+ #include <linux/platform_device.h>
+ #include <linux/io.h>
+ #include <linux/serial_core.h>
+diff --git a/drivers/tty/serial/atmel_serial.c b/drivers/tty/serial/atmel_serial.c
+index 3467a875641a..7ac477344aa3 100644
+--- a/drivers/tty/serial/atmel_serial.c
++++ b/drivers/tty/serial/atmel_serial.c
+@@ -21,7 +21,6 @@
+ #include <linux/tty_flip.h>
+ #include <linux/platform_device.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dmaengine.h>
+ #include <linux/atmel_pdc.h>
+diff --git a/drivers/tty/serial/fsl_linflexuart.c b/drivers/tty/serial/fsl_linflexuart.c
+index 6fc21b6684e6..f697751c2ad5 100644
+--- a/drivers/tty/serial/fsl_linflexuart.c
++++ b/drivers/tty/serial/fsl_linflexuart.c
 @@ -11,7 +11,7 @@
- #define __ASM_SPARC64_FLOPPY_H
- 
+ #include <linux/irq.h>
+ #include <linux/module.h>
  #include <linux/of.h>
 -#include <linux/of_device.h>
-+#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/serial_core.h>
+ #include <linux/slab.h>
+ #include <linux/tty_flip.h>
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index 4d80fae20177..e1a8d5415718 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -18,9 +18,9 @@
+ #include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/of_dma.h>
+ #include <linux/pinctrl/consumer.h>
++#include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/serial_core.h>
+ #include <linux/slab.h>
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 7341d060f85c..3ed5083a7108 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -25,7 +25,6 @@
+ #include <linux/rational.h>
+ #include <linux/slab.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/io.h>
  #include <linux/dma-mapping.h>
  
- #include <asm/auxio.h>
-diff --git a/arch/sparc/include/asm/parport.h b/arch/sparc/include/asm/parport.h
-index 03b27090c0c8..0a7ffcfd59cd 100644
---- a/arch/sparc/include/asm/parport.h
-+++ b/arch/sparc/include/asm/parport.h
-@@ -7,7 +7,8 @@
- #ifndef _ASM_SPARC64_PARPORT_H
- #define _ASM_SPARC64_PARPORT_H 1
- 
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/ebus_dma.h>
- #include <asm/ns87303.h>
-diff --git a/arch/sparc/kernel/apc.c b/arch/sparc/kernel/apc.c
-index ecd05bc0a104..d44725d37e30 100644
---- a/arch/sparc/kernel/apc.c
-+++ b/arch/sparc/kernel/apc.c
-@@ -13,7 +13,7 @@
- #include <linux/miscdevice.h>
- #include <linux/pm.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
-+#include <linux/platform_device.h>
- #include <linux/module.h>
- 
- #include <asm/io.h>
-diff --git a/arch/sparc/kernel/auxio_32.c b/arch/sparc/kernel/auxio_32.c
-index a32d588174f2..989860e890c4 100644
---- a/arch/sparc/kernel/auxio_32.c
-+++ b/arch/sparc/kernel/auxio_32.c
-@@ -8,7 +8,6 @@
- #include <linux/init.h>
- #include <linux/spinlock.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/export.h>
- 
- #include <asm/oplib.h>
-diff --git a/arch/sparc/kernel/auxio_64.c b/arch/sparc/kernel/auxio_64.c
-index 774a82b0c649..2a2800d21325 100644
---- a/arch/sparc/kernel/auxio_64.c
-+++ b/arch/sparc/kernel/auxio_64.c
-@@ -10,7 +10,8 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
+diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
+index bcaa479608d8..3adb60c683f7 100644
+--- a/drivers/tty/serial/lantiq.c
++++ b/drivers/tty/serial/lantiq.c
+@@ -17,7 +17,8 @@
  #include <linux/ioport.h>
--#include <linux/of_device.h>
+ #include <linux/lantiq.h>
+ #include <linux/module.h>
+-#include <linux/of_platform.h>
 +#include <linux/of.h>
 +#include <linux/platform_device.h>
- 
- #include <asm/prom.h>
- #include <asm/io.h>
-diff --git a/arch/sparc/kernel/central.c b/arch/sparc/kernel/central.c
-index 23f8838dd96e..a1a6485c9183 100644
---- a/arch/sparc/kernel/central.c
-+++ b/arch/sparc/kernel/central.c
-@@ -10,7 +10,7 @@
- #include <linux/export.h>
- #include <linux/string.h>
- #include <linux/init.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- 
- #include <asm/fhc.h>
-diff --git a/arch/sparc/kernel/chmc.c b/arch/sparc/kernel/chmc.c
-index 6ff43df740e0..d5fad5fb04c1 100644
---- a/arch/sparc/kernel/chmc.c
-+++ b/arch/sparc/kernel/chmc.c
-@@ -15,7 +15,8 @@
- #include <linux/errno.h>
- #include <linux/init.h>
+ #include <linux/serial.h>
+ #include <linux/serial_core.h>
+ #include <linux/slab.h>
+diff --git a/drivers/tty/serial/liteuart.c b/drivers/tty/serial/liteuart.c
+index 80de3a42b67b..d881cdd2a58f 100644
+--- a/drivers/tty/serial/liteuart.c
++++ b/drivers/tty/serial/liteuart.c
+@@ -11,8 +11,7 @@
+ #include <linux/litex.h>
+ #include <linux/module.h>
  #include <linux/of.h>
--#include <linux/of_device.h>
-+#include <linux/of_platform.h>
+-#include <linux/of_address.h>
+-#include <linux/of_platform.h>
 +#include <linux/platform_device.h>
- #include <asm/spitfire.h>
- #include <asm/chmctrl.h>
- #include <asm/cpudata.h>
-diff --git a/arch/sparc/kernel/ioport.c b/arch/sparc/kernel/ioport.c
-index a8cbe403301f..5ebca5c7af1e 100644
---- a/arch/sparc/kernel/ioport.c
-+++ b/arch/sparc/kernel/ioport.c
-@@ -39,7 +39,7 @@
- #include <linux/seq_file.h>
- #include <linux/scatterlist.h>
- #include <linux/dma-map-ops.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- 
- #include <asm/io.h>
- #include <asm/vaddrs.h>
-diff --git a/arch/sparc/kernel/leon_kernel.c b/arch/sparc/kernel/leon_kernel.c
-index 39229940d725..4c61da491fee 100644
---- a/arch/sparc/kernel/leon_kernel.c
-+++ b/arch/sparc/kernel/leon_kernel.c
-@@ -8,9 +8,7 @@
- #include <linux/errno.h>
- #include <linux/mutex.h>
+ #include <linux/serial.h>
+ #include <linux/serial_core.h>
+ #include <linux/slab.h>
+diff --git a/drivers/tty/serial/ma35d1_serial.c b/drivers/tty/serial/ma35d1_serial.c
+index 2604b4d9fb78..789593495a80 100644
+--- a/drivers/tty/serial/ma35d1_serial.c
++++ b/drivers/tty/serial/ma35d1_serial.c
+@@ -8,7 +8,7 @@
+ #include <linux/clk.h>
+ #include <linux/delay.h>
  #include <linux/of.h>
 -#include <linux/of_platform.h>
- #include <linux/interrupt.h>
--#include <linux/of_device.h>
- #include <linux/clocksource.h>
- #include <linux/clockchips.h>
- 
-diff --git a/arch/sparc/kernel/leon_pci.c b/arch/sparc/kernel/leon_pci.c
-index b6663a3fbae9..8de6646e9ce8 100644
---- a/arch/sparc/kernel/leon_pci.c
-+++ b/arch/sparc/kernel/leon_pci.c
-@@ -7,7 +7,8 @@
-  * Code is partially derived from pcic.c
-  */
- 
--#include <linux/of_device.h>
-+#include <linux/of.h>
 +#include <linux/platform_device.h>
- #include <linux/kernel.h>
- #include <linux/pci.h>
- #include <linux/export.h>
-diff --git a/arch/sparc/kernel/leon_pci_grpci1.c b/arch/sparc/kernel/leon_pci_grpci1.c
-index e6935d0ac1ec..8700a0e3b0df 100644
---- a/arch/sparc/kernel/leon_pci_grpci1.c
-+++ b/arch/sparc/kernel/leon_pci_grpci1.c
-@@ -13,10 +13,11 @@
-  * Contributors: Daniel Hellstrom <daniel@gaisler.com>
-  */
- 
--#include <linux/of_device.h>
- #include <linux/export.h>
- #include <linux/kernel.h>
-+#include <linux/of.h>
- #include <linux/of_irq.h>
-+#include <linux/platform_device.h>
- #include <linux/delay.h>
- #include <linux/pci.h>
- 
-diff --git a/arch/sparc/kernel/leon_pci_grpci2.c b/arch/sparc/kernel/leon_pci_grpci2.c
-index ca22f93d9045..60b6bdf7761f 100644
---- a/arch/sparc/kernel/leon_pci_grpci2.c
-+++ b/arch/sparc/kernel/leon_pci_grpci2.c
-@@ -6,12 +6,14 @@
-  *
-  */
- 
--#include <linux/of_device.h>
- #include <linux/kernel.h>
- #include <linux/pci.h>
+ #include <linux/iopoll.h>
+ #include <linux/serial_core.h>
  #include <linux/slab.h>
+diff --git a/drivers/tty/serial/mps2-uart.c b/drivers/tty/serial/mps2-uart.c
+index 860d161fa594..5da88cbeec73 100644
+--- a/drivers/tty/serial/mps2-uart.c
++++ b/drivers/tty/serial/mps2-uart.c
+@@ -16,7 +16,6 @@
+ #include <linux/console.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+-#include <linux/of_device.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/serial_core.h>
+diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
+index a368f4293967..3974ca6ad86c 100644
+--- a/drivers/tty/serial/mxs-auart.c
++++ b/drivers/tty/serial/mxs-auart.c
+@@ -30,7 +30,7 @@
+ #include <linux/clk.h>
  #include <linux/delay.h>
- #include <linux/export.h>
+ #include <linux/io.h>
+-#include <linux/of_device.h>
 +#include <linux/of.h>
-+#include <linux/platform_device.h>
-+
- #include <asm/io.h>
- #include <asm/leon.h>
- #include <asm/vaddrs.h>
-diff --git a/arch/sparc/kernel/of_device_32.c b/arch/sparc/kernel/of_device_32.c
-index fa05b29fa051..06012e68bdca 100644
---- a/arch/sparc/kernel/of_device_32.c
-+++ b/arch/sparc/kernel/of_device_32.c
-@@ -8,6 +8,7 @@
- #include <linux/errno.h>
- #include <linux/irq.h>
- #include <linux/of_platform.h>
-+#include <linux/platform_device.h>
  #include <linux/dma-mapping.h>
- #include <asm/leon.h>
- #include <asm/leon_amba.h>
-diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
-index c41aa82a9af3..74ce6850b531 100644
---- a/arch/sparc/kernel/of_device_64.c
-+++ b/arch/sparc/kernel/of_device_64.c
-@@ -9,7 +9,9 @@
- #include <linux/slab.h>
- #include <linux/errno.h>
- #include <linux/irq.h>
-+#include <linux/of.h>
- #include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- #include <asm/spitfire.h>
+ #include <linux/dmaengine.h>
  
- #include "of_device_common.h"
-diff --git a/arch/sparc/kernel/of_device_common.c b/arch/sparc/kernel/of_device_common.c
-index 60f86b837658..07d794c8ba3b 100644
---- a/arch/sparc/kernel/of_device_common.c
-+++ b/arch/sparc/kernel/of_device_common.c
-@@ -6,10 +6,11 @@
- #include <linux/mod_devicetable.h>
- #include <linux/errno.h>
- #include <linux/irq.h>
-+#include <linux/of.h>
- #include <linux/of_platform.h>
- #include <linux/of_address.h>
+diff --git a/drivers/tty/serial/pic32_uart.c b/drivers/tty/serial/pic32_uart.c
+index 196a4e678451..e308d5022b3f 100644
+--- a/drivers/tty/serial/pic32_uart.c
++++ b/drivers/tty/serial/pic32_uart.c
+@@ -11,7 +11,6 @@
+ #include <linux/kernel.h>
+ #include <linux/platform_device.h>
+ #include <linux/of.h>
 -#include <linux/of_device.h>
  #include <linux/of_irq.h>
-+#include <linux/platform_device.h>
- 
- #include "of_device_common.h"
- 
-diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
-index a948a49817c7..f66005ce4cb5 100644
---- a/arch/sparc/kernel/pci.c
-+++ b/arch/sparc/kernel/pci.c
-@@ -20,8 +20,9 @@
- #include <linux/irq.h>
+ #include <linux/of_gpio.h>
  #include <linux/init.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
-+#include <linux/of_platform.h>
- #include <linux/pgtable.h>
-+#include <linux/platform_device.h>
- 
- #include <linux/uaccess.h>
- #include <asm/irq.h>
-diff --git a/arch/sparc/kernel/pci_common.c b/arch/sparc/kernel/pci_common.c
-index 4759ccd542fe..5eeec9ad6845 100644
---- a/arch/sparc/kernel/pci_common.c
-+++ b/arch/sparc/kernel/pci_common.c
-@@ -8,7 +8,8 @@
- #include <linux/slab.h>
- #include <linux/pci.h>
- #include <linux/device.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/prom.h>
- #include <asm/oplib.h>
-diff --git a/arch/sparc/kernel/pci_fire.c b/arch/sparc/kernel/pci_fire.c
-index 0ca08d455e80..0b91bde80fdc 100644
---- a/arch/sparc/kernel/pci_fire.c
-+++ b/arch/sparc/kernel/pci_fire.c
-@@ -10,7 +10,8 @@
- #include <linux/msi.h>
- #include <linux/export.h>
- #include <linux/irq.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- #include <linux/numa.h>
- 
- #include <asm/prom.h>
-diff --git a/arch/sparc/kernel/pci_impl.h b/arch/sparc/kernel/pci_impl.h
-index 4e3d15189fa9..f31761f51757 100644
---- a/arch/sparc/kernel/pci_impl.h
-+++ b/arch/sparc/kernel/pci_impl.h
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index 444c74eeab7d..5607b668588b 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
 @@ -11,7 +11,6 @@
- #include <linux/spinlock.h>
- #include <linux/pci.h>
- #include <linux/msi.h>
--#include <linux/of_device.h>
- #include <asm/io.h>
- #include <asm/prom.h>
- #include <asm/iommu.h>
-diff --git a/arch/sparc/kernel/pci_msi.c b/arch/sparc/kernel/pci_msi.c
-index 9ed11985768e..fc7402948b7b 100644
---- a/arch/sparc/kernel/pci_msi.c
-+++ b/arch/sparc/kernel/pci_msi.c
-@@ -5,6 +5,8 @@
-  */
- #include <linux/kernel.h>
- #include <linux/interrupt.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- #include <linux/slab.h>
  #include <linux/irq.h>
- 
-diff --git a/arch/sparc/kernel/pci_psycho.c b/arch/sparc/kernel/pci_psycho.c
-index f413371da387..1efc98305ec7 100644
---- a/arch/sparc/kernel/pci_psycho.c
-+++ b/arch/sparc/kernel/pci_psycho.c
-@@ -13,7 +13,9 @@
- #include <linux/export.h>
- #include <linux/slab.h>
- #include <linux/interrupt.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/iommu.h>
- #include <asm/irq.h>
-diff --git a/arch/sparc/kernel/pci_sun4v.c b/arch/sparc/kernel/pci_sun4v.c
-index 7d91ca6aa675..c80b0a21d709 100644
---- a/arch/sparc/kernel/pci_sun4v.c
-+++ b/arch/sparc/kernel/pci_sun4v.c
-@@ -15,7 +15,8 @@
- #include <linux/msi.h>
- #include <linux/export.h>
- #include <linux/log2.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- #include <linux/dma-map-ops.h>
- #include <asm/iommu-common.h>
- 
-diff --git a/arch/sparc/kernel/pmc.c b/arch/sparc/kernel/pmc.c
-index b5c1eb33b951..69a0206e56f0 100644
---- a/arch/sparc/kernel/pmc.c
-+++ b/arch/sparc/kernel/pmc.c
-@@ -11,7 +11,7 @@
- #include <linux/init.h>
- #include <linux/pm.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
-+#include <linux/platform_device.h>
  #include <linux/module.h>
- 
- #include <asm/io.h>
-diff --git a/arch/sparc/kernel/power.c b/arch/sparc/kernel/power.c
-index 8147985a1dc4..db8a3f9e3d40 100644
---- a/arch/sparc/kernel/power.c
-+++ b/arch/sparc/kernel/power.c
-@@ -9,7 +9,8 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/reboot.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/prom.h>
- #include <asm/io.h>
-diff --git a/arch/sparc/kernel/prom_irqtrans.c b/arch/sparc/kernel/prom_irqtrans.c
-index 28aff1c524b5..426bd08cb2ab 100644
---- a/arch/sparc/kernel/prom_irqtrans.c
-+++ b/arch/sparc/kernel/prom_irqtrans.c
-@@ -4,6 +4,7 @@
- #include <linux/init.h>
- #include <linux/of.h>
- #include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/oplib.h>
- #include <asm/prom.h>
-diff --git a/arch/sparc/kernel/psycho_common.c b/arch/sparc/kernel/psycho_common.c
-index e90bcb6bad7f..5ee74b4c0cf4 100644
---- a/arch/sparc/kernel/psycho_common.c
-+++ b/arch/sparc/kernel/psycho_common.c
-@@ -6,6 +6,7 @@
- #include <linux/kernel.h>
- #include <linux/interrupt.h>
- #include <linux/numa.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/upa.h>
- 
-diff --git a/arch/sparc/kernel/sbus.c b/arch/sparc/kernel/sbus.c
-index 32141e1006c4..0bababf6f2bc 100644
---- a/arch/sparc/kernel/sbus.c
-+++ b/arch/sparc/kernel/sbus.c
-@@ -14,7 +14,8 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
  #include <linux/of.h>
 -#include <linux/of_device.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- #include <linux/numa.h>
- 
- #include <asm/page.h>
-diff --git a/arch/sparc/kernel/time_32.c b/arch/sparc/kernel/time_32.c
-index 958c2cf4479b..08bbdc458596 100644
---- a/arch/sparc/kernel/time_32.c
-+++ b/arch/sparc/kernel/time_32.c
-@@ -33,7 +33,6 @@
- #include <linux/ioport.h>
- #include <linux/profile.h>
+ #include <linux/pm_opp.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+diff --git a/drivers/tty/serial/serial-tegra.c b/drivers/tty/serial/serial-tegra.c
+index 1cf08b33456c..cbe641727f2a 100644
+--- a/drivers/tty/serial/serial-tegra.c
++++ b/drivers/tty/serial/serial-tegra.c
+@@ -20,7 +20,6 @@
+ #include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/pagemap.h>
+ #include <linux/platform_device.h>
+ #include <linux/reset.h>
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 7c9457962a3d..115271d2f82d 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -35,7 +35,6 @@
+ #include <linux/module.h>
+ #include <linux/mm.h>
  #include <linux/of.h>
 -#include <linux/of_device.h>
  #include <linux/platform_device.h>
- 
- #include <asm/mc146818rtc.h>
-diff --git a/arch/sparc/mm/io-unit.c b/arch/sparc/mm/io-unit.c
-index 133dd42570d6..d8376f61b4d0 100644
---- a/arch/sparc/mm/io-unit.c
-+++ b/arch/sparc/mm/io-unit.c
-@@ -13,7 +13,8 @@
- #include <linux/bitops.h>
- #include <linux/dma-map-ops.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/io.h>
- #include <asm/io-unit.h>
-diff --git a/arch/sparc/mm/iommu.c b/arch/sparc/mm/iommu.c
-index 3a6caef68348..5a5080db800f 100644
---- a/arch/sparc/mm/iommu.c
-+++ b/arch/sparc/mm/iommu.c
-@@ -7,14 +7,15 @@
-  * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)
-  * Copyright (C) 1997,1998 Jakub Jelinek    (jj@sunsite.mff.cuni.cz)
-  */
-- 
-+
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/mm.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+diff --git a/drivers/tty/serial/sunhv.c b/drivers/tty/serial/sunhv.c
+index 7d38c33ef506..c671d674bce4 100644
+--- a/drivers/tty/serial/sunhv.c
++++ b/drivers/tty/serial/sunhv.c
+@@ -17,11 +17,11 @@
  #include <linux/slab.h>
- #include <linux/dma-map-ops.h>
- #include <linux/of.h>
+ #include <linux/delay.h>
+ #include <linux/init.h>
 -#include <linux/of_device.h>
-+#include <linux/of_platform.h>
++#include <linux/of.h>
 +#include <linux/platform_device.h>
  
- #include <asm/io.h>
- #include <asm/mxcc.h>
+ #include <asm/hypervisor.h>
+ #include <asm/spitfire.h>
+-#include <asm/prom.h>
+ #include <asm/irq.h>
+ #include <asm/setup.h>
+ 
+diff --git a/drivers/tty/serial/sunsab.c b/drivers/tty/serial/sunsab.c
+index 48b39fdb0397..40eeaf835bba 100644
+--- a/drivers/tty/serial/sunsab.c
++++ b/drivers/tty/serial/sunsab.c
+@@ -33,7 +33,8 @@
+ #include <linux/slab.h>
+ #include <linux/delay.h>
+ #include <linux/init.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ 
+ #include <linux/io.h>
+ #include <asm/irq.h>
+diff --git a/drivers/tty/serial/sunsu.c b/drivers/tty/serial/sunsu.c
+index fed052a0b931..58a4342ad0f9 100644
+--- a/drivers/tty/serial/sunsu.c
++++ b/drivers/tty/serial/sunsu.c
+@@ -37,11 +37,11 @@
+ #include <linux/serial_reg.h>
+ #include <linux/init.h>
+ #include <linux/delay.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ 
+ #include <linux/io.h>
+ #include <asm/irq.h>
+-#include <asm/prom.h>
+ #include <asm/setup.h>
+ 
+ #include <linux/serial_core.h>
+diff --git a/drivers/tty/serial/sunzilog.c b/drivers/tty/serial/sunzilog.c
+index 0fbeb3dbd843..c8c71c56264c 100644
+--- a/drivers/tty/serial/sunzilog.c
++++ b/drivers/tty/serial/sunzilog.c
+@@ -33,11 +33,11 @@
+ #include <linux/serio.h>
+ #endif
+ #include <linux/init.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ 
+ #include <linux/io.h>
+ #include <asm/irq.h>
+-#include <asm/prom.h>
+ #include <asm/setup.h>
+ 
+ #include <linux/serial_core.h>
+diff --git a/drivers/tty/serial/tegra-tcu.c b/drivers/tty/serial/tegra-tcu.c
+index 23500b342da7..65069daf36ec 100644
+--- a/drivers/tty/serial/tegra-tcu.c
++++ b/drivers/tty/serial/tegra-tcu.c
+@@ -7,7 +7,6 @@
+ #include <linux/mailbox_client.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/serial.h>
+ #include <linux/serial_core.h>
+diff --git a/drivers/tty/serial/uartlite.c b/drivers/tty/serial/uartlite.c
+index 679574893ebe..b225a78f6175 100644
+--- a/drivers/tty/serial/uartlite.c
++++ b/drivers/tty/serial/uartlite.c
+@@ -20,9 +20,6 @@
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+ #include <linux/of.h>
+-#include <linux/of_address.h>
+-#include <linux/of_device.h>
+-#include <linux/of_platform.h>
+ #include <linux/clk.h>
+ #include <linux/pm_runtime.h>
+ 
+diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
+index 404230c1ebb2..284b293fade6 100644
+--- a/drivers/tty/serial/ucc_uart.c
++++ b/drivers/tty/serial/ucc_uart.c
+@@ -17,15 +17,16 @@
+  */
+ 
+ #include <linux/module.h>
++#include <linux/platform_device.h>
+ #include <linux/serial.h>
+ #include <linux/serial_core.h>
+ #include <linux/slab.h>
+ #include <linux/tty.h>
+ #include <linux/tty_flip.h>
+ #include <linux/io.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
+ #include <linux/dma-mapping.h>
+ 
+ #include <linux/fs_uart_pd.h>
+diff --git a/drivers/tty/serial/vt8500_serial.c b/drivers/tty/serial/vt8500_serial.c
+index cc9157df732f..32433e9b3e5f 100644
+--- a/drivers/tty/serial/vt8500_serial.c
++++ b/drivers/tty/serial/vt8500_serial.c
+@@ -14,6 +14,7 @@
+ #include <linux/irq.h>
+ #include <linux/init.h>
+ #include <linux/console.h>
++#include <linux/platform_device.h>
+ #include <linux/tty.h>
+ #include <linux/tty_flip.h>
+ #include <linux/serial_core.h>
+@@ -21,7 +22,6 @@
+ #include <linux/slab.h>
+ #include <linux/clk.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/err.h>
+ 
+ /*
 -- 
 2.40.1
 
