@@ -2,72 +2,67 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64670754847
-	for <lists+sparclinux@lfdr.de>; Sat, 15 Jul 2023 12:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF5C755D54
+	for <lists+sparclinux@lfdr.de>; Mon, 17 Jul 2023 09:47:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229488AbjGOKsA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 15 Jul 2023 06:48:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41256 "EHLO
+        id S230047AbjGQHrE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 17 Jul 2023 03:47:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230177AbjGOKr5 (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 15 Jul 2023 06:47:57 -0400
-Received: from mailrelay3-1.pub.mailoutpod2-cph3.one.com (mailrelay3-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:402::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E133A84
-        for <sparclinux@vger.kernel.org>; Sat, 15 Jul 2023 03:47:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=rsa1;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=hJKuyUGhxmtOjD6kuHJpi0wsrKNzXYtETGeFgeXc7II=;
-        b=Ucn6CxYxKvVLUdqvXK/zV8JuQ0wNHIPEYcb0pJoQHqQ8+LD6unz7fqTc2oSc5lqqu7Ibmoh1yIo7N
-         TGekQlit/GMH5TY9jkx5I4VQbdt3HK04NI/44y/hTTzhJ5NDz15EtWymT6O3F3EYxBqE2wA4P4KlqH
-         NVhhRUOOHpjrMFPjGgR18xSr0gavVOBTghE8Rtkae71MvZrMVDX5/lAbKoN3f63xCQVORSSUuZe9+e
-         3UiWLbMUMVnPzHvwgL1jHjb0fqTU0oB3aWCEF7f5zIeLbrLdmreGwo1ovBzxVJn/+zZeETPk1O4MOG
-         QZnVV+ZRNIo9bp60/P/r9eFqQphNWCA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=ed1;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=hJKuyUGhxmtOjD6kuHJpi0wsrKNzXYtETGeFgeXc7II=;
-        b=QSHCG+TTDqqScOMMkMX5MCSUEPNB30xqbjj+ZHx+D5zA152EKUJw4H6fom0gYsdJnxUz8oOFfgrye
-         PxB/85MCw==
-X-HalOne-ID: 0c1f8229-22fd-11ee-b315-b90637070a9d
-Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-        by mailrelay3 (Halon) with ESMTPSA
-        id 0c1f8229-22fd-11ee-b315-b90637070a9d;
-        Sat, 15 Jul 2023 10:47:55 +0000 (UTC)
-Date:   Sat, 15 Jul 2023 12:47:53 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] sbus: Explicitly include correct DT includes
-Message-ID: <20230715104753.GB251436@ravnborg.org>
-References: <20230714175048.4066006-1-robh@kernel.org>
+        with ESMTP id S229566AbjGQHrD (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Mon, 17 Jul 2023 03:47:03 -0400
+X-Greylist: delayed 619 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 17 Jul 2023 00:46:36 PDT
+Received: from mail.cassleycruden.pl (mail.cassleycruden.pl [217.61.97.118])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9483110C9
+        for <sparclinux@vger.kernel.org>; Mon, 17 Jul 2023 00:46:36 -0700 (PDT)
+Received: by mail.cassleycruden.pl (Postfix, from userid 1001)
+        id E3FF782A2F; Mon, 17 Jul 2023 08:36:10 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cassleycruden.pl;
+        s=mail; t=1689579372;
+        bh=Bm7kvP9mjtgWMDTk0x3n9fvdJasu+xrGpL0E8vcP3ks=;
+        h=Date:From:To:Subject:From;
+        b=M1o5BIfUPJuGJTUizXgZ7QNzkG+Dw5qfi/SVbYYHDw0eMhQsBDwwm004Ft93vKp5y
+         GtElBn1HZD8RURQoVFe7Du8xUQT5lfRw0o/GxSWoNEnoaZtxvkP+Ykgi3C0LMQFoCY
+         pL4qXnNFPgOk5/Qy556l5QSvnyjNGTJcoTdXMPeGaJkHJtloWWrAtBARY/Sz2vHjQA
+         gqlNestbazxoB0Dc4aFYpG2CgxmjeLNfQHyqSJvXfbwDbrk2po69CcWav76UAOn69d
+         ES2OyveSqPJhVSQzAyR0cFuNV2NPJdNGyg4fm4YPTrSj9L2ZDJMzD8lE6Ppl2WRwd1
+         RHAQ3TEHDzBoQ==
+Received: by mail.cassleycruden.pl for <sparclinux@vger.kernel.org>; Mon, 17 Jul 2023 07:36:05 GMT
+Message-ID: <20230717074500-0.1.68.c1mc.0.iapecqkqp3@cassleycruden.pl>
+Date:   Mon, 17 Jul 2023 07:36:05 GMT
+From:   "Adrian Giermata" <adrian.giermata@cassleycruden.pl>
+To:     <sparclinux@vger.kernel.org>
+Subject: Nieaktywna strona www
+X-Mailer: mail.cassleycruden.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230714175048.4066006-1-robh@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_40,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Fri, Jul 14, 2023 at 11:50:48AM -0600, Rob Herring wrote:
-> The DT of_device.h and of_platform.h date back to the separate
-> of_platform_bus_type before it as merged into the regular platform bus.
-> As part of that merge prepping Arm DT support 13 years ago, they
-> "temporarily" include each other. They also include platform_device.h
-> and of.h. As a result, there's a pretty much random mix of those include
-> files used throughout the tree. In order to detangle these headers and
-> replace the implicit includes with struct declarations, users need to
-> explicitly include the correct includes.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Dzie=C5=84 dobry!
+
+w=C5=82a=C5=9Bnie zako=C5=84czy=C5=82em budow=C4=99 nowej strony internet=
+owej dla firmy dzia=C5=82aj=C4=85cej w Pa=C5=84stwa bran=C5=BCy.
+
+Dzi=C4=99ki nowoczesnym funkcjonalno=C5=9Bciom i niestandardowej kreacji =
+umocni=C5=82em mark=C4=99 tej firmy dodaj=C4=85c jej warto=C5=9Bci i to=C5=
+=BCsamo=C5=9Bci, kt=C3=B3rej szukaj=C4=85 Klienci.
+
+Z przyjemno=C5=9Bci=C4=85 mog=C4=99 odwiedzi=C4=87 siedzib=C4=99 Pa=C5=84=
+stwa firmy i przedstawi=C4=87 swoje portfolio lub mog=C4=99 zadzwoni=C4=87=
+ i pozna=C4=87 Pa=C5=84stwa oczekiwania, wtedy wsp=C3=B3lnie przeanalizuj=
+emy potencja=C5=82 wsp=C3=B3=C5=82pracy.=20
+
+Czy moja propozycja wydaje si=C4=99 atrakcyjna?
+
+
+Pozdrawiam
+Adrian Giermata
