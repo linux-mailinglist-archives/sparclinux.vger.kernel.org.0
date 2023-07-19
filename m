@@ -2,112 +2,135 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45D88759836
-	for <lists+sparclinux@lfdr.de>; Wed, 19 Jul 2023 16:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F722759850
+	for <lists+sparclinux@lfdr.de>; Wed, 19 Jul 2023 16:27:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231687AbjGSOZ0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 19 Jul 2023 10:25:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55414 "EHLO
+        id S231589AbjGSO1M (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 19 Jul 2023 10:27:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231617AbjGSOZJ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 19 Jul 2023 10:25:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 065C82681
-        for <sparclinux@vger.kernel.org>; Wed, 19 Jul 2023 07:24:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689776638;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=AYL0WxfELPHjwx6ZiDqavEiQQIijrcopNRfhrvLV03A=;
-        b=Fy8i5nOuJc9vT64qGI1h402ACgpl6AB64fP+pSezsKXU7oX0ASaTIrY6cxryrL9cV8OvNU
-        v0sIZeURGjZ3itQ6NPF0MFxRumgHZwjZfMTfec/c/ZD6nxw8e6l3CXc8VJBtqU8rK9ljTf
-        QgQvU5p0Ucau8pjJq5qE+94Kp1SQ6E8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-402-QIXG0VyaOtKu8_ZHJE7czQ-1; Wed, 19 Jul 2023 10:23:56 -0400
-X-MC-Unique: QIXG0VyaOtKu8_ZHJE7czQ-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-31701b27d19so394986f8f.1
-        for <sparclinux@vger.kernel.org>; Wed, 19 Jul 2023 07:23:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689776635; x=1690381435;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AYL0WxfELPHjwx6ZiDqavEiQQIijrcopNRfhrvLV03A=;
-        b=Jl1p4bcqUvgWf42iNtY58OtMx4lT2pNRpbhTZX/D2a+oBqnpgcBtJqwNq3UB7SQ/sB
-         XF0Pndv4OHqtRFZB9KXQAyUszhroXSTZ/4DbdgPwtuaBHCiiunOMDQsprisopgAsoTBz
-         c9Emi8BvNMLdtb+eutOPAOGaa2/j7MX5Z0YGNlU1ipgiT98/kv79pwwZ5kvPR65O7ezU
-         HiAIKbowPZrylAIC8OZmEAcunOcyOyMw2OOOV0H2ql8xjwrtTXmOF8MVfoTb3eNvT50C
-         Kw+cNwVJYJy8ZzzWq2AI9j0NrbW/pKWFXeVp9hZZBjugxNU2Bm9JgKlraAu/EIYeXsAa
-         TZ8A==
-X-Gm-Message-State: ABy/qLZLSb1MnLL/r+ZnQzOFc6ji7EMW++h8aGBGR6zennM2MdGcXlPk
-        GQ6rgupCRJLeksKYm1/OL3jWWgJSMxMCKZ8+ClWl6jXqkFvebwZJ7JW24oCxW3BOepk8DdHI4hp
-        2SAKjMyoDKhrWAgvb3sdy5w==
-X-Received: by 2002:adf:f406:0:b0:317:15f5:a1cc with SMTP id g6-20020adff406000000b0031715f5a1ccmr41785wro.22.1689776635696;
-        Wed, 19 Jul 2023 07:23:55 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHAuWaDn4wkaE25f0gFYugdobiggD0h46Z8p4U2s3LOHj24u3Bx+1zUs1XU1djJ3aSjiu0SQg==
-X-Received: by 2002:adf:f406:0:b0:317:15f5:a1cc with SMTP id g6-20020adff406000000b0031715f5a1ccmr41757wro.22.1689776635405;
-        Wed, 19 Jul 2023 07:23:55 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id q19-20020a056000137300b003143d80d11dsm5429196wrz.112.2023.07.19.07.23.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jul 2023 07:23:54 -0700 (PDT)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     Arnd Bergmann <arnd@kernel.org>, linux-fbdev@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Helge Deller <deller@gmx.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@quicinc.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
+        with ESMTP id S231250AbjGSO1L (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 19 Jul 2023 10:27:11 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 610E510F5;
+        Wed, 19 Jul 2023 07:27:08 -0700 (PDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36JECD34007296;
+        Wed, 19 Jul 2023 14:25:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=sqCPepFLBkIjt5JAghDAGMMRAecFvEbEAHTaHv7StA4=;
+ b=fWwgAOnqpMRwDj5C8+A/dSuJrT0tROdWB7sMARd8mBo+xRpVTtCp+/1omci+OXee6H5f
+ 9LrNRV6FIGvZ3kYav4DsCmp5+CAI4Bx1nxNkQahZKOBWai2Wr1RpFDM+6CVubO0Yr8Gh
+ upfJAx9vFU40Ge8ufnccL6cx0kOxO21unDp1997QalhyRuu+aOFdBteRRpsPtO0rt6R9
+ ba5YyYyjYPRNp/EmsWJX0hz23O8yeYg99ShH8qB/svSFdEOE720ZgW5HJDXP6Ndc8M84
+ svWt++Qneu6rmC9XEx27QtNoe9MwOFrkOskKkSkgXCLmhxdjlT0VFTt+ZDMMn23z4AGh /g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxhcxgawu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Jul 2023 14:25:15 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36JEDaw7012182;
+        Wed, 19 Jul 2023 14:25:14 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxhcxgavw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Jul 2023 14:25:14 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+        by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36JBbHlN007106;
+        Wed, 19 Jul 2023 14:25:12 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+        by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv80j7qxk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Jul 2023 14:25:12 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+        by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36JEP9wg51773818
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Jul 2023 14:25:09 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9920A2004B;
+        Wed, 19 Jul 2023 14:25:09 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 256CF20043;
+        Wed, 19 Jul 2023 14:25:08 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.152.224.66])
+        by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Wed, 19 Jul 2023 14:25:08 +0000 (GMT)
+Date:   Wed, 19 Jul 2023 16:25:06 +0200
+From:   Claudio Imbrenda <imbrenda@linux.ibm.com>
+To:     Hugh Dickins <hughd@google.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Hildenbrand <david@redhat.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Yang Shi <shy828301@gmail.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Peter Xu <peterx@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>, Yu Zhao <yuzhao@google.com>,
+        Alistair Popple <apopple@nvidia.com>,
+        Ralph Campbell <rcampbell@nvidia.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Steven Price <steven.price@arm.com>,
+        SeongJae Park <sj@kernel.org>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Huang Ying <ying.huang@intel.com>,
+        Naoya Horiguchi <naoya.horiguchi@nec.com>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Airlie <airlied@gmail.com>,
-        Deepak Rawat <drawat.floss@gmail.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guo Ren <guoren@kernel.org>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Khalid Aziz <khalid@gonehiking.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
+        Zack Rusin <zackr@vmware.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Miaohe Lin <linmiaohe@huawei.com>,
+        Minchan Kim <minchan@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Song Liu <song@kernel.org>,
+        Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
         Russell King <linux@armlinux.org.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        WANG Xuerui <kernel@xen0n.name>, Wei Liu <wei.liu@kernel.org>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 7/9] vga16fb: drop powerpc support
-In-Reply-To: <20230719123944.3438363-8-arnd@kernel.org>
-References: <20230719123944.3438363-1-arnd@kernel.org>
- <20230719123944.3438363-8-arnd@kernel.org>
-Date:   Wed, 19 Jul 2023 16:23:53 +0200
-Message-ID: <87a5vshtdy.fsf@minerva.mail-host-address-is-not-set>
+        "David S. Miller" <davem@davemloft.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Jann Horn <jannh@google.com>,
+        Vishal Moola <vishal.moola@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
+        linux-arm-kernel@lists.infradead.org, sparclinux@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 07/13] s390: add pte_free_defer() for pgtables
+ sharing page
+Message-ID: <20230719162506.235856eb@p-imbrenda>
+In-Reply-To: <94eccf5f-264c-8abe-4567-e77f4b4e14a@google.com>
+References: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com>
+        <94eccf5f-264c-8abe-4567-e77f4b4e14a@google.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vuiOSC4KH_FPIWCJ2t0CCG3oPSC3iQ5O
+X-Proofpoint-ORIG-GUID: nsfYgGQiUgK_3ljX9gGN4xkSrT1C83gX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-19_09,2023-07-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 phishscore=0 spamscore=0
+ mlxlogscore=974 impostorscore=0 malwarescore=0 clxscore=1011
+ priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2306200000 definitions=main-2307190126
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -115,34 +138,58 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> writes:
+On Tue, 11 Jul 2023 21:38:35 -0700 (PDT)
+Hugh Dickins <hughd@google.com> wrote:
 
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> I noticed that commit 0db5b61e0dc07 ("fbdev/vga16fb: Create
-> EGA/VGA devices in sysfb code") broke vga16fb on non-x86 platforms,
-> because the sysfb code never creates a vga-framebuffer device when
-> screen_info.orig_video_isVGA is set to '1' instead of VIDEO_TYPE_VGAC.
->
-> However, it turns out that the only architecture that has allowed
-> building vga16fb in the past 20 years is powerpc, and this only worked
-> on two 32-bit platforms and never on 64-bit powerpc. The last machine
-> that actually used this was removed in linux-3.10, so this is all dead
-> code and can be removed.
->
-> The big-endian support in vga16fb.c could also be removed, but I'd just
-> leave this in place.
->
-> Fixes: 933ee7119fb14 ("powerpc: remove PReP platform")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
+[...]
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable)
+> +{
+> +	struct page *page;
+> +
+> +	page = virt_to_page(pgtable);
+> +	SetPageActive(page);
+> +	page_table_free(mm, (unsigned long *)pgtable);
+> +	/*
+> +	 * page_table_free() does not do the pgste gmap_unlink() which
+> +	 * page_table_free_rcu() does: warn us if pgste ever reaches here.
+> +	 */
+> +	WARN_ON_ONCE(mm_alloc_pgste(mm));
 
--- 
-Best regards,
+it seems I have overlooked something when we previously discussed
+this...
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+mm_alloc_pgste() is true for all processes that have PGSTEs, not only
+for processes that can run guests.
+
+There are two ways to enable PGSTEs: an ELF header bit, and a sysctl
+knob.
+
+The ELF bit is only used by qemu, it enables PGSTE allocation only for
+that single process. This is a strong indication that the process wants
+to run guests.
+
+The sysctl knob enables PGSTE allocation for every process in the system
+from that moment on. In that case, the WARN_ON_ONCE would be triggered
+when not necessary.
+
+There is however another way to check if a process is actually
+__using__ the PGSTEs, a.k.a. if the process is actually capable of
+running guests.
+
+Confusingly, the name of that function is mm_has_pgste(). This confused
+me as well, which is why I didn't notice it when we discussed this
+previously :)
+
+
+in short: can you please use mm_has_pgste() instead of mm_alloc_pgste()
+in the WARN_ON_ONCE ?
+
+> +}
+> +#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+> +
+>  /*
+>   * Base infrastructure required to generate basic asces, region, segment,
+>   * and page tables that do not make use of enhanced features like EDAT1.
 
