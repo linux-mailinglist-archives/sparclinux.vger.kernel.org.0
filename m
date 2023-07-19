@@ -2,57 +2,57 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A720759849
-	for <lists+sparclinux@lfdr.de>; Wed, 19 Jul 2023 16:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4FA8759886
+	for <lists+sparclinux@lfdr.de>; Wed, 19 Jul 2023 16:38:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231638AbjGSO0Z (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 19 Jul 2023 10:26:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56766 "EHLO
+        id S230186AbjGSOhc (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 19 Jul 2023 10:37:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231583AbjGSO0T (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 19 Jul 2023 10:26:19 -0400
+        with ESMTP id S231209AbjGSOhG (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 19 Jul 2023 10:37:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA86E270C
-        for <sparclinux@vger.kernel.org>; Wed, 19 Jul 2023 07:25:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B04CA1718
+        for <sparclinux@vger.kernel.org>; Wed, 19 Jul 2023 07:35:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689776716;
+        s=mimecast20190719; t=1689777338;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=xY+xsOpuPsAa6KICDwWDt2PoXyQ0u/vopB2mSitD/gY=;
-        b=UK723g9Xbr6CfQVpAoY61fE/wD+k+i5j9vQtue0SzSARbIRQAQ33QEVLRYyqRcs7RTlA7q
-        nUqwUBGs4TJO9TdvHOAxNxVd4U6SP8JLrC31ghJL+tYEixl/O1FhT8rSexw9fBL02Y7Byf
-        RaGw01FqRx4PXkb6Xu5hqvD4enQnpW8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=GW017PQkbwcyBZVSjL1eIJ3Tr23afBwEJMZO/sY3MB8=;
+        b=Bk+dk1mBEQJDTKuW9K8t8hp3CB+h01vAXtIZOhfUUaOwjhn9QZJr3CrmMjGOtTHDmM5KZW
+        vSQUlLA10dA9WKF3pWrhH871D3hn+/HeD7aooccGEqHBD5haE3RVpCeBrHeqIAGuJObE5/
+        sZCUoatdaCiRxEVTfL/SXBzjE87DKv8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-rQWxcYWmNxaji0ho4l0n7Q-1; Wed, 19 Jul 2023 10:25:12 -0400
-X-MC-Unique: rQWxcYWmNxaji0ho4l0n7Q-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-31429e93f26so4199969f8f.2
-        for <sparclinux@vger.kernel.org>; Wed, 19 Jul 2023 07:25:11 -0700 (PDT)
+ us-mta-411-esxlX1leP4mfEN1q9dD7eg-1; Wed, 19 Jul 2023 10:35:36 -0400
+X-MC-Unique: esxlX1leP4mfEN1q9dD7eg-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3fb416d7731so39538705e9.2
+        for <sparclinux@vger.kernel.org>; Wed, 19 Jul 2023 07:35:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689776710; x=1690381510;
+        d=1e100.net; s=20221208; t=1689777336; x=1690382136;
         h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xY+xsOpuPsAa6KICDwWDt2PoXyQ0u/vopB2mSitD/gY=;
-        b=bINsEB+YkKj2ImfN4dpUC1KVSq2csJ1UaZhsb6RLgUK+OsJAL6GhUmpYIsN4CBSDmf
-         mB5EeA+txrBO90RqGOBQANjP+Pb9Mrb89BjlkX6g+mxDNk8VFEECgOd9kgN/nDGk42gE
-         gjbYFMacdW8jrkwjyJQAO5TTpkef5javq2X52D4NLD91JfaDjCB5hByR4QfOgyvDSGtf
-         4WXMgxkZlUCYhfcAzAZkvt2xNaeF+C10io21ayUJ3c2cF9zCqZ2fVO00fgKIJ106SgRY
-         alV6zmxl8LC/6e7pf8F295rbiJpdkaDn1jviIapM7zU/62kq4Wi0tHauOSgpaChfJH6J
-         BQww==
-X-Gm-Message-State: ABy/qLYDP8+8fvtZPpO+NdFP9Up02mvBWoIaLp6t73CaCKYwwj4qpgb/
-        r2RWNDCbXdyqm022BT7dGH6p8m1jMcVfjXQWwXivSg+zN1TWdyk7+isfq6CwEE6oigYQHUF3rqv
-        VfQXmMIGcck4/VQ8ie9Fkjg==
-X-Received: by 2002:adf:f6d2:0:b0:315:a2a0:e331 with SMTP id y18-20020adff6d2000000b00315a2a0e331mr15880wrp.50.1689776710229;
-        Wed, 19 Jul 2023 07:25:10 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHdsBbmhlUZVwgJXnbSuIEfuMAzDx5IOvgnijOdvMDteAVkW8k0bDz3T8ek9eZvK84UcEFXkg==
-X-Received: by 2002:adf:f6d2:0:b0:315:a2a0:e331 with SMTP id y18-20020adff6d2000000b00315a2a0e331mr15829wrp.50.1689776709888;
-        Wed, 19 Jul 2023 07:25:09 -0700 (PDT)
+        bh=GW017PQkbwcyBZVSjL1eIJ3Tr23afBwEJMZO/sY3MB8=;
+        b=VAb9hwIsJ5wGlfaWJMEotdftf1o/OuCvuMpG1aKKalbKxA0qnDHEhB1Gc2GWwnMxb5
+         /hgi6Rn/+Nz68vGx1qh1PP/we/QxjEOqZ3JCRrmmlZHiZESUNFdgpqVvXLD9SWPoyCJa
+         wvWcJGMN+AXBlashglUEoJgpp+4qT69W85aHK3NbX06cSQvv4ygTOamZrv8EqpSkZ3Nk
+         ircdaKk25vdQnKXVs4OzUBH7Lk7LXpRyE0Gbm8xm6vcByBepdBRIYfy8g45igcO7fuC0
+         xpQa09g4jJirmLIwOXiInkSJlLCrH4Ym4I8Dpr9Xn26nZi3obT+I0a/xCnwVtClyKGUO
+         RI+A==
+X-Gm-Message-State: ABy/qLY+tXCM5QQAmMIE/lH9ye4LuMycXFQw3YV1MqZGyprUiVFmUl5/
+        Dj82AnrmfDVZH6IQCx0ruexwoWIGLgQwK7tuGCLnodpj2RjXQSnr6V5Pbf4gRxwc97K/j75VAnk
+        /ni/k3D4JzQkUwCSc+9YuNw==
+X-Received: by 2002:a05:600c:20f:b0:3fb:ab76:164b with SMTP id 15-20020a05600c020f00b003fbab76164bmr2130587wmi.13.1689777335791;
+        Wed, 19 Jul 2023 07:35:35 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGyN6MTy8oRS46HP6DzRqXrb5z9b00oXqiEwJ+r7OovxVf1XP/FK2uW1HDXjbNqEtS7mD81iA==
+X-Received: by 2002:a05:600c:20f:b0:3fb:ab76:164b with SMTP id 15-20020a05600c020f00b003fbab76164bmr2130535wmi.13.1689777335451;
+        Wed, 19 Jul 2023 07:35:35 -0700 (PDT)
 Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id t13-20020a7bc3cd000000b003fc05b89e5bsm1805793wmj.34.2023.07.19.07.25.09
+        by smtp.gmail.com with ESMTPSA id u9-20020a7bc049000000b003fba6a0c881sm1798903wmc.43.2023.07.19.07.35.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jul 2023 07:25:09 -0700 (PDT)
+        Wed, 19 Jul 2023 07:35:35 -0700 (PDT)
 From:   Javier Martinez Canillas <javierm@redhat.com>
 To:     Arnd Bergmann <arnd@kernel.org>, linux-fbdev@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>,
@@ -96,12 +96,12 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-hyperv@vger.kernel.org,
         dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 8/9] hyperv: avoid dependency on screen_info
-In-Reply-To: <20230719123944.3438363-9-arnd@kernel.org>
+Subject: Re: [PATCH v2 9/9] efi: move screen_info into efi init code
+In-Reply-To: <20230719123944.3438363-10-arnd@kernel.org>
 References: <20230719123944.3438363-1-arnd@kernel.org>
- <20230719123944.3438363-9-arnd@kernel.org>
-Date:   Wed, 19 Jul 2023 16:25:08 +0200
-Message-ID: <877cqwhtbv.fsf@minerva.mail-host-address-is-not-set>
+ <20230719123944.3438363-10-arnd@kernel.org>
+Date:   Wed, 19 Jul 2023 16:35:34 +0200
+Message-ID: <874jm0hsuh.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -119,16 +119,26 @@ Arnd Bergmann <arnd@kernel.org> writes:
 
 > From: Arnd Bergmann <arnd@arndb.de>
 >
-> The two hyperv framebuffer drivers (hyperv_fb or hyperv_drm_drv) access the
-> global screen_info in order to take over from the sysfb framebuffer, which
-> in turn could be handled by simplefb, simpledrm or efifb. Similarly, the
-> vmbus_drv code marks the original EFI framebuffer as reserved, but this
-> is not required if there is no sysfb.
+> After the vga console no longer relies on global screen_info, there are
+> only two remaining use cases:
 >
-> As a preparation for making screen_info itself more local to the sysfb
-> helper code, add a compile-time conditional in all three files that relate
-> to hyperv fb and just skip this code if there is no sysfb that needs to
-> be unregistered.
+>  - on the x86 architecture, it is used for multiple boot methods
+>    (bzImage, EFI, Xen, kexec) to commicate the initial VGA or framebuffer
+
+communicate
+
+>    settings to a number of device drivers.
+>
+>  - on other architectures, it is only used as part of the EFI stub,
+>    and only for the three sysfb framebuffers (simpledrm, simplefb, efifb).
+>
+> Remove the duplicate data structure definitions by moving it into the
+> efi-init.c file that sets it up initially for the EFI case, leaving x86
+> as an exception that retains its own definition for non-EFI boots.
+>
+> The added #ifdefs here are optional, I added them to further limit the
+> reach of screen_info to configurations that have at least one of the
+> users enabled.
 >
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
