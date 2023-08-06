@@ -2,51 +2,51 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5C187714C3
-	for <lists+sparclinux@lfdr.de>; Sun,  6 Aug 2023 14:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EBD67714D1
+	for <lists+sparclinux@lfdr.de>; Sun,  6 Aug 2023 14:09:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229479AbjHFMJq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 6 Aug 2023 08:09:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58174 "EHLO
+        id S230160AbjHFMJu (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 6 Aug 2023 08:09:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbjHFMJo (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 6 Aug 2023 08:09:44 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2764172C;
-        Sun,  6 Aug 2023 05:09:40 -0700 (PDT)
+        with ESMTP id S230167AbjHFMJp (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 6 Aug 2023 08:09:45 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D7C19A9;
+        Sun,  6 Aug 2023 05:09:42 -0700 (PDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 9E0B11F898;
+        by smtp-out1.suse.de (Postfix) with ESMTPS id CC8612188A;
         Sun,  6 Aug 2023 12:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1691323770; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dpAFNVy5WNN1yht6et9dDx13v8ArFEslLtfT53kIf3o=;
-        b=HbukGDQDlhs8/GmHeQuCbRsUgeR7KbksnBmY0sRwmJoQsvqGuL9QL1vXolgqMicCJI5reo
-        G2WPlQB1i3hOCK0+u27x0jecsvg+AhRk6OxIEm9UFDxk8KVvU7UppgI3OTCmcgt269xE93
-        iSqZO5k1/LBdh0MGPNPIcfCcWNlMoto=
+        bh=w+1HJaDGhhWNRrx4AOpdqsGLKjCpKoKiNMbN++GMzB0=;
+        b=OYf++maj/lRRJSnLWPd7o/Cx/KLXczWlBPQ1ia/X9SQ/d0rkD9mZrIOZCn216cWV/eUA2S
+        W512FHn2/Nli6vV0EFdnlFXCfhzlo0eyz90lp9PSA5Lt+BOR9HVj4LEoV1+VIE/tLOEO3b
+        fCo/YCIQ0DDXeHLmMEZLbF90OpNB2Iw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1691323770;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dpAFNVy5WNN1yht6et9dDx13v8ArFEslLtfT53kIf3o=;
-        b=5FQapBC1foYHpay4YYoxZ+QWabt32oZT8jnoJ8be/GzwAwWLMNh4AE+1eiGL1arow/ri7/
-        i6XSOJ3gH5z6T/Ag==
+        bh=w+1HJaDGhhWNRrx4AOpdqsGLKjCpKoKiNMbN++GMzB0=;
+        b=85vMmCOVDWuXo6WOmhUQhZWv0a6qOBiyawqmyq7oDj5Fr+tiwwuIhg4K9nMqcgxp9tE1jg
+        tfcWOgLBAI/65sCQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 74BE1139D1;
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A2F92139C4;
         Sun,  6 Aug 2023 12:09:30 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id YGSYG3qNz2QvSwAAMHmgww
+        id ALvcJnqNz2QvSwAAMHmgww
         (envelope-from <tzimmermann@suse.de>); Sun, 06 Aug 2023 12:09:30 +0000
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     deller@gmx.de, sam@ravnborg.org, javierm@redhat.com,
@@ -54,9 +54,9 @@ To:     deller@gmx.de, sam@ravnborg.org, javierm@redhat.com,
 Cc:     sparclinux@vger.kernel.org, linux-fbdev@vger.kernel.org,
         dri-devel@lists.freedesktop.org,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 09/11] fbdev/leo: Use initializer macro for struct fb_ops
-Date:   Sun,  6 Aug 2023 13:59:00 +0200
-Message-ID: <20230806120926.5368-10-tzimmermann@suse.de>
+Subject: [PATCH 10/11] fbdev/p9100: Use initializer macro for struct fb_ops
+Date:   Sun,  6 Aug 2023 13:59:01 +0200
+Message-ID: <20230806120926.5368-11-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230806120926.5368-1-tzimmermann@suse.de>
 References: <20230806120926.5368-1-tzimmermann@suse.de>
@@ -80,79 +80,76 @@ which selects the correct modules.
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
  drivers/video/fbdev/Kconfig |  4 +---
- drivers/video/fbdev/leo.c   | 19 ++++++-------------
- 2 files changed, 7 insertions(+), 16 deletions(-)
+ drivers/video/fbdev/p9100.c | 18 +++++-------------
+ 2 files changed, 6 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index dfc601db65a4..3bade062ac3f 100644
+index 3bade062ac3f..ae2b0c07223f 100644
 --- a/drivers/video/fbdev/Kconfig
 +++ b/drivers/video/fbdev/Kconfig
-@@ -587,9 +587,7 @@ config FB_P9100
- config FB_LEO
- 	bool "Leo (ZX) support"
+@@ -577,9 +577,7 @@ config FB_CG14
+ config FB_P9100
+ 	bool "P9100 (Sparcbook 3 only) support"
  	depends on FB_SBUS
 -	select FB_CFB_FILLRECT
 -	select FB_CFB_COPYAREA
 -	select FB_CFB_IMAGEBLIT
 +	select FB_SBUS_HELPERS
  	help
- 	  This is the frame buffer device driver for the SBUS-based Sun ZX
- 	  (leo) frame buffer cards.
-diff --git a/drivers/video/fbdev/leo.c b/drivers/video/fbdev/leo.c
-index 2f725cd7633a..7cf525c76079 100644
---- a/drivers/video/fbdev/leo.c
-+++ b/drivers/video/fbdev/leo.c
-@@ -31,28 +31,21 @@
- static int leo_setcolreg(unsigned, unsigned, unsigned, unsigned,
- 			 unsigned, struct fb_info *);
- static int leo_blank(int, struct fb_info *);
--
--static int leo_mmap(struct fb_info *, struct vm_area_struct *);
--static int leo_ioctl(struct fb_info *, unsigned int, unsigned long);
- static int leo_pan_display(struct fb_var_screeninfo *, struct fb_info *);
+ 	  This is the frame buffer device driver for the P9100 card
+ 	  supported on Sparcbook 3 machines.
+diff --git a/drivers/video/fbdev/p9100.c b/drivers/video/fbdev/p9100.c
+index ca06886d9578..e1356f8a866e 100644
+--- a/drivers/video/fbdev/p9100.c
++++ b/drivers/video/fbdev/p9100.c
+@@ -31,8 +31,8 @@ static int p9100_setcolreg(unsigned, unsigned, unsigned, unsigned,
+ 			   unsigned, struct fb_info *);
+ static int p9100_blank(int, struct fb_info *);
  
-+static int leo_sbusfb_mmap(struct fb_info *info, struct vm_area_struct *vma);
-+static int leo_sbusfb_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg);
-+
+-static int p9100_mmap(struct fb_info *, struct vm_area_struct *);
+-static int p9100_ioctl(struct fb_info *, unsigned int, unsigned long);
++static int p9100_sbusfb_mmap(struct fb_info *info, struct vm_area_struct *vma);
++static int p9100_sbusfb_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg);
+ 
  /*
   *  Frame buffer operations
-  */
+@@ -40,16 +40,9 @@ static int p9100_ioctl(struct fb_info *, unsigned int, unsigned long);
  
- static const struct fb_ops leo_ops = {
+ static const struct fb_ops p9100_ops = {
  	.owner			= THIS_MODULE,
-+	FB_DEFAULT_SBUS_OPS(leo),
- 	.fb_setcolreg		= leo_setcolreg,
- 	.fb_blank		= leo_blank,
- 	.fb_pan_display		= leo_pan_display,
++	FB_DEFAULT_SBUS_OPS(p9100),
+ 	.fb_setcolreg		= p9100_setcolreg,
+ 	.fb_blank		= p9100_blank,
 -	.fb_fillrect		= cfb_fillrect,
 -	.fb_copyarea		= cfb_copyarea,
 -	.fb_imageblit		= cfb_imageblit,
--	.fb_mmap		= leo_mmap,
--	.fb_ioctl		= leo_ioctl,
+-	.fb_mmap		= p9100_mmap,
+-	.fb_ioctl		= p9100_ioctl,
 -#ifdef CONFIG_COMPAT
 -	.fb_compat_ioctl	= sbusfb_compat_ioctl,
 -#endif
  };
  
- #define LEO_OFF_LC_SS0_KRN	0x00200000UL
-@@ -414,7 +407,7 @@ static struct sbus_mmap_map leo_mmap_map[] = {
- 	{ .size = 0 }
+ /* P9100 control registers */
+@@ -218,7 +211,7 @@ static struct sbus_mmap_map p9100_mmap_map[] = {
+ 	{ 0,			0,		0		    }
  };
  
--static int leo_mmap(struct fb_info *info, struct vm_area_struct *vma)
-+static int leo_sbusfb_mmap(struct fb_info *info, struct vm_area_struct *vma)
+-static int p9100_mmap(struct fb_info *info, struct vm_area_struct *vma)
++static int p9100_sbusfb_mmap(struct fb_info *info, struct vm_area_struct *vma)
  {
- 	struct leo_par *par = (struct leo_par *)info->par;
+ 	struct p9100_par *par = (struct p9100_par *)info->par;
  
-@@ -423,7 +416,7 @@ static int leo_mmap(struct fb_info *info, struct vm_area_struct *vma)
+@@ -227,8 +220,7 @@ static int p9100_mmap(struct fb_info *info, struct vm_area_struct *vma)
  				  par->which_io, vma);
  }
  
--static int leo_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg)
-+static int leo_sbusfb_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg)
+-static int p9100_ioctl(struct fb_info *info, unsigned int cmd,
+-		       unsigned long arg)
++static int p9100_sbusfb_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg)
  {
+ 	/* Make it look like a cg3. */
  	return sbusfb_ioctl_helper(cmd, arg, info,
- 				   FBTYPE_SUNLEO, 32, info->fix.smem_len);
 -- 
 2.41.0
 
