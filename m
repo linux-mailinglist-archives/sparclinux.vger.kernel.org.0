@@ -2,143 +2,122 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CDCD771387
-	for <lists+sparclinux@lfdr.de>; Sun,  6 Aug 2023 05:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 223727714BD
+	for <lists+sparclinux@lfdr.de>; Sun,  6 Aug 2023 14:09:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbjHFD7g (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 5 Aug 2023 23:59:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33842 "EHLO
+        id S229449AbjHFMJl (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 6 Aug 2023 08:09:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjHFD7f (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 5 Aug 2023 23:59:35 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16BFC1FD9
-        for <sparclinux@vger.kernel.org>; Sat,  5 Aug 2023 20:59:34 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-583f036d50bso39811417b3.3
-        for <sparclinux@vger.kernel.org>; Sat, 05 Aug 2023 20:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691294373; x=1691899173;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lrjEl367R/y3HI+4JKvQ0DDl1pq1Lit9a0Zn8ubupwU=;
-        b=fPoU/fRuHX5caeTxQNTi6xCx7rooozWVX8OCkvcRFbiVcZeihuuZZlQmHVtAw45YAU
-         kFT79lh292tEMsPH0yFic9OWUawFTESm7xFiS7iMD5hNLVpkpBLE1WwEzPp8KYPc9FvH
-         766vba+m+Ozk/SUm7hZshVAuKp3hxt+fVNapmNcBwnLA8Tu4o53ObK+EGCiIS1gfH4rG
-         uel9HuMTx0Oe+VPeKFnHbRMjn+5QkVxnK6oa0BwRKKK/2LR8eKx9092x6l95LvzWPB4R
-         /SFh7mg0lNI5CkVsjDsRo/ouKCF7FXkkPaU6nGGyY8dfVtlmJW+KmCWlykivefXbbzzJ
-         QLIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691294373; x=1691899173;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lrjEl367R/y3HI+4JKvQ0DDl1pq1Lit9a0Zn8ubupwU=;
-        b=HVqxy4C0kWWRsqEPjBoYOJlQzNq1cD/iphcus4iGu6YVqLdc1TE91SHDIIpIIsOrjq
-         W9qNwqlZXgeEP24KbapfI+mjlzkUjC5cWT2xAIo+FOm8i7FKK/Xwoy8fUPzC7X2iurXv
-         WIJxvkQXOGB2GWysGYZ15X0SBJRqDOsyyWVadfDSGzN6vbHpCflg/byYXXofxKgCIAtf
-         Uwej5e1ZenNgZvF4Fq43ZkROUZG6JjJPchO7sLVDOU4RhCwLncACciqzsvWo+Ke1jwhP
-         8ZzR7CpXQPVDx0GDTzZ8s9HCVhii31v58NjoGQ+D7xbyhbztI5TPnP1d7sWD1vNzvSYE
-         RykQ==
-X-Gm-Message-State: AOJu0YyfzqQaL5yNemJkgCL/Agato04JeLzeoPCXTmkiO/OOorZzzEkC
-        de/EtLyHNUU0yLX6ZNhe+wgi2A==
-X-Google-Smtp-Source: AGHT+IEL/z5m+be82hvNIbgvVlYv0KrLIPiuRdrdQbyoEcvhg0nO6N3eCW4FBoXQZBwSKC83ZFZFiw==
-X-Received: by 2002:a0d:e253:0:b0:584:189c:13ec with SMTP id l80-20020a0de253000000b00584189c13ecmr5953081ywe.21.1691294373186;
-        Sat, 05 Aug 2023 20:59:33 -0700 (PDT)
-Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id p6-20020a815b06000000b00584554be59dsm1887384ywb.85.2023.08.05.20.59.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Aug 2023 20:59:32 -0700 (PDT)
-Date:   Sat, 5 Aug 2023 20:59:27 -0700 (PDT)
-From:   Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@ripple.attlocal.net
-To:     Andrew Morton <akpm@linux-foundation.org>
-cc:     Qi Zheng <zhengqi.arch@bytedance.com>,
-        Hugh Dickins <hughd@google.com>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        David Hildenbrand <david@redhat.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Yang Shi <shy828301@gmail.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Peter Xu <peterx@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>, Yu Zhao <yuzhao@google.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Ralph Campbell <rcampbell@nvidia.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Steven Price <steven.price@arm.com>,
-        SeongJae Park <sj@kernel.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Huang Ying <ying.huang@intel.com>,
-        Naoya Horiguchi <naoya.horiguchi@nec.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Zack Rusin <zackr@vmware.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Miaohe Lin <linmiaohe@huawei.com>,
-        Minchan Kim <minchan@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Song Liu <song@kernel.org>,
-        Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Jann Horn <jannh@google.com>,
-        Vishal Moola <vishal.moola@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
-        linux-arm-kernel@lists.infradead.org, sparclinux@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v3 10/13 fix2] mm/khugepaged: collapse_pte_mapped_thp() with
- mmap_read_lock(): fix2
-In-Reply-To: <0df84f9f-e9b0-80b1-4c9e-95abc1a73a96@bytedance.com>
-Message-ID: <e0197433-8a47-6a65-534d-eda26eeb78b0@google.com>
-References: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com> <b53be6a4-7715-51f9-aad-f1347dcb7c4@google.com> <0df84f9f-e9b0-80b1-4c9e-95abc1a73a96@bytedance.com>
+        with ESMTP id S229523AbjHFMJk (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 6 Aug 2023 08:09:40 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B7AB1AD;
+        Sun,  6 Aug 2023 05:09:30 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id DA471210E6;
+        Sun,  6 Aug 2023 12:09:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1691323768; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=W8ewKa8Cglzkg2nCJT59gTrQoPyG+rZHdmcSjnInUeU=;
+        b=tqZN0xM7oimP87qoGiVQNoF0d2cxrhXqc9Zvj99XB0oxCTvJSow8Jm4awtBvIhYIpNwy/H
+        PUESisjENRGh8Lzeg7rRsZSpIK02NXqqEBZxIYg7VzcrsbeR3ONioFhSHaoQXHoav3dJV4
+        SYBha5xGucGmDcX1JYZDt83KD4vCduo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1691323768;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=W8ewKa8Cglzkg2nCJT59gTrQoPyG+rZHdmcSjnInUeU=;
+        b=fJAVl9rHOq7R40PdzRpjP1zSCUUag2rQsonL3UT1sor0LRjrHD8JpSVe0p/pyEqggN6YR4
+        ThI/6CQ01Domf0CQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id AB682139C4;
+        Sun,  6 Aug 2023 12:09:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id CbDuKHiNz2QvSwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Sun, 06 Aug 2023 12:09:28 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     deller@gmx.de, sam@ravnborg.org, javierm@redhat.com,
+        davem@davemloft.net
+Cc:     sparclinux@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 00/11] fbdev/sbus: Initializers for struct fb_ops
+Date:   Sun,  6 Aug 2023 13:58:51 +0200
+Message-ID: <20230806120926.5368-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_PASS,T_SPF_HELO_TEMPERROR
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Use ptep_clear() instead of pte_clear(): when CONFIG_PAGE_TABLE_CHECK=y,
-ptep_clear() adds some accounting, missing which would cause a BUG later.
+Add initializer macros for struct fb_ops of drivers that operate
+on SBUS-based framebuffers. Also add a Kconfig token to select the
+correct dependencies.
 
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Closes: https://lore.kernel.org/linux-mm/0df84f9f-e9b0-80b1-4c9e-95abc1a73a96@bytedance.com/
----
- mm/khugepaged.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+All drivers for SBUS-based framebuffers use the regular helpers
+for framebuffers in I/O memory (fb_io_*() and cfb_*()). Each driver
+provides its own implementation of mmap and ioctls around common
+helpers from sbuslib.o. Patches 1 to 3 clean up the code a bit and
+add a initializer macros that set up struct fb_ops correctly.
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index bb76a5d454de..78fc1a24a1cc 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1603,7 +1603,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 		 * TLB flush can be left until pmdp_collapse_flush() does it.
- 		 * PTE dirty? Shmem page is already dirty; file is read-only.
- 		 */
--		pte_clear(mm, addr, pte);
-+		ptep_clear(mm, addr, pte);
- 		page_remove_rmap(page, vma, false);
- 		nr_ptes++;
- 	}
+Patches 4 to 11 convert the drivers. Each patch slightly renames
+the driver's mmap and ioctl functions so that it matches the name
+pattern of sbuslib.o.
+
+Like the other fbdev initializer macros, the SBUS helpers are
+easily grep-able. In a later patch, they can be left to empty values
+if the rsp. functionality, such as file I/O or console, has been
+disabled.
+
+There are no functional changes. The helpers set the defaults that
+the drivers already use. The fb_io_*() functions that the initializer
+macro sets are the defaults if struct fb_ops.fb_read or .fb_write are
+NULL. After all drivers have been updated to set them explicitly, the
+defaults can be dropped and the functions can be made optional.
+
+Build-tested on sparc64.
+
+Thomas Zimmermann (11):
+  fbdev/sbus: Build sbuslib.o if CONFIG_FB_SBUS has been selected
+  fbdev/sbus: Forward declare all necessary structures in header
+  fbdev/sbus: Add initializer macros and Kconfig tokens for SBUS support
+  fbdev/bw2: Use initializer macro for struct fb_ops
+  fbdev/cg14: Use initializer macro for struct fb_ops
+  fbdev/cg3: Use initializer macro for struct fb_ops
+  fbdev/cg6: Use initializer macro for struct fb_ops
+  fbdev/ffb: Use initializer macro for struct fb_ops
+  fbdev/leo: Use initializer macro for struct fb_ops
+  fbdev/p9100: Use initializer macro for struct fb_ops
+  fbdev/tcx: Use initializer macro for struct fb_ops
+
+ drivers/video/fbdev/Kconfig   | 30 ++++++++++++----------------
+ drivers/video/fbdev/Makefile  | 17 ++++++++--------
+ drivers/video/fbdev/bw2.c     | 17 +++++-----------
+ drivers/video/fbdev/cg14.c    | 19 ++++++------------
+ drivers/video/fbdev/cg3.c     | 17 +++++-----------
+ drivers/video/fbdev/cg6.c     | 17 ++++++++--------
+ drivers/video/fbdev/ffb.c     | 17 ++++++++--------
+ drivers/video/fbdev/leo.c     | 19 ++++++------------
+ drivers/video/fbdev/p9100.c   | 18 +++++------------
+ drivers/video/fbdev/sbuslib.h | 37 ++++++++++++++++++++++++++++++++++-
+ drivers/video/fbdev/tcx.c     | 20 ++++++-------------
+ 11 files changed, 106 insertions(+), 122 deletions(-)
+
 -- 
-2.35.3
+2.41.0
 
