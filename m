@@ -2,73 +2,162 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CA47770DD9
-	for <lists+sparclinux@lfdr.de>; Sat,  5 Aug 2023 07:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD508771383
+	for <lists+sparclinux@lfdr.de>; Sun,  6 Aug 2023 05:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229447AbjHEFIl (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sat, 5 Aug 2023 01:08:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53772 "EHLO
+        id S229577AbjHFDzl (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sat, 5 Aug 2023 23:55:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjHEFIk (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sat, 5 Aug 2023 01:08:40 -0400
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E423F4ED8
-        for <sparclinux@vger.kernel.org>; Fri,  4 Aug 2023 22:08:39 -0700 (PDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-585fd99ed8bso55645747b3.1
-        for <sparclinux@vger.kernel.org>; Fri, 04 Aug 2023 22:08:39 -0700 (PDT)
+        with ESMTP id S229468AbjHFDzk (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sat, 5 Aug 2023 23:55:40 -0400
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6441E1BEC
+        for <sparclinux@vger.kernel.org>; Sat,  5 Aug 2023 20:55:39 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-58451ecf223so37443377b3.1
+        for <sparclinux@vger.kernel.org>; Sat, 05 Aug 2023 20:55:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691212119; x=1691816919;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fyaf0OHfvWgaqfRiwRufcy49gz6rXRNyNLf1qH0Ffk0=;
-        b=lHpxs7Mwc9rtpDwYj1Jofg7DiVt5V/6/frN2hvz1fe9OAhY/6nWjCsI9ULm5L7dQX7
-         /xaI6s7LuirLqfzmvxm9229YNSr5KI0HJxzgaCakRy5kbIzZbsi/nueC1+kzyvB4OxQY
-         jrhJw5t2O0GLygSHk1DrJd9Hg20EFB/8i+E9fU+3nESRaHGcBFBkDH7wu3xmnDLAJFEx
-         nMB2LF9T6+F3gxLj0DMv0nkvr8GZow2Pj7TshAEBzIWPD82OtIju+cjwWa/IifeN3MnK
-         hAv9sEntDUPfVMr1a4PgfCxaX66DkrLoGr6t3MYf6cpwE2z+winp5BmTOR5P4UUgfLrC
-         hpSA==
+        d=google.com; s=20221208; t=1691294138; x=1691898938;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=m2K+k0UoOXs6D5uLva9XkEFbd09ZRm9Z7/lr2pw8hZw=;
+        b=nHQK9bAViVteBZuYzu1hSOzZou4B7CZHQRLaLY6OQhD1zUjj/ni/sFz980Hez3g6xP
+         +XJdU9vnCkIdIo4sxbPl3r3sYiHSM+SwI9Q4fpiZIBM4Eof2E8FuwdvUmKXrdVFtQlcx
+         ww+ZM5dOPHj7CUMoYM0F9VEscwNfVfykgHQSeFqLDRH8X8nndU7fw98QPxNlNPhr9jfi
+         w3PvJYAodiPLKRnlfP8VbYcBqtQImekRiz1F15mmV39CZybLJVmANRH5/iuTvgm0WOhL
+         SpUQkdBJ71frR6f2MxShl/q+q+TV2Ok4ynKVWq7SSJQkDn4kFZWzeTN8D/KeteoSw1o9
+         EKLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691212119; x=1691816919;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fyaf0OHfvWgaqfRiwRufcy49gz6rXRNyNLf1qH0Ffk0=;
-        b=EZC4vTxdhotaCqdGsojEmDNp5VljOVNNM14VOpV+cW4cTulOh5jFg0NKa8eCvlF6Te
-         Sl5T6F4flBUQEQoR3a2uK7hjg+V9/gEjl+kN9+5UPCJVlO4JwYvTMVrUxquT1sSx7qWL
-         HZOhuvmEHIpWjBpm/IZ2jNNOJW/tZ7+cqhaZVYpxwTUCCa8eZK/hKcD2jxK4wPKADWUF
-         +PZ8awOIRWz/4cOX0nxwp2/ZgtO43WbaM7qGMKiiw4YVfF0YuKl1pR0Eg9IGSB/uAgc1
-         w8ZWj5HpatCC3gEMfS8VJ92B9uc4byglRvWBhzVBaA5AqT5x5G1euPJjK28u7JHT5e+G
-         9puA==
-X-Gm-Message-State: AOJu0YwSWhB0TPqMaab+33SP4w1b7aYPbvHVbvaR0IENQNTGq093G7+7
-        VPTajKfqyYRZQxQCUc3sFzTTH69XXfuGLcI7srg=
-X-Google-Smtp-Source: AGHT+IGC51iH5lLkgsdf+GEBJ0ZJq55wYKAK1z0tTqNd4aH8aIYSGJHy/3p9B2Jhle/ajfLf6Hl+CUi2WyuGD3MfkPM=
-X-Received: by 2002:a0d:dd08:0:b0:583:9db5:7e89 with SMTP id
- g8-20020a0ddd08000000b005839db57e89mr1823041ywe.24.1691212119124; Fri, 04 Aug
- 2023 22:08:39 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691294138; x=1691898938;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=m2K+k0UoOXs6D5uLva9XkEFbd09ZRm9Z7/lr2pw8hZw=;
+        b=b/DlN7sN6EyQD8LKd1P9VckvDO3o1Bh9RhSyUYsdyAPyyj4AS8mm70aOezASiO9Caw
+         4ATjhGqMcpnC8chLA1PSfhceTX8A9yCCZnfX0kGTJlxGqRJYdQoTvrGFbVz45zN4MZzl
+         ygwfNzlloKkYm3PbHk/4Z07umDrm1fVQQ9u88kxRcCNK1ZAK046Fxc9cq0hk3pI73BL1
+         ICJkLGeCQ3bMB8QMBKNE3h81OdRHwbEq7hkQFtA1rh52e7R9hQTci7XDO5CmaUGITam2
+         Xvh/VsV+TdTKst+VasOyFH2qXx/F8gyEg2X1ctXNv8bOBrIqj035bXosBfXDxuZ/MFWJ
+         6dcA==
+X-Gm-Message-State: AOJu0YwzcEF4ptaHVjMqNnT3MjEDQbw3I+p8FyoXMEYQMlIctUaVgRPk
+        Ar3upxxusE1sSf8C5HyfTnppUA==
+X-Google-Smtp-Source: AGHT+IFiva5XFrTVBq0jEtYJXpVvro3rzuVZhewsSXihKRs8BSeQq4Tb3piHb2uK39Vd3DI+t0W0ew==
+X-Received: by 2002:a0d:d488:0:b0:56d:5272:d540 with SMTP id w130-20020a0dd488000000b0056d5272d540mr6237470ywd.46.1691294138477;
+        Sat, 05 Aug 2023 20:55:38 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id a64-20020a0df143000000b00576e67820f3sm1861323ywf.66.2023.08.05.20.55.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Aug 2023 20:55:37 -0700 (PDT)
+Date:   Sat, 5 Aug 2023 20:55:25 -0700 (PDT)
+From:   Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To:     Qi Zheng <zhengqi.arch@bytedance.com>
+cc:     Hugh Dickins <hughd@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Hildenbrand <david@redhat.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Yang Shi <shy828301@gmail.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Peter Xu <peterx@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>, Yu Zhao <yuzhao@google.com>,
+        Alistair Popple <apopple@nvidia.com>,
+        Ralph Campbell <rcampbell@nvidia.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Steven Price <steven.price@arm.com>,
+        SeongJae Park <sj@kernel.org>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Huang Ying <ying.huang@intel.com>,
+        Naoya Horiguchi <naoya.horiguchi@nec.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Zack Rusin <zackr@vmware.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Miaohe Lin <linmiaohe@huawei.com>,
+        Minchan Kim <minchan@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Song Liu <song@kernel.org>,
+        Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Jann Horn <jannh@google.com>,
+        Vishal Moola <vishal.moola@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
+        linux-arm-kernel@lists.infradead.org, sparclinux@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 10/13] mm/khugepaged: collapse_pte_mapped_thp() with
+ mmap_read_lock()
+In-Reply-To: <0df84f9f-e9b0-80b1-4c9e-95abc1a73a96@bytedance.com>
+Message-ID: <884f20fe-d642-3a5f-522a-d756c3443bb4@google.com>
+References: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com> <b53be6a4-7715-51f9-aad-f1347dcb7c4@google.com> <0df84f9f-e9b0-80b1-4c9e-95abc1a73a96@bytedance.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7010:6254:b0:377:d5d4:4eb0 with HTTP; Fri, 4 Aug 2023
- 22:08:38 -0700 (PDT)
-Reply-To: bintu37999@gmail.com
-From:   BINTU FELICIA <gatotusb@gmail.com>
-Date:   Sat, 5 Aug 2023 06:08:38 +0100
-Message-ID: <CALyoYrNxMECyZtc8ch_Xpad9Td7RjJePNDVvotgv9i0LHSQRpQ@mail.gmail.com>
-Subject: HELLO...,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-How are you today? I hope you are fine. My name is Miss
-Bintu Felicia . l am single looking for honest and nice
-person whom i can partner with . I don't care about
-your color, ethnicity, Status or Sex. Upon your reply to
-this mail I will tell you more about myself and send you
-more of my picture .I am sending you this beautiful mail
-with a wish for much happiness
+On Thu, 3 Aug 2023, Qi Zheng wrote:
+> On 2023/7/12 12:42, Hugh Dickins wrote:
+> > Bring collapse_and_free_pmd() back into collapse_pte_mapped_thp().
+> > It does need mmap_read_lock(), but it does not need mmap_write_lock(),
+> > nor vma_start_write() nor i_mmap lock nor anon_vma lock.  All racing
+> > paths are relying on pte_offset_map_lock() and pmd_lock(), so use those.
+...
+> > @@ -1681,47 +1634,76 @@ int collapse_pte_mapped_thp(struct mm_struct *mm,
+> > unsigned long addr,
+> >   
+> >     if (pte_none(ptent))
+> >   			continue;
+> > -		page = vm_normal_page(vma, addr, ptent);
+> > -		if (WARN_ON_ONCE(page && is_zone_device_page(page)))
+> > +		/*
+> > +		 * We dropped ptl after the first scan, to do the
+> > mmu_notifier:
+> > +		 * page lock stops more PTEs of the hpage being faulted in,
+> > but
+> > +		 * does not stop write faults COWing anon copies from existing
+> > +		 * PTEs; and does not stop those being swapped out or
+> > migrated.
+> > +		 */
+> > +		if (!pte_present(ptent)) {
+> > +			result = SCAN_PTE_NON_PRESENT;
+> >   			goto abort;
+> > +		}
+> > +		page = vm_normal_page(vma, addr, ptent);
+> > +		if (hpage + i != page)
+> > +			goto abort;
+> > +
+> > +		/*
+> > +		 * Must clear entry, or a racing truncate may re-remove it.
+> > +		 * TLB flush can be left until pmdp_collapse_flush() does it.
+> > +		 * PTE dirty? Shmem page is already dirty; file is read-only.
+> > +		 */
+> > +		pte_clear(mm, addr, pte);
+> 
+> This is not non-present PTE entry, so we should call ptep_clear() to let
+> page_table_check track the PTE clearing operation, right? Otherwise it
+> may lead to false positives?
+
+You are right: thanks a lot for catching that: fix patch follows.
+
+Hugh
