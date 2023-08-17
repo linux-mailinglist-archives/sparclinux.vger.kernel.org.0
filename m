@@ -2,68 +2,111 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C70F177F1AC
-	for <lists+sparclinux@lfdr.de>; Thu, 17 Aug 2023 10:01:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B01577FB96
+	for <lists+sparclinux@lfdr.de>; Thu, 17 Aug 2023 18:09:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233562AbjHQIAz (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 17 Aug 2023 04:00:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41618 "EHLO
+        id S1353511AbjHQQI1 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 17 Aug 2023 12:08:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236393AbjHQIAc (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 17 Aug 2023 04:00:32 -0400
-X-Greylist: delayed 537 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 17 Aug 2023 01:00:29 PDT
-Received: from mail.lavesdre.pl (mail.lavesdre.pl [51.89.165.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50AC6A6
-        for <sparclinux@vger.kernel.org>; Thu, 17 Aug 2023 01:00:29 -0700 (PDT)
-Received: by mail.lavesdre.pl (Postfix, from userid 1002)
-        id 1F826445FC; Thu, 17 Aug 2023 07:51:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lavesdre.pl; s=mail;
-        t=1692258690; bh=smPIxdDRk68XR+fHT/NuBVIqjZ4P2eG/GbCmeO87UMM=;
-        h=Date:From:To:Subject:From;
-        b=O71IznYbca019TCjqVH45nrgJ07S30qQsfQ9TL5DTM6Wx1Veva8EqTES4UZA9iaZc
-         97svAeC5cC9rp3LFmmH34PIJOJumSHJQW+Cn9mmHRPAANajFSVZFnKLSIo3OehSCsx
-         fZEmdnaP32BpFx6YnszrNCKQWhT5GNu4NngYi5nq13Zf8hf4HYAItkJB2CPa6s1ASt
-         AQy2YVhenmCuqWrFFB7w5Wja3UyVH6ZH5sK7ccXbBM4VvSaV8QNflV88pqWwoG2V0z
-         hEnc5zzalEgSne1ZuI73pBLWnlWwZH3aGmabU5h/LrMttxndNtxWSxBneIsn1ZYZTu
-         ttCAuSy5BRnRg==
-Received: by mail.lavesdre.pl for <sparclinux@vger.kernel.org>; Thu, 17 Aug 2023 07:51:15 GMT
-Message-ID: <20230817064500-0.1.3j.6oik.0.4nkt99np0e@lavesdre.pl>
-Date:   Thu, 17 Aug 2023 07:51:15 GMT
-From:   =?UTF-8?Q? "Miko=C5=82aj_Permoda" ?= <mikolaj.permoda@lavesdre.pl>
-To:     <sparclinux@vger.kernel.org>
-Subject: =?UTF-8?Q?Przyznano_now=C4=85_dotacj=C4=99?=
-X-Mailer: mail.lavesdre.pl
+        with ESMTP id S1353512AbjHQQIE (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 17 Aug 2023 12:08:04 -0400
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 428973A86
+        for <sparclinux@vger.kernel.org>; Thu, 17 Aug 2023 09:07:57 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:d85a:258d:2c59:b44])
+        by laurent.telenet-ops.be with bizsmtp
+        id ag7i2A0034QHFyo01g7i1C; Thu, 17 Aug 2023 18:07:55 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtp (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1qWfX4-000uIf-BZ;
+        Thu, 17 Aug 2023 18:07:41 +0200
+Received: from geert by rox.of.borg with local (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1qWfXB-007YEb-P7;
+        Thu, 17 Aug 2023 18:07:41 +0200
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Russell King <linux@armlinux.org.uk>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH treewide 0/9] Remove obsolete IDE headers
+Date:   Thu, 17 Aug 2023 18:07:31 +0200
+Message-Id: <cover.1692288018.git.geert@linux-m68k.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+	Hi all,
 
-chcemy poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci uzyskania do=
-finansowania na instalacj=C4=99 systemu fotowoltaicznego i magazyn=C3=B3w=
- energii.=20
+This patch series removes all unused <asm/ide.h> headers and
+<asm-generic/ide_iops.h>.  <asm/ide.h> was still included by 3 PATA
+drivers for m68k platforms, but without any real need.
 
-Pi=C4=85ta edycja Programu M=C3=B3j Pr=C4=85d znacz=C4=85co rozszerza zak=
-res i kwot=C4=99 dofinansowania kt=C3=B3ra wynosi 58 tys. z=C5=82, gdzie =
-w poprzedniej edycji, mo=C5=BCna by=C5=82o otrzyma=C4=87 nie wi=C4=99cej =
-ni=C5=BC 31 tys. z=C5=82.=20
+The first 5 patches have no dependencies.
+The last patch depends on the 3 pata patches.
 
-Jako firma specjalizuj=C4=85ca si=C4=99 w monta=C5=BCu i serwisie fotowol=
-taiki ch=C4=99tnie podejmiemy si=C4=99 realizacji ca=C5=82ego projektu wr=
-az z przygotowaniem, z=C5=82o=C5=BCeniem i rozliczeniem wniosku o dotacj=C4=
-=99. =20
+Thanks for your comments!
 
-Kiedy mogliby=C5=9Bmy um=C3=B3wi=C4=87 si=C4=99 na kr=C3=B3tk=C4=85 rozmo=
-w=C4=99 w celu zbadania potrzeb?=20
+Geert Uytterhoeven (9):
+  ARM: Remove <asm/ide.h>
+  parisc: Remove <asm/ide.h>
+  powerpc: Remove <asm/ide.h>
+  sparc: Remove <asm/ide.h>
+  asm-generic: Remove ide_iops.h
+  ata: pata_buddha: Remove #include <asm/ide.h>
+  ata: pata_falcon: Remove #include <asm/ide.h>
+  ata: pata_gayle: Remove #include <asm/ide.h>
+  m68k: Remove <asm/ide.h>
 
+ arch/arm/include/asm/ide.h     | 24 ---------
+ arch/m68k/include/asm/ide.h    | 67 -----------------------
+ arch/parisc/include/asm/ide.h  | 54 -------------------
+ arch/powerpc/include/asm/ide.h | 18 -------
+ arch/sparc/include/asm/ide.h   | 97 ----------------------------------
+ drivers/ata/pata_buddha.c      |  1 -
+ drivers/ata/pata_falcon.c      |  1 -
+ drivers/ata/pata_gayle.c       |  1 -
+ include/asm-generic/ide_iops.h | 39 --------------
+ 9 files changed, 302 deletions(-)
+ delete mode 100644 arch/arm/include/asm/ide.h
+ delete mode 100644 arch/m68k/include/asm/ide.h
+ delete mode 100644 arch/parisc/include/asm/ide.h
+ delete mode 100644 arch/powerpc/include/asm/ide.h
+ delete mode 100644 arch/sparc/include/asm/ide.h
+ delete mode 100644 include/asm-generic/ide_iops.h
 
-Pozdrawiam
-Miko=C5=82aj Permoda
+-- 
+2.34.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
