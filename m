@@ -2,74 +2,70 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 710ED781CE2
-	for <lists+sparclinux@lfdr.de>; Sun, 20 Aug 2023 10:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 098A0781CE3
+	for <lists+sparclinux@lfdr.de>; Sun, 20 Aug 2023 10:11:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230135AbjHTILE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 20 Aug 2023 04:11:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57844 "EHLO
+        id S230099AbjHTILH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Sun, 20 Aug 2023 04:11:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229668AbjHTILA (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 20 Aug 2023 04:11:00 -0400
-Received: from mailrelay2-1.pub.mailoutpod2-cph3.one.com (mailrelay2-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:401::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F06344211
-        for <sparclinux@vger.kernel.org>; Sun, 20 Aug 2023 01:08:35 -0700 (PDT)
+        with ESMTP id S230027AbjHTILC (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Sun, 20 Aug 2023 04:11:02 -0400
+Received: from mailrelay5-1.pub.mailoutpod2-cph3.one.com (mailrelay5-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:404::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CFAC423F
+        for <sparclinux@vger.kernel.org>; Sun, 20 Aug 2023 01:08:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ravnborg.org; s=rsa1;
         h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
          from:date:from;
-        bh=oodxccrBzg4XqtTHjS1zOVx29jRaoidsP8nWpOw14RY=;
-        b=YChe1TstpygT2d7vJcZ5IwdPR+kSaf21KzzXmQll++iu7yuzYcAnzHlTN6halrPeLc2KVXvX6tznV
-         9yMrOYTU66je84cTH5GleM4MWZJkrRxVeYFB9AZUIcJvla3IacQPJSAOSYgf0XA2xm/vRlk3vDJuL/
-         zBevqngA/0bSOlZV3aN0mkAnhM4KJYimHkGBNmXiQXCEoE3T9DRJm04LxsQHu7DRskkO4qVkgNjObq
-         LPGmRnlPKq4zjd2avylsV/VvoJDsf2rb5yA3+D+CIh34R5KzkPTmgEwju3hmDi2sDwRPX3kuZrdVJF
-         9LZ0Q4/SRqH9S7kFMFt/rBTDsr+m3Qw==
+        bh=mo2YDv+ovlF2nVfFfdhR2ZsisZkCOXFJRfLQgf7gU70=;
+        b=oPDj7eeTLZNat7oFWPgKtTlMaBtxAnihJfGaFqy8/7POyvhIIpuxiuPK9LRia9YhnMGfQRR+JENET
+         QE0UwABhiJjGbdtwzNx/UqJVVTkU3BrWmyZueq03p37h12EswRO1gUiu4g0znhUgKpZFF/6qf0ESpQ
+         21Uyg3TZzOx+5I0gYoYPwmUCtEfJJ8gjeawklXY/rlmL1JddnLpyP7Aaye8J7ahomMjorUlpg+E+zN
+         1r2nLBin26IeqO0KG/R+JIrE04L4RD0mw/yWGhsnd62br+Frl9XRLg00NDSMUfNKmUsJTuyPGGrEBU
+         5d2C0EwF0N6ZRQMd6/k6X9Ukqgbjs/A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
         d=ravnborg.org; s=ed1;
         h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
          from:date:from;
-        bh=oodxccrBzg4XqtTHjS1zOVx29jRaoidsP8nWpOw14RY=;
-        b=wWxdp0MRt9zae2m3fbs1Gl8bOxxUf916XR8GRqaHv44hyFrRPq/ekzhjeTEv9KUyS9VIQvnY4QYyp
-         ttAUTiGCw==
-X-HalOne-ID: c02c422d-3f30-11ee-9303-13db1c4e5356
+        bh=mo2YDv+ovlF2nVfFfdhR2ZsisZkCOXFJRfLQgf7gU70=;
+        b=/P6fOU74/HqLKgyCkv/nwwB3RvY4shUENoqwAlAiMzHMus3tPNyeNgFlaJLVWKlSr2juyBb2l7Z8t
+         ZOAek51Dw==
+X-HalOne-ID: c8a2bf8f-3f30-11ee-9473-55333ba73462
 Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-        by mailrelay2 (Halon) with ESMTPSA
-        id c02c422d-3f30-11ee-9303-13db1c4e5356;
-        Sun, 20 Aug 2023 08:08:33 +0000 (UTC)
-Date:   Sun, 20 Aug 2023 10:08:31 +0200
+        by mailrelay5 (Halon) with ESMTPSA
+        id c8a2bf8f-3f30-11ee-9473-55333ba73462;
+        Sun, 20 Aug 2023 08:08:46 +0000 (UTC)
+Date:   Sun, 20 Aug 2023 10:08:45 +0200
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     Masahiro Yamada <masahiroy@kernel.org>
 Cc:     linux-kbuild@vger.kernel.org, linux-arch@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 1/6] sparc: replace #include <asm/export.h> with #include
- <linux/export.h>
-Message-ID: <20230820080831.GA206827@ravnborg.org>
+Subject: Re: [PATCH 2/6] sparc: remove <asm/export.h>
+Message-ID: <20230820080845.GB206827@ravnborg.org>
 References: <20230819233353.3683813-1-masahiroy@kernel.org>
+ <20230819233353.3683813-2-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230819233353.3683813-1-masahiroy@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_NONE autolearn=unavailable autolearn_force=no
+In-Reply-To: <20230819233353.3683813-2-masahiroy@kernel.org>
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Sun, Aug 20, 2023 at 08:33:48AM +0900, Masahiro Yamada wrote:
-> Commit ddb5cdbafaaa ("kbuild: generate KSYMTAB entries by modpost")
-> deprecated <asm/export.h>, which is now a wrapper of <linux/export.h>.
+On Sun, Aug 20, 2023 at 08:33:49AM +0900, Masahiro Yamada wrote:
+> All *.S files under arch/sparc/ have been converted to include
+> <linux/export.h> instead of <asm/export.h>.
 > 
-> Replace #include <asm/export.h> with #include <linux/export.h>.
-> 
-> After all the <asm/export.h> lines are converted, <asm/export.h> and
-> <asm-generic/export.h> will be removed.
+> Remove <asm/export.h>.
 > 
 > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-
-Thanks,
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
