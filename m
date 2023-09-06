@@ -2,139 +2,114 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23E8B79286A
-	for <lists+sparclinux@lfdr.de>; Tue,  5 Sep 2023 18:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE67793F63
+	for <lists+sparclinux@lfdr.de>; Wed,  6 Sep 2023 16:48:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232010AbjIEQVq (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 5 Sep 2023 12:21:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47254 "EHLO
+        id S236487AbjIFOsP (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 6 Sep 2023 10:48:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354781AbjIEOUB (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 5 Sep 2023 10:20:01 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C468197;
-        Tue,  5 Sep 2023 07:19:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
-        :Date:subject:date:message-id:reply-to;
-        bh=tXlyPfpn4kN+DQURxdfJQDcnAt2vpqV+AwaY6wnwJEA=; b=Ug9IKVCSbpqEU2aPbdoNFLVXZ+
-        4o/kN99/Msj21mLQlGdi2Fl+C3jSpNYiqu54FcADH9Vw+lCaIpHBXrF7De8jIKWy3LVteBjNeW3qF
-        ONgU0j5zAYd0AxDSdhcDkAwxaikMbBbXsMZiGS3JhImZOxo9+xdcQ1X1p1EpVERdHuk4=;
-Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:43660 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1qdWu3-0000tG-91; Tue, 05 Sep 2023 10:19:39 -0400
-Date:   Tue, 5 Sep 2023 10:19:38 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Yi Yang <yiyang13@huawei.com>
-Cc:     <davem@davemloft.net>, <gregkh@linuxfoundation.org>,
-        <jirislaby@kernel.org>, <jag.raman@oracle.com>,
-        <sparclinux@vger.kernel.org>, <linux-serial@vger.kernel.org>
-Message-Id: <20230905101938.7cf68e477b946e1a066de17f@hugovil.com>
-In-Reply-To: <20230904035220.48164-1-yiyang13@huawei.com>
-References: <20230904035220.48164-1-yiyang13@huawei.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 184.161.19.61
-X-SA-Exim-Mail-From: hugo@hugovil.com
+        with ESMTP id S235265AbjIFOsJ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 6 Sep 2023 10:48:09 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD0F4173A;
+        Wed,  6 Sep 2023 07:48:04 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 5E378223E0;
+        Wed,  6 Sep 2023 14:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1694011683; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=Xszo7pVQPpJh90SLFXOt6v5MNEZ/ZQ3nkgwWLVKnV3E=;
+        b=VnvrsjwdldkLT17VDCpbL3NG7Oy+CIPU7/5bo8GBz/XkAo+GqnyaqKuGPlibTul1z1J6x4
+        tYhUEG+3pErCzHf03/eCEfEJWO6G4BH25TZ8fkilYuPd7DFRMqvt9JDPKevskE8fU7nQrt
+        v4TxktDxvpRcuRwgRewsDKxJuLOr2yc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1694011683;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=Xszo7pVQPpJh90SLFXOt6v5MNEZ/ZQ3nkgwWLVKnV3E=;
+        b=hSuIDwDftuch5IMFzYWbOYpDgDGgJx9OauQALOjjevzDFMLOAPxjPb3awmGulXWXbSipr6
+        kE73v3Zybw2dBnAQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1B4BD1346C;
+        Wed,  6 Sep 2023 14:48:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id NzaxBSOR+GSNSgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Wed, 06 Sep 2023 14:48:03 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        arnd@arndb.de, deller@gmx.de
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-fbdev@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-arch@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 0/5] ppc, fbdev: Clean up fbdev mmap helper
+Date:   Wed,  6 Sep 2023 16:35:01 +0200
+Message-ID: <20230906144801.25297-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
-Subject: Re: [PATCH V2] tty: vcc: Add check for kstrdup() in vcc_probe()
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, 4 Sep 2023 11:52:20 +0800
-Yi Yang <yiyang13@huawei.com> wrote:
+Clean up and rename fb_pgprotect() to work without struct file. Then
+refactor the implemnetation for PowerPC. This change has been discussed
+at [1] in the context of refactoring fbdev's mmap code.
 
-> Add check for the return value of kstrdup() and return the error, if it
-> fails in order to avoid NULL pointer dereference.
-> 
-> Fixes: 5d171050e28f ("sparc64: vcc: Enable VCC port probe and removal")
-> Signed-off-by: Yi Yang <yiyang13@huawei.com>
-> ---
-> V2: Add goto target for error paths.
-> ---
->  drivers/tty/vcc.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/tty/vcc.c b/drivers/tty/vcc.c
-> index a39ed981bfd3..5b625f20233b 100644
-> --- a/drivers/tty/vcc.c
-> +++ b/drivers/tty/vcc.c
-> @@ -579,18 +579,22 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
->  		return -ENOMEM;
->  
->  	name = kstrdup(dev_name(&vdev->dev), GFP_KERNEL);
-> +	if (!name) {
-> +		rv = -ENOMEM;
-> +		goto free_port;
+The first two patches update fbdev and replace fbdev's fb_pgprotect()
+with fb_pgprot_device() on all architectures. The new helper's stream-
+lined interface enables more refactoring within fbdev's mmap
+implementation.
 
-Hi,
-at this point, the port is not yet allocated, so you should not jump to
-free_port. You should simply return with -ENOMEM.
+Patches 3 to 5 adapt PowerPC's internal interfaces to provide
+phys_mem_access_prot() that works without struct file. Neither the
+architecture code or fbdev helpers need the parameter.
 
+v2:
+	* reorder patches to simplify merging (Michael)
 
-> +	}
->  
->  	rv = vio_driver_init(&port->vio, vdev, VDEV_CONSOLE_CON, vcc_versions,
->  			     ARRAY_SIZE(vcc_versions), NULL, name);
->  	if (rv)
-> -		goto free_port;
-> +		goto free_name;
->  
->  	port->vio.debug = vcc_dbg_vio;
->  	vcc_ldc_cfg.debug = vcc_dbg_ldc;
->  
->  	rv = vio_ldc_alloc(&port->vio, &vcc_ldc_cfg, port);
->  	if (rv)
-> -		goto free_port;
-> +		goto free_name;
+[1] https://lore.kernel.org/linuxppc-dev/5501ba80-bdb0-6344-16b0-0466a950f82c@suse.com/
 
-You should still jump to free_port, not free_name, after seeing my
-comments below
+Thomas Zimmermann (5):
+  fbdev: Avoid file argument in fb_pgprotect()
+  fbdev: Replace fb_pgprotect() with fb_pgprot_device()
+  arch/powerpc: Remove trailing whitespaces
+  arch/powerpc: Remove file parameter from phys_mem_access_prot code
+  arch/powerpc: Call internal __phys_mem_access_prot() in fbdev code
 
+ arch/ia64/include/asm/fb.h                | 15 +++++++--------
+ arch/m68k/include/asm/fb.h                | 19 ++++++++++---------
+ arch/mips/include/asm/fb.h                | 11 +++++------
+ arch/powerpc/include/asm/book3s/pgtable.h | 10 ++++++++--
+ arch/powerpc/include/asm/fb.h             | 13 +++++--------
+ arch/powerpc/include/asm/machdep.h        | 13 ++++++-------
+ arch/powerpc/include/asm/nohash/pgtable.h | 10 ++++++++--
+ arch/powerpc/include/asm/pci.h            |  4 +---
+ arch/powerpc/kernel/pci-common.c          |  3 +--
+ arch/powerpc/mm/mem.c                     |  8 ++++----
+ arch/sparc/include/asm/fb.h               | 15 +++++++++------
+ arch/x86/include/asm/fb.h                 | 10 ++++++----
+ arch/x86/video/fbdev.c                    | 15 ++++++++-------
+ drivers/video/fbdev/core/fb_chrdev.c      |  3 ++-
+ include/asm-generic/fb.h                  | 12 ++++++------
+ 15 files changed, 86 insertions(+), 75 deletions(-)
 
->  
->  	spin_lock_init(&port->lock);
->  
-> @@ -624,6 +628,11 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
->  		goto unreg_tty;
->  	}
->  	port->domain = kstrdup(domain, GFP_KERNEL);
-> +	if (!port->domain) {
-> +		rv = -ENOMEM;
-> +		goto unreg_tty;
-> +	}
-> +
->  
->  	mdesc_release(hp);
->  
-> @@ -653,8 +662,9 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
->  	vcc_table_remove(port->index);
->  free_ldc:
->  	vio_ldc_free(&port->vio);
-> -free_port:
-> +free_name:
->  	kfree(name);
-> +free_port:
->  	kfree(port);
+-- 
+2.42.0
 
-free_name should come after free_port...
-
-Hugo.
-
-
->  
->  	return rv;
-> -- 
-> 2.17.1
-> 
