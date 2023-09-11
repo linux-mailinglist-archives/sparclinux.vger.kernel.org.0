@@ -2,52 +2,52 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A7D579B226
-	for <lists+sparclinux@lfdr.de>; Tue, 12 Sep 2023 01:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47B9F79B130
+	for <lists+sparclinux@lfdr.de>; Tue, 12 Sep 2023 01:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244514AbjIKWZ0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Mon, 11 Sep 2023 18:25:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36668 "EHLO
+        id S243326AbjIKWZu (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Mon, 11 Sep 2023 18:25:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237702AbjIKNKp (ORCPT
+        with ESMTP id S237704AbjIKNKp (ORCPT
         <rfc822;sparclinux@vger.kernel.org>); Mon, 11 Sep 2023 09:10:45 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CE32E7;
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC6EBE4B;
         Mon, 11 Sep 2023 06:10:40 -0700 (PDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id C55AB1F8A6;
-        Mon, 11 Sep 2023 13:10:38 +0000 (UTC)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 7646421850;
+        Mon, 11 Sep 2023 13:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1694437838; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1694437839; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SQtqPTO6zowJiMP7f/KbQAZIhFJEInYimmVKJDBEpdg=;
-        b=bqwWs5cq53W9DRAIRi/zY8VbRvkwiNS1i7gx1aMnEXcJuf4sxkdI73WiHAqtXCc12Ulsfd
-        Q20dCTf4yg+Z3MyUF6d1qRZziS0FzyRgnjlVQAjMW510n8b87QKRE0LPtDF43wBQHQC882
-        D7csaZrtRok02oeUvZJChNzOgMD0q8o=
+        bh=zC+JZGsYXsje+yxOPTqCSn4MX7oGHygyObBUu1WbhrA=;
+        b=NXQHlmbMHYPOXM6/Q/wl/QPcZG0WBva+XMfJ3bI8zPZR0ux8x966yv6JXD7NlSTCOQklTa
+        932HKLit7W3e7hcuwCJ8sc5x6KRlq+PhBRrREvJgCoo1V1dGXQ5h7PnTiS4OLTxVn3gu1O
+        Rx1xh4EvrS13FZCYRWs2QwstnFhPB3k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1694437838;
+        s=susede2_ed25519; t=1694437839;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SQtqPTO6zowJiMP7f/KbQAZIhFJEInYimmVKJDBEpdg=;
-        b=gCN6aoBHxkH05NjVEyxOkbuoEmr6Am1TDXSMu7XMsUMczyyDxLKdp7XI9gHTNrdhvwfK/U
-        JWthC4eG8eFSKJAw==
+        bh=zC+JZGsYXsje+yxOPTqCSn4MX7oGHygyObBUu1WbhrA=;
+        b=JCHgcAtxoFB/ZbPa6EOWzeOMrMPLp/0P8whX9d/BfwDeq0tnkGwyxy4nr08KjBixgKrfEu
+        Rcaq/Y+WU3OamAAw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8292113AD1;
-        Mon, 11 Sep 2023 13:10:38 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2DC1513AD1;
+        Mon, 11 Sep 2023 13:10:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id wAH8Hs4R/2SCIwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Mon, 11 Sep 2023 13:10:38 +0000
+        id ALk3Cs8R/2SCIwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Mon, 11 Sep 2023 13:10:39 +0000
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
         arnd@arndb.de, deller@gmx.de
@@ -56,9 +56,9 @@ Cc:     linuxppc-dev@lists.ozlabs.org, linux-fbdev@vger.kernel.org,
         linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-arch@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v3 1/5] fbdev: Avoid file argument in fb_pgprotect()
-Date:   Mon, 11 Sep 2023 15:08:31 +0200
-Message-ID: <20230911131033.27745-2-tzimmermann@suse.de>
+Subject: [PATCH v3 3/5] arch/powerpc: Remove trailing whitespaces
+Date:   Mon, 11 Sep 2023 15:08:33 +0200
+Message-ID: <20230911131033.27745-4-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911131033.27745-1-tzimmermann@suse.de>
 References: <20230911131033.27745-1-tzimmermann@suse.de>
@@ -74,37 +74,49 @@ Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Only PowerPC's fb_pgprotect() needs the file argument, although
-the implementation does not use it. Pass NULL to the internal
-helper in preparation of further updates. A later patch will remove
-the file parameter from fb_pgprotect().
+Fix coding style. No functional changes.
 
-While at it, replace the shift operation with PHYS_PFN().
-
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- arch/powerpc/include/asm/fb.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/machdep.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/fb.h b/arch/powerpc/include/asm/fb.h
-index 5f1a2e5f76548..61e3b8806db69 100644
---- a/arch/powerpc/include/asm/fb.h
-+++ b/arch/powerpc/include/asm/fb.h
-@@ -9,7 +9,12 @@
- static inline void fb_pgprotect(struct file *file, struct vm_area_struct *vma,
- 				unsigned long off)
- {
--	vma->vm_page_prot = phys_mem_access_prot(file, off >> PAGE_SHIFT,
-+	/*
-+	 * PowerPC's implementation of phys_mem_access_prot() does
-+	 * not use the file argument. Set it to NULL in preparation
-+	 * of later updates to the interface.
-+	 */
-+	vma->vm_page_prot = phys_mem_access_prot(NULL, PHYS_PFN(off),
- 						 vma->vm_end - vma->vm_start,
- 						 vma->vm_page_prot);
- }
+diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+index 4f6e7d7ee3883..933465ed4c432 100644
+--- a/arch/powerpc/include/asm/machdep.h
++++ b/arch/powerpc/include/asm/machdep.h
+@@ -10,7 +10,7 @@
+ #include <linux/export.h>
+ 
+ struct pt_regs;
+-struct pci_bus;	
++struct pci_bus;
+ struct device_node;
+ struct iommu_table;
+ struct rtc_time;
+@@ -78,8 +78,8 @@ struct machdep_calls {
+ 	unsigned char 	(*nvram_read_val)(int addr);
+ 	void		(*nvram_write_val)(int addr, unsigned char val);
+ 	ssize_t		(*nvram_write)(char *buf, size_t count, loff_t *index);
+-	ssize_t		(*nvram_read)(char *buf, size_t count, loff_t *index);	
+-	ssize_t		(*nvram_size)(void);		
++	ssize_t		(*nvram_read)(char *buf, size_t count, loff_t *index);
++	ssize_t		(*nvram_size)(void);
+ 	void		(*nvram_sync)(void);
+ 
+ 	/* Exception handlers */
+@@ -102,9 +102,9 @@ struct machdep_calls {
+ 	 */
+ 	long	 	(*feature_call)(unsigned int feature, ...);
+ 
+-	/* Get legacy PCI/IDE interrupt mapping */ 
++	/* Get legacy PCI/IDE interrupt mapping */
+ 	int		(*pci_get_legacy_ide_irq)(struct pci_dev *dev, int channel);
+-	
++
+ 	/* Get access protection for /dev/mem */
+ 	pgprot_t	(*phys_mem_access_prot)(struct file *file,
+ 						unsigned long pfn,
 -- 
 2.42.0
 
