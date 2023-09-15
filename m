@@ -2,75 +2,127 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 867447A12E2
-	for <lists+sparclinux@lfdr.de>; Fri, 15 Sep 2023 03:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 409407A1456
+	for <lists+sparclinux@lfdr.de>; Fri, 15 Sep 2023 05:24:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231260AbjIOBYH (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Thu, 14 Sep 2023 21:24:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35932 "EHLO
+        id S231932AbjIODYK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Thu, 14 Sep 2023 23:24:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230100AbjIOBYG (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Thu, 14 Sep 2023 21:24:06 -0400
-X-Greylist: delayed 10805 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 14 Sep 2023 18:24:02 PDT
-Received: from s.wfbtzhsw.outbound-mail.sendgrid.net (s.wfbtzhsw.outbound-mail.sendgrid.net [159.183.224.105])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155B9268F
-        for <sparclinux@vger.kernel.org>; Thu, 14 Sep 2023 18:24:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rum-digital.com;
-        h=content-type:mime-version:content-transfer-encoding:
-        content-description:subject:from:reply-to:to:cc:content-type:from:subject:to;
-        s=s1; bh=aIzoVsflcKEKEfLCc2C2MqlOdeC2kiSY4sN2tb9a3Ro=;
-        b=kxedhCeTtJjsy9q2NFczAQ5nJi92Ir7vklYMMOgeNEMrqdW+yl/Yf9g0vLMJ/yVaeuRQ
-        aOPsysY95KNWaPWpNVI7Tls7VfbLxcxo5FayefokdfTWqwojoF5k8lxtm28m+IfFPzOzZn
-        PdvWWurLA02PcZyrOgr85Gv46JTHmA4/wbLWQDOJcV91sn8QBc3EAG9Q79ZoezMsBIHWkU
-        B+05QZVJaSISnE2mJHM9c0NvtbT+N6oIxpU5xG5HjfY73ITCIGCk0CVMWVrfyBkZsRJG6m
-        T9L0clR7XxB4ogb3sHBFDEIogl7Pwx6r+9C1JYRW5juksSsTjICJnqX598sYddSA==
-Received: by filterdrecv-645d4f7c4d-55t5t with SMTP id filterdrecv-645d4f7c4d-55t5t-1-65037626-70
-        2023-09-14 21:07:50.406660494 +0000 UTC m=+10963900.635208453
-Received: from [185.225.75.232] (unknown)
-        by geopod-ismtpd-2 (SG) with ESMTP
-        id 9nbNQAhVRsm8BglYypAIwg
-        Thu, 14 Sep 2023 21:07:50.222 +0000 (UTC)
-Content-Type: text/plain; charset=us-ascii
+        with ESMTP id S229767AbjIODYJ (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Thu, 14 Sep 2023 23:24:09 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1F14270C;
+        Thu, 14 Sep 2023 20:24:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1694748242;
+        bh=6XG3B0FzXsmvZoKkkhm5wOJHB7Zd1TpS1JWjBGpTusE=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=PKpIyJXfdhJr2Sk2XiFpR9ouUJal5nD2tBGYvkTi+yQRsa9ZIvCgirZ5+6besrqBL
+         UlCTRNeIti/3HlXKC5s/hNh/zWDyp0CAj38ooZCtURDec0zV29n1q0vvHWP8LzC/8u
+         j+BMCh8sirKL/ZLOdFgRYAJwTicvGuLLCgCMve6s4NNE6G+YTeu3xI1X+6WSPiiUmJ
+         53dID1WgSubZVw/xkbEC18yiNd+dsH+sCiTIMfNZ4C0SAAbyPBEWD+PT1gDHirRJ7I
+         e1Oe/pJXxiN5V+sroGp3Ed6zutx8sxe3J/0iaG/Wx6C4lA/ghdRZcbu2waY0Piauup
+         ceLVj/+K8GSVw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rn0045DDWz4wxR;
+        Fri, 15 Sep 2023 13:23:48 +1000 (AEST)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Sohil Mehta <sohil.mehta@intel.com>, linux-api@vger.kernel.org,
+        linux-arch@vger.kernel.org
+Cc:     Sohil Mehta <sohil.mehta@intel.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H . Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Sergei Trofimovich <slyich@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Rohan McLure <rmclure@linux.ibm.com>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Brian Gerst <brgerst@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Deepak Gupta <debug@rivosinc.com>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH v2] arch: Reserve map_shadow_stack() syscall number for
+ all architectures
+In-Reply-To: <20230914185804.2000497-1-sohil.mehta@intel.com>
+References: <20230914185804.2000497-1-sohil.mehta@intel.com>
+Date:   Fri, 15 Sep 2023 13:23:43 +1000
+Message-ID: <878r986rwg.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Free Grant
-From:   Access Industries <support@rum-digital.com>
-Date:   Thu, 14 Sep 2023 21:07:50 +0000 (UTC)
-Message-ID: <9nbNQAhVRsm8BglYypAIwg@geopod-ismtpd-2>
-Reply-To: grantdept@cpn.it
-X-SG-EID: =?us-ascii?Q?UWX7VtQHSAz+6B=2Fk5JY0LUDNkYwirBLYyeHylJQRWlfQuueEt6QYgVhYHx0Eg1?=
- =?us-ascii?Q?q9cwIUbmDcshkgQKpagEF9vMt2sqqRyCcL0qCuy?=
- =?us-ascii?Q?bJ0hRI9i+Ng+FGf0X+hQHbfHp3dg7ZlA=2F2um9vE?=
- =?us-ascii?Q?6OR2dwnYpqlJ0SetR8e=2FylgStc1f2gJPjxcvvl2?=
- =?us-ascii?Q?2sCddQtEToYxFp9ZGKOGyL5hokrE=2FWIp4cKsQvY?=
- =?us-ascii?Q?9WhNIY78o1eshTBM33eb2SunDtGXumn4sMM9jr9?=
- =?us-ascii?Q?Kkw8jNwhZaWGow=2F+Ud0aw=3D=3D?=
-To:     Recipients <support@rum-digital.com>
-X-Entity-ID: FvQ+4LiynPmKYPl/L9cTxw==
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Hello,
+Sohil Mehta <sohil.mehta@intel.com> writes:
+> commit c35559f94ebc ("x86/shstk: Introduce map_shadow_stack syscall")
+> recently added support for map_shadow_stack() but it is limited to x86
+> only for now. There is a possibility that other architectures (namely,
+> arm64 and RISC-V), that are implementing equivalent support for shadow
+> stacks, might need to add support for it.
+>
+> Independent of that, reserving arch-specific syscall numbers in the
+> syscall tables of all architectures is good practice and would help
+> avoid future conflicts. map_shadow_stack() is marked as a conditional
+> syscall in sys_ni.c. Adding it to the syscall tables of other
+> architectures is harmless and would return ENOSYS when exercised.
+>
+> Note, map_shadow_stack() was assigned #453 during the merge process
+> since #452 was taken by fchmodat2().
+>
+> For Powerpc, map it to sys_ni_syscall() as is the norm for Powerpc
+> syscall tables.
 
-I am Sir Leonard Valentinovich Blavatnik, a British businessman, investor, =
-philanthropist and President (Access Industries). I have donated 20% of my =
-personal wealth to charitable causes and have also promised to donate 20% o=
-f my wealth to private individuals this year 2023. I have decided to donate=
- 500,000.00 Dollars (five hundred thousand United States Dollars) to you. I=
-f you are interested in my donation, please contact me for more information=
-.
+Mapping it to sys_map_shadow_stack() would work fine, but I'm happy with
+sys_ni_syscall as I don't see powerpc implementing map_shadow_stack()
+any time soon.
 
-You can also read more about me using the link below
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-https://u19734262.ct.sendgrid.net/ls/click?upn=3Dn1BQuW99yTeKkeyD4ax-2BnkDz=
-6ZdC7vu35lLA5ZpqxsBOTiuKuDz6gBrrivSrT9oISlT7mYiCGgZWoucZ3QIWZg-3D-3D8BDX_i8=
-2A39MENmVWE15tnXIur65AUJzbakovUD7hZRH9vfcOIAt0CIA5jKHAojzmbN-2F2WM2-2BT2wxW=
-OKphADA7RAlOmWBA8E59ERQWWt5kGwGUCYqSrsZL7-2FbM1JUQOuKgGX26V06dCjMLLDDEQHTTS=
-CrGkKcKCsVL80Il7LqwXleNaNVsjHxBF-2BxEP24Nngvj-2B-2FhemcefbgixWN835h1z5Q2OlU=
-bCSHQgtRe3tSwXbFImpQ-3D
-
-Kind regards
-President (Access Industries)
-Sir Leonard Valentinovich Blavatnik
+cheers
