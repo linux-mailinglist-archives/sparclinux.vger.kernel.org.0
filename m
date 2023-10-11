@@ -2,66 +2,147 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 469A47C4CDD
-	for <lists+sparclinux@lfdr.de>; Wed, 11 Oct 2023 10:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78B3A7C545C
+	for <lists+sparclinux@lfdr.de>; Wed, 11 Oct 2023 14:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230152AbjJKIQw (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Wed, 11 Oct 2023 04:16:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59038 "EHLO
+        id S1346206AbjJKMx0 (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 11 Oct 2023 08:53:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbjJKIQv (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Wed, 11 Oct 2023 04:16:51 -0400
-Received: from mail.corebizinsight.com (mail.corebizinsight.com [217.61.112.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857C1CF
-        for <sparclinux@vger.kernel.org>; Wed, 11 Oct 2023 01:16:48 -0700 (PDT)
-Received: by mail.corebizinsight.com (Postfix, from userid 1002)
-        id 9B01E83445; Wed, 11 Oct 2023 10:16:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corebizinsight.com;
-        s=mail; t=1697012205;
-        bh=CEmchsDu5Oe+RNHCZSBmKSgMOuy1xnO2dydqkEjt3Qs=;
-        h=Date:From:To:Subject:From;
-        b=Q7gT0SA3wScUsJUtL+24ZXxIVbvcjXhuYd4m49JhVogP2ejfRSWJ+JFQC6FZdfVee
-         kbbcGwvMZR9j/EgVnv9011jRhcAvW+04Otu7YCxLB+aBEMiNnwwjA4Xq1HvQ9qf/3m
-         vmppJM0hVqXTYY6+TL5LYsDfS23aRPhKvj1pNl7id1rgBE8o4V27tE4EWJ/DMWrxsv
-         74ciJy04Mgl3hYoaGq0k/xHv0MMwsR2i4mHWTK32FrVlSPppuFCkvhj8RKd1dLZm47
-         4H08REITtoHKD+Z2iwWlgDyGVYf/OkjcxorFS3mkMvFKH/M/N7q4ojNGOjVsv1/vl/
-         2aIZ52bqpQ5kw==
-Received: by mail.corebizinsight.com for <sparclinux@vger.kernel.org>; Wed, 11 Oct 2023 08:16:08 GMT
-Message-ID: <20231011084500-0.1.1c.64oh.0.ch4a882n07@corebizinsight.com>
-Date:   Wed, 11 Oct 2023 08:16:08 GMT
-From:   "Jakub Kovarik" <jakub.kovarik@corebizinsight.com>
-To:     <sparclinux@vger.kernel.org>
-Subject: =?UTF-8?Q?Pros=C3=ADm_kontaktujte?=
-X-Mailer: mail.corebizinsight.com
+        with ESMTP id S232124AbjJKMxY (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 11 Oct 2023 08:53:24 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A1D9D;
+        Wed, 11 Oct 2023 05:53:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F85C433CC;
+        Wed, 11 Oct 2023 12:53:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697028802;
+        bh=BAn9cTmPCgYcwvId5a7izdOqRdwYY/SugU+kfhYDqmU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Ckftw/lZlJbPMA/dzRJmM/VrLm2xFZ2zbn7DGTxWiomWSOVP6zZhFIJ2BNZzOzfmi
+         WNdYzaNnpb0li5MHShlQK3oR77qATwhquIfYtbS2qcxouWrx/tYNXq544lAjKFQDpA
+         Vz9LMECi3pswPXznVM4zmgrfwP36gbWZmEY2zgeCDANjr1COzuPDnQPEfA7i1xQ8p8
+         bSEXGRHusQV4L7Fpb8YmVEuiGDQpTc2IAutv3bYkXEraZvYfx3GpqleFpTlduIcfsH
+         rSwOf/YNc5EZyzIbjBjWlirtlOXEah9MWUIUlTA8o9qnOzmXTT7DWL5nce0eSzTi43
+         DQnyck+GuK7pA==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-1e9872c88aaso587888fac.1;
+        Wed, 11 Oct 2023 05:53:22 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyHOHJUfFReogwm/1+towp+E2ZY+EngBesVYO8udKmEpgd7SVBF
+        9AvlR7IXBlVApKiAYmvNE3FwDb1vuk/XJEI8g18=
+X-Google-Smtp-Source: AGHT+IHunqCCf3/TPbLbNP9iC+WACbBVYbi8Ckvhhj1/4uAEKkWSBuHMfzGgLhnmZ11rboJKnGC/Z4MWi+rIZcz3AOo=
+X-Received: by 2002:a05:6870:5611:b0:1d1:3a58:14a5 with SMTP id
+ m17-20020a056870561100b001d13a5814a5mr26035580oao.25.1697028802212; Wed, 11
+ Oct 2023 05:53:22 -0700 (PDT)
 MIME-Version: 1.0
+References: <20231009124210.1064021-1-masahiroy@kernel.org>
+ <20231009124210.1064021-4-masahiroy@kernel.org> <CAJF2gTTDpGgzsiRk=q6FCdX_g5maY-sT9h0jiW=p6HLziq97yA@mail.gmail.com>
+In-Reply-To: <CAJF2gTTDpGgzsiRk=q6FCdX_g5maY-sT9h0jiW=p6HLziq97yA@mail.gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Wed, 11 Oct 2023 21:52:45 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATmaSXQYFMZEw2vpn6td10+huck-vy-Rbo5Brys+j_Stg@mail.gmail.com>
+Message-ID: <CAK7LNATmaSXQYFMZEw2vpn6td10+huck-vy-Rbo5Brys+j_Stg@mail.gmail.com>
+Subject: Re: [PATCH 4/5] kbuild: unify vdso_install rules
+To:     Guo Ren <guoren@kernel.org>
+Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+        loongarch@lists.linux.dev, sparclinux@vger.kernel.org,
+        x86@kernel.org, Albert Ou <aou@eecs.berkeley.edu>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,
-        URIBL_DBL_SPAM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dobr=C3=A9 r=C3=A1no,
+On Wed, Oct 11, 2023 at 11:24=E2=80=AFAM Guo Ren <guoren@kernel.org> wrote:
+>
+> On Mon, Oct 9, 2023 at 8:42=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.=
+org> wrote:
 
-Je mo=C5=BEn=C3=A9 s v=C3=A1mi nav=C3=A1zat spolupr=C3=A1ci?
+> > --- a/arch/riscv/Makefile
+> > +++ b/arch/riscv/Makefile
+> > @@ -131,12 +131,6 @@ endif
+> >  libs-y +=3D arch/riscv/lib/
+> >  libs-$(CONFIG_EFI_STUB) +=3D $(objtree)/drivers/firmware/efi/libstub/l=
+ib.a
+> >
+> > -PHONY +=3D vdso_install
+> > -vdso_install:
+> > -       $(Q)$(MAKE) $(build)=3Darch/riscv/kernel/vdso $@
+> > -       $(if $(CONFIG_COMPAT),$(Q)$(MAKE) \
+> > -               $(build)=3Darch/riscv/kernel/compat_vdso compat_$@)
+> > -
+> >  ifeq ($(KBUILD_EXTMOD),)
+> >  ifeq ($(CONFIG_MMU),y)
+> >  prepare: vdso_prepare
+> > @@ -148,6 +142,9 @@ vdso_prepare: prepare0
+> >  endif
+> >  endif
+> >
+> > +vdso-install-y                 +=3D arch/riscv/kernel/vdso/vdso.so.dbg
+> > +vdso-install-$(CONFIG_COMPAT)  +=3D arch/riscv/kernel/compat_vdso/comp=
+at_vdso.so.dbg:../compat_vdso/compat_vdso.so
+> Why do we need ":../compat_vdso/compat_vdso.so" here?
 
-R=C3=A1d si promluv=C3=ADm s osobou zab=C3=BDvaj=C3=ADc=C3=AD se prodejn=C3=
-=AD =C4=8Dinnost=C3=AD.
-
-Pom=C3=A1h=C3=A1me efektivn=C4=9B z=C3=ADsk=C3=A1vat nov=C3=A9 z=C3=A1kaz=
-n=C3=ADky.
-
-Nevahejte me kontaktovat.
-
-V p=C5=99=C3=ADpad=C4=9B z=C3=A1jmu V=C3=A1s bude kontaktovat n=C3=A1=C5=A1=
- anglicky mluv=C3=ADc=C3=AD z=C3=A1stupce.
 
 
-Pozdravy
-Jakub Kovarik
+
+All architectures except riscv install vdso files
+to /lib/modules/$(uname -r)/vdso/.
+
+
+
+See the following code in arch/riscv/kernel/compat_vdso/Makefile:
+
+
+quiet_cmd_compat_vdso_install =3D INSTALL $@
+      cmd_compat_vdso_install =3D cp $(obj)/$@.dbg $(MODLIB)/compat_vdso/$@
+
+
+
+
+Riscv copies the compat vdso to
+/lib/modules/$(uname -r)/compat_vdso/.
+
+
+
+This commit preserves the current installation path as-is.
+
+If the riscv maintainers agree, we can change the
+installation destination to /lib/modules/$(uname -r)/vdso/
+for consistency.
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
