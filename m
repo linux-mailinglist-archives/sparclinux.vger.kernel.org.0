@@ -2,79 +2,87 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AD547D4839
-	for <lists+sparclinux@lfdr.de>; Tue, 24 Oct 2023 09:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A43C7D7AC5
+	for <lists+sparclinux@lfdr.de>; Thu, 26 Oct 2023 04:16:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232391AbjJXHQK (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Tue, 24 Oct 2023 03:16:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36552 "EHLO
+        id S230409AbjJZCQS (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 25 Oct 2023 22:16:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232579AbjJXHQJ (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 24 Oct 2023 03:16:09 -0400
-Received: from mail.tehinnovacii.ru (mail.tehinnovacii.ru [185.221.212.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95E4B110;
-        Tue, 24 Oct 2023 00:16:06 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.tehinnovacii.ru (Postfix) with ESMTP id 10289848764FC;
-        Mon, 23 Oct 2023 23:45:26 +0300 (MSK)
-Received: from mail.tehinnovacii.ru ([127.0.0.1])
-        by localhost (mail.tehinnovacii.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id AsLe8yb3zwiv; Mon, 23 Oct 2023 23:45:25 +0300 (MSK)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.tehinnovacii.ru (Postfix) with ESMTP id CEEAE8473B6FC;
-        Mon, 23 Oct 2023 23:45:18 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.tehinnovacii.ru CEEAE8473B6FC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tehinnovacii.ru;
-        s=mail; t=1698093918;
-        bh=Ws5TcS6EV4V7aiUY6u9eol5cuGGKUQT0mSrLKF+Le3s=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=gF3HJaA2jR3Tk7i+GD3nilt3u4FoKrAJqM6Y1EEoj44Bh/C5E0vNlAuDXbTtUhwIN
-         ko5q3sn+EGwuHSPkyJEOBLX7yBXm2ji9ZHKAYHewujsquGXfFa/HA9RJ0n0ryGd7ot
-         O4lQi8DaaZ45+/DytpurdkyRPlOIL1cnlP1XFU9bLXgfmBcNIXEwWfzL7WtvBynMQL
-         P6VXDtWUwg3JK6325vn1RJmkFeO+ZQ+9lgkR9IUHZQJq585wW73AghA9qYujGx9hmM
-         zpgz6eS5Sm5bHtzWR3fyTc+LKuc/u/kJ25HdFmkQWC/uIaB8hBuI9FYHbDQ0FYIHHO
-         tGdPpPm4QF5MQ==
-Received: from mail.tehinnovacii.ru ([127.0.0.1])
-        by localhost (mail.tehinnovacii.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id zFUW49guDSZp; Mon, 23 Oct 2023 23:45:18 +0300 (MSK)
-Received: from DESKTOP-0AG4O9B.lan (unknown [41.157.248.166])
-        by mail.tehinnovacii.ru (Postfix) with ESMTPSA id A9BE58454F767;
-        Mon, 23 Oct 2023 23:45:11 +0300 (MSK)
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S229518AbjJZCQS (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 25 Oct 2023 22:16:18 -0400
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 191AD93
+        for <sparclinux@vger.kernel.org>; Wed, 25 Oct 2023 19:16:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Type:MIME-Version:
+        Message-ID:Subject:To:From:Date:Reply-To:Cc:Content-Transfer-Encoding:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=Wzg8L27iK/4jwoWeUpFwrV/R1lAKP0Rc4AC4lxf/kpc=; b=FnnQWYwg0hqm/vxCvpzQSXCleA
+        TPUtsFP4taz+lVzkf4Ig5/s6l9zYY2Wl9I4dsMb2lB+ZkHHKynpn3rbaNh1NV7ZptkgdQW/914bL3
+        INOBWokxMbS4UaP+xhrb9JMMTGlmaX2DPtW2xyRTDaSTYhpqF3SCquoCXtMLdRqHHwdqI7m2ALbRC
+        fzk/nuftmVvMUi/WIr6UoVQIJ/v1Rywq+noI0mhZ/5NNN3RiLK72xU+fnT/bXNlIOGUCvvAqEfZSG
+        X/C8l6X9oePBUTTk8P6mWaynFunJz/HPeswpLXO7pE3q0PrFpR1/JXV0JzPaGRzPbMWMMuKTnL1Xm
+        225/zJDQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1qvpuv-005mfx-1V
+        for sparclinux@vger.kernel.org;
+        Thu, 26 Oct 2023 02:16:13 +0000
+Date:   Thu, 26 Oct 2023 03:16:13 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     sparclinux@vger.kernel.org
+Subject: [PATCH] sparc32: fix a braino in fault handling in
+ csum_and_copy_..._user()
+Message-ID: <20231026021613.GI800259@ZenIV>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Brauchen Sie einen Kredit?
-To:     Recipients <zp@tehinnovacii.ru>
-From:   Georg Johannes Proksch <zp@tehinnovacii.ru>
-Date:   Mon, 23 Oct 2023 13:44:09 -0700
-Reply-To: kreditschufadeutsch0@gmail.com
-Message-Id: <20231023204511.A9BE58454F767@mail.tehinnovacii.ru>
-X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_BL_SPAMCOP_NET,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Brauchen Sie einen Kredit?
-Tr=E4umen Sie davon, ein Unternehmen zu gr=FCnden?
-Sie ben=F6tigen Geld f=FCr Ihre Gesch=E4ftsidee, ben=F6tigen aber eine gro=
-=DFe Finanzierung?
-Besitzen Sie ein Unternehmen und m=F6chten expandieren?
+Fault handler used to make non-trivial calls, so it needed
+to set a stack frame up.  Used to be
+	save ... - grab a stack frame, old %o... become %i...
+	....
+	ret	- go back to address originally in %o7, currently %i7
+	 restore - switch to previous stack frame, in delay slot
+Non-trivial calls had been gone since ab5e8b331244 and that code should
+have become
+	retl	- go back to address in %o7
+	 clr %o0 - have return value set to 0
+What it had become instead was
+	ret	- go back to address in %i7 - return address of *caller*
+	 clr %o0 - have return value set to 0
+which is not good, to put it mildly - we forcibly return 0 from
+csum_and_copy_{from,to}_iter() (which is what the call of that
+thing had been inlined into) and do that without dropping the
+stack frame of said csum_and_copy_..._iter().  Confuses the
+hell out of the caller of csum_and_copy_..._iter(), obviously...
 
-Wir bieten Gesch=E4ftskredite, Privatkredite, Projektkredite und Autokredit=
-e mit einem Zinssatz von 2 % an.
+Fixes: ab5e8b331244 "sparc32: propagate the calling conventions change down to __csum_partial_copy_sparc_generic()"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ arch/sparc/lib/checksum_32.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Vollst=E4ndiger Name:
-Kreditbetrag:
-Kreditlaufzeit:
-Land:
-Telefonnummer:
+diff --git a/arch/sparc/lib/checksum_32.S b/arch/sparc/lib/checksum_32.S
+index 84ad709cbecb..66eda40fce36 100644
+--- a/arch/sparc/lib/checksum_32.S
++++ b/arch/sparc/lib/checksum_32.S
+@@ -453,5 +453,5 @@ ccslow:	cmp	%g1, 0
+  * we only bother with faults on loads... */
+ 
+ cc_fault:
+-	ret
++	retl
+ 	 clr	%o0
+-- 
+2.39.2
 
-Herr Georg Johannes Proksch
-Kreditberater/Berater
