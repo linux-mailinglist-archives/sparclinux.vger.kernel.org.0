@@ -2,74 +2,110 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C117D7D9DF1
-	for <lists+sparclinux@lfdr.de>; Fri, 27 Oct 2023 18:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43A637DA120
+	for <lists+sparclinux@lfdr.de>; Fri, 27 Oct 2023 21:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231760AbjJ0QYZ (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 27 Oct 2023 12:24:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60344 "EHLO
+        id S232339AbjJ0TEF (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 27 Oct 2023 15:04:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231302AbjJ0QYY (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 27 Oct 2023 12:24:24 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF31E5;
-        Fri, 27 Oct 2023 09:24:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A6AC433C7;
-        Fri, 27 Oct 2023 16:24:16 +0000 (UTC)
-Date:   Fri, 27 Oct 2023 17:24:12 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
-        loongarch@lists.linux.dev, sparclinux@vger.kernel.org,
-        x86@kernel.org, Albert Ou <aou@eecs.berkeley.edu>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 4/5] kbuild: unify vdso_install rules
-Message-ID: <ZTvkLIVmC3fnxX9p@arm.com>
-References: <20231009124210.1064021-1-masahiroy@kernel.org>
- <20231009124210.1064021-4-masahiroy@kernel.org>
+        with ESMTP id S231461AbjJ0TEE (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 27 Oct 2023 15:04:04 -0400
+X-Greylist: delayed 964 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 Oct 2023 12:04:01 PDT
+Received: from mailrelay6-1.pub.mailoutpod2-cph3.one.com (mailrelay6-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:405::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A94B9116
+        for <sparclinux@vger.kernel.org>; Fri, 27 Oct 2023 12:04:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=rsa2;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=H94qu6peAAnBju0wasBN++vO8+mN5Ue31N0Ays7V/mA=;
+        b=J/Cgw0+z7+NZBYC6ZkMj51Qq2FrmMZ9rtpgyj9O1ea+TmIgQtXI/MqP8xsk8PZRRdqWQ8S8NG4F6P
+         ffResuz6RrwTyySsjR08GMcDjumRTN/EAvlmBHMQW8nlhIgCAx0F11J4Bcbo3dM6t2QHFheFs8O/Ki
+         DJk4ZmIUUhdOyNWZOM+HjTwEjrQJtM0YA3MADg+C/v5bfgzwgMdWn9Lg7wwdEeUpC+K4nFcsTKarII
+         8/iTwKftQIK83VBUFTH60vJWVXzP3wFnuMxQARfaEd+S+3cIe6QXjF1beaZi6zLWiKHo+YVCQswjuX
+         pm/ed72ZWFN7dmOp/DJ+j0B3KKJ18VA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=ed2;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=H94qu6peAAnBju0wasBN++vO8+mN5Ue31N0Ays7V/mA=;
+        b=+LC91w5r3b9mVazFIU6nUKgAMU6Yc6/yWiajo56qpzSc7e/w06vd/67PO7LXEH85t8hz4meOHA/0c
+         9aXDAKkBg==
+X-HalOne-ID: 55cd127b-74f9-11ee-97f1-23968f462fbe
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+        by mailrelay6 (Halon) with ESMTPSA
+        id 55cd127b-74f9-11ee-97f1-23968f462fbe;
+        Fri, 27 Oct 2023 18:47:55 +0000 (UTC)
+Date:   Fri, 27 Oct 2023 20:47:53 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Al Viro <viro@zeniv.linux.org.uk>
+Cc:     sparclinux@vger.kernel.org
+Subject: Re: [PATCH] sparc32: fix a braino in fault handling in
+ csum_and_copy_..._user()
+Message-ID: <20231027184753.GA1048069@ravnborg.org>
+References: <20231026021613.GI800259@ZenIV>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231009124210.1064021-4-masahiroy@kernel.org>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20231026021613.GI800259@ZenIV>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-On Mon, Oct 09, 2023 at 09:42:09PM +0900, Masahiro Yamada wrote:
-> Currently, there is no standard implementation for vdso_install,
-> leading to various issues:
-[...]
->  arch/arm64/Makefile                    |  9 ++----
->  arch/arm64/kernel/vdso/Makefile        | 10 ------
->  arch/arm64/kernel/vdso32/Makefile      | 10 ------
+Hi Al,
 
-For arm64:
+On Thu, Oct 26, 2023 at 03:16:13AM +0100, Al Viro wrote:
+> Fault handler used to make non-trivial calls, so it needed
+> to set a stack frame up.  Used to be
+> 	save ... - grab a stack frame, old %o... become %i...
+> 	....
+> 	ret	- go back to address originally in %o7, currently %i7
+> 	 restore - switch to previous stack frame, in delay slot
+> Non-trivial calls had been gone since ab5e8b331244 and that code should
+> have become
+> 	retl	- go back to address in %o7
+> 	 clr %o0 - have return value set to 0
+> What it had become instead was
+> 	ret	- go back to address in %i7 - return address of *caller*
+> 	 clr %o0 - have return value set to 0
+> which is not good, to put it mildly - we forcibly return 0 from
+> csum_and_copy_{from,to}_iter() (which is what the call of that
+> thing had been inlined into) and do that without dropping the
+> stack frame of said csum_and_copy_..._iter().  Confuses the
+> hell out of the caller of csum_and_copy_..._iter(), obviously...
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+I wonder how you managed to find this? Do you actually use sparc32 these
+days?
+
+You could also kill the EX2 define while touchign the file,
+it is no longer used after ab5e8b331244.
+> 
+> Fixes: ab5e8b331244 "sparc32: propagate the calling conventions change down to __csum_partial_copy_sparc_generic()"
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+
+
+> ---
+>  arch/sparc/lib/checksum_32.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/sparc/lib/checksum_32.S b/arch/sparc/lib/checksum_32.S
+> index 84ad709cbecb..66eda40fce36 100644
+> --- a/arch/sparc/lib/checksum_32.S
+> +++ b/arch/sparc/lib/checksum_32.S
+> @@ -453,5 +453,5 @@ ccslow:	cmp	%g1, 0
+>   * we only bother with faults on loads... */
+>  
+>  cc_fault:
+> -	ret
+> +	retl
+>  	 clr	%o0
+> -- 
+> 2.39.2
