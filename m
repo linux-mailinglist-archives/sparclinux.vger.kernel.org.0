@@ -2,81 +2,126 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F5427E1711
-	for <lists+sparclinux@lfdr.de>; Sun,  5 Nov 2023 23:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43E5D7E3A2C
+	for <lists+sparclinux@lfdr.de>; Tue,  7 Nov 2023 11:45:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229489AbjKEWAE (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Sun, 5 Nov 2023 17:00:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54512 "EHLO
+        id S233994AbjKGKpA (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Tue, 7 Nov 2023 05:45:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229865AbjKEWAB (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Sun, 5 Nov 2023 17:00:01 -0500
-X-Greylist: delayed 5151 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Nov 2023 13:59:57 PST
-Received: from SMTP-HCRC-200.brggroup.vn (mail.hcrc.vn [42.112.212.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1CD9BF;
-        Sun,  5 Nov 2023 13:59:57 -0800 (PST)
-Received: from SMTP-HCRC-200.brggroup.vn (localhost [127.0.0.1])
-        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTP id C2C801999F;
-        Mon,  6 Nov 2023 01:58:22 +0700 (+07)
-Received: from zimbra.hcrc.vn (unknown [192.168.200.66])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTPS id BC5EC1999E;
-        Mon,  6 Nov 2023 01:58:22 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.hcrc.vn (Postfix) with ESMTP id 588731B82534;
-        Mon,  6 Nov 2023 01:58:24 +0700 (+07)
-Received: from zimbra.hcrc.vn ([127.0.0.1])
-        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id BwZX5eEYVgkV; Mon,  6 Nov 2023 01:58:24 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.hcrc.vn (Postfix) with ESMTP id 26D3A1B8252B;
-        Mon,  6 Nov 2023 01:58:24 +0700 (+07)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.hcrc.vn 26D3A1B8252B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hcrc.vn;
-        s=64D43D38-C7D6-11ED-8EFE-0027945F1BFA; t=1699210704;
-        bh=WOZURJ77pkiMUL2pPLC14ifVPRvyTQIBEQmxuN1ezAA=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=Af6xqmg2suMtsb+SOkP+eks+uA3sUx/Xn4DNbjx/vG5eG0iQDRGKqc+r8Rj3YvCx9
-         WaFeEH1YiwJYZtvfwqr/vXCQa/DhNPtS15fifALDSrvFDD7SdJ7eyHjlwZKykHPvly
-         gCE1YjcX4OB3TLroiPvHXDK9HTiuho0wYDqxI+0D5CcoATYgmvNeSlfsknEUuF19U6
-         IxI+vZiUCIKHboOJKGDu+NKaBf5glSyjWU5NSWdNdhBvwy43zaApmoGqvcP64Bx61P
-         D/pvC8jboVfNnRGC2K/8L5od2NrT3gPadm/xZrEMXCfW12T6Vph074ch/PnLYr8A9o
-         /Qt48LmVsy13Q==
-X-Virus-Scanned: amavisd-new at hcrc.vn
-Received: from zimbra.hcrc.vn ([127.0.0.1])
-        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id QzOs__H2endx; Mon,  6 Nov 2023 01:58:24 +0700 (+07)
-Received: from [192.168.1.152] (unknown [51.179.100.52])
-        by zimbra.hcrc.vn (Postfix) with ESMTPSA id DD62B1B82538;
-        Mon,  6 Nov 2023 01:58:17 +0700 (+07)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S233938AbjKGKpA (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Tue, 7 Nov 2023 05:45:00 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E45EA3;
+        Tue,  7 Nov 2023 02:44:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF0EC433C7;
+        Tue,  7 Nov 2023 10:44:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699353896;
+        bh=6KvSSAyHzV1t/xzun1oJg0AqCmYPNZNoG1yjrk+2N5g=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=EfHMKmIUi7LClGqSTR82uTGSALdsGhooGkAQNBOKzdAx9XrKCS32CwP6rRNlINeJp
+         fTBcOh2CbrNgz5T9wN8X4IfDIz30xCLXq2htrhQAdC3JQhS9flLyk/+pf5MtKIc1uc
+         JGySGdYEdfIvLpVTQJXhgpJr9YrJTitMM+csMdn+xILBQI2oGOVjB/sYO87FSSlzde
+         FSNahA1CtFFCQyIxON1Z1I4OewRIeg1rULpA/yqisw7axPef9I0RY6dTvW/rbObEf0
+         ODLYbBKyXYy654yF6yL9+/nSFia7MKf5WBhUfT/JXvT2gH/1if2QXy5oq+hmLNVTje
+         IOMZOtUYIwdeQ==
+Date:   Tue, 7 Nov 2023 10:44:47 +0000
+From:   Will Deacon <will@kernel.org>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nadav Amit <nadav.amit@gmail.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Song Liu <song@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-modules@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v3 04/13] mm/execmem, arch: convert remaining overrides
+ of module_alloc to execmem
+Message-ID: <20231107104446.GA19133@willie-the-truck>
+References: <20230918072955.2507221-1-rppt@kernel.org>
+ <20230918072955.2507221-5-rppt@kernel.org>
+ <20231023171420.GA4041@willie-the-truck>
+ <20231026085800.GK2824@kernel.org>
+ <20231026102438.GA6924@willie-the-truck>
+ <20231030070053.GL2824@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?b?4oKsIDEwMC4wMDAuMDAwPw==?=
-To:     Recipients <ch.31hamnghi@hcrc.vn>
-From:   ch.31hamnghi@hcrc.vn
-Date:   Sun, 05 Nov 2023 19:58:07 +0100
-Reply-To: joliushk@gmail.com
-Message-Id: <20231105185817.DD62B1B82538@zimbra.hcrc.vn>
-X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231030070053.GL2824@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Goededag,
-Ik ben mevrouw Joanna Liu en een medewerker van Citi Bank Hong Kong.
-Kan ik =E2=82=AC 100.000.000 aan u overmaken? Kan ik je vertrouwen
+On Mon, Oct 30, 2023 at 09:00:53AM +0200, Mike Rapoport wrote:
+> On Thu, Oct 26, 2023 at 11:24:39AM +0100, Will Deacon wrote:
+> > On Thu, Oct 26, 2023 at 11:58:00AM +0300, Mike Rapoport wrote:
+> > > On Mon, Oct 23, 2023 at 06:14:20PM +0100, Will Deacon wrote:
+> > > > On Mon, Sep 18, 2023 at 10:29:46AM +0300, Mike Rapoport wrote:
+> > > > > diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
+> > > > > index dd851297596e..cd6320de1c54 100644
+> > > > > --- a/arch/arm64/kernel/module.c
+> > > > > +++ b/arch/arm64/kernel/module.c
+> 
+> ...
+> 
+> > > > > -	if (module_direct_base) {
+> > > > > -		p = __vmalloc_node_range(size, MODULE_ALIGN,
+> > > > > -					 module_direct_base,
+> > > > > -					 module_direct_base + SZ_128M,
+> > > > > -					 GFP_KERNEL | __GFP_NOWARN,
+> > > > > -					 PAGE_KERNEL, 0, NUMA_NO_NODE,
+> > > > > -					 __builtin_return_address(0));
+> > > > > -	}
+> > > > > +	module_init_limits();
+> > > > 
+> > > > Hmm, this used to be run from subsys_initcall(), but now you're running
+> > > > it _really_ early, before random_init(), so randomization of the module
+> > > > space is no longer going to be very random if we don't have early entropy
+> > > > from the firmware or the CPU, which is likely to be the case on most SoCs.
+> > > 
+> > > Well, it will be as random as KASLR. Won't that be enough?
+> > 
+> > I don't think that's true -- we have the 'kaslr-seed' property for KASLR,
+> > but I'm not seeing anything like that for the module randomisation and I
+> > also don't see why we need to set these limits so early.
+> 
+> x86 needs execmem initialized before ftrace_init() so I thought it would be
+> best to setup execmem along with most of MM in mm_core_init().
+> 
+> I'll move execmem initialization for !x86 to a later point, say
+> core_initcall.
 
+Thanks, Mike.
 
-Ik wacht op jullie reacties
-Met vriendelijke groeten
-mevrouw Joanna Liu
-
+Will
