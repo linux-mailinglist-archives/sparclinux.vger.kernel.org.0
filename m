@@ -2,44 +2,62 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CD497EB9B1
-	for <lists+sparclinux@lfdr.de>; Tue, 14 Nov 2023 23:58:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBB127EBEAE
+	for <lists+sparclinux@lfdr.de>; Wed, 15 Nov 2023 09:40:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229569AbjKNW6Z convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+sparclinux@lfdr.de>); Tue, 14 Nov 2023 17:58:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41092 "EHLO
+        id S234683AbjKOIkn (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Wed, 15 Nov 2023 03:40:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231659AbjKNW6Y (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Tue, 14 Nov 2023 17:58:24 -0500
-X-Greylist: delayed 1231 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Nov 2023 14:58:21 PST
-Received: from mail.jan.ne.jp (mail.jan.ne.jp [211.10.90.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9D9B0DB
-        for <sparclinux@vger.kernel.org>; Tue, 14 Nov 2023 14:58:21 -0800 (PST)
-Received: from www10.jan.ne.jp (www10.jan.ne.jp [211.10.90.141])
-        by mail.jan.ne.jp (Postfix) with SMTP id 573E519F4D2
-        for <sparclinux@vger.kernel.org>; Wed, 15 Nov 2023 07:27:38 +0900 (JST)
-Received: (qmail 16793 invoked from network); 15 Nov 2023 05:34:50 +0900
-Received: from unknown (HELO ?51.195.53.194?) (eiji.i@isono-body.co.jp@51.195.53.194)
-  by www10.jan.ne.jp with SMTP; 15 Nov 2023 05:34:50 +0900
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S234651AbjKOIkm (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Wed, 15 Nov 2023 03:40:42 -0500
+Received: from mail.marketnova.pl (mail.marketnova.pl [51.38.127.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0983010E
+        for <sparclinux@vger.kernel.org>; Wed, 15 Nov 2023 00:40:37 -0800 (PST)
+Received: by mail.marketnova.pl (Postfix, from userid 1002)
+        id DA4D8A4E7B; Wed, 15 Nov 2023 08:40:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marketnova.pl;
+        s=mail; t=1700037635;
+        bh=q6g+ObtCV61LlnEBi7yLnSiOU+IF64224rZgvBJLEss=;
+        h=Date:From:To:Subject:From;
+        b=kYoJM3fPC7FLRFFiTv3FQtB+Ylyvze2HaRn4Gzmvs4fR+CnDUMUHfn9DUV4vRpUIZ
+         ModagUDh+g3fvPjeGO3t7mWrTvEq4W2NQvU4+WLQ7q1PL88r9J/Il3M5brIWaraGba
+         HrPhodiNcsdNIa8UxZ/pobtxpEbOxn2XPLtZA7Nu6wZpsKN6545hD28bSIAb7lFxyq
+         14KdG9soMWfAkvmOG+raVta9MeW4u5p2DbiIl1c+XxPA9vKh29Er6QnOtKsBJv+mEH
+         dK7uIz7M77jknvdcJQdDf8KcgLSJo91n2uBHJITYXW114HceujXC7O6p9UBdtyc1Vq
+         84pRCsU4WfKbg==
+Received: by mail.marketnova.pl for <sparclinux@vger.kernel.org>; Wed, 15 Nov 2023 08:40:14 GMT
+Message-ID: <20231115074500-0.1.d8.1mh1d.0.07mlb0j0km@marketnova.pl>
+Date:   Wed, 15 Nov 2023 08:40:14 GMT
+From:   "Wiktor Nurek" <wiktor.nurek@marketnova.pl>
+To:     <sparclinux@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.marketnova.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: my subject
-To:     Recipients <eiji.i@isono-body.co.jp>
-From:   "Ms Toni" <eiji.i@isono-body.co.jp>
-Date:   Tue, 14 Nov 2023 12:34:37 -0800
-Reply-To: tran24358@gmail.com
-Message-ID: <20231114203450.15790.qmail@www10.jan.ne.jp>
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_ABUSE_SURBL
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-I'm Toni Harris and I'm looking for a partner to work with in your country. I need assistance investing funds in your country. Email me to discuss this opportunity with you. Contact email: tran24358@gmail.com
+Dzie=C5=84 dobry,
+
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
+
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
+
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+
+
+Pozdrawiam serdecznie
+Wiktor Nurek
