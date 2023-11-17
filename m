@@ -2,68 +2,62 @@ Return-Path: <sparclinux-owner@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 299B87EEE02
-	for <lists+sparclinux@lfdr.de>; Fri, 17 Nov 2023 10:01:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 333E87EF8C4
+	for <lists+sparclinux@lfdr.de>; Fri, 17 Nov 2023 21:38:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229599AbjKQJBN (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
-        Fri, 17 Nov 2023 04:01:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49794 "EHLO
+        id S231928AbjKQUiC (ORCPT <rfc822;lists+sparclinux@lfdr.de>);
+        Fri, 17 Nov 2023 15:38:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjKQJBM (ORCPT
-        <rfc822;sparclinux@vger.kernel.org>); Fri, 17 Nov 2023 04:01:12 -0500
-Received: from mail.corporatenexus.pl (mail.corporatenexus.pl [135.125.237.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1B701A5
-        for <sparclinux@vger.kernel.org>; Fri, 17 Nov 2023 01:01:01 -0800 (PST)
-Received: by mail.corporatenexus.pl (Postfix, from userid 1002)
-        id 65325468FB; Fri, 17 Nov 2023 09:00:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corporatenexus.pl;
-        s=mail; t=1700211659;
-        bh=wI8ebJnK0/U/nEQoUHOR0TLZjvqZwfsl1rzI+iT7ku0=;
-        h=Date:From:To:Subject:From;
-        b=HhOslrQju8KDVc2mMPMnaJEC7VBgjdoASp8nKZ4sxAlM9o8//qo3sZy+aUFgWvjlj
-         a2JNFy4KGzWWDGT217b+gKhOwBeayoYG7ppive1wlYkVnP16F4wU3sYwBGDfVHG18I
-         bmFt0Is19Ht2pnNqUbcyPt5PMSY4yj2DTJlTMuHBOg1q3slzsJuM0qUY6YyA9oo43B
-         1PLXZPYj3pS0qmzkr5T6BZYWEIQuIjj75UGygk8BUsXfELZDPbt3rjfPRyN9YaqBrC
-         ZxyhZE6zeHRw8Tx3n44ptoz9QSMEJ6scQDDv3606mlAlzrQ2soebWQDYw91aXNr9TM
-         rbq/GXbalnjiw==
-Received: by mail.corporatenexus.pl for <sparclinux@vger.kernel.org>; Fri, 17 Nov 2023 09:00:47 GMT
-Message-ID: <20231117074500-0.1.3p.7evq.0.2q69n3mg9s@corporatenexus.pl>
-Date:   Fri, 17 Nov 2023 09:00:47 GMT
-From:   "Maciej Brylski" <maciej.brylski@corporatenexus.pl>
-To:     <sparclinux@vger.kernel.org>
-Subject: =?UTF-8?Q?=C5=9Arodki_dla_firm_pod_saldo_z_terminala?=
-X-Mailer: mail.corporatenexus.pl
+        with ESMTP id S230383AbjKQUiB (ORCPT
+        <rfc822;sparclinux@vger.kernel.org>); Fri, 17 Nov 2023 15:38:01 -0500
+X-Greylist: delayed 1325 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Nov 2023 12:37:57 PST
+Received: from coiirm.cetait.es (coiirm.cetait.es [217.160.168.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2222A7;
+        Fri, 17 Nov 2023 12:37:57 -0800 (PST)
+Received: from webmail.coiirm.es (localhost.localdomain [127.0.0.1])
+        by coiirm.cetait.es (Postfix) with ESMTPSA id EA1703E614C;
+        Fri, 17 Nov 2023 21:02:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=coiirm.es;
+        s=default; t=1700251375;
+        bh=nUp/bglnvvu+C/E73cLDgAAg4wdK/dLxL9RGipyD5BE=; h=From:To:Subject;
+        b=OF5Vk8ZGqLaWJrY/v1OktHNxEahebOE01EKkQkood1f41JBjFpex7vVrjNjg7tSe+
+         silhnIzhNYD1sE8ZKf7lSQkhuhLA9fNe/CmphjWdIvNxON2fbCi5xUc+pUAdu1Wdrk
+         zDn811ZCSBMJqFzV76Qr7ti01puyKcl0FFeKUa4A=
+Authentication-Results: coiirm.cetait.es;
+        spf=pass (sender IP is 127.0.0.1) smtp.mailfrom=josee.jimenezc@coiirm.es smtp.helo=webmail.coiirm.es
+Received-SPF: pass (coiirm.cetait.es: connection is authenticated)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Date:   Fri, 17 Nov 2023 20:02:42 +0000
+From:   Johnson Benjamin <josee.jimenezc@coiirm.es>
+To:     undisclosed-recipients:;
+Subject: Good afternoon from (TG),
+Reply-To: johnsonbenjamin7600@gmail.com
+User-Agent: Roundcube Webmail/1.4.15
+Message-ID: <eabf29c5bec95536e7ca3ad3864bbe72@coiirm.es>
+X-Sender: josee.jimenezc@coiirm.es
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <170025136799.21608.1214246170842915171@coiirm.cetait.es>
+X-PPP-Vhost: coiirm.es
+X-Spam-Status: No, score=2.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <sparclinux.vger.kernel.org>
 X-Mailing-List: sparclinux@vger.kernel.org
 
-Dzie=C5=84 dobry,
 
-czy interesuj=C4=85 Pa=C5=84stwa dodatkowe =C5=9Brodki na zakup towaru, n=
-owych urz=C4=85dze=C5=84 lub na bie=C5=BC=C4=85c=C4=85 dzia=C5=82alno=C5=9B=
-=C4=87?
+Good afternoon from (TG),
 
-Prowadz=C4=85c firm=C4=99 od m.in. roku i generuj=C4=85c obroty na termin=
-alu p=C5=82atniczym od 6 miesi=C4=99cy (co najmniej 7500 z=C5=82), mog=C4=
-=85 Pa=C5=84stwo uzyska=C4=87 nawet 500 000 z=C5=82 na dowolny cel.
+Did you receive the message I sent to you? Can I resend it to you?
 
-Gwarantujemy minimum formalno=C5=9Bci, nie wymagamy za=C5=9Bwiadcze=C5=84=
-, PIT i KPiR. Ca=C5=82y proces odbywa si=C4=99 online, a sp=C5=82ata jest=
- automatyczna.
+Yours faithfully
 
-Je=C5=9Bli chc=C4=85 Pa=C5=84stwo pozna=C4=87 indywidualn=C4=85 ofert=C4=99=
- z propozycj=C4=85 kwoty i sp=C5=82aty, prosz=C4=99 o wiadomo=C5=9B=C4=87=
-=2E
-
-
-Pozdrawiam
-Maciej Brylski
+Barrister Johnson Benjamin
