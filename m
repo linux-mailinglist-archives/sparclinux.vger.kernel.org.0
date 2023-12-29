@@ -1,57 +1,57 @@
-Return-Path: <sparclinux+bounces-120-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-118-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B32820153
-	for <lists+sparclinux@lfdr.de>; Fri, 29 Dec 2023 21:09:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1541B820151
+	for <lists+sparclinux@lfdr.de>; Fri, 29 Dec 2023 21:08:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79C851F21B6F
-	for <lists+sparclinux@lfdr.de>; Fri, 29 Dec 2023 20:09:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 394441C2153F
+	for <lists+sparclinux@lfdr.de>; Fri, 29 Dec 2023 20:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3339113FEB;
-	Fri, 29 Dec 2023 20:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD08913FEB;
+	Fri, 29 Dec 2023 20:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b="G1VXb/wa";
-	dkim=permerror (0-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b="jaWnDv46"
+	dkim=pass (2048-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b="XtG0wCMR";
+	dkim=permerror (0-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b="0J9enZRS"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mailrelay1-1.pub.mailoutpod2-cph3.one.com (mailrelay1-1.pub.mailoutpod2-cph3.one.com [46.30.211.176])
+Received: from mailrelay4-1.pub.mailoutpod2-cph3.one.com (mailrelay4-1.pub.mailoutpod2-cph3.one.com [46.30.211.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3B813FF1
-	for <sparclinux@vger.kernel.org>; Fri, 29 Dec 2023 20:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FCD13AE4
+	for <sparclinux@vger.kernel.org>; Fri, 29 Dec 2023 20:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ravnborg.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ravnborg.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=ravnborg.org; s=rsa2;
 	h=in-reply-to:content-type:mime-version:references:message-id:subject:to:from:
 	 date:from;
-	bh=EGpU/wBREU1TuW0HNalg3hWWoCzJ9fEHAfVCsF2Pf7c=;
-	b=G1VXb/waTvmLVCaoyhnNp9mH+k0dTudIAYQ/cR+oSOF1EQqLo4jFiSv6CHKP/NN7I5TWc0JL/PPN2
-	 zjdSKNkrVgRoI5yxhmGJ6V+yd4oH7KElGBPWbfV+HVe1BrQTF/J4wJ8sPaEroere9dWC9pchY7OZo/
-	 D/uaLjd1qRAvng2OfqxIRKzUe0KhiuPpFlttuOUYfOqM1bi71M4z+rjruwPjcZrZSAqRU1iZxdlSHQ
-	 HKrJA6GFRvyhZvY1+WKVxjnBHxfo1kykNMqXepXikjsmOEDI/QeLXzRE5K6zZ5+87GVt2VLfDmUKCf
-	 E4pgED0B45GrHep/VZ8UepovUfXYOQA==
+	bh=ynnfHQAVyzxK7C1A33SeufC/Y4Zrdp9vy+YbewmKWCQ=;
+	b=XtG0wCMR4SkvP+rmB0UE1KspJmFak0e6UGyAO0lrorjrhNQJWkNP5uh0Bj6Pg+a8t3v+JlMuHaEFe
+	 URTCAGS1xZcy9fv/j7Dvg+mrHelZpiutUVgCC/G0lAGbyQD+e2Xc0ulskE59eI23MWQis6BlA6mDDq
+	 C9ntDT18bjtJ87CNDvOaEmC4AW7Od34fck2NHfa82yqgRSp+HGe5u4QiERfglfvmaun23o0t0hS18A
+	 WacVAmiQY8eyzTxmbhlCtJY9vOg2jVAxC6rWQt9pP1RhYrmyBeqEEqR4aa/TqtcYjybNDX0vOOG8ej
+	 l1yQc0vT1/QSy51Nv4IqT7puIIk2emw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
 	d=ravnborg.org; s=ed2;
 	h=in-reply-to:content-type:mime-version:references:message-id:subject:to:from:
 	 date:from;
-	bh=EGpU/wBREU1TuW0HNalg3hWWoCzJ9fEHAfVCsF2Pf7c=;
-	b=jaWnDv46p+OmzU0dsGkv0wmgmOaiZI/KweQnWvMckgcuCn3CjUFtZfMQkQEyV53N2qJ/+h1dy01j0
-	 hqpo/44Ag==
-X-HalOne-ID: f5d8b1f6-a685-11ee-a342-2b733b0ff8f0
+	bh=ynnfHQAVyzxK7C1A33SeufC/Y4Zrdp9vy+YbewmKWCQ=;
+	b=0J9enZRSX/DYPODmQpeh9VdC6/Oyoix0rKnTPKfSZhjSSQKjXk6EGSXDKKnE4F+EaUzV388dFy3y7
+	 8y4u5i0DA==
+X-HalOne-ID: 05ad9308-a686-11ee-bba8-2dc64a403fa2
 Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-	by mailrelay1 (Halon) with ESMTPSA
-	id f5d8b1f6-a685-11ee-a342-2b733b0ff8f0;
-	Fri, 29 Dec 2023 20:07:59 +0000 (UTC)
-Date: Fri, 29 Dec 2023 21:07:58 +0100
+	by mailrelay4 (Halon) with ESMTPSA
+	id 05ad9308-a686-11ee-bba8-2dc64a403fa2;
+	Fri, 29 Dec 2023 20:08:27 +0000 (UTC)
+Date: Fri, 29 Dec 2023 21:08:25 +0100
 From: Sam Ravnborg <sam@ravnborg.org>
 To: "David S. Miller" <davem@davemloft.net>,
 	Arnd Bergmann <arnd@kernel.org>,
 	Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org
-Subject: [PATCH 2/4] sparc32: Add cmpxchg support using CAS
-Message-ID: <20231229200758.GB4034411@ravnborg.org>
+Subject: [PATCH 3/4] sparc32: Add atomic bitops support using CAS
+Message-ID: <20231229200825.GC4034411@ravnborg.org>
 References: <20231229200604.GA4033529@ravnborg.org>
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
@@ -63,188 +63,290 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20231229200604.GA4033529@ravnborg.org>
 
-Utilize the casa instruction to implement cmpxchg support.
+This implements the atomic bit operations using the CAS instruction
+so they are atomic.
 
-The implementation is based on the patch:
+The implementation uses a single asm helper, to make the code as readable
+as possible. The implementation is done inline in bitops/atomic.h to
+mirror the structure used in asm-generic.
+As an added benefit the bitops can be instrumented.
 
-    0002-sparc32-leon-Add-support-for-atomic-operations-with-.patch
-    included in gaisler-buildroot-2023.02-1.0
+The generated code is more compact with the majority implemented in C as
+this allows the compiler to do optimizations especially when the
+arguments passed are constant.
 
-Drop the emulated version as the minimum supported CPU is leon3, and
-leon3 has CAS support.
+The old emulated bitops implementation is no longer used and deleted.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Andreas Larsson <andreas@gaisler.com>
 Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>
 ---
- arch/sparc/include/asm/cmpxchg_32.h | 72 +++++++++++++++++------------
- arch/sparc/lib/atomic32.c           | 42 -----------------
- 2 files changed, 42 insertions(+), 72 deletions(-)
+ arch/sparc/include/asm/bitops/atomic_32.h | 124 ++++++++++++++++++++++
+ arch/sparc/include/asm/bitops_32.h        |  71 +------------
+ arch/sparc/lib/atomic32.c                 |  39 -------
+ 3 files changed, 125 insertions(+), 109 deletions(-)
+ create mode 100644 arch/sparc/include/asm/bitops/atomic_32.h
 
-diff --git a/arch/sparc/include/asm/cmpxchg_32.h b/arch/sparc/include/asm/cmpxchg_32.h
-index d0af82c240b7..a35f2aa5d2ce 100644
---- a/arch/sparc/include/asm/cmpxchg_32.h
-+++ b/arch/sparc/include/asm/cmpxchg_32.h
-@@ -12,10 +12,21 @@
- #ifndef __ARCH_SPARC_CMPXCHG__
- #define __ARCH_SPARC_CMPXCHG__
- 
--unsigned long __xchg_u32(volatile u32 *m, u32 new);
--void __xchg_called_with_bad_pointer(void);
-+void __xchg_called_with_bad_pointer(void)
-+	__compiletime_error("Bad argument size for xchg");
- 
--static __always_inline unsigned long __arch_xchg(unsigned long x, __volatile__ void * ptr, int size)
-+static __always_inline
-+unsigned long __xchg_u32(volatile unsigned long *m, unsigned long val)
-+{
-+	asm volatile("swap [%2], %0"
-+		     : "=&r" (val)
-+		     : "0" (val), "r" (m)
-+		     : "memory");
-+	return val;
-+}
+diff --git a/arch/sparc/include/asm/bitops/atomic_32.h b/arch/sparc/include/asm/bitops/atomic_32.h
+new file mode 100644
+index 000000000000..b9e33d21b58d
+--- /dev/null
++++ b/arch/sparc/include/asm/bitops/atomic_32.h
+@@ -0,0 +1,124 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_SPARC_BITOPS_ATOMIC_H_
++#define __ASM_SPARC_BITOPS_ATOMIC_H_
++
++#include <linux/atomic.h>
++#include <linux/compiler.h>
++
++#include <asm/asi.h>
++#include <asm/barrier.h>
 +
 +static __always_inline
-+unsigned long __arch_xchg(unsigned long x, volatile void * ptr, int size)
- {
- 	switch (size) {
- 	case 4:
-@@ -25,25 +36,31 @@ static __always_inline unsigned long __arch_xchg(unsigned long x, __volatile__ v
- 	return x;
- }
++int __boa_casa(volatile unsigned long *p,
++	       unsigned long check,
++	       unsigned long swap)
++{
++	// casa [p], check, swap
++	// check == swap for success, otherwise try again
++	asm volatile("casa      [%2] 0xb, %3, %0"
++		     : "=&r" (swap)
++		     : "0" (swap), "r" (p), "r" (check)
++		     : "memory");
++
++	return swap;
++}
++
++static __always_inline void
++arch_set_bit(unsigned int nr, volatile unsigned long *p)
++{
++	unsigned long mask = BIT_MASK(nr);
++	unsigned long check;
++	unsigned long swap;
++
++	p += BIT_WORD(nr);
++
++	do {
++		check = *p;
++		swap = check | mask;
++	} while (__boa_casa(p, check, swap) != check);
++}
++
++static __always_inline void
++arch_clear_bit(unsigned int nr, volatile unsigned long *p)
++{
++	unsigned long mask = BIT_MASK(nr);
++	unsigned long check;
++	unsigned long swap;
++
++	p += BIT_WORD(nr);
++
++	do {
++		check = *p;
++		swap = check & ~mask;
++	} while (__boa_casa(p, check, swap) != check);
++}
++
++static __always_inline void
++arch_change_bit(unsigned int nr, volatile unsigned long *p)
++{
++	unsigned long mask = BIT_MASK(nr);
++	unsigned long check;
++	unsigned long swap;
++
++	p += BIT_WORD(nr);
++
++	do {
++		check = *p;
++		swap = check ^ mask;
++	} while (__boa_casa(p, check, swap) != check);
++}
++
++static __always_inline int
++arch_test_and_set_bit(unsigned int nr, volatile unsigned long *p)
++{
++	unsigned long mask = BIT_MASK(nr);
++	unsigned long check;
++	unsigned long swap;
++
++	p += BIT_WORD(nr);
++
++	do {
++		check = *p;
++		swap = check | mask;
++	} while (__boa_casa(p, check, swap) != check);
++
++	return !!(check & mask);
++}
++
++static __always_inline int
++arch_test_and_clear_bit(unsigned int nr, volatile unsigned long *p)
++{
++	unsigned long mask = BIT_MASK(nr);
++	unsigned long check;
++	unsigned long swap;
++
++	p += BIT_WORD(nr);
++
++	do {
++		check = *p;
++		swap = check & ~mask;
++	} while (__boa_casa(p, check, swap) != check);
++
++	return !!(check & mask);
++}
++
++static __always_inline int
++arch_test_and_change_bit(unsigned int nr, volatile unsigned long *p)
++{
++	unsigned long mask = BIT_MASK(nr);
++	unsigned long check;
++	unsigned long swap;
++
++	p += BIT_WORD(nr);
++
++	do {
++		check = *p;
++		swap = check ^ mask;
++	} while (__boa_casa(p, check, swap) != check);
++
++	return !!(check & mask);
++}
++
++#include <asm-generic/bitops/instrumented-atomic.h>
++
++#endif /* __ASM_SPARC_BITOPS_ATOMIC_H_ */
+diff --git a/arch/sparc/include/asm/bitops_32.h b/arch/sparc/include/asm/bitops_32.h
+index 3448c191b484..34279e9572a4 100644
+--- a/arch/sparc/include/asm/bitops_32.h
++++ b/arch/sparc/include/asm/bitops_32.h
+@@ -19,76 +19,7 @@
+ #error only <linux/bitops.h> can be included directly
+ #endif
  
--#define arch_xchg(ptr,x) ({(__typeof__(*(ptr)))__arch_xchg((unsigned long)(x),(ptr),sizeof(*(ptr)));})
-+#define arch_xchg(ptr,x)						\
-+({									\
-+ 	(__typeof__(*(ptr))) __arch_xchg((unsigned long)(x),		\
-+					 (ptr),				\
-+					 sizeof(*(ptr)));		\
-+})
- 
--/* Emulate cmpxchg() the same way we emulate atomics,
-- * by hashing the object address and indexing into an array
-- * of spinlocks to get a bit of performance...
-- *
-- * See arch/sparc/lib/atomic32.c for implementation.
-- *
-- * Cribbed from <asm-parisc/atomic.h>
+-unsigned long sp32___set_bit(unsigned long *addr, unsigned long mask);
+-unsigned long sp32___clear_bit(unsigned long *addr, unsigned long mask);
+-unsigned long sp32___change_bit(unsigned long *addr, unsigned long mask);
+-
+-/*
+- * Set bit 'nr' in 32-bit quantity at address 'addr' where bit '0'
+- * is in the highest of the four bytes and bit '31' is the high bit
+- * within the first byte. Sparc is BIG-Endian. Unless noted otherwise
+- * all bit-ops return 0 if bit was previously clear and != 0 otherwise.
 - */
-+void __cmpxchg_called_with_bad_pointer(void)
-+	__compiletime_error("Bad argument size for cmpxchg");
- 
--/* bug catcher for when unsupported size is used - won't link */
--void __cmpxchg_called_with_bad_pointer(void);
- /* we only need to support cmpxchg of a u32 on sparc */
--unsigned long __cmpxchg_u32(volatile u32 *m, u32 old, u32 new_);
-+static __always_inline
-+unsigned long __cmpxchg_u32(volatile int *m, int old, int new)
-+{
-+	asm volatile("casa [%2] 0xb, %3, %0"
-+		     : "=&r" (new)
-+		     : "0" (new), "r" (m), "r" (old)
-+		     : "memory");
-+
-+	return new;
-+}
- 
- /* don't worry...optimizer will get rid of most of this */
--static inline unsigned long
--__cmpxchg(volatile void *ptr, unsigned long old, unsigned long new_, int size)
-+static __always_inline
-+unsigned long __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new_, int size)
- {
- 	switch (size) {
- 	case 4:
-@@ -52,6 +69,7 @@ __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new_, int size)
- 		__cmpxchg_called_with_bad_pointer();
- 		break;
- 	}
-+
- 	return old;
- }
- 
-@@ -59,22 +77,16 @@ __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new_, int size)
- ({									\
- 	__typeof__(*(ptr)) _o_ = (o);					\
- 	__typeof__(*(ptr)) _n_ = (n);					\
--	(__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,	\
--			(unsigned long)_n_, sizeof(*(ptr)));		\
-+									\
-+	(__typeof__(*(ptr))) __cmpxchg((ptr),				\
-+				       (unsigned long)_o_,		\
-+				       (unsigned long)_n_,		\
-+				       sizeof(*(ptr)));			\
- })
- 
--u64 __cmpxchg_u64(u64 *ptr, u64 old, u64 new);
--#define arch_cmpxchg64(ptr, old, new)	__cmpxchg_u64(ptr, old, new)
+-static inline int test_and_set_bit(unsigned long nr, volatile unsigned long *addr)
+-{
+-	unsigned long *ADDR, mask;
 -
--#include <asm-generic/cmpxchg-local.h>
+-	ADDR = ((unsigned long *) addr) + (nr >> 5);
+-	mask = 1 << (nr & 31);
 -
- /*
-- * cmpxchg_local and cmpxchg64_local are atomic wrt current CPU. Always make
-- * them available.
-+ * We can not support 64-bit cmpxchg using LEON CASA. Better fail to link than
-+ * pretend we can support something that is not atomic towards 64-bit writes.
-  */
--#define arch_cmpxchg_local(ptr, o, n)				  	       \
--	((__typeof__(*(ptr)))__generic_cmpxchg_local((ptr), (unsigned long)(o),\
--			(unsigned long)(n), sizeof(*(ptr))))
--#define arch_cmpxchg64_local(ptr, o, n) __generic_cmpxchg64_local((ptr), (o), (n))
+-	return sp32___set_bit(ADDR, mask) != 0;
+-}
+-
+-static inline void set_bit(unsigned long nr, volatile unsigned long *addr)
+-{
+-	unsigned long *ADDR, mask;
+-
+-	ADDR = ((unsigned long *) addr) + (nr >> 5);
+-	mask = 1 << (nr & 31);
+-
+-	(void) sp32___set_bit(ADDR, mask);
+-}
+-
+-static inline int test_and_clear_bit(unsigned long nr, volatile unsigned long *addr)
+-{
+-	unsigned long *ADDR, mask;
+-
+-	ADDR = ((unsigned long *) addr) + (nr >> 5);
+-	mask = 1 << (nr & 31);
+-
+-	return sp32___clear_bit(ADDR, mask) != 0;
+-}
+-
+-static inline void clear_bit(unsigned long nr, volatile unsigned long *addr)
+-{
+-	unsigned long *ADDR, mask;
+-
+-	ADDR = ((unsigned long *) addr) + (nr >> 5);
+-	mask = 1 << (nr & 31);
+-
+-	(void) sp32___clear_bit(ADDR, mask);
+-}
+-
+-static inline int test_and_change_bit(unsigned long nr, volatile unsigned long *addr)
+-{
+-	unsigned long *ADDR, mask;
+-
+-	ADDR = ((unsigned long *) addr) + (nr >> 5);
+-	mask = 1 << (nr & 31);
+-
+-	return sp32___change_bit(ADDR, mask) != 0;
+-}
+-
+-static inline void change_bit(unsigned long nr, volatile unsigned long *addr)
+-{
+-	unsigned long *ADDR, mask;
+-
+-	ADDR = ((unsigned long *) addr) + (nr >> 5);
+-	mask = 1 << (nr & 31);
+-
+-	(void) sp32___change_bit(ADDR, mask);
+-}
+-
++#include <asm/bitops/atomic_32.h>
+ #include <asm-generic/bitops/non-atomic.h>
  
- #endif /* __ARCH_SPARC_CMPXCHG__ */
+ #include <asm-generic/bitops/ffz.h>
 diff --git a/arch/sparc/lib/atomic32.c b/arch/sparc/lib/atomic32.c
-index cf80d1ae352b..f378471adeca 100644
+index f378471adeca..ed778f7ebe97 100644
 --- a/arch/sparc/lib/atomic32.c
 +++ b/arch/sparc/lib/atomic32.c
-@@ -158,45 +158,3 @@ unsigned long sp32___change_bit(unsigned long *addr, unsigned long mask)
- 	return old & mask;
+@@ -119,42 +119,3 @@ void arch_atomic_set(atomic_t *v, int i)
+ 	spin_unlock_irqrestore(ATOMIC_HASH(v), flags);
  }
- EXPORT_SYMBOL(sp32___change_bit);
+ EXPORT_SYMBOL(arch_atomic_set);
 -
--unsigned long __cmpxchg_u32(volatile u32 *ptr, u32 old, u32 new)
+-unsigned long sp32___set_bit(unsigned long *addr, unsigned long mask)
 -{
--	unsigned long flags;
--	u32 prev;
+-	unsigned long old, flags;
 -
--	spin_lock_irqsave(ATOMIC_HASH(ptr), flags);
--	if ((prev = *ptr) == old)
--		*ptr = new;
--	spin_unlock_irqrestore(ATOMIC_HASH(ptr), flags);
+-	spin_lock_irqsave(ATOMIC_HASH(addr), flags);
+-	old = *addr;
+-	*addr = old | mask;
+-	spin_unlock_irqrestore(ATOMIC_HASH(addr), flags);
 -
--	return (unsigned long)prev;
+-	return old & mask;
 -}
--EXPORT_SYMBOL(__cmpxchg_u32);
+-EXPORT_SYMBOL(sp32___set_bit);
 -
--u64 __cmpxchg_u64(u64 *ptr, u64 old, u64 new)
+-unsigned long sp32___clear_bit(unsigned long *addr, unsigned long mask)
 -{
--	unsigned long flags;
--	u64 prev;
+-	unsigned long old, flags;
 -
--	spin_lock_irqsave(ATOMIC_HASH(ptr), flags);
--	if ((prev = *ptr) == old)
--		*ptr = new;
--	spin_unlock_irqrestore(ATOMIC_HASH(ptr), flags);
+-	spin_lock_irqsave(ATOMIC_HASH(addr), flags);
+-	old = *addr;
+-	*addr = old & ~mask;
+-	spin_unlock_irqrestore(ATOMIC_HASH(addr), flags);
 -
--	return prev;
+-	return old & mask;
 -}
--EXPORT_SYMBOL(__cmpxchg_u64);
+-EXPORT_SYMBOL(sp32___clear_bit);
 -
--unsigned long __xchg_u32(volatile u32 *ptr, u32 new)
+-unsigned long sp32___change_bit(unsigned long *addr, unsigned long mask)
 -{
--	unsigned long flags;
--	u32 prev;
+-	unsigned long old, flags;
 -
--	spin_lock_irqsave(ATOMIC_HASH(ptr), flags);
--	prev = *ptr;
--	*ptr = new;
--	spin_unlock_irqrestore(ATOMIC_HASH(ptr), flags);
+-	spin_lock_irqsave(ATOMIC_HASH(addr), flags);
+-	old = *addr;
+-	*addr = old ^ mask;
+-	spin_unlock_irqrestore(ATOMIC_HASH(addr), flags);
 -
--	return (unsigned long)prev;
+-	return old & mask;
 -}
--EXPORT_SYMBOL(__xchg_u32);
+-EXPORT_SYMBOL(sp32___change_bit);
 -- 
 2.34.1
 
