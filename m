@@ -1,39 +1,39 @@
-Return-Path: <sparclinux+bounces-127-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-128-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1058244E2
-	for <lists+sparclinux@lfdr.de>; Thu,  4 Jan 2024 16:24:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81EEE8250B7
+	for <lists+sparclinux@lfdr.de>; Fri,  5 Jan 2024 10:21:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8006BB211B1
-	for <lists+sparclinux@lfdr.de>; Thu,  4 Jan 2024 15:24:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FE112846FF
+	for <lists+sparclinux@lfdr.de>; Fri,  5 Jan 2024 09:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64A5241E2;
-	Thu,  4 Jan 2024 15:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442F4249FD;
+	Fri,  5 Jan 2024 09:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNblqvl2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jC0TsOWJ"
 X-Original-To: sparclinux@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAEE249E8;
-	Thu,  4 Jan 2024 15:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC8CC433C8;
-	Thu,  4 Jan 2024 15:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2D3249F3;
+	Fri,  5 Jan 2024 09:21:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A0EC433C8;
+	Fri,  5 Jan 2024 09:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704381836;
-	bh=ntsB/zO+V8LcScJNpkXqCsZ4Rc4wuSVE8XfPym0CPPg=;
+	s=korg; t=1704446512;
+	bh=2KSxEcP5EDrV4lu8VHhBbdAukOvaEgpynNjsnX+n/9s=;
 	h=Subject:To:From:Date:From;
-	b=oNblqvl2jVDn0iX9Y0/qYKriZRbdIBYdUTa+B4MyT/sv1BxAw+a8k0eR7GOg5VVgz
-	 eSPdWs+rw4fnbiVSyGlLQD5Y+iNf/bS90oGyMkQaZJmqotsLOlCGEm4/uM7f5pQjyI
-	 TuLa+X+41pZKVCpmzS1PcClDBYu5QLI+e5w5cNEk=
-Subject: patch "serial: apbuart: fix console prompt on qemu" added to tty-testing
+	b=jC0TsOWJMc6ACkELrz1QvhK+3ajVxG6CL9xkEoS3uT/gwfuQGX3oo6ugkGsJ3JZrv
+	 KV4CYvTkdZzx7+OuU0qIafZR3wLSjDC20uRkryI+cViRTD8rPSHAgbNATA2H2si6v4
+	 ijfpkG5OyV8UTwdY6HO6MyfCJhASFUtQXOlkK/dE=
+Subject: patch "serial: apbuart: fix console prompt on qemu" added to tty-next
 To: sam@ravnborg.org,andreas@gaisler.com,gregkh@linuxfoundation.org,jirislaby@kernel.org,linux-serial@vger.kernel.org,sparclinux@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jan 2024 16:23:39 +0100
-Message-ID: <2024010439-elaborate-upstream-dd50@gregkh>
+Date: Fri, 05 Jan 2024 10:21:38 +0100
+Message-ID: <2024010538-legged-species-457d@gregkh>
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
@@ -50,13 +50,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my tty git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
-in the tty-testing branch.
+in the tty-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the tty-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
