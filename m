@@ -1,60 +1,60 @@
-Return-Path: <sparclinux+bounces-195-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-196-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0036683CC2B
-	for <lists+sparclinux@lfdr.de>; Thu, 25 Jan 2024 20:33:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0A283CC30
+	for <lists+sparclinux@lfdr.de>; Thu, 25 Jan 2024 20:33:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33CF71C22E83
-	for <lists+sparclinux@lfdr.de>; Thu, 25 Jan 2024 19:33:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CA141F2508A
+	for <lists+sparclinux@lfdr.de>; Thu, 25 Jan 2024 19:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710C4137C2D;
-	Thu, 25 Jan 2024 19:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B3A135A55;
+	Thu, 25 Jan 2024 19:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="deVH0cLp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SJrYyYcK"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CA21350F2
-	for <sparclinux@vger.kernel.org>; Thu, 25 Jan 2024 19:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70ADD135A53
+	for <sparclinux@vger.kernel.org>; Thu, 25 Jan 2024 19:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706211176; cv=none; b=FLDqqFNWw2UyzL0uM73s5x5ilv6x4GWCZxNPDPfCtmnunxBjV8yUi3u8u1w5kcogQTH5STmJjrMyt0P1jXoXX39zOUJHV5BHJMWYtTN+lQk2+OANRQ7DZ73EGZfOJjBx9qo970c3q80/T/B8gr6rKldZvfNcbzlv0DRsvBg2Uts=
+	t=1706211182; cv=none; b=Fq04nCi4zwGRCIEacvi7isaie8LBKaozE4lxLNf8oBVwfd7gUDzaqqnsuWmlKgG4dmF4Betq/+br6PN3N/5UbEj+QB1mXOBpBHrjWvNZ+BQVfugWqJn2BUfWYEadwGZ5blJc8qSiKkA8QQTrvEDzvt+5NYupUAZm6gerhuMy/tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706211176; c=relaxed/simple;
-	bh=4oR4uklhnth919C6I1sotzXwyWZpiE5xrUKUZXjkCr8=;
+	s=arc-20240116; t=1706211182; c=relaxed/simple;
+	bh=+UR4oqQo3sGwKJKMPQ9gzzzYQReDaaw0rcVnPjBuGyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TWMnV62dXVLJZ4Cl+KtVu97be6pe56S8708NTiyO1QMEQytzl49Xo1lcMMV3YTDje6jzdHTC7BWbSlaQHhtjI4CdsspvlDJehRW/C2RobaCN1/2BxloYtU7pMNe9zo7P17urKWzg4GSjIUugKXsvuMhCnmPXngL8XfTe38Ckc+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=deVH0cLp; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=DDw0m6Fs6TyIDyvcaAI3c41R9QG5lMMuCeHXktWKqzRTAHpwZ0EkPODR9XrXHGJHGW1ekOEBC39NyuorsvidiAYOwsUtqbLtl09MhIKD0qeUHAcPWRN6UvO4BTtB8u/VvhYSXVJNK0whYoQIrC8+ptkw5wsOZC049aqvjN1qbD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SJrYyYcK; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706211173;
+	s=mimecast20190719; t=1706211180;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PQouyLY2O+uNJNW8rltya8+XjvAPXlL2xnyiW/c3KZ4=;
-	b=deVH0cLp8Z55xuhNEsiPNDgTcnn7OMaoAqOyQZLeKhfbK56fa+k/SFMfcMhbhp1ZxG8QpV
-	q/Bn69mtK00Gc45mdtBl5e5PT1RwSZBnTdFwdhPx8E5d0Qbzcq6mCldiumWW4gLC5UZsJJ
-	OlbamY2Nx92KFa/S+pMCXMzKg316kVY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606--28HdBjrN0mHVjdOaKldYA-1; Thu, 25 Jan 2024 14:32:48 -0500
-X-MC-Unique: -28HdBjrN0mHVjdOaKldYA-1
+	bh=yJs+mcURKSPmR1cOyRG5Auy6AFvJQWxP76HaETvMI0g=;
+	b=SJrYyYcKHBqOsDAgyTnjr78iB8xcjPPMJvLEfn0vesxvKnh408olc/UZ1OZqUaQt/gyMk+
+	Akmqnx2ba7yQGz9A9thOHSPFyn+1agswbAn0DIZhrvmovDVKqugn+DQsR9D/mlH+lgB1hJ
+	QhmqiJUzLQuSwwSdLMKce8QGonew+JY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-7NVfgMTTPOWOAzUG4yyD5g-1; Thu,
+ 25 Jan 2024 14:32:57 -0500
+X-MC-Unique: 7NVfgMTTPOWOAzUG4yyD5g-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AF58485A589;
-	Thu, 25 Jan 2024 19:32:46 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 111D93C025C9;
+	Thu, 25 Jan 2024 19:32:53 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.39.193.154])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 37002492BC6;
-	Thu, 25 Jan 2024 19:32:41 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 359AB492BC6;
+	Thu, 25 Jan 2024 19:32:46 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -86,9 +86,9 @@ Cc: linux-mm@kvack.org,
 	linux-riscv@lists.infradead.org,
 	linux-s390@vger.kernel.org,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v2 02/15] arm/pgtable: define PFN_PTE_SHIFT
-Date: Thu, 25 Jan 2024 20:32:14 +0100
-Message-ID: <20240125193227.444072-3-david@redhat.com>
+Subject: [PATCH v2 03/15] nios2/pgtable: define PFN_PTE_SHIFT
+Date: Thu, 25 Jan 2024 20:32:15 +0100
+Message-ID: <20240125193227.444072-4-david@redhat.com>
 In-Reply-To: <20240125193227.444072-1-david@redhat.com>
 References: <20240125193227.444072-1-david@redhat.com>
 Precedence: bulk
@@ -105,22 +105,22 @@ simply define PFN_PTE_SHIFT, required by pte_next_pfn().
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/arm/include/asm/pgtable.h | 2 ++
+ arch/nios2/include/asm/pgtable.h | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
-index d657b84b6bf70..be91e376df79e 100644
---- a/arch/arm/include/asm/pgtable.h
-+++ b/arch/arm/include/asm/pgtable.h
-@@ -209,6 +209,8 @@ static inline void __sync_icache_dcache(pte_t pteval)
- extern void __sync_icache_dcache(pte_t pteval);
- #endif
+diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
+index 5144506dfa693..d052dfcbe8d3a 100644
+--- a/arch/nios2/include/asm/pgtable.h
++++ b/arch/nios2/include/asm/pgtable.h
+@@ -178,6 +178,8 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
+ 	*ptep = pteval;
+ }
  
-+#define PFN_PTE_SHIFT		PAGE_SHIFT
++#define PFN_PTE_SHIFT		0
 +
- void set_ptes(struct mm_struct *mm, unsigned long addr,
- 		      pte_t *ptep, pte_t pteval, unsigned int nr);
- #define set_ptes set_ptes
+ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ 		pte_t *ptep, pte_t pte, unsigned int nr)
+ {
 -- 
 2.43.0
 
