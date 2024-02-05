@@ -1,36 +1,36 @@
-Return-Path: <sparclinux+bounces-282-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-280-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B8784A575
-	for <lists+sparclinux@lfdr.de>; Mon,  5 Feb 2024 21:18:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44AD84A571
+	for <lists+sparclinux@lfdr.de>; Mon,  5 Feb 2024 21:18:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DDE8280DFD
-	for <lists+sparclinux@lfdr.de>; Mon,  5 Feb 2024 20:18:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D8591F25CC6
+	for <lists+sparclinux@lfdr.de>; Mon,  5 Feb 2024 20:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C6317A1E2;
-	Mon,  5 Feb 2024 19:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFFC179A2A;
+	Mon,  5 Feb 2024 19:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
 	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0MuN3we"
 X-Original-To: sparclinux@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBD217A1C8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF9E179A0F;
 	Mon,  5 Feb 2024 19:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707159855; cv=none; b=PHQOykxRbzCfH64zOukDl27ZOAto1ZsI/0Pa/qCXpDDYeSDDWohClzVTfh53FXgonhRyQTydIM/oabqTxfLy1gxME6cltORqr3nSqz9e4/X01JgZhdVY9fYPzztcIC3CZy13mMw/b0RuRU5XWcZQVAkaeYlbGg1d5IrI0hZ6520=
+	t=1707159854; cv=none; b=sEXibqK+tws2LrlXLwv+2GCEdn/gspexxsWgjeG6qk7MkipcoHUCChcF48SRklNR0V1LBlZsFIcS2rXg/IgmV6ccWBVORzrJIT+ViFrM5UPWRpb8gi2Wgr/Sp2pXnZljGfReZMLzb/EIR4i71xBszqHBQwY/z3JaXzHxLoF1aBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707159855; c=relaxed/simple;
+	s=arc-20240116; t=1707159854; c=relaxed/simple;
 	bh=nIlg0Ojr7ROSJ4zCSJfQ+EY2JGPU+IPkd+GLvdpsS1Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dSs4nfReCyKyAJgXm/sToou9YompR/I55Qo0hjNOl4HfGkvvtM/DCxmNa+YKwQpFOFXtTa6WeGvgj4az2eZn/teacd0gsmL+HnHqzqvbZwxyfb3npR7xHdKIUQykccTiTa25NWOGLvHLXoThWMzyTz5TOs7ckD+rqyb4rNBTtE4=
+	 Content-Type:Content-Disposition:In-Reply-To; b=LYtj4IjjSaCL7iftzi1wRR8APecpE7YhwR5sS8+EMlpnoiI6k1ZBvco05xgsRdLn2c02vLTDQh+bFywgPjTrKOSIKjCcpz3i1MmyvJYHVfXYBvsEKaDrRK8RXv2BMefypVc73q70/jtUO/t3PLD2b+FFB02xN5PIG8d6u+eZe/I=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0MuN3we; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63CEDC43330;
-	Mon,  5 Feb 2024 19:04:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12687C433C7;
+	Mon,  5 Feb 2024 19:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1707159854;
 	bh=nIlg0Ojr7ROSJ4zCSJfQ+EY2JGPU+IPkd+GLvdpsS1Q=;
