@@ -1,34 +1,34 @@
-Return-Path: <sparclinux+bounces-459-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-458-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2014886ED6A
-	for <lists+sparclinux@lfdr.de>; Sat,  2 Mar 2024 01:19:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE99B86ED69
+	for <lists+sparclinux@lfdr.de>; Sat,  2 Mar 2024 01:19:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC29C28A09A
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FBDA28A08E
 	for <lists+sparclinux@lfdr.de>; Sat,  2 Mar 2024 00:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07D56FCA;
-	Sat,  2 Mar 2024 00:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3916AD6;
+	Sat,  2 Mar 2024 00:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XlIhhDYI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MaAP4KNP"
 X-Original-To: sparclinux@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5415CA1
-	for <sparclinux@vger.kernel.org>; Sat,  2 Mar 2024 00:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B777163CB;
+	Sat,  2 Mar 2024 00:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709338652; cv=none; b=lvlgm/8PXDPSWn5k7fN3hjRwoOdsajA0sCO0MFVrII2lqetE/TRh26XdekdONw07bOIfG9uboNk1zsKFFEn3j9w3si14sf8rRnjRiCLmaNxkyrwjhn9kCs7q+YZE4xxqQ1KwpLZXjY/6tegFcOWUVYPRLDKvVy3YjZEDs4S2nsc=
+	t=1709338651; cv=none; b=vE07EeAPh0ed6LkvHIcf6xO1AnzECpx2WP1W7zOjb4iHm6soUZvvFLmofVbjK3fwE1y6j8sDS02PKu+mUiV4UG+7zP1IkfmQIpbsisvn3fgfNKuNHA1xtLZqyoAHKftJOjjxhBwN16VVIbWy0e35AmkRXP/DixI9dCHLSPsWCc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709338652; c=relaxed/simple;
-	bh=DseUjhqxzerYYYUWP+eq2zoWOrm51og3LqJeNn7JxLI=;
+	s=arc-20240116; t=1709338651; c=relaxed/simple;
+	bh=xbWkxQYQam1S+ncDPTZ2nNpXwaU0bA5k+3cegEBrWhU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oNIU49N+FHftvhI2qeXnUYhpX3YNwL4jaYdV+Cy3Xgu88TcktwqnRcxu6u78IfhdeTlxmPDuGMeYN81o7Xo9gIOikrOYKLAYQuLN/kNVnRAnF0S/mUg9IRoLr9qY553E8QCGORnP1VvsyCUFuzm6546yJupgQ1xWVrdDE3HmSj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XlIhhDYI; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=f7XrE8iKfdoo0p6rgCyBAzhlCNeoCFKMp7Gn+J9OQecq7J0BlOG2zuw432RTPwKHwtIP8dqBg0naCV6OugeQqY+osfqtjh1GshTS5N6YaHG7IGxYYUD7MZtF08MDXKOZWP0KXQdd3ckllhRppKOqtMvnca3/IrlMXcoXZ2mQd5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MaAP4KNP; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,24 +36,24 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1709338649; x=1740874649;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=DseUjhqxzerYYYUWP+eq2zoWOrm51og3LqJeNn7JxLI=;
-  b=XlIhhDYIuk27NNdHGIIbcxvopQiha0tgINd8UQtPdEzdQSDmgDNdhjTD
-   Nqm+MO6Oq4oXj75oS06775DrS3z5P/r00a0Dqjmo4j8f7cGhFuqCN3+th
-   H8B1z7eL4iMiFEvMTmgTIRwO7cdHq33NUW2gBq4E4n3j2JaaHGelxjwxN
-   +idj/hI4P5vZuRGhlam8fkqLUVZmYoj6iDsJbGt7JlctYJ7o0DZJ0Cwqa
-   My4X43+eT7YsvjWMdT6NNAmRCFVkVuCBXDZIU7BcX3I2BrNk8OZN/hADU
-   6Scs+u7YQLB8/JAPwlpRrZrjgCHqjVTL4+3644t5kgcJlxkswclEamJNZ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11000"; a="7715764"
+  bh=xbWkxQYQam1S+ncDPTZ2nNpXwaU0bA5k+3cegEBrWhU=;
+  b=MaAP4KNPIX1IZ90su3zqAi0C2rEjhqoorZlR//BBjRkVJAM01MSexq4S
+   4tM8WCLjKtFCTUi4x78tSadt+HX+hg4Rbl9RWhZKxyzbdPRXGp0RjpDr0
+   mky2GJ/vAO++L1NDZdYvzG6AkSyAggeVjYRnpK9rS6zGxN2OpmJXeTG0r
+   IA9dDtYvlj/2hwGxI7jcilIMFU9xvwo564liFO4z8KnBCavKRU+6fqYAO
+   WSOS9NCjoYM8jvKVMYLgzBfFwKyXjFph7DSJResy6cevOQA0w+UaDP2ux
+   rXO+WlDYs6Fu0tyatZ38uYDHDHHdPeg3c0n0/KpL5/nWKv3B8dIXV7e6R
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11000"; a="7715777"
 X-IronPort-AV: E=Sophos;i="6.06,197,1705392000"; 
-   d="scan'208";a="7715764"
+   d="scan'208";a="7715777"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2024 16:17:28 -0800
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2024 16:17:29 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,197,1705392000"; 
-   d="scan'208";a="8495984"
+   d="scan'208";a="8495990"
 Received: from thwood-mobl1.amr.corp.intel.com (HELO rpedgeco-desk4.intel.com) ([10.251.7.75])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2024 16:17:27 -0800
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2024 16:17:28 -0800
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: rick.p.edgecombe@intel.com
 Cc: Liam.Howlett@oracle.com,
@@ -71,15 +71,13 @@ Cc: Liam.Howlett@oracle.com,
 	sparclinux@vger.kernel.org,
 	tglx@linutronix.de,
 	x86@kernel.org,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Subject: [RFC v2.1 08/12] s390: Use initializer for struct vm_unmapped_area_info
-Date: Fri,  1 Mar 2024 16:17:10 -0800
-Message-Id: <20240302001714.674091-8-rick.p.edgecombe@intel.com>
+	Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	linux-sh@vger.kernel.org
+Subject: [RFC v2.1 09/12] sh: Use initializer for struct vm_unmapped_area_info
+Date: Fri,  1 Mar 2024 16:17:11 -0800
+Message-Id: <20240302001714.674091-9-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240302001714.674091-1-rick.p.edgecombe@intel.com>
 References: <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
@@ -124,12 +122,10 @@ that were manually initialized to zero, as this would be redundant for
 designated initializers.
 
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org
 Link: https://lore.kernel.org/lkml/202402280912.33AEE7A9CF@keescook/#t
 Link: https://lore.kernel.org/lkml/j7bfvig3gew3qruouxrh7z7ehjjafrgkbcmg6tcghhfh3rhmzi@wzlcoecgy5rs/
 ---
@@ -147,96 +143,44 @@ Rick
 
 [0] https://lore.kernel.org/lkml/20240226190951.3240433-6-rick.p.edgecombe@intel.com/
 ---
- arch/s390/mm/hugetlbpage.c | 27 +++++++++++++--------------
- arch/s390/mm/mmap.c        | 25 +++++++++++++------------
- 2 files changed, 26 insertions(+), 26 deletions(-)
+ arch/sh/mm/mmap.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
-index c2d2850ec8d5..dd7245b276e6 100644
---- a/arch/s390/mm/hugetlbpage.c
-+++ b/arch/s390/mm/hugetlbpage.c
-@@ -258,14 +258,13 @@ static unsigned long hugetlb_get_unmapped_area_bottomup(struct file *file,
- 		unsigned long pgoff, unsigned long flags)
- {
- 	struct hstate *h = hstate_file(file);
--	struct vm_unmapped_area_info info;
-+	struct vm_unmapped_area_info info = {
-+		.length = len,
-+		.low_limit = current->mm->mmap_base,
-+		.high_limit = TASK_SIZE,
-+		.align_mask = PAGE_MASK & ~huge_page_mask(h)
-+	};
- 
--	info.flags = 0;
--	info.length = len;
--	info.low_limit = current->mm->mmap_base;
--	info.high_limit = TASK_SIZE;
--	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
--	info.align_offset = 0;
- 	return vm_unmapped_area(&info);
- }
- 
-@@ -274,15 +273,15 @@ static unsigned long hugetlb_get_unmapped_area_topdown(struct file *file,
- 		unsigned long pgoff, unsigned long flags)
- {
- 	struct hstate *h = hstate_file(file);
--	struct vm_unmapped_area_info info;
-+	struct vm_unmapped_area_info info = {
-+		.flags = VM_UNMAPPED_AREA_TOPDOWN,
-+		.length = len,
-+		.low_limit = PAGE_SIZE,
-+		.high_limit = current->mm->mmap_base,
-+		.align_mask = PAGE_MASK & ~huge_page_mask(h)
-+	};
- 	unsigned long addr;
- 
--	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
--	info.length = len;
--	info.low_limit = PAGE_SIZE;
--	info.high_limit = current->mm->mmap_base;
--	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
--	info.align_offset = 0;
- 	addr = vm_unmapped_area(&info);
- 
- 	/*
-diff --git a/arch/s390/mm/mmap.c b/arch/s390/mm/mmap.c
-index cd52d72b59cf..203eb653b92f 100644
---- a/arch/s390/mm/mmap.c
-+++ b/arch/s390/mm/mmap.c
-@@ -77,7 +77,12 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
- {
+diff --git a/arch/sh/mm/mmap.c b/arch/sh/mm/mmap.c
+index b82199878b45..000a86c752c1 100644
+--- a/arch/sh/mm/mmap.c
++++ b/arch/sh/mm/mmap.c
+@@ -57,7 +57,12 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
  	struct mm_struct *mm = current->mm;
  	struct vm_area_struct *vma;
+ 	int do_colour_align;
 -	struct vm_unmapped_area_info info;
 +	struct vm_unmapped_area_info info = {
 +		.length = len,
-+		.low_limit = mm->mmap_base,
++		.low_limit = TASK_UNMAPPED_BASE,
 +		.high_limit = TASK_SIZE,
-+		.align_offset = pgoff << PAGE_SHIFT
++		.align_offset = pgoff << PAGE_SHIFT,
 +	};
  
- 	if (len > TASK_SIZE - mmap_min_addr)
- 		return -ENOMEM;
-@@ -93,15 +98,10 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
- 			goto check_asce_limit;
+ 	if (flags & MAP_FIXED) {
+ 		/* We do not accept a shared mapping if it would violate
+@@ -88,12 +93,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 			return addr;
  	}
  
 -	info.flags = 0;
 -	info.length = len;
--	info.low_limit = mm->mmap_base;
+-	info.low_limit = TASK_UNMAPPED_BASE;
 -	info.high_limit = TASK_SIZE;
- 	if (filp || (flags & MAP_SHARED))
- 		info.align_mask = MMAP_ALIGN_MASK << PAGE_SHIFT;
- 	else
- 		info.align_mask = 0;
+ 	info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
 -	info.align_offset = pgoff << PAGE_SHIFT;
- 	addr = vm_unmapped_area(&info);
- 	if (offset_in_page(addr))
- 		return addr;
-@@ -116,7 +116,13 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp, unsigned long ad
- {
- 	struct vm_area_struct *vma;
+ 	return vm_unmapped_area(&info);
+ }
+ 
+@@ -106,7 +106,13 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
  	struct mm_struct *mm = current->mm;
+ 	unsigned long addr = addr0;
+ 	int do_colour_align;
 -	struct vm_unmapped_area_info info;
 +	struct vm_unmapped_area_info info = {
 +		.flags = VM_UNMAPPED_AREA_TOPDOWN,
@@ -246,20 +190,17 @@ index cd52d72b59cf..203eb653b92f 100644
 +		.align_offset = pgoff << PAGE_SHIFT
 +	};
  
- 	/* requested length too big for entire address space */
- 	if (len > TASK_SIZE - mmap_min_addr)
-@@ -134,15 +140,10 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp, unsigned long ad
- 			goto check_asce_limit;
+ 	if (flags & MAP_FIXED) {
+ 		/* We do not accept a shared mapping if it would violate
+@@ -138,12 +144,7 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 			return addr;
  	}
  
 -	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
 -	info.length = len;
 -	info.low_limit = PAGE_SIZE;
 -	info.high_limit = mm->mmap_base;
- 	if (filp || (flags & MAP_SHARED))
- 		info.align_mask = MMAP_ALIGN_MASK << PAGE_SHIFT;
- 	else
- 		info.align_mask = 0;
+ 	info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
 -	info.align_offset = pgoff << PAGE_SHIFT;
  	addr = vm_unmapped_area(&info);
  
