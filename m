@@ -1,161 +1,197 @@
-Return-Path: <sparclinux+bounces-684-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-686-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DCFC87ED2F
-	for <lists+sparclinux@lfdr.de>; Mon, 18 Mar 2024 17:16:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8C287F0C6
+	for <lists+sparclinux@lfdr.de>; Mon, 18 Mar 2024 21:04:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AD231F2241C
-	for <lists+sparclinux@lfdr.de>; Mon, 18 Mar 2024 16:16:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41FE51C21E5F
+	for <lists+sparclinux@lfdr.de>; Mon, 18 Mar 2024 20:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F00535A2;
-	Mon, 18 Mar 2024 16:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADA057889;
+	Mon, 18 Mar 2024 20:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AEzlhRln"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="InxVHWpS"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2084.outbound.protection.outlook.com [40.107.101.84])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6515336B11;
-	Mon, 18 Mar 2024 16:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710778589; cv=fail; b=Dt7RTr4Rlvnmb8HKgBFBGlwtFxRY6jDhKCJ5RFLgYgSfCn2AUNl0y3Dfdy+yUWjPJ373bkLZpV7xOpWVUlaJDeyoIOR9oPTAqgFhN3vQvKhy6hyoUDMnaJECJk4W3US5Z8KvqfkBTJP4I1g34+ibC+cRbFXhJ3Y/azfxg2UyhAQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710778589; c=relaxed/simple;
-	bh=kIT6BFjv3xpXLU/umsxieq5WJKEk0Jew1EAy1pJf9z0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=F+JC3iw8Jab9xfL+F5LVlksS1tZ3jkV6A8bPIXMFwuRTE0+3wQXbnIXw60Q7UtsihVsMuQ2wn5X64+cDZYZvgfEa1K2HUj5P7Gdp22fp/NxYORaLBsMchsamY9vUJsvMGwRvnfraQv6gnsFU9XLuIaVSXGVqu8lAWCI36k1FYiY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AEzlhRln; arc=fail smtp.client-ip=40.107.101.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ggU2T2+dW5s6Jl2d0IwtXFeqUSSDq9wPJqcoLLiT15hXKN2xiZ8jiiLxEUpsXy+lHu3ksu3Q98h5lhTxF5yw02H8dmvHQEHm1o/W0JwTw9hBDE0r5tbzf2o7GAeIVLoxM+fCa7SBp34QFQu+Gq1iwTCkRxaSROGBn7NVC2hnJMpuy3y+Lold4vVbs1EUuKBrWskeqiK2gumAs3/5qCz/lrWJX2FiBF+ppD+v7pwEjUzSSFVDNacKW5e9hCQDL/DV6iKOFyTDR7ftLgsmPz6X9yf6XiEyco4vP/oE3O3cll1xz5CSzJHpmmatYzUiiboYaNrks5jiF6qqHX1fuZFBdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bHPGI0sgsnO463bBG9OyVNa4jROqiE7xpF6jdd5I06I=;
- b=B/R8nMZx4EeZodp4q5yfseF+Y/QR3DeULAg+6s7JDzOWyZ9N+qliajNvLYo9YPsaNNW4ENz+Vw9ObKurN9x2Cv15Nkgz+Vc7+6KmM/hrKESfuQ4hPJsjkkE/JQ99KPz/ajNi3WM32k65EAcZUnbk7KdTMLe5dSHwZZEqLI2M3IBme6aM6l5DcA0T/ctaoaFa7d7nSAuaWdRWTWP2dTVFN/mwOUG/omgShdd9yJE7E8bcP4+UASzYbvHY3FI5DnfeV60iplShvKQWLwavEEnkZ05QlNETJQpWegVlAf9PxAUUU916M9vJk+hf6FRa7xeYO5iGLsENqym5mWgdKoDljg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bHPGI0sgsnO463bBG9OyVNa4jROqiE7xpF6jdd5I06I=;
- b=AEzlhRlnrOSA0DyBXbxK8dZeBR/+5KQic4KDWPbGQGdvLRvNFzEQdMh6ik67/S9D0j3E/gmR/M5uh4T5Czaw8kdTGRvCF3DUoH03VzLnqDnnIVCT7IppnMASh4iSaaQ/Pgyks1xa5KKbUzxCEv1oZOFh7UpG6q6VHBRaXyThMBwvH8PjLZ7OF2c5gygzOMrwj6FO1WJ/IbSph3bjRzdiD2eFkTMWdanpr4K7SL5D/VrGp3BgGT+8SKKpwFwOtLM2p8C3g4sQsL1bblVOVBpoMnpEFnngaztyB+5/G/4b4euRoISSiyByh1Mq3vQGzLeg2uhWWVIleLBOCYny2HJxrQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
- by CH3PR12MB8331.namprd12.prod.outlook.com (2603:10b6:610:12f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26; Mon, 18 Mar
- 2024 16:16:25 +0000
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::6aec:dbca:a593:a222]) by DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::6aec:dbca:a593:a222%5]) with mapi id 15.20.7386.025; Mon, 18 Mar 2024
- 16:16:25 +0000
-Date: Mon, 18 Mar 2024 13:16:23 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"x86@kernel.org" <x86@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CAD57326
+	for <sparclinux@vger.kernel.org>; Mon, 18 Mar 2024 20:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710792253; cv=none; b=cSWDx/nXF0kQr7zMGuWJHT3P4GEo2/YDUaOukcpJY6M7el0GfiiiXFOHj1LwuopEooj0b949GoldtwooZhOyy90zzoxkVFuZzEJKOu2GA3WSO8cC4VvfpcODlWyHoWG/ni3QwYSUrC5Hf7EpWvNVDl1OW7phDcPQnamwHuZHq04=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710792253; c=relaxed/simple;
+	bh=Bn8UEEZs0nJ4FHyVWhLc7SJHMnJcP5WPrALi4/aCuNE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nqTkvpbXGIeDNv1j/lcgItpY7ZaHXj7BQdDNzFxnZ5Ji5cpYZMvp3sRGrD7L93wSPoVTbQG9tUEfia4waxg02t20Lo2DWlPuW9Rn9mFSEctI41nJXFfKnWMfTOCHTE7a9sKbrslL8XoMJ/dunElAfGeb+2LZQkhQz9SpfFHV/LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=InxVHWpS; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710792249;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=j5cONy39WPTChmBWXZo5a/mjWSs5JnDb/U3l3IKfJB0=;
+	b=InxVHWpSgzQYn8fmIygDW65nFhl7yfRlR6+iXjYiqPdZwLTAw5iJKlzHhkGOjIg4Y0Q0oJ
+	6EK+XpRRBMsJWfu+QeqIi5S6cBl4+p/vr7hi7FCOROAmBC1ytCQf9r+0Eu31sJcYrPQf3e
+	EbcoFelezV5gzKFeOXvuEdT10b4QOjI=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-182-YKqA6MG9M6Cm4XHYhhvpaA-1; Mon, 18 Mar 2024 16:04:07 -0400
+X-MC-Unique: YKqA6MG9M6Cm4XHYhhvpaA-1
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-430d45c66acso2197591cf.1
+        for <sparclinux@vger.kernel.org>; Mon, 18 Mar 2024 13:04:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710792247; x=1711397047;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j5cONy39WPTChmBWXZo5a/mjWSs5JnDb/U3l3IKfJB0=;
+        b=bI5bXxkwgxRLOzzDMvpvsMGY+hKrs4NP2bDkbqJ/AXTpqyADPeTb0OLdv25wJsWLRv
+         6RUsP816XVbHZxMbKMzshmhZPBq+m0Mhe3VEMG/7XkmZnDiOWS7jjLE3LoPU2gzHS7Nk
+         A9vNOqjfyFDkRZgbVUk+lmKMeIsFJbGeyvpucbJlllS03BOyRBlCDBuciB2lqPjweGhO
+         3FoZJSnOJKDpb7wgJkyNHdwyRSo5F8117+AGR52upJS6pU174pGewWQfUwcC28YaeoS0
+         ojm2assevEPsS0jOUmGvwKcj9ZaBA0D5Sh0C91TIPyCRxdTFSG92hrvHmF/OnlB5k4Xt
+         9IPw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6mZHnCjtT3gVyPXWYuPL3cHp3oGgodMiwk4sszjomnd/Vxx1FYUb7DUBXtswqAAwuXI/o41+6VoafJAqm6EopLzBhmcDx1yfJwQ==
+X-Gm-Message-State: AOJu0YyQCgOkOyAxnzys9DVuN2HJcUBkuD/GRecnu1IPW8eHpWuAHzWG
+	gYuhL1OS+PERrXABwh/QxhwR+LUxO2kqstBY05dhq3Ev6kaWN9s3YrPrZNZC0IbnFnf7oZm9VQw
+	P2toA6LckFJmOGXCIIpyNlnSfhaWhtORefxtCh2vxY+t0fUafqJI6ahd+wQs=
+X-Received: by 2002:ac8:7c98:0:b0:430:ace8:980c with SMTP id y24-20020ac87c98000000b00430ace8980cmr316483qtv.1.1710792246958;
+        Mon, 18 Mar 2024 13:04:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGo9BloGRl/c/yuy7ygQZyZX9tfR07zN6D3r4pfcwUlCUAvWyqq6nKAa5eHOp/ysbaQ7B4Kng==
+X-Received: by 2002:ac8:7c98:0:b0:430:ace8:980c with SMTP id y24-20020ac87c98000000b00430ace8980cmr316449qtv.1.1710792246399;
+        Mon, 18 Mar 2024 13:04:06 -0700 (PDT)
+Received: from x1n.. ([99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id hj10-20020a05622a620a00b0042ebbc1196fsm3484491qtb.87.2024.03.18.13.04.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Mar 2024 13:04:06 -0700 (PDT)
+From: peterx@redhat.com
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	x86@kernel.org,
 	Muchun Song <muchun.song@linux.dev>,
-	"sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>
-Subject: Re: [PATCH 11/13] mm/treewide: Replace pXd_huge() with pXd_leaf()
-Message-ID: <20240318161623.GB5825@nvidia.com>
-References: <20240313214719.253873-1-peterx@redhat.com>
- <20240313214719.253873-12-peterx@redhat.com>
- <0f929f80-92fd-4824-a7d6-839f1aef4c8a@csgroup.eu>
- <ZfL0qh0re5BpYGba@x1n>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZfL0qh0re5BpYGba@x1n>
-X-ClientProxiedBy: SN7PR04CA0169.namprd04.prod.outlook.com
- (2603:10b6:806:125::24) To DM6PR12MB3849.namprd12.prod.outlook.com
- (2603:10b6:5:1c7::26)
+	Mike Rapoport <rppt@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	sparclinux@vger.kernel.org,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-arm-kernel@lists.infradead.org,
+	peterx@redhat.com
+Subject: [PATCH v2 00/14] mm/treewide: Remove pXd_huge() API
+Date: Mon, 18 Mar 2024 16:03:50 -0400
+Message-ID: <20240318200404.448346-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|CH3PR12MB8331:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd2ba8d5-2498-470a-5de1-08dc4766c242
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	5R9VlEMi4F4P2NagsgZhz97fAh/GDS4WvK99aifrcZftVfBgP7iMBcyUS0ERzvatCyS4ZpyHPDXkdD04kwL7nblOyc5ipabejo6JpSODlaoUMeRRQ66VyexP08ZwxXEzJfMyfUb61xeseE88qry9nsoyDq0XwBLMzvppr/wldCPmkj+TeeuqJraR2qQHxM1ErTYvHUPihobdq9GnfAVK6BznG3dbPyzbMnQxerLrB/PaDldtHfavxiN6ZgNa1iFpAQjEb2vw8f7YE64p/EhVmii9uFl6G9fADuf5BYFoHmN1FVk+nPOpcWp4KhaOuzoPN6lanRmEe+2OBn41OJpsYE5TRmqvGx8n+eD6IP6rrQRGvIUkmvMdI5aE7PwXcqs6NyOPW8v5R8Qe85tdVpcTl+LdydHWJpsRBQL+f2H4MGu1uMPoMVFC1vkaEV17cvSFmSyiQiZSASTg5vtCWxI1/K9ihUXXlI8P08OZoTtSTfD4d6EUDqswyXs533Vhm2kTmcR65eYZXN+ADd5b155eAhs/JPZMEM5+ZvokVOAQl2hOUuHHtsdkhCmCPQAEIfpZnzuFwpuaID2NeSaoJs5YDn3WPM025x79eu8ZzF253+DG1KU1AaM2+dH1sJ77QXd9zjyR3yZuMMWoEny4kt5vtTb0FaAFeaWOa5HXn1WBGnA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(7416005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9sK+rlVthDEJlrnSJpDOsTBTV1nHVv6ZxTdUDLVqjaLA1HnRnNB006izuCjN?=
- =?us-ascii?Q?sMyQU6ATSVkt9o5z9KzkC6qApIoCM2ZD0X+1QsgZ1cgAkKRBbywjKgHwkDWe?=
- =?us-ascii?Q?2Cd8DL0s6cW8jWxxThZhWZmQqztTPQ9Hof6M7PSed+S1ZYGSJDV1jksfzVu9?=
- =?us-ascii?Q?3BW78pOQ4wtmjh7baLWjcWvu1acO3PG4NrhPsOyjr+wBC3x7Yntdp0S6j53u?=
- =?us-ascii?Q?eMNfm26K09UF/0Py7VlNjZmSfnD9PRgIiYqEe/QTnr66BIsEWNFFkPiwX/4e?=
- =?us-ascii?Q?kmC0mb86agBJISOkCbYbuXAzsFBi/WZJQGXTK/MWn9ks8REQNG0z77nmYipO?=
- =?us-ascii?Q?QcQCUcxa9ZTJUQPLjfZcgCazPOfuKgdVSFrBmqlIMSLMjNq8qsp4ENhfbxYk?=
- =?us-ascii?Q?K1YcaxRib6zOPGu1kQh6CQJKJVVv018pYEVC/ow6JK1pBCJCEo679lpDnjMH?=
- =?us-ascii?Q?25H6WEx59ltWb/2cE5ymrbSSrNJ/RQbThlLoyBE41f7kzCbmTIktVw1JhdIY?=
- =?us-ascii?Q?0dw+a78J8f/GyxOe1i36CVp9cqDfU5clKEKjCQXaOwZ4NKCW7hWY0vDBwIF7?=
- =?us-ascii?Q?9ZsFMyrS4ehhR6X+YR9Da1wr40gVnWOV7t9b8syaeGnHYNOHRyMyFBdJpOPg?=
- =?us-ascii?Q?3AXzVoJiCCNYL7OTL1cX+/h6vw4cPiv+iGQyxy6YNDBx+XenzIfyJELWh0qY?=
- =?us-ascii?Q?LBxO2jA2lIzCziwTWKVQCQopQsSr7X0v73+aMfBvxM8azxSA5EBSYMT1i388?=
- =?us-ascii?Q?kNuBiTyZBem05836ZBi4zfyMxmp5R5yPbyHqKrTcwYXX3jVKq3eCkPiC76KO?=
- =?us-ascii?Q?KQZGSPyPFXYFhj1aE0v+jozwmrI9Hb9w7S53D09GvggkmJpbHAmPd+jn3j0f?=
- =?us-ascii?Q?Yci8B6dDODYgN+/zgBBqLuLWlVYUCXCnJTVZGTbRvo+RiO1V3DQe3eNsmS6R?=
- =?us-ascii?Q?YGykz7bEg7JlgvYaGdEK1XDwQakPcLQQOdXUYn5tK0buZsm545qXEcUn8Sjq?=
- =?us-ascii?Q?6G14KQsZtruvJdTVptA423d23SJkmN+3hpjLocgLZZhSVAWTnmPw1jL/oWxe?=
- =?us-ascii?Q?nscDEPXj+G07UXL61ulPXWXgub5d95+Tq5mUkh1W9HXmJbvZG9Hatk/9V0x9?=
- =?us-ascii?Q?rafn1uTmOZYEgcUUoajZu/+6K8EwWnhyrFgm3iH+l8w7NAUyw2kTOYztHjv/?=
- =?us-ascii?Q?lNXFVROC/lBqsFEDCFfGk9TnK/+McQ6GSov0/inOR9VgQ2dhgXYMA/+66O+P?=
- =?us-ascii?Q?gDfoEVXZu8FFe7kMgDqhy3NvKVYSrIiOWIvdj5M4srhXCA/LyJlCsj9f/hwx?=
- =?us-ascii?Q?9aQAbOpLzL27DxdeRi5nJdgQq6+oaZFofU4MYI0eKBkH+lIwtiTpOViJ4VbG?=
- =?us-ascii?Q?Y46dwKMfIEL/dqrRLa+Wq5q95ha34fw+wBc29AbU7AoXPgFPk16l6ed7bU8n?=
- =?us-ascii?Q?HbirpVdmULI4fLb8k1O5RRwi8iZZW5cwyxHd9h46LRu6FYP8imiwaSnihKvb?=
- =?us-ascii?Q?ibb49k21Wvr8gpnQVHbX8zpnAeI17NzDsdk/GC1X/GrYxQa+wZsu5rnx8Tsw?=
- =?us-ascii?Q?fcASbXQOx7ottXT+zVE=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd2ba8d5-2498-470a-5de1-08dc4766c242
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2024 16:16:25.3057
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2L4gyrK+ZKTmJPnB51EriTxZnleDFjlf/kcepXfjxBaiyEpQzV7czB9M7BBT2B0P
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8331
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 14, 2024 at 08:59:22AM -0400, Peter Xu wrote:
+From: Peter Xu <peterx@redhat.com>
 
-> > > --- a/mm/hmm.c
-> > > +++ b/mm/hmm.c
-> > > @@ -429,7 +429,7 @@ static int hmm_vma_walk_pud(pud_t *pudp, unsigned long start, unsigned long end,
-> > >   		return hmm_vma_walk_hole(start, end, -1, walk);
-> > >   	}
-> > >   
-> > > -	if (pud_huge(pud) && pud_devmap(pud)) {
-> > > +	if (pud_leaf(pud) && pud_devmap(pud)) {
-> > 
-> > Didn't previous patch say devmap implies leaf ? Or is it only for GUP ?
-> 
-> This is an extra safety check that I didn't remove.  Devmap used separate
-> bits even though I'm not clear on why.  It should still imply a leaf though.
+[based on akpm/mm-unstable commit b66d4391d8fe, March 18th]
 
-Yes, something is very wrong if devmap is true on non-leaf..
+v2:
+- Add a patch to cleanup ARM's pmd_thp_or_huge [Christophe]
+- Enhance commit message for PowerPC patch on hugepd [Christophe]
 
-Jason
+v1: https://lore.kernel.org/r/20240313214719.253873-1-peterx@redhat.com
+
+In previous work [1], we removed the pXd_large() API, which is arch
+specific.  This patchset further removes the hugetlb pXd_huge() API.
+
+Hugetlb was never special on creating huge mappings when compared with
+other huge mappings.  Having a standalone API just to detect such pgtable
+entries is more or less redundant, especially after the pXd_leaf() API set
+is introduced with/without CONFIG_HUGETLB_PAGE.
+
+When looking at this problem, a few issues are also exposed that we don't
+have a clear definition of the *_huge() variance API.  This patchset
+started by cleaning these issues first, then replace all *_huge() users to
+use *_leaf(), then drop all *_huge() code.
+
+On x86/sparc, swap entries will be reported "true" in pXd_huge(), while for
+all the rest archs they're reported "false" instead.  This part is done in
+patch 1-5, in which I suspect patch 1 can be seen as a bug fix, but I'll
+leave that to hmm experts to decide.
+
+Besides, there are three archs (arm, arm64, powerpc) that have slightly
+different definitions between the *_huge() v.s. *_leaf() variances.  I
+tackled them separately so that it'll be easier for arch experts to chim in
+when necessary.  This part is done in patch 6-9.
+
+The final patches 10-14 do the rest on the final removal, since *_leaf()
+will be the ultimate API in the future, and we seem to have quite some
+confusions on how *_huge() APIs can be defined, provide a rich comment for
+*_leaf() API set to define them properly to avoid future misuse, and
+hopefully that'll also help new archs to start support huge mappings and
+avoid traps (like either swap entries, or PROT_NONE entry checks).
+
+The whole series is lightly tested on x86 and arm64.
+
+[1] https://lore.kernel.org/r/20240305043750.93762-1-peterx@redhat.com
+
+Peter Xu (14):
+  mm/hmm: Process pud swap entry without pud_huge()
+  mm/gup: Cache p4d in follow_p4d_mask()
+  mm/gup: Check p4d presence before going on
+  mm/x86: Change pXd_huge() behavior to exclude swap entries
+  mm/sparc: Change pXd_huge() behavior to exclude swap entries
+  mm/arm: Use macros to define pmd/pud helpers
+  mm/arm: Redefine pmd_huge() with pmd_leaf()
+  mm/arm64: Merge pXd_huge() and pXd_leaf() definitions
+  mm/powerpc: Redefine pXd_huge() with pXd_leaf()
+  mm/gup: Merge pXd huge mapping checks
+  mm/treewide: Replace pXd_huge() with pXd_leaf()
+  mm/treewide: Remove pXd_huge()
+  mm/arm: Remove pmd_thp_or_huge()
+  mm: Document pXd_leaf() API
+
+ arch/arm/include/asm/pgtable-2level.h         |  5 ++-
+ arch/arm/include/asm/pgtable-3level-hwdef.h   |  1 +
+ arch/arm/include/asm/pgtable-3level.h         |  5 ++-
+ arch/arm/lib/uaccess_with_memcpy.c            |  4 +--
+ arch/arm/mm/Makefile                          |  1 -
+ arch/arm/mm/hugetlbpage.c                     | 34 -------------------
+ arch/arm64/include/asm/pgtable.h              |  6 ++--
+ arch/arm64/mm/hugetlbpage.c                   | 18 ++--------
+ arch/loongarch/mm/hugetlbpage.c               | 12 +------
+ arch/mips/include/asm/pgtable-32.h            |  2 +-
+ arch/mips/include/asm/pgtable-64.h            |  2 +-
+ arch/mips/mm/hugetlbpage.c                    | 10 ------
+ arch/mips/mm/tlb-r4k.c                        |  2 +-
+ arch/parisc/mm/hugetlbpage.c                  | 11 ------
+ .../include/asm/book3s/64/pgtable-4k.h        | 20 -----------
+ .../include/asm/book3s/64/pgtable-64k.h       | 25 --------------
+ arch/powerpc/include/asm/book3s/64/pgtable.h  | 27 +++++++--------
+ arch/powerpc/include/asm/nohash/pgtable.h     | 10 ------
+ arch/powerpc/mm/pgtable_64.c                  |  6 ++--
+ arch/riscv/mm/hugetlbpage.c                   | 10 ------
+ arch/s390/mm/hugetlbpage.c                    | 10 ------
+ arch/sh/mm/hugetlbpage.c                      | 10 ------
+ arch/sparc/mm/hugetlbpage.c                   | 12 -------
+ arch/x86/mm/hugetlbpage.c                     | 26 --------------
+ arch/x86/mm/pgtable.c                         |  4 +--
+ include/linux/hugetlb.h                       | 24 -------------
+ include/linux/pgtable.h                       | 24 ++++++++++---
+ mm/gup.c                                      | 24 ++++++-------
+ mm/hmm.c                                      |  9 ++---
+ mm/memory.c                                   |  2 +-
+ 30 files changed, 68 insertions(+), 288 deletions(-)
+ delete mode 100644 arch/arm/mm/hugetlbpage.c
+
+-- 
+2.44.0
+
 
