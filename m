@@ -1,78 +1,78 @@
-Return-Path: <sparclinux+bounces-688-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-690-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C87D87F0CB
-	for <lists+sparclinux@lfdr.de>; Mon, 18 Mar 2024 21:04:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C03E87F0CF
+	for <lists+sparclinux@lfdr.de>; Mon, 18 Mar 2024 21:05:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B136E1F23FC6
-	for <lists+sparclinux@lfdr.de>; Mon, 18 Mar 2024 20:04:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A9FD1C21E27
+	for <lists+sparclinux@lfdr.de>; Mon, 18 Mar 2024 20:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEC358239;
-	Mon, 18 Mar 2024 20:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E8959B71;
+	Mon, 18 Mar 2024 20:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O6YS+vCA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W0mfFgrA"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F0C57892
-	for <sparclinux@vger.kernel.org>; Mon, 18 Mar 2024 20:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4966559B45
+	for <sparclinux@vger.kernel.org>; Mon, 18 Mar 2024 20:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710792255; cv=none; b=qWDODkLIz1xYsbjuF+vMQbMIKaFlcLcKHVmP6Z7xonTsU5OXQJ6DkNlumHDui7r6PeUwAqstnSYo1M3CWaL79M2p6GtUjn8buOUB3ldutwrZAlQ2Da0pIdlnJ7LYll1/MvO92CTcGC3YXAl6SfrpM9JDnIGTm4CIpfCKG6TXF5I=
+	t=1710792259; cv=none; b=iKMManAnQMnAdyPUGuFqWnH6jAB2nyJ+UjR/mYrgM5cEM0A4mSH3L7uFgz7u2orxkw0EFuSIB2t2+x5l8iqedpp4ijWrDN7PfkBYfvK9QQAkLFH3pFESyqXOWueBQo0CuQoi4UMpzQNP5T+qLX4Ljs6KIhme49aKIhbl6B0w52c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710792255; c=relaxed/simple;
-	bh=XKAmzhpmXEAjAsa42PYgBQQ2HzrzYrw3Lh5/ehBy8nY=;
+	s=arc-20240116; t=1710792259; c=relaxed/simple;
+	bh=xsXv+igcIa2LD7vY6Lm1s+FcdmOPBabwjo2Ma8p3Wuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2FMpmC2HXgbFfWfIJxhYfxlgmvpUB4lXI605jZJz7wYlPn+tAPHAc0yUBnrgvDvAPZEB7ydKj6TThBVJUrug/unWthkOFYlO38SbrN39N2NR9M+C+Bv+mz3d7LiV+9lecaPnUwMGaVv0xrk3uDnSbDPNSHhnXDcispZdiQeK+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O6YS+vCA; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=aswT2bTNJ+w4H11xCOekzGvKu2wcV+IF6Gr1g+FsijB08coKTxI1LADLWx6cbmZ8tKJN8WCFsJI201/+2ompB1iMw5RRKa5odfF0tR3Akf/3/jHemVI+t28scGy5zB1LUrBYV0ROh+u4XkQ7c1N1pDOcam5qsfnCAIpRYbPSpJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W0mfFgrA; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710792252;
+	s=mimecast20190719; t=1710792256;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OThRyXZFMjugEtcpgf//pX/PpGcoxbD3wNFnQts0Kco=;
-	b=O6YS+vCAwaEx3DbX7jUjOyUpYA5qU8uq6C2t9jQ4hk/DF4zvQPx8x458zFfgxxYK7h2/c0
-	UpQaWYxzcSi7nX5URdqZ/dZ2PI4D1IZfhUTbysr4qCkH5aPH9JrzepZs5F4gqjTpc2iTQc
-	C8wF57vQnkyOvkPYqrAwKEWoUF5wuUA=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=vtZJyICZEGrBJHpYWSu5beimQ7UmPGzVa4S5UCB/Dcs=;
+	b=W0mfFgrAAF0QEJSOfcIdppmnlAqK4FRZymZyXAsNTET52OE0pLJiKs1I209fUq0NFGxzaA
+	aGO1/XENKw0MK6Isp1yvRyUfJSq70rAEejAvVtdAuKUue/xi9vK9LGEdNj0432Nw7sguVS
+	OaM/SKdCMV9JL0QZuWcbLHupBaeM8Nw=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-283-o6QrPGEROv-OEEQc8BJATg-1; Mon, 18 Mar 2024 16:04:11 -0400
-X-MC-Unique: o6QrPGEROv-OEEQc8BJATg-1
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-430b4572a97so17522651cf.1
-        for <sparclinux@vger.kernel.org>; Mon, 18 Mar 2024 13:04:11 -0700 (PDT)
+ us-mta-246-RSElcEDjO_OWdLmANG6yQA-1; Mon, 18 Mar 2024 16:04:12 -0400
+X-MC-Unique: RSElcEDjO_OWdLmANG6yQA-1
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-430b4572a97so17522921cf.1
+        for <sparclinux@vger.kernel.org>; Mon, 18 Mar 2024 13:04:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710792251; x=1711397051;
+        d=1e100.net; s=20230601; t=1710792252; x=1711397052;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OThRyXZFMjugEtcpgf//pX/PpGcoxbD3wNFnQts0Kco=;
-        b=Z/UPCyNvXHLQE6zWWOLhbVAlukoW2OZKgc3ep8/o/Oap+WYXSA20eq7v77snuoFBF2
-         pEOpeFnYFune/hThws18j6N68Iec/oKBAN4fgGnuhPV5N85dL6thLpWZjaORzkY8xPko
-         bBbqtelmaagGDwHba1PYxt4wCeB0GJP3710zNw5XeFsn/2fPpfSyXrUqwwh9HCOv2TJl
-         FIe8Bp1YMuVqwH6nyjVMZuT7HDlEAf80DCWYkd1UGrLqd6HYFP/3czRcrzS9fLQIZBzI
-         ZGIl9/kFYADntDXp+KoM5msfeNczBNSdUF80hdUZE7oqJnCImMB1AS3FzSeN/GP8dT9D
-         KwiA==
-X-Forwarded-Encrypted: i=1; AJvYcCXrLAHAJSgGeUTpiCWIL8rWWQvnZQ7bZQO46VXS2J4bzm70VGQd2YLpIiXDV8XIfReNIxa89GuBLOsik7jUAq97EziiQQx6vEwolw==
-X-Gm-Message-State: AOJu0Yw018aWSgK9UJR6JqWrKePVtysbGklYTvDiZzKQ0wJ3INVV3oMQ
-	jGDAiXKcFDal1gCJqNS+bMqyPZyUTI577IL3EoCO/vlYnvav40gMFyerSTCe5j8RhG6e6twcFZM
-	vFSq39TxJfTS1HNmt9V0njW1ZERAXnpAxY+bUBzCZSP7b1F/o5oy9X4rqZb0=
-X-Received: by 2002:a05:622a:100b:b0:430:ace8:9801 with SMTP id d11-20020a05622a100b00b00430ace89801mr13041017qte.1.1710792250879;
-        Mon, 18 Mar 2024 13:04:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE3lB75/Xyi/Yr3FGp4iv8P5rE4DSC0aUJAJLEw6DejnKFtl7A4ZV0qXSchssNp4WRDw4IDoQ==
-X-Received: by 2002:a05:622a:100b:b0:430:ace8:9801 with SMTP id d11-20020a05622a100b00b00430ace89801mr13040968qte.1.1710792250407;
-        Mon, 18 Mar 2024 13:04:10 -0700 (PDT)
+        bh=vtZJyICZEGrBJHpYWSu5beimQ7UmPGzVa4S5UCB/Dcs=;
+        b=IVzpSbvwOcHeFlg8J5tpENT8DJ0VJQ4nJlVFY/MlWdAASxLwIh+ssh2AREF809O3gB
+         jYTDghO6aFdUffaRCp1GRb9g60Tgt6c7AKKYe3erbpWmW2aVoh/vIw1PN9M1KgJu1RuV
+         me/HAcQ8b0890hd8G+49Dy8p4MfR9XXh+Yg7UpbXT16B/1Kzl7j5A3dBqKFI6U7okWIy
+         ICYOH0IK8Bc+lqTT0BX9y/rr6LrYqoe67ca7qZYTOWchpeL12tlJD0xyrfuP6zeKPTIz
+         +2hJp80CuP07v+BIsZXkkFt5TuRETl2796vHxZ7yj0lguMKi0yBAQZxmnWWz0u1v+Em2
+         vtxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqYr+pqeqlKeXUBHKhw2rouYAxwVUM5PkvL+SsKODv7/msUCkeH3S1E10eiTlY4cWP9Xncu7s6Eh9n7zu6Rf5xdmzne+yl3u/hRw==
+X-Gm-Message-State: AOJu0YzpB+U2BrxwQ8niQp/AdocNWin3uSoHvfj3gwCiFUlkh50DTMOq
+	qRIFdDW1aqELI8jvxd7L24Y+G4Xt9x2uUcYAfmXfWGKLafoGO5V4kz83Axt+f4zQInpwAwEp80c
+	bfQ1eIInWsiq0GKJsW7MBH7lcTnHE4dT6Pmuun58RtJPdnJq3Kl2hiaskwT8=
+X-Received: by 2002:a05:622a:134e:b0:430:c82f:b9ab with SMTP id w14-20020a05622a134e00b00430c82fb9abmr6625397qtk.0.1710792252297;
+        Mon, 18 Mar 2024 13:04:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFopBSFWwBK3v15ombZ7ZQDo2UFCgzW4nradhEvm8gSdWhrm9dq3oWG6x2VBEnxvd6M1ShIXA==
+X-Received: by 2002:a05:622a:134e:b0:430:c82f:b9ab with SMTP id w14-20020a05622a134e00b00430c82fb9abmr6625362qtk.0.1710792251793;
+        Mon, 18 Mar 2024 13:04:11 -0700 (PDT)
 Received: from x1n.. ([99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id hj10-20020a05622a620a00b0042ebbc1196fsm3484491qtb.87.2024.03.18.13.04.09
+        by smtp.gmail.com with ESMTPSA id hj10-20020a05622a620a00b0042ebbc1196fsm3484491qtb.87.2024.03.18.13.04.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Mar 2024 13:04:09 -0700 (PDT)
+        Mon, 18 Mar 2024 13:04:11 -0700 (PDT)
 From: peterx@redhat.com
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
@@ -86,10 +86,15 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-arm-kernel@lists.infradead.org,
-	peterx@redhat.com
-Subject: [PATCH v2 03/14] mm/gup: Check p4d presence before going on
-Date: Mon, 18 Mar 2024 16:03:53 -0400
-Message-ID: <20240318200404.448346-4-peterx@redhat.com>
+	peterx@redhat.com,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH v2 04/14] mm/x86: Change pXd_huge() behavior to exclude swap entries
+Date: Mon, 18 Mar 2024 16:03:54 -0400
+Message-ID: <20240318200404.448346-5-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240318200404.448346-1-peterx@redhat.com>
 References: <20240318200404.448346-1-peterx@redhat.com>
@@ -99,42 +104,108 @@ List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Peter Xu <peterx@redhat.com>
 
-Currently there should have no p4d swap entries so it may not matter much,
-however this may help us to rule out swap entries in pXd_huge() API, which
-will include p4d_huge().  The p4d_present() checks make it 100% clear that
-we won't rely on p4d_huge() for swap entries.
+This patch partly reverts below commits:
 
+3a194f3f8ad0 ("mm/hugetlb: make pud_huge() and follow_huge_pud() aware of non-present pud entry")
+cbef8478bee5 ("mm/hugetlb: pmd_huge() returns true for non-present hugepage")
+
+Right now, pXd_huge() definition across kernel is unclear. We have two
+groups that think differently on swap entries:
+
+  - x86/sparc:     Allow pXd_huge() to accept swap entries
+  - all the rest:  Doesn't allow pXd_huge() to accept swap entries
+
+This is so confusing.  Since the sparc helpers seem to be added in 2016,
+which is after x86's (2015), so sparc could have followed a trend.  x86
+proposed such swap handling in 2015 to resolve hugetlb swap entries hit in
+GUP, but now GUP guards swap entries with !pXd_present() in all layers so
+we should be safe.
+
+We should define this API properly, one way or another, rather than keep
+them defined differently across archs.
+
+Gut feeling tells me that pXd_huge() shouldn't include swap entries, and it
+turns out that I am not the only one thinking so, the question was raised
+when the current pmd_huge() for x86 was proposed by Ville Syrjälä:
+
+https://lore.kernel.org/all/Y2WQ7I4LXh8iUIRd@intel.com/
+
+  I might also be missing something obvious, but why is it even necessary
+  to treat PRESENT==0+PSE==0 as a huge entry?
+
+It is also questioned when Jason Gunthorpe reviewed the other patchset on
+swap entry handlings:
+
+https://lore.kernel.org/all/20240221125753.GQ13330@nvidia.com/
+
+Revert its meaning back to original.  It shouldn't have any functional
+change as we should be ready with guards on !pXd_present() explicitly
+everywhere.
+
+Note that I also dropped the "#if CONFIG_PGTABLE_LEVELS > 2", it was there
+probably because it was breaking things when 3a194f3f8ad0 was proposed,
+according to the report here:
+
+https://lore.kernel.org/all/Y2LYXItKQyaJTv8j@intel.com/
+
+Now we shouldn't need that.
+
+Instead of reverting to _PAGE_PSE raw check, leverage pXd_leaf().
+
+Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- mm/gup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/mm/hugetlbpage.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 69a777f4fc5c..802987281b2f 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -776,7 +776,7 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
+diff --git a/arch/x86/mm/hugetlbpage.c b/arch/x86/mm/hugetlbpage.c
+index 5804bbae4f01..8362953a24ce 100644
+--- a/arch/x86/mm/hugetlbpage.c
++++ b/arch/x86/mm/hugetlbpage.c
+@@ -20,29 +20,19 @@
+ #include <asm/elf.h>
  
- 	p4dp = p4d_offset(pgdp, address);
- 	p4d = READ_ONCE(*p4dp);
--	if (p4d_none(p4d))
-+	if (!p4d_present(p4d))
- 		return no_page_table(vma, flags);
- 	BUILD_BUG_ON(p4d_huge(p4d));
- 	if (unlikely(p4d_bad(p4d)))
-@@ -3069,7 +3069,7 @@ static int gup_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr, unsigned lo
- 		p4d_t p4d = READ_ONCE(*p4dp);
+ /*
+- * pmd_huge() returns 1 if @pmd is hugetlb related entry, that is normal
+- * hugetlb entry or non-present (migration or hwpoisoned) hugetlb entry.
+- * Otherwise, returns 0.
++ * pmd_huge() returns 1 if @pmd is hugetlb related entry.
+  */
+ int pmd_huge(pmd_t pmd)
+ {
+-	return !pmd_none(pmd) &&
+-		(pmd_val(pmd) & (_PAGE_PRESENT|_PAGE_PSE)) != _PAGE_PRESENT;
++	return pmd_leaf(pmd);
+ }
  
- 		next = p4d_addr_end(addr, end);
--		if (p4d_none(p4d))
-+		if (!p4d_present(p4d))
- 			return 0;
- 		BUILD_BUG_ON(p4d_huge(p4d));
- 		if (unlikely(is_hugepd(__hugepd(p4d_val(p4d))))) {
+ /*
+- * pud_huge() returns 1 if @pud is hugetlb related entry, that is normal
+- * hugetlb entry or non-present (migration or hwpoisoned) hugetlb entry.
+- * Otherwise, returns 0.
++ * pud_huge() returns 1 if @pud is hugetlb related entry.
+  */
+ int pud_huge(pud_t pud)
+ {
+-#if CONFIG_PGTABLE_LEVELS > 2
+-	return !pud_none(pud) &&
+-		(pud_val(pud) & (_PAGE_PRESENT|_PAGE_PSE)) != _PAGE_PRESENT;
+-#else
+-	return 0;
+-#endif
++	return pud_leaf(pud);
+ }
+ 
+ #ifdef CONFIG_HUGETLB_PAGE
 -- 
 2.44.0
 
