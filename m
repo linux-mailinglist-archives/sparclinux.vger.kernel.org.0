@@ -1,160 +1,122 @@
-Return-Path: <sparclinux+bounces-833-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-834-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE2589340D
-	for <lists+sparclinux@lfdr.de>; Sun, 31 Mar 2024 18:55:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C2C893D7D
+	for <lists+sparclinux@lfdr.de>; Mon,  1 Apr 2024 17:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 715381C2339B
-	for <lists+sparclinux@lfdr.de>; Sun, 31 Mar 2024 16:55:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D36628147A
+	for <lists+sparclinux@lfdr.de>; Mon,  1 Apr 2024 15:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E595158870;
-	Sun, 31 Mar 2024 16:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CE347F6F;
+	Mon,  1 Apr 2024 15:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BIKPjrCm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTHTSXmY"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75D7158866;
-	Sun, 31 Mar 2024 16:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=62.96.220.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711903244; cv=fail; b=A4WiLqBkcAWOxpS1ltONPrI1Bp6bnLm6656YTB2QqPLea0wV2csBpTAuGtNs4VNogZ1C7s2EPz2QMLSyYx6MkRtLriyzzcjs4lnzLwWK9UoPvNzIGkW9uG867yRkaTOsDyC3Y89wTu7CxkP2oFAEa3TIX822Ditcrw8uRjBQPNA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711903244; c=relaxed/simple;
-	bh=wYvH7eXjBQHsNCEU8GOf3BJzoOWEU2ZpO9NJyFvqUT4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:Cc; b=Vi+kpyVzDFfulK/EPRDE4meYw5b/KuZ6rwBupP0kbFqTUww90JgHaqndkROoZE77eFFqF/PR8DdUUyJa9Cunq9cND/275qAqZvttUEfD3CWPPZYvHKDxJxdoG8Rn5futJtubcWpC8naWdtcPJOtsTKOmHLVVWxJKEfxeoxTsUR0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; dkim=fail (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BIKPjrCm reason="signature verification failed"; arc=none smtp.client-ip=10.30.226.201; arc=fail smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 9B05F208C8;
-	Sun, 31 Mar 2024 18:40:41 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from a.mx.secunet.com ([127.0.0.1])
-	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id mdg8a3f3sTrw; Sun, 31 Mar 2024 18:40:41 +0200 (CEST)
-Received: from mailout2.secunet.com (mailout2.secunet.com [62.96.220.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id 0A2FA208C4;
-	Sun, 31 Mar 2024 18:40:30 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 0A2FA208C4
-Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
-	by mailout2.secunet.com (Postfix) with ESMTP id F0A3080005E;
-	Sun, 31 Mar 2024 18:40:29 +0200 (CEST)
-Received: from mbx-essen-01.secunet.de (10.53.40.197) by
- cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 31 Mar 2024 18:40:29 +0200
-Received: from Pickup by mbx-essen-01.secunet.de with Microsoft SMTP Server id
- 15.1.2507.17; Sun, 31 Mar 2024 16:37:03 +0000
-X-sender: <linux-kernel+bounces-125654-steffen.klassert=secunet.com@vger.kernel.org>
-X-Receiver: <steffen.klassert@secunet.com> ORCPT=rfc822;steffen.klassert@secunet.com
-X-CreatedBy: MSExchange15
-X-HeloDomain: mbx-dresden-01.secunet.de
-X-ExtendedProps: BQBjAAoAroimlidQ3AgFADcAAgAADwA8AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5NYWlsUmVjaXBpZW50Lk9yZ2FuaXphdGlvblNjb3BlEQAAAAAAAAAAAAAAAAAAAAAADwA/AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5EaXJlY3RvcnlEYXRhLk1haWxEZWxpdmVyeVByaW9yaXR5DwADAAAATG93
-X-Source: SMTP:Default MBX-ESSEN-02
-X-SourceIPAddress: 10.53.40.199
-X-EndOfInjectedXHeaders: 8711
-X-Virus-Scanned: by secunet
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=147.75.80.249; helo=am.mirrors.kernel.org; envelope-from=linux-kernel+bounces-125654-steffen.klassert=secunet.com@vger.kernel.org; receiver=steffen.klassert@secunet.com 
-DKIM-Filter: OpenDKIM Filter v2.11.0 b.mx.secunet.com 2B36D20315
-Authentication-Results: b.mx.secunet.com;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BIKPjrCm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C2047768;
+	Mon,  1 Apr 2024 15:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal: i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711792677; cv=none; b=JaaBhaOp7veI9BZzPZd6OWUk4p4+zz/wflDXIYYOmx8B+JtFXUuGFTIb/GCba1RpVQ9SuRge8tICYp3X99oZoENVEme3sevVie274SfPcF0sUY3QIJ8UaTf1SjM9EqPSjchSsRxfV9lP+yjzyfEb78J48u4YIih8p2qTelUROp8=
-ARC-Message-Signature: i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711792677; c=relaxed/simple;
-	bh=2Q6VY0DGMACrjNS3qT1yPJApGJKAhjr7VSLFZ///1Y8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QIWhVhAbazdKochdO0wPupxKNgs2V13Tf+i7h6jiPVhAm8VgObHrNRI5mqJwWrV6zlF2xy+sl5OxKGXEBBAQ4qcOPojIyNGNFeinR11xNjiLGwZwJ4f1EpFWWIG0hrG+oCi0zrXUg2IJaY/RHFAjxP4mt8xcXMc+++CUTXGRBDA=
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BIKPjrCm; arc=none smtp.client-ip=10.30.226.201
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711792677;
-	bh=2Q6VY0DGMACrjNS3qT1yPJApGJKAhjr7VSLFZ///1Y8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=BIKPjrCmuop+w7k+pVQ/5GQFzv/kREJ+oNMmkgs00gVX+LKr1itZO/AQn8KxMd/02
-	 LbY8k7BsgHrYZSdGsq6OmDswW0zTlFVm0wpq1HfYDqSRLm4VvHsle6oUuBkj0Q290l
-	 7GlyVG4MGAmPPhJQLR62zGs2dRxiUd1ovBphkjrFEzbmZbTaKbw7bnT3skeaIf8pzG
-	 g/GbJCjFeGqA3oEyixr+X7xiEJwEMaDj19wcaxq3cR6aknv8pbmeJsc0hQFkHzBNmC
-	 Z24U7Ouq3TgBabu+kd1eF5f7q/+L4kcdXpmBOxqFcgegX/tZSDW7FCaMx+ZAu0fZh6
-	 hX3PI6ZheN7qg==
-From: Sam Ravnborg via B4 Relay <devnull+sam.ravnborg.org@kernel.org>
-Date: Sat, 30 Mar 2024 10:57:39 +0100
-Subject: [PATCH 03/10] sparc64: Fix prototype warning for vmemmap_free
-Precedence: bulk
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711986730; cv=none; b=U/PsKiT3AMfpecyU3JcFaaSkX089DhP0rVwlnARFFryJzgYLd9YXb5sGAHGReOzIcADehl27xn7TQwmX8dxglt6A4i4g2mmb8LL48QOGucEFD+f9bTDKhSbp5jldq3vLszVcUysG1UHLrLFjQmTmXNj62liU87eoAxs4WcdrQWY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711986730; c=relaxed/simple;
+	bh=kcYpRHBkrw31yKDWEgNbPfZ32JYvHWwjx3vpz1/bb54=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sCg/c7KtgxUSnQ4+6rWRuGg1LJMcQfI4zELzpCYbaz2UbohRdDqjr03Bf09uEo0ge38nyFSdZUp59u+Fx6fOLyAHAGeKBQvPkfkltej1RwHMuA1btkYvLevHV5ZQadjt9d6rJ24hyUO9L2l4B/XbTPf7/oXuFBk9+Fcv57kweLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTHTSXmY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013DBC433F1;
+	Mon,  1 Apr 2024 15:52:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711986729;
+	bh=kcYpRHBkrw31yKDWEgNbPfZ32JYvHWwjx3vpz1/bb54=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UTHTSXmYFaGiTZnoLDh2oKtnTnU/4CV/dFmHEZCLg1o4MF2ujtHFjTj5GBZvHITt6
+	 V/naKy0IxZ7ldnfq6xE4xuo/ahpYeOasq/wFPfijySqN4XlpL9e42tnWI2IlNl4Hwi
+	 QqzuDT6ZxNbimyx0O9dle9Ki6lJKlWjGo46TsFRs=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Igor Zhbanov <izh1979@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	sparclinux@vger.kernel.org,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 036/399] sparc64: NMI watchdog: fix return value of __setup handler
+Date: Mon,  1 Apr 2024 17:40:02 +0200
+Message-ID: <20240401152550.242999480@linuxfoundation.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Message-ID: <20240330-sparc64-warnings-v1-3-37201023ee2f@ravnborg.org>
-References: <20240330-sparc64-warnings-v1-0-37201023ee2f@ravnborg.org>
-In-Reply-To: <20240330-sparc64-warnings-v1-0-37201023ee2f@ravnborg.org>
-To: Andreas Larsson <andreas@gaisler.com>, 
- "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Cc: Nick Bowler <nbowler@draconx.ca>, linux-kernel@vger.kernel.org, 
- Arnd Bergmann <arnd@arndb.de>, Sam Ravnborg <sam@ravnborg.org>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711792675; l=1023;
- i=sam@ravnborg.org; s=20230107; h=from:subject:message-id;
- bh=+iIEu1z65nIiaVFud5jDAU2EF2qjq+E//QvstvA1vGg=;
- b=5VSMXsJDe14dfB5oOTmmYLuyPXBP0AEI7kkhlo+yFPQJH9hBDtSPFVLukEaLXfZBrY9t+daDfF0L
- L8uXsXFQCPOI5uioh9DGaOBI8cOkimdx9zSDJ9alHiqMpCCrM+VV
-X-Developer-Key: i=sam@ravnborg.org; a=ed25519;
- pk=R0+pqV7BRYOAeOIGkyOrSNke7arx5y3LkEuNi37YEyU=
-X-Endpoint-Received: by B4 Relay for sam@ravnborg.org/20230107 with
- auth_id=22
-X-Original-From: Sam Ravnborg <sam@ravnborg.org>
-Reply-To: sam@ravnborg.org
-X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
+Content-Transfer-Encoding: 8bit
 
-From: Sam Ravnborg <sam@ravnborg.org>
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
-Fix the following warning:
-arch/sparc/mm/init_64.c:2644:6: warning: no previous prototype for =E2=80=
-=98vmemmap_free=E2=80=99
+------------------
 
-The function vmemmap_free() is only used for systems with
-CONFIG_MEMORY_HOTPLUG defined - and sparc64 do not support this.
-Drop the empty function as it has no users.
+From: Randy Dunlap <rdunlap@infradead.org>
 
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andreas Larsson <andreas@gaisler.com>
+[ Upstream commit 3ed7c61e49d65dacb96db798c0ab6fcd55a1f20f ]
+
+__setup() handlers should return 1 to obsolete_checksetup() in
+init/main.c to indicate that the boot option has been handled.
+A return of 0 causes the boot option/value to be listed as an Unknown
+kernel parameter and added to init's (limited) argument or environment
+strings. Also, error return codes don't mean anything to
+obsolete_checksetup() -- only non-zero (usually 1) or zero.
+So return 1 from setup_nmi_watchdog().
+
+Fixes: e5553a6d0442 ("sparc64: Implement NMI watchdog on capable cpus.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Igor Zhbanov <izh1979@gmail.com>
+Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
 Cc: "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20240211052802.22612-1-rdunlap@infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/mm/init_64.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/sparc/kernel/nmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index f83017992eaa..5444b515815a 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -2640,11 +2640,6 @@ int __meminit vmemmap_populate(unsigned long vstart,=
- unsigned long vend,
-=20
- 	return 0;
+diff --git a/arch/sparc/kernel/nmi.c b/arch/sparc/kernel/nmi.c
+index 17cdfdbf1f3b7..149adc0947530 100644
+--- a/arch/sparc/kernel/nmi.c
++++ b/arch/sparc/kernel/nmi.c
+@@ -279,7 +279,7 @@ static int __init setup_nmi_watchdog(char *str)
+ 	if (!strncmp(str, "panic", 5))
+ 		panic_on_timeout = 1;
+ 
+-	return 0;
++	return 1;
  }
--
--void vmemmap_free(unsigned long start, unsigned long end,
--		struct vmem_altmap *altmap)
--{
--}
- #endif /* CONFIG_SPARSEMEM_VMEMMAP */
-=20
- /* These are actually filled in at boot time by sun4{u,v}_pgprot_init() */
-
---=20
-2.34.1
+ __setup("nmi_watchdog=", setup_nmi_watchdog);
+ 
+-- 
+2.43.0
 
 
 
