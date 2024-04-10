@@ -1,31 +1,31 @@
-Return-Path: <sparclinux+bounces-871-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-873-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2F089F84F
-	for <lists+sparclinux@lfdr.de>; Wed, 10 Apr 2024 15:40:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA80E89F82A
+	for <lists+sparclinux@lfdr.de>; Wed, 10 Apr 2024 15:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0ED61B2C786
-	for <lists+sparclinux@lfdr.de>; Wed, 10 Apr 2024 13:35:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 119D31C23201
+	for <lists+sparclinux@lfdr.de>; Wed, 10 Apr 2024 13:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F3815DBC4;
-	Wed, 10 Apr 2024 13:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8040913D607;
+	Wed, 10 Apr 2024 13:35:23 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6931B13D607
-	for <sparclinux@vger.kernel.org>; Wed, 10 Apr 2024 13:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0443B15E5B1
+	for <sparclinux@vger.kernel.org>; Wed, 10 Apr 2024 13:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712756119; cv=none; b=GDBLrzBOpsh36824RTmqC4UyTCw9UKVQxNVHi/HhMMbHTFNNfpnvoVe3wNIq5HtF06WBfCHgv12a2jg7wZSKRv6mqdTIfoeQtOhs+8jTqUJKZRf9CBXNLfBdmUWPwOIQcLgqjaRX1T4LxuHnM/7FWYGnmeMIcxa6ij5m1i6LDwI=
+	t=1712756123; cv=none; b=VBpgneS1yTK8QfFGei8dRpX8/S2ciDRxbaqTDmwV4y8ZYEO+nVpEe2fjcIT5Ujo24Zs7R3jPnxoEhWXwfDGOOoCISdowrBj+Ahwvp3GJDVNa/AD0EtSxpYmlYWJH8hE7vxkzbvFB29Yn59eOu3URg0RhHEKGRnU4I8j9rGp72FE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712756119; c=relaxed/simple;
-	bh=9/aI6C1S1aJSIOesjnJTAKtzPhucx8Qmarc0aWUhi9E=;
+	s=arc-20240116; t=1712756123; c=relaxed/simple;
+	bh=+3NCIwNoU3FZjXcssF0F4YqxUiatzW3IS6tXHFNtK+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qCrvgtj4M8skoKU4L5x1mBK0vgQEiH+pNSYkTem+gl768P2xZcXlFIt9zgcw7YoJXEPMeVwobnCGGpTrMtiR7TOO1XSfzBrcMJPuqArCTkzhytCDl14Uga2W9Uqblg+RnjMmLyfvtMoClrK9zYgwRgfxPCbn8ozIMmn/nPW9OFQ=
+	 MIME-Version:Content-Type; b=hKybDsHXASei/K4w3bM12NWPGhuJjYZ8ETKH6d1hAT+DFHjFw66qEMcg8/mcmpj8CXN5fBcUvNtgWDvtpHJgqLsRsRxSBBq4DlijV30j8hLF+dYh0rCgdyPPZ4VfW1AAS1G0ZtAE/Ncq6SdKvghCglmX7OZ6mZ7nJU4LcmHNZ2k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -33,26 +33,28 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1ruY6a-00054X-PG; Wed, 10 Apr 2024 15:35:12 +0200
+	id 1ruY6a-00054Y-TA; Wed, 10 Apr 2024 15:35:12 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1ruY6Z-00BVM2-H8; Wed, 10 Apr 2024 15:35:11 +0200
+	id 1ruY6Z-00BVM5-OD; Wed, 10 Apr 2024 15:35:11 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1ruY6Z-00HaOo-1R;
+	id 1ruY6Z-00HaOs-29;
 	Wed, 10 Apr 2024 15:35:11 +0200
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
 	Andreas Larsson <andreas@gaisler.com>,
 	Sam Ravnborg <sam@ravnborg.org>,
+	=?utf-8?q?Ahelenia_Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Rob Herring <robh@kernel.org>
 Cc: sparclinux@vger.kernel.org,
 	kernel@pengutronix.de
-Subject: [PATCH 1/2] sparc: parport: Convert to platform remove callback returning void
-Date: Wed, 10 Apr 2024 15:35:06 +0200
-Message-ID:  <2765e090dba2d99f92e16c92b6aa55090aae053b.1712755381.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 2/2] sparc: chmc: Convert to platform remove callback returning void
+Date: Wed, 10 Apr 2024 15:35:07 +0200
+Message-ID:  <9fbd788bbca4efd2f596e3c56d045db450756c80.1712755381.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1712755381.git.u.kleine-koenig@pengutronix.de>
 References: <cover.1712755381.git.u.kleine-koenig@pengutronix.de>
@@ -63,7 +65,7 @@ List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1827; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=9/aI6C1S1aJSIOesjnJTAKtzPhucx8Qmarc0aWUhi9E=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmFpWLdInwdJ2G1z13S0ieCecZ6McX2XQgwoJ8m RAtfI9gXQ+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZhaViwAKCRCPgPtYfRL+ TkcsB/0btYWUDL7Q36v9OzDq2nPWaUQSIexcXAvo+x33U4nwn6JLsqG3ig3MPRZgqNqfXqoAMsH UPMrsjqvJkTleIAR8Udg8WUVWU0eKCzDPVDE1Qp/53qgR1QHHqrT1PCq+Vyg9WIv+8Luz42uNBJ GbF3yNGUkop3qmGrs+Ocq8g6SGdqjELj4FDNNmh33acBBzgMxPNl1tPzWTd8Ib4BcBrEVWu1woL 6OwGCDEqtX0R8ZxA7yfbBJDlcEytzNdGdKQurJFouPWIr9Yn7KGCcrWCo9j/TqawJrn9VCbFLfL f/q0ZwmSbBYSRUQ8SfEH8AShxKBUxm3SY9wBeVeFc8fxTm9e
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1755; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=+3NCIwNoU3FZjXcssF0F4YqxUiatzW3IS6tXHFNtK+A=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmFpWMGP22wzIX9/fF6DhMGaGbzWvV/taUtdzWQ Hgml6ag8YqJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZhaVjAAKCRCPgPtYfRL+ TnBxB/wKaQuw4EymJt1jrSWUqbt5VTwOxqAXz/AGkIBRnUp18Oln4B1nQ2+VfnkmsZGdebOJ0/+ TSnLv3/j6+4Y7MpGAmBFHqbCOQohUR+rj/lmxxr0VWTGjr45m3p/zfKfMGkjIIViTyPD9InmPrU s6hL9/WHjGuFexZZepxucsCXO0MOoH9zfuiTdWZ1WAeI80vqik1j7wHe0hZ4lbDi5B7SAxGK2Hi iP6TNIPkMED0eq5Ddi8ptk6R4C4At2QIoYK4PuWwAxq7iemHTq83tY6/z/drHrbjqgO3LfHcRAd 6qU00QXdQcDTEdsi5LJ6waEQxbb1MkqQOpPrZzLa0QBj89+U
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -86,40 +88,39 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- arch/sparc/include/asm/parport_64.h | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/sparc/kernel/chmc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/sparc/include/asm/parport_64.h b/arch/sparc/include/asm/parport_64.h
-index 0a7ffcfd59cd..4f530a270760 100644
---- a/arch/sparc/include/asm/parport_64.h
-+++ b/arch/sparc/include/asm/parport_64.h
-@@ -196,7 +196,7 @@ static int ecpp_probe(struct platform_device *op)
- 	return err;
+diff --git a/arch/sparc/kernel/chmc.c b/arch/sparc/kernel/chmc.c
+index 00e571c30bb5..e02074062001 100644
+--- a/arch/sparc/kernel/chmc.c
++++ b/arch/sparc/kernel/chmc.c
+@@ -788,7 +788,7 @@ static void jbusmc_destroy(struct platform_device *op, struct jbusmc *p)
+ 	kfree(p);
  }
  
--static int ecpp_remove(struct platform_device *op)
-+static void ecpp_remove(struct platform_device *op)
+-static int us3mc_remove(struct platform_device *op)
++static void us3mc_remove(struct platform_device *op)
  {
- 	struct parport *p = dev_get_drvdata(&op->dev);
- 	int slot = p->dma;
-@@ -216,8 +216,6 @@ static int ecpp_remove(struct platform_device *op)
- 			   d_len);
- 		clear_bit(slot, dma_slot_map);
+ 	void *p = dev_get_drvdata(&op->dev);
+ 
+@@ -798,7 +798,6 @@ static int us3mc_remove(struct platform_device *op)
+ 		else if (mc_type == MC_TYPE_JBUS)
+ 			jbusmc_destroy(op, p);
  	}
--
 -	return 0;
  }
  
- static const struct of_device_id ecpp_match[] = {
-@@ -245,7 +243,7 @@ static struct platform_driver ecpp_driver = {
- 		.of_match_table = ecpp_match,
+ static const struct of_device_id us3mc_match[] = {
+@@ -815,7 +814,7 @@ static struct platform_driver us3mc_driver = {
+ 		.of_match_table = us3mc_match,
  	},
- 	.probe			= ecpp_probe,
--	.remove			= ecpp_remove,
-+	.remove_new		= ecpp_remove,
+ 	.probe		= us3mc_probe,
+-	.remove		= us3mc_remove,
++	.remove_new	= us3mc_remove,
  };
  
- static int parport_pc_find_nonpci_ports(int autoirq, int autodma)
+ static inline bool us3mc_platform(void)
 -- 
 2.43.0
 
