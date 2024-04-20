@@ -1,49 +1,49 @@
-Return-Path: <sparclinux+bounces-946-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-948-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F048AB9CF
-	for <lists+sparclinux@lfdr.de>; Sat, 20 Apr 2024 07:17:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEDE8AB9D4
+	for <lists+sparclinux@lfdr.de>; Sat, 20 Apr 2024 07:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C327B21251
-	for <lists+sparclinux@lfdr.de>; Sat, 20 Apr 2024 05:17:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE5E1C2093B
+	for <lists+sparclinux@lfdr.de>; Sat, 20 Apr 2024 05:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380C914A8C;
-	Sat, 20 Apr 2024 05:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48D412E5D;
+	Sat, 20 Apr 2024 05:17:03 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
-Received: from smtpbg156.qq.com (smtpbg156.qq.com [15.184.82.18])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE89E55F;
-	Sat, 20 Apr 2024 05:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.82.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C294B17BC9;
+	Sat, 20 Apr 2024 05:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713590208; cv=none; b=Ofcs3vorNw+3gICfl4iILo8uU0Z5Jbd5DyabAhHsF9U4UeE3TyVpp/OJp/joW2T3IW48sOFLkBQvw9Wfgb/Ex6xbC4JWt7ns5dDRzfDMzdxNxrZ7bMx2yTxxCYcz1BmgOTBmZNLFWK2ehUK+9XHFUxnq1smubneRfBcJDncIVdk=
+	t=1713590223; cv=none; b=rYUhNM7iP7W/Cg9JkDlDxrUre9HbFO1AWkYHR8Vtujd2YhZlSrrl8ZKdUDRA13Hz1gwhIOM90b2wpLU635eIvS8m+Tcm5ug39s6wexWrGVEksnhqlGF2PMpy/rfD2LGb6veEzcG/eoww5zOpbMD5kq/owzyiQreyAx9SE92GWak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713590208; c=relaxed/simple;
-	bh=J3xx7uCwxqDnvOjB2f/TyE777o+chO9jhWnCFlaoiFk=;
+	s=arc-20240116; t=1713590223; c=relaxed/simple;
+	bh=sFnCyAezPJqAAlu3qDvF7erthkLHTCeXNJjaVGL6Y6w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iNxWQFsUIuS5z9WwhBnO/fg7D0yXvxOVCCdJoZ9onUTH3L4pidKQzqjMY/K3L2RnKt6T/MHzaefrU8mUbcPZiWh2gBMJsjOcC6jDOmtqLsGzAd+OXcWqe1YyYGD8YHGK/rucZjB7Lk+wtFRpQGX6HXYxlA+ZiJW7XCb9KIjhT6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass smtp.mailfrom=shingroup.cn; arc=none smtp.client-ip=15.184.82.18
+	 MIME-Version; b=W8o1MLurG1Z1/Qe9I0zIgE8P6X90aTcOEkYqfvEnbcFwGOJDZfiCTNs77W8Oa6ArMhe3TqgMFISpf03YusdOr1NrcER/fpnSAFIVmir63b62OgAwsZkNODXiur8xZ3r9+DufpY5gbeYna0mTEPkk4FfJ75TYZCFdmHFdFm1fnvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass smtp.mailfrom=shingroup.cn; arc=none smtp.client-ip=54.207.19.206
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shingroup.cn
-X-QQ-mid: bizesmtp84t1713590173tizhh7rd
-X-QQ-Originating-IP: 8MtURKbY14c/8/zzXdbr2mv34MhaCyJmjCscKsCI8Ts=
+X-QQ-mid: bizesmtp79t1713590179t1j0ojyx
+X-QQ-Originating-IP: usNWeg3p56fbl6S4O5hLIa/2vcCL/sUddDTvjUu6ZQk=
 Received: from localhost ( [112.0.147.129])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 20 Apr 2024 13:16:12 +0800 (CST)
+	id ; Sat, 20 Apr 2024 13:16:17 +0800 (CST)
 X-QQ-SSF: 01400000000000903000000A0000000
-X-QQ-FEAT: 7YFKcddXagjUdEvd7pTyWsQ4VLtezgpliaI64kOzXjRCa35JZRCrMEOCTqGhV
-	qng8CLtYjSU4vPeW/USn80ZBPzeHD5ntGK/QkI3/6S9881J7o1Sr7qqwipZAPGvAVaN+oDt
-	nV3xJ7A/0dPzfaKjQZ379/v77zl5nQmZHQekOCI7hu3vHu622JrM1p3O7AlmMnNzCkwRGd0
-	FvyLmQgGhK8b8nhCbcis+qaayFaQOURFPBTQ7M8aYyryM34uJR0VDbpjNXmxjbKfzz5pdv+
-	FQ2JVxjwjsRwWJbz53Tsqvs0xQIOEjZkPtuTAYUlM3d9FGu6UWzBrzmXqc0ecBpSrMZtasp
-	VBavlsaY+kUu7+IcSbIMKs4afXgfFL/Sd/RkWjRNsMd5JjNVb3dkYi3lVtr/B9jUbESTkJ2
-	jz5FYmU3rfc7AT47u3FsPw==
+X-QQ-FEAT: kXE5muS/leEbbuoBaiU+TdzUdL8x1DtGffTVB18ZZSjdZkb7ukY1/vsQEbTcj
+	/NXvomoV18BJGH7GSXpOT4kPYqdzRkXp2cswMMBLFO7EFgU3Pr1hY/7VYyesv4D1cvIMV6W
+	HdN9MK0b25112qI1mqXixVzW4O7ZWSlEn4tPhnK/uhx+Yf+u0Bh5BtcHYZQEgfo1NFXX8wv
+	W/UVodAkBuo5rh8V+NvcF7K0WOpS281MfHV1BPbqVX47V/rkPl6A6cTSDZ1r6yx7wUcs+we
+	f+djCR4KWNJYQmJErZxhtT8GLtyti8qGk0+HpGKqXlwTnrDzJjwhzuCjhWrrKS2PHKS6ISU
+	0GrnJu3Zc/j1deuop76NewiI7M6R27Qb2R0pBGFD8+NcYaUMb8qQGjRaC+DfZCzFBL+r4mA
+	eqVicjisW3I=
 X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 15600578157613225618
+X-BIZMAIL-ID: 13105262653113255618
 From: Dawei Li <dawei.li@shingroup.cn>
 To: davem@davemloft.net,
 	andreas@gaisler.com
@@ -51,9 +51,9 @@ Cc: sparclinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	sam@ravnborg.org,
 	Dawei Li <dawei.li@shingroup.cn>
-Subject: [PATCH v2 3/7] sparc/of: Remove on-stack cpumask var
-Date: Sat, 20 Apr 2024 13:15:43 +0800
-Message-Id: <20240420051547.3681642-4-dawei.li@shingroup.cn>
+Subject: [PATCH v2 4/7] sparc/pci_msi: Remove on-stack cpumask var
+Date: Sat, 20 Apr 2024 13:15:44 +0800
+Message-Id: <20240420051547.3681642-5-dawei.li@shingroup.cn>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20240420051547.3681642-1-dawei.li@shingroup.cn>
 References: <20240420051547.3681642-1-dawei.li@shingroup.cn>
@@ -76,16 +76,16 @@ unneeded cpumask var.
 
 Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
 ---
- arch/sparc/kernel/of_device_64.c | 5 +----
+ arch/sparc/kernel/pci_msi.c | 5 +----
  1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
-index c350c58c7f69..f98c2901f335 100644
---- a/arch/sparc/kernel/of_device_64.c
-+++ b/arch/sparc/kernel/of_device_64.c
-@@ -624,10 +624,7 @@ static unsigned int __init build_one_device_irq(struct platform_device *op,
- out:
- 	nid = of_node_to_nid(dp);
+diff --git a/arch/sparc/kernel/pci_msi.c b/arch/sparc/kernel/pci_msi.c
+index fc7402948b7b..acb2f83a1d5c 100644
+--- a/arch/sparc/kernel/pci_msi.c
++++ b/arch/sparc/kernel/pci_msi.c
+@@ -287,10 +287,7 @@ static int bringup_one_msi_queue(struct pci_pbm_info *pbm,
+ 
+ 	nid = pbm->numa_node;
  	if (nid != -1) {
 -		cpumask_t numa_mask;
 -
@@ -93,8 +93,8 @@ index c350c58c7f69..f98c2901f335 100644
 -		irq_set_affinity(irq, &numa_mask);
 +		irq_set_affinity(irq, cpumask_of_node(nid));
  	}
- 
- 	return irq;
+ 	err = request_irq(irq, sparc64_msiq_interrupt, 0,
+ 			  "MSIQ",
 -- 
 2.27.0
 
