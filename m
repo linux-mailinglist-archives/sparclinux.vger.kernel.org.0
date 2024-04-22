@@ -1,74 +1,53 @@
-Return-Path: <sparclinux+bounces-998-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-1000-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E7C8ACC91
-	for <lists+sparclinux@lfdr.de>; Mon, 22 Apr 2024 14:11:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633118ACDE5
+	for <lists+sparclinux@lfdr.de>; Mon, 22 Apr 2024 15:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63696285AD1
-	for <lists+sparclinux@lfdr.de>; Mon, 22 Apr 2024 12:11:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9552A1C22007
+	for <lists+sparclinux@lfdr.de>; Mon, 22 Apr 2024 13:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD8F14A084;
-	Mon, 22 Apr 2024 12:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD96D14F128;
+	Mon, 22 Apr 2024 13:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CFHTz0AC"
+	dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="TtRAMlly"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7401474D8
-	for <sparclinux@vger.kernel.org>; Mon, 22 Apr 2024 12:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71804145342;
+	Mon, 22 Apr 2024 13:11:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713787901; cv=none; b=FNqosCijQu+y2fQU/GS4iT0PxEU6nYmBMG1bqFpqkSqM2c/ud1pR2GlB0KgWRb9qKUdRiVyvc8qhgJZWsotWKjW253QnrA0B8vYbKyPOnml0slDVsOwjlAOjg1AshDwgm001ATvkmKR0m9W8T3p5zrmcIJ5LJ9awn+If/DD83ZM=
+	t=1713791520; cv=none; b=iIk6XmJXd5t+PltghQqs38JEf148SgYhL4FZnLJqAO9Mu99P6nP5QUEv8eiyVHoqpwZNC0PnQ8jLyAzx/1Mo8msBEZur3/7vIzk3AhtjyUR9IBGK7hJxrwKEJfeh0cbgmgrgpSmxjeAtga1nUQ1AKEUp2u8Sd/fbSHubzqqewbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713787901; c=relaxed/simple;
-	bh=P+ngD7651DKaxK2xXQRIyCnuFIb7V6Y5I4v0Y+4liW4=;
+	s=arc-20240116; t=1713791520; c=relaxed/simple;
+	bh=XOe3rO+V4OSg40SEQ1ztLJzq8dL9itVN6gTILUOr+sM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cBFBqxnT4Gx0IOJ9xrvP+CyUiok5H3ieDtkpr+jmSnTzMAtEBFBP5sOOq/yGAscRbq/50irrppfpyAwSEedGYS2jVRd/GhcTFWGQje66x8Xo4dLCAaGhFe6ZTv8MLecR05OR5nVHiKNS4lAOAW4ySqhDsTcytAp9Szos2+VQSC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CFHTz0AC; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-41a7aa24c4fso3332415e9.1
-        for <sparclinux@vger.kernel.org>; Mon, 22 Apr 2024 05:11:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713787897; x=1714392697; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bCRnuZK0O/QOXHu1Ldkstjl1doP0jCVLWLbPZKH0WnQ=;
-        b=CFHTz0ACeA5cePDuWJvlh0c8tKCX+vdZE51F+lymx2ic2Y7hs2eXx05OW4IBWO5NY7
-         enwTee91Ffu3VfDwyIkmea7VIvN1ABlqbVpYWHDO8qGLChX0hoAO+wasQMUtc896zpHB
-         QxjKoTPskxJNDiDIqOlKG4CIT6U73cuCt0Vs9fgQM0ezVMx0psIJB9CigTkRj5XWIUKW
-         xaeJd3fUGhkumQtrwTPbnfBgS5vg69UeFthGeF6sKzOfXwJNG5K2/VFS9jCmhxkfP77J
-         31QAA9xu9VEv3dBKe3932dOMZdSw5hMYLReIRTM78EV4NCYcxeN6zzWPjQTuz5Shh7PR
-         Wv3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713787897; x=1714392697;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bCRnuZK0O/QOXHu1Ldkstjl1doP0jCVLWLbPZKH0WnQ=;
-        b=sZ2kRgyY7FICRaEXaPZbEtxQaxnZJ9hBOPrYkxtCfxZvgOLLpTpCgvA3Pajip/j/W7
-         OLTG3MTmbcVlmdU7ITwWycB77mFhbf5zWGPpMbqNixw04E5fHMeZ896yR+Q7On5QzFz9
-         bh3Uj1pvvND2+0qygKJ1fA18QefLaXTtZYvsdOXwwmYmsmen5ElAj3oM41eh40IJGNhE
-         cG5gF+JGFpQOEZbC8klMrgfhkKWXLrzujO7ZxcTqyKZI8XsY1PNEKaVr8Nr/jqTuhr2Q
-         J/F5PJHcFqNOz/tkL7/+yw2hUbO8XBXq0wcQJ3Uzoi9UaySXAP0230ghSW+w7gAgAiYH
-         xvFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXB18GZUSJsV0hmMNNn5n9c4Z5O24QUv6fyDIZDNcBW8L8fQJ80hdreHoRakTXAQRsO9JV6pKkW9u+ZeraRDrqyYhsOoC7jp3COmw==
-X-Gm-Message-State: AOJu0YxH2F4KJTNubOM0EMgIFp4vnBXPEWRet/kiRvnOVWLibGGTLwG+
-	DFXJ/eny+QizidzWU9jggCttLibjgCYHNwpISznQlNbc0IqWrtCP9mrCeKPgZno=
-X-Google-Smtp-Source: AGHT+IHynTNWSPs7rYJt+CqENDAY0rj5tOUJ3mwkpUrvPfTTqXCsLGZ4LMBMh1xVXt1DdTNJhAB4yQ==
-X-Received: by 2002:a05:600c:3552:b0:419:7fd:2fbe with SMTP id i18-20020a05600c355200b0041907fd2fbemr5536580wmq.11.1713787897251;
-        Mon, 22 Apr 2024 05:11:37 -0700 (PDT)
-Received: from [192.168.1.28] (lfbn-bay-1-170-196.w83-193.abo.wanadoo.fr. [83.193.250.196])
-        by smtp.gmail.com with ESMTPSA id r14-20020a05600c458e00b00417e5b71188sm16503881wmo.34.2024.04.22.05.11.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Apr 2024 05:11:36 -0700 (PDT)
-Message-ID: <fb942d49-1c72-40a6-8309-ef3331d8f8dc@linaro.org>
-Date: Mon, 22 Apr 2024 14:11:34 +0200
+	 In-Reply-To:Content-Type; b=n3CKynZILXiJQtbrnyKst2xa+w1/JGCi6bE3LvMO0X+ETpsyksiTsolKCjM3v9iREiaGeRsEXUWcBWSCHPNzLRp/VWhEy8yOp0ApET+G2rB8fcpO7yy5H9fQCuoVld3X/HWCSSIskVUz0eLKQBoI8VQYeW8ygo1dGs2WvIcbwfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=TtRAMlly; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4VNQd26fR4z680f;
+	Mon, 22 Apr 2024 15:11:50 +0200 (CEST)
+Received: from [10.10.15.10] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4VNQd237yKz67yS;
+	Mon, 22 Apr 2024 15:11:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=unoeuro; t=1713791510;
+	bh=iD3Put1A9IYrX60+JD9GoM52tBmlJ+dyLBFknV0tTPQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=TtRAMllyiIjnlMnB6dqO3KD6WcIQO5NTJkh6TKPLjrT/J/9ZcPM3F6bFOTThF33Si
+	 UdX/+xkzQfUDpCq7x24jv2whpot9Bj+ZJepyWqsq1xUb2RsvSlaRytJqDYP6aNEE3u
+	 Me8YSRtuU9Lnoyfj4tH9eQMca7zsZpwGrIvqf8n8=
+Message-ID: <509e2bb2-54c2-4156-9bb8-4541c87ea2f2@gaisler.com>
+Date: Mon, 22 Apr 2024 15:11:49 +0200
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
@@ -76,80 +55,72 @@ List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/15] arch: make execmem setup available regardless of
- CONFIG_MODULES
-To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>,
- Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "David S. Miller" <davem@davemloft.net>, Dinh Nguyen <dinguyen@kernel.org>,
- Donald Dutile <ddutile@redhat.com>, Eric Chanudet <echanude@redhat.com>,
- Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
- Huacai Chen <chenhuacai@kernel.org>,
- Kent Overstreet <kent.overstreet@linux.dev>,
- Luis Chamberlain <mcgrof@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Michael Ellerman
- <mpe@ellerman.id.au>, Nadav Amit <nadav.amit@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Russell King <linux@armlinux.org.uk>, Sam Ravnborg <sam@ravnborg.org>,
- Song Liu <song@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
- bpf@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, linux-modules@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
- netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
-References: <20240422094436.3625171-1-rppt@kernel.org>
- <20240422094436.3625171-12-rppt@kernel.org>
+Subject: Re: [PATCH 00/10] sparc64: Fix CPU online bug and warning fixes
+To: Sam Ravnborg <sam@ravnborg.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: "David S . Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org,
+ Nick Bowler <nbowler@draconx.ca>, linux-kernel@vger.kernel.org,
+ Atish Patra <atish.patra@oracle.com>, stable@vger.kernel.org,
+ Bob Picco <bob.picco@oracle.com>, Vijay Kumar <vijay.ac.kumar@oracle.com>
+References: <20240330-sparc64-warnings-v1-0-37201023ee2f@ravnborg.org>
+ <4e57929b-1539-4a25-ab05-a2a9e04ecc1d@app.fastmail.com>
+ <20240330183937.GA191882@ravnborg.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240422094436.3625171-12-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20240330183937.GA191882@ravnborg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 22/4/24 11:44, Mike Rapoport wrote:
-> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> 
-> execmem does not depend on modules, on the contrary modules use
-> execmem.
-> 
-> To make execmem available when CONFIG_MODULES=n, for instance for
-> kprobes, split execmem_params initialization out from
-> arch/*/kernel/module.c and compile it when CONFIG_EXECMEM=y
-> 
-> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> ---
->   arch/arm/kernel/module.c       |  43 ----------
->   arch/arm/mm/init.c             |  45 +++++++++++
->   arch/arm64/kernel/module.c     | 140 ---------------------------------
->   arch/arm64/mm/init.c           | 140 +++++++++++++++++++++++++++++++++
->   arch/loongarch/kernel/module.c |  19 -----
->   arch/loongarch/mm/init.c       |  21 +++++
->   arch/mips/kernel/module.c      |  22 ------
->   arch/mips/mm/init.c            |  23 ++++++
->   arch/nios2/kernel/module.c     |  20 -----
->   arch/nios2/mm/init.c           |  21 +++++
->   arch/parisc/kernel/module.c    |  20 -----
->   arch/parisc/mm/init.c          |  23 +++++-
->   arch/powerpc/kernel/module.c   |  63 ---------------
->   arch/powerpc/mm/mem.c          |  64 +++++++++++++++
->   arch/riscv/kernel/module.c     |  44 -----------
->   arch/riscv/mm/init.c           |  45 +++++++++++
->   arch/s390/kernel/module.c      |  27 -------
->   arch/s390/mm/init.c            |  30 +++++++
->   arch/sparc/kernel/module.c     |  19 -----
->   arch/sparc/mm/Makefile         |   2 +
->   arch/sparc/mm/execmem.c        |  21 +++++
->   arch/x86/kernel/module.c       |  27 -------
->   arch/x86/mm/init.c             |  29 +++++++
->   23 files changed, 463 insertions(+), 445 deletions(-)
->   create mode 100644 arch/sparc/mm/execmem.c
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+On 2024-03-30 19:39, Sam Ravnborg wrote:
+> Hi Arnd,
+> 
+> On Sat, Mar 30, 2024 at 11:19:37AM +0100, Arnd Bergmann wrote:
+>> On Sat, Mar 30, 2024, at 10:57, Sam Ravnborg via B4 Relay wrote:
+>>> Nick Bowler reported that sparc64 failed to bring all his CPU's online,
+>>> and that turned out to be an easy fix.
+>>>
+>>> The sparc64 build was rather noisy with a lot of warnings which had
+>>> irritated me enough to go ahead and fix them.
+>>> With this set of patches my arch/sparc/ is almost warning free for
+>>> all{no,yes,mod}config + defconfig builds.
+>>
+>> Patches 1-9 look good to me,
+>>
+>> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> Thanks!
+
+Picking up patches 1-8 to my for-next with
+
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Tested-by: Andreas Larsson <andreas@gaisler.com>
+
+and, having run it only on single core qemu, patch 9 with
+
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+
+>>
+>>> There is one warning about "clone3 not implemented", which I have ignored.
+>>>
+>>> The warning fixes hides the fact that sparc64 is not yet y2038 prepared,
+>>> and it would be preferable if someone knowledgeable would fix this
+>>> poperly.
+>>
+>> The clone3 bug has been around for ages, it's probably not even that
+>> hard to fix and just needs a little bit of testing.
+> I looked briefly and it involves a better understanding of the window
+> register manipulation than what I have today.
+> 
+>>
+>> If anyone wants to work on the time64 support for the vdso, I can
+>> explain the details for how it's done.
+>
+> I am happy to type the patches but need to rely on others for testing.
+> Anything to help me get started would be super.
+
+I'm not picking up patch 10 at the moment, but it would be really nice
+to get allmodconfig builds to not fail due to prototype Werrors.
+
+Thanks,
+Andreas
 
