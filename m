@@ -1,118 +1,106 @@
-Return-Path: <sparclinux+bounces-1018-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-1020-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAFF8AF6D3
-	for <lists+sparclinux@lfdr.de>; Tue, 23 Apr 2024 20:44:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D208AFEE4
+	for <lists+sparclinux@lfdr.de>; Wed, 24 Apr 2024 04:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B346528D3F9
-	for <lists+sparclinux@lfdr.de>; Tue, 23 Apr 2024 18:44:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 003051F22C3A
+	for <lists+sparclinux@lfdr.de>; Wed, 24 Apr 2024 02:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E7D13E8AC;
-	Tue, 23 Apr 2024 18:44:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="sTdsLXFR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E9C139573;
+	Wed, 24 Apr 2024 02:56:37 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6701E53F;
-	Tue, 23 Apr 2024 18:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5432A7F490;
+	Wed, 24 Apr 2024 02:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713897855; cv=none; b=eJJojNpP+YNG4y5RvlwFITjSZtddyNUeYxGe4j7Ipali/3MK1X1vjwuKdWj64M/U5RnyY8rzx3fn7LNvzEuQr5KOuu5cF7WCe4sBjsNIuGC2P1ukYF8aD1uzUqcLj9UqTZ+8701ApLORvmA8DMl3Si8XR2U8WdMi1ZHlQm0AMzE=
+	t=1713927397; cv=none; b=aD1Jljgd+UFypxtF62OaHcDpOqtkWmLHS3klKSQlbF2VmsYn+QVC22xV83ogQe6I9JgaUXTTSf8mck9YlH6DLK6Y6/Sks9fiFQchzeSHBOkmo8ZjKPLbwLz2f2uFUT4WuQHpXk2XsLyqf07maTHcZ+0WxfttmeB2E9CeOE5dTn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713897855; c=relaxed/simple;
-	bh=Eh9zhjxxN1SsvPJ8tSCa0BbWuSgXZjcEkhJDt0+ZCWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AUZ00UZ42UCGzpoyUbY1XGugCFOzUC2zLogpeZJ10rHI29unvdOiaTbXhqbqr0kRWaaCQliUxfDhZRrt5EulyFg09YRArOh3r53M/ftmVKe6WJaBl8wIXOrsrduBnCqD2JkSXBnIhybDnZWmW3xyP1XNyIHJMPWgTqk+rCbrNcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=sTdsLXFR; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=r34+nTm/8Jbk3qeyC42lEKxQEubfYHcW3Uknob791/g=; b=sTdsLXFRE+QcyX+0QJ8WCgaQYk
-	jiSZ6Kg9oD2pelNjtWjILcEQkP/tyHd4UJmsQbaA2Jitxjalcki5VI03zdGPwpwTxSoe3aIbli3qQ
-	dWH7sElHDAutoKt8KDm5nian7HuEUHVgySIzKpZXw53KNkQNHisfiYi9aT2zUjYwSYlqMi/pKFh4h
-	lR+8fzkY2is97ohNEfJiNYIyw5wG0OUC6MDW4MRyh7HEtQLG80vucUI1prRhC7ITcRjqm0SAho5j2
-	lxk7qbgnL2WHJoutm2s37b7MEjM+hCAz2PrtFU951qAi7PqrN+vxilNTvPssOcF0h7m744Qbr1drk
-	dX6rIqQw==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzL7i-00000001AcU-0fdH;
-	Tue, 23 Apr 2024 18:44:10 +0000
-Date: Tue, 23 Apr 2024 11:44:10 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Donald Dutile <ddutile@redhat.com>,
-	Eric Chanudet <echanude@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nadav Amit <nadav.amit@gmail.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Sam Ravnborg <sam@ravnborg.org>, Song Liu <song@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
-	bpf@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, linux-modules@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v5 00/15] mm: jit/text allocator
-Message-ID: <ZigBepQBSfqLsyL7@bombadil.infradead.org>
-References: <20240422094436.3625171-1-rppt@kernel.org>
+	s=arc-20240116; t=1713927397; c=relaxed/simple;
+	bh=yb8eJJPFl2tkuFQKzjHMxdKWsZ9qcqM55zk2rzYZcCI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ccfBH3J8aqZbtMdpekfSW23rBTW/bFTnSHYyGUKhSWEpdfvbUIfZGjFZOfrwSKwURVoEhYfAfV1ZBQZ/IwTYvBmPilYhLXQFVovPYA5yfm0PYsOr3LhM4C8crR2wcnIM/p8+qOWeJgQ32y/orZ18P7V/miyVjloyc08grqOmbOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass smtp.mailfrom=shingroup.cn; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shingroup.cn
+X-QQ-mid: bizesmtpsz7t1713927354tf7i31l
+X-QQ-Originating-IP: yi9okuZ1DjO/2d4GcZAw+6JBRr0iS7O8rnPasZkzw2Y=
+Received: from localhost ( [112.0.147.129])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 24 Apr 2024 10:55:53 +0800 (CST)
+X-QQ-SSF: 01400000000000903000000A0000000
+X-QQ-FEAT: znfcQSa1hKboFoGnXB/PrQQ0NNwe+m6eDs3goMm7htGyD+AKm7LTs6X2jWl5j
+	M5ER50h3POS0SpVpGxyjhEtogJU+GDNOu1YsNQrzUxYrLs7/YBGDQqdWq4grdNhkhrKTMUj
+	adSlXjRZyqTdrF/sshiw4nLE7gOdAlmrZQDGr4NAGgJFV5sjyZbPzVdxI8HlabHKFLJP2TW
+	r8Pwng790psoWLoGAbIXlDQFBm8/BcOL28wr4K6LjAgQ/9ctCjr4wTbJlZVpgtfstRdoyL4
+	7MIiQafjI8uxMCxqz5vC98UnoWWGWBxbQgmtC7oQNkJevqsxAMvOa23VppPlX7d0xdMhZ6N
+	MBNseG7vHaRbYnK2dQJT3CJ1FIIqrn3la5l8tBz7Z8tajaQvWU9U4wUdRVARmwPjIe/J1oT
+	sr9TXxlvV70=
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 18105697174608553188
+From: Dawei Li <dawei.li@shingroup.cn>
+To: davem@davemloft.net,
+	andreas@gaisler.com
+Cc: sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sam@ravnborg.org,
+	Dawei Li <dawei.li@shingroup.cn>
+Subject: [PATCH v4 0/5] Remove onstack cpumask var for sparc
+Date: Wed, 24 Apr 2024 10:55:43 +0800
+Message-Id: <20240424025548.3765250-1-dawei.li@shingroup.cn>
+X-Mailer: git-send-email 2.27.0
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240422094436.3625171-1-rppt@kernel.org>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
 
-On Mon, Apr 22, 2024 at 12:44:21PM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> 
-> (something went wrong with the prevois posting, sorry for the noise)
-> 
-> Hi,
-> 
-> Since v3 I looked into making execmem more of an utility toolbox, as we
-> discussed at LPC with Mark Rutland, but it was getting more hairier than
-> having a struct describing architecture constraints and a type identifying
-> the consumer of execmem.
-> 
-> And I do think that having the description of architecture constraints for
-> allocations of executable memory in a single place is better than having it
-> spread all over the place.
-> 
-> The patches available via git:
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=execmem/v5
+Hi,
 
-Thanks! I've merged and pushed this onto modules-next in its entirety now for
-wider testing.
+This is v4 of previous series on removal of on-stack cpumask var for
+sparc arch.
 
-  Luis
+Change since v3:
+
+- Rebased against for-next of Andreas.
+
+- Add Reviewed-by from Sam.
+
+- Remove PATCH(sparc/init: Remove on-stack cpumask var).
+
+v1:
+https://lore.kernel.org/all/20240418104949.3606645-1-dawei.li@shingroup.cn/
+
+v2:
+https://lore.kernel.org/all/20240420051547.3681642-1-dawei.li@shingroup.cn/
+
+v3:
+https://lore.kernel.org/all/20240423083043.3735921-1-dawei.li@shingroup.cn/
+
+Dawei Li (5):
+  sparc/srmmu: Remove on-stack cpumask var
+  sparc/irq: Remove on-stack cpumask var
+  sparc/of: Remove on-stack cpumask var
+  sparc/pci_msi: Remove on-stack cpumask var
+  sparc/leon: Remove on-stack cpumask var
+
+ arch/sparc/kernel/irq_64.c       | 10 +++-----
+ arch/sparc/kernel/leon_kernel.c  |  7 +++---
+ arch/sparc/kernel/of_device_64.c |  5 +---
+ arch/sparc/kernel/pci_msi.c      |  5 +---
+ arch/sparc/mm/srmmu.c            | 40 ++++++++++----------------------
+ 5 files changed, 20 insertions(+), 47 deletions(-)
+
+-- 
+2.27.0
+
 
