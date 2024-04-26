@@ -1,53 +1,53 @@
-Return-Path: <sparclinux+bounces-1045-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-1047-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BAE8B3CCD
-	for <lists+sparclinux@lfdr.de>; Fri, 26 Apr 2024 18:31:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F06078B3D3A
+	for <lists+sparclinux@lfdr.de>; Fri, 26 Apr 2024 18:53:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F4CE1C221BB
-	for <lists+sparclinux@lfdr.de>; Fri, 26 Apr 2024 16:31:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC69D288C02
+	for <lists+sparclinux@lfdr.de>; Fri, 26 Apr 2024 16:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0676724B21;
-	Fri, 26 Apr 2024 16:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C327146588;
+	Fri, 26 Apr 2024 16:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="Qip71L1C"
+	dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="Qt8MYRjE"
 X-Original-To: sparclinux@vger.kernel.org
 Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB43469D;
-	Fri, 26 Apr 2024 16:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9175D148FF6
+	for <sparclinux@vger.kernel.org>; Fri, 26 Apr 2024 16:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714149087; cv=none; b=QacFyPiI6dFQz5XX9DaSS2RwRGiTEw9RJ4VbziV9Gkzrc/KWyCLiRBAckivQJs462i2VsX3S2oCu1qDmOZCA1cA7Djs1fOB4pLJyIGqAa+4WhNLfjnX3cE2tGQaqg/1/wba+pEClUYeciyI1jU0K1V7m8KnDGtWTHOtROeSXpg8=
+	t=1714150382; cv=none; b=d9VEAWot2M38exWOaMjMdIoyF03DEIvXs92JKRqUx3bSKr2U92tI6LRuriWznMuXDeqx3LPg3QMm06iEX8vJ7rGEO5LsJ31UZGIFnnhVyrUD6ybaqCpwD2mdMzVLBfdVURXmb5/DXfSn+0GjA+a+vO7RMU3L5aCVOzE3VNn4Pw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714149087; c=relaxed/simple;
-	bh=7dZ7krTYAZxq8cPoPdHSIbY+K7yXIIJx3qWxQhJ/RRk=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=HDeaKGWWM+6FKQfSBnILJSQM4g232iG90fbqndQ+LN+GR2rBbj/jtirYLRH4lvL2O6hwNB+AQcN5M+sDIK2mMn7dZk4yg7LMZRo4kEJFkYlv/Uryr+VNEk6AsqFFDGUgDHfOun2/+XLSPztyJj1rWNNO6gSDmVmhZXNdB1TTE5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=Qip71L1C; arc=none smtp.client-ip=94.231.106.210
+	s=arc-20240116; t=1714150382; c=relaxed/simple;
+	bh=n+swDYlRkep2TFba88JYofx+RK+l7QpKnAUk9GLX/mM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=S+iZNupDxDxNSAqJbIweqhEpVUbtThDweHS8JZYX38VSSlCFnNtbHbWqqKnhl107ePabXWAG2zRV2cj/wnF+/n3cGmYXfx1H8NjZAmcixhlYiddrshvegK+OezcWjpDgIeH2oNTbkiiyPmv2+5S7iw/v8lUZJsxiY78Fm0QQUcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=Qt8MYRjE; arc=none smtp.client-ip=94.231.106.210
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
 Received: from localhost (localhost [127.0.0.1])
-	by smtp.simply.com (Simply.com) with ESMTP id 4VQysF4BZqz681r;
-	Fri, 26 Apr 2024 18:31:13 +0200 (CEST)
+	by smtp.simply.com (Simply.com) with ESMTP id 4VQzLJ3sMrz67xt;
+	Fri, 26 Apr 2024 18:52:56 +0200 (CEST)
 Received: from [10.10.15.10] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(Client did not present a certificate)
-	by smtp.simply.com (Simply.com) with ESMTPSA id 4VQysD6C6Lz681M;
-	Fri, 26 Apr 2024 18:31:12 +0200 (CEST)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4VQzLJ28Xgz680r;
+	Fri, 26 Apr 2024 18:52:56 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
-	s=unoeuro; t=1714149073;
-	bh=7dZ7krTYAZxq8cPoPdHSIbY+K7yXIIJx3qWxQhJ/RRk=;
-	h=Date:From:Subject:To:References:In-Reply-To;
-	b=Qip71L1CB2hsoOlwuKmcv17dZwZJcIodp8s9eiGLiE2SdJKEkPWTctJVORe6CHLyw
-	 w1vgSpFi5Etpn/M8S373xPLJoB8krfHcRZKzkUxQEs9wK1YY2FZkFjRYS1WsI7YWxh
-	 vepEI2N+D2i5R7QMzj66NgwXNxt6h05IqlTiooW4=
-Message-ID: <7749e9f4-2540-4618-8689-b6bb757f9cd0@gaisler.com>
-Date: Fri, 26 Apr 2024 18:31:12 +0200
+	s=unoeuro; t=1714150376;
+	bh=5uG/+7EO1Njy3ESIewJAJKfHHvLTEwJt9Kjxl9rrUbs=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=Qt8MYRjEfkVzv/vsE2QESQMLhHj4lwgFKYeCt83foba50xnIv3eCjz1Gi69mEBY66
+	 S7yyYjmztg2REjMMKO8P2sQ1h/WsMHwYb/sGn8GP/Y7O6zDbi/7hb4FWP1/RanPRmU
+	 afPVdhtrCYEbv0FymW6eJRUXyLagu9mu9LU6/Hh8=
+Message-ID: <d2848a93-898b-4122-8a48-1922f4e42db1@gaisler.com>
+Date: Fri, 26 Apr 2024 18:52:55 +0200
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
@@ -55,55 +55,103 @@ List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [PATCH v2 00/28] sparc32: sunset sun4m and sun4d
+Subject: Re: [PATCH 1/4] sparc32: Add support for specifying -mcpu
 To: Sam Ravnborg <sam@ravnborg.org>, "David S. Miller" <davem@davemloft.net>,
- Arnd Bergmann <arnd@kernel.org>, Helge Deller <deller@gmx.de>,
- Randy Dunlap <rdunlap@infradead.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Kjetil Oftedal <oftedal@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Alan Stern <stern@rowland.harvard.edu>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, sparclinux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-sound@vger.kernel.org
-References: <20240309-sunset-v2-0-f09912574d2c@ravnborg.org>
- <20240423180216.GA906720@ravnborg.org>
+ Arnd Bergmann <arnd@kernel.org>, sparclinux@vger.kernel.org
+References: <20231229200604.GA4033529@ravnborg.org>
+ <20231229200726.GA4034411@ravnborg.org>
 Content-Language: en-US
-In-Reply-To: <20240423180216.GA906720@ravnborg.org>
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20231229200726.GA4034411@ravnborg.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2024-04-23 20:02, Sam Ravnborg wrote:
-> Please let me know if you expect me to rebase this on for-next.
-> I have not yet tried if there are merge conflicts but can take a look in
-> a some days if required.
+On 2023-12-29 21:07, Sam Ravnborg wrote:
+> Add support for selecting the CPU architecture.
+> The default is leon3 - which is the minimum required as the kernel uses
+> CAS instructions.
+> 
+> Inspired by (from gaisler-buildroot-2023.02-1.0):
+>     0001-sparc32-leon-Build-with-mcpu-leon3-for-SPARC_LEON.patch
+>     0028-sparc32-leon-Make-what-mcpu-to-be-used-configurable-.patch
+> 
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Andreas Larsson <andreas@gaisler.com>
+> Cc: Arnd Bergmann <arnd@kernel.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> ---
+>  arch/sparc/Kconfig  | 24 ++++++++++++++++++++++++
+>  arch/sparc/Makefile | 13 +++++--------
+>  2 files changed, 29 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+> index 1b9cf7f3c500..e94783ceb409 100644
+> --- a/arch/sparc/Kconfig
+> +++ b/arch/sparc/Kconfig
+> @@ -161,6 +161,30 @@ config ARCH_SUPPORTS_UPROBES
+>  
+>  menu "Processor type and features"
+>  
+> +choice
+> +	prompt "LEON architecture"
+> +	default SPARC_CPU_LEON3
+> +	help
+> +	  Select the architecture the kernel shall be built for
+> +
+> +config SPARC_CPU_LEON3
+> +	prompt "LEON 3"
 
-My local testing branch for this patchset rebased with trivial fixups,
-so no immediate rebase and resubmission is needed. I do run into some
-strange problems on SMP with this patchset plus your CAS patchset, that
-I do not get when I rebase the Linux patches from our kernel release
-that has my CAS patchset. With no CAS at all these things fails even
-worse, so do I need one or the other for these tests.
+This should rather be bool than prompt...
 
-I will need to dig deeper into figuring out the problems seems to be due
-to something in any of your two patchsets in themselves or if it is
-something else. I do need some additional fixes from our kernel release
-for SMP to work properly, so it could also be that there is something
-with my combination of your patches and my patches adapted on top of
-yours.
+> +	help
+> +	  Build the kernel for the LEON 3 architecture
+> +
+> +config SPARC_CPU_LEON5
+> +	prompt "LEON 5"
 
-There are also some needed fixes for LEON that relies upon code removed
-in this patchset. Maybe the best solution for that would be if I submit
-those and you then rebase upon them.
+...and the same here.
 
-> That is assuming you agree with the sunset of the sun platforms...
+> +	help
+> +	  Build the kernel for the LEON 5 architecture
+> +
+> +config SPARC_CPU_DEFAULT
+> +	bool "Toolchain default"
+> +	help
+> +	  Build the kernel with no -mcpu option, getting the default
+> +	  for the toolchain that is being used.
+> +
+> +endchoice
+> +
+>  config SMP
+>  	bool "Symmetric multi-processing support"
+>  	help
+> diff --git a/arch/sparc/Makefile b/arch/sparc/Makefile
+> index 5f6035936131..3c3a1fd8c873 100644
+> --- a/arch/sparc/Makefile
+> +++ b/arch/sparc/Makefile
+> @@ -25,14 +25,11 @@ KBUILD_LDFLAGS := -m elf32_sparc
+>  export BITS    := 32
+>  UTS_MACHINE    := sparc
+>  
+> -# We are adding -Wa,-Av8 to KBUILD_CFLAGS to deal with a specs bug in some
+> -# versions of gcc.  Some gcc versions won't pass -Av8 to binutils when you
+> -# give -mcpu=v8.  This silently worked with older bintutils versions but
+> -# does not any more.
+> -KBUILD_CFLAGS  += -m32 -mcpu=v8 -pipe -mno-fpu -fcall-used-g5 -fcall-used-g7
+> -KBUILD_CFLAGS  += -Wa,-Av8
+> -
+> -KBUILD_AFLAGS  += -m32 -Wa,-Av8
+> +cpuflags-$(CONFIG_SPARC_CPU_LEON3)	:= -mcpu=leon3
+> +cpuflags-$(CONFIG_SPARC_CPU_LEON5)	:= -mcpu=leon5
+> +
+> +KBUILD_CFLAGS  += -m32 $(cpuflags-y) -pipe -mno-fpu -fcall-used-g5 -fcall-used-g7
+> +KBUILD_AFLAGS  += -m32 $(cpuflags-y)
+>  
+>  else
+>  #####
 
-I do agree with the idea in general, but being busy with other things I
-have had little time to dig into this lately.
+As said in the sunset thread, more vetting is needed from my side, so no
+need to respin this series yet.
 
 Thanks,
 Andreas
