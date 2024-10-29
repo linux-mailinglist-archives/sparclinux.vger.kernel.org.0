@@ -1,159 +1,145 @@
-Return-Path: <sparclinux+bounces-2514-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-2517-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4F49B41EB
-	for <lists+sparclinux@lfdr.de>; Tue, 29 Oct 2024 06:51:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB189B4C87
+	for <lists+sparclinux@lfdr.de>; Tue, 29 Oct 2024 15:50:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 359F22837B8
-	for <lists+sparclinux@lfdr.de>; Tue, 29 Oct 2024 05:51:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 842071C22696
+	for <lists+sparclinux@lfdr.de>; Tue, 29 Oct 2024 14:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9CB201009;
-	Tue, 29 Oct 2024 05:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6297191F6C;
+	Tue, 29 Oct 2024 14:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O4MXc1dw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f8RUtOX9"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA798200BB5
-	for <sparclinux@vger.kernel.org>; Tue, 29 Oct 2024 05:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCA018C939;
+	Tue, 29 Oct 2024 14:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730181098; cv=none; b=XLhw8a2RieWfww/b0iuN2XcYZqH3AAQubPYgd/GmTMwmgj1RcIz0sxAdmTNddnt1kaqHqEIKAp8FPHu89rZsraJOwI6O6iHm+mdHkEkgrm+TV+yA2CYT88B1BYSBvYPin2RUL4G0aLoT0RUwPlYlBSj4WizKlbWnDbhjxVczEj8=
+	t=1730213395; cv=none; b=Tu838YPZBsgor0Q3yJI4uAayquZ6eIgYW3m74CVCx+OfJCy1UKx9DqzFPuYhJKId9efdmeAEJqZGpFb3QfL09lFC9s1iDS4qsCiSKL6Hhd7Dp7VK9Q/Xd1/7afFoU/ZteVStUped0rZWsKKpBBNFhH7MqKXBHQpt9WhCx6ixZG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730181098; c=relaxed/simple;
-	bh=rkJGzaJiGDNyDHmrzD6Ukn0kvrLRqUNFw7rsJbF66DM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CbUyWXwQHGQzbdTAXXTD5iyV5y5Smi1G4J8n5FPooxeK+P4C7fbYDKOTAOiTlb4httOZSgBCre/e+syOizFnonjT/it1Ogrg2sTEEQ6881VT1fRXzlaRDQDWkKCZl6KTqvcRFHCwnP7dDplrqn1STVUaZMegt/x5c3veFs+dD4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O4MXc1dw; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-460a8d1a9b7so138861cf.1
-        for <sparclinux@vger.kernel.org>; Mon, 28 Oct 2024 22:51:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730181095; x=1730785895; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yS+AWBnCO/J18Xc6TcuxqR5XEdAGr/Rpio3YV4nA0AE=;
-        b=O4MXc1dwxcgbsQWGK53emGves46j/aC/NBO5mU8uxHNFbMgm99YV1mCvYt9FMmNEza
-         Nrd0l09XgIndpa3N3+rrO40GWHE8PMH7DSRn3APfxUKc4+e+mpNPr5krVYfDQMYaBz23
-         nH1KKMPj/U8SaZ35spcPGvPCabb5tlab7e/+5XDtZbEyF3Vt2zbgaTjPJRaLBEgdjAW8
-         aOkTwCEQ+Zcgy00U/n839uEzdgcCnE5gwi3sacJIgOnnSCbV2+TP+4lRbRS1z4BLEBFu
-         y1KDxn2N4Xlmsy+XhzHUd8ZpFcdvQNNezNsYWFO3DJcGqSuqYguNEDUe50pXcQrHwjMI
-         zJqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730181095; x=1730785895;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yS+AWBnCO/J18Xc6TcuxqR5XEdAGr/Rpio3YV4nA0AE=;
-        b=LWfwQnGXmB0Slnb0DaH7nUZPEeTTu0sqkk3oF26Mg2TeDd8W/RjA0KtgpLy191MaWV
-         /+mOtiHo6wF8lAraLY7lmbHG9SCC0almn7b+J+zt34RveeuORSLlTXlKx9dHq6E5ewAf
-         NqvDblrh8TKo8oICRDz3KlvSXo1cRRqHKlhOupsfCHaqxhUcfrtA+oHlCoh2Me8K7E5H
-         tAoCtRSI7zJscHX7usYiuXj6PAm7uNY0MKlP3aWVpezFWJPXB6V3xPjz+W+gpJGpDx+5
-         KBrRUEhBXBZ8jy1QY9Z79kTTwmg89PVKbaBQeRDNLMvacU9dZ2MDudBn8t73gUJ13L0O
-         sv0w==
-X-Forwarded-Encrypted: i=1; AJvYcCV6T2SiQLvevfR2O9b6geEbOhKcdlxWf60z4t/Ms0j2iXgue92f5MH+ytC9qHj0C+nxUrWbOu6+2IBq@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0asjVtqJvviFnCZpuBfJALOabhkijdCsydV5R7eon69gNJPu6
-	HlMSHRn4+CyLSRyVqtkE1TX7sdad8kALeLfwmb3i3cAF0NMH7p14i4vZTvGt2MzAgt4NN8PdwJ8
-	NsWtN0pdXpeCMSAtDZ82c6SJhapIYlFZDwA6j
-X-Gm-Gg: ASbGncvM3AkAo+hfimxER3Q+7j+8piwCY0Pa4j31EGxsb0bf18/pbsEQZGKAMB3POaV
-	AKRRf6cnP26ZlEBldyGDwzhUcblOiQXA1WAC+LTDWUIOeJ1Ya1ioRkNN0yP0=
-X-Google-Smtp-Source: AGHT+IEVAXdFG3fNtFOsbcJBNRZwq6dZ7NPHf4Fl17QtrnIba/Ad0eOq8gq9bIFuScwN6QgnbyAorRomVIE9wKpqH3w=
-X-Received: by 2002:a05:622a:38b:b0:45f:6f3:5671 with SMTP id
- d75a77b69052e-46164fa2de0mr2424301cf.20.1730181094473; Mon, 28 Oct 2024
- 22:51:34 -0700 (PDT)
+	s=arc-20240116; t=1730213395; c=relaxed/simple;
+	bh=dxu8NGLbbkNXI+3HmhHSQPHx4jpdDIhPx1liJ8XwGUY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HiSdPVl7tv3/3TrsXawKvx74dhH9x/tWSaha1ughQ6WKBHQZZfVpkXTWgz87zi9cQ37J9b44U9JT48jCf5R89DHK5maQ2xFHFFEvxpBiFJOdDejRmbQcK8UBOCSbkxyvxMF4YSDXayJ4btqg1qSqsNu+KRMKK/54jZRrseYocH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f8RUtOX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 26807C4CEE5;
+	Tue, 29 Oct 2024 14:49:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730213395;
+	bh=dxu8NGLbbkNXI+3HmhHSQPHx4jpdDIhPx1liJ8XwGUY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=f8RUtOX9v/yr7teb2eTHS7GMgsyArQl3bsBlQfUT/GLqeOwtYLawn2oqrIQ5YNx/w
+	 WH0xWqPx0aGpisGHk0uFNIuxzS77BGexeZFrNaqf4ZnSMK882MAi0j4vtLPS0/8vQ+
+	 BDEozqc8eZjZxKEtOOeHQhvElKmxjZwzG0aJmmfSx+Lof8BbuNhgPOdB7uYS+BWo0O
+	 ugMvSwpXBPtowayW0eWv0Ci6aNqUV5VD2htifb1EiTNabRS7YOnY75xYZn+R0FFGav
+	 3vQw4Mk4DEkYa3qpphoVhK4T/RqBse54YsTJeEQU5nBIOf/rQmLepYNKXgZeXE7zmP
+	 Z/y17BRY6NS/w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 105C7D3A665;
+	Tue, 29 Oct 2024 14:49:55 +0000 (UTC)
+From: Koakuma via B4 Relay <devnull+koachan.protonmail.com@kernel.org>
+Subject: [PATCH v3 0/2] sparc/build: Rework CFLAGS for clang compatibility
+Date: Tue, 29 Oct 2024 21:49:06 +0700
+Message-Id: <20241029-sparc-cflags-v3-0-b28745a6bd71@protonmail.com>
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241026051410.2819338-1-xur@google.com> <20241026051410.2819338-3-xur@google.com>
- <202410281716.0C8F383@keescook> <0605fa9c-0e48-48ec-b04d-c2ef1c48fdd9@zytor.com>
-In-Reply-To: <0605fa9c-0e48-48ec-b04d-c2ef1c48fdd9@zytor.com>
-From: Rong Xu <xur@google.com>
-Date: Mon, 28 Oct 2024 22:51:21 -0700
-Message-ID: <CAF1bQ=QDQ+ACsH2CchnRk2LDRpN_WYjJOAjr9FDspxiar+YbrQ@mail.gmail.com>
-Subject: Re: [PATCH v6 2/7] objtool: Fix unreachable instruction warnings for
- weak functions
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Kees Cook <kees@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Bill Wendling <morbo@google.com>, Borislav Petkov <bp@alien8.de>, Breno Leitao <leitao@debian.org>, 
-	Brian Gerst <brgerst@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Li <davidxl@google.com>, Han Shen <shenhan@google.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Poimboeuf <jpoimboe@kernel.org>, Juergen Gross <jgross@suse.com>, 
-	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	"Mike Rapoport (IBM)" <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Wei Yang <richard.weiyang@gmail.com>, workflows@vger.kernel.org, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Maksim Panchenko <max4bolt@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Yonghong Song <yonghong.song@linux.dev>, Yabin Cui <yabinc@google.com>, 
-	Krzysztof Pszeniczny <kpszeniczny@google.com>, Sriraman Tallam <tmsriram@google.com>, 
-	Stephane Eranian <eranian@google.com>, x86@kernel.org, linux-arch@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOL1IGcC/3XMTQqDMBCG4atI1p0Sp2qwq96jdJGfiQbUSCKhR
+ bx7o5tCS5fvDN+zskjBUWTXYmWBkovOTzkup4LpXk4dgTO5GXKseIMc4iyDBm0H2UUgYdEoZSr
+ VGpYncyDrngd3f+TuXVx8eB16KvfrHyiVUIJSUhhurTAV3ubgFz+N0g1n7Ue2awk/gijFl4DAA
+ es2v6ghVdsfYdu2NzvMEAbvAAAA
+X-Change-ID: 20240620-sparc-cflags-e7f2dbbd4b9d
+To: "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <ndesaulniers@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ glaubitz@physik.fu-berlin.de, Masahiro Yamada <masahiroy@kernel.org>, 
+ Nicolas Schier <nicolas@fjasle.eu>, Jonathan Corbet <corbet@lwn.net>
+Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Koakuma <koachan@protonmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730213393; l=2365;
+ i=koachan@protonmail.com; s=20240620; h=from:subject:message-id;
+ bh=dxu8NGLbbkNXI+3HmhHSQPHx4jpdDIhPx1liJ8XwGUY=;
+ b=Cpa9Kjmy4yNXmh+4u4E9dL73GLbapjGZbMr1QhlAkTR5avAlOpIVo6RdEvVF63/G1AVuMrly0
+ e8KpgKglyqaCUC2fR+c3tAIi+W+ay3g6BJ/7zN7p/pVdNLBcz8GMcJ5
+X-Developer-Key: i=koachan@protonmail.com; a=ed25519;
+ pk=UA59FS3yiAA1cnAAUZ1rehTmr6skh95PgkNRBLcoKCg=
+X-Endpoint-Received: by B4 Relay for koachan@protonmail.com/20240620 with
+ auth_id=174
+X-Original-From: Koakuma <koachan@protonmail.com>
+Reply-To: koachan@protonmail.com
 
-I think the objtool works on individual object files (or vmlinux.o).
-The -Wl,--gc-sections flag, on the other hand, is a linker flag that
-acts on the final link -- it's applied after objtool invocations.
-Therefore, even with -Wl,--gc-sections, we'll still encounter those
-spurious warnings from objtool.
+Hello~
 
--Rong
+This changes the CFLAGS for building the SPARC kernel so that it can be
+built with clang, as a follow up from the discussion in this thread:
 
-On Mon, Oct 28, 2024 at 5:19=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wrot=
-e:
->
-> On 10/28/24 17:16, Kees Cook wrote:
-> > On Fri, Oct 25, 2024 at 10:14:04PM -0700, Rong Xu wrote:
-> >> In the presence of both weak and strong function definitions, the
-> >> linker drops the weak symbol in favor of a strong symbol, but
-> >> leaves the code in place. Code in ignore_unreachable_insn() has
-> >> some heuristics to suppress the warning, but it does not work when
-> >> -ffunction-sections is enabled.
-> >>
-> >> Suppose function foo has both strong and weak definitions.
-> >> Case 1: The strong definition has an annotated section name,
-> >> like .init.text. Only the weak definition will be placed into
-> >> .text.foo. But since the section has no symbols, there will be no
-> >> "hole" in the section.
-> >>
-> >> Case 2: Both sections are without an annotated section name.
-> >> Both will be placed into .text.foo section, but there will be only one
-> >> symbol (the strong one). If the weak code is before the strong code,
-> >> there is no "hole" as it fails to find the right-most symbol before
-> >> the offset.
-> >>
-> >> The fix is to use the first node to compute the hole if hole.sym
-> >> is empty. If there is no symbol in the section, the first node
-> >> will be NULL, in which case, -1 is returned to skip the whole
-> >> section.
-> >>
-> >> Co-developed-by: Han Shen <shenhan@google.com>
-> >> Signed-off-by: Han Shen <shenhan@google.com>
-> >
-> > This seems logically correct to me, but I'd love to see review from Jos=
-h
-> > and/or Peter Z on this change too.
-> >
-> > Reviewed-by: Kees Cook <kees@kernel.org>
-> >
->
-> Does this happen even with -Wl,--gc-sections?
->
->         -hpa
->
+https://lore.kernel.org/lkml/JAYB7uS-EdLABTR4iWZdtFOVa5MvlKosIrD_cKTzgeozCOGRM7lhxeLigFB1g3exX445I_W5VKB-tAzl2_G1zCVJRQjp67ODfsSqiZWOZ9o=@protonmail.com/T/#u
+
+The changes are removal of various `-fcall-used-*` flags, and adding
+clang target flags for SPARC:
+
+- `-fcall-used-*` flags is gated behind cc-option as it is
+  not supported in clang. It should be safe; clang won't use the registers
+  specified as temporaries, but it is a safe change wrt. the ABI.
+  Assembly code can still use those registers as needed.
+  A cursory look at the assembly generated by GCC 13.2 shows that
+  the compiler was able to reallocate uses of those registers into
+  other temporary registers without adding extra spills, so there
+  should be no change in performance.
+
+- More trivial is to add CLANG_TARGET_FLAGS for SPARC target.
+
+Building with these changes still result in a working kernel,
+at least for Sun T5120, Oracle T4-1, and qemu virtual machines.
+
+On the LLVM side, the effort for building Linux/SPARC is tracked here:
+https://github.com/llvm/llvm-project/issues/40792
+
+Signed-off-by: Koakuma <koachan@protonmail.com>
+---
+Changes in v3:
+- Use cc-option to allow GCC to still use -fcall-used-* flags.
+- Add documentation on building on SPARC, along with required LLVM version.
+- Link to v2: https://lore.kernel.org/r/20240717-sparc-cflags-v2-0-259407e6eb5f@protonmail.com
+
+Changes in v2:
+- Remove the -mv8plus change; it will be handled on clang side:
+  https://github.com/llvm/llvm-project/pull/98713
+- Add CLANG_TARGET_FLAGS as suggested in v1 review.
+- Link to v1: https://lore.kernel.org/r/20240620-sparc-cflags-v1-1-bba7d0ff7d42@protonmail.com
+
+---
+Koakuma (2):
+      sparc/build: Put usage of -fcall-used* flags behind cc-option
+      sparc/build: Add SPARC target flags for compiling with clang
+
+ Documentation/kbuild/llvm.rst | 3 +++
+ arch/sparc/Makefile           | 4 ++--
+ arch/sparc/vdso/Makefile      | 2 +-
+ scripts/Makefile.clang        | 1 +
+ 4 files changed, 7 insertions(+), 3 deletions(-)
+---
+base-commit: c2ee9f594da826bea183ed14f2cc029c719bf4da
+change-id: 20240620-sparc-cflags-e7f2dbbd4b9d
+
+Best regards,
+-- 
+Koakuma <koachan@protonmail.com>
+
+
 
