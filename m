@@ -1,92 +1,117 @@
-Return-Path: <sparclinux+bounces-2603-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-2605-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9229BF1D7
-	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2024 16:36:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087859BF33C
+	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2024 17:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 501F41C25AE1
-	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2024 15:36:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC86E1F21A62
+	for <lists+sparclinux@lfdr.de>; Wed,  6 Nov 2024 16:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4A4201273;
-	Wed,  6 Nov 2024 15:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF47189F5C;
+	Wed,  6 Nov 2024 16:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="X4ikZ4wn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6rqua4yb"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="RaZGVFe5"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic314-13.consmr.mail.bf2.yahoo.com (sonic314-13.consmr.mail.bf2.yahoo.com [74.6.132.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781D616CD29;
-	Wed,  6 Nov 2024 15:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB52913A88A
+	for <sparclinux@vger.kernel.org>; Wed,  6 Nov 2024 16:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.132.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730907384; cv=none; b=Vv3v+QbiVvs470EYWBpnmLF+YHol6crY/I6WebHkVcEBKtkoatP4E3kxtXOErtxbYUZ19uMIgdGhx/eJwUhWt2d/G+qUICutpvqMXQotMDimwF9hIxOC/8leYZMl07lipDubUKrUxGds3Di9Cmf2b781gE8IRAEP3CoHtOEFSjI=
+	t=1730910618; cv=none; b=dE8GWglKz0/KRGZ17U1j01Jz3kb2rF60XyikpPaJhCMCEWGXcQapUB91ziy/FUSzCYoBxRxoz/n/6DJAxWY7KuK0GJwFXVxNOPiTswYzc8HtNjR7p4eO23QZViTfemVfbO7NoXVYSqez0ubOVTS41K6OEFrMGqGJOSt/YgLJVro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730907384; c=relaxed/simple;
-	bh=gvu+DlrdaTyOJiJCe5bkq6Jd1DrS0DApb5B0qy8AEYY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JuP80dLKztwxvzpIG9jrlh/JD5TNeycBjWcP5hExPLKQlOJ7aC1Ni6GQWYzAwfUDUrI2CHcJbuf52luTO+YE2E08Sj4UaiilhhE7I5l/KZ7QZMqQJ0ggU1Hj097/vFJrWYAXKy4ykGgfJ2A/oUiHQoBBLxd8UOfTIV2Dz6rAK8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=X4ikZ4wn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6rqua4yb; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730907380;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qtdYKdKwHTXJuMaHWRfAi9GzxWa0wjVTqWwZaJ837uI=;
-	b=X4ikZ4wn2utxMTie23bvYGlg/xa0WdyyiHLaQeu0RA5/ZE2PJ2Pmto2uWM/BmYRfM5cusZ
-	xGTTysJime1Tkq5H2zlByQlAxZZRB0IqCY5mwZro6nvyFuxSCXdl4ZYRqj11G3jtRqxo7P
-	g8OtrQlB0yZtIoDFHlDilnswkZeVM8ytnG6jdCXYqVO3fbHoiurw4xnv0xgVLDaw3fHYE1
-	lPXtpLFY4ozMVHQfw2mipLlYOXRvRW0kaGrQhh4GWAL7id5+gghzzgRfLcPNqmslPM09Ki
-	5Q9mOU7CTuI6MKtYrhIjCuTf/y9HIurBX35AsZdJm/s/cVyJLKFf7fZEeKm4hQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730907380;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qtdYKdKwHTXJuMaHWRfAi9GzxWa0wjVTqWwZaJ837uI=;
-	b=6rqua4ybQt6quGmOvgnPokZHhH0+yX7iB4GXIw64WWkV3ihPpTiq4XKmJYyvYtAt8xZQY0
-	JxxvskTwBqSwlUCw==
-To: Bjorn Helgaas <helgaas@kernel.org>, Dullfire <dullfire@yahoo.com>
-Cc: davem@davemloft.net, sparclinux@vger.kernel.org, netdev@vger.kernel.org,
- linux-pci@vger.kernel.org
-Subject: Re: Kernel panic with niu module
-In-Reply-To: <20241104234412.GA1446170@bhelgaas>
-References: <20241104234412.GA1446170@bhelgaas>
-Date: Wed, 06 Nov 2024 16:36:21 +0100
-Message-ID: <87fro4pe6i.ffs@tglx>
+	s=arc-20240116; t=1730910618; c=relaxed/simple;
+	bh=fvAFf0JaFeBYm+F2wvaYY1CZI8BimVIWOliOUZ1LMAE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I/nD72WI+Cn/biHvyvqXeKKrONnoWAMK8DkG5yx3FlLv2eKtfDftkDhS4+4pJDtxu7YZCX4XuB5XEmJy4gNRnklbaY1uq2N0n2wrNICHmG9VymlU/6znVei7fMbcI8OitGoh9WvllVI1dicN25CMMCMm7Zf6HZaNFWQ0D1kYWIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=RaZGVFe5; arc=none smtp.client-ip=74.6.132.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1730910609; bh=W0ieKc3ap2ATG+t73oWiPacelFjiXkyZM757F906zV8=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=RaZGVFe5QGta3h9qs80DqR42kbDiabkMl9CRH+h/WChFQkOZAT0iTrc/7cT6UPAEc/ef+OcKtJmbuYc6rxL+4q4GxnujHLhWgT6vi2Y/AhzF2UZOnMqcey6aDemb7WxVsn75Y4eLTcM497E/gjBb1EjhfMFLqxBzEdz8v0ySlmxAsP3kkuhtPdt1eEJdsWI6ApxsvJinNqgOjyV2PzDT39uLWmprrV8dl0ky8iSU7TGGJEcm6FMJJ1kLkO6J2R3vWMC70f0UIm+qTIvEtuNeAhxShoVJIPeNHb+6wTqATgca4UIvQ/ZkXlU+jQ5ogmp8iiLsXEndvOn5p/MVH9QZBQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1730910609; bh=v8duAYhLnT2wSO9/g7ki6EuZVnevhsEEQiVAvkG7FIu=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=MgiaX1vZfU5d0+KksxoEawg4bqhao6AYgPhG36lQOAnGWc5s4VvChUxzM0GHsQD3DNQxiYKPTOoyORbQpZBd/fLoLP4/cMofZkcT23WhXAaaqxSR7/AHcorLVwj+hG/bwSoQ9b1kR4ueAwRaL7YFZCYF0oHVRwya1e3vQs912O9hOaEyr9xKpOgW/7arAmWdw+AIFLTgbgj8Q5JTzIdayv7zUmvMYLlrL/+NVFCpdaNc2LidGKETviJNhEid/tkntdDAHr+Mm7VarZBSyMk3j5PBZ3Qls4H1M5aqlXwTr1HguAY64bzHv1XzKUdRMTpFQfTAil6UEk+TC5ntSiwKJQ==
+X-YMail-OSG: Itp9kHgVM1mb1p7LBBg2BiXephJb3Ielz00JP7e28KGT05Kw.7.hRs6rEqV26Hq
+ L3vssA6zBOOcHeAicnDpij40x3Uned20II46HK_mmbROrW2sgjnKtQjX9mxMOIEXfgOZNxXu5JoI
+ JJsmuVnqORUUp465NbzIgTmS0P78De7YgJLM8MOh49HZ0ZhWx.kNjgUbkRLMBnblhfEAHtQJGRGl
+ k4Q7YjuN.0Sw88eMMXNcXG70XGw53D.ctV42bDC6_bi5U8RAZRBiLWSlrCuiDGcCbIaxLtZ4gA.7
+ llRQdKlij70oOUdOTem1YYC6.iubp.6uSmwhxHavxPXSGtnlYmb7CoDd_lWC7O9ulYI3l1b8170m
+ Et8S8WNymmeA9_8aSv5MFVUdAWo9jMztPlf89Een6o_YscuwtiObSMeNIZZG.FscoMe_Jsxd6Rkh
+ 55QT6nLIgkDRKhgb76wLwpX29hGyNojlfFBIAyQavEw3xgMq0L6p7EpflsAtP14CECDZ0fiprxGo
+ hKLEIPL51aJKEy0i6zXQXboWLBRkqzyV0s.dFLXld4CI8hxysVxB7myK6TDpoEjTrPaDCgz5NkwH
+ 8z2SuxW2kDDm9f_ZFvMAXrj893YvoXQlay9NxfFuVhUgGYibE8icLJPigqM0SGLA70mg2aPrBtsw
+ .QiPBdIMdavndblI6aLZvkdqQHNPnZqWTfJba8KCEPeiCpOZADH6C5JGyg6EByDE3W9_KIwSMPg0
+ DaxAZ0fSn4pDSasgqAce3nMPMfeBVAmKBJJWCwM.XoRRiS0JzhDxl9m4SH332Hk8aleGJe.IE8Be
+ _nMsw_Ttmhzyho8IPPOmQSdK8EdfGxamepHAA95rovcjoGMn1Jy08ljjTIoYugWIvBLhTDVin2Eh
+ fiAcj0uRrSkp2.CoIB6GsQUogCj1qpwKamf0a3XhK1uHGM5msH1I8xchOElubos1iSfp.eNycOTs
+ EL8nxn7rwxou0ft_chooUAhmtQX.aC8c5CV5FsvU1OkP9eiJQv6aCvfX9tvAnTZ5rVlqnCQcDSWy
+ iSIKZ4VFhlMfz_U0fcZgLjG3.BB1huYkxpm3AcfP8xfuMHxCYyu9iwI.xGQKCVbEeM7TE6yPJsHy
+ F3D7VfqdiESlDe9Q98vNYzRHcCNhIuXCB5uBQvHmC3E9HRtUd0bOjQYq3NR5RWQQfSe5ZpOxpKR5
+ WUe0j4WT01X3BZwtnUOdlxL16p619iPB7No.mC7FGJJNii8lwcUTlYXF1wOna7yOqgGomR1JbNwv
+ oSRUGbaG_jDDsXbdwn2DR9X7d1vpWs1.OE6V95_DOu.SyD8rqG20mbJ59EtKOq.QCpKFCcVEIU.B
+ ti3GaZ.YxqFQVym52Y9_hQd4Gu4XM_EtCl8sCQLUKfEO_.waGTYKHk_1SutQrksXquAuflquVrUZ
+ AGgLLjqDv5aSQsMtELkPmKFETm1YWuBmqktilY4jwOfMF82bHZwaIxUNh4S8HdJlZVT65E_v4D23
+ izxFxagQyPR95zZXAZs8toVfFb0gD5rU.JOYivWuxTGYkpqL_w2_7VUsz0JnsrZG5fREvb9QNeOV
+ oOad9CEWNfZ_Rq4jcwv_3ENYj4oxFnau7wDZ3dECZPnGoo3GTVMaQm35h2h3ICIRBTeorlZ6K176
+ fnn4pKiYD7EBGLNngkFE.4JVJF.g.pMPpxHgHvYeZfJoe3DWPtuEal2uDWple6ztCKq0zciMOuzX
+ 9xYTqozvI9yb5M9prbRtRaggntygIul5_jVLqv9x63UjOkikXsNHJvc591CIjTaDMJMdhMN111ey
+ fBcaNaDDUqyDD6la5yIcDdLYehCH5BbmCVLek0jw21sEcSaaSfgUiRJsBp58aUuB4uRmdjpPYo4s
+ IS8FsQHoUVCJIhNjFpbCb5HRGdY3baMOK0VYF98c8ALjhrZqEpBAPjHczBLJ1M.ZYLtBheq_L7Ul
+ Et2LL8SEuItwXW0XTbM9b6r2ViW77pkA4CSdK0vKCie0OApbF1_qF6RbxS3zKiLeGd6dd3K.6V5g
+ YaPg8NkJdeK_2H._GVf53BsaWzDfFXh6Rr3MRbPxKKdEfhFMJPhFUFqKupCtdVYP1HRVg9uZ0YlQ
+ JxmxvXprBK4uGfzo_pffDZFm__j3.XYGaViZZ7Q8q1Ge1PmGR4L2wenbTEfmwocUse4sYTUU0DLJ
+ W2AHLIkuiDKkAIhmHN1z3xZsMhMX4jG5aUI2i7N_qrKW9rww2UjCv3LkZQVdsJ4XAGiTEpc467xw
+ SFhQr4ZYir_N2R_4GWlWTldhL5eRTM.Z187WeWpOoWX_UDqkC30n14jDyBiZ3
+X-Sonic-MF: <dullfire@yahoo.com>
+X-Sonic-ID: b8509b16-6bc8-4ea9-8dc9-b2f922c1dad1
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.bf2.yahoo.com with HTTP; Wed, 6 Nov 2024 16:30:09 +0000
+Received: by hermes--production-ne1-bfc75c9cd-rq64s (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 9ac2812bfb1d027bbae0833a8fb18759;
+          Wed, 06 Nov 2024 16:19:58 +0000 (UTC)
+Message-ID: <973e2e20-51d9-4fe4-a361-0e07bcf95bab@yahoo.com>
+Date: Wed, 6 Nov 2024 10:04:40 -0600
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: Kernel panic with niu module
+Content-Language: en-US
+To: Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <helgaas@kernel.org>
+Cc: davem@davemloft.net, sparclinux@vger.kernel.org, netdev@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20241104234412.GA1446170@bhelgaas> <87fro4pe6i.ffs@tglx>
+From: Dullfire <dullfire@yahoo.com>
+In-Reply-To: <87fro4pe6i.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.22806 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Mon, Nov 04 2024 at 17:44, Bjorn Helgaas wrote:
-> On Mon, Nov 04, 2024 at 05:34:42AM -0600, Dullfire wrote:
->> I have also bisected the kernel, and determined that  upstream commit
->> 7d5ec3d3612396dc6d4b76366d20ab9fc06f399f revealed this issue. This commit
->> adds read to the mask status before any write to PCI_MSIX_ENTRY_DATA, thus
->> provoking the issue.
+> 7d5ec3d36123 had the mask_all() invocation _before_ setting up the the
+> entries and reading back the descriptors. So that commit cannot break
+> the niu device when your problem analysis is correct.
 
-7d5ec3d36123 had the mask_all() invocation _before_ setting up the the
-entries and reading back the descriptors. So that commit cannot break
-the niu device when your problem analysis is correct.
+In 7d5ec3d36123 (and later) msix_mask_all() only writes to
+PCI_MSIX_ENTRY_VECTOR_CTRL. I have tried all the MSIX registers, and only 
+writes to PCI_MSIX_ENTRY_DATA were able to prevent a fatal trap on a read.
+However the only write to PCI_MSIX_ENTRY_DATA I see is in
+__pci_write_msi_msg() for 7d5ec3d36123, or pci_write_msg_msix(), in 6.11.5.
 
-83dbf898a2d4 moved the mask_all() invocation after setting up MSI-X into
-the success path to handle a bonkers Marvell NVME device. That then
-matches your problem desription as the read proceeds the write.
+> 83dbf898a2d4 moved the mask_all() invocation after setting up MSI-X into
+> the success path to handle a bonkers Marvell NVME device. That then
+> matches your problem desription as the read proceeds the write.
+>
+> I've never heard of a similiar problem, so I'm pretty sure that's truly
+> niu specific.
+>
+> Thanks,
+>
+>         tglx
 
-I've never heard of a similiar problem, so I'm pretty sure that's truly
-niu specific.
 
-Thanks,
-
-        tglx
+Regards,
+Jonathan Currier
 
