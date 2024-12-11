@@ -1,70 +1,70 @@
-Return-Path: <sparclinux+bounces-2812-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-2814-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E7729EDB8C
-	for <lists+sparclinux@lfdr.de>; Thu, 12 Dec 2024 00:30:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C759EDB9B
+	for <lists+sparclinux@lfdr.de>; Thu, 12 Dec 2024 00:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0171F168AE0
-	for <lists+sparclinux@lfdr.de>; Wed, 11 Dec 2024 23:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E866A168AE7
+	for <lists+sparclinux@lfdr.de>; Wed, 11 Dec 2024 23:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE4E1FD7AC;
-	Wed, 11 Dec 2024 23:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150C21FD7BC;
+	Wed, 11 Dec 2024 23:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uQR62U21"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jdn9oz7v"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21CB1FCD02
-	for <sparclinux@vger.kernel.org>; Wed, 11 Dec 2024 23:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E541FD796
+	for <sparclinux@vger.kernel.org>; Wed, 11 Dec 2024 23:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733959702; cv=none; b=oNnHZgQSucZxXpmWdxUkUmbA+3+q7RfiK1IZSL/o5IU+r/H7fCxbKE5rcnNs1GP91Uqc4pSV4ISWersxvDdg4g3XI9gOp6zNEEQ1sKhlE/9VMSHXBZkNGCOQ7SllPhnGyIZCMVhsj/R4yLpaD+ObpJVZi4xAjJuNj8K38iAZAz0=
+	t=1733959706; cv=none; b=KXYmAJQ8rAbv51x0d2SUOrr4LgHMTOucMqAxHRIMR6W2MUHxbm7OZs0y42lvzj0yTx+GS/CfR00LXr7NL1LkCYT9fT4uMnh0SolC/G8ENoLRoCzjpGxUeUPzfxx9m9gbj08zcbitaQoR4DeZqg5VfS4uGow4tLdEWf/rCTRp2sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733959702; c=relaxed/simple;
-	bh=ihwAm37IJ2/hyH8wk9p8tewzBNUAFvpAvR4rEE9oF+8=;
+	s=arc-20240116; t=1733959706; c=relaxed/simple;
+	bh=t20Jm0mocAcK7lQ29shtI55Q6k8DV8IzFPooZ89HtI8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WDG1/94+SLNQP/zqVCEFwA8hUN7bnldt4EJNPY7hVYeP9Yj8jtfJsVU7c2zWH+9IVWMf2QAUq0gd201io7gfTfY+oOaqpne6/QOY2iXqp3FMfFECoRFmn4fdWCyu+aThEeRjqh0g0GVk7zXOWTDBilCawImZb83w9gD2OoiwQa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kaleshsingh.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uQR62U21; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=K891rQDRcfYVyhdA2unmMwh5KVRMiscK2Jf+2SAybiBEDmtCg3kVPYIyRW+Sf3eqWL+K0M9rmOkmbukwm5p0HbVCxTDAv4saYJ+AZSsqIBCRnoWfN8S4EpIH0mntg2PyreN+ucwRvkbUWpEuU7Wx176zxhW9kS1zeEuvRsh9/pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kaleshsingh.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jdn9oz7v; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kaleshsingh.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2163dc0f5dbso34892025ad.2
-        for <sparclinux@vger.kernel.org>; Wed, 11 Dec 2024 15:28:19 -0800 (PST)
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-728f1c4b95aso25676b3a.0
+        for <sparclinux@vger.kernel.org>; Wed, 11 Dec 2024 15:28:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733959699; x=1734564499; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733959701; x=1734564501; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uS3JA6w5wn3oIbxGMB+ie6BxkNausmcv0DhJz9a4fkc=;
-        b=uQR62U217bS+T1AweoH918/5FFDimU0rPOTcz+N1nByJhHqrKlo8nwPm0+nqlBU45B
-         WrPADAHSbRqfp2GCPefvAbI9wCOIeWBiniKXINJ2LWu60bFuekVilayqfzUBvLxWXV9R
-         wIs0Bjheu0LrYfSDg52K3U+OLXAhcOQOk/NEx0orAuFtge1GCpQEmfQtdWePC5FqtczM
-         +yRp5Yv3V1GMmYqYw9+il62IIDvfxdzHP7DIFfMNR+FwBX19HPqHZ/JD4+HZjFqTQ1Dy
-         w0tLB7BUfTh+l87ZlLQGmbYsjLqXgGY+OndYds4N28PiJgWIjRNVxDV2CGxwLlM0oE0z
-         fdGg==
+        bh=UgF7uGjYnhvUd+Jp5od3s3bWQayM3Oz+R04wRikqyig=;
+        b=jdn9oz7vQF1zkP0hokK9Ur/G9iVbtEDdXqbpxPL+YFh/9/tH5hE70Y1hhPgLboWEGW
+         FDnZ98S05qO21xK1GC8H9UVf2zwwLN5PCAkDjUaUxWTUVwIRt+gzszEMOuRfmXHEmGe2
+         od96ykr4B/SNxkmo8w1j9iqGmLZk04ktr+GY+nXzRHST+QP9Splbi+jkDxN4ROCPFAhN
+         wneV51QJFj2tmwrGq297aNPbUeKQ+wf+2RMMB7S24UwRVAsF6zoSyoozYpK+d65F9W8Y
+         d0zwWvxTkmJPLSYgWubMXwJzbpd4rDK72vk4QURRTTyAoV0rWikxHZMpqXU6WKTBfkth
+         R96Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733959699; x=1734564499;
+        d=1e100.net; s=20230601; t=1733959701; x=1734564501;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uS3JA6w5wn3oIbxGMB+ie6BxkNausmcv0DhJz9a4fkc=;
-        b=qnt7l1dD8h0DBVLX1IT+1SXyxDnBRbGIrGw6qkHUcxwu8UPgaTFf2KILNE2Uippx1+
-         WJD7iPKcTy1MjjGdm9NtStzqzL4OxoBpb+wIu6Zta8s3ldE3Gzgv8AK2+rvn8oWzTRz3
-         rslnTMNZPxca7qfxQ6MiEYHt2N3MwhP7kbGuyA4qt6gCvgO9ZwAgPvsOVQ2Ds6QXBxlM
-         qBPcN4E/T9HE/c9kxiNAP96MjUDTn57fAXTQOFmm6tIYEZGMUoZ3xhqwGgAO1I0BMO3e
-         vOZ734VXleoN4sIduhhh5pMLzqmj74nPPdDzvSD80Ej9jRZ4JgMfAFi/Nb3set/9f0u2
-         jgvw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPNeH3LQxeNwn6QHCiw8F5+4Y+kMtbtXXcyOBd6NBQQLoNFL23exg+tRtCQRrfReyW5KDFbcec8DY2@vger.kernel.org
-X-Gm-Message-State: AOJu0YznokrWOwSdrmCXwvZwUv765y+JAb+34QsBHZHuI6P1EsJN5cha
-	lpWKHWgTi6zY3x+AfJw0yHBoJkVJeOM5eI0W5jThjqpe/eG/wUxa5Z6MiR9vUMkN6a5A3DTduah
-	QDjuldQGvV+DAm+YO7fKjYw==
-X-Google-Smtp-Source: AGHT+IH7t7zoi6yI0PaPMLOJjSIpLoHx+Um10nYrD7SAuARxjRKOSw8DIf3dxsqs6hFZHoDsSpm8PlX4hDRCbsA6SQ==
-X-Received: from pgbcr9.prod.google.com ([2002:a05:6a02:4109:b0:7fd:4e21:2f5a])
+        bh=UgF7uGjYnhvUd+Jp5od3s3bWQayM3Oz+R04wRikqyig=;
+        b=oAZ2gWzacs3oG0Guf+pQAlE0qsqZ47heSTx9LwxgICQd2OxisMW5FkuDkQwpKVx5qZ
+         S7dzth/ij5Q0btyYYKZZttR+Wba0jtbJRP29j2d2KbTIKvBO6JFmEdFiEQVtspcsdq2Q
+         4cZ63xNH2A7MlpL4qf/84XQFBk8S+0+3SPXGj+UvpYILvGYdNeJGlYlTSLydZLBwBAnD
+         mfro8RdV96wmsuPINDRoDJuoDrgSja6R9LcmGaHGnbowSkYnG17XIL7035wrtLXuDWB6
+         Lm74QJfQ5BJoywZPathDit35qwkRaEMRbv+1NOEu1eE0hXjdWfYAQ2JrZh0y9QgSsroO
+         7zJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUq0JJXGJlGBMJJlD8pU5052Qh/+2UdF8d3pLZ3bwuzs+1jQi6J5Vl3ZrUlmtZeAAYGUYZ4FYiFTxgS@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMxz3hXiozuTV9tRiDJTSKbd3JPB+GRjJNOfzIkS/rYCZb2lEH
+	M/4o7+QsbgsQBwZplBTZLEiPbEeSqYV4hwjswDFCIFIDqcXXh3jFMYUltpJY4PjUK+SGX2JnG36
+	1CzKE1pGW4zJORBDOW9HJbA==
+X-Google-Smtp-Source: AGHT+IFqVvEP6jzHMp67taGtKGZyTqxXNFEg2GPfnpgGUKbuvSmZTqL3vNpWjeuOs0OQEe1804BSml5OhCqqS6mIfw==
+X-Received: from pfbdw6.prod.google.com ([2002:a05:6a00:3686:b0:725:d2c1:3f5f])
  (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:d590:b0:216:7ee9:2227 with SMTP id d9443c01a7336-21778505a3cmr82109795ad.36.1733959699175;
- Wed, 11 Dec 2024 15:28:19 -0800 (PST)
-Date: Wed, 11 Dec 2024 15:27:49 -0800
+ 2002:a05:6a20:43ac:b0:1e1:9fef:e974 with SMTP id adf61e73a8af0-1e1ceb34d58mr1527638637.24.1733959700835;
+ Wed, 11 Dec 2024 15:28:20 -0800 (PST)
+Date: Wed, 11 Dec 2024 15:27:50 -0800
 In-Reply-To: <20241211232754.1583023-1-kaleshsingh@google.com>
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
@@ -74,8 +74,8 @@ List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20241211232754.1583023-1-kaleshsingh@google.com>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241211232754.1583023-12-kaleshsingh@google.com>
-Subject: [PATCH mm-unstable v2 11/16] mm: sh: Introduce arch_mmap_hint()
+Message-ID: <20241211232754.1583023-13-kaleshsingh@google.com>
+Subject: [PATCH mm-unstable v2 12/16] mm: sparc32: Introduce arch_mmap_hint()
 From: Kalesh Singh <kaleshsingh@google.com>
 To: akpm@linux-foundation.org, vbabka@suse.cz, yang@os.amperecomputing.com, 
 	riel@surriel.com, david@redhat.com, minchan@kernel.org, jyescas@google.com
@@ -95,8 +95,11 @@ Cc: linux@armlinux.org.uk, tsbogend@alpha.franken.de,
 	Kalesh Singh <kaleshsingh@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Introduce sh arch_mmap_hint() and define HAVE_ARCH_MMAP_HINT.
-This is a preparatory patch, no functional change is introduced.
+Introduce sparc32 arch_mmap_hint() and define HAVE_ARCH_MMAP_HINT.
+
+If a sufficiently sized hole doesn't exist at the hint address,
+fallback to searching the entire valid VA space instead of only
+the VA space above the hint address.
 
 Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 ---
@@ -106,139 +109,77 @@ Changes in v2:
     special case of the hint addr being "enforced", per Yang Shi.
   - Consolidate error handling in arch_mmap_hint().
 
- arch/sh/include/asm/pgtable.h |  1 +
- arch/sh/mm/mmap.c             | 83 ++++++++++++++---------------------
- 2 files changed, 33 insertions(+), 51 deletions(-)
+ arch/sparc/include/asm/pgtable_32.h |  1 +
+ arch/sparc/kernel/sys_sparc_32.c    | 33 +++++++++++++++++++----------
+ 2 files changed, 23 insertions(+), 11 deletions(-)
 
-diff --git a/arch/sh/include/asm/pgtable.h b/arch/sh/include/asm/pgtable.h
-index 729f5c6225fb..072dbe038808 100644
---- a/arch/sh/include/asm/pgtable.h
-+++ b/arch/sh/include/asm/pgtable.h
-@@ -149,5 +149,6 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
- /* arch/sh/mm/mmap.c */
+diff --git a/arch/sparc/include/asm/pgtable_32.h b/arch/sparc/include/asm/pgtable_32.h
+index 62bcafe38b1f..95084c4d0b01 100644
+--- a/arch/sparc/include/asm/pgtable_32.h
++++ b/arch/sparc/include/asm/pgtable_32.h
+@@ -437,6 +437,7 @@ static inline int io_remap_pfn_range(struct vm_area_struct *vma,
+ 
+ /* We provide our own get_unmapped_area to cope with VA holes for userland */
  #define HAVE_ARCH_UNMAPPED_AREA
- #define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
 +#define HAVE_ARCH_MMAP_HINT
  
- #endif /* __ASM_SH_PGTABLE_H */
-diff --git a/arch/sh/mm/mmap.c b/arch/sh/mm/mmap.c
-index c442734d9b0c..ebda962e8c4e 100644
---- a/arch/sh/mm/mmap.c
-+++ b/arch/sh/mm/mmap.c
-@@ -51,14 +51,14 @@ static inline unsigned long COLOUR_ALIGN(unsigned long addr,
- 	return base + off;
+ #define pmd_pgtable(pmd)	((pgtable_t)__pmd_page(pmd))
+ 
+diff --git a/arch/sparc/kernel/sys_sparc_32.c b/arch/sparc/kernel/sys_sparc_32.c
+index fb31bc0c5b48..0cc717755417 100644
+--- a/arch/sparc/kernel/sys_sparc_32.c
++++ b/arch/sparc/kernel/sys_sparc_32.c
+@@ -40,13 +40,17 @@ SYSCALL_DEFINE0(getpagesize)
+ 	return PAGE_SIZE; /* Possibly older binaries want 8192 on sun4's? */
  }
  
--unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
--	unsigned long len, unsigned long pgoff, unsigned long flags,
--	vm_flags_t vm_flags)
+-unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len, unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
 +unsigned long arch_mmap_hint(struct file *filp, unsigned long addr,
 +			     unsigned long len, unsigned long pgoff,
 +			     unsigned long flags)
  {
--	struct mm_struct *mm = current->mm;
--	struct vm_area_struct *vma;
--	int do_colour_align;
 -	struct vm_unmapped_area_info info = {};
-+	bool do_colour_align;
+-	bool file_hugepage = false;
++	bool file_hugepage;
 +
-+	if (unlikely(len > TASK_SIZE))
++	/* See asm-sparc/uaccess.h */
++	if (len > TASK_SIZE - PAGE_SIZE)
 +		return -ENOMEM;
+ 
+-	if (filp && is_file_hugepages(filp))
+-		file_hugepage = true;
++	file_hugepage = filp && is_file_hugepages(filp);
  
  	if (flags & MAP_FIXED) {
  		/* We do not accept a shared mapping if it would violate
-@@ -70,24 +70,29 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+@@ -58,14 +62,21 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
  		return addr;
  	}
  
--	if (unlikely(len > TASK_SIZE))
+-	/* See asm-sparc/uaccess.h */
+-	if (len > TASK_SIZE - PAGE_SIZE)
 -		return -ENOMEM;
-+	do_colour_align = filp || (flags & MAP_SHARED);
- 
--	do_colour_align = 0;
--	if (filp || (flags & MAP_SHARED))
--		do_colour_align = 1;
-+	if (do_colour_align)
-+		addr = COLOUR_ALIGN(addr, pgoff);
-+	else
-+		addr = PAGE_ALIGN(addr);
- 
--	if (addr) {
--		if (do_colour_align)
--			addr = COLOUR_ALIGN(addr, pgoff);
--		else
--			addr = PAGE_ALIGN(addr);
+-	if (!addr)
+-		addr = TASK_UNMAPPED_BASE;
 +	return generic_mmap_hint(filp, addr, len, pgoff, flags);
 +}
- 
--		vma = find_vma(mm, addr);
--		if (TASK_SIZE - len >= addr &&
--		    (!vma || addr + len <= vm_start_gap(vma)))
--			return addr;
--	}
 +
-+unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
-+	unsigned long len, unsigned long pgoff, unsigned long flags,
-+	vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len,
++				     unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
 +{
 +	struct vm_unmapped_area_info info = {};
-+	bool do_colour_align;
++	bool file_hugepage = false;
 +
 +	addr = arch_mmap_hint(filp, addr, len, pgoff, flags);
 +	if (addr)
 +		return addr;
-+
-+	do_colour_align = filp || (flags & MAP_SHARED);
  
  	info.length = len;
- 	info.low_limit = TASK_UNMAPPED_BASE;
-@@ -102,41 +107,17 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
- 			  const unsigned long len, const unsigned long pgoff,
- 			  const unsigned long flags, vm_flags_t vm_flags)
- {
--	struct vm_area_struct *vma;
- 	struct mm_struct *mm = current->mm;
- 	unsigned long addr = addr0;
--	int do_colour_align;
- 	struct vm_unmapped_area_info info = {};
-+	bool do_colour_align;
- 
--	if (flags & MAP_FIXED) {
--		/* We do not accept a shared mapping if it would violate
--		 * cache aliasing constraints.
--		 */
--		if ((flags & MAP_SHARED) &&
--		    ((addr - (pgoff << PAGE_SHIFT)) & shm_align_mask))
--			return -EINVAL;
-+	/* requesting a specific address */
-+	addr = arch_mmap_hint(filp, addr, len, pgoff, flags);
-+	if (addr)
- 		return addr;
--	}
- 
--	if (unlikely(len > TASK_SIZE))
--		return -ENOMEM;
--
--	do_colour_align = 0;
--	if (filp || (flags & MAP_SHARED))
--		do_colour_align = 1;
--
--	/* requesting a specific address */
--	if (addr) {
--		if (do_colour_align)
--			addr = COLOUR_ALIGN(addr, pgoff);
--		else
--			addr = PAGE_ALIGN(addr);
--
--		vma = find_vma(mm, addr);
--		if (TASK_SIZE - len >= addr &&
--		    (!vma || addr + len <= vm_start_gap(vma)))
--			return addr;
--	}
-+	do_colour_align = filp || (flags & MAP_SHARED);
- 
- 	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
- 	info.length = len;
+-	info.low_limit = addr;
++	info.low_limit = TASK_UNMAPPED_BASE;
+ 	info.high_limit = TASK_SIZE;
+ 	if (!file_hugepage) {
+ 		info.align_mask = (flags & MAP_SHARED) ?
 -- 
 2.47.0.338.g60cca15819-goog
 
