@@ -1,151 +1,111 @@
-Return-Path: <sparclinux+bounces-3149-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-3153-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692E9A38C1B
-	for <lists+sparclinux@lfdr.de>; Mon, 17 Feb 2025 20:10:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21AE6A3951F
+	for <lists+sparclinux@lfdr.de>; Tue, 18 Feb 2025 09:23:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DC593B53B5
-	for <lists+sparclinux@lfdr.de>; Mon, 17 Feb 2025 19:08:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E60A188A2F3
+	for <lists+sparclinux@lfdr.de>; Tue, 18 Feb 2025 08:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20552237194;
-	Mon, 17 Feb 2025 19:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="StCMnrt6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3791F202C4C;
+	Tue, 18 Feb 2025 08:15:50 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86B72376E6;
-	Mon, 17 Feb 2025 19:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F8A22B8D2;
+	Tue, 18 Feb 2025 08:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739819324; cv=none; b=J6G8aN+uVSbpOG6A1joqA6UTT3m6+2/6V58mutKBVTRuVsnCT+ihTW4KOGxUIKcPLY3j8+1Jn1/wBdKhA5/AU//2wU6I6ye9kymjqWVa4vG+if8YlmgJBBpF8vhNfbsURG0vucVGKAy75ielAWmkbN0V5WOQSuBUb8a5bQlbdp0=
+	t=1739866550; cv=none; b=MqoWZSaBVU9CxpOjmxZEnkfqCghv3XJDBRBBIQ9WGWpxPrHyl+C6pU3Tl6KAUF172CIp55MZVDmUwKAP8RCqoUySlOOIuWSH73iKyyO0vzJlNE0dSlSn+l76yQitSFtdSNZBHA3xT3v50x50bS2LC6NARnRogJbZHeRgT3JZ9yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739819324; c=relaxed/simple;
-	bh=Pog03rmX9bMIOhA22fmIVxnX76K9JHTko7Y7/e2Puno=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iePCSYL/mDUgyVX6L9uxaul52VgnvX7MO0sfrI2EMKcIyMKTHpQ1RoLaQhCaWceVZa+xuGiEtyxE81ZFE/FcDKQHamUtSf6zRgGtlihrXqSRURms9zuiSE+lkGhmocPnph/W4bcf3Dab14LmoG+q7MKMyVf4x30g0/F2M+u9WLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=StCMnrt6; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=OumVES33M5Q6KKLjsks+HzN6mA4d4PgrDi4hyJXhstQ=; b=StCMnrt6vOSAYjFMqqQquk050o
-	hn1znvvg9gYx0AwLbFVElug1d1bW6SEWC5H6dYMk8J4C7mg0KKFEgL/HFVJvoA99AQ/0JSkSUErr2
-	TtcqV5Ev5F8iW4alNv2SNQPl6S01DglwDe5jooRarQpgbJ/l/ZVAqSfnmiymy+RfLGQx4SSUgETnn
-	TzhasKCnq5rTeSL7GLZAICQkeu663hIrRckIbtwLo9icbmZqKxQSO+kiWs4EGAl7Z15/lwEfa3F4Y
-	L5EvDNIT5UdATOp5oZB+3Y/6WYY/Q5HETXGUent6CVnm3bZ/1K5o8X6f6yqK63/mHxlPMryWUmXdG
-	kBG41KUw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tk6Tv-00000001pBk-19SY;
-	Mon, 17 Feb 2025 19:08:39 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: linux-mm@kvack.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-arch@vger.kernel.org,
-	x86@kernel.org,
-	linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org
-Subject: [PATCH 7/7] mm: Add folio_mk_pte()
-Date: Mon, 17 Feb 2025 19:08:34 +0000
-Message-ID: <20250217190836.435039-8-willy@infradead.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250217190836.435039-1-willy@infradead.org>
-References: <20250217190836.435039-1-willy@infradead.org>
+	s=arc-20240116; t=1739866550; c=relaxed/simple;
+	bh=hUhVSMiNBon3K2vaCA6tQYsPBq1I+3qyjxMNBRB+kOM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rpB3Zc7JX1TxhvW7Lfq2GmyY1BGASdNdI7rboOS+iGTd80gdME+6xJbTj7RkKhj66VxU11dupMSD6AJPEIHHFFhBMrQ728OYpFFLJIOELVq87Ha9zBDbdeYyzs3NSlbrwkcOqqhR2IeVeQeLSdLGyskMZ360bGpVb9QMNieIBJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4be66604050so467845137.3;
+        Tue, 18 Feb 2025 00:15:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739866547; x=1740471347;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K6Hz8bZDs78uyXHgQQ8oUf4o6rHFlSQuKCrUj7YwByY=;
+        b=h+wR2ycrOrqVnyKGdEcFAXkjs9P9ct4q172F1Sa+IrUwjGdc8j8lrDng2cp+ssXN0W
+         hOgLB+K5BXHMClm5ikeCvGIcyQ4Xm11jqrvSy58jQwNeqDc4QXwmVHWHJxFpbN9qNsKT
+         vocjFH4aJpf4Y1oVtZa9tl9TvWpEp3D8sAhD/TOB85EIPFi8YRXxINnsQLSEBN9fFXkr
+         4jKvUWPrFClZNz21W2V7KFWgd9G+CbkmW3PKN8UrkEMgBij4Ih2m09ZdsCSCGlJOuP9G
+         m4oH21wXAVfHUtsEAwoZQ+wa5+T/d64fB2Gg0QUjuU0vtXbIK5TsnjCqyZ9QjTtWWq7A
+         5Wyw==
+X-Forwarded-Encrypted: i=1; AJvYcCUfpaR0Rrpr/ydPSRbLZVRIZEwxZaUTw8KZh8vEgWe7vzACNZn9OiYHRnZgQxFTqXtWHtPsRl1KaIQZ@vger.kernel.org, AJvYcCWGpFpZMBFtLsHqfnnBh+sz1pU/v0LFg21A0zvbSt80033LOQkaxwXOFEZQTv3q0c9je8rAufsgztL5HA==@vger.kernel.org, AJvYcCWiTRg4Jg7LmOwIa2iZ6PRDf0Ie47s0TKG5zUgGaVxO/G6RfD0r+UyNY4L1/816Vr6o3iF54JW5H20sog==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5xb+N7c8hT+R5b+yr++SeXHa9G6Hlk2R8CTHTqzjJCSUpXcKq
+	FSxLNxhlqt+SKhqH/n2NyURVWNu9hJV/LA2fdmt1o/lbSIgN/KgHpQemHkbRNXs=
+X-Gm-Gg: ASbGnctGV4vFv1LdgzDmb40Y9ZKgC2gct81vZirQW315fZLGgFF4f//7zg2HvHkQX05
+	JsXh+Tq7DGI+0ggFB+6CukU6lSY6icWhkbAZecZXQ4tpTufhYnHegegkFkRhojy6KtIBG/7hboS
+	yTin603dJ+19W9pMkYhtudG4Acu4tJnYR/DJFXBsN397hJU4ZYndSpGkTJPJtUaiaFWVbkHBZcv
+	vLfSnteTtnDoSEx5T+TIgAQobWu8SJekdk4DM/kawqjg9BN2OudqA2GVcFmnAxtrwJeuyFbDbMk
+	CGztfm+mbOBQvksSsFFo72WOP0s6Y7i+Tzpg5jVKY6a1M+l5ILrV4w==
+X-Google-Smtp-Source: AGHT+IEX76G7/YcPfmDhLpq/8v43imczmXmfnbQxrZ2R0fm1QusDqKNHAjlipVipWh7vDVZcUM0Z5g==
+X-Received: by 2002:a05:6102:2c82:b0:4ba:9689:8725 with SMTP id ada2fe7eead31-4bd3fd51580mr6366553137.14.1739866546779;
+        Tue, 18 Feb 2025 00:15:46 -0800 (PST)
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com. [209.85.222.52])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4bd3c9acda5sm1790288137.9.2025.02.18.00.15.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Feb 2025 00:15:46 -0800 (PST)
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-868ddc4c6b6so1879852241.2;
+        Tue, 18 Feb 2025 00:15:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV7GsFGAw8oXkKVf2vWeMOx5mwEwwa7pwWScQVuakA7vPmBgXsNhX7gUQsBFjS5i9Y1AKKWcmXZA6gK@vger.kernel.org, AJvYcCVkZmpJes0DhivFZdutVqM2Hulv15oU/D66zdzgekl6EOigeFBA7X7Z88r5N66zdUyavDpqVGNSeB3mUQ==@vger.kernel.org, AJvYcCXc/qROJlrRTWcpU5r4MPxSpmMSQJ1ZVs0HcTXUZowMjAehIpIOl9PPRLTeVTPv6J7rKHM9qQkRJgwO8A==@vger.kernel.org
+X-Received: by 2002:a05:6102:d94:b0:4bb:b843:95e6 with SMTP id
+ ada2fe7eead31-4bd3fc9869amr6525145137.7.1739866546228; Tue, 18 Feb 2025
+ 00:15:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250217190836.435039-1-willy@infradead.org> <20250217190836.435039-3-willy@infradead.org>
+In-Reply-To: <20250217190836.435039-3-willy@infradead.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 18 Feb 2025 09:15:34 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVGGPVxz6spuFhqZV5YONji+hOi2ALjBkD2Yt-xrb8R9w@mail.gmail.com>
+X-Gm-Features: AWEUYZlUk2UQkMyt8RR6rg-cBVbuU2v1FebOMuVIYEMfkPb3IlGZ86jcKmJ0Nps
+Message-ID: <CAMuHMdVGGPVxz6spuFhqZV5YONji+hOi2ALjBkD2Yt-xrb8R9w@mail.gmail.com>
+Subject: Re: [PATCH 2/7] mm: Introduce a common definition of mk_pte()
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: linux-mm@kvack.org, linux-arch@vger.kernel.org, x86@kernel.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-um@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-Removes a cast from folio to page in four callers of mk_pte().
+On Mon, 17 Feb 2025 at 20:09, Matthew Wilcox (Oracle)
+<willy@infradead.org> wrote:
+> Most architectures simply call pfn_pte().  Centralise that as the normal
+> definition and remove the definition of mk_pte() from the architectures
+> which have either that exact definition or something similar.
+>
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- include/linux/mm.h | 15 +++++++++++++++
- mm/memory.c        |  6 +++---
- mm/userfaultfd.c   |  2 +-
- 3 files changed, 19 insertions(+), 4 deletions(-)
+>  arch/m68k/include/asm/mcf_pgtable.h      | 6 ------
+>  arch/m68k/include/asm/motorola_pgtable.h | 6 ------
+>  arch/m68k/include/asm/sun3_pgtable.h     | 6 ------
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 62dccde9c561..b1e311bae6b7 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1921,6 +1921,21 @@ static inline pte_t mk_pte(struct page *page, pgprot_t pgprot)
- {
- 	return pfn_pte(page_to_pfn(page), pgprot);
- }
-+
-+/**
-+ * folio_mk_pte - Create a PTE for this folio
-+ * @folio: The folio to create a PTE for
-+ * @pgprot: The page protection bits to use
-+ *
-+ * Create a page table entry for the first page of this folio.
-+ * This is suitable for passing to set_ptes().
-+ *
-+ * Return: A page table entry suitable for mapping this folio.
-+ */
-+static inline pte_t folio_mk_pte(struct folio *folio, pgprot_t pgprot)
-+{
-+	return pfn_pte(folio_pfn(folio), pgprot);
-+}
- #endif
- 
- /**
-diff --git a/mm/memory.c b/mm/memory.c
-index 4330560eee55..72411a6d696f 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -936,7 +936,7 @@ copy_present_page(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
- 	rss[MM_ANONPAGES]++;
- 
- 	/* All done, just insert the new page copy in the child */
--	pte = mk_pte(&new_folio->page, dst_vma->vm_page_prot);
-+	pte = folio_mk_pte(new_folio, dst_vma->vm_page_prot);
- 	pte = maybe_mkwrite(pte_mkdirty(pte), dst_vma);
- 	if (userfaultfd_pte_wp(dst_vma, ptep_get(src_pte)))
- 		/* Uffd-wp needs to be delivered to dest pte as well */
-@@ -3480,7 +3480,7 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
- 			inc_mm_counter(mm, MM_ANONPAGES);
- 		}
- 		flush_cache_page(vma, vmf->address, pte_pfn(vmf->orig_pte));
--		entry = mk_pte(&new_folio->page, vma->vm_page_prot);
-+		entry = folio_mk_pte(new_folio, vma->vm_page_prot);
- 		entry = pte_sw_mkyoung(entry);
- 		if (unlikely(unshare)) {
- 			if (pte_soft_dirty(vmf->orig_pte))
-@@ -4892,7 +4892,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
- 	 */
- 	__folio_mark_uptodate(folio);
- 
--	entry = mk_pte(&folio->page, vma->vm_page_prot);
-+	entry = folio_mk_pte(folio, vma->vm_page_prot);
- 	entry = pte_sw_mkyoung(entry);
- 	if (vma->vm_flags & VM_WRITE)
- 		entry = pte_mkwrite(pte_mkdirty(entry), vma);
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index af3dfc3633db..507a9e3caec7 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1066,7 +1066,7 @@ static int move_present_pte(struct mm_struct *mm,
- 	folio_move_anon_rmap(src_folio, dst_vma);
- 	src_folio->index = linear_page_index(dst_vma, dst_addr);
- 
--	orig_dst_pte = mk_pte(&src_folio->page, dst_vma->vm_page_prot);
-+	orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
- 	/* Follow mremap() behavior and treat the entry dirty after the move */
- 	orig_dst_pte = pte_mkwrite(pte_mkdirty(orig_dst_pte), dst_vma);
- 
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.47.2
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
