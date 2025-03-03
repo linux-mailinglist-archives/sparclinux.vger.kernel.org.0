@@ -1,133 +1,83 @@
-Return-Path: <sparclinux+bounces-3248-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-3254-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D256A4E5A2
-	for <lists+sparclinux@lfdr.de>; Tue,  4 Mar 2025 17:23:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5266DA4EBF3
+	for <lists+sparclinux@lfdr.de>; Tue,  4 Mar 2025 19:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5DCB188628A
-	for <lists+sparclinux@lfdr.de>; Tue,  4 Mar 2025 16:12:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4280E1887343
+	for <lists+sparclinux@lfdr.de>; Tue,  4 Mar 2025 18:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92252D0DF1;
-	Tue,  4 Mar 2025 15:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E2B24BCE8;
+	Tue,  4 Mar 2025 18:26:45 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
 Received: from beeline1.cc.itu.edu.tr (beeline1.cc.itu.edu.tr [160.75.25.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B4D27EC9D
-	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 15:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A08205511
+	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 18:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.115
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741103499; cv=pass; b=S96kjIYRk5KiyD+6p9IjpkmTOeD+WtnScqskFC8F7swDg6fz2CvKMjunOZXNRh/y+ShcGtYEsVjgkdMae/ECbg1F3T/B6uyKssGwUfy3LWZaSugk6gkHrJh4WeFFxNxYkFOGaETaS1CYXGeKLVG7CX0UOEMVNBAUqBPd6+3Iaqo=
+	t=1741112805; cv=pass; b=bQxVAXw6HqswHDSnyVdc1T9ih9Xq5NRqzZvzH1uojiiknHSIzlEWMoxa+5VM4QUAzP9rtYAqCNw+4WohEGdOzI65zGuaUp1lLX6NtpzbCaE3PJZLwEKDmsCuvCvoZAI/OLRiFAVEPsAZOBsvDkgB85BGj44C9+Pl8ba1kq/exHc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741103499; c=relaxed/simple;
-	bh=QKOwJg6BolnauL8LATVVlEllg6JFT7aKk9SSrVmeErQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=s+ZjRxXTNr1XXAhiS9JB2ossd0lNlYiuN5LYAyVZJAzULTJseGFfHy5lDeV3TSWnC/+wiRPV9tsdIqZRdIqU2nqBVvRuk4wzVi+a6n9YFpd11Lqjf/Z6DT8sVDITv6X0cejQr9g689iJynklg1YM5KqW8Dk5LK4yYtv/z1FJmhM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=none smtp.mailfrom=cc.itu.edu.tr; arc=none smtp.client-ip=194.107.17.57; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass smtp.mailfrom=altlinux.org; arc=pass smtp.client-ip=160.75.25.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strace.io
+	s=arc-20240116; t=1741112805; c=relaxed/simple;
+	bh=7be/Msm+H+RtUT38wFcu4DC963JAinemIQkyzCmXDwQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u9QHvtPEI+p/PMm/I3a13DLSRA26m1s9gg2Sszd0eOWhJaOLMT6j7xtb7j5mcF9mgylxWMt7MreCk4XEH2ezurUeYpUvCOOozJ2mPsMS3HS7k0xeKxXnkITPk8CAGCRUDXmDFEA/5ILdCwNsDVNuQ9oXi2yZ7DNhRQEHJRFq6AA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=cc.itu.edu.tr; arc=none smtp.client-ip=217.140.110.172; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=pass smtp.client-ip=160.75.25.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
 Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline1.cc.itu.edu.tr (Postfix) with ESMTPS id BAA2140D4DD2
-	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 18:51:35 +0300 (+03)
+	by beeline1.cc.itu.edu.tr (Postfix) with ESMTPS id 18FA540D4DE9
+	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 21:26:42 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6gC14nmfzG1gm
-	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 18:51:09 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6fr86YsTzG0hL
+	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 18:34:48 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id 0DB0A42742; Tue,  4 Mar 2025 18:50:58 +0300 (+03)
-X-Envelope-From: <linux-kernel+bounces-541564-bozkiru=itu.edu.tr@vger.kernel.org>
-Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
-	by le2 (Postfix) with ESMTP id 98FA8424A2
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:26:15 +0300 (+03)
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by fgw2.itu.edu.tr (Postfix) with SMTP id 2EDED2DCE3
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:26:15 +0300 (+03)
+	id 6C4CF42745; Tue,  4 Mar 2025 18:34:39 +0300 (+03)
+X-Envelope-From: <linux-kernel+bounces-541357-bozkiru=itu.edu.tr@vger.kernel.org>
+Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
+	by le2 (Postfix) with ESMTP id 7EEDD42FF3
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:23:09 +0300 (+03)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by fgw1.itu.edu.tr (Postfix) with SMTP id 161E03064C0B
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:23:08 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A22ED166A43
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 11:22:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C126C3A6421
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1330D1F582E;
-	Mon,  3 Mar 2025 11:20:18 +0000 (UTC)
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91591F1921;
-	Mon,  3 Mar 2025 11:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1941F1931;
+	Mon,  3 Mar 2025 10:22:14 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB7E1EDA04;
+	Mon,  3 Mar 2025 10:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741000813; cv=none; b=gFBXT+A/sq6b/2i9cF8uYZLn6g/00K4cT7kQosTWzLtoNUm/HpWlb/JqnUoHIPCaTtMa8JnyXLijTfwGvoQ5Y5SSGdrr1yAYXvGBc4O0nQxNwbUpOsq1uiX0IaWy8R498HfWeE1QdSLOORr4fDmgJfMkUOHSbQspMdQYA5GjbUU=
+	t=1740997332; cv=none; b=K5b2jorN+bj5hFZjPHV5rThRYSqjvKWh/fq6NFbhu2M5KUG3stpALASTx6gBNpSNFENWtQireD+DcionEemvb2afRNdQhLb1/6GT+PWsr8sj7wGJpWqYFzXIqlOhypEou9oVt2+4Fg6xeTT9upERWnyxdruW6A6BIwO/s/Dww3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741000813; c=relaxed/simple;
-	bh=QKOwJg6BolnauL8LATVVlEllg6JFT7aKk9SSrVmeErQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KxafT1JlebKuhS9A1TjMBIcuCUbFTCTNsCX7bEIKPNssUgWb2DDLN4ENu4uWY29INAeDR5ZwdxplkgaaLmMXICr+ZefjBDHRaIvg8WcyZDP6pE5076W1TOrjfpJOXYP/KhJy3PNFQ3LUDpr3YPBSyFi8MRx43zGYIw/4zvslLuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strace.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id C751F72C90B;
-	Mon,  3 Mar 2025 14:20:09 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id AB4E07CCB3A; Mon,  3 Mar 2025 13:20:09 +0200 (IST)
-Date: Mon, 3 Mar 2025 13:20:09 +0200
-From: "Dmitry V. Levin" <ldv@strace.io>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Oleg Nesterov <oleg@redhat.com>, Alexey Gladkov <legion@kernel.org>,
-	Eugene Syromyatnikov <evgsyr@gmail.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Helge Deller <deller@gmx.de>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Mike Frysinger <vapier@gentoo.org>,
-	Renzo Davoli <renzo@cs.unibo.it>,
-	Davide Berardi <berardi.dav@gmail.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, Will Deacon <will@kernel.org>,
-	Guo Ren <guoren@kernel.org>, Brian Cain <bcain@quicinc.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Dinh Nguyen <dinguyen@kernel.org>,
-	Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-	strace-devel@lists.strace.io, linux-snps-arc@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-arch@vger.kernel.org
-Subject: [PATCH v7 2/6] syscall.h: add syscall_set_arguments()
-Message-ID: <20250303112009.GC24170@strace.io>
+	s=arc-20240116; t=1740997332; c=relaxed/simple;
+	bh=7be/Msm+H+RtUT38wFcu4DC963JAinemIQkyzCmXDwQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HD7eenxiEj1fvokvELJRnZgKKTrdjTC4V7eIm41p29AQC5ytivKjaSmK+EOWRaH24pqwyYxnuY5djU6bdMzMWMJ+3mHtxlLODC0x9Cuv0tbU6laTQETcP5LFG/adBHFHECkRYZPd2SDbo3OivYegV1V7GfKAHjtCXVr8RwWG4+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F08EC12FC;
+	Mon,  3 Mar 2025 02:22:23 -0800 (PST)
+Received: from [10.1.26.155] (XHFQ2J9959.cambridge.arm.com [10.1.26.155])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7EC963F66E;
+	Mon,  3 Mar 2025 02:22:07 -0800 (PST)
+Message-ID: <1ff509c7-187b-4e43-b266-db8ada33b9a2@arm.com>
+Date: Mon, 3 Mar 2025 10:22:05 +0000
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
@@ -135,527 +85,123 @@ List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250303111910.GA24170@strace.io>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/4] mm: Fix lazy mmu docs and usage
+Content-Language: en-GB
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Juergen Gross <jgross@suse.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-mm@kvack.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org
+References: <20250302145555.3236789-1-ryan.roberts@arm.com>
+ <20250302145555.3236789-2-ryan.roberts@arm.com>
+ <5418a661-dbd0-46e9-8ef7-b1c5a34acce3@redhat.com>
+ <a9e21c14-d390-4119-ad93-b23e6ccbac15@redhat.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <a9e21c14-d390-4119-ad93-b23e6ccbac15@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6gC14nmfzG1gm
+X-ITU-Libra-ESVA-ID: 4Z6fr86YsTzG0hL
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741708270.78394@Cv3K8gyqewopEgRbcOJQIQ
+X-ITU-Libra-ESVA-Watermark: 1741717479.57157@zik+Q1uQ3YclcGAQZ2cdfw
 X-ITU-MailScanner-SpamCheck: not spam
 
-This function is going to be needed on all HAVE_ARCH_TRACEHOOK
-architectures to implement PTRACE_SET_SYSCALL_INFO API.
+On 03/03/2025 08:52, David Hildenbrand wrote:
+> On 03.03.25 09:49, David Hildenbrand wrote:
+>> On 02.03.25 15:55, Ryan Roberts wrote:
+>>> The docs, implementations and use of arch_[enter|leave]_lazy_mmu_mode()
+>>> is a bit of a mess (to put it politely). There are a number of issues
+>>> related to nesting of lazy mmu regions and confusion over whether the
+>>> task, when in a lazy mmu region, is preemptible or not. Fix all the
+>>> issues relating to the core-mm. Follow up commits will fix the
+>>> arch-specific implementations. 3 arches implement lazy mmu; powerpc,
+>>> sparc and x86.
+>>>
+>>> When arch_[enter|leave]_lazy_mmu_mode() was first introduced by commit
+>>> 6606c3e0da53 ("[PATCH] paravirt: lazy mmu mode hooks.patch"), it was
+>>> expected that lazy mmu regions would never nest and that the appropriate
+>>> page table lock(s) would be held while in the region, thus ensuring the
+>>> region is non-preemptible. Additionally lazy mmu regions were only used
+>>> during manipulation of user mappings.
+>>>
+>>> Commit 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy
+>>> updates") started invoking the lazy mmu mode in apply_to_pte_range(),
+>>> which is used for both user and kernel mappings. For kernel mappings the
+>>> region is no longer protected by any lock so there is no longer any
+>>> guarantee about non-preemptibility. Additionally, for RT configs, the
+>>> holding the PTL only implies no CPU migration, it doesn't prevent
+>>> preemption.
+>>>
+>>> Commit bcc6cc832573 ("mm: add default definition of set_ptes()") added
+>>> arch_[enter|leave]_lazy_mmu_mode() to the default implementation of
+>>> set_ptes(), used by x86. So after this commit, lazy mmu regions can be
+>>> nested. Additionally commit 1a10a44dfc1d ("sparc64: implement the new
+>>> page table range API") and commit 9fee28baa601 ("powerpc: implement the
+>>> new page table range API") did the same for the sparc and powerpc
+>>> set_ptes() overrides.
+>>>
+>>> powerpc couldn't deal with preemption so avoids it in commit
+>>> b9ef323ea168 ("powerpc/64s: Disable preemption in hash lazy mmu mode"),
+>>> which explicitly disables preemption for the whole region in its
+>>> implementation. x86 can support preemption (or at least it could until
+>>> it tried to add support nesting; more on this below). Sparc looks to be
+>>> totally broken in the face of preemption, as far as I can tell.
+>>>
+>>> powewrpc can't deal with nesting, so avoids it in commit 47b8def9358c
+>>> ("powerpc/mm: Avoid calling arch_enter/leave_lazy_mmu() in set_ptes"),
+>>> which removes the lazy mmu calls from its implementation of set_ptes().
+>>> x86 attempted to support nesting in commit 49147beb0ccb ("x86/xen: allow
+>>> nesting of same lazy mode") but as far as I can tell, this breaks its
+>>> support for preemption.
+>>>
+>>> In short, it's all a mess; the semantics for
+>>> arch_[enter|leave]_lazy_mmu_mode() are not clearly defined and as a
+>>> result the implementations all have different expectations, sticking
+>>> plasters and bugs.
+>>>
+>>> arm64 is aiming to start using these hooks, so let's clean everything up
+>>> before adding an arm64 implementation. Update the documentation to state
+>>> that lazy mmu regions can never be nested, must not be called in
+>>> interrupt context and preemption may or may not be enabled for the
+>>> duration of the region.
+>>>
+>>> Additionally, update the way arch_[enter|leave]_lazy_mmu_mode() is
+>>> called in pagemap_scan_pmd_entry() to follow the normal pattern of
+>>> holding the ptl for user space mappings. As a result the scope is
+>>> reduced to only the pte table, but that's where most of the performance
+>>> win is. While I believe there wasn't technically a bug here, the
+>>> original scope made it easier to accidentally nest or, worse,
+>>> accidentally call something like kmap() which would expect an immediate
+>>> mode pte modification but it would end up deferred.
+>>>
+>>> arch-specific fixes to conform to the new spec will proceed this one.
+>>>
+>>> These issues were spotted by code review and I have no evidence of
+>>> issues being reported in the wild.
+>>>
+>>
+>> All looking good to me!
+>>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>>
+> 
+> ... but I do wonder if the set_ptes change should be split from the pagemap change.
 
-This partially reverts commit 7962c2eddbfe ("arch: remove unused
-function syscall_set_arguments()") by reusing some of old
-syscall_set_arguments() implementations.
+So set_ptes + docs changes in one patch, and pagemap change in another? I can do
+that.
 
-Signed-off-by: Dmitry V. Levin <ldv@strace.io>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Acked-by: Helge Deller <deller@gmx.de> # parisc
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk> # mips
----
- arch/arc/include/asm/syscall.h        | 14 +++++++++++
- arch/arm/include/asm/syscall.h        | 13 ++++++++++
- arch/arm64/include/asm/syscall.h      | 13 ++++++++++
- arch/csky/include/asm/syscall.h       | 13 ++++++++++
- arch/hexagon/include/asm/syscall.h    |  7 ++++++
- arch/loongarch/include/asm/syscall.h  |  8 ++++++
- arch/mips/include/asm/syscall.h       | 28 +++++++++++++++++++++
- arch/nios2/include/asm/syscall.h      | 11 ++++++++
- arch/openrisc/include/asm/syscall.h   |  7 ++++++
- arch/parisc/include/asm/syscall.h     | 12 +++++++++
- arch/powerpc/include/asm/syscall.h    | 10 ++++++++
- arch/riscv/include/asm/syscall.h      |  9 +++++++
- arch/s390/include/asm/syscall.h       |  9 +++++++
- arch/sh/include/asm/syscall_32.h      | 12 +++++++++
- arch/sparc/include/asm/syscall.h      | 10 ++++++++
- arch/um/include/asm/syscall-generic.h | 14 +++++++++++
- arch/x86/include/asm/syscall.h        | 36 +++++++++++++++++++++++++++
- arch/xtensa/include/asm/syscall.h     | 11 ++++++++
- include/asm-generic/syscall.h         | 16 ++++++++++++
- 19 files changed, 253 insertions(+)
+I didn't actually cc stable on these, I'm wondering if I should do that? Perhaps
+for all patches except the pagemap change?
 
-diff --git a/arch/arc/include/asm/syscall.h b/arch/arc/include/asm/syscall.h
-index 9709256e31c8..89c1e1736356 100644
---- a/arch/arc/include/asm/syscall.h
-+++ b/arch/arc/include/asm/syscall.h
-@@ -67,6 +67,20 @@ syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
- 	}
- }
- 
-+static inline void
-+syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
-+		      unsigned long *args)
-+{
-+	unsigned long *inside_ptregs = &regs->r0;
-+	unsigned int n = 6;
-+	unsigned int i = 0;
-+
-+	while (n--) {
-+		*inside_ptregs = args[i++];
-+		inside_ptregs--;
-+	}
-+}
-+
- static inline int
- syscall_get_arch(struct task_struct *task)
- {
-diff --git a/arch/arm/include/asm/syscall.h b/arch/arm/include/asm/syscall.h
-index fe4326d938c1..21927fa0ae2b 100644
---- a/arch/arm/include/asm/syscall.h
-+++ b/arch/arm/include/asm/syscall.h
-@@ -80,6 +80,19 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	memcpy(args, &regs->ARM_r0 + 1, 5 * sizeof(args[0]));
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+	memcpy(&regs->ARM_r0, args, 6 * sizeof(args[0]));
-+	/*
-+	 * Also copy the first argument into ARM_ORIG_r0
-+	 * so that syscall_get_arguments() would return it
-+	 * instead of the previous value.
-+	 */
-+	regs->ARM_ORIG_r0 = regs->ARM_r0;
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- 	/* ARM tasks don't change audit architectures on the fly. */
-diff --git a/arch/arm64/include/asm/syscall.h b/arch/arm64/include/asm/syscall.h
-index ab8e14b96f68..76020b66286b 100644
---- a/arch/arm64/include/asm/syscall.h
-+++ b/arch/arm64/include/asm/syscall.h
-@@ -73,6 +73,19 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	memcpy(args, &regs->regs[1], 5 * sizeof(args[0]));
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+	memcpy(&regs->regs[0], args, 6 * sizeof(args[0]));
-+	/*
-+	 * Also copy the first argument into orig_x0
-+	 * so that syscall_get_arguments() would return it
-+	 * instead of the previous value.
-+	 */
-+	regs->orig_x0 = regs->regs[0];
-+}
-+
- /*
-  * We don't care about endianness (__AUDIT_ARCH_LE bit) here because
-  * AArch64 has the same system calls both on little- and big- endian.
-diff --git a/arch/csky/include/asm/syscall.h b/arch/csky/include/asm/syscall.h
-index 0de5734950bf..717f44b4d26f 100644
---- a/arch/csky/include/asm/syscall.h
-+++ b/arch/csky/include/asm/syscall.h
-@@ -59,6 +59,19 @@ syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
- 	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
- }
- 
-+static inline void
-+syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
-+		      const unsigned long *args)
-+{
-+	memcpy(&regs->a0, args, 6 * sizeof(regs->a0));
-+	/*
-+	 * Also copy the first argument into orig_a0
-+	 * so that syscall_get_arguments() would return it
-+	 * instead of the previous value.
-+	 */
-+	regs->orig_a0 = regs->a0;
-+}
-+
- static inline int
- syscall_get_arch(struct task_struct *task)
- {
-diff --git a/arch/hexagon/include/asm/syscall.h b/arch/hexagon/include/asm/syscall.h
-index 951ca0ed8376..1024a6548d78 100644
---- a/arch/hexagon/include/asm/syscall.h
-+++ b/arch/hexagon/include/asm/syscall.h
-@@ -33,6 +33,13 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	memcpy(args, &(&regs->r00)[0], 6 * sizeof(args[0]));
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 unsigned long *args)
-+{
-+	memcpy(&(&regs->r00)[0], args, 6 * sizeof(args[0]));
-+}
-+
- static inline long syscall_get_error(struct task_struct *task,
- 				     struct pt_regs *regs)
- {
-diff --git a/arch/loongarch/include/asm/syscall.h b/arch/loongarch/include/asm/syscall.h
-index e286dc58476e..ff415b3c0a8e 100644
---- a/arch/loongarch/include/asm/syscall.h
-+++ b/arch/loongarch/include/asm/syscall.h
-@@ -61,6 +61,14 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	memcpy(&args[1], &regs->regs[5], 5 * sizeof(long));
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 unsigned long *args)
-+{
-+	regs->orig_a0 = args[0];
-+	memcpy(&regs->regs[5], &args[1], 5 * sizeof(long));
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_LOONGARCH64;
-diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-index 056aa1b713e2..f1926ce30d4b 100644
---- a/arch/mips/include/asm/syscall.h
-+++ b/arch/mips/include/asm/syscall.h
-@@ -74,6 +74,23 @@ static inline void mips_get_syscall_arg(unsigned long *arg,
- #endif
- }
- 
-+static inline void mips_set_syscall_arg(unsigned long *arg,
-+	struct task_struct *task, struct pt_regs *regs, unsigned int n)
-+{
-+#ifdef CONFIG_32BIT
-+	switch (n) {
-+	case 0: case 1: case 2: case 3:
-+		regs->regs[4 + n] = *arg;
-+		return;
-+	case 4: case 5: case 6: case 7:
-+		*arg = regs->args[n] = *arg;
-+		return;
-+	}
-+#else
-+	regs->regs[4 + n] = *arg;
-+#endif
-+}
-+
- static inline long syscall_get_error(struct task_struct *task,
- 				     struct pt_regs *regs)
- {
-@@ -120,6 +137,17 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 		mips_get_syscall_arg(args++, task, regs, i++);
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 unsigned long *args)
-+{
-+	unsigned int i = 0;
-+	unsigned int n = 6;
-+
-+	while (n--)
-+		mips_set_syscall_arg(args++, task, regs, i++);
-+}
-+
- extern const unsigned long sys_call_table[];
- extern const unsigned long sys32_call_table[];
- extern const unsigned long sysn32_call_table[];
-diff --git a/arch/nios2/include/asm/syscall.h b/arch/nios2/include/asm/syscall.h
-index fff52205fb65..526449edd768 100644
---- a/arch/nios2/include/asm/syscall.h
-+++ b/arch/nios2/include/asm/syscall.h
-@@ -58,6 +58,17 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	*args   = regs->r9;
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+	struct pt_regs *regs, const unsigned long *args)
-+{
-+	regs->r4 = *args++;
-+	regs->r5 = *args++;
-+	regs->r6 = *args++;
-+	regs->r7 = *args++;
-+	regs->r8 = *args++;
-+	regs->r9 = *args;
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_NIOS2;
-diff --git a/arch/openrisc/include/asm/syscall.h b/arch/openrisc/include/asm/syscall.h
-index 903ed882bdec..e6383be2a195 100644
---- a/arch/openrisc/include/asm/syscall.h
-+++ b/arch/openrisc/include/asm/syscall.h
-@@ -57,6 +57,13 @@ syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
- 	memcpy(args, &regs->gpr[3], 6 * sizeof(args[0]));
- }
- 
-+static inline void
-+syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
-+		      const unsigned long *args)
-+{
-+	memcpy(&regs->gpr[3], args, 6 * sizeof(args[0]));
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_OPENRISC;
-diff --git a/arch/parisc/include/asm/syscall.h b/arch/parisc/include/asm/syscall.h
-index 00b127a5e09b..b146d0ae4c77 100644
---- a/arch/parisc/include/asm/syscall.h
-+++ b/arch/parisc/include/asm/syscall.h
-@@ -29,6 +29,18 @@ static inline void syscall_get_arguments(struct task_struct *tsk,
- 	args[0] = regs->gr[26];
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *tsk,
-+					 struct pt_regs *regs,
-+					 unsigned long *args)
-+{
-+	regs->gr[21] = args[5];
-+	regs->gr[22] = args[4];
-+	regs->gr[23] = args[3];
-+	regs->gr[24] = args[2];
-+	regs->gr[25] = args[1];
-+	regs->gr[26] = args[0];
-+}
-+
- static inline long syscall_get_error(struct task_struct *task,
- 				     struct pt_regs *regs)
- {
-diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
-index 422d7735ace6..521f279e6b33 100644
---- a/arch/powerpc/include/asm/syscall.h
-+++ b/arch/powerpc/include/asm/syscall.h
-@@ -114,6 +114,16 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	}
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+	memcpy(&regs->gpr[3], args, 6 * sizeof(args[0]));
-+
-+	/* Also copy the first argument into orig_gpr3 */
-+	regs->orig_gpr3 = args[0];
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- 	if (is_tsk_32bit_task(task))
-diff --git a/arch/riscv/include/asm/syscall.h b/arch/riscv/include/asm/syscall.h
-index 121fff429dce..8d389ba995c8 100644
---- a/arch/riscv/include/asm/syscall.h
-+++ b/arch/riscv/include/asm/syscall.h
-@@ -66,6 +66,15 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+	regs->orig_a0 = args[0];
-+	args++;
-+	memcpy(&regs->a1, args, 5 * sizeof(regs->a1));
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- #ifdef CONFIG_64BIT
-diff --git a/arch/s390/include/asm/syscall.h b/arch/s390/include/asm/syscall.h
-index 27e3d804b311..0e3296a32e6a 100644
---- a/arch/s390/include/asm/syscall.h
-+++ b/arch/s390/include/asm/syscall.h
-@@ -78,6 +78,15 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	args[0] = regs->orig_gpr2 & mask;
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+	regs->orig_gpr2 = args[0];
-+	for (int n = 1; n < 6; n++)
-+		regs->gprs[2 + n] = args[n];
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- #ifdef CONFIG_COMPAT
-diff --git a/arch/sh/include/asm/syscall_32.h b/arch/sh/include/asm/syscall_32.h
-index d87738eebe30..cb51a7528384 100644
---- a/arch/sh/include/asm/syscall_32.h
-+++ b/arch/sh/include/asm/syscall_32.h
-@@ -57,6 +57,18 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	args[0] = regs->regs[4];
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+	regs->regs[1] = args[5];
-+	regs->regs[0] = args[4];
-+	regs->regs[7] = args[3];
-+	regs->regs[6] = args[2];
-+	regs->regs[5] = args[1];
-+	regs->regs[4] = args[0];
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- 	int arch = AUDIT_ARCH_SH;
-diff --git a/arch/sparc/include/asm/syscall.h b/arch/sparc/include/asm/syscall.h
-index 20c109ac8cc9..62a5a78804c4 100644
---- a/arch/sparc/include/asm/syscall.h
-+++ b/arch/sparc/include/asm/syscall.h
-@@ -117,6 +117,16 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	}
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < 6; i++)
-+		regs->u_regs[UREG_I0 + i] = args[i];
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- #if defined(CONFIG_SPARC64) && defined(CONFIG_COMPAT)
-diff --git a/arch/um/include/asm/syscall-generic.h b/arch/um/include/asm/syscall-generic.h
-index 172b74143c4b..2984feb9d576 100644
---- a/arch/um/include/asm/syscall-generic.h
-+++ b/arch/um/include/asm/syscall-generic.h
-@@ -62,6 +62,20 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	*args   = UPT_SYSCALL_ARG6(r);
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+	struct uml_pt_regs *r = &regs->regs;
-+
-+	UPT_SYSCALL_ARG1(r) = *args++;
-+	UPT_SYSCALL_ARG2(r) = *args++;
-+	UPT_SYSCALL_ARG3(r) = *args++;
-+	UPT_SYSCALL_ARG4(r) = *args++;
-+	UPT_SYSCALL_ARG5(r) = *args++;
-+	UPT_SYSCALL_ARG6(r) = *args;
-+}
-+
- /* See arch/x86/um/asm/syscall.h for syscall_get_arch() definition. */
- 
- #endif	/* __UM_SYSCALL_GENERIC_H */
-diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
-index 7c488ff0c764..b9c249dd9e3d 100644
---- a/arch/x86/include/asm/syscall.h
-+++ b/arch/x86/include/asm/syscall.h
-@@ -90,6 +90,18 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	args[5] = regs->bp;
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+	regs->bx = args[0];
-+	regs->cx = args[1];
-+	regs->dx = args[2];
-+	regs->si = args[3];
-+	regs->di = args[4];
-+	regs->bp = args[5];
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- 	return AUDIT_ARCH_I386;
-@@ -121,6 +133,30 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 	}
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+# ifdef CONFIG_IA32_EMULATION
-+	if (task->thread_info.status & TS_COMPAT) {
-+		regs->bx = *args++;
-+		regs->cx = *args++;
-+		regs->dx = *args++;
-+		regs->si = *args++;
-+		regs->di = *args++;
-+		regs->bp = *args;
-+	} else
-+# endif
-+	{
-+		regs->di = *args++;
-+		regs->si = *args++;
-+		regs->dx = *args++;
-+		regs->r10 = *args++;
-+		regs->r8 = *args++;
-+		regs->r9 = *args;
-+	}
-+}
-+
- static inline int syscall_get_arch(struct task_struct *task)
- {
- 	/* x32 tasks should be considered AUDIT_ARCH_X86_64. */
-diff --git a/arch/xtensa/include/asm/syscall.h b/arch/xtensa/include/asm/syscall.h
-index 5ee974bf8330..f9a671cbf933 100644
---- a/arch/xtensa/include/asm/syscall.h
-+++ b/arch/xtensa/include/asm/syscall.h
-@@ -68,6 +68,17 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 		args[i] = regs->areg[reg[i]];
- }
- 
-+static inline void syscall_set_arguments(struct task_struct *task,
-+					 struct pt_regs *regs,
-+					 const unsigned long *args)
-+{
-+	static const unsigned int reg[] = XTENSA_SYSCALL_ARGUMENT_REGS;
-+	unsigned int i;
-+
-+	for (i = 0; i < 6; ++i)
-+		regs->areg[reg[i]] = args[i];
-+}
-+
- asmlinkage long xtensa_rt_sigreturn(void);
- asmlinkage long xtensa_shmat(int, char __user *, int);
- asmlinkage long xtensa_fadvise64_64(int, int,
-diff --git a/include/asm-generic/syscall.h b/include/asm-generic/syscall.h
-index 182b039ce5fa..292b412f4e9a 100644
---- a/include/asm-generic/syscall.h
-+++ b/include/asm-generic/syscall.h
-@@ -117,6 +117,22 @@ void syscall_set_return_value(struct task_struct *task, struct pt_regs *regs,
- void syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
- 			   unsigned long *args);
- 
-+/**
-+ * syscall_set_arguments - change system call parameter value
-+ * @task:	task of interest, must be in system call entry tracing
-+ * @regs:	task_pt_regs() of @task
-+ * @args:	array of argument values to store
-+ *
-+ * Changes 6 arguments to the system call.
-+ * The first argument gets value @args[0], and so on.
-+ *
-+ * It's only valid to call this when @task is stopped for tracing on
-+ * entry to a system call, due to %SYSCALL_WORK_SYSCALL_TRACE or
-+ * %SYSCALL_WORK_SYSCALL_AUDIT.
-+ */
-+void syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
-+			   const unsigned long *args);
-+
- /**
-  * syscall_get_arch - return the AUDIT_ARCH for the current system call
-  * @task:	task of interest, must be blocked
--- 
-ldv
+Thanks for the quick review!
 
 
