@@ -1,137 +1,137 @@
-Return-Path: <sparclinux+bounces-3249-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-3247-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A79A4E6C2
-	for <lists+sparclinux@lfdr.de>; Tue,  4 Mar 2025 17:50:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E67A4E5E6
+	for <lists+sparclinux@lfdr.de>; Tue,  4 Mar 2025 17:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 230247A8A39
-	for <lists+sparclinux@lfdr.de>; Tue,  4 Mar 2025 16:47:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47A408C216C
+	for <lists+sparclinux@lfdr.de>; Tue,  4 Mar 2025 16:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07605278157;
-	Tue,  4 Mar 2025 16:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0AC27FE65;
+	Tue,  4 Mar 2025 15:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ANFNs5G8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MUEEaKhH"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from beeline2.cc.itu.edu.tr (beeline2.cc.itu.edu.tr [160.75.25.116])
+Received: from beeline3.cc.itu.edu.tr (beeline3.cc.itu.edu.tr [160.75.25.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096882780F9
-	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 16:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B80E292FBE
+	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 15:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.117
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741105551; cv=pass; b=oP1+Mkrc9ICfI86miMwcJtWswUvrX9L3FI9DYNutZHoYvRiQd4+/uagzGVt4m+3cjyVXraJbjbKbKvoj4JV8d5jNix37XxEi0ou38Kdv3asc28KAFtIMixIYhVaO6aJj0pUEXm2aHoBrfFKpxjGZxHmwAYAxc3a/y39BO7lPwv8=
+	t=1741103047; cv=pass; b=oxebkPZfbdTA18ptKCmfiUoBzo01nnxhToQAOb4FpP9XVyG7K3beulExJqT9LNdS4HeXldWLFrP0SuzICaZOteEqQiP4uzfB1uTWEJLuGUd/C6n3aYiuAVsjEl+FYudoNlW2sQsbS83piS45QwIFuNLx4UrDvxGWYnReEsN3+t4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741105551; c=relaxed/simple;
-	bh=zCOjBv5AvYJcTcxt92Gav4gKEM+8D+EuXV0aeC3s2D4=;
+	s=arc-20240116; t=1741103047; c=relaxed/simple;
+	bh=K2F9EW+qiAEiFc0wnbOIq8DzI+iuGYeb0zxsjfA4rl0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A/QLVJP11znLeuPCqScsv/oxIHzumK6gt7f68LLGFuFd0JuqBRIactpCKlMMdIAZLKGLp9xdt8A06vuGHSEJ+Klrx1rlzPwQfOGajVzBO4xGQM8rQkXEU6TZlz4uamTWPkzoaUnx0KpUb0OyPBig6j/vmHOeJFzSkzGAw+nOAsE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ANFNs5G8; arc=none smtp.client-ip=170.10.129.124; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; arc=pass smtp.client-ip=160.75.25.116
+	 In-Reply-To:Content-Type; b=TYwP9X1vxd9Fcn999nkMrNGR02V295Pr1YqpG3oYoZ8IuGJj+bdDGwMweGc/FfWQbavkhCKXA/BfX7naS+314t3P9EmtLhs1oLSvsoNEdmo5nXEGjuOhsDW8F65ZmRl71UmFoJ9WwoSeyyE/AzwN9UnoYTG5j+51GIZwIlue5z8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MUEEaKhH; arc=none smtp.client-ip=170.10.133.124; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; arc=pass smtp.client-ip=160.75.25.117
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
 Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline2.cc.itu.edu.tr (Postfix) with ESMTPS id 4C6D3408B64D
-	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 19:25:48 +0300 (+03)
+	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id AE73040CEC93
+	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 18:44:03 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
 Authentication-Results: lesvatest1.cc.itu.edu.tr;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ANFNs5G8
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MUEEaKhH
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6gx1506LzG3Fl
-	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 19:24:05 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6g1Y2zKVzG1Fk
+	for <sparclinux@vger.kernel.org>; Tue,  4 Mar 2025 18:42:57 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id BCDAB42764; Tue,  4 Mar 2025 19:23:53 +0300 (+03)
+	id C9663400C6; Tue,  4 Mar 2025 18:42:48 +0300 (+03)
 Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ANFNs5G8
-X-Envelope-From: <linux-kernel+bounces-541202-bozkiru=itu.edu.tr@vger.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MUEEaKhH
+X-Envelope-From: <linux-kernel+bounces-541205-bozkiru=itu.edu.tr@vger.kernel.org>
 Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ANFNs5G8
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MUEEaKhH
 Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
-	by le2 (Postfix) with ESMTP id CEBFE41FA6
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 11:54:49 +0300 (+03)
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by fgw1.itu.edu.tr (Postfix) with SMTP id 68CEC3064C0B
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 11:54:49 +0300 (+03)
+	by le2 (Postfix) with ESMTP id 8C1A9421EE
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 11:55:14 +0300 (+03)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by fgw1.itu.edu.tr (Postfix) with SMTP id 1F1653063EFC
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 11:55:13 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A9BE169015
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 08:54:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C02F3A7D51
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 08:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47981F0E55;
-	Mon,  3 Mar 2025 08:49:58 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8791F17E8;
+	Mon,  3 Mar 2025 08:51:47 +0000 (UTC)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F831F0E49
-	for <linux-kernel@vger.kernel.org>; Mon,  3 Mar 2025 08:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEBB1F151E
+	for <linux-kernel@vger.kernel.org>; Mon,  3 Mar 2025 08:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740991794; cv=none; b=nMtHFIBulIZ6Z/2ALR2aBXrucFC2S93dSrygWsnuHiCRwMUn1tuUXYi7hRZ0Sq90dWs74rtYQPdDmzU3tKB0I+zviZsM1cevBXMmpkKPnIsDUyhoq6nDI0B74EafmckPKIWfCnn6n64aZwbStgsOUzubT15Z8tZYVrR2BE9kouY=
+	t=1740991904; cv=none; b=s+t4rBwbDuB/WPVt85V6S+m+FojOewUkJVHjQmnVLcyr+H6MbsV39zdIGh6wuNduLpy6jl8ZBmq8Kqq9oBSqJ1uhcYSTOuyF0jjJ4DLOSfKEweGLnLTaXB8YL9zq0W+DzRX3mv8RCql5vkfDYLfKqjzOtv4thwTlipNm3pDJOfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740991794; c=relaxed/simple;
-	bh=zCOjBv5AvYJcTcxt92Gav4gKEM+8D+EuXV0aeC3s2D4=;
+	s=arc-20240116; t=1740991904; c=relaxed/simple;
+	bh=K2F9EW+qiAEiFc0wnbOIq8DzI+iuGYeb0zxsjfA4rl0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BFLDKmkAO78ilHXkJ4rSfhMcJ2YmoAo7ySSmGPsOdstmAvwNdmwIGL/TKg3Du1W/9hZAzz9jURujHU7eO1hP73DFSTJmDX8XCgdkFPvh6+RqT4L63oV9bLLpdu+3RmfXtlTjmI03Dt5Q1Z1S0SsX1GmcvVxYqRHc5amSzRrNUYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ANFNs5G8; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=XJILvxXCcJ0pELYZ+h/JRQE11NRcS230t56HgjJvxbzwbvGzyFCrRvZVliyPb8vwzNrLQMlkFs6Hlr7piwSW5w1cp3/fvTAw0BdX3vheJr8NBFyMDuok2ZWRNeSK5i7cbUNm5i2deZ4BGZrN3LoDk0gS4SLs0DBvq2/BFE3KxQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MUEEaKhH; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740991791;
+	s=mimecast20190719; t=1740991899;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HZgsvoWWTlj/z7Wx3jz+2Ap6TQJJXYjKQ3XMWzn2w2I=;
-	b=ANFNs5G8byBVKUkRox21ASS4NXH2VXk9lCsJmqvq2Od3fYiBxB40uuSh+SbPJIdfO5HFuz
-	dHJjChulSiROJLDvYIakJV/lOmDFqmGsGeQ7Q6ilF2oEwDWDypshkKbQgWdU5vipbHksg/
-	mNTuHUfIhIdXvf3vMrG9FFqAeMfCQc0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=PqwL+v3kSKyO1WWdOm3Dn4wn0YpaEHuXEacsy1CmEn4=;
+	b=MUEEaKhHroJTTeUp4KpAtO7naUHm8iEdVaV1kb7KmpWFAiy5a8jkMMipWqsR8y8eLMSPp4
+	dnrl21lc0/K2YOTKaSOBGn9zsA1kc9ocXtz5xe95YVTm0IVvFMv2MwtsCe+Cg53OMg8jXj
+	RwijkMT2v03xMyv/FWpaAgt37lFShcQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-187-5l4JXGGbM2CRqTw9V2nWCA-1; Mon, 03 Mar 2025 03:49:45 -0500
-X-MC-Unique: 5l4JXGGbM2CRqTw9V2nWCA-1
-X-Mimecast-MFC-AGG-ID: 5l4JXGGbM2CRqTw9V2nWCA_1740991784
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43998ec3733so21975005e9.2
-        for <linux-kernel@vger.kernel.org>; Mon, 03 Mar 2025 00:49:44 -0800 (PST)
+ us-mta-528-VA546TMQMj6KekOoIIhgNA-1; Mon, 03 Mar 2025 03:51:38 -0500
+X-MC-Unique: VA546TMQMj6KekOoIIhgNA-1
+X-Mimecast-MFC-AGG-ID: VA546TMQMj6KekOoIIhgNA_1740991896
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-390f000e962so851941f8f.2
+        for <linux-kernel@vger.kernel.org>; Mon, 03 Mar 2025 00:51:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740991784; x=1741596584;
+        d=1e100.net; s=20230601; t=1740991896; x=1741596696;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=HZgsvoWWTlj/z7Wx3jz+2Ap6TQJJXYjKQ3XMWzn2w2I=;
-        b=T/dvDygW2wviUV1m6e0IPOCijiB0GPkLJhVk3JK8krA1rJ2IF9otmKR0zitlIZfCUf
-         kfbJownTcQ3TJO/HzJoVe87Z89gPU0g4naMeWgejMGIMjhVZrsqpXfk7CLInXtqYfvfW
-         IizLIKWKN4RAuLTRURcKNt9mJT0wgvKb81CmFJkULZNzyYurGnuCevFCbe238oaEkhev
-         Dk1fHhMN53g2uroB+KcdfHPVNqTXPk50YtvkWG30ceL+tA8UBBc6pujvmrxlsMuEPYAp
-         WG1ep3FdW8BlipMY22ZjxhWqrG2DjD7p9DsL36aGMLNFu/mmdtYdS7sWj541rPYLBpjl
-         /Z4w==
-X-Forwarded-Encrypted: i=1; AJvYcCWcVHr9QZt1NKSP/Tg2WHREksTWSWql5b4+pBnZlLmbRRhzUmZjCqHUfDCpeCyjXlBMdhAA7lFHVKswyD8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztARJiuHLnyPtTHtl7rUVMsZscTR/leJpYtLqSXva3CyIYbNtp
-	+mBqySS8ybgKOmLdbOW5/EHQoh1BwoUKuJGi2kHr4xTULtgtTz1X2oySkdCZfqgkBY8SV28wXax
-	Qnt9OyavMenX8hKahtRR5aQCpt/0m86Gd1/aIg2ja0HiH1KnZKLQI8bCfNbNf6g==
-X-Gm-Gg: ASbGncvXd5ipcC5ss7ySu+a1bcuC+g3CrB59TuThYnul7RaDpXsVCUnfXIT1nq3Zlvg
-	h3iCvzrPsAiBSy9FxasLX2xAdr7EtfJY3y5yO7fx7osF/Px3kT9WJkozExNrY8PqqswFfBtr4tP
-	o7AbTH6RLOvzhutqPws16Vlr6Tqg4xKk1zXQKJBY+eZ+sx+25fZESNyBAFueQG2Rs4qBfZh+tvL
-	lJjeAACvF7SIlD/1HCR9E3Y+spr7DpYXh0lQgYWpKNvoQkZ9LBCpN5S6Q0+cnFhradrxfAeg8pN
-	9OCy9Tvrj0KVLHY4jEqS9UDY67aG+3D8z+k91Dft3fYNwsWHrxCvUIaV57oxuKgl6zf/LhXJxTl
-	widEnTiFIXZNJdFTxNR8eRs65ycS4cAZfJd0xXRbtq/w=
-X-Received: by 2002:a05:600c:6a98:b0:43b:c1ac:aeeb with SMTP id 5b1f17b1804b1-43bc1acb051mr17807955e9.2.1740991783872;
-        Mon, 03 Mar 2025 00:49:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGfkTeqUr6av3ulFhHw4w32J7M9dmMHOsqprQVn7qo3OHB2JAoIA5h/UZCV7efl/bOzE0qShA==
-X-Received: by 2002:a05:600c:6a98:b0:43b:c1ac:aeeb with SMTP id 5b1f17b1804b1-43bc1acb051mr17807725e9.2.1740991783445;
-        Mon, 03 Mar 2025 00:49:43 -0800 (PST)
+        bh=PqwL+v3kSKyO1WWdOm3Dn4wn0YpaEHuXEacsy1CmEn4=;
+        b=oChVHtL26OvS9qrjvljJrZldt64vp6Jz1zcpZr+vB4t5+9PfB0JpGEB1cYZrHAMEMT
+         NXjKzNG+UD7m0IJtZrPQdobkfI7x6bmeS0hJx2aAGQIn1WchGljz5SjaeJIjHE7tzfgr
+         hDTBGg8C0cdbQB8I+GIONVRFpHZr+GkYexv5pGqZ2HLxtsmgDD1uP+yWv+ID+hJAb6wD
+         +4VT6k645YcC6c/qE0jEWG5z02e3TG8Ok1FHmt7qzF9KB6q/noipl460vIcAnZKWHnhe
+         v71KoEQwdSYshC5cyjqeaJEXexb6zeZWj6kWkBMKM+JkDt8xII4sI8E3pQIbUEWfdO7f
+         m/MA==
+X-Forwarded-Encrypted: i=1; AJvYcCVc25svwb+S47p3fOR3nYCFXI/ntfMoHhydLlSg/5/uGj1PZ4EvXvD3ZIXbPfRaVxzc9Cw4zDLB4hIu1hk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxebEQsUp7eWITMai4/rWadHgwKpfor9f97Zlk47fg+K6F7AEce
+	MUQ0xvkL1LiZKHsWsBgXDirrSC6NhotHg4fTt5oCXP1y5J76vIm3RFUiabYSN5ztErKMQ8UkOX8
+	6WdI/XGMoUk9HpENZlNSfZVfhjjPrjPkdWSGfBi7DBqVEVIFuqy8BOxatWc+RFw==
+X-Gm-Gg: ASbGnctLjE9cHh6S5UKLkvL+JgxfDiBC89/AaEca25iyM49CxH2AT5i85xViGDrmxFa
+	r88D9yYCqVGhGmOzrcGPM8VG5GGtPdErUHrlR6Gw9QPNL4EzU7fT+g3sMl9wA1Rh4nXDLLOegXl
+	X4C46SzHe4Ys1uMsfI4hazpDhITem3D7D4Z+cOsMbu6TqzSXkPZgvyrsPMAg5Sw6oLR9JHvnn/+
+	30eV0FLBe+WJcSc+mOhW6eIM+dyuv8VpKoDex3tX4QM7ejjP9IfJZ/Sq9MOIdN5JIHfLiMRCbeR
+	Rq+H1iPlPIYAvUil6C3J5JhZUSetRTy7fI0J+qKLd/o9Ox+Q7jv8DFlxR2luuRlsY1/0p/BrmSu
+	rx1/skUu2N2QMI+qLT7oKDa8wZUO1puxE72rtFXLS+lk=
+X-Received: by 2002:a05:6000:1565:b0:391:9b2:f48d with SMTP id ffacd0b85a97d-39109b2f8ebmr2190202f8f.33.1740991896372;
+        Mon, 03 Mar 2025 00:51:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEiqrTykXg+NUm0kAtziKqLGECEKRMnAI63MS2I3V/WDMW5AEnsAxTN6b4wA0iNetJkZ/Gt5g==
+X-Received: by 2002:a05:6000:1565:b0:391:9b2:f48d with SMTP id ffacd0b85a97d-39109b2f8ebmr2190184f8f.33.1740991895948;
+        Mon, 03 Mar 2025 00:51:35 -0800 (PST)
 Received: from ?IPV6:2003:cb:c734:9600:af27:4326:a216:2bfb? (p200300cbc7349600af274326a2162bfb.dip0.t-ipconnect.de. [2003:cb:c734:9600:af27:4326:a216:2bfb])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bc032d049sm33471735e9.5.2025.03.03.00.49.42
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e4844a22sm13875701f8f.74.2025.03.03.00.51.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 00:49:43 -0800 (PST)
-Message-ID: <5418a661-dbd0-46e9-8ef7-b1c5a34acce3@redhat.com>
-Date: Mon, 3 Mar 2025 09:49:41 +0100
+        Mon, 03 Mar 2025 00:51:35 -0800 (PST)
+Message-ID: <4af46304-cf25-4c4a-8e4a-3a566193ca62@redhat.com>
+Date: Mon, 3 Mar 2025 09:51:34 +0100
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
@@ -140,7 +140,7 @@ List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/4] mm: Fix lazy mmu docs and usage
+Subject: Re: [PATCH v1 2/4] sparc/mm: Disable preemption in lazy mmu mode
 To: Ryan Roberts <ryan.roberts@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  "David S. Miller" <davem@davemloft.net>,
@@ -154,7 +154,7 @@ To: Ryan Roberts <ryan.roberts@arm.com>,
 Cc: linux-mm@kvack.org, sparclinux@vger.kernel.org,
  xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org
 References: <20250302145555.3236789-1-ryan.roberts@arm.com>
- <20250302145555.3236789-2-ryan.roberts@arm.com>
+ <20250302145555.3236789-3-ryan.roberts@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -202,89 +202,63 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20250302145555.3236789-2-ryan.roberts@arm.com>
+In-Reply-To: <20250302145555.3236789-3-ryan.roberts@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6gx1506LzG3Fl
+X-ITU-Libra-ESVA-ID: 4Z6g1Y2zKVzG1Fk
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741710289.93503@+KVAS8JlPExUYhK8JRZGBQ
+X-ITU-Libra-ESVA-Watermark: 1741707783.47338@UGiS25r8GamFJ5ygQiNgKA
 X-ITU-MailScanner-SpamCheck: not spam
 
 On 02.03.25 15:55, Ryan Roberts wrote:
-> The docs, implementations and use of arch_[enter|leave]_lazy_mmu_mode()
-> is a bit of a mess (to put it politely). There are a number of issues
-> related to nesting of lazy mmu regions and confusion over whether the
-> task, when in a lazy mmu region, is preemptible or not. Fix all the
-> issues relating to the core-mm. Follow up commits will fix the
-> arch-specific implementations. 3 arches implement lazy mmu; powerpc,
-> sparc and x86.
+> Since commit 38e0edb15bd0 ("mm/apply_to_range: call pte function with
+> lazy updates") it's been possible for arch_[enter|leave]_lazy_mmu_mode()
+> to be called without holding a page table lock (for the kernel mappings
+> case), and therefore it is possible that preemption may occur while in
+> the lazy mmu mode. The Sparc lazy mmu implementation is not robust to
+> preemption since it stores the lazy mode state in a per-cpu structure
+> and does not attempt to manage that state on task switch.
 > 
-> When arch_[enter|leave]_lazy_mmu_mode() was first introduced by commit
-> 6606c3e0da53 ("[PATCH] paravirt: lazy mmu mode hooks.patch"), it was
-> expected that lazy mmu regions would never nest and that the appropriate
-> page table lock(s) would be held while in the region, thus ensuring the
-> region is non-preemptible. Additionally lazy mmu regions were only used
-> during manipulation of user mappings.
+> Powerpc had the same issue and fixed it by explicitly disabling
+> preemption in arch_enter_lazy_mmu_mode() and re-enabling in
+> arch_leave_lazy_mmu_mode(). See commit b9ef323ea168 ("powerpc/64s:
+> Disable preemption in hash lazy mmu mode").
 > 
-> Commit 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy
-> updates") started invoking the lazy mmu mode in apply_to_pte_range(),
-> which is used for both user and kernel mappings. For kernel mappings the
-> region is no longer protected by any lock so there is no longer any
-> guarantee about non-preemptibility. Additionally, for RT configs, the
-> holding the PTL only implies no CPU migration, it doesn't prevent
-> preemption.
+> Given Sparc's lazy mmu mode is based on powerpc's, let's fix it in the
+> same way here.
 > 
-> Commit bcc6cc832573 ("mm: add default definition of set_ptes()") added
-> arch_[enter|leave]_lazy_mmu_mode() to the default implementation of
-> set_ptes(), used by x86. So after this commit, lazy mmu regions can be
-> nested. Additionally commit 1a10a44dfc1d ("sparc64: implement the new
-> page table range API") and commit 9fee28baa601 ("powerpc: implement the
-> new page table range API") did the same for the sparc and powerpc
-> set_ptes() overrides.
+> Fixes: 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy updates")
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> ---
+>   arch/sparc/mm/tlb.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> powerpc couldn't deal with preemption so avoids it in commit
-> b9ef323ea168 ("powerpc/64s: Disable preemption in hash lazy mmu mode"),
-> which explicitly disables preemption for the whole region in its
-> implementation. x86 can support preemption (or at least it could until
-> it tried to add support nesting; more on this below). Sparc looks to be
-> totally broken in the face of preemption, as far as I can tell.
-> 
-> powewrpc can't deal with nesting, so avoids it in commit 47b8def9358c
-> ("powerpc/mm: Avoid calling arch_enter/leave_lazy_mmu() in set_ptes"),
-> which removes the lazy mmu calls from its implementation of set_ptes().
-> x86 attempted to support nesting in commit 49147beb0ccb ("x86/xen: allow
-> nesting of same lazy mode") but as far as I can tell, this breaks its
-> support for preemption.
-> 
-> In short, it's all a mess; the semantics for
-> arch_[enter|leave]_lazy_mmu_mode() are not clearly defined and as a
-> result the implementations all have different expectations, sticking
-> plasters and bugs.
-> 
-> arm64 is aiming to start using these hooks, so let's clean everything up
-> before adding an arm64 implementation. Update the documentation to state
-> that lazy mmu regions can never be nested, must not be called in
-> interrupt context and preemption may or may not be enabled for the
-> duration of the region.
-> 
-> Additionally, update the way arch_[enter|leave]_lazy_mmu_mode() is
-> called in pagemap_scan_pmd_entry() to follow the normal pattern of
-> holding the ptl for user space mappings. As a result the scope is
-> reduced to only the pte table, but that's where most of the performance
-> win is. While I believe there wasn't technically a bug here, the
-> original scope made it easier to accidentally nest or, worse,
-> accidentally call something like kmap() which would expect an immediate
-> mode pte modification but it would end up deferred.
-> 
-> arch-specific fixes to conform to the new spec will proceed this one.
-> 
-> These issues were spotted by code review and I have no evidence of
-> issues being reported in the wild.
-> 
-
-All looking good to me!
+> diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+> index 8648a50afe88..a35ddcca5e76 100644
+> --- a/arch/sparc/mm/tlb.c
+> +++ b/arch/sparc/mm/tlb.c
+> @@ -52,8 +52,10 @@ void flush_tlb_pending(void)
+>   
+>   void arch_enter_lazy_mmu_mode(void)
+>   {
+> -	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
+> +	struct tlb_batch *tb;
+>   
+> +	preempt_disable();
+> +	tb = this_cpu_ptr(&tlb_batch);
+>   	tb->active = 1;
+>   }
+>   
+> @@ -64,6 +66,7 @@ void arch_leave_lazy_mmu_mode(void)
+>   	if (tb->tlb_nr)
+>   		flush_tlb_pending();
+>   	tb->active = 0;
+> +	preempt_enable();
+>   }
+>   
+>   static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
 
 Acked-by: David Hildenbrand <david@redhat.com>
 
