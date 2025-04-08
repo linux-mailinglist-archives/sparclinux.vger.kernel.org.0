@@ -1,38 +1,38 @@
-Return-Path: <sparclinux+bounces-3420-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-3412-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24813A7FAD4
-	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 12:04:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C09A7FADB
+	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 12:05:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37EA43A8D2C
-	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 10:02:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E16A19E2F70
+	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 10:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55B326F446;
-	Tue,  8 Apr 2025 09:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865DE266F06;
+	Tue,  8 Apr 2025 09:53:31 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E93C267AFB;
-	Tue,  8 Apr 2025 09:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09116267704;
+	Tue,  8 Apr 2025 09:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744106048; cv=none; b=fWAP871wNS8IYfS9xnnBIZakn8hKDlKHhSGDu8S/TjT3Ua1yEnCjz0V4wx/jvmk6xqn+l5ZbvRcVsnK3bUlfL89nDLZZ5BgNGL33ARny9i6K+uh7CUPKOtGge9EUSYjmk1VMEPNQpyzfeyZH+7Fp0wvuRU00itEz3lPSP++S96c=
+	t=1744106011; cv=none; b=FaQhCi00HTfVqDKhIU81n0PdLqNVQT6dkrpTIQhpX9wWiHitT2CxrPEMySzjgto9NoYSM4BkqYjExUsi01dpV33R7lrcqK2vpGG2G6BmgTFdPYWL7/eSvsauNR6zE521m/g0w0XDbvYU3SV2LbBzWLNgx94YYg9g6n3h8llPPxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744106048; c=relaxed/simple;
-	bh=7SkekEk0zS7CeV0Z+w07u4SyLJEvkvLC1BauqGZI4gc=;
+	s=arc-20240116; t=1744106011; c=relaxed/simple;
+	bh=St2Kv65BwofpU4q8HERwkv8VvzQChXdvekG2xPYCROA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1/RcWZOtXJMN8BFgqgpJh5fNPq76qbnLVm4qeN1f38txzzTp+wqotrhHKn79uBCj4rS65fRdqq3FedZWJzTC4+xM8F29ccq2G5Jnz693Kac0sjBS/YYahQ7Yxx4PxnjtYI6NtcNMnc8/+MBjqcFsGH525hQHDTXHZkGyS4Sse4=
+	 MIME-Version; b=qjA80Et//ylcqkO+zLHZWhVFfpihTpgB/ZEr58qpLzBBRO3TMJStyR+SHw/jhrI9s7NTj26JeogQ0Rz9UquQQQnrNixp9KxJAqajPeNARSs1eEKJChguKfAhcwQVG2Fd1sqqGaZKeZPw6tAR9TP25bClR41IS8nG+oE7jIvyeBM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C22912308;
-	Tue,  8 Apr 2025 02:54:07 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 211432308;
+	Tue,  8 Apr 2025 02:53:30 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8289A3F6A8;
-	Tue,  8 Apr 2025 02:54:02 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D3DDB3F6A8;
+	Tue,  8 Apr 2025 02:53:24 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -67,9 +67,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v2 12/12] riscv: mm: Call PUD/P4D ctor in special kernel pgtable alloc
-Date: Tue,  8 Apr 2025 10:52:22 +0100
-Message-ID: <20250408095222.860601-13-kevin.brodsky@arm.com>
+Subject: [PATCH v2 04/12] m68k: mm: Call ctor/dtor for kernel PTEs
+Date: Tue,  8 Apr 2025 10:52:14 +0100
+Message-ID: <20250408095222.860601-5-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250408095222.860601-1-kevin.brodsky@arm.com>
 References: <20250408095222.860601-1-kevin.brodsky@arm.com>
@@ -81,54 +81,39 @@ List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Constructors for PUD/P4D-level pgtables were recently introduced.
-They should be called for all pgtables; make sure they are called
-for special kernel mappings created by create_pgd_mapping() too.
-
-While at it also switch to using pagetable_alloc() like
-in alloc_{pte,pmd}_late().
+The generic implementation of pte_{alloc_one,free}_kernel now calls
+the [cd]tor. Align the m68k/ColdFire implementation of those
+functions by calling the [cd]tor explicitly.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/riscv/mm/init.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/m68k/include/asm/mcf_pgalloc.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 59a982f88908..8d0374d7ce8e 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -590,11 +590,11 @@ static phys_addr_t __init alloc_pud_fixmap(uintptr_t va)
+diff --git a/arch/m68k/include/asm/mcf_pgalloc.h b/arch/m68k/include/asm/mcf_pgalloc.h
+index 465a71101b7d..fc5454d37da3 100644
+--- a/arch/m68k/include/asm/mcf_pgalloc.h
++++ b/arch/m68k/include/asm/mcf_pgalloc.h
+@@ -7,7 +7,7 @@
  
- static phys_addr_t __meminit alloc_pud_late(uintptr_t va)
+ static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
  {
--	unsigned long vaddr;
-+	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
- 
--	vaddr = __get_free_page(GFP_KERNEL);
--	BUG_ON(!vaddr);
--	return __pa(vaddr);
-+	BUG_ON(!ptdesc);
-+	pagetable_pud_ctor(ptdesc);
-+	return __pa((pud_t *)ptdesc_address(ptdesc));
+-	pagetable_free(virt_to_ptdesc(pte));
++	pagetable_dtor_free(virt_to_ptdesc(pte));
  }
  
- static p4d_t *__init get_p4d_virt_early(phys_addr_t pa)
-@@ -628,11 +628,11 @@ static phys_addr_t __init alloc_p4d_fixmap(uintptr_t va)
+ extern const char bad_pmd_string[];
+@@ -19,6 +19,10 @@ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
  
- static phys_addr_t __meminit alloc_p4d_late(uintptr_t va)
- {
--	unsigned long vaddr;
-+	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
+ 	if (!ptdesc)
+ 		return NULL;
++	if (!pagetable_pte_ctor(mm, ptdesc)) {
++		pagetable_free(ptdesc);
++		return NULL;
++	}
  
--	vaddr = __get_free_page(GFP_KERNEL);
--	BUG_ON(!vaddr);
--	return __pa(vaddr);
-+	BUG_ON(!ptdesc);
-+	pagetable_p4d_ctor(ptdesc);
-+	return __pa((p4d_t *)ptdesc_address(ptdesc));
+ 	return ptdesc_address(ptdesc);
  }
- 
- static void __meminit create_pud_mapping(pud_t *pudp, uintptr_t va, phys_addr_t pa, phys_addr_t sz,
 -- 
 2.47.0
 
