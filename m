@@ -1,38 +1,38 @@
-Return-Path: <sparclinux+bounces-3414-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-3418-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA5FA7FAE0
-	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 12:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9D7A7FAF6
+	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 12:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA3DA19E328E
-	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 10:00:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 642CB189AE69
+	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 10:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4A1267724;
-	Tue,  8 Apr 2025 09:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79006267AED;
+	Tue,  8 Apr 2025 09:54:00 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539CC267704;
-	Tue,  8 Apr 2025 09:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B43266594;
+	Tue,  8 Apr 2025 09:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744106020; cv=none; b=ojNd3znYk7smf+pgzu4NYbvFYHxF18/9sdS+d6ztIHhZgDWGbEAEiejcu2MWjlFK+b43kV80X1xGb3emNSm1Gia0hczulaaNZQtQxxJhh1qKWFfwsiYi2Bqs82dXYzGeu9lvv4jnaWHlytLkjzj5jLIV6EsaAveGuMhmp4UMOiM=
+	t=1744106040; cv=none; b=U+1V/CP6Nzmn46lSdVJQBWLcuBLWw9M8RE/NvE34FfScYMee2RJfUbNTw8F65uWvXfF0u7hAp8W8gTAvLFPzoOKOnq7YA0CKLUFrU/PVyA4rGI5en3PfPIK5waRxB/rD/uCF0MAewy7BIAQCbdXlwXp35EXsrX488S6az8bMbYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744106020; c=relaxed/simple;
-	bh=P1HsBuwbRRvDOxMRGpGhUOeFt313ph6Xd9gJXgXRnIo=;
+	s=arc-20240116; t=1744106040; c=relaxed/simple;
+	bh=PWLeu289fXlXcBmOnTypDs6Tc9pxoDi1WRHvtvQYZb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrmVY+FFYrcqQOTo9JVIkHgFj+32ss6xqEA2uI0l0sYb2Oua7r1xIl13fnbeU0kslqzQcaesaIFN+oSnP/vnLcPPgmYXvDHkbUHcfQZCI5JEL4nVQ+TJ6IPy+9tmlXDhM3khfuFqJuRrm1a/U3VqadNWlV7vT9Lp/UD1cFywKXk=
+	 MIME-Version; b=CR82ff/nyAEXI8Qz1fB52AJhLhGhBUbz5+vBvlAY8bRaGVsoSs+AJu1kEYqvtfogePjJfu1KLpf5RG1P4OgsfBLfFEnPRiLgrJg7rfGGL4c5RzqTGVY/PIkCgs4In2QtQj+qWIk0Hz9FlTdlw+1f2+5fsNlxb5bhaADmNBnrerQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 861E82309;
-	Tue,  8 Apr 2025 02:53:39 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5D48D16A3;
+	Tue,  8 Apr 2025 02:53:58 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4566F3F6A8;
-	Tue,  8 Apr 2025 02:53:34 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1DCDA3F6A8;
+	Tue,  8 Apr 2025 02:53:52 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -67,9 +67,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v2 06/12] sparc64: mm: Call ctor/dtor for kernel PTEs
-Date: Tue,  8 Apr 2025 10:52:16 +0100
-Message-ID: <20250408095222.860601-7-kevin.brodsky@arm.com>
+Subject: [PATCH v2 10/12] riscv: mm: Clarify ctor mm argument in alloc_{pte,pmd}_late
+Date: Tue,  8 Apr 2025 10:52:20 +0100
+Message-ID: <20250408095222.860601-11-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250408095222.860601-1-kevin.brodsky@arm.com>
 References: <20250408095222.860601-1-kevin.brodsky@arm.com>
@@ -81,74 +81,48 @@ List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The generic implementation of pte_{alloc_one,free}_kernel now calls
-the [cd]tor, without initialising the ptlock needlessly as
-pagetable_pte_ctor() skips it for init_mm.
+pagetable_{pte,pmd}_ctor(mm, ptdesc) skip the ptlock initialisation
+if mm is &init_mm. To avoid unnecessary overhead, it is therefore
+preferable to pass the actual mm associated to the PTE/PMD.
 
-Align sparc64 with the generic implementation by ensuring
-pagetable_pte_[cd]tor() are called for kernel PTEs. As a result
-the kernel and user alloc/free functions have the same
-implementation, and since pgtable_t is defined as pte_t *, we can
-have both call a common helper.
+Unfortunately, this proves challenging for alloc_{pte,pmd}_late() as
+the associated mm is not available at the point where they are
+called - in fact not even top-level functions like
+create_pgd_mapping() are passed the mm. As a result they both call
+the ctor with NULL as mm; this is safe but potentially wasteful.
+
+This is not a new situation, but let's add a couple of comments to
+clarify it.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/sparc/mm/init_64.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ arch/riscv/mm/init.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 5c8eabda1d17..25ae4c897aae 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -2878,18 +2878,7 @@ void __flush_tlb_all(void)
- 			     : : "r" (pstate));
- }
- 
--pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
--{
--	struct page *page = alloc_page(GFP_KERNEL | __GFP_ZERO);
--	pte_t *pte = NULL;
--
--	if (page)
--		pte = (pte_t *) page_address(page);
--
--	return pte;
--}
--
--pgtable_t pte_alloc_one(struct mm_struct *mm)
-+static pte_t *__pte_alloc_one(struct mm_struct *mm)
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index e5ef693fc778..59a982f88908 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -442,6 +442,11 @@ static phys_addr_t __meminit alloc_pte_late(uintptr_t va)
  {
- 	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL | __GFP_ZERO, 0);
+ 	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL & ~__GFP_HIGHMEM, 0);
  
-@@ -2902,9 +2891,14 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
- 	return ptdesc_address(ptdesc);
++	/*
++	 * We do not know which mm the PTE page is associated to at this point.
++	 * Passing NULL to the ctor is the safe option, though it may result
++	 * in unnecessary work (e.g. initialising the ptlock for init_mm).
++	 */
+ 	BUG_ON(!ptdesc || !pagetable_pte_ctor(NULL, ptdesc));
+ 	return __pa((pte_t *)ptdesc_address(ptdesc));
  }
- 
--void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
-+pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+@@ -522,6 +527,7 @@ static phys_addr_t __meminit alloc_pmd_late(uintptr_t va)
  {
--	free_page((unsigned long)pte);
-+	return __pte_alloc_one(mm);
-+}
-+
-+pgtable_t pte_alloc_one(struct mm_struct *mm)
-+{
-+	return __pte_alloc_one(mm);
- }
+ 	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL & ~__GFP_HIGHMEM, 0);
  
- static void __pte_free(pgtable_t pte)
-@@ -2915,6 +2909,11 @@ static void __pte_free(pgtable_t pte)
- 	pagetable_free(ptdesc);
++	/* See comment in alloc_pte_late() regarding NULL passed the ctor */
+ 	BUG_ON(!ptdesc || !pagetable_pmd_ctor(NULL, ptdesc));
+ 	return __pa((pmd_t *)ptdesc_address(ptdesc));
  }
- 
-+void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
-+{
-+	__pte_free(pte);
-+}
-+
- void pte_free(struct mm_struct *mm, pgtable_t pte)
- {
- 	__pte_free(pte);
 -- 
 2.47.0
 
