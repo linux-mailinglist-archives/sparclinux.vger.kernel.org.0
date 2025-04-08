@@ -1,38 +1,38 @@
-Return-Path: <sparclinux+bounces-3413-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-3415-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B424A7FAC5
-	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 12:03:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD3EA7FAB5
+	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 12:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A9657A6D3B
-	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 09:59:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94F063A92B1
+	for <lists+sparclinux@lfdr.de>; Tue,  8 Apr 2025 10:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37EEE26771C;
-	Tue,  8 Apr 2025 09:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513D1221546;
+	Tue,  8 Apr 2025 09:53:45 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1EF267704;
-	Tue,  8 Apr 2025 09:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C033726B2B1;
+	Tue,  8 Apr 2025 09:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744106016; cv=none; b=ixFWn5tcvylANSeJ+o1Lmwg69e2U0B1WM56zQLK4KaNPdoNP2tkEv5U4kXy6wg50jzo1wR/2gL+cj3caEjQ++aiGJK0FE8eZj4FT3exTyg+IfM52Lyf05wccmu/t+p3mfpUpK7gYxOb34BV4PPG12M0ykWWTpvgRbu+QiNm+t3g=
+	t=1744106025; cv=none; b=YSO+QRBfOSDPG8dmUGDmWuYaMHrkXw4M9Ln8gj7/ep+RejstkuIhRIRLMo4xhI/QeVxUdahpe/Xm4gIJoWyRgoz7izM9MHZKzBJFvNv35AUYQzvqmFuRLdooBkDzka8vx15MVhDOuS6WrXk1yRqP09LvFVgMdUexKKD3knp4OaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744106016; c=relaxed/simple;
-	bh=sJY3k14WBl1j2uqNZ+rNzVrFO/O8YxCuCcrCnNtLeO4=;
+	s=arc-20240116; t=1744106025; c=relaxed/simple;
+	bh=VN9QPRYao3EbcBaeo7qDPwRxCJ3ZhUtuefFyVfJ6bnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7aUcn3xMBdFknPB8/W4pKIEdPMDHkWBLORUYRWqKnHkgZCQLMGBUOqMK1+3FuCGSqoeVgnbZM4RKRAnD9LwhS0uYF+Pd+d+HVcAkiB8ZgCA6tiP0ZVEI4oNifd1RLc69ua7+aAzlmFib4E8O2azu7J41pKW0cTp+HFK40MAOdc=
+	 MIME-Version; b=HF2F3lhoml4JcYwuCbebiSO3GxNAk2Rh7UhMwE2afkSXyOkVQarTrMszRUhl3iD2hC29Jm9cnS695GtVEc/NQzNV621xzC7w+Lh9mx3mPO24iUAk8UCBdrjBpQzqJ/54LyRdMW8gng9AdtA0b+PncJI4Y+aln79SmNWG959hvUQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CCE4822FC;
-	Tue,  8 Apr 2025 02:53:34 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3EB2B2328;
+	Tue,  8 Apr 2025 02:53:44 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D5873F6A8;
-	Tue,  8 Apr 2025 02:53:29 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F29D83F6A8;
+	Tue,  8 Apr 2025 02:53:38 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -67,9 +67,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v2 05/12] powerpc: mm: Call ctor/dtor for kernel PTEs
-Date: Tue,  8 Apr 2025 10:52:15 +0100
-Message-ID: <20250408095222.860601-6-kevin.brodsky@arm.com>
+Subject: [PATCH v2 07/12] mm: Skip ptlock_init() for kernel PMDs
+Date: Tue,  8 Apr 2025 10:52:17 +0100
+Message-ID: <20250408095222.860601-8-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250408095222.860601-1-kevin.brodsky@arm.com>
 References: <20250408095222.860601-1-kevin.brodsky@arm.com>
@@ -81,71 +81,40 @@ List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The generic implementation of pte_{alloc_one,free}_kernel now calls
-the [cd]tor, without initialising the ptlock needlessly as
-pagetable_pte_ctor() skips it for init_mm.
+Split page table locks are not used for pgtables associated to
+init_mm, at any level. pte_alloc_kernel() does not call
+ptlock_init() as a result. There is however no separate alloc/free
+functions for kernel PMDs, and pmd_ptlock_init() is called
+unconditionally. When ALLOC_SPLIT_PTLOCKS is true (e.g. 32-bit
+architectures or if CONFIG_PREEMPT_RT is selected), this results in
+unnecessary dynamic memory allocation every time a kernel PMD is
+allocated.
 
-On powerpc, all functions related to PTE allocation are implemented
-by common helpers, which are passed a boolean to differentiate user
-from kernel pgtables. This patch aligns the powerpc implementation
-with the generic one by calling pagetable_pte_[cd]tor()
-unconditionally in those helpers.
+Now that pagetable_pmd_ctor() is passed the associated mm, we can
+easily remove this overhead by skipping pmd_ptlock_init() if the
+pgtable is associated to init_mm. No special-casing is needed on the
+dtor path, as ptlock_free() is already called unconditionally for
+all levels. (ptlock_free() is a no-op unless a ptlock was allocated
+for the given PTP.)
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/powerpc/mm/pgtable-frag.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ include/linux/mm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
-index 387e9b1fe12c..77e55eac16e4 100644
---- a/arch/powerpc/mm/pgtable-frag.c
-+++ b/arch/powerpc/mm/pgtable-frag.c
-@@ -56,19 +56,17 @@ static pte_t *__alloc_for_ptecache(struct mm_struct *mm, int kernel)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 3f48e449574a..ef420f4dc72c 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3210,7 +3210,7 @@ static inline spinlock_t *pmd_lock(struct mm_struct *mm, pmd_t *pmd)
+ static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
+ 				      struct ptdesc *ptdesc)
  {
- 	void *ret = NULL;
- 	struct ptdesc *ptdesc;
-+	gfp_t gfp = PGALLOC_GFP;
- 
--	if (!kernel) {
--		ptdesc = pagetable_alloc(PGALLOC_GFP | __GFP_ACCOUNT, 0);
--		if (!ptdesc)
--			return NULL;
--		if (!pagetable_pte_ctor(mm, ptdesc)) {
--			pagetable_free(ptdesc);
--			return NULL;
--		}
--	} else {
--		ptdesc = pagetable_alloc(PGALLOC_GFP, 0);
--		if (!ptdesc)
--			return NULL;
-+	if (!kernel)
-+		gfp |= __GFP_ACCOUNT;
-+
-+	ptdesc = pagetable_alloc(gfp, 0);
-+	if (!ptdesc)
-+		return NULL;
-+	if (!pagetable_pte_ctor(mm, ptdesc)) {
-+		pagetable_free(ptdesc);
-+		return NULL;
- 	}
- 
- 	atomic_set(&ptdesc->pt_frag_refcount, 1);
-@@ -124,12 +122,10 @@ void pte_fragment_free(unsigned long *table, int kernel)
- 
- 	BUG_ON(atomic_read(&ptdesc->pt_frag_refcount) <= 0);
- 	if (atomic_dec_and_test(&ptdesc->pt_frag_refcount)) {
--		if (kernel)
--			pagetable_free(ptdesc);
--		else if (folio_test_clear_active(ptdesc_folio(ptdesc)))
--			call_rcu(&ptdesc->pt_rcu_head, pte_free_now);
--		else
-+		if (kernel || !folio_test_clear_active(ptdesc_folio(ptdesc)))
- 			pte_free_now(&ptdesc->pt_rcu_head);
-+		else
-+			call_rcu(&ptdesc->pt_rcu_head, pte_free_now);
- 	}
- }
- 
+-	if (!pmd_ptlock_init(ptdesc))
++	if (mm != &init_mm && !pmd_ptlock_init(ptdesc))
+ 		return false;
+ 	ptdesc_pmd_pts_init(ptdesc);
+ 	__pagetable_ctor(ptdesc);
 -- 
 2.47.0
 
