@@ -1,149 +1,105 @@
-Return-Path: <sparclinux+bounces-4109-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-4111-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98A2B06B1C
-	for <lists+sparclinux@lfdr.de>; Wed, 16 Jul 2025 03:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31CABB06DC2
+	for <lists+sparclinux@lfdr.de>; Wed, 16 Jul 2025 08:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 467FC1A64BCD
-	for <lists+sparclinux@lfdr.de>; Wed, 16 Jul 2025 01:27:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92E371C21CC5
+	for <lists+sparclinux@lfdr.de>; Wed, 16 Jul 2025 06:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519EB264F8A;
-	Wed, 16 Jul 2025 01:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC72221DB9;
+	Wed, 16 Jul 2025 06:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="AIIxJX2H"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="jB7bcGfa"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51E222A1C5;
-	Wed, 16 Jul 2025 01:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DAA20EB;
+	Wed, 16 Jul 2025 06:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752629214; cv=none; b=RuehcW+jsgbvQoyna1Ra8NursvoMyShBuOM7DIJe9Xf6oHW9iv/jRKn//XrD5BOXNc97N3Fzjefy+DSP+o4IlRHlJHjI6KQZFipwmqpGuku7JadJCBnk9LvAeSsE7Hr4fMCBDU20qJg6oXvA69P0VF1LswOtLNAILsYXcD6Tb5A=
+	t=1752646740; cv=none; b=qkg9i0x9cu46VPM97L8OBJq1mh/r8X8oenXnZqcZFJdPYYt1XZGavrkvC7Y6x4FOWz8G4xnoiYJyFL9EL0wMeME/FVtxjMksEdfSscr5TtbOzjDxjHURsjEVplmy6/UWcp36tD7NjFaayIIcS/BVvb9fznSAO25qWXHorrLKa7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752629214; c=relaxed/simple;
-	bh=dhmRHC6omUzZl+BhxCjM/v9Ct0N8di0JDdmsBX7FkhI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATMuKaPqFiKFlqepwlCbGSJmKuRfifaNHMZ9vTXNyaq/Eha4mC6aEyTIG+O1+5H5s9hgOLdV4F9lwzEX9oSGw/9ktRJB+CBmgJ/5MhJe5W4SX9gZXn9OZrBaRyhTG/qQVwxHH9AdcZIJUE38z4xwWwammWIoZAW2afOJGz25k0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=AIIxJX2H; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56G0fmq0026786;
-	Wed, 16 Jul 2025 01:26:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=3Zym5
-	azNXiz9qVHXMLPgaEgHeOyb0ea+hw0Xt9bHqAA=; b=AIIxJX2HrC7ltRXRyFrhx
-	g+9nNpq/fVSnB4Z+1/ySYPvAWx8+dzAgOjQX7GiJpwTiREZwkvSR9KNcRQM+l1Ra
-	yXjIDllyZXObtozKjxrVzDpN4VJ87XeQzhtJuO+1kK5zv9nPd09PVAMvTsxFUCBM
-	rfbjGP1PsRGmlrXXdoC8u3V9gN+1LX4l82ubtQiP5HmLub8yRiaifOSfslVIVyIZ
-	r6/M8LkfBNn6ClUrVfkqstjI/Npia4hkrvnx3jcad1JAXUZ1NCX51go+6g+5fIKf
-	0nhdl4WNUQ/meW30AAJG7XsVl69ofmwKmIpQWcgsXGVjuyiHScbk+b/iAVbncdb9
-	g==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47uk8g0038-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Jul 2025 01:26:17 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56G0K5pc029002;
-	Wed, 16 Jul 2025 01:26:17 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47ue5afds6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Jul 2025 01:26:17 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56G1QCRe036586;
-	Wed, 16 Jul 2025 01:26:16 GMT
-Received: from localhost.localdomain (ca-dev60.us.oracle.com [10.129.136.27])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 47ue5afdph-4;
-	Wed, 16 Jul 2025 01:26:16 +0000
-From: Anthony Yznaga <anthony.yznaga@oracle.com>
-To: davem@davemloft.net, andreas@gaisler.com, arnd@arndb.de,
-        muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
-        david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-        vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, alexghiti@rivosinc.com,
-        agordeev@linux.ibm.com, anshuman.khandual@arm.com,
-        christophe.leroy@csgroup.eu, ryan.roberts@arm.com, will@kernel.org
-Subject: [PATCH 3/3] mm: drop hugetlb_free_pgd_range()
-Date: Tue, 15 Jul 2025 18:26:11 -0700
-Message-ID: <20250716012611.10369-4-anthony.yznaga@oracle.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250716012611.10369-1-anthony.yznaga@oracle.com>
-References: <20250716012611.10369-1-anthony.yznaga@oracle.com>
+	s=arc-20240116; t=1752646740; c=relaxed/simple;
+	bh=qjPrwqF9/I2x8Qf6rZVsKDPcqEE/qYpZvKlRBCnYWto=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gIjIT/XNRtHr7OzxuO4VR8ICanVoJEJu8uz14VBrVU8DtESRXGJ9CLh+XmnHj9k617Lw8OeYUf37Ic/25NffMutjOSpSszntGsnvVXtYlOVYkZpuvN5Hf7qb/q1QkEiA7zCTYbJjKNaWaF6CzSUt1/krbFx05Qgp5+keW1PYM9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=jB7bcGfa; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=qIHKtqHYhjFHDqLB5xdZ5o+B+hj8vWTNDrAvtMdcHZU=; t=1752646736; x=1753251536; 
+	b=jB7bcGfaLpeq5netKPCvVfANUs+PKESUZqZicypf5Lz6z+WeR3Docbchgj5vGgXIF2ME1H13I6R
+	boSHjAKJP8rAeIHafWn+hDODxvRDEZI0Ktl7rMDtxIpCmD96sMPP9GFCRETvTynKDZq0+aqDbK2/2
+	gD7+6+4ezexBSAHFWEnqH7h92uJ2aI1XbHd1RngJCaQu2S/Y9H7NzxuSo4kajipQuzKh2TlqkHhwR
+	5sq/frkrSjYmtsivMya6TDqD8m+k1XXTtzmw1EKhaexLbb67KmpztO9KER7GOqApxAiTY5o21a+Hv
+	vwDI2aT76XtKejJdZKL7tByybaxYiRUvXKJQ==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.98)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1ubvTb-00000003Tv0-0wKq; Wed, 16 Jul 2025 08:18:47 +0200
+Received: from p57bd96d0.dip0.t-ipconnect.de ([87.189.150.208] helo=suse-laptop.fritz.box)
+          by inpost2.zedat.fu-berlin.de (Exim 4.98)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1ubvTa-00000001iiC-4A3T; Wed, 16 Jul 2025 08:18:47 +0200
+Message-ID: <7531c897d8a4dc874bc226f5cb724eb66ee17974.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH] sparc64: fix hugetlb for sun4u
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Anthony Yznaga <anthony.yznaga@oracle.com>, sparclinux@vger.kernel.org, 
+	davem@davemloft.net, andreas@gaisler.com
+Cc: linux-kernel@vger.kernel.org, agordeev@linux.ibm.com, will@kernel.org, 
+	ryan.roberts@arm.com, david@redhat.com, osalvador@suse.de
+Date: Wed, 16 Jul 2025 08:18:46 +0200
+In-Reply-To: <20250716012446.10357-1-anthony.yznaga@oracle.com>
+References: <20250716012446.10357-1-anthony.yznaga@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-15_05,2025-07-15_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 spamscore=0
- suspectscore=0 adultscore=0 mlxlogscore=898 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507160010
-X-Proofpoint-ORIG-GUID: bMDuweexcGO3OD1A_a-oXN_tSS3SJ0_z
-X-Authority-Analysis: v=2.4 cv=Of+YDgTY c=1 sm=1 tr=0 ts=6876ffba cx=c_pps a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17 a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=xJtxJrIqMAcFdswKMKAA:9
-X-Proofpoint-GUID: bMDuweexcGO3OD1A_a-oXN_tSS3SJ0_z
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE2MDAxMSBTYWx0ZWRfX4NfffmIEIG3p N3a+WZplz1bCX1jn4LyAn0Mg9WGbS66Ae/IXdekWEZ8HpCd2ULlHj94+xQfD91kOdXMJLjIJZBJ BHyzjjh+ZiInL5iHrEPF4lm9ZApbdNEgklvXvocDgTXnvu0TcOM1kzybRY0vBO1i/xEuPhXgnA5
- yrAvFJrWoF09AYgXkHxg3pq+0nEFXSHRS1fCdVoY5AgSB9199iOrCmmPhXz+WaOWbM1dEz+03cm DmJ60pjZZzA/1kvuYMlxG8mgQ9+wWIevEK1+RYDE+iziHtkLTgKaYS9+98rdEvUwngQanRbzCFt KQ6YCiJlBSFGdIe4cTv/GBaAxgyYbm7iUsaLuvDm8TWThjOVs6piSbfZLcSDUiIPWL6bXsVK4OM
- 6EoS4uXRcll+dz7OaKjJHMG7xtd3OU79Dra32xDnhOgspTTObnBARiE1Yo73aD6tC+swqz2r
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
 
-There are no longer any callers of hugetlb_free_pgd_range().
+Hi Anthony,
 
-Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
----
- include/asm-generic/hugetlb.h | 9 ---------
- include/linux/hugetlb.h       | 7 -------
- 2 files changed, 16 deletions(-)
+On Tue, 2025-07-15 at 18:24 -0700, Anthony Yznaga wrote:
+> An attempt to exercise sparc hugetlb code in a sun4u-based guest
+> running under qemu results in the guest hanging due to being stuck
+> in a trap loop. This is due to invalid hugetlb TTEs being installed
+> that do not have the expected _PAGE_PMD_HUGE and page size bits set.
+> Although the breakage has gone apparently unnoticed for several years,
+> fix it now so there is the option to exercise sparc hugetlb code under
+> qemu. This can be useful because sun4v support in qemu does not support
+> linux guests currently and sun4v-based hardware resources may not be
+> readily available.
 
-diff --git a/include/asm-generic/hugetlb.h b/include/asm-generic/hugetlb.h
-index 3e0a8fe9b108..2558daea1a32 100644
---- a/include/asm-generic/hugetlb.h
-+++ b/include/asm-generic/hugetlb.h
-@@ -66,15 +66,6 @@ static inline void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
- }
- #endif
- 
--#ifndef __HAVE_ARCH_HUGETLB_FREE_PGD_RANGE
--static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
--		unsigned long addr, unsigned long end,
--		unsigned long floor, unsigned long ceiling)
--{
--	free_pgd_range(tlb, addr, end, floor, ceiling);
--}
--#endif
--
- #ifndef __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
- static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
- 		pte_t *ptep, pte_t pte, unsigned long sz)
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 42f374e828a2..adf59868e5ba 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -396,13 +396,6 @@ static inline int is_hugepage_only_range(struct mm_struct *mm,
- 	return 0;
- }
- 
--static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
--				unsigned long addr, unsigned long end,
--				unsigned long floor, unsigned long ceiling)
--{
--	BUG();
--}
--
- #ifdef CONFIG_USERFAULTFD
- static inline int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
- 					   struct vm_area_struct *dst_vma,
--- 
-2.47.1
+It has actually been observed for a long time that newer kernels are
+unstable on sun4u while there are no stability issues on sun4v.
 
+I'm not sure though whether the Debian kernel enables hugetlb by default.
+
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
