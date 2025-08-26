@@ -1,146 +1,102 @@
-Return-Path: <sparclinux+bounces-4475-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-4478-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CE2B36F5A
-	for <lists+sparclinux@lfdr.de>; Tue, 26 Aug 2025 18:04:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0EEDB36F54
+	for <lists+sparclinux@lfdr.de>; Tue, 26 Aug 2025 18:03:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05F00982DBC
-	for <lists+sparclinux@lfdr.de>; Tue, 26 Aug 2025 15:58:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C98327B430A
+	for <lists+sparclinux@lfdr.de>; Tue, 26 Aug 2025 16:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC8C36CE0C;
-	Tue, 26 Aug 2025 15:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23BAD3164A3;
+	Tue, 26 Aug 2025 16:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="OJSmEXgJ"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECDE3680AF;
-	Tue, 26 Aug 2025 15:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F406313E2B;
+	Tue, 26 Aug 2025 16:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756223760; cv=none; b=Qt4HBc0xM4mZUaAEAo41fCLeJ05mKVj7Ij6ClpueH3FEihL0AyH5byguGwwwAULyDWQgww54UOuQk+Du3P3OAOgikEyNRF5KGYqXK1UOA1Hgdm/3m8pXt40D3TwDg55xsJHcn/nCpZZBaGkIH5zn/0UuOeYnNPexi7kmUI036Y8=
+	t=1756224215; cv=none; b=K6pENE3wP8EZPpHPrlrGhxl27SAIgIulJDCMn7ufNJwI8GDCe+9hN+4pDhjO+xlQwYgEYlT7xNUxY1ENnn9+nfcvrP3MsAbcYM5KRvWz6VCiQGPBHoPjUKmdcdJ7UlC4Vxg5FQyZLHJwr3+sU1fhgao4bTTONr7845nHL0qPZf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756223760; c=relaxed/simple;
-	bh=jYBq+PgIvySwkPnJ+epoOGBplfR4iCEGkU3hyHU0kTA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GIjlREOUZrDmonqDN5qo2cMkuniab44noHlyO0ehsA8wRIWGxNnZaDB7fqdldWpbskt+GT7mfRaIPLdIrazDPQvYbOYakPjgUxCedyKUc521urMHBTqTq/5H6sWSSfUGoHS936nLA/KHg1UDe/KtnPXQgbpm31g36quD2rnacTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3F871A25;
-	Tue, 26 Aug 2025 08:55:49 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D7E113F694;
-	Tue, 26 Aug 2025 08:55:51 -0700 (PDT)
-Date: Tue, 26 Aug 2025 16:55:49 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
-	acme@kernel.org, namhyung@kernel.org,
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-	irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org,
-	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, coresight@lists.linaro.org,
-	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
-	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 02/19] perf/hisilicon: Fix group validation
-Message-ID: <aK3ZBUQ3QeB2egX7@J2N7QTR9R3>
-References: <cover.1755096883.git.robin.murphy@arm.com>
- <c7b877e66ba0d34d8558c5af8bbb620e8c0e47d9.1755096883.git.robin.murphy@arm.com>
- <aK2XS_GhLw1EQ2ml@J2N7QTR9R3>
- <ab80cb84-42b2-4ce8-aa6c-4ce6be7a12b7@arm.com>
- <aK3TS3s5_Pczx1nu@J2N7QTR9R3>
+	s=arc-20240116; t=1756224215; c=relaxed/simple;
+	bh=wcv7knq4PA1KSCMtNch0UJfW3K2AWGn8q0NFryhCUns=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D2zayfaycgoXv325/416aoLxHG+M9rPzOlapA3//agvbk8Ll7v0XC0lva4LlL3g/65pT6YC4dP0nRaGx2p/7ByujQgim0XQGbmnPts42W3V7bqL65uvMzpCShu1zBm1HSMxkT0zQrPNVzkPW6TgpsnLnVOkb93RdGphn5WJ525Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mkarcher.dialup.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=OJSmEXgJ; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mkarcher.dialup.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=Content-Transfer-Encoding:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:From:Reply-To:Subject:Date:Message-ID:To:Cc:
+	MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=VyCZxsBbdNQ7yBiAHXgXD7zZcdaNhFfGu6xm7ym9Ph0=; t=1756224210; x=1756829010; 
+	b=OJSmEXgJ2jXh3KiAmBaWwtpieT6/tDuBteMMnnFRpFI5E5efpowAJCgRmkV5pz3XNxwJY+L8DmD
+	V9DF3OiZleoVBFMCoEKjb+iSagfZVNZQumnLPYTxz0WlME93rfc47WWojN5DnWS/V/o2S5oq4ExYR
+	WH4nxWRPu6kuZBQZ5sQFYC8O2s6a4sY2Q/qvJrnZql97E48pfpBRuqCoJDfuic1KAJ9fUt7pSFfaH
+	67rFxSl376+4UWJIyCYxiGmOk6Nvkd/wYPA3qzAZJ+2YYu2b2umtP3C0E1PtKmxE8K4ow3lNt3qS4
+	oG/PUUtUowG0bFNLNnMZ0G1pU9Ly+e9YbMeA==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.98)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <mkarcher@zedat.fu-berlin.de>)
+          id 1uqw8o-00000000x4I-48UU; Tue, 26 Aug 2025 18:03:23 +0200
+Received: from [89.57.34.174] (helo=Geist14)
+          by inpost2.zedat.fu-berlin.de (Exim 4.98)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <kernel@mkarcher.dialup.fu-berlin.de>)
+          id 1uqw8o-00000000c5y-38mo; Tue, 26 Aug 2025 18:03:22 +0200
+From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+To: linux-kernel@vger.kernel.org
+Cc: sparclinux@vger.kernel.org,
+	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Anthony Yznaga <anthony.yznaga@oracle.com>
+Subject: Fix accurate exception reporting in SPARC assembly
+Date: Tue, 26 Aug 2025 18:03:02 +0200
+Message-ID: <20250826160312.2070-1-kernel@mkarcher.dialup.fu-berlin.de>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aK3TS3s5_Pczx1nu@J2N7QTR9R3>
+Content-Transfer-Encoding: 8bit
+X-Original-Sender: kernel@mkarcher.dialup.fu-berlin.de
+X-ZEDAT-Hint: PO
 
-On Tue, Aug 26, 2025 at 04:31:23PM +0100, Mark Rutland wrote:
-> On Tue, Aug 26, 2025 at 03:35:48PM +0100, Robin Murphy wrote:
-> > On 2025-08-26 12:15 pm, Mark Rutland wrote:
-> > > On Wed, Aug 13, 2025 at 06:00:54PM +0100, Robin Murphy wrote:
-> > > > diff --git a/drivers/perf/hisilicon/hisi_pcie_pmu.c b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-> > > > index c5394d007b61..3b0b2f7197d0 100644
-> > > > --- a/drivers/perf/hisilicon/hisi_pcie_pmu.c
-> > > > +++ b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-> > > > @@ -338,21 +338,16 @@ static bool hisi_pcie_pmu_validate_event_group(struct perf_event *event)
-> > > >   	int counters = 1;
-> > > >   	int num;
-> > > > -	event_group[0] = leader;
-> > > > -	if (!is_software_event(leader)) {
-> > > > -		if (leader->pmu != event->pmu)
-> > > > -			return false;
-> > > > +	if (leader == event)
-> > > > +		return true;
-> > > > -		if (leader != event && !hisi_pcie_pmu_cmp_event(leader, event))
-> > > > -			event_group[counters++] = event;
-> > > > -	}
-> > > > +	event_group[0] = event;
-> > > > +	if (leader->pmu == event->pmu && !hisi_pcie_pmu_cmp_event(leader, event))
-> > > > +		event_group[counters++] = leader;
-> > > 
-> > > Looking at this, the existing logic to share counters (which
-> > > hisi_pcie_pmu_cmp_event() is trying to permit) looks to be bogus, given
-> > > that the start/stop callbacks will reprogram the HW counters (and hence
-> > > can fight with one another).
-> > 
-> > Yeah, this had a dodgy smell when I first came across it, but after doing
-> > all the digging I think it does actually work out - the trick seems to be
-> > the group_leader check in hisi_pcie_pmu_get_event_idx(), with the
-> > implication the PMU is going to be stopped while scheduling in/out the whole
-> > group, so assuming hisi_pcie_pmu_del() doesn't clear the counter value in
-> > hardware (even though the first call nukes the rest of the event
-> > configuration), then the events should stay in sync.
-> 
-> I don't think that's sufficient. If nothing else, overflow is handled
-> per-event, and for a group of two identical events, upon overflow
-> hisi_pcie_pmu_irq() will reprogram the shared HW counter when handling
-> the first event, and the second event will see an arbitrary
-> discontinuity. Maybe no-one has spotted that due to the 2^63 counter
-> period that we program, but this is clearly bogus.
-> 
-> In addition, AFAICT the IRQ handler doesn't stop the PMU, so in general
-> groups aren't handled atomically, and snapshots of the counters won't be
-> atomic.
-> 
-> > It does seem somewhat nonsensical to have multiple copies of the same event
-> > in the same group, but I imagine it could happen with some sort of scripted
-> > combination of metrics, and supporting it at this level saves needing
-> > explicit deduplication further up. So even though my initial instinct was to
-> > rip it out too, in the end I concluded that that doesn't seem justified.
-> 
+In 2018, David Miller implemented accurate exception reporting in
+copy_from_user and copy_to_user by handling exceptions on each load
+or store instruction that accesses userspace memory and calculating
+the remaining bytes from the processor context. As issues with
+transparent huge page support and folio support in ext4 were due
+to a bogus return value from copy_from_user, I wrote a comprehensive
+testsuite for the generic variant, and the machine-specific variants
+for UltraSPARC I/II, UltraSPARC III, Niagara, Niagara 2/3 and
+Niagara 4, see
 
-[...]
+https://github.com/karcherm/sparc-cfu-bug-reproducer
 
-> As above, I think it's clearly bogus. I don't think we should have
-> merged it as-is and it's not something I'd like to see others copy.
-> Other PMUs don't do this sort of event deduplication, and in general it
-> should be up to the user or userspace software to do that rather than
-> doing that badly in the kernel.
-> 
-> Given it was implemented with no rationale I think we should rip it out.
-> If that breaks someone's scripting, then we can consider implementing
-> something that actually works.
+despite the name of the project, it does not only test copy_from_user,
+but also copy_to_user, and it also contains fixes to a very small amount
+of exception handler references that were calculating the result in
+a wrong way.
 
-FWIW, I'm happy to go do that as a follow-up, so if that's a pain, feel
-free to leave that as-is for now.
+For UltraSPARC III, I chose to adjust the memcpy code itself instead of
+adding complexity to multiple exception handlers. That fix has already
+been tested to fix stability issues observed by Adrian Glaubitz which
+kicked of the investigation. On all other architectures, the changes
+are just to the exception handlers.
 
-Mark.
+Kind regards,
+  Michael Karcher
 
