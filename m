@@ -1,102 +1,154 @@
-Return-Path: <sparclinux+bounces-4663-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-4666-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C225BB3FE32
-	for <lists+sparclinux@lfdr.de>; Tue,  2 Sep 2025 13:47:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E435B40AE2
+	for <lists+sparclinux@lfdr.de>; Tue,  2 Sep 2025 18:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3147018891B7
-	for <lists+sparclinux@lfdr.de>; Tue,  2 Sep 2025 11:47:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F4013AECAB
+	for <lists+sparclinux@lfdr.de>; Tue,  2 Sep 2025 16:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E431A2877F2;
-	Tue,  2 Sep 2025 11:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C952F6586;
+	Tue,  2 Sep 2025 16:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="jXmzEnXa"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b="Hgt9I1aF"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+Received: from exactco.de (exactco.de [176.9.10.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20302FF159;
-	Tue,  2 Sep 2025 11:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CABC26C386;
+	Tue,  2 Sep 2025 16:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.10.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756813502; cv=none; b=GqVCtkGags45mKFqBAVTH1SuSl8cOdxReSIHiVDZK4PtJwXMZrWkUUW28i+ltsja/j2PSQdc2bVpZEZ9kdzKilKaqVolRm1feS6udwLb/ia3eNfhP7ZAxnr9pzelqUOxSW6SoGqv95zxrDD+uUTVA7SDeodfkyMSG+m++krA4BE=
+	t=1756831388; cv=none; b=RNo8q5c254ryHb/K/XwoY2GcdjsrixcjTUSbnKX4ovRvuG/yzwh6Wp4mANxCSlAZfhI+HF4ReA46WAsoYZn8SKztMEMpA4Iq7lURoqh+9D3KxKLuFw8MEl69pELZ9s3yH3fx3IzVm+U5lNV90Rr3tkr0THXI70rr/YZQbM96Z3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756813502; c=relaxed/simple;
-	bh=0o5C5Ly/rHsnoowmYx3m8IcTZ1cPVbKim17lOjF7UUg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yr99fq3LKd2sOGPqzXWTUgrntYafMafyWYpftc7jDAzWfecr0WG1Ub7D8gMijEC4SwxcBl6NFyyJsXN1ld62UMoKvIvLOlitEsQhmblHnR6Fq6O/AY91Lt7Nxv02Mz5VrJhsVI6HlMjwvwjOaRYaMnspm/e0NWPvOj1le/Ik8WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=jXmzEnXa reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
-Received: from localhost (localhost [127.0.0.1])
-	by smtp.simply.com (Simply.com) with ESMTP id 4cGP6x6Rpwz1FZPJ;
-	Tue,  2 Sep 2025 13:44:57 +0200 (CEST)
-Received: from [192.168.0.25] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by smtp.simply.com (Simply.com) with ESMTPSA id 4cGP6w5mgsz1FXjD;
-	Tue,  2 Sep 2025 13:44:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
-	s=simplycom2; t=1756813497;
-	bh=voGobjfJ+JDIyxPuu8fGQb2u9QP7Z513vboXRHjWrpI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jXmzEnXapdgWj3k2C76LGG7k/5mt1kwvMqAYSfMFYlJ0dMOQ80Oj2YE0pnZAtNJ4t
-	 tXQk/LzaZA57Nv160y42KGcSc12HLtx5zDkXLTwO001yujBIUCUp0jXWbSqOup1wEK
-	 caelEQWo/j1aiLxV7BPWjSbstlue7ClkuM93YSG2cSzlCJSLWryT6cSw2EEQcr+aVF
-	 FTt0lGn6fnMuHg7U0U6sd3U2Ku9tEiPKwlVMzDHUsOHxPUryMAOV1qAvelOgjen0aR
-	 RoDQinmHdiIG1eCVLztKOXDNMYphrSPAPE4G8u5ceaF4FDq1DzCH6UTTJUx5w29cc0
-	 vZYTj+Lq2QLjQ==
-Message-ID: <92bace9a-b5c4-4ea1-a1f7-4742c15a64a0@gaisler.com>
-Date: Tue, 2 Sep 2025 13:44:56 +0200
+	s=arc-20240116; t=1756831388; c=relaxed/simple;
+	bh=rfktqMLqj/HEGtTA/vFQSSXSbayE7EEksa3KKdX8Sys=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=PM73qqYshTBhDfrSpS+kIAqdH6ip8Wwx0qyekVCZr4YsxG18MLuiRJq3dY0MPRzvWVqQIZrT66b4z1OYGJouIZn0cF0kd6N/hvJEs/GXBDEXXgpoe74Gq0aBT+cqwt3H5vdTQfuCA4PV+1wQld3EaFZHgewBVy6EqXOAKhBYFZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactcode.com; spf=pass smtp.mailfrom=exactco.de; dkim=pass (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b=Hgt9I1aF; arc=none smtp.client-ip=176.9.10.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactcode.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=exactco.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
+	s=x; h=Sender:Content-Transfer-Encoding:Content-Type:Mime-Version:References:
+	In-Reply-To:From:Subject:Cc:To:Message-Id:Date:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=RpNQu/7GD6lqrNXUZUK8qxSjAj2abH8bPyt1t+uavUA=; b=Hgt9I1aFicE8R0GhIkCOEzvVRb
+	czOdL56txGDEXeR9MS8XIkYK926hESg6gN2SwNzsiP4lHSEfaJx6oGAsj2dryC+ia4akjPJRUAoGD
+	06JtI3RU4PSiQzeDxVV4iu68FtbRTeVufGdcy37Zjn6OS58PYjOzO0pn9WWP90puNIGI9gleghtyJ
+	MWMk+a9WfLeV92ml6rPR6QFiMDvf1tXw8wAduXFRdK6oHNCqjAjvb3MLRdjwYvAKoifeTn+CQTE4G
+	pCT9C0B4rjjBBm8rMtUXZfBKym9KElzuRUKWMUUU/iu2QmPH3jTLo4Veg73LGH1/iJUt1039zKAIu
+	evcHIkZQ==;
+Date: Tue, 02 Sep 2025 18:33:48 +0200 (CEST)
+Message-Id: <20250902.183348.7850037982207673.rene@exactcode.com>
+To: kernel@mkarcher.dialup.fu-berlin.de
+Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+ andreas@gaisler.com, glaubitz@physik.fu-berlin.de,
+ anthony.yznaga@oracle.com
+Subject: Re: [PATCH 1/4] sparc: fix accurate exception reporting in
+ copy_{from_to}_user for UltraSPARC
+From: Rene Rebe <rene@exactcode.com>
+In-Reply-To: <20250826160312.2070-2-kernel@mkarcher.dialup.fu-berlin.de>
+References: <20250826160312.2070-1-kernel@mkarcher.dialup.fu-berlin.de>
+	<20250826160312.2070-2-kernel@mkarcher.dialup.fu-berlin.de>
+X-Mailer: Mew version 6.10 on Emacs 30.2
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] arch: copy_thread: pass clone_flags as u64
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Arnd Bergmann <arnd@arndb.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- cgroups@vger.kernel.org, linux-security-module@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com,
- selinux@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org
-References: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
- <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
- <f2371539-cd4e-4d70-9576-4bb1c677104c@gaisler.com>
- <11a4d0a953e3a9405177d67f287c69379a2b2f8f.camel@physik.fu-berlin.de>
-Content-Language: en-US
-From: Andreas Larsson <andreas@gaisler.com>
-In-Reply-To: <11a4d0a953e3a9405177d67f287c69379a2b2f8f.camel@physik.fu-berlin.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+Sender: rene@exactco.de
 
-On 2025-09-02 09:15, John Paul Adrian Glaubitz wrote:
->> Thanks for this and for the whole series! Needed foundation for a
->> sparc32 clone3 implementation as well.
-> 
-> Can you implement clone3 for sparc64 as well?
+Hi Michael, Adrian,
 
-(heavily pairing down the to list)
+thank you so much for doing this work and dropping me a note to test!
+I had bisected that last year, too, but due to lack of further time
+only ended up reverting d563d678aa0 "fs: Handle intra-page faults in
+copy_mount_options()". I also did not suspect copy_{from,to}_user be
+that regressed and broken on sparc64, ... :-/
 
-We'll take a look at that as well.
+Tested-by: Ren=E9 Rebe <rene@exactcode.com> # on Ultra 5 UltraSparc IIi=
 
-Cheers,
-Andreas
 
+> Fixes: cb736fdbb208 ("sparc64: Convert U1copy_{from,to}_user to accur=
+ate exception reporting.")
+> Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+> ---
+>  arch/sparc/lib/U1memcpy.S | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
+> =
+
+> diff --git a/arch/sparc/lib/U1memcpy.S b/arch/sparc/lib/U1memcpy.S
+> index 635398ec7540..154fbd35400c 100644
+> --- a/arch/sparc/lib/U1memcpy.S
+> +++ b/arch/sparc/lib/U1memcpy.S
+> @@ -164,17 +164,18 @@ ENTRY(U1_gs_40_fp)
+>  	retl
+>  	 add		%o0, %o2, %o0
+>  ENDPROC(U1_gs_40_fp)
+> -ENTRY(U1_g3_0_fp)
+> -	VISExitHalf
+> -	retl
+> -	 add		%g3, %o2, %o0
+> -ENDPROC(U1_g3_0_fp)
+>  ENTRY(U1_g3_8_fp)
+>  	VISExitHalf
+>  	add		%g3, 8, %g3
+>  	retl
+>  	 add		%g3, %o2, %o0
+>  ENDPROC(U1_g3_8_fp)
+> +ENTRY(U1_g3_16_fp)
+> +	VISExitHalf
+> +	add		%g3, 16, %g3
+> +	retl
+> +	 add		%g3, %o2, %o0
+> +ENDPROC(U1_g3_16_fp)
+>  ENTRY(U1_o2_0_fp)
+>  	VISExitHalf
+>  	retl
+> @@ -547,18 +548,18 @@ FUNC_NAME:		/* %o0=3Ddst, %o1=3Dsrc, %o2=3Dlen =
+*/
+>  62:	FINISH_VISCHUNK(o0, f44, f46)
+>  63:	UNEVEN_VISCHUNK_LAST(o0, f46, f0)
+>  =
+
+> -93:	EX_LD_FP(LOAD(ldd, %o1, %f2), U1_g3_0_fp)
+> +93:	EX_LD_FP(LOAD(ldd, %o1, %f2), U1_g3_8_fp)
+>  	add		%o1, 8, %o1
+>  	subcc		%g3, 8, %g3
+>  	faligndata	%f0, %f2, %f8
+> -	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_8_fp)
+> +	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_16_fp)
+>  	bl,pn		%xcc, 95f
+>  	 add		%o0, 8, %o0
+> -	EX_LD_FP(LOAD(ldd, %o1, %f0), U1_g3_0_fp)
+> +	EX_LD_FP(LOAD(ldd, %o1, %f0), U1_g3_8_fp)
+>  	add		%o1, 8, %o1
+>  	subcc		%g3, 8, %g3
+>  	faligndata	%f2, %f0, %f8
+> -	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_8_fp)
+> +	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_16_fp)
+>  	bge,pt		%xcc, 93b
+>  	 add		%o0, 8, %o0
+>  =
+
+> -- =
+
+> 2.50.1
+> =
+
+> =
+
+
+-- =
+
+  Ren=E9 Rebe, ExactCODE GmbH, Berlin, Germany.
+  https://exactcode.com | https://t2linux.com | https://rene.rebe.de
 
