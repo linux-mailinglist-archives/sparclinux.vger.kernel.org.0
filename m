@@ -1,175 +1,112 @@
-Return-Path: <sparclinux+bounces-4665-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-4667-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8F2B40AD0
-	for <lists+sparclinux@lfdr.de>; Tue,  2 Sep 2025 18:40:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6FDB40AF5
+	for <lists+sparclinux@lfdr.de>; Tue,  2 Sep 2025 18:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A751207852
-	for <lists+sparclinux@lfdr.de>; Tue,  2 Sep 2025 16:40:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C62F7AA70E
+	for <lists+sparclinux@lfdr.de>; Tue,  2 Sep 2025 16:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7865B2E03E6;
-	Tue,  2 Sep 2025 16:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7294338F4F;
+	Tue,  2 Sep 2025 16:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b="UEUqo0vz"
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="gFgk19Jf"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from exactco.de (exactco.de [176.9.10.151])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA832E92BB;
-	Tue,  2 Sep 2025 16:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.10.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3628F31AF2E;
+	Tue,  2 Sep 2025 16:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756831213; cv=none; b=glKVU78vxMdqwmyfOaIGE6YDA5P8aBNuRTFTc/rBGCXLoKbxIC5WJThVXza6bXodjCtRHaZQ7VNGTaTzJgAykpEkKWkiQGXheDACDjj4OarB/w+y+ls4G22O4XHdOQuEjeLg4U5XesE94OuvIjhaY2CJR6jPf0yT2EW/Wy4SoPs=
+	t=1756831669; cv=none; b=lLgKVN94TciWe3OS+UlNsRLJ8GvZ00/l5x2/9IdFneqeKGNgxf+JgvIprdp334f8IFFZxv8NW302PMwN/7NiccTLMZu/a2k/j55Pek1CJt5/yvXC+2Fn2S3IoaSr2HrBJlh8SXIg1VY2uxqG3VkIjb5MpGZcVLXxxwQ1lm/+ExQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756831213; c=relaxed/simple;
-	bh=O+CiFUXK19a4qlQTMXJPUCsKlQMWNNu08cipXC779Cc=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Tgdnwpjxv8V7q+m++WB5eilxnga1ZXzj8akPG5IpE7comm8rCUN+UeT/pH+ycgnpU26I/4cAO3jekvDWfzSp83LQV/J1MiXxX6ViRkEjonneHTbUTPlUT2V9ydnGE/Pant05V7j7hzcjYL3QFEYxipWX9AvQ6XNgMLpjDf6WD5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactcode.com; spf=pass smtp.mailfrom=exactco.de; dkim=pass (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b=UEUqo0vz; arc=none smtp.client-ip=176.9.10.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactcode.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=exactco.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
-	s=x; h=Sender:Content-Transfer-Encoding:Content-Type:Mime-Version:References:
-	In-Reply-To:From:Subject:Cc:To:Message-Id:Date:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=newOGdvmUa6vft90u655j3V2ptdVczfzsCxNV5dwPU0=; b=UEUqo0vz3ZZwZpMYFRTxGTHPNS
-	Qhk8Ds2x8ZrTah8//V7xim+BjADO9xJ1suHM6NLbU9Z1w0f6KKxoq0BLHtVf8BQ2Eiso/XJaKETMJ
-	7gdw3knlZ/FLqoSMBj46+6xMXyWB0EWfO9XthZa6E9s15icmi8TN5UjSRn0ZEWI8RIncD/CaXwmHD
-	rqa32MOINIY3deiCVjwbjPlBZ0BkbE3L+TP/Ql3yJcKjJPdvATuLZQp+YuVnGzuXZIJBezJniQGra
-	H4/AdSMACun/333ufjJYEtcrFuw7vfXWhsMbpijO373sXMo8UzBJjzFnLoEIEPS6EzLJoj8b/9lIu
-	wfYGGZmQ==;
-Date: Tue, 02 Sep 2025 18:40:11 +0200 (CEST)
-Message-Id: <20250902.184011.440504961051160142.rene@exactcode.com>
-To: kernel@mkarcher.dialup.fu-berlin.de
-Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
- andreas@gaisler.com, glaubitz@physik.fu-berlin.de,
- anthony.yznaga@oracle.com
+	s=arc-20240116; t=1756831669; c=relaxed/simple;
+	bh=UTC2GyluPdRpA4vm1s9KI1N3EECdAr9uVw3rbOVnxBY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ESzLtPsP9P92ziv8qBywEvXfm/In7c+wldQmvflSXwwIZBk/SpaqzjewpC1OlkR0q5Ubqwi4Axmj5J/W2h5TEd9YSKKiyp+xAwH6QWmUYRFGGjnECcMFRL+7XLAseZtUSSLuKgJD8iqrrGcbtbkQH7Dc5r34lZ2QABjlkn3EstY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=gFgk19Jf; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=0d+VCvvchtfyxeVhxRdYyEzzFtwK5+d4izY09aCco30=; t=1756831666;
+	x=1757436466; b=gFgk19JfTGKF0b1tt8UmD645hbmB3Fz1cpGpYy6MG5Mp9SH/JnYUPk2E7osGu
+	X9+4C54wWvaIioNBBlBVvShVnTndxCQGFXVGSjYSPkmT+LqPlB6BY4VAy4wX709AdA04z82i6CV4J
+	2Lz3an9QnDgzjLzRIqwN2zUKVEOVDEFyxVaW5U6LM0jpjwQt/v8s6NITPrZv5LNY35mmFj7C+GVEN
+	YP0NNtAyFM0klS7BGpSqX5GR/Ud35m6In2bNkXIT6hIhu9a3lEHrGgNjQ8cBJaQbq9MaxaQxl3+91
+	9cH58OvdcLHBYCNkv2RRTC6PIUUER9nrBnN5lHDGAxXutKVw6A==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.98)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1utUAZ-00000003vKf-2rLG; Tue, 02 Sep 2025 18:47:43 +0200
+Received: from p5b13aa34.dip0.t-ipconnect.de ([91.19.170.52] helo=[192.168.178.61])
+          by inpost2.zedat.fu-berlin.de (Exim 4.98)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1utUAZ-000000008Nr-1CTf; Tue, 02 Sep 2025 18:47:43 +0200
+Message-ID: <cf4e16f7846a3324521828e71c0676b9c524ebbf.camel@physik.fu-berlin.de>
 Subject: Re: [PATCH 3/4] sparc: fix accurate exception reporting in
  copy_{from_to}_user for Niagara
-From: Rene Rebe <rene@exactcode.com>
-In-Reply-To: <20250826160312.2070-4-kernel@mkarcher.dialup.fu-berlin.de>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Rene Rebe <rene@exactcode.com>, kernel@mkarcher.dialup.fu-berlin.de
+Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, 
+	andreas@gaisler.com, anthony.yznaga@oracle.com
+Date: Tue, 02 Sep 2025 18:47:41 +0200
+In-Reply-To: <20250902.184011.440504961051160142.rene@exactcode.com>
 References: <20250826160312.2070-1-kernel@mkarcher.dialup.fu-berlin.de>
-	<20250826160312.2070-4-kernel@mkarcher.dialup.fu-berlin.de>
-X-Mailer: Mew version 6.10 on Emacs 30.2
+		<20250826160312.2070-4-kernel@mkarcher.dialup.fu-berlin.de>
+	 <20250902.184011.440504961051160142.rene@exactcode.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-Sender: rene@exactco.de
+MIME-Version: 1.0
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
 
-Hi,
+Hi Rene,
 
-From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+On Tue, 2025-09-02 at 18:40 +0200, Rene Rebe wrote:
+> Hi,
+>=20
+> From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+>=20
+> > Fixes: 7ae3aaf53f16 ("sparc64: Convert NGcopy_{from,to}_user to accurat=
+e exception reporting.")
+> > Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+>=20
+> Tested-by: Ren=C3=A9 Rebe <rene@exactcode.com> # UltraSparc T4 SPARC T4-1=
+ Server
 
-> Fixes: 7ae3aaf53f16 ("sparc64: Convert NGcopy_{from,to}_user to accur=
-ate exception reporting.")
-> Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+Thanks for the testing! However, this actually needs to be tested on a SPAR=
+C T1
+as both T2 and T4 have their own implementation that is being used. Testing=
+ on a
+T4 will therefore not invoke this particular code unless you modify the ker=
+nel in
+head_64.S to employ the Niagara 1 code on Niagara 4.
 
-Tested-by: Ren=E9 Rebe <rene@exactcode.com> # UltraSparc T4 SPARC T4-1 =
-Server
+Do you happen to have a SPARC T1?
 
-> ---
->  arch/sparc/lib/NGmemcpy.S | 29 ++++++++++++++++++-----------
->  1 file changed, 18 insertions(+), 11 deletions(-)
-> =
+Adrian
 
-> diff --git a/arch/sparc/lib/NGmemcpy.S b/arch/sparc/lib/NGmemcpy.S
-> index ee51c1230689..bbd3ea0a6482 100644
-> --- a/arch/sparc/lib/NGmemcpy.S
-> +++ b/arch/sparc/lib/NGmemcpy.S
-> @@ -79,8 +79,8 @@
->  #ifndef EX_RETVAL
->  #define EX_RETVAL(x)	x
->  __restore_asi:
-> -	ret
->  	wr	%g0, ASI_AIUS, %asi
-> +	ret
->  	 restore
->  ENTRY(NG_ret_i2_plus_i4_plus_1)
->  	ba,pt	%xcc, __restore_asi
-> @@ -125,15 +125,16 @@ ENTRY(NG_ret_i2_plus_g1_minus_56)
->  	ba,pt	%xcc, __restore_asi
->  	 add	%i2, %g1, %i0
->  ENDPROC(NG_ret_i2_plus_g1_minus_56)
-> -ENTRY(NG_ret_i2_plus_i4)
-> +ENTRY(NG_ret_i2_plus_i4_plus_16)
-> +        add     %i4, 16, %i4
->  	ba,pt	%xcc, __restore_asi
->  	 add	%i2, %i4, %i0
-> -ENDPROC(NG_ret_i2_plus_i4)
-> -ENTRY(NG_ret_i2_plus_i4_minus_8)
-> -	sub	%i4, 8, %i4
-> +ENDPROC(NG_ret_i2_plus_i4_plus_16)
-> +ENTRY(NG_ret_i2_plus_i4_plus_8)
-> +	add	%i4, 8, %i4
->  	ba,pt	%xcc, __restore_asi
->  	 add	%i2, %i4, %i0
-> -ENDPROC(NG_ret_i2_plus_i4_minus_8)
-> +ENDPROC(NG_ret_i2_plus_i4_plus_8)
->  ENTRY(NG_ret_i2_plus_8)
->  	ba,pt	%xcc, __restore_asi
->  	 add	%i2, 8, %i0
-> @@ -160,6 +161,12 @@ ENTRY(NG_ret_i2_and_7_plus_i4)
->  	ba,pt	%xcc, __restore_asi
->  	 add	%i2, %i4, %i0
->  ENDPROC(NG_ret_i2_and_7_plus_i4)
-> +ENTRY(NG_ret_i2_and_7_plus_i4_plus_8)
-> +	and	%i2, 7, %i2
-> +	add	%i4, 8, %i4
-> +	ba,pt	%xcc, __restore_asi
-> +	 add	%i2, %i4, %i0
-> +ENDPROC(NG_ret_i2_and_7_plus_i4)
->  #endif
->  =
-
->  	.align		64
-> @@ -405,13 +412,13 @@ FUNC_NAME:	/* %i0=3Ddst, %i1=3Dsrc, %i2=3Dlen *=
-/
->  	andn		%i2, 0xf, %i4
->  	and		%i2, 0xf, %i2
->  1:	subcc		%i4, 0x10, %i4
-> -	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4)
-> +	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4_plus_16)
->  	add		%i1, 0x08, %i1
-> -	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4)
-> +	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4_plus_16)
->  	sub		%i1, 0x08, %i1
-> -	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4)
-> +	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4_plus_16)
->  	add		%i1, 0x8, %i1
-> -	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_minus_8)
-> +	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_plus_8)
->  	bgu,pt		%XCC, 1b
->  	 add		%i1, 0x8, %i1
->  73:	andcc		%i2, 0x8, %g0
-> @@ -468,7 +475,7 @@ FUNC_NAME:	/* %i0=3Ddst, %i1=3Dsrc, %i2=3Dlen */
->  	subcc		%i4, 0x8, %i4
->  	srlx		%g3, %i3, %i5
->  	or		%i5, %g2, %i5
-> -	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4)
-> +	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4_plus_8)
->  	add		%o0, 0x8, %o0
->  	bgu,pt		%icc, 1b
->  	 sllx		%g3, %g1, %g2
-> -- =
-
-> 2.50.1
-> =
-
-> =
-
-
--- =
-
-  Ren=E9 Rebe, ExactCODE GmbH, Berlin, Germany
-  https://exactcode.com | https://t2linux.com | https://rene.rebe.de
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
