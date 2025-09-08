@@ -1,38 +1,38 @@
-Return-Path: <sparclinux+bounces-4746-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-4747-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED88B485F3
-	for <lists+sparclinux@lfdr.de>; Mon,  8 Sep 2025 09:45:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED9EB485DD
+	for <lists+sparclinux@lfdr.de>; Mon,  8 Sep 2025 09:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A0441612DB
-	for <lists+sparclinux@lfdr.de>; Mon,  8 Sep 2025 07:43:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 460097A1B7E
+	for <lists+sparclinux@lfdr.de>; Mon,  8 Sep 2025 07:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63092F0C44;
-	Mon,  8 Sep 2025 07:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFCF2EBDD7;
+	Mon,  8 Sep 2025 07:41:06 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7514A2F069D;
-	Mon,  8 Sep 2025 07:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A120C2F0C45;
+	Mon,  8 Sep 2025 07:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757317260; cv=none; b=q1IMKIudOtT21lSOqaGkDinLprUPvMuNtAghdAzN7SzG1x9Hetxx4Yy9R2yS6fV7r1NqKx6uRQYkSrk64E/g+ykRNYVvKAY8fobQSJgL1vbD9vbRhnwvWJB16iljoGktXaWEcbcssYQvkkd5jFKXNe1THEhSRI2tQ8yVcLA+UTA=
+	t=1757317266; cv=none; b=Dn6H4N9NhPgbU3Q34vmjhwQjekKg2zrgCkTmux1K5uXP0eVgTYkLrkmReOAB/rMjXKvOnkBWk/UetJlNwcNWlBfCqHDYlrzoLPBtqMwlZFDOxtbLWO8iudBxzKhtMG95LN1gMp15w/oDCJHhUxDggj/NrflqFN9cbRToh4W/tPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757317260; c=relaxed/simple;
-	bh=yfCmp1cgBuE+nIbh0f1qUN+rx6g2Ca7L39W2Xk9ihd4=;
+	s=arc-20240116; t=1757317266; c=relaxed/simple;
+	bh=RBBIxra09BhkwbooY81B9WzuSALW0LxVnMc2e055kqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=deO4PEBNdWK744DkNHPwl3TJCYDt1jISW3ssXf6bSf0WoDLKGss7slcVrWfEILDxaQLfM3cr1ETN5SJTvQTgRyIm/HUh4SyjvB2qBmbY/0loHf+HHWLt5mnRFu8KJhxSZqAurlXRXAvUdWTUDolwS5rtaFsXrNA+DXWLn2ueXiM=
+	 MIME-Version; b=TQhhUz6D9TNCEr9Ikg+d6GgSlX6yFvbTQrZCbvKrRyeQdJGLxYa29ecTWK0J7hs5eHyQx3AcsQjo7MzG+LP/MW0p6tY47ZMRapzt1drqT1m+6qIkQZnXmIVzRz2nogcAT4HpAOWnI8L72g6CetIpzJX32tuC9pe1xzHYpRJidCw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE1BA2A2A;
-	Mon,  8 Sep 2025 00:40:50 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A803E2C46;
+	Mon,  8 Sep 2025 00:40:55 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 538FB3F63F;
-	Mon,  8 Sep 2025 00:40:54 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 553163F63F;
+	Mon,  8 Sep 2025 00:40:59 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -69,9 +69,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v2 5/7] powerpc/mm: support nested lazy_mmu sections
-Date: Mon,  8 Sep 2025 08:39:29 +0100
-Message-ID: <20250908073931.4159362-6-kevin.brodsky@arm.com>
+Subject: [PATCH v2 6/7] sparc/mm: support nested lazy_mmu sections
+Date: Mon,  8 Sep 2025 08:39:30 +0100
+Message-ID: <20250908073931.4159362-7-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250908073931.4159362-1-kevin.brodsky@arm.com>
 References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
@@ -88,7 +88,7 @@ code: enter() can return a flag if called inside another lazy_mmu
 section, so that the matching call to leave() leaves any
 optimisation enabled.
 
-This patch implements that new logic for powerpc: if there is an
+This patch implements that new logic for sparc: if there is an
 active batch, then enter() returns LAZY_MMU_NESTED and the matching
 leave() leaves batch->active set. The preempt_{enable,disable} calls
 are left untouched as they already handle nesting themselves.
@@ -99,37 +99,37 @@ not.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/powerpc/include/asm/book3s/64/tlbflush-hash.h | 13 ++++++++++---
+ arch/sparc/mm/tlb.c | 13 ++++++++++---
  1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-index c9f1e819e567..e92bce2efca6 100644
---- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-@@ -39,9 +39,13 @@ static inline lazy_mmu_state_t arch_enter_lazy_mmu_mode(void)
- 	 */
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index bf5094b770af..fdc33438b85f 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -56,9 +56,13 @@ lazy_mmu_state_t arch_enter_lazy_mmu_mode(void)
+ 
  	preempt_disable();
- 	batch = this_cpu_ptr(&ppc64_tlb_batch);
--	batch->active = 1;
+ 	tb = this_cpu_ptr(&tlb_batch);
+-	tb->active = 1;
  
 -	return LAZY_MMU_DEFAULT;
-+	if (!batch->active) {
-+		batch->active = 1;
++	if (!tb->active) {
++		tb->active = 1;
 +		return LAZY_MMU_DEFAULT;
 +	} else {
 +		return LAZY_MMU_NESTED;
 +	}
  }
  
- static inline void arch_leave_lazy_mmu_mode(lazy_mmu_state_t state)
-@@ -54,7 +58,10 @@ static inline void arch_leave_lazy_mmu_mode(lazy_mmu_state_t state)
+ void arch_leave_lazy_mmu_mode(lazy_mmu_state_t state)
+@@ -67,7 +71,10 @@ void arch_leave_lazy_mmu_mode(lazy_mmu_state_t state)
  
- 	if (batch->index)
- 		__flush_tlb_pending(batch);
--	batch->active = 0;
+ 	if (tb->tlb_nr)
+ 		flush_tlb_pending();
+-	tb->active = 0;
 +
 +	if (state != LAZY_MMU_NESTED)
-+		batch->active = 0;
++		tb->active = 0;
 +
  	preempt_enable();
  }
