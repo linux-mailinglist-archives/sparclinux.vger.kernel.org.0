@@ -1,496 +1,212 @@
-Return-Path: <sparclinux+bounces-4869-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-4871-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5F0B502FE
-	for <lists+sparclinux@lfdr.de>; Tue,  9 Sep 2025 18:45:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D462B50480
+	for <lists+sparclinux@lfdr.de>; Tue,  9 Sep 2025 19:33:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86F5117E752
-	for <lists+sparclinux@lfdr.de>; Tue,  9 Sep 2025 16:45:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CE34A4E04C2
+	for <lists+sparclinux@lfdr.de>; Tue,  9 Sep 2025 17:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB503570B7;
-	Tue,  9 Sep 2025 16:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07524275AF0;
+	Tue,  9 Sep 2025 17:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E11HMBmL"
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="J74cpqzJ"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F793568E6
-	for <sparclinux@vger.kernel.org>; Tue,  9 Sep 2025 16:45:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C57272807
+	for <sparclinux@vger.kernel.org>; Tue,  9 Sep 2025 17:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757436316; cv=none; b=B4Xjjg0kpPp4UUy2SijgVkhlsLhPUNpWhsT4mNsa+2oC20QVAA1o5+CAIsVq6FfAB8rtYREQ2TUziewd76yCER28WwW+GNiUw7a/IwuEgiwGvLBwUx1oKSSrc0KyUYHOGFAOw18Bbp8rpx4XtTnl02TCmu4B2/+RW7co4ikgMKE=
+	t=1757439225; cv=none; b=PtycCkys9jyQFRYtfXbifsnEfHl73iDukFCVHodMyIDfnvh90V+Eqg1pTkgLRZ2lAqdpFY6EftO8Tj1JEus2gHjhoZcHw8ErtAi0X6C7bI53FHm9vC84cFGxPfiidB8CTRgsNVK00uBG5ME9JqYA8PuY5eztW8vSmO1HFWANdJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757436316; c=relaxed/simple;
-	bh=YdqZOJS1XegllADYMp14xOqLRozKDiiQo9nTBZULf1E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iema6eFGAfmvo8Uxvv0j/DT3E/woQoH8gdPsZWptD2+Z/y/DW3wCRMsY/j3F4P/cVGNn21mUW115dDYeR2+LZJtMFaLZr44ROeAPSln4+M/NoUSZiIdwXKfdhoah05AXnPFGWxJeUZryFUvVAQupLuonfuzEPijAKv3sMHSmKUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E11HMBmL; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-61cfbb21fd1so268a12.0
-        for <sparclinux@vger.kernel.org>; Tue, 09 Sep 2025 09:45:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757436312; x=1758041112; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wg66ytqT5gW0pLgpcFNtD+RmpG9kakagwaMvlSmeZ+A=;
-        b=E11HMBmLeymjWvmtiHL/nmg29yKYDj0qR/fgxd/AkKdzjtxM0GUWvRliYNyXuhN/kS
-         wfWqpyNuEJfla+m3VWckONvZYF46FzTcya9aarfdmXliTw7+eh79zmdqic7hTnrzAYaW
-         LDErsXSnXMMh0SSjTVgN2FW850MlGnG7AxvqF6H3Ntb/OxdX02C3CmDvgelNMYV0gJlE
-         huWVE3tuZc2p3BxdYEKBiBfYjDkFgwLL1K29atO3PJksQqd9j18JBpauC1dT2htHUyta
-         Nocxi0Z8KblDnJtaXDsMsgPg8eWNOt5RUOzAUc3j56dkEkMKAdrMT2oM4m8ucyuLR/5K
-         ZfVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757436312; x=1758041112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wg66ytqT5gW0pLgpcFNtD+RmpG9kakagwaMvlSmeZ+A=;
-        b=T2sZKde8O/FU2R4ZaJ5mC11RGFMcRNbiX46A8vW0Qi6dc5qPq7mr1+dpCOT6E1Ekac
-         64tn+y0XptiBQK7qH+hkI1fJ8q6nblv/ejl2wD24wbA8JgsxdOvwtIx9MmLDbjP86nGO
-         JanIpp6G/OnzOo0vZyGIZCREmvZ5Tq2Mf0y/d1Kv5G/xP0dxtVL9L5vDGgf8aTviQspS
-         xGS0A3FzOv6aAqOn6PzYPpEu1Q0usHciAHEeMxmoPOyQ7fjOTPfFAn2bu6gVzoT5QR8K
-         XpHhvzL9D0WOFZ78eUkF9Z0Q9yww/l+7ll317Q4dqGiWTx0R23MCcTt9YVI1pD7i6Coj
-         46Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQVi3ECdh0lwvY+XEBMcrf5RRcCvpilAEXs5RnMzduXQ0BwQmoE5NEmffNXcOX27AoGPz5YfcR+2Yh@vger.kernel.org
-X-Gm-Message-State: AOJu0YzO1xCUp3BKqQcra55HcA2YiDsV/ewspz1aGeRw92SsEhyS6QHt
-	aTM6T+EJGf0TEWOH37kxisKqNtzECZhCW80quUaTYncD4ib6/3lID08XTIbbdGURk78kIZnNMJ+
-	h0ovpvsgJCjJ1X87h60ysvVPBPPIh03lNTlDYj/64
-X-Gm-Gg: ASbGncuC/56kA+PWPAfG3YH3WQ1bnLh0tCm3TsPeFgmWZ4OD8F5ATubNHQhc6CR+1PW
-	7GB7A78LCI3BOHockbbryO4xeCguGfEffI/PUktaA+cifDYKWl8HBake2JUhv6aXFaeQHXGhAz/
-	FWny/q6nV0AEB5nS4IdLGfxqPZJhlJbM12VASJ2PE1SQAqd3JieGMwDKTDATA6V4/W0GgG/vXA5
-	Tw0fICAIuqaWnxdCOzdi/u4JRX3ajhJ+MPD7Q0GybGSpPv90FFbOSc=
-X-Google-Smtp-Source: AGHT+IGPGk0qf/IiaeJSTR25Y6zNMAmob9Bf6pRZiB8Cz91tPx5tFvdw6FMK8xHuP6h0JHF887G6sd0LUCfFyNW1CIU=
-X-Received: by 2002:a05:6402:d60:b0:61c:d36d:218c with SMTP id
- 4fb4d7f45d1cf-6234d3ee779mr242645a12.0.1757436311257; Tue, 09 Sep 2025
- 09:45:11 -0700 (PDT)
+	s=arc-20240116; t=1757439225; c=relaxed/simple;
+	bh=CJkpZETzrOJvATyv3gBiJb4f890+NaaT3kXeiofzdE0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BEtDFzk0g+tkgaxoN7ElJKffGQKemrphprGUKMs7JpnavqzgdNOtUhfQ28k4ycg8auBZCRAdRUv1YzGOfs6noCLKXNBqzGAJKcinXMLAPa2iqcX9QAAWfMW92O/VLtlFgrPUBsMMJGcu4rHSykNKfzhwAM4N7mFyz7BLh8yMsOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=J74cpqzJ; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=tCO8CvJPq78LPnBXnN/tHf/cCX9rbdNfdwHDrRdC+oE=; t=1757439223;
+	x=1758044023; b=J74cpqzJ9qAls/ktSMXKfy5xMJ8dXGx6x8Cc3y7sEm3453T/4YCjzsRwvMyPy
+	Zr6/Q5qBsV2EdvbQKzo0V2KplJe2NhDN+EdN7WUyrNPfRO3oCT773iaxuuhyKkqRrPvUwOkD50I07
+	DUwFITijmIGEETJxTFrobIjAvPh8VeIJCAo6S4sKFYMQh3hdqcd/Jywo7dIdhlVsnA/GzKFtj82aQ
+	DRg7tQ8fYU38ALEQmz+XnFD/XcNKTJKmkpOPohsRFuLKd13wuumKy8AOIjrAh/XLM9OPFO0IEwQff
+	cmM7n8rf1iERBkBmnC3eUsQE9SwVmZeLjMXup2/SOKWl406HSg==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.98)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1uw2Dt-00000002U3X-11Nh; Tue, 09 Sep 2025 19:33:41 +0200
+Received: from p5b13aa34.dip0.t-ipconnect.de ([91.19.170.52] helo=[192.168.178.61])
+          by inpost2.zedat.fu-berlin.de (Exim 4.98)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1uw2Dt-00000000BCH-02vr; Tue, 09 Sep 2025 19:33:41 +0200
+Message-ID: <73e81a8280b345ee09df0dfa9f0e21148144722f.camel@physik.fu-berlin.de>
+Subject: Re: New test kernel - second attempt
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Riccardo Mottola <riccardo.mottola@libero.it>, 
+ "<debian-sparc@lists.debian.org>"
+	 <debian-sparc@lists.debian.org>
+Cc: sparclinux <sparclinux@vger.kernel.org>
+Date: Tue, 09 Sep 2025 19:33:40 +0200
+In-Reply-To: <7515a193-5ae2-69d6-9c6e-c3b6c7459f50@libero.it>
+References: 
+	<9b8530550078b5e89b19e987981d25fee8e18500.camel@physik.fu-berlin.de>
+	 <7515a193-5ae2-69d6-9c6e-c3b6c7459f50@libero.it>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1757329751.git.lorenzo.stoakes@oracle.com> <ea1a5ab9fff7330b69f0b97c123ec95308818c98.1757329751.git.lorenzo.stoakes@oracle.com>
-In-Reply-To: <ea1a5ab9fff7330b69f0b97c123ec95308818c98.1757329751.git.lorenzo.stoakes@oracle.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 9 Sep 2025 09:44:58 -0700
-X-Gm-Features: AS18NWD_8AWrPfmI0tsMVHUiuAGzDjgerBQcQZeWasEIUA51d1DPsE14BgjCaGA
-Message-ID: <CAJuCfpFr+vMowHzAs7QDwMmNvS4RMJg0xqXkYAxBLCKh1wdAmQ@mail.gmail.com>
-Subject: Re: [PATCH 06/16] mm: introduce the f_op->mmap_complete, mmap_abort hooks
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Matthew Wilcox <willy@infradead.org>, Guo Ren <guoren@kernel.org>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	"David S . Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Nicolas Pitre <nico@fluxnic.net>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Baoquan He <bhe@redhat.com>, 
-	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, 
-	James Morse <james.morse@arm.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, 
-	sparclinux@vger.kernel.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	linux-mm@kvack.org, ntfs3@lists.linux.dev, kexec@lists.infradead.org, 
-	kasan-dev@googlegroups.com, Jason Gunthorpe <jgg@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
 
-On Mon, Sep 8, 2025 at 4:11=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> We have introduced the f_op->mmap_prepare hook to allow for setting up a
-> VMA far earlier in the process of mapping memory, reducing problematic
-> error handling paths, but this does not provide what all
-> drivers/filesystems need.
->
-> In order to supply this, and to be able to move forward with removing
-> f_op->mmap altogether, introduce f_op->mmap_complete.
->
-> This hook is called once the VMA is fully mapped and everything is done,
-> however with the mmap write lock and VMA write locks held.
->
-> The hook is then provided with a fully initialised VMA which it can do wh=
-at
-> it needs with, though the mmap and VMA write locks must remain held
-> throughout.
->
-> It is not intended that the VMA be modified at this point, attempts to do
-> so will end in tears.
->
-> This allows for operations such as pre-population typically via a remap, =
-or
-> really anything that requires access to the VMA once initialised.
->
-> In addition, a caller may need to take a lock in mmap_prepare, when it is
-> possible to modify the VMA, and release it on mmap_complete. In order to
-> handle errors which may arise between the two operations, f_op->mmap_abor=
+Hi,
+
+On Tue, 2025-09-09 at 19:34 +0200, Riccardo Mottola wrote:
+> John Paul Adrian Glaubitz wrote:
+> > https://people.debian.org/~glaubitz/sparc64/
+> >=20
+> > Don't mind the weird version number, it's a 6.12.3 kernel:
+> >=20
+> > linux (6.12.43-1+nothp1) UNRELEASED; urgency=3Dmedium
+> >=20
+> >    * Add sparc64_fix_hugetlb.patch
+> >    * Add sparc64_fix_copyops.patch
+> >    * Disable CONFIG_TRANSPARENT_HUGEPAGE
+> >    * Disable CONFIG_TRANSPARENT_HUGEPAGE_ALWAYS
+>=20
+> Sorry, but this is not a good one. On the Sun Fire T2000 i used the=20
+> "smp" kernel and it crashes on boot:
+> Loading Linux 6.12+unreleased-sparc64-smp ...tect other bootable=20
+> partitions. =C3=A2
+> Loading initial ramdisk ...GNU GRUB=C2=A0 version 2.04-16onfiguration. =
+=C3=A2
+> Check GRUB_DISABLE_OS_PROBER documentation entry. =C3=A2
+> [=C2=A0=C2=A0=C2=A0 2.919995] pci 0000:02:00.0: failed to populate child =
+OF nodes=20
+> (-19)------+ =C3=A2
+> [=C2=A0=C2=A0=C2=A0 2.920055] pci 0000:03:01.0: failed to populate child =
+OF nodes=20
+> (-19)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =C3=A2
+> [=C2=A0=C2=A0=C2=A0 2.920103] pci 0000:03:02.0: failed to populate child =
+OF nodes=20
+> (-19))=C2=A0=C2=A0=C2=A0=C2=A0 | =C3=A2
+> [=C2=A0=C2=A0=C2=A0 2.920150] pci 0000:03:08.0: failed to populate child =
+OF nodes=20
+> (-19)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |4) ... =C3=A2
+> [=C2=A0=C2=A0=C2=A0 2.920197] pci 0000:03:09.0: failed to populate child =
+OF nodes=20
+> (-19)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =C3=A2
+> [=C2=A0=C2=A0=C2=A0 2.995757] pci 0001:02:00.0: failed to populate child =
+OF nodes=20
+> (-19)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =C3=A2
+> [=C2=A0=C2=A0=C2=A0 2.995812] pci 0001:03:01.0: failed to populate child =
+OF nodes=20
+> (-19)de)=C2=A0=C2=A0 | =C3=A2
+> [=C2=A0=C2=A0=C2=A0 2.995860] pci 0001:03:02.0: failed to populate child =
+OF nodes=20
+> (-19)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 100%
+> [=C2=A0=C2=A0=C2=A0 2.995907] pci 0001:03:08.0: failed to populate child =
+OF nodes=20
+> (-19)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> [=C2=A0=C2=A0=C2=A0 2.995954] pci 0001:03:09.0: failed to populate child =
+OF nodes=20
+> (-19)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> [=C2=A0=C2=A0=C2=A0 2.996002] pci 0001:04:00.0: failed to populate child =
+OF nodes=20
+> (-19)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> [=C2=A0=C2=A0=C2=A0 2.996048] pci 0001:04:00.2: failed to populate child =
+OF nodes=20
+> (-19)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |v
+> [=C2=A0=C2=A0 10.810326] mptsas 0000:07:00.0: Unable to change power stat=
+e from=20
+> D3cold to D0, device inaccessible
+> [=C2=A0=C2=A0 11.147798] NON-RESUMABLE ERROR: Reporting on cpu=20
+> 24-----------------------+
+> [=C2=A0=C2=A0 11.147975] NON-RESUMABLE ERROR: TPC [0x000000001017e034]=
+=20
+> <MakeIocReady+0x10/0x298 [mptbase]>
+> [=C2=A0=C2=A0 11.148142] NON-RESUMABLE ERROR: RAW=20
+> [1810000000000001:00000010e6e37b64:0000000202000004:000000ea00300000
+> [=C2=A0=C2=A0 11.148226] NON-RESUMABLE ERROR:=20
+> 0000000000180000:0000000000000000:0000000000000000:0000000000000000]
+> [=C2=A0=C2=A0 11.148307] NON-RESUMABLE ERROR: handle [0x1810000000000001]=
+ stick=20
+> [0x00000010e6e37b64]
+> [=C2=A0=C2=A0 11.148382] NON-RESUMABLE ERROR: type [precise nonresumable]
+> [=C2=A0=C2=A0 11.148444] NON-RESUMABLE ERROR: attrs [0x02000004] < PIO sp=
+-faulted=20
+> priv >
+> [=C2=A0=C2=A0 11.148568] NON-RESUMABLE ERROR: raddr [0x000000ea00300000].
+> [=C2=A0=C2=A0 11.149692] Kernel panic - not syncing: Non-resumable error.
+> [=C2=A0=C2=A0 11.149772] CPU: 24 UID: 0 PID: 405 Comm: (udev-worker) Not =
+tainted=20
+> 6.12+unreleased-sparc64-smp #1=C2=A0 Debian 6.12.43-1+nothp1
+> [=C2=A0=C2=A0 11.149898] Call Trace:
+> [=C2=A0=C2=A0 11.149951] [<0000000000eff2b4>] dump_stack+0x8/0x18
+> [=C2=A0=C2=A0 11.150042] [<0000000000ef1930>] panic+0xf4/0x398
+> [=C2=A0=C2=A0 11.150121] [<000000000042a48c>] sun4v_nonresum_error+0x16c/=
+0x240
+> [=C2=A0=C2=A0 11.150217] [<0000000000406eb8>] sun4v_nonres_mondo+0xc8/0xd=
+8
+> [=C2=A0=C2=A0 11.150320] [<000000001017e034>] MakeIocReady+0x10/0x298 [mp=
+tbase]
+> [=C2=A0=C2=A0 11.150426] [<000000001017e4b4>] mpt_do_ioc_recovery+0x9c/0x=
+1110=20
+> [mptbase]
+> [=C2=A0=C2=A0 11.150532] [<000000001017d6f8>] mpt_attach+0xb58/0xd20 [mpt=
+base]
+> [=C2=A0=C2=A0 11.150636] [<0000000010283f30>] mptsas_probe+0x10/0x440 [mp=
+tsas]
+> [=C2=A0=C2=A0 11.150761] [<0000000000ad1fac>] pci_device_probe+0xac/0x180
+> [=C2=A0=C2=A0 11.150862] [<0000000000b8b8e8>] really_probe+0xc8/0x400
+> [=C2=A0=C2=A0 11.150956] [<0000000000b8bcac>] __driver_probe_device+0x8c/=
+0x160
+> [=C2=A0=C2=A0 11.151050] [<0000000000b8be68>] driver_probe_device+0x28/0x=
+100
+> [=C2=A0=C2=A0 11.151145] [<0000000000b8c11c>] __driver_attach+0xbc/0x1e0
+> [=C2=A0=C2=A0 11.151238] [<0000000000b8927c>] bus_for_each_dev+0x5c/0xc0
+> [=C2=A0=C2=A0 11.151328] [<0000000000b8b09c>] driver_attach+0x1c/0x40
+> [=C2=A0=C2=A0 11.151419] [<0000000000b8a860>] bus_add_driver+0x180/0x240
+> [=C2=A0=C2=A0 11.772806] Press Stop-A (L1-A) from sun keyboard or send br=
+eak
+> [=C2=A0=C2=A0 11.772806] twice on console to return to the boot prom
+> [=C2=A0=C2=A0 11.773113] ---[ end Kernel panic - not syncing: Non-resumab=
+le error.=20
+> ]---
+>=20
+>=20
+> the first part "failed to populate child OF node" happens also with=20
+> kernel that do boot and run successfully.
+
+Keep in mind you may have to keep the machine off for a longer time or rese=
 t
-> is provided.
->
-> This hook should be used to drop any lock and clean up anything before th=
-e
-> VMA mapping operation is aborted. After this point the VMA will not be
-> added to any mapping and will not exist.
->
-> We also add a new mmap_context field to the vm_area_desc type which can b=
-e
-> used to pass information pertinent to any locks which are held or any sta=
-te
-> which is required for mmap_complete, abort to operate correctly.
->
-> We also update the compatibility layer for nested filesystems which
-> currently still only specify an f_op->mmap() handler so that it correctly
-> invokes f_op->mmap_complete as necessary (note that no error can occur
-> between mmap_prepare and mmap_complete so mmap_abort will never be called
-> in this case).
->
-> Also update the VMA tests to account for the changes.
->
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  include/linux/fs.h               |  4 ++
->  include/linux/mm_types.h         |  5 ++
->  mm/util.c                        | 18 +++++--
->  mm/vma.c                         | 82 ++++++++++++++++++++++++++++++--
->  tools/testing/vma/vma_internal.h | 31 ++++++++++--
->  5 files changed, 129 insertions(+), 11 deletions(-)
->
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 594bd4d0521e..bb432924993a 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -2195,6 +2195,10 @@ struct file_operations {
->         int (*uring_cmd_iopoll)(struct io_uring_cmd *, struct io_comp_bat=
-ch *,
->                                 unsigned int poll_flags);
->         int (*mmap_prepare)(struct vm_area_desc *);
-> +       int (*mmap_complete)(struct file *, struct vm_area_struct *,
-> +                            const void *context);
-> +       void (*mmap_abort)(const struct file *, const void *vm_private_da=
-ta,
-> +                          const void *context);
->  } __randomize_layout;
->
->  /* Supports async buffered reads */
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index cf759fe08bb3..052db1f31fb3 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -793,6 +793,11 @@ struct vm_area_desc {
->         /* Write-only fields. */
->         const struct vm_operations_struct *vm_ops;
->         void *private_data;
-> +       /*
-> +        * A user-defined field, value will be passed to mmap_complete,
-> +        * mmap_abort.
-> +        */
-> +       void *mmap_context;
->  };
->
->  /*
-> diff --git a/mm/util.c b/mm/util.c
-> index 248f877f629b..f5bcac140cb9 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -1161,17 +1161,26 @@ int __compat_vma_mmap_prepare(const struct file_o=
-perations *f_op,
->         err =3D f_op->mmap_prepare(&desc);
->         if (err)
->                 return err;
-> +
->         set_vma_from_desc(vma, &desc);
->
-> -       return 0;
-> +       /*
-> +        * No error can occur between mmap_prepare() and mmap_complete so=
- no
-> +        * need to invoke mmap_abort().
-> +        */
-> +
-> +       if (f_op->mmap_complete)
-> +               err =3D f_op->mmap_complete(file, vma, desc.mmap_context)=
-;
-> +
-> +       return err;
->  }
->  EXPORT_SYMBOL(__compat_vma_mmap_prepare);
->
->  /**
->   * compat_vma_mmap_prepare() - Apply the file's .mmap_prepare() hook to =
-an
-> - * existing VMA.
-> + * existing VMA and invoke .mmap_complete() if provided.
->   * @file: The file which possesss an f_op->mmap_prepare() hook.
+the NV-RAM. We've got multiple reports now of machines that became stable
+after that.
 
-nit: possesss seems to be misspelled. Maybe we can fix it here as well?
+Adrian
 
-> - * @vma: The VMA to apply the .mmap_prepare() hook to.
-> + * @vma: The VMA to apply the hooks to.
->   *
->   * Ordinarily, .mmap_prepare() is invoked directly upon mmap(). However,=
- certain
->   * stacked filesystems invoke a nested mmap hook of an underlying file.
-> @@ -1188,6 +1197,9 @@ EXPORT_SYMBOL(__compat_vma_mmap_prepare);
->   * establishes a struct vm_area_desc descriptor, passes to the underlyin=
-g
->   * .mmap_prepare() hook and applies any changes performed by it.
->   *
-> + * If the relevant hooks are provided, it also invokes .mmap_complete() =
-upon
-> + * successful completion.
-> + *
->   * Once the conversion of filesystems is complete this function will no =
-longer
->   * be required and will be removed.
->   *
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 0efa4288570e..a0b568fe9e8d 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -22,6 +22,7 @@ struct mmap_state {
->         /* User-defined fields, perhaps updated by .mmap_prepare(). */
->         const struct vm_operations_struct *vm_ops;
->         void *vm_private_data;
-> +       void *mmap_context;
->
->         unsigned long charged;
->
-> @@ -2343,6 +2344,23 @@ static int __mmap_prelude(struct mmap_state *map, =
-struct list_head *uf)
->         int error;
->         struct vma_iterator *vmi =3D map->vmi;
->         struct vma_munmap_struct *vms =3D &map->vms;
-> +       struct file *file =3D map->file;
-> +
-> +       if (file) {
-> +               /* f_op->mmap_complete requires f_op->mmap_prepare. */
-> +               if (file->f_op->mmap_complete && !file->f_op->mmap_prepar=
-e)
-> +                       return -EINVAL;
-> +
-> +               /*
-> +                * It's not valid to provide an f_op->mmap_abort hook wit=
-hout also
-> +                * providing the f_op->mmap_prepare and f_op->mmap_comple=
-te hooks it is
-> +                * used with.
-> +                */
-> +               if (file->f_op->mmap_abort &&
-> +                    (!file->f_op->mmap_prepare ||
-> +                     !file->f_op->mmap_complete))
-> +                       return -EINVAL;
-> +       }
->
->         /* Find the first overlapping VMA and initialise unmap state. */
->         vms->vma =3D vma_find(vmi, map->end);
-> @@ -2595,6 +2613,7 @@ static int call_mmap_prepare(struct mmap_state *map=
-)
->         /* User-defined fields. */
->         map->vm_ops =3D desc.vm_ops;
->         map->vm_private_data =3D desc.private_data;
-> +       map->mmap_context =3D desc.mmap_context;
->
->         return 0;
->  }
-> @@ -2636,16 +2655,61 @@ static bool can_set_ksm_flags_early(struct mmap_s=
-tate *map)
->         return false;
->  }
->
-> +/*
-> + * Invoke the f_op->mmap_complete hook, providing it with a fully initia=
-lised
-> + * VMA to operate upon.
-> + *
-> + * The mmap and VMA write locks must be held prior to and after the hook=
- has
-> + * been invoked.
-> + */
-> +static int call_mmap_complete(struct mmap_state *map, struct vm_area_str=
-uct *vma)
-> +{
-> +       struct file *file =3D map->file;
-> +       void *context =3D map->mmap_context;
-> +       int error;
-> +       size_t len;
-> +
-> +       if (!file || !file->f_op->mmap_complete)
-> +               return 0;
-> +
-> +       error =3D file->f_op->mmap_complete(file, vma, context);
-> +       /* The hook must NOT drop the write locks. */
-> +       vma_assert_write_locked(vma);
-> +       mmap_assert_write_locked(current->mm);
-> +       if (!error)
-> +               return 0;
-> +
-> +       /*
-> +        * If an error occurs, unmap the VMA altogether and return an err=
-or. We
-> +        * only clear the newly allocated VMA, since this function is onl=
-y
-> +        * invoked if we do NOT merge, so we only clean up the VMA we cre=
-ated.
-> +        */
-> +       len =3D vma_pages(vma) << PAGE_SHIFT;
-> +       do_munmap(current->mm, vma->vm_start, len, NULL);
-> +       return error;
-> +}
-> +
-> +static void call_mmap_abort(struct mmap_state *map)
-> +{
-> +       struct file *file =3D map->file;
-> +       void *vm_private_data =3D map->vm_private_data;
-> +
-> +       VM_WARN_ON_ONCE(!file || !file->f_op);
-> +       file->f_op->mmap_abort(file, vm_private_data, map->mmap_context);
-> +}
-> +
->  static unsigned long __mmap_region(struct file *file, unsigned long addr=
-,
->                 unsigned long len, vm_flags_t vm_flags, unsigned long pgo=
-ff,
->                 struct list_head *uf)
->  {
-> -       struct mm_struct *mm =3D current->mm;
-> -       struct vm_area_struct *vma =3D NULL;
-> -       int error;
->         bool have_mmap_prepare =3D file && file->f_op->mmap_prepare;
-> +       bool have_mmap_abort =3D file && file->f_op->mmap_abort;
-> +       struct mm_struct *mm =3D current->mm;
->         VMA_ITERATOR(vmi, mm, addr);
->         MMAP_STATE(map, mm, &vmi, addr, len, pgoff, vm_flags, file);
-> +       struct vm_area_struct *vma =3D NULL;
-> +       bool allocated_new =3D false;
-> +       int error;
->
->         map.check_ksm_early =3D can_set_ksm_flags_early(&map);
->
-> @@ -2668,8 +2732,12 @@ static unsigned long __mmap_region(struct file *fi=
-le, unsigned long addr,
->         /* ...but if we can't, allocate a new VMA. */
->         if (!vma) {
->                 error =3D __mmap_new_vma(&map, &vma);
-> -               if (error)
-> +               if (error) {
-> +                       if (have_mmap_abort)
-> +                               call_mmap_abort(&map);
->                         goto unacct_error;
-> +               }
-> +               allocated_new =3D true;
->         }
->
->         if (have_mmap_prepare)
-> @@ -2677,6 +2745,12 @@ static unsigned long __mmap_region(struct file *fi=
-le, unsigned long addr,
->
->         __mmap_epilogue(&map, vma);
->
-> +       if (allocated_new) {
-> +               error =3D call_mmap_complete(&map, vma);
-> +               if (error)
-> +                       return error;
-> +       }
-> +
->         return addr;
->
->         /* Accounting was done by __mmap_prelude(). */
-> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_int=
-ernal.h
-> index 07167446dcf4..566cef1c0e0b 100644
-> --- a/tools/testing/vma/vma_internal.h
-> +++ b/tools/testing/vma/vma_internal.h
-> @@ -297,11 +297,20 @@ struct vm_area_desc {
->         /* Write-only fields. */
->         const struct vm_operations_struct *vm_ops;
->         void *private_data;
-> +       /*
-> +        * A user-defined field, value will be passed to mmap_complete,
-> +        * mmap_abort.
-> +        */
-> +       void *mmap_context;
->  };
->
->  struct file_operations {
->         int (*mmap)(struct file *, struct vm_area_struct *);
->         int (*mmap_prepare)(struct vm_area_desc *);
-> +       void (*mmap_abort)(const struct file *, const void *vm_private_da=
-ta,
-> +                          const void *context);
-> +       int (*mmap_complete)(struct file *, struct vm_area_struct *,
-> +                            const void *context);
->  };
->
->  struct file {
-> @@ -1471,7 +1480,7 @@ static inline int __compat_vma_mmap_prepare(const s=
-truct file_operations *f_op,
->  {
->         struct vm_area_desc desc =3D {
->                 .mm =3D vma->vm_mm,
-> -               .file =3D vma->vm_file,
-> +               .file =3D file,
->                 .start =3D vma->vm_start,
->                 .end =3D vma->vm_end,
->
-> @@ -1485,13 +1494,21 @@ static inline int __compat_vma_mmap_prepare(const=
- struct file_operations *f_op,
->         err =3D f_op->mmap_prepare(&desc);
->         if (err)
->                 return err;
-> +
->         set_vma_from_desc(vma, &desc);
->
-> -       return 0;
-> +       /*
-> +        * No error can occur between mmap_prepare() and mmap_complete so=
- no
-> +        * need to invoke mmap_abort().
-> +        */
-> +
-> +       if (f_op->mmap_complete)
-> +               err =3D f_op->mmap_complete(file, vma, desc.mmap_context)=
-;
-> +
-> +       return err;
->  }
->
-> -static inline int compat_vma_mmap_prepare(struct file *file,
-> -               struct vm_area_struct *vma)
-> +static inline int compat_vma_mmap_prepare(struct file *file, struct vm_a=
-rea_struct *vma)
->  {
->         return __compat_vma_mmap_prepare(file->f_op, file, vma);
->  }
-> @@ -1548,4 +1565,10 @@ static inline vm_flags_t ksm_vma_flags(const struc=
-t mm_struct *, const struct fi
->         return vm_flags;
->  }
->
-> +static inline int do_munmap(struct mm_struct *mm, unsigned long start, s=
-ize_t len,
-> +             struct list_head *uf)
-> +{
-> +       return 0;
-> +}
-> +
->  #endif /* __MM_VMA_INTERNAL_H */
-> --
-> 2.51.0
->
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
