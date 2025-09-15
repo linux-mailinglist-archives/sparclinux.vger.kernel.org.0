@@ -1,40 +1,54 @@
-Return-Path: <sparclinux+bounces-5011-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-5015-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38783B577EB
-	for <lists+sparclinux@lfdr.de>; Mon, 15 Sep 2025 13:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0847DB5795B
+	for <lists+sparclinux@lfdr.de>; Mon, 15 Sep 2025 13:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E73783B2313
-	for <lists+sparclinux@lfdr.de>; Mon, 15 Sep 2025 11:19:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E8584409E1
+	for <lists+sparclinux@lfdr.de>; Mon, 15 Sep 2025 11:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC602C3257;
-	Mon, 15 Sep 2025 11:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE69B30149E;
+	Mon, 15 Sep 2025 11:51:05 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8DDEAF9;
-	Mon, 15 Sep 2025 11:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EB31C3C11;
+	Mon, 15 Sep 2025 11:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757935182; cv=none; b=Y27gFch6St9Bi2HX3LLfPb2OUCQwIo682NS2zDo9FL2c2tTz1FZbneUMnJuvaxXZu6+j/Wh9SVnUVz5abT0xsg5ITB0BsmefGpAOS5Oc5ODy9VNmTYphpCkH1RTQhac7yU4TTs3wNKE5MxuHHqrAKTxXGk8ln/nL7+s1ppknbtg=
+	t=1757937065; cv=none; b=uMr7F3zRVGK6mJDSLR1QnR2F5z/T5ZNoARlvqOvcEIA0qePwTu2Z2fbspZZdrJtdzONzMpjq0HXbG7Tf44E9rPzV86OpkkVlV0Kno0ojMRVPithJlXwbnwt90cZ5XdVgouu5aGH7OtrV0a2PV2uZhTcwaTH9iXzLqGQsJg5l5sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757935182; c=relaxed/simple;
-	bh=ezmIh4yAIIyC5Ofx9OYfMJK6a3eTs8fzX06OGshPKFg=;
+	s=arc-20240116; t=1757937065; c=relaxed/simple;
+	bh=a0VRXbta8K9gtk+IGHOwOU6MaIwzucwt5cPvZhkP+xE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KJqa2OGm8VoRw0nlJUYq8N0MV2cKjrXBWBlL2jZI8vVKUCkCxJvOKOq8dg0R7LctRUQWeKLPG/MZA9euQCeAIe5CbaCzMk/ysEsHPcRsdMKpm5DMCs/9haFZAtNixQd9tuz3rt4rVxlIto5iE5ENp85yFGk+HnSFsGB+RdUWSeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4D6971424;
-	Mon, 15 Sep 2025 04:19:31 -0700 (PDT)
-Received: from [10.57.70.220] (unknown [10.57.70.220])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C7D73F694;
-	Mon, 15 Sep 2025 04:19:34 -0700 (PDT)
-Message-ID: <d407a381-099b-4ec6-a20e-aeff4f3d750f@arm.com>
-Date: Mon, 15 Sep 2025 13:19:32 +0200
+	 In-Reply-To:Content-Type; b=qsyIXY+kYx5k041VL4/9xcOAGdtdYi6QfDoGuzhdEGC5xfshk9eqXe9r0MDRIhZmMGbErHpKSC2+XZl6s6g9eucBk9QXPSfVXu75qcVFPPQlpAs+WZdUDs8QTw5iP8kD2n1VSwWh+Z7SLTT+lySfvPKcYqvp1uJEU16gfr2O3Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cQNTZ3Ybxz9syb;
+	Mon, 15 Sep 2025 13:43:46 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id FUI2IJx72rFj; Mon, 15 Sep 2025 13:43:46 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cQNTZ1TXDz9syY;
+	Mon, 15 Sep 2025 13:43:46 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id DD3B38B765;
+	Mon, 15 Sep 2025 13:43:45 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id EDG4hZ4nbxwm; Mon, 15 Sep 2025 13:43:45 +0200 (CEST)
+Received: from [10.25.207.160] (unknown [10.25.207.160])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5E4998B763;
+	Mon, 15 Sep 2025 13:43:44 +0200 (CEST)
+Message-ID: <ba78173a-9312-40fc-a88a-d94764ed6010@csgroup.eu>
+Date: Mon, 15 Sep 2025 13:43:43 +0200
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
@@ -42,111 +56,433 @@ List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/7] Nesting support for lazy MMU mode
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
- Mark Rutland <Mark.Rutland@arm.com>
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908191602.61160a7990b9ea418de758c7@linux-foundation.org>
- <d1b4ff2a-052f-4556-91ae-273962edbed0@redhat.com>
- <338ef811-1dab-4c4e-bc5f-8ebd8cb68435@arm.com>
- <5a0818bb-75d4-47df-925c-0102f7d598f4-agordeev@linux.ibm.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <5a0818bb-75d4-47df-925c-0102f7d598f4-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH RESEND 04/62] init: x86, arm, sh, sparc: remove variable
+ rd_image_start, which controls starting block number of initrd
+To: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>,
+ Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Aleksa Sarai <cyphar@cyphar.com>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Julian Stecklina <julian.stecklina@cyberus-technology.de>,
+ Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>,
+ Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>,
+ Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org,
+ initramfs@vger.kernel.org, linux-api@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-ext4@vger.kernel.org, "Theodore Y . Ts'o" <tytso@mit.edu>,
+ linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
+ devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+ Kees Cook <kees@kernel.org>, Thorsten Blum <thorsten.blum@linux.dev>,
+ Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
+References: <20250913003842.41944-1-safinaskar@gmail.com>
+ <20250913003842.41944-5-safinaskar@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250913003842.41944-5-safinaskar@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 15/09/2025 08:28, Alexander Gordeev wrote:
-> On Fri, Sep 12, 2025 at 05:25:27PM +0200, Kevin Brodsky wrote:
->
-> Hi Kevin,
->
->> Based on the outcome of the discussion with David on patch 2 [1p], there
->> is indeed an alternative approach that we should seriously consider. In
->> summary:
->>
->> * Keep the API stateless, handle nesting with a counter in task_struct
->> * Introduce new functions to temporarily disable lazy_mmu without
->> impacting nesting, track that with a bool in task_struct (addresses the
->> situation in mm/kasan/shadow.c and possibly some x86 cases too)
->> * Move as much handling from arch_* to generic functions
->>
->> What the new generic infrastructure would look like:
->>
->> struct task_struct {
->>     ...
->> #ifdef CONFIG_ARCH_LAZY_MMU
->>     struct {
->>         uint8_t count;
->>         bool enabled; /* or paused, see below */
->>     } lazy_mmu_state;
->> #endif
->> }
->>
->> * lazy_mmu_mode_enable():
-> This helper is parameter-free, assuming the MMU unit does not need any
-> configuration other than turning it on/off. That is currently true, but
-> (as I noted in my other mail) I am going to introduce a friend enable
-> function that accepts parameters, creates an arch-specific state and
-> uses it while the lazy mmu mode is active.
 
-Yes I think that's fine.
 
-> That does not impact your design (AFAICT), except one change below.
->
->>     if (!lazy_mmu_state.count) {
->>         arch_enter_lazy_mmu_mode();
->>         lazy_mmu_state.enabled = true;
->>     }
->>     lazy_mmu_state.count++;
->>
->> * lazy_mmu_mode_disable():
->>     lazy_mmu_count--;
->>     if (!lazy_mmu_state.count) {
->>         lazy_mmu_state.enabled = false;
->>         arch_leave_lazy_mmu_mode();
->>     } else {
->>         arch_flush_lazy_mmu_mode();
->>     }
->>
->> * lazy_mmu_mode_pause():
->>     lazy_mmu_state.enabled = false;
->>     arch_leave_lazy_mmu_mode();
-> This needs to be arch_pause_lazy_mmu_mode(), otherwise the arch-specific
-> state will be lost.
->
->> * lazy_mmu_mode_resume();
->>     arch_enter_lazy_mmu_mode();
-> Conversely, this needs to be arch_resume_lazy_mmu_mode(). And it can not
-> be arch_enter_lazy_mmu_mode(), since a lazy_mmu_mode_resume() caller does
-> not know the parameters passed to the lazy_mmu_mode_enable(...)-friend.
+Le 13/09/2025 à 02:37, Askar Safin a écrit :
+> [Vous ne recevez pas souvent de courriers de safinaskar@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> This is preparation for initrd removal
+> 
+> Signed-off-by: Askar Safin <safinaskar@gmail.com>
+> ---
+>   Documentation/arch/x86/boot.rst       | 4 ++--
+>   arch/arm/kernel/atags_parse.c         | 2 --
+>   arch/sh/include/asm/setup.h           | 1 -
+>   arch/sh/kernel/head_32.S              | 2 +-
+>   arch/sh/kernel/setup.c                | 9 +--------
+>   arch/sparc/boot/piggyback.c           | 4 ++--
+>   arch/sparc/kernel/head_32.S           | 4 ++--
+>   arch/sparc/kernel/head_64.S           | 6 ++++--
+>   arch/sparc/kernel/setup_32.c          | 5 -----
+>   arch/sparc/kernel/setup_64.c          | 5 -----
+>   arch/x86/boot/header.S                | 2 +-
+>   arch/x86/include/uapi/asm/bootparam.h | 5 +----
+>   arch/x86/kernel/setup.c               | 5 -----
+>   include/linux/initrd.h                | 3 ---
+>   init/do_mounts_rd.c                   | 8 +++-----
+>   15 files changed, 17 insertions(+), 48 deletions(-)
+> 
+> diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
+> index 77e6163288db..118aa7b69667 100644
+> --- a/Documentation/arch/x86/boot.rst
+> +++ b/Documentation/arch/x86/boot.rst
+> @@ -189,7 +189,7 @@ Offset/Size Proto           Name                    Meaning
+>   01F1/1         ALL(1)          setup_sects             The size of the setup in sectors
+>   01F2/2         ALL             root_flags              If set, the root is mounted readonly
+>   01F4/4         2.04+(2)        syssize                 The size of the 32-bit code in 16-byte paras
+> -01F8/2         ALL             ram_size                DO NOT USE - for bootsect.S use only
+> +01F8/2         ALL             ram_size                DO NOT USE - for bootsect.S use only - used to control initrd, which was removed from Linux in 2025
 
-Got it, that makes sense. Even without your proposal, it is probably a
-good idea to allow arch's to behave differently on pause/resume.
+Is this change really needed/usefull. Here people can think it shall not 
+be used because it is removed in 2025. But it reality it was already 
+DO-NOT-USE 20 years old.
 
-I hope we can avoid forcing all arch's to define arch_pause/arch_resume
-though, since only s390 will use it for the foreseeable future. Using
-optional macros should do the trick.
+>   01FA/2         ALL             vid_mode                Video mode control
+>   01FC/2         ALL             root_dev                Default root device number
+>   01FE/2         ALL             boot_flag               0xAA55 magic number
+> @@ -308,7 +308,7 @@ Offset/size:        0x1f8/2
+>   Protocol:      ALL
+>   ============   ===============
+> 
+> -  This field is obsolete.
+> +  This field is obsolete. Used to control initrd, which was removed from Linux in 2025.
 
-- Kevin
+Same comment, this field has been obsolete long before the removal of 
+initrd in 2025 so that new comment bring confusion.
+
+> 
+>   ============   ===================
+>   Field name:    vid_mode
+> diff --git a/arch/arm/kernel/atags_parse.c b/arch/arm/kernel/atags_parse.c
+> index 4ec591bde3df..a3f0a4f84e04 100644
+> --- a/arch/arm/kernel/atags_parse.c
+> +++ b/arch/arm/kernel/atags_parse.c
+> @@ -90,8 +90,6 @@ __tagtable(ATAG_VIDEOTEXT, parse_tag_videotext);
+>   #ifdef CONFIG_BLK_DEV_RAM
+>   static int __init parse_tag_ramdisk(const struct tag *tag)
+>   {
+> -       rd_image_start = tag->u.ramdisk.start;
+> -
+>          if (tag->u.ramdisk.size)
+>                  rd_size = tag->u.ramdisk.size;
+> 
+> diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
+> index 84bb23a771f3..d1b97c5726e4 100644
+> --- a/arch/sh/include/asm/setup.h
+> +++ b/arch/sh/include/asm/setup.h
+> @@ -10,7 +10,6 @@
+>   #define PARAM  ((unsigned char *)empty_zero_page)
+> 
+>   #define MOUNT_ROOT_RDONLY (*(unsigned long *) (PARAM+0x000))
+> -#define RAMDISK_FLAGS (*(unsigned long *) (PARAM+0x004))
+>   #define ORIG_ROOT_DEV (*(unsigned long *) (PARAM+0x008))
+>   #define LOADER_TYPE (*(unsigned long *) (PARAM+0x00c))
+>   #define INITRD_START (*(unsigned long *) (PARAM+0x010))
+> diff --git a/arch/sh/kernel/head_32.S b/arch/sh/kernel/head_32.S
+> index b603b7968b38..4382c0f058c8 100644
+> --- a/arch/sh/kernel/head_32.S
+> +++ b/arch/sh/kernel/head_32.S
+> @@ -28,7 +28,7 @@
+>          .section        .empty_zero_page, "aw"
+>   ENTRY(empty_zero_page)
+>          .long   1               /* MOUNT_ROOT_RDONLY */
+> -       .long   0               /* RAMDISK_FLAGS */
+> +       .long   0               /* RAMDISK_FLAGS - used to control initrd, which was removed from Linux in 2025 */
+>          .long   0x0200          /* ORIG_ROOT_DEV */
+>          .long   1               /* LOADER_TYPE */
+>          .long   0x00000000      /* INITRD_START */
+> diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
+> index d66f098e9e9f..50f1d39fe34f 100644
+> --- a/arch/sh/kernel/setup.c
+> +++ b/arch/sh/kernel/setup.c
+> @@ -70,8 +70,6 @@ EXPORT_SYMBOL(sh_mv);
+> 
+>   extern int root_mountflags;
+> 
+> -#define RAMDISK_IMAGE_START_MASK       0x07FF
+> -
+>   static char __initdata command_line[COMMAND_LINE_SIZE] = { 0, };
+> 
+>   static struct resource code_resource = {
+> @@ -273,19 +271,14 @@ void __init setup_arch(char **cmdline_p)
+> 
+>          printk(KERN_NOTICE "Boot params:\n"
+>                             "... MOUNT_ROOT_RDONLY - %08lx\n"
+> -                          "... RAMDISK_FLAGS     - %08lx\n"
+>                             "... ORIG_ROOT_DEV     - %08lx\n"
+>                             "... LOADER_TYPE       - %08lx\n"
+>                             "... INITRD_START      - %08lx\n"
+>                             "... INITRD_SIZE       - %08lx\n",
+> -                          MOUNT_ROOT_RDONLY, RAMDISK_FLAGS,
+> +                          MOUNT_ROOT_RDONLY,
+>                             ORIG_ROOT_DEV, LOADER_TYPE,
+>                             INITRD_START, INITRD_SIZE);
+> 
+> -#ifdef CONFIG_BLK_DEV_RAM
+> -       rd_image_start = RAMDISK_FLAGS & RAMDISK_IMAGE_START_MASK;
+> -#endif
+> -
+>          if (!MOUNT_ROOT_RDONLY)
+>                  root_mountflags &= ~MS_RDONLY;
+>          setup_initial_init_mm(_text, _etext, _edata, _end);
+> diff --git a/arch/sparc/boot/piggyback.c b/arch/sparc/boot/piggyback.c
+> index 6d74064add0a..a9cc55254ff8 100644
+> --- a/arch/sparc/boot/piggyback.c
+> +++ b/arch/sparc/boot/piggyback.c
+> @@ -220,8 +220,8 @@ int main(int argc,char **argv)
+> 
+>          /*
+>           * root_flags = 0
+> -        * root_dev = 1 (RAMDISK_MAJOR)
+> -        * ram_flags = 0
+> +        * root_dev = 1 (1 used to mean RAMDISK_MAJOR, i. e. initrd, which was removed from Linux)
+
+At the end of your series RAMDISK_MAJOR still exists so this comment is 
+wrong.
+
+> +        * ram_flags = 0 (used to control initrd, which was removed from Linux in 2025)
+>           * sparc_ramdisk_image = "PAGE aligned address after _end")
+>           * sparc_ramdisk_size = size of image
+>           */
+
+Shouldn't this block be droped entirely ?
+
+> diff --git a/arch/sparc/kernel/head_32.S b/arch/sparc/kernel/head_32.S
+> index 38345460d542..46f0e39b9037 100644
+> --- a/arch/sparc/kernel/head_32.S
+> +++ b/arch/sparc/kernel/head_32.S
+> @@ -65,7 +65,7 @@ empty_zero_page:      .skip PAGE_SIZE
+>   EXPORT_SYMBOL(empty_zero_page)
+> 
+>          .global root_flags
+> -       .global ram_flags
+> +       .global ram_flags /* used to control initrd, which was removed from Linux in 2025 */
+
+Can we remove this line completely instead of adding a comment ?
+
+>          .global root_dev
+>          .global sparc_ramdisk_image
+>          .global sparc_ramdisk_size
+> @@ -81,7 +81,7 @@ root_flags:
+>          .half   1
+>   root_dev:
+>          .half   0
+> -ram_flags:
+> +ram_flags: /* used to control initrd, which was removed from Linux in 2025 */
+
+Same, why not remove this object completely ?
+
+>          .half   0
+>   sparc_ramdisk_image:
+>          .word   0
+> diff --git a/arch/sparc/kernel/head_64.S b/arch/sparc/kernel/head_64.S
+> index cf0549134234..4480c0532fe9 100644
+> --- a/arch/sparc/kernel/head_64.S
+> +++ b/arch/sparc/kernel/head_64.S
+> @@ -52,7 +52,9 @@ stext:
+>    * Fields should be kept upward compatible and whenever any change is made,
+>    * HdrS version should be incremented.
+>    */
+> -        .global root_flags, ram_flags, root_dev
+> +        .global root_flags
+> +        .global ram_flags /* used to control initrd, which was removed from Linux in 2025 */
+
+Same, can you remove them ?
+Such comments in the code are generaly pointless, you can recover 
+history with 'git log'.
+
+> +        .global root_dev
+>           .global sparc_ramdisk_image, sparc_ramdisk_size
+>          .global sparc_ramdisk_image64
+> 
+> @@ -71,7 +73,7 @@ root_flags:
+>           .half   1
+>   root_dev:
+>           .half   0
+> -ram_flags:
+> +ram_flags: /* used to control initrd, which was removed from Linux in 2025 */
+
+Same, remove.
+
+>           .half   0
+>   sparc_ramdisk_image:
+>           .word   0
+> diff --git a/arch/sparc/kernel/setup_32.c b/arch/sparc/kernel/setup_32.c
+> index eb60be31127f..fb46fb3acf54 100644
+> --- a/arch/sparc/kernel/setup_32.c
+> +++ b/arch/sparc/kernel/setup_32.c
+> @@ -170,8 +170,6 @@ static void __init boot_flags_init(char *commands)
+> 
+>   extern unsigned short root_flags;
+>   extern unsigned short root_dev;
+> -extern unsigned short ram_flags;
+> -#define RAMDISK_IMAGE_START_MASK       0x07FF
+> 
+>   extern int root_mountflags;
+> 
+> @@ -335,9 +333,6 @@ void __init setup_arch(char **cmdline_p)
+>          if (!root_flags)
+>                  root_mountflags &= ~MS_RDONLY;
+>          ROOT_DEV = old_decode_dev(root_dev);
+> -#ifdef CONFIG_BLK_DEV_RAM
+> -       rd_image_start = ram_flags & RAMDISK_IMAGE_START_MASK;
+> -#endif
+> 
+>          prom_setsync(prom_sync_me);
+> 
+> diff --git a/arch/sparc/kernel/setup_64.c b/arch/sparc/kernel/setup_64.c
+> index f728f1b00aca..79b56613c6d8 100644
+> --- a/arch/sparc/kernel/setup_64.c
+> +++ b/arch/sparc/kernel/setup_64.c
+> @@ -143,8 +143,6 @@ static void __init boot_flags_init(char *commands)
+> 
+>   extern unsigned short root_flags;
+>   extern unsigned short root_dev;
+> -extern unsigned short ram_flags;
+> -#define RAMDISK_IMAGE_START_MASK       0x07FF
+> 
+>   extern int root_mountflags;
+> 
+> @@ -640,9 +638,6 @@ void __init setup_arch(char **cmdline_p)
+>          if (!root_flags)
+>                  root_mountflags &= ~MS_RDONLY;
+>          ROOT_DEV = old_decode_dev(root_dev);
+> -#ifdef CONFIG_BLK_DEV_RAM
+> -       rd_image_start = ram_flags & RAMDISK_IMAGE_START_MASK;
+> -#endif
+> 
+>   #ifdef CONFIG_IP_PNP
+>          if (!ic_set_manually) {
+> diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+> index 9bea5a1e2c52..0ced2e9f100e 100644
+> --- a/arch/x86/boot/header.S
+> +++ b/arch/x86/boot/header.S
+> @@ -235,7 +235,7 @@ hdr:
+>                  .byte setup_sects - 1
+>   root_flags:    .word ROOT_RDONLY
+>   syssize:       .long ZO__edata / 16
+> -ram_size:      .word 0                 /* Obsolete */
+> +ram_size:      .word 0                 /* Used to control initrd, which was removed from Linux in 2025 */
+
+Same, just remove, or make 'reserved' if you need to keep the space.
+
+>   vid_mode:      .word SVGA_MODE
+>   root_dev:      .word 0                 /* Default to major/minor 0/0 */
+>   boot_flag:     .word 0xAA55
+> diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
+> index f53dd3f319ba..bf56549f79bb 100644
+> --- a/arch/x86/include/uapi/asm/bootparam.h
+> +++ b/arch/x86/include/uapi/asm/bootparam.h
+> @@ -4,9 +4,6 @@
+> 
+>   #include <asm/setup_data.h>
+> 
+> -/* ram_size flags */
+> -#define RAMDISK_IMAGE_START_MASK       0x07FF
+> -
+>   /* loadflags */
+>   #define LOADED_HIGH    (1<<0)
+>   #define KASLR_FLAG     (1<<1)
+> @@ -37,7 +34,7 @@ struct setup_header {
+>          __u8    setup_sects;
+>          __u16   root_flags;
+>          __u32   syssize;
+> -       __u16   ram_size;
+> +       __u16   ram_size; /* used to control initrd, which was removed from Linux in 2025 */
+
+Rename it to 'reserved'.
+
+>          __u16   vid_mode;
+>          __u16   root_dev;
+>          __u16   boot_flag;
+> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> index 6409e766fb17..797c3c9fc75e 100644
+> --- a/arch/x86/kernel/setup.c
+> +++ b/arch/x86/kernel/setup.c
+> @@ -222,8 +222,6 @@ extern int root_mountflags;
+> 
+>   unsigned long saved_video_mode;
+> 
+> -#define RAMDISK_IMAGE_START_MASK       0x07FF
+> -
+>   static char __initdata command_line[COMMAND_LINE_SIZE];
+>   #ifdef CONFIG_CMDLINE_BOOL
+>   char builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
+> @@ -541,9 +539,6 @@ static void __init parse_boot_params(void)
+>          bootloader_version  = bootloader_type & 0xf;
+>          bootloader_version |= boot_params.hdr.ext_loader_ver << 4;
+> 
+> -#ifdef CONFIG_BLK_DEV_RAM
+> -       rd_image_start = boot_params.hdr.ram_size & RAMDISK_IMAGE_START_MASK;
+> -#endif
+>   #ifdef CONFIG_EFI
+>          if (!strncmp((char *)&boot_params.efi_info.efi_loader_signature,
+>                       EFI32_LOADER_SIGNATURE, 4)) {
+> diff --git a/include/linux/initrd.h b/include/linux/initrd.h
+> index f1a1f4c92ded..6320a9cb6686 100644
+> --- a/include/linux/initrd.h
+> +++ b/include/linux/initrd.h
+> @@ -5,9 +5,6 @@
+> 
+>   #define INITRD_MINOR 250 /* shouldn't collide with /dev/ram* too soon ... */
+> 
+> -/* starting block # of image */
+> -extern int rd_image_start;
+> -
+>   /* size of a single RAM disk */
+>   extern unsigned long rd_size;
+> 
+> diff --git a/init/do_mounts_rd.c b/init/do_mounts_rd.c
+> index f7d53bc21e41..8e0a774a9c6f 100644
+> --- a/init/do_mounts_rd.c
+> +++ b/init/do_mounts_rd.c
+> @@ -17,11 +17,9 @@
+>   static struct file *in_file, *out_file;
+>   static loff_t in_pos, out_pos;
+> 
+> -int __initdata rd_image_start;         /* starting block # of image */
+
+Why do you need to change this really ? In any case this entire file 
+goes away in a later patch so you shouldn't bother to update that.
+
+> -
+>   static int __init ramdisk_start_setup(char *str)
+>   {
+> -       rd_image_start = simple_strtol(str,NULL,0);
+> +       /* will be removed in next commit */
+
+Useless comment, don't add such burden.
+
+>          return 1;
+>   }
+>   __setup("ramdisk_start=", ramdisk_start_setup);
+> @@ -60,7 +58,7 @@ identify_ramdisk_image(struct file *file, loff_t pos,
+>          unsigned char *buf;
+>          const char *compress_name;
+>          unsigned long n;
+> -       int start_block = rd_image_start;
+> +       int start_block = 0;
+
+Don't change, it is removed later.
+
+> 
+>          buf = kmalloc(size, GFP_KERNEL);
+>          if (!buf)
+> @@ -196,7 +194,7 @@ int __init rd_load_image(char *from)
+>          if (IS_ERR(in_file))
+>                  goto noclose_input;
+> 
+> -       in_pos = rd_image_start * BLOCK_SIZE;
+> +       in_pos = 0;
+
+Same
+
+>          nblocks = identify_ramdisk_image(in_file, in_pos, &decompressor);
+>          if (nblocks < 0)
+>                  goto done;
+> --
+> 2.47.2
+> 
+> 
+
 
