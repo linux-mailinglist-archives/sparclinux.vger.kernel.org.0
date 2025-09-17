@@ -1,131 +1,105 @@
-Return-Path: <sparclinux+bounces-5134-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-5136-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07449B7FD79
-	for <lists+sparclinux@lfdr.de>; Wed, 17 Sep 2025 16:15:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516E0B7FEDF
+	for <lists+sparclinux@lfdr.de>; Wed, 17 Sep 2025 16:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9CF162509D
-	for <lists+sparclinux@lfdr.de>; Wed, 17 Sep 2025 14:09:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 363A1542DB8
+	for <lists+sparclinux@lfdr.de>; Wed, 17 Sep 2025 14:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15DC3195EE;
-	Wed, 17 Sep 2025 14:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930AD278E67;
+	Wed, 17 Sep 2025 14:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WyIEv5kN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1Ov3WBkd"
+	dkim=pass (2048-bit key) header.d=libero.it header.i=@libero.it header.b="J220iQT7"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from libero.it (smtp-31-wd.italiaonline.it [213.209.13.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3142F6166;
-	Wed, 17 Sep 2025 14:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F982D8383
+	for <sparclinux@vger.kernel.org>; Wed, 17 Sep 2025 14:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.209.13.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758117746; cv=none; b=egr/h6HdGQbbSZdvBzJVmrdcUnVjlcRgvfozJKu+NHoHCJ4O1wMM/Bd6Kw1X2y7AZjLvgjJ/ZhQf0odt6Uh5NVqvphYD7muWuniFdK+HmTp4AmV6x2SP+baMM1Qz7dhcgdXGqhOXlMpMEAp/5rut32Mcw5d7E82g5ihc8Jk5PBw=
+	t=1758117886; cv=none; b=ueWy1EwJiyfDO3G9josBQcYt20OxAWYSDwsNugGU1eq/1q9ErCCOYFS3Iu3j3++yfOTNkVUbGLMyatH2l8Xzcw2e3fmnmRL8uG9K22GC/t7UuJN1LvryZs6KdNEvpW+sqb5f0rbd+NO1wxDFr49Gp05jOFcn11jFaUEILFxMwLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758117746; c=relaxed/simple;
-	bh=z6rw8gc2i+vXaJlg660yiQKhkDkj7a8Qr+J2EFiBq9A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tADFljqh7Qcf17mptWbebcx+XHuHdv0/5uyMIiEEpXqVIUTh6y0xe+bf7DaYlsN4JNbB7wKL5ZuqPs4rLV8dcvVH5IzmEQQ+jpPv+Oc0uVAOX5N6tA9eobxzM5EUrEBFsbG7ZpMOFzvGAU6JK6Zo1k/mVAc7jZmxKcsy2TsD1o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WyIEv5kN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1Ov3WBkd; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758117734;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tXWzH3AvD69Q8lI5Y0llzQzfFSEhsuV9TmtXsx0N6Y8=;
-	b=WyIEv5kNEj9kmZtWOWeZFCCCY1bKbOwpQLdESGYzHr8aG+JimbdpiPhO+pYGXJ5hXnUmOC
-	nkDWFRp/Km9ncq1IUzarC6zSat13sCZFinKSZ6TJ4igvoAyZwcGPLFjc/X4xEPTO3btvvw
-	ndMOpmuthbyZu7XIQM7yN5qCw+OiSniKzriW2W3IWdIhqreAChd7jTIp3RkgAMQEdnfo13
-	Usp5z0uaapjAvRcSpMy6GjR0JEgkmOnr1+EedQA31VYdmhXb4xyImRuvHYPXAnOTtmZv3/
-	OfordU9WHIWzFvZehPLEXkZGw/8cjzTTQnZtmNk7vyesWkqywAm3i6Q42mHY5g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758117734;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tXWzH3AvD69Q8lI5Y0llzQzfFSEhsuV9TmtXsx0N6Y8=;
-	b=1Ov3WBkd4ndEaUkbAYesP5lZZeKZBCW6v/dv4t+5HpDa4vpaLTKURbGvN8xeVceJNb0Lkn
-	HSsYPzwckq71LeCA==
-Date: Wed, 17 Sep 2025 16:00:38 +0200
-Subject: [PATCH v3 36/36] clocksource: drop include of asm/clocksource.h
- from linux/clocksource.h
+	s=arc-20240116; t=1758117886; c=relaxed/simple;
+	bh=+kuhSKsjPxQ8nOrSZdx0XxDy6WRC00FTF7AC4OCtulc=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=MC4J3QY1XgP4zFqDtcigEpQRpB/bQdquS+o6CF+Pt7/3pQx00QPSW2970uqEpRlgdWdVjI60CVeOj0QaCQRXcjnKXTtOWnnobfFJzAbtrlBuxumDKyzOjRyYO87IdW67JAnf6S7s0Ou4V+sqkMGn57pdE8clBwTn4qzfvNVsvA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=libero.it; spf=pass smtp.mailfrom=libero.it; dkim=pass (2048-bit key) header.d=libero.it header.i=@libero.it header.b=J220iQT7; arc=none smtp.client-ip=213.209.13.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=libero.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=libero.it
+Received: from [192.168.1.36] ([151.65.2.228])
+	by smtp-31.iol.local with ESMTPA
+	id ysm1ua0TX90dBysm2udAKv; Wed, 17 Sep 2025 16:04:42 +0200
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+	t=1758117882; bh=H/egCDy360dY4Nlu1TnTBbuSMVnjJdqH+I3/V00HJIc=;
+	h=From;
+	b=J220iQT7rGgBmcLePcWU90Pap8zkc+uAzimNkoFHx2oltt9d/GKMLdHu6GyJrnuXw
+	 vN7cVsC1iSAJ0Np/+IvGQZJ7eEfBqvaWKKidrTfGBa9qoB6Sx3WMBfXweuHhBgw0p8
+	 aZAdUCJ1GLVuWtP8yzLA728IgwO5QYxh6hsspUnj15bs5/D1kkEv6D2FbCCxrVNkxZ
+	 zeUI5fFxRlDKD+h6geDMwSRdOs7mOugqxZGwad7Wl8naI0oHOITA3vrj4OrDYamYlX
+	 aV10zJT1gsa2XbR3mMgaMsWe7WkRJh1QV/Q0fwwLMzB5Ry/EC+ysWt+zSp+V+dizA5
+	 gvayZr7yV0DwQ==
+X-CNFS-Analysis: v=2.4 cv=bNoWIO+Z c=1 sm=1 tr=0 ts=68cabffa cx=a_exe
+ a=fUUb/luldTa8vXwyIFcL2Q==:117 a=fUUb/luldTa8vXwyIFcL2Q==:17
+ a=IkcTkHD0fZMA:10 a=PlO26epGgpw1fcW0wy0A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
+Subject: Re: New test kernel - second attempt
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "<debian-sparc@lists.debian.org>" <debian-sparc@lists.debian.org>
+Cc: sparclinux <sparclinux@vger.kernel.org>
+References: <9b8530550078b5e89b19e987981d25fee8e18500.camel@physik.fu-berlin.de>
+ <7515a193-5ae2-69d6-9c6e-c3b6c7459f50@libero.it>
+ <73e81a8280b345ee09df0dfa9f0e21148144722f.camel@physik.fu-berlin.de>
+ <74380961-4a1b-95a7-96f5-448737356082@libero.it>
+ <4207162c8254a2b8f423db485f974ca00ae355a3.camel@physik.fu-berlin.de>
+ <a00eb0eb-5276-0f0b-f983-f14d20c62978@libero.it>
+ <701179a7ec724e3d921bcc8e31315f2fea45b4b7.camel@physik.fu-berlin.de>
+From: Riccardo Mottola <riccardo.mottola@libero.it>
+Message-ID: <2f0fbc24-e73f-5b47-8b7e-ee48e720f899@libero.it>
+Date: Wed, 17 Sep 2025 16:08:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101
+ Firefox/128.0 SeaMonkey/2.53.21
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <701179a7ec724e3d921bcc8e31315f2fea45b4b7.camel@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250917-vdso-sparc64-generic-2-v3-36-3679b1bc8ee8@linutronix.de>
-References: <20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de>
-In-Reply-To: <20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de>
-To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Arnd Bergmann <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>, 
- John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
- Shuah Khan <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
- "Jason A. Donenfeld" <Jason@zx2c4.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>, 
- Shannon Nelson <sln@onemain.com>
-Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
- linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758117712; l=681;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=z6rw8gc2i+vXaJlg660yiQKhkDkj7a8Qr+J2EFiBq9A=;
- b=RhaONrS37dhEX8d1wSADLLwBV5kdoZ8JXoywKJrRNnTRBnqPjh/4TWSHyfP00DxiPUP9Nzz7Y
- EkydccSCII3B3rLLld2L+tAc2+T/EDPK/KlwsHTX3SAToBbrIuL3HqZ
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-CMAE-Envelope: MS4xfJh8q7tetz7Qmp8h8dglTSEBLMgfV4G1OuYjXfdO5Ozrp7Wc7mdGnJHnoOUwkglDB5lVQK8aAdGBBWeYZtRB1XqGVAbHa99S9Jqm8L++SCeaxfu/HSmU
+ wpW5NC/1h9uhfC8NoISpcp2rSi5k8/QLYrUzQSk0PD44hOIZswr/mqd50LczmL2MWIw0a8o0DPC8cewwT9lC1h6gnzKjfmuyaKsa76mNS4gDRcPZYxHL5WfN
+ +cbmwNvvONFy8kgVbWZR1Y3kBHfVYxjpvgrPMR907/+iPfikj36MCHyg6y2QQH/z
 
-The same inclusion is already satisfied by vdso/clocksource.h.
+John Paul Adrian Glaubitz wrote:
+> Looks like your machine has problems with power management.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
- include/linux/clocksource.h | 4 ----
- 1 file changed, 4 deletions(-)
+some feature previously not harnessed by older kernels?
 
-diff --git a/include/linux/clocksource.h b/include/linux/clocksource.h
-index 12d853b1883265cb47d93e33d8370e3957e7e695..afa03e9fb6f6c978099b33c07ec853b7a82fde84 100644
---- a/include/linux/clocksource.h
-+++ b/include/linux/clocksource.h
-@@ -25,10 +25,6 @@ struct clocksource_base;
- struct clocksource;
- struct module;
- 
--#if defined(CONFIG_GENERIC_GETTIMEOFDAY)
--#include <asm/clocksource.h>
--#endif
--
- #include <vdso/clocksource.h>
- 
- /**
+>
+> Could be issues with the hardware. I would give Solaris 11.3 a try to verify
+> that the hardware is actually working properly.
 
--- 
-2.51.0
+That one is unfortunately long gone. It did work years ago before I 
+"linuxized" it.
 
+Thanks to ALOM, I can check for faults and see:
+sc> showfaults
+Last POST run: SAT JAN 01 02:15:39 2000
+POST status: Passed all devices
+
+   ID FRU               Fault
+    0 SC/BAT            BATTERY at SC/BAT/V_BAT has exceeded low warning 
+threshold.
+
+that should be minor, just my NVRAM battery going low? IIRC it is 
+user-replacemable on the T2000... put that on my TODO.
+
+Riccardo
 
