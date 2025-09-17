@@ -1,131 +1,137 @@
-Return-Path: <sparclinux+bounces-5137-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-5139-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D3EB7FEBE
-	for <lists+sparclinux@lfdr.de>; Wed, 17 Sep 2025 16:22:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DD1B8042D
+	for <lists+sparclinux@lfdr.de>; Wed, 17 Sep 2025 16:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F147626BD8
-	for <lists+sparclinux@lfdr.de>; Wed, 17 Sep 2025 14:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43EDB1891994
+	for <lists+sparclinux@lfdr.de>; Wed, 17 Sep 2025 14:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6281B2ECE9E;
-	Wed, 17 Sep 2025 14:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="Z6eLgUMM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AAA306D36;
+	Wed, 17 Sep 2025 14:50:38 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015562ECE8B
-	for <sparclinux@vger.kernel.org>; Wed, 17 Sep 2025 14:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143BB26159E;
+	Wed, 17 Sep 2025 14:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758118239; cv=none; b=SPx1eWlrZogyO9rl0XOijx6PS6Os0ViotNycg0schmYOn6qV7/7XOoGQdx46vCeRism1ycZ17HEPNkBz9RA+pOsmnRV1BPQfBOmw43UYP12y4GLQzqeHaWwod3bkLKwdDxBjP2ZCDvsmFNq3/AWAr9X2ev60BVc4I3fF5MG9kT0=
+	t=1758120638; cv=none; b=lhKnfr5p4TvBtQxB0vEj9EEa46VkP375qVEKKJOImw3xnsIWQdDWlKRQfix9JDArVF8nPA0vlDmf5E6IrHPT+G0DNsjl8Kxpc7paX9AIi6cl0Nspr9Vamg6zIsMIXRZUA5xAcyr7Ikr6RKdZxu+Vg/s/SxdbzmdMjVPVc08La30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758118239; c=relaxed/simple;
-	bh=Tfltw911eP3bfpUuhqI8yH1l/Q3ntgW2Uv7+ONu/GnQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=evgzmSE+gYIRt0HFGgHbuAOdgfs59OdXl1CC4lPktbzVMvwlaqMGAF3pURTEKG8yAV8wMGAbyJwx0O8GWp18B3iVzANhILI9lJO7HRIFCNczZ8lEES4E8DjyvFsAZ5Qih+AY6k+OMmg2yYkDy1DIoIzbbfF2/ENIquugIKkx/q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=Z6eLgUMM; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=uOXFxbmsl5lJKduOIknfIH8y61+ERlyJH7qGKafsGAY=; t=1758118236;
-	x=1758723036; b=Z6eLgUMMANPgp2lrNmaCR14doebVQIAVqk37EmZ6eZfBbBGPtQ1YuDZib8ib/
-	psXZ5wZ+eaZX/C7Tv4BIuxKc1IQnHzU3/GOygVCjhuKLsr0OqQnSh6MRZwDIjWpmb/p8z+2WwcbTo
-	fempbn7vJ/kz2Wgexd7wCXouL/YEWhzO2y3hd91TNjM1ydYN9TZxexcw8GCC2MqxqF2kNxahji2ML
-	IrKEsw15r8iXrUhQjqGPTsybQZTlW8IZGdnOxqFxqQDV17UeO1ihO7xI0L+ZVSc/ZEXMUvJTOFw/8
-	rfn0fQPTG/V4sQqBVioCB1uPdbE8tKGjQfzZ4PT2YKZKBSCePA==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1uysrh-00000004AkI-3wdV; Wed, 17 Sep 2025 16:10:33 +0200
-Received: from p5b13aa34.dip0.t-ipconnect.de ([91.19.170.52] helo=[192.168.178.61])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1uysrh-00000003JvK-39g4; Wed, 17 Sep 2025 16:10:33 +0200
-Message-ID: <f666c3ad29b117bfdafebe23d42410ac2f1b228e.camel@physik.fu-berlin.de>
-Subject: Re: New test kernel - second attempt
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Riccardo Mottola <riccardo.mottola@libero.it>, 
- "<debian-sparc@lists.debian.org>"
-	 <debian-sparc@lists.debian.org>
-Cc: sparclinux <sparclinux@vger.kernel.org>
-Date: Wed, 17 Sep 2025 16:10:33 +0200
-In-Reply-To: <2f0fbc24-e73f-5b47-8b7e-ee48e720f899@libero.it>
-References: 
-	<9b8530550078b5e89b19e987981d25fee8e18500.camel@physik.fu-berlin.de>
-	 <7515a193-5ae2-69d6-9c6e-c3b6c7459f50@libero.it>
-	 <73e81a8280b345ee09df0dfa9f0e21148144722f.camel@physik.fu-berlin.de>
-	 <74380961-4a1b-95a7-96f5-448737356082@libero.it>
-	 <4207162c8254a2b8f423db485f974ca00ae355a3.camel@physik.fu-berlin.de>
-	 <a00eb0eb-5276-0f0b-f983-f14d20c62978@libero.it>
-	 <701179a7ec724e3d921bcc8e31315f2fea45b4b7.camel@physik.fu-berlin.de>
-	 <2f0fbc24-e73f-5b47-8b7e-ee48e720f899@libero.it>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	s=arc-20240116; t=1758120638; c=relaxed/simple;
+	bh=4Wc+7RlDyYQxsFMt1VpemfvZM7UmiTSNVLu2rV9GnqQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n+4dTZOOr3e2BinJ9Uzovtkju+2Wd/GXLQ6mex4XLWOXJnOUw3atW11Kvgvt9H2NnSL3/pnVw6JjxUfLJNC5+l3pa5l82EZzvvsg+uWyD/50tnmkpelgWvP5fso2leYjvIRqt/IjwG39k8uTGNlCw9PhFYwwgN+WYaBcAaMWhmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cRhL8185Cz9sxm;
+	Wed, 17 Sep 2025 16:41:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id JixBRAxvbto3; Wed, 17 Sep 2025 16:41:52 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cRhL76yxbz9sxl;
+	Wed, 17 Sep 2025 16:41:51 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D0FA18B76C;
+	Wed, 17 Sep 2025 16:41:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id VStNY412crOA; Wed, 17 Sep 2025 16:41:51 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 452048B767;
+	Wed, 17 Sep 2025 16:41:50 +0200 (CEST)
+Message-ID: <41d100c5-4706-400e-a61a-46b068f1bc74@csgroup.eu>
+Date: Wed, 17 Sep 2025 16:41:49 +0200
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/36] powerpc/vdso: Explicitly include asm/cputable.h
+ and asm/feature-fixups.h
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Arnd Bergmann
+ <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>,
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Shuah Khan <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, Russell King
+ <linux@armlinux.org.uk>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
+ Shannon Nelson <sln@onemain.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-s390@vger.kernel.org
+References: <20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de>
+ <20250917-vdso-sparc64-generic-2-v3-7-3679b1bc8ee8@linutronix.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250917-vdso-sparc64-generic-2-v3-7-3679b1bc8ee8@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2025-09-17 at 16:08 +0200, Riccardo Mottola wrote:
-> John Paul Adrian Glaubitz wrote:
-> > Looks like your machine has problems with power management.
->=20
-> some feature previously not harnessed by older kernels?
 
-Not necessarily a new feature, but simply how the hardware is being used
-by the kernel. Could be hardware initialized in a different order etc.
 
-> > Could be issues with the hardware. I would give Solaris 11.3 a try to v=
-erify
-> > that the hardware is actually working properly.
->=20
-> That one is unfortunately long gone. It did work years ago before I=20
-> "linuxized" it.
->=20
-> Thanks to ALOM, I can check for faults and see:
-> sc> showfaults
-> Last POST run: SAT JAN 01 02:15:39 2000
-> POST status: Passed all devices
->=20
->  =C2=A0 ID FRU=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 Fault
->  =C2=A0=C2=A0 0 SC/BAT=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 BATTERY at SC/BAT/V_BAT has exceeded low warning=20
-> threshold.
->=20
-> that should be minor, just my NVRAM battery going low? IIRC it is=20
-> user-replacemable on the T2000... put that on my TODO.
+Le 17/09/2025 à 16:00, Thomas Weißschuh a écrit :
+> The usage of ASM_FTR_IFCLR(CPU_TR_ARCH_31) requires asm/cputable.h and
+> asm/feature-fixups.h. Currently these headers are included transitively,
+> but that transitive inclusion is about to go away.
 
-We have had someone on the list who ran into weird crashes because of a cor=
-rupted
-NVRAM. He only found out after test-installing Solaris on the machine confi=
-rming
-that the issues weren't Linux-specific. Hence the advise to test Solaris 11=
-.3.
+Hum ...
 
-Adrian
+That was unexpectedly added by commit 9c7bfc2dc21e ("powerpc/64s: Make 
+POWER10 and later use pause_short in cpu_relax loops")
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+In theory, vdso/ headers shouldn't include any headers outside of vdso/
+
+
+> 
+> Explicitly include the headers.
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> ---
+>   arch/powerpc/include/asm/vdso/processor.h | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/vdso/processor.h b/arch/powerpc/include/asm/vdso/processor.h
+> index 80d13207c5688d73954822aede2bbe2d0e05c054..42b64903bdf47cc5bd571fc3b5caed45e6358cb9 100644
+> --- a/arch/powerpc/include/asm/vdso/processor.h
+> +++ b/arch/powerpc/include/asm/vdso/processor.h
+> @@ -4,6 +4,9 @@
+>   
+>   #ifndef __ASSEMBLY__
+
+__ASSEMBLY__ is replaced by __ASSEMBLER__ in powerpc-next in commit 
+74db6cc331b0 ("powerpc: Replace __ASSEMBLY__ with __ASSEMBLER__ in 
+non-uapi headers")
+
+>   
+> +#include <asm/cputable.h>
+> +#include <asm/feature-fixups.h>
+> +
+>   /* Macros for adjusting thread priority (hardware multi-threading) */
+>   #ifdef CONFIG_PPC64
+>   #define HMT_very_low()		asm volatile("or 31, 31, 31	# very low priority")
+> 
+
 
