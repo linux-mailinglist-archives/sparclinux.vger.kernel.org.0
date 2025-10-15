@@ -1,153 +1,277 @@
-Return-Path: <sparclinux+bounces-5365-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-5367-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738E9BD99B8
-	for <lists+sparclinux@lfdr.de>; Tue, 14 Oct 2025 15:14:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38DAFBDD62F
+	for <lists+sparclinux@lfdr.de>; Wed, 15 Oct 2025 10:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4386C19A5519
-	for <lists+sparclinux@lfdr.de>; Tue, 14 Oct 2025 13:10:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F52A19A3DD7
+	for <lists+sparclinux@lfdr.de>; Wed, 15 Oct 2025 08:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F5A316180;
-	Tue, 14 Oct 2025 13:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zwMEM9rR";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="W4M1n9ep"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9BF2EC574;
+	Wed, 15 Oct 2025 08:27:52 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0687A314D32;
-	Tue, 14 Oct 2025 13:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6432D3725;
+	Wed, 15 Oct 2025 08:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760447158; cv=none; b=MlTSqAJtl27cdACnbFL4KoeBevovZYDWV1WYM3vEcE1yFfpW0fbvK6aizjB9ynGMTkmV+/qgqghw61wu0nuKRrKBonDuA/wRImTtOR0shMWf6xDLSPrL5ehSZzv+sEQVQs/4CFu8LahJobhDwGouoep1iaXmY3x6f7Lt9qcpd+c=
+	t=1760516872; cv=none; b=YBI9+lmU5e2X1pk+id9haupTGt1AiJX8wewUHpp71euAwsZKQn+UaNOfbH2Ybzp4Bz6Wc5MjoEHZ5SBy5ZA043tBt3PFFK79c6T1fwr2ySBZaExAB/O4u2FyYhDlZTr72cE2U/XLGb4L6GXdiYVksJHJKn1iBrqsXEgzTfQzYg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760447158; c=relaxed/simple;
-	bh=3tMmqGYPXW1+sizcvYuquIc8pIXvr2WxMOGAl2JNK7w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TxjRxlELFT5sWvqZNXY1/nprE25oR3fC5SLUVlAQ85lNeVMy89EPp9i9OaLgqkX9vO6VkOIUdk2YxTY25LdILoneYKOE5fzRhbERMKoZQ9FTkJK350uzYpnURuozFAC9KW3m162m8mSP2bqgfMc05dIuJksAJMHhfxlsi8yNDR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zwMEM9rR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=W4M1n9ep; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760447155;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P3cczBZg1hsuy3VQFI6BicmC+DtK7KqMRuLTbCsjnP4=;
-	b=zwMEM9rRsQ90GXTSdrweLrU/7N3K+yghbYemcwg2uPHlqNF4j0cCpvgXjHX+0YTJHZKeOJ
-	AV7HOIPkmXmNzu6g0EfsZnhSDogez7ExUFpFIQjBIUmkwgedkM3DGW224OvDuv52AIiZH9
-	uKRl9o2EZd7M+RCB5zTZ1f+xyZnAR5GiJLRFHzfR4cP0emlAiibCVqzSAHClyND3Pp/2iM
-	yKs65bATUduM7f//XMj8XYH2ahgPRCn5m0VbgHU6FK+5oevGvM7717IdBgoO7SM8ZQYHJC
-	HSnF8eolELUmKlBeYbD2mXYIfape+3JtKdL1CAPjIYMe4jiWJN0qV2kseLuxsg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760447155;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P3cczBZg1hsuy3VQFI6BicmC+DtK7KqMRuLTbCsjnP4=;
-	b=W4M1n9ep7+/iLbuSo+Li8obSVodl7csZ5v1BhDxO5sXkVBj5QToSOlVQNP3+geRfZJcBNk
-	80JSyHmdyZFC2oAA==
-Date: Tue, 14 Oct 2025 15:05:25 +0200
-Subject: [PATCH v2 10/10] kbuild: simplify CC_CAN_LINK
+	s=arc-20240116; t=1760516872; c=relaxed/simple;
+	bh=B4bDTQ4bRHKwoZfWbtpwWhAxXsu9jU2KIPik7MqM60Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GTNh7YFy0EU8dRg4lxWJGTARo5O9q5zU1dhAYtZJ6X4CyfsbJUtZ+Ci7WE2wwQwxT6oEPeViyoAw7PlfDD12C9CXvbJmnQhwHldO4FTEDdQKJCbIhkjTH0qqPFTcvQMMPViVqNR9MKM0cpBv6Pt1XjjWl//k4Yr44Q18CYgtFKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A32C41A32;
+	Wed, 15 Oct 2025 01:27:34 -0700 (PDT)
+Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9E0813F66E;
+	Wed, 15 Oct 2025 01:27:37 -0700 (PDT)
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Will Deacon <will@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	x86@kernel.org
+Subject: [PATCH v3 00/13] Nesting support for lazy MMU mode
+Date: Wed, 15 Oct 2025 09:27:14 +0100
+Message-ID: <20251015082727.2395128-1-kevin.brodsky@arm.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251014-kbuild-userprogs-bits-v2-10-faeec46e887a@linutronix.de>
-References: <20251014-kbuild-userprogs-bits-v2-0-faeec46e887a@linutronix.de>
-In-Reply-To: <20251014-kbuild-userprogs-bits-v2-0-faeec46e887a@linutronix.de>
-To: Nathan Chancellor <nathan@kernel.org>, 
- Nicolas Schier <nicolas.schier@linux.dev>, Nicolas Schier <nsc@kernel.org>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Masahiro Yamada <masahiroy@kernel.org>, linux-riscv@lists.infradead.org, 
- linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760447149; l=1868;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=3tMmqGYPXW1+sizcvYuquIc8pIXvr2WxMOGAl2JNK7w=;
- b=NFH6jl0rxMrCvmdRLauKbjBZxs9geVFFRlVKeBozgXilXJgY1Mju4UC/ys+/hGi5CHjYmw4ka
- Wd0jRrV874oD4xRqVjBpgkRZJoGweQQIsS5fVbRbcN//KQqo62xtX6e
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-All architectures supporting multiple ABIs have been migrated to
-ARCH_CC_CAN_LINK. The remaining ones do not require any special flag,
-so simplify the logic.
+When the lazy MMU mode was introduced eons ago, it wasn't made clear
+whether such a sequence was legal:
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+	arch_enter_lazy_mmu_mode()
+	...
+		arch_enter_lazy_mmu_mode()
+		...
+		arch_leave_lazy_mmu_mode()
+	...
+	arch_leave_lazy_mmu_mode()
+
+It seems fair to say that nested calls to
+arch_{enter,leave}_lazy_mmu_mode() were not expected, and most
+architectures never explicitly supported it.
+
+Ryan Roberts' series from March [1] attempted to prevent nesting from
+ever occurring, and mostly succeeded. Unfortunately, a corner case
+(DEBUG_PAGEALLOC) may still cause nesting to occur on arm64. Ryan
+proposed [2] to address that corner case at the generic level but this
+approach received pushback; [3] then attempted to solve the issue on
+arm64 only, but it was deemed too fragile.
+
+It feels generally difficult to guarantee that lazy_mmu sections don't
+nest, because callers of various standard mm functions do not know if
+the function uses lazy_mmu itself. This series therefore performs a
+U-turn and adds support for nested lazy_mmu sections, on all
+architectures.
+
+v3 is a full rewrite of the series based on the feedback from David
+Hildenbrand on v2. Nesting is now handled using a counter in task_struct
+(patch 7), like other APIs such as pagefault_{disable,enable}().
+This is fully handled in a new generic layer in <linux/pgtable.h>; the
+existing arch_* API remains unchanged. A new pair of calls,
+lazy_mmu_mode_{pause,resume}(), is also introduced to allow functions
+that are called with the lazy MMU mode enabled to temporarily pause it,
+regardless of nesting.
+
+An arch now opts in to using the lazy MMU mode by selecting
+CONFIG_ARCH_LAZY_MMU; this is more appropriate now that we have a
+generic API, especially with state conditionally added to task_struct.
+The overall approach is very close to what David proposed on v2 [4].
+
+Unlike in v1/v2, no special provision is made for architectures to
+save/restore extra state when entering/leaving the mode. Based on the
+discussions so far, this does not seem to be required - an arch can
+store any relevant state in thread_struct during arch_enter() and
+restore it in arch_leave(). Nesting is not a concern as these functions
+are only called at the top level, not in nested sections.
+
+The introduction of a generic layer, and tracking of the lazy MMU state
+in task_struct, also allows to streamline the arch callbacks - this
+series removes 72 lines from arch/.
+
+Patch overview:
+
+* Patch 1: cleanup - avoids having to deal with the powerpc
+  context-switching code
+
+* Patch 2-4: prepare arch_flush_lazy_mmu_mode() to be called from the
+  generic layer (patch 7)
+
+* Patch 5-6: new API + CONFIG_ARCH_LAZY_MMU
+
+* Patch 7: nesting support
+
+* Patch 8-13: move as much handling as possible to the generic layer
+
+This series has been tested by running the mm kselfetsts on arm64 with
+DEBUG_VM, DEBUG_PAGEALLOC and KFENCE. It was also build-tested on other
+architectures (with and without XEN_PV on x86).
+
+- Kevin
+
+[1] https://lore.kernel.org/all/20250303141542.3371656-1-ryan.roberts@arm.com/
+[2] https://lore.kernel.org/all/20250530140446.2387131-1-ryan.roberts@arm.com/
+[3] https://lore.kernel.org/all/20250606135654.178300-1-ryan.roberts@arm.com/
+[4] https://lore.kernel.org/all/ef343405-c394-4763-a79f-21381f217b6c@redhat.com/
 ---
- Makefile     | 11 +++--------
- init/Kconfig |  3 +--
- 2 files changed, 4 insertions(+), 10 deletions(-)
+Changelog
 
-diff --git a/Makefile b/Makefile
-index 26e5bca534e27034c355939bca4c90db435ecdbd..1b7da9f10b88f1a374ae34477e5621b4dd27c017 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1137,17 +1137,12 @@ endif
- # Align the architecture of userspace programs with the kernel
- USERFLAGS_FROM_KERNEL := --target=%
- 
--ifdef CONFIG_ARCH_USERPROGS_CFLAGS
--KBUILD_USERCFLAGS += $(CONFIG_ARCH_USERFLAGS)
--KBUILD_USERLDFLAGS += $(CONFIG_ARCH_USERFLAGS)
--else
--# If not overridden also inherit the bit size
--USERFLAGS_FROM_KERNEL += -m32 -m64
--endif
--
- KBUILD_USERCFLAGS  += $(filter $(USERFLAGS_FROM_KERNEL), $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
- KBUILD_USERLDFLAGS += $(filter $(USERFLAGS_FROM_KERNEL), $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
- 
-+KBUILD_USERCFLAGS += $(CONFIG_ARCH_USERFLAGS)
-+KBUILD_USERLDFLAGS += $(CONFIG_ARCH_USERFLAGS)
-+
- # userspace programs are linked via the compiler, use the correct linker
- ifdef CONFIG_CC_IS_CLANG
- KBUILD_USERLDFLAGS += --ld-path=$(LD)
-diff --git a/init/Kconfig b/init/Kconfig
-index 4a2ae3cfbf26525a60936d9b29a74ef4319ba3a5..a0127598f2f25ffb55dbb8a0691b0aa68138fc69 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -88,8 +88,7 @@ config ARCH_HAS_CC_CAN_LINK
- config CC_CAN_LINK
- 	bool
- 	default ARCH_CC_CAN_LINK if ARCH_HAS_CC_CAN_LINK
--	default $(cc_can_link_user,$(m64-flag)) if 64BIT
--	default $(cc_can_link_user,$(m32-flag))
-+	default $(cc_can_link_user)
- 
- # Fixed in GCC 14, 13.3, 12.4 and 11.5
- # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113921
+v2..v3:
 
+- Full rewrite; dropped all Acked-by/Reviewed-by.
+- Rebased on v6.18-rc1.
+
+v2: https://lore.kernel.org/all/20250908073931.4159362-1-kevin.brodsky@arm.com/
+
+v1..v2:
+- Rebased on mm-unstable.
+- Patch 2: handled new calls to enter()/leave(), clarified how the "flush"
+  pattern (leave() followed by enter()) is handled.
+- Patch 5,6: removed unnecessary local variable [Alexander Gordeev's
+  suggestion].
+- Added Mike Rapoport's Acked-by.
+
+v1: https://lore.kernel.org/all/20250904125736.3918646-1-kevin.brodsky@arm.com/
+---
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: xen-devel@lists.xenproject.org
+Cc: x86@kernel.org
+---
+Alexander Gordeev (1):
+  powerpc/64s: Do not re-activate batched TLB flush
+
+Kevin Brodsky (12):
+  x86/xen: simplify flush_lazy_mmu()
+  powerpc/mm: implement arch_flush_lazy_mmu_mode()
+  sparc/mm: implement arch_flush_lazy_mmu_mode()
+  mm: introduce CONFIG_ARCH_LAZY_MMU
+  mm: introduce generic lazy_mmu helpers
+  mm: enable lazy_mmu sections to nest
+  arm64: mm: replace TIF_LAZY_MMU with in_lazy_mmu_mode()
+  powerpc/mm: replace batch->active with in_lazy_mmu_mode()
+  sparc/mm: replace batch->active with in_lazy_mmu_mode()
+  x86/xen: use lazy_mmu_state when context-switching
+  mm: bail out of lazy_mmu_mode_* in interrupt context
+  mm: introduce arch_wants_lazy_mmu_mode()
+
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/pgtable.h              |  46 +------
+ arch/arm64/include/asm/thread_info.h          |   3 +-
+ arch/arm64/mm/mmu.c                           |   4 +-
+ arch/arm64/mm/pageattr.c                      |   4 +-
+ .../include/asm/book3s/64/tlbflush-hash.h     |  25 ++--
+ arch/powerpc/include/asm/thread_info.h        |   2 -
+ arch/powerpc/kernel/process.c                 |  25 ----
+ arch/powerpc/mm/book3s64/hash_tlb.c           |  10 +-
+ arch/powerpc/mm/book3s64/subpage_prot.c       |   4 +-
+ arch/powerpc/platforms/Kconfig.cputype        |   1 +
+ arch/sparc/Kconfig                            |   1 +
+ arch/sparc/include/asm/tlbflush_64.h          |   5 +-
+ arch/sparc/mm/tlb.c                           |  14 +--
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/boot/compressed/misc.h               |   1 +
+ arch/x86/boot/startup/sme.c                   |   1 +
+ arch/x86/include/asm/paravirt.h               |   1 -
+ arch/x86/include/asm/pgtable.h                |   3 +-
+ arch/x86/include/asm/thread_info.h            |   4 +-
+ arch/x86/xen/enlighten_pv.c                   |   3 +-
+ arch/x86/xen/mmu_pv.c                         |   9 +-
+ fs/proc/task_mmu.c                            |   4 +-
+ include/linux/mm_types_task.h                 |   5 +
+ include/linux/pgtable.h                       | 114 +++++++++++++++++-
+ include/linux/sched.h                         |  19 +++
+ mm/Kconfig                                    |   3 +
+ mm/kasan/shadow.c                             |   8 +-
+ mm/madvise.c                                  |  18 +--
+ mm/memory.c                                   |  16 +--
+ mm/migrate_device.c                           |   4 +-
+ mm/mprotect.c                                 |   4 +-
+ mm/mremap.c                                   |   4 +-
+ mm/userfaultfd.c                              |   4 +-
+ mm/vmalloc.c                                  |  12 +-
+ mm/vmscan.c                                   |  12 +-
+ 36 files changed, 226 insertions(+), 169 deletions(-)
+
+
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
 -- 
-2.51.0
+2.47.0
 
 
