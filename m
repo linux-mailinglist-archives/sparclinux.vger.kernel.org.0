@@ -1,36 +1,36 @@
-Return-Path: <sparclinux+bounces-5783-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-5785-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E71CBE8DC
-	for <lists+sparclinux@lfdr.de>; Mon, 15 Dec 2025 16:12:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F77CCBE8E5
+	for <lists+sparclinux@lfdr.de>; Mon, 15 Dec 2025 16:12:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD70030640D8
-	for <lists+sparclinux@lfdr.de>; Mon, 15 Dec 2025 15:04:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B9C930CB82C
+	for <lists+sparclinux@lfdr.de>; Mon, 15 Dec 2025 15:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE183321B9;
-	Mon, 15 Dec 2025 15:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A0D33506D;
+	Mon, 15 Dec 2025 15:04:09 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FE8332902;
-	Mon, 15 Dec 2025 15:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4504F332EDA;
+	Mon, 15 Dec 2025 15:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765811036; cv=none; b=cywF5qMUI6qotBHIZtS1l/HyDd7Yi3KREmWCvYOh1u/hd03+Epb6CxSLg/vKUNPAxkx8t7QnnSzZiowzIt2hc44/g8pmsPGSeBckVUAlEjkhHZzSQ96DRKSeq0HsCo4T3hWHXGXqLDIs+b5uDqK2e3AFlsDRrzu2HIPB9HAi6BU=
+	t=1765811049; cv=none; b=YP/I1OauHf6orvxezGUSQLfQFgbVuOBKQVTJOjEqr4T6NdYYC7OTNpKalwHcqedmyUSocngl5mUPOd3bt3mENBNr2FPl81/5aHas/mKGcWFObaWc3uDso3tVdZkxTEwOqehRrWMi4P4H6dZ6fQvKCXAJuk6lnPSB6NstClT/cT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765811036; c=relaxed/simple;
-	bh=b3ghA7FymwAlaXb+hvBmBZL3S7aJ6Kwth1qbl25PPeI=;
+	s=arc-20240116; t=1765811049; c=relaxed/simple;
+	bh=sJHaIRnx36dzxhiGdyM8d4HIhQLew91HQNz728XfFxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PjOkvpFpzxT+ZFTjTKTSFjlwLT84FdSew4Bpoa/UNkjEq9mjvFY7jYNQc1rOXWT555FCr0SjUucisXy6Pm/zNNEKcrvAsndW+INJPuwTRLrj4MLbK4Gf4Hj+tqbqU2xxlVknzHWW4AsFxDlfUmo5x6J7QyFjOwwj7/oyTxUNPYo=
+	 MIME-Version; b=ppquthszs8GItp2wyZrVv8hFHDLJAiHzazCruw0c3ccYTnhARnWryI3yePaH3vefczpzH8M12+GjfsMOK1bCeAoi159jmphYOEZfpCyzxfLiZC18XESfirQ20wpclvINooHs+4Em6GY9bKvEU9nNoeAWLkOEbeHv6eA6AEtOrsw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1DD31165C;
-	Mon, 15 Dec 2025 07:03:47 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ABDB91684;
+	Mon, 15 Dec 2025 07:03:52 -0800 (PST)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F099A3F73B;
-	Mon, 15 Dec 2025 07:03:48 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D5F43F73B;
+	Mon, 15 Dec 2025 07:03:54 -0800 (PST)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -72,9 +72,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	x86@kernel.org
-Subject: [PATCH v6 03/14] powerpc/mm: implement arch_flush_lazy_mmu_mode()
-Date: Mon, 15 Dec 2025 15:03:12 +0000
-Message-ID: <20251215150323.2218608-4-kevin.brodsky@arm.com>
+Subject: [PATCH v6 04/14] sparc/mm: implement arch_flush_lazy_mmu_mode()
+Date: Mon, 15 Dec 2025 15:03:13 +0000
+Message-ID: <20251215150323.2218608-5-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251215150323.2218608-1-kevin.brodsky@arm.com>
 References: <20251215150323.2218608-1-kevin.brodsky@arm.com>
@@ -91,59 +91,58 @@ arch_flush_lazy_mmu_mode() to be called when leaving a nested
 lazy_mmu section.
 
 Move the relevant logic from arch_leave_lazy_mmu_mode() to
-arch_flush_lazy_mmu_mode() and have the former call the latter. The
-radix_enabled() check is required in both as
-arch_flush_lazy_mmu_mode() will be called directly from the generic
-layer in a subsequent patch.
+arch_flush_lazy_mmu_mode() and have the former call the latter.
 
-Note: the additional this_cpu_ptr() and radix_enabled() calls on the
+Note: the additional this_cpu_ptr() call on the
 arch_leave_lazy_mmu_mode() path will be removed in a subsequent
 patch.
 
 Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- .../powerpc/include/asm/book3s/64/tlbflush-hash.h | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ arch/sparc/include/asm/tlbflush_64.h | 2 +-
+ arch/sparc/mm/tlb.c                  | 9 ++++++++-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-index 146287d9580f..2d45f57df169 100644
---- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-@@ -41,7 +41,7 @@ static inline void arch_enter_lazy_mmu_mode(void)
- 	batch->active = 1;
+diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
+index 8b8cdaa69272..925bb5d7a4e1 100644
+--- a/arch/sparc/include/asm/tlbflush_64.h
++++ b/arch/sparc/include/asm/tlbflush_64.h
+@@ -43,8 +43,8 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+ 
+ void flush_tlb_pending(void);
+ void arch_enter_lazy_mmu_mode(void);
++void arch_flush_lazy_mmu_mode(void);
+ void arch_leave_lazy_mmu_mode(void);
+-#define arch_flush_lazy_mmu_mode()      do {} while (0)
+ 
+ /* Local cpu only.  */
+ void __flush_tlb_all(void);
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index a35ddcca5e76..7b5dfcdb1243 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -59,12 +59,19 @@ void arch_enter_lazy_mmu_mode(void)
+ 	tb->active = 1;
  }
  
--static inline void arch_leave_lazy_mmu_mode(void)
-+static inline void arch_flush_lazy_mmu_mode(void)
+-void arch_leave_lazy_mmu_mode(void)
++void arch_flush_lazy_mmu_mode(void)
  {
- 	struct ppc64_tlb_batch *batch;
+ 	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
  
-@@ -51,12 +51,21 @@ static inline void arch_leave_lazy_mmu_mode(void)
- 
- 	if (batch->index)
- 		__flush_tlb_pending(batch);
+ 	if (tb->tlb_nr)
+ 		flush_tlb_pending();
 +}
 +
-+static inline void arch_leave_lazy_mmu_mode(void)
++void arch_leave_lazy_mmu_mode(void)
 +{
-+	struct ppc64_tlb_batch *batch;
-+
-+	if (radix_enabled())
-+		return;
-+	batch = this_cpu_ptr(&ppc64_tlb_batch);
++	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
 +
 +	arch_flush_lazy_mmu_mode();
- 	batch->active = 0;
+ 	tb->active = 0;
  	preempt_enable();
  }
- 
--#define arch_flush_lazy_mmu_mode()      do {} while (0)
--
- extern void hash__tlbiel_all(unsigned int action);
- 
- extern void flush_hash_page(unsigned long vpn, real_pte_t pte, int psize,
 -- 
 2.51.2
 
