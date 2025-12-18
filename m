@@ -1,100 +1,140 @@
-Return-Path: <sparclinux+bounces-5817-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-5819-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0FCCCBBD4
-	for <lists+sparclinux@lfdr.de>; Thu, 18 Dec 2025 13:11:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66352CCBC9A
+	for <lists+sparclinux@lfdr.de>; Thu, 18 Dec 2025 13:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CE9523020384
-	for <lists+sparclinux@lfdr.de>; Thu, 18 Dec 2025 12:11:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AB421301D0AA
+	for <lists+sparclinux@lfdr.de>; Thu, 18 Dec 2025 12:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F47832D7C8;
-	Thu, 18 Dec 2025 12:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4008E26F28F;
+	Thu, 18 Dec 2025 12:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tifMOqAT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V0faqMlq"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A27328248;
-	Thu, 18 Dec 2025 12:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A643B32142A
+	for <sparclinux@vger.kernel.org>; Thu, 18 Dec 2025 12:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766059909; cv=none; b=UAWgoNGn/pLVoJ8taFn7U13qwhHSBmESzo8/NDRFA2FhlMnjfe25hD/IO1ptRWKI69yH9NaqaAQ1H2uirRCeCmcYgRhVfyuk4+4BQsVHF9Vt+NaRGg3phcbFHARet6vaYNRx0JTyWLE0N4CthMf5P3eN0oJcaYztrVpHiyw3I8U=
+	t=1766060981; cv=none; b=Y5DgjK+IeLZcAF1MxtHkKz7l6M1HxWF2kNNeKbOLKtR3AuX0qCIZIE/cNxIvtw3I3jk0rzuDxMLSyNT+slfNYYuAvLdgd6bMme30OQ3r9+Bl7GS79PAY/ShgF8mTCzK1u3IdtwZLRevsa8Rtue5A9c+RnmavWDY6TEBWUfsd3hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766059909; c=relaxed/simple;
-	bh=ipI3gqtuXeH8Ewu4AyGr2xi/tSRvuGR+xxhOF1hRRs4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P80WKRzjB5p9ARu9EYTAlVpnpIOu7z7Cd+7r1PcXUpN/1e87QmhxsZNPRg0s4gp3K1fGC22Ts1kYWyK0MKJ5W6jz33SGgt6wuS4+ZwheVW19oikn/R4uZ4aC0kTSjuqWZPnMwlNS32Z4z3BFCd2r3IidI3TYjYbYDnHPHt0gl48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tifMOqAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515F6C4CEFB;
-	Thu, 18 Dec 2025 12:11:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766059908;
-	bh=ipI3gqtuXeH8Ewu4AyGr2xi/tSRvuGR+xxhOF1hRRs4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tifMOqAT2f2HQ4jFq5UqKvTU0mF0DIM0ZYg4EcGmCcHD3ApJwCUlaEkx6WrErE83W
-	 zfVw+lvsLSuw3BAAGLDj/rfEui+S/6bV25HghWqJhKBGp4e+fYUCabjUaNgq25cdrD
-	 fZiEnD2vP+zR4cz6ocWYmBpyirf1rop1A/XYuEpMGleN/Q5WWurzifZBJmaMOrXpih
-	 Y5WOnDjFSyI488CRoaOk3uHWiKTuCN0UxLHysQSEoypsYPCJPwmYgE4blkiDEBHUgH
-	 5Sd1mLAEAEZXZVQrVYb8pkkWpGDP9UkfhtdfShTLC1WXDD/0oDNb1BM3X/fU2Pl5rT
-	 P+LSgV6IuayVQ==
-Date: Thu, 18 Dec 2025 14:11:37 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Tao pilgrim <pilgrimtao@gmail.com>
-Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, kevin.brodsky@arm.com, dave.hansen@linux.intel.com,
-	ziy@nvidia.com, chengkaitao@kylinos.cn, willy@infradead.org,
-	zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] sparc: Use vmemmap_populate_hugepages for
- vmemmap_populate
-Message-ID: <aUPvecgVj8XXBcw5@kernel.org>
-References: <20251217120858.18713-1-pilgrimtao@gmail.com>
- <aUPiFbuaglcjqiB1@kernel.org>
- <CAAWJmAaxtKY50BEm3N8V1QTwpyCgQLfLFarrVfPVVpXg9ftmcw@mail.gmail.com>
+	s=arc-20240116; t=1766060981; c=relaxed/simple;
+	bh=ffPTyuiEVHWwTCiNfJpfvcZQat/klsCzHR7/EM+Qf10=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GIZFHbzpenFFLAqklHZgzstuVr8zDpXg5V3/2GWloXlfU3T6yDfLF0r/DpATTS1WZYJg5LwmL5CV3YfdXG3+lnLkabOsnAn01bwvTD74FijMteS/FDYxXkaVI4JRV0qMb93t3nQgWe2oMUmLuF/ftdJg1ul9Lq1hXjJHngPZ6aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V0faqMlq; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0bb2f093aso5995935ad.3
+        for <sparclinux@vger.kernel.org>; Thu, 18 Dec 2025 04:29:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766060979; x=1766665779; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ffPTyuiEVHWwTCiNfJpfvcZQat/klsCzHR7/EM+Qf10=;
+        b=V0faqMlqLPPqIDrihHodxm064xbKtegyNJtiRgMAXZiuOVXmBpeYrXTmb9BvPCjerg
+         Taw59kv2VOTpN6UiZs+cJw2zdl6B01gEh8afLVbDJ85CktQEvYiDEtkNrQ9IYLDv2BFo
+         /7H6b24pELOPVll7XcIxH9k+EqsbzwjBFKht5IgGQoIQ46I5Rx48y1gH2m9GIXfqzWIX
+         04AWLPr18TwPHKKwasAdTYsGvqu+gNx/CM67i58yFMxxEeQ2l9/swRZIphbkFX4rAaMH
+         k4fbMZwr2Kaci5rm8lM6lvEahG4SE9F81CzTkCuBgINwLwlvub0pxrCz/Ir1x1LBZSbU
+         FaEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766060979; x=1766665779;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ffPTyuiEVHWwTCiNfJpfvcZQat/klsCzHR7/EM+Qf10=;
+        b=Ydy9YB5LGVyr4K7G3ExDNgTTJrpnFmKyUEf7UXWDZjSYTnvlXjSPvPcCwpKvlQqFBc
+         4IoyHwlJtC2nHNF6olCLsUi7fKIOfZgjZUASz92W4thHTW0UN90GThKD7EKIdP4NLWZ1
+         nDszRe4oHqJHwLCbyleN5CwkCYCeeqdbWX6rboKViBybDJHsGHrsh0w/LjN9sqtinLVZ
+         VoO/PtefysvyxOyktT99PLK8P4yUu3iglGDqhMYGe7FA3N6hAYNvdFW9N8xRoDhiZKnG
+         HHZTam3dA3QHgl4QB6zmloUmKr/eMrqDngw2bgu5IqbNsmXAPDH91gdBS6ZOe5kJzhzj
+         h7xg==
+X-Forwarded-Encrypted: i=1; AJvYcCUzzP5VuU1DtobbQT5SqsfIjmc+7UxM1lTQ4+QZGD30iCGhsOIiMb0P4LcC0+pYZPV4rsgJozp5NGGX@vger.kernel.org
+X-Gm-Message-State: AOJu0YwC5AYkw1DMh7cgicX7GqZGHz6lfY31BBd5XT5Pb84JDF/GeOlD
+	Q+TBGycRK448nqz8iWKEZ1p3PUVD/sQTWah0csSy4jF3X+ziubced8YLnCiTzLRfz6/B7ly5Yt0
+	ckuLmQL/g7KEcW8Cvockazhrg+dy/Eig=
+X-Gm-Gg: AY/fxX62hMgOeEuYilLNnji1smSOeRHtnUWgxoLbfZp71xaIe0saslur1ME6pyphhJy
+	hB+WLJMYZ1ESEZwz1k5xmWgO35asgMqPlBIiu+xOG1iI0xBDqfThCOyjhDf/3+W9DI/zQlTqZNz
+	bKa+p/IvVpjML8AYp20oGq7RIdwVL5S7wfqKLU0cYOmGry3RVsBHn4kKxiJQsYS1bB3V6UwCbye
+	d9YsLV3A7hcRxC6bzWLAYPXKEwm1mL70hGzqgxrGm35k9+B20P6z74hwiwXGf0dpr6YyN2bUAEx
+	3WZn
+X-Google-Smtp-Source: AGHT+IEttbzL3TgeISd4JSQbWLlcIpr31jHSAc4dl7Ysmfw70BtvwM2g27MIdwEy92Jtor9ZBzlV7nCoDMgSPn0w63c=
+X-Received: by 2002:a17:903:1a03:b0:2a0:afeb:fbb6 with SMTP id
+ d9443c01a7336-2a0afec014amr148642795ad.8.1766060978829; Thu, 18 Dec 2025
+ 04:29:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAWJmAaxtKY50BEm3N8V1QTwpyCgQLfLFarrVfPVVpXg9ftmcw@mail.gmail.com>
+References: <20251217120858.18713-1-pilgrimtao@gmail.com> <aUPiFbuaglcjqiB1@kernel.org>
+ <CAAWJmAaxtKY50BEm3N8V1QTwpyCgQLfLFarrVfPVVpXg9ftmcw@mail.gmail.com> <aUPvecgVj8XXBcw5@kernel.org>
+In-Reply-To: <aUPvecgVj8XXBcw5@kernel.org>
+From: Tao pilgrim <pilgrimtao@gmail.com>
+Date: Thu, 18 Dec 2025 20:29:27 +0800
+X-Gm-Features: AQt7F2qe4Pk_SuV9V8zg1gW8M29Sp6bxxmJHkeChyw-ETnoQVSTJAeHwFR1AQTE
+Message-ID: <CAAWJmAa44SF=dj+FTiXn0aZwLLGbSTAieb8Cy73RE0sGAkAYLQ@mail.gmail.com>
+Subject: Re: [PATCH] sparc: Use vmemmap_populate_hugepages for vmemmap_populate
+To: Mike Rapoport <rppt@kernel.org>
+Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org, 
+	david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com, kevin.brodsky@arm.com, 
+	dave.hansen@linux.intel.com, ziy@nvidia.com, chengkaitao@kylinos.cn, 
+	willy@infradead.org, zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 18, 2025 at 07:45:52PM +0800, Tao pilgrim wrote:
-> On Thu, Dec 18, 2025 at 7:14 PM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > On Wed, Dec 17, 2025 at 08:08:58PM +0800, chengkaitao wrote:
-> > > From: Chengkaitao <chengkaitao@kylinos.cn>
+On Thu, Dec 18, 2025 at 8:11=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> On Thu, Dec 18, 2025 at 07:45:52PM +0800, Tao pilgrim wrote:
+> > On Thu, Dec 18, 2025 at 7:14=E2=80=AFPM Mike Rapoport <rppt@kernel.org>=
+ wrote:
 > > >
-> > > 1. Added the vmemmap_false_pmd function to accommodate architectures
-> > > that do not support basepages.
-> > > 2. In the SPARC architecture, reimplemented vmemmap_populate using
-> > > vmemmap_populate_hugepages.
+> > > On Wed, Dec 17, 2025 at 08:08:58PM +0800, chengkaitao wrote:
+> > > > From: Chengkaitao <chengkaitao@kylinos.cn>
+> > > >
+> > > > 1. Added the vmemmap_false_pmd function to accommodate architecture=
+s
+> > > > that do not support basepages.
+> > > > 2. In the SPARC architecture, reimplemented vmemmap_populate using
+> > > > vmemmap_populate_hugepages.
+> > >
+> > > What problem this patch is trying to solve?
 > >
-> > What problem this patch is trying to solve?
-> 
-> Following the pattern established by other architectures, vmemmap_populate
-> is reimplemented using vmemmap_populate_hugepages in the SPARC architecture,
-> which fulfills the intended purpose of vmemmap_populate_hugepages.
+> > Following the pattern established by other architectures, vmemmap_popul=
+ate
+> > is reimplemented using vmemmap_populate_hugepages in the SPARC architec=
+ture,
+> > which fulfills the intended purpose of vmemmap_populate_hugepages.
+>
+> But what's wrong with the current sparc::vmemmap_populate()?
 
-But what's wrong with the current sparc::vmemmap_populate()?
- 
-> The functional logic remains unchanged.
-> 
-> > > Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
-> > > ---
-> 
-> -- 
-> Yours,
-> Kaitao Cheng
+The current implementation of sparc::vmemmap_populate() is correct
+and functional.
 
--- 
-Sincerely yours,
-Mike.
+However, I believe that generalizing vmemmap_populate_hugepages()
+still results in certain architectures requiring special-case handling
+branches, which is contrary to our goal of a unified implementation.
+
+Another benefit is that it allows us to eliminate the external
+declarations of vmemmap_p?d_populate functions and convert
+them to static functions.
+
+> > The functional logic remains unchanged.
+> >
+> > > > Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
+> > > > ---
+
+--=20
+Yours,
+Kaitao Cheng
 
