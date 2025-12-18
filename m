@@ -1,260 +1,154 @@
-Return-Path: <sparclinux+bounces-5816-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-5818-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2915CCBBBE
-	for <lists+sparclinux@lfdr.de>; Thu, 18 Dec 2025 13:10:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304ABCCBC03
+	for <lists+sparclinux@lfdr.de>; Thu, 18 Dec 2025 13:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4851C30274F8
-	for <lists+sparclinux@lfdr.de>; Thu, 18 Dec 2025 12:09:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 176D930C3818
+	for <lists+sparclinux@lfdr.de>; Thu, 18 Dec 2025 12:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB7732D7D5;
-	Thu, 18 Dec 2025 12:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EBC32E6A0;
+	Thu, 18 Dec 2025 12:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UBN0Ds0v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pbfm1N29"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFDA2EC0AD
-	for <sparclinux@vger.kernel.org>; Thu, 18 Dec 2025 12:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC9932E697
+	for <sparclinux@vger.kernel.org>; Thu, 18 Dec 2025 12:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766059750; cv=none; b=olBUxRT6if8ey1T/QXgFD9+UGV/mCXxt3dX8P5mpw3r7XH6K1T0OPflkBAhSPWdIum+1StO4F8CBWyKDcW24siZ0VrPVL3qfbO+Gq7hUHGbOpduy0Sofd6TtZ2sowS/Q4rTDUBJS9A+//L1CLpWa/maOIeYiGRJS78k97En44P0=
+	t=1766059919; cv=none; b=iKSNLktzYJ5HM5FYZV2d57cl4KRXwX0F/tOql9NyB2DO0wsAX/gvEeC4zYi3b6LvbDXHC+Radnm7aQw+2qmk+UbKMQnuc273hydByCZ3Wxyw10uxuEfAOUbH4DgBsD65/p32pyoKtjAJ3N1JoYhFHI1yunkigWMZaIFvc2GATJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766059750; c=relaxed/simple;
-	bh=5QbkLs3eAmHI0q4F/Bjkvs+Od+TUF25IUuSwDO2KNI0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WMBtZd2GojaXeMgFmjzClbXRIRVFCocAaRIzl9ZVwywO1+wEjXmVvOzu5vEvGb3nMIcgUXcvR+8KcO+1uVyQ0ScY1O+l2BJh4EikVua5WcWDcoviPusn1GvbFHE9X5MKnNDtc9bh9cIb7/RgP7hfjmcQu6t2+Ukg2lgeFOs9kWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UBN0Ds0v; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-bfb84c2fe5eso216379a12.1
-        for <sparclinux@vger.kernel.org>; Thu, 18 Dec 2025 04:09:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766059748; x=1766664548; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SHE1DktcfgTgvIuicioIyZLgtx7X0c5eJ01RjbYGdSI=;
-        b=UBN0Ds0v37OXHo7RzApeujOsU5+8TkTi7/Nfo2RDENxVqeuTk4a0FhFxkI2Xc10lAN
-         iZfKeY1sq2uNyo/zXeohkq7jUOcLZElIo3+Cy98x3XtYNDbj14+IuUj9CiriNDx36c0X
-         9auu4c/ww2RxvCU0KkBOd7lQKBPEUABSGLYCh0uXbc2k0SoxWUOhFD7lg17iIxhB0ECM
-         znJsxCrDXCEAg/T/97FFBWkih3vyL3/ZRn6COpls17aYeH2z1UTkLPZheOAjbKnMCA+o
-         5+HMTSvDM4K8SUmTHrCuliWUUHZKW65XiJYsDSjEKIOq3bOhMNFdtPzt5aHbXNc6FWZG
-         8Kgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766059748; x=1766664548;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SHE1DktcfgTgvIuicioIyZLgtx7X0c5eJ01RjbYGdSI=;
-        b=gVnYqLy4hY0LANCzpgJgop9bmmdm25I0Qls3Esn1j+KZzAdUbtqBUUaZujiSzSWWCJ
-         +7/cpOyywjNcZ90bFU7g+Sr6JUbnQnchT3gw7nd11nd1H5cDbSmcq/qNb/tcf4aCXB5W
-         W+QfYEeAR9UY060ceTr6UP8a8/E+ZUESbDYLdp8uhdw3evRKV0hAc+bZyn3MEydEKpnx
-         TjdK8CanXRu6aRQCYgjRLoZQtky9t/P3WewQfV6lKcEDFlEgAGYcPbP3Tcwbo05We/hp
-         MXyMqx0Zcu7/cIZHieQBYeC8Ecw6iRlsQuRjj43ooDvHOZhdVWStVBFBFD7vHwRh8P01
-         YoRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVk3FP8cc5LUOwlscIuQrSlPonBkF82d6Rq3cd3Dq2IJN4x/g6UEf4ube9hdgMvkYA0n1yulyv9koun@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2mW3FbSn/cJOwjb+D0WvTiH5dKRBkv45rT98LCbK1GzSdZkol
-	1k7im5lbjwsbha8Fd30Zb3iWpGFWGNmTgEmCDfBDzqlujgGULnvao7acD8KDuQcxLhJYLBvm0cQ
-	yFKB7/3chtSstTF4tpqkWY+noOzpXJ4M=
-X-Gm-Gg: AY/fxX559mVFgI69ZBB3PitLpHyTph0OYYTfZ4n23mDA2J/Lo0WCptec/XgT3ClPH+i
-	a/YhB1hOrrj1C2frngCBWRKpFtnbwl/anVjPM36zuzOFL+5Ovn+mwvFV5HwbTppUvnqgXcI8Dwi
-	2wS754YUxx9+dd8DolPqIMn55ieHauXEYb6cZrsIYzMxOQivFpAk+OrR7XFBotNUfSb7BLXpe/q
-	a/Xl9+EG5ImTfv5CRtlUBDxAboRLq0gnt3sDvJLUdm6ZtUvZx17ggyYBupt79KS1cg4XQ==
-X-Google-Smtp-Source: AGHT+IFTTfUO30yzA2Dx4USbhYHMj0svTb/BVY1U9NRWjNhoq9m1ZU+yXheFUq02TDUzG8NzUgZV9kxNT8DNGyPr9UQ=
-X-Received: by 2002:a17:90b:17cf:b0:34b:75f4:96d3 with SMTP id
- 98e67ed59e1d1-34e71d80c4bmr2064722a91.5.1766059747972; Thu, 18 Dec 2025
- 04:09:07 -0800 (PST)
+	s=arc-20240116; t=1766059919; c=relaxed/simple;
+	bh=XGQ+7SgEew4iClGYURs+C9L0stXJTBsZbjZ2oG7UIc0=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=YRdfYpCNxAaam9pGra/t9G2qZWf/aJ7gb64lr2loN01Q+4qobPMzOxK1IRp19ErBbXrdZGqe7FOrjrWwbOlotR6Xt1/pKLFrC3hQMlNFn2uNnUSP7TVN/9NUiOy0UwJHGi8QwcClgrZviYh6CMncJLQigmtvgV9EIR6yX1LZ8WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pbfm1N29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0079C116B1;
+	Thu, 18 Dec 2025 12:11:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766059918;
+	bh=XGQ+7SgEew4iClGYURs+C9L0stXJTBsZbjZ2oG7UIc0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=Pbfm1N29OV600qM6UTmHFrWBgKAAPaEIi8H31U8/D7Fy4/yQH7DtTr8fjL1JU2ZGr
+	 6nwz3dwH1V2m2ot6sPml3YHiTkco7la+c2nu+l+SxzciJta8kjjah21YI0wd4vAeV1
+	 isA2l1yKhqypiDWu4LQeHt4ykcmpaBp/ImSwyvJVre9a3pRs4GXVsIRHvw6x+1fCZ3
+	 aTjQTA27ccRELqk9h2L0kraeNtbMTR5EzRmpbnJomxT+NeArdctTyUhXcuNcwN7S86
+	 MwPNLvKu3CLTwt2KbzjkGo2I4spjFwLzTY0Numflrkc7wTVrfPPFNtqzCFaA++T+6a
+	 inlbyNZVWvrqA==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BD61AF40069;
+	Thu, 18 Dec 2025 07:11:56 -0500 (EST)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-04.internal (MEProxy); Thu, 18 Dec 2025 07:11:56 -0500
+X-ME-Sender: <xms:jO9DafeY02D3zYoswm455JApvwyXo9N__fUotOJi51wAZtuEx-h72w>
+    <xme:jO9DaQDfyGYFoXV11b_RfSRExwBkMCEzZBimiIe7NMQwesYYigYemrJGclZL6-nUN
+    5nH6_xmiiK7evyXwi9tI-nHYYwNuyJSE2e3okgtOjc_KJ6UT8WLB40>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegheeflecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdfnvghonhcu
+    tfhomhgrnhhovhhskhihfdcuoehlvghonheskhgvrhhnvghlrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeekgfduveffueffveduleefgfejhfevfeduueeiueetleeugeeivdfhfedv
+    geeuhfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheplhgvohhnodhmvghsmhhtphgruhhthhhp
+    vghrshhonhgrlhhithihqdduvdeftdehfeelkeegqddvjeejleejjedvkedqlhgvohhnpe
+    epkhgvrhhnvghlrdhorhhgsehlvghonhdrnhhupdhnsggprhgtphhtthhopeefiedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpth
+    htohepthhssghoghgvnhgusegrlhhphhgrrdhfrhgrnhhkvghnrdguvgdprhgtphhtthho
+    pehrohgsihhnrdhmuhhrphhhhiesrghrmhdrtghomhdprhgtphhtthhopehlihhnuhigse
+    grrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhl
+    vghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegurghvvghmsegurghvvghmlh
+    hofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhr
+    tghpthhtohepohhlvghkshgrnhgurhgpthihshhhtghhvghnkhhosegvphgrmhdrtghomh
+    dprhgtphhtthhopegrnhgurhgvrghssehgrghishhlvghrrdgtohhm
+X-ME-Proxy: <xmx:jO9DaW3ei8lQ9gcPxNPUeQZve5kN2H4YDdliFX36bDRD9uMeDsZ4KA>
+    <xmx:jO9DaUpMFxuOPj7_hGyyy_s579il17M-kR5TgcqcXniyOzdDRg_9ow>
+    <xmx:jO9DaWJBfSyOkp-S-guhU4sCQMQj21t9ZeDTKlB6MTu_eAniobrx8g>
+    <xmx:jO9DaQMmPwxjAIxGEGDyRXW1Dza8HIb57oy-5TquwYRW4FNWdPdjfg>
+    <xmx:jO9DaU3nohCadRXkzPkJY71Xjbbz3hpclv3AJ-2YED3d89Ht1quCx0PH>
+Feedback-ID: i927946fb:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 7DD622CE0072; Thu, 18 Dec 2025 07:11:56 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251217120858.18713-1-pilgrimtao@gmail.com> <d373f7b0-f822-4c31-990c-41a6cdc76db3@kernel.org>
- <CAAWJmAYJdEJyybVgD7erzZgvwufZ8gSmP_FCohmZLYozbhbb3g@mail.gmail.com> <d2aa6eb6-cf67-4b89-a9d4-306c720fad55@kernel.org>
-In-Reply-To: <d2aa6eb6-cf67-4b89-a9d4-306c720fad55@kernel.org>
-From: Tao pilgrim <pilgrimtao@gmail.com>
-Date: Thu, 18 Dec 2025 20:08:56 +0800
-X-Gm-Features: AQt7F2pkmTsUiJV8lIIJaZ0vsj6lH6G4x65cGL3iKhJH2kP5ETESDd5-2fe-D1M
-Message-ID: <CAAWJmAYfaic8Nj+_Zj0W9LToRBkA+77zqDTPf9iguf7B36L6qQ@mail.gmail.com>
-Subject: Re: [PATCH] sparc: Use vmemmap_populate_hugepages for vmemmap_populate
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, kevin.brodsky@arm.com, 
-	dave.hansen@linux.intel.com, ziy@nvidia.com, chengkaitao@kylinos.cn, 
-	willy@infradead.org, zhengqi.arch@bytedance.com, sparclinux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ThreadId: AsrGuGndWMm3
+Date: Thu, 18 Dec 2025 14:11:35 +0200
+From: "Leon Romanovsky" <leon@kernel.org>
+To: "Guenter Roeck" <linux@roeck-us.net>
+Cc: "Marek Szyprowski" <m.szyprowski@samsung.com>,
+ "Robin Murphy" <robin.murphy@arm.com>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Juergen Gross" <jgross@suse.com>,
+ "Stefano Stabellini" <sstabellini@kernel.org>,
+ "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>,
+ "Richard Henderson" <richard.henderson@linaro.org>,
+ "Matt Turner" <mattst88@gmail.com>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Helge Deller" <deller@gmx.de>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Geoff Levand" <geoff@infradead.org>,
+ "David Miller" <davem@davemloft.net>,
+ "Andreas Larsson" <andreas@gaisler.com>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ xen-devel@lists.xenproject.org, linux-alpha@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Jason Gunthorpe" <jgg@nvidia.com>
+Message-Id: <77e73a01-9f7e-475b-a810-278f931910ed@app.fastmail.com>
+In-Reply-To: <20251218084002.GD39046@unreal>
+References: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
+ <20251015-remove-map-page-v5-9-3bbfe3a25cdf@kernel.org>
+ <b184f1bf-96dc-4546-8512-9cba5ecb58f7@roeck-us.net>
+ <20251218084002.GD39046@unreal>
+Subject: Re: [PATCH v5 09/14] parisc: Convert DMA map_page to map_phys interface [qemu
+ test failure]
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Thu, Dec 18, 2025 at 7:49=E2=80=AFPM David Hildenbrand (Red Hat)
-<david@kernel.org> wrote:
->
-> On 12/18/25 12:02, Tao pilgrim wrote:
-> > On Thu, Dec 18, 2025 at 4:44=E2=80=AFPM David Hildenbrand (Red Hat)
-> > <david@kernel.org> wrote:
-> >>
-> >> On 12/17/25 13:08, chengkaitao wrote:
-> >>> From: Chengkaitao <chengkaitao@kylinos.cn>
->
-> ^ this is the author
->
-> And you reply from a completely different address with a completely
-> different name.
->
-> To whom am I talking here? The patch author?
 
-Yes, I'm the author. Due to company security policies, I have to
-use two different email addresses, which I have no choice...
 
-> [...]
+On Thu, Dec 18, 2025, at 10:40, Leon Romanovsky wrote:
+> On Wed, Dec 17, 2025 at 04:17:38AM -0800, Guenter Roeck wrote:
+>> Hi,
+>> 
+>> On Wed, Oct 15, 2025 at 12:12:55PM +0300, Leon Romanovsky wrote:
+>> > From: Leon Romanovsky <leonro@nvidia.com>
+>> > 
+>> > Perform mechanical conversion from .map_page to .map_phys callback.
+>> > 
+>> > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+>> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+>> 
+>> This patch causes all my 32-bit parisc qemu tests with C3700 machine
+>> to fail. Network interface tests fail, and all boot attempts from
+>> any kind of hard drive (scsi, usb) fail with this patch in the tree.
 >
-> >> Bunch of unrelated changes that should not go in here.
-> >
-> > This indeed contains some unrelated code changes and removal of
-> > extra whitespace. These could be split into a separate patch,
-> > but the new patch might be somewhat redundant, lol. If you'd
-> > like me to proceed this way, please reply confirming.
->
-> We usually don't do random other stuff as part of one patch. It's a
-> different story if you touch the surrounding code, but that doesn't look
-> like that here?
->
-> >
-> >>> @@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
-> >>>    EXPORT_SYMBOL(_PAGE_CACHE);
-> >>>
-> >>>    #ifdef CONFIG_SPARSEMEM_VMEMMAP
-> >>> -int __meminit vmemmap_populate(unsigned long vstart, unsigned long v=
-end,
-> >>> -                            int node, struct vmem_altmap *altmap)
-> >>> +void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
-> >>> +                            unsigned long addr, unsigned long next)
-> >>>    {
-> >>>        unsigned long pte_base;
-> >>>
-> >>> @@ -2595,39 +2595,25 @@ int __meminit vmemmap_populate(unsigned long =
-vstart, unsigned long vend,
-> >>>
-> >>>        pte_base |=3D _PAGE_PMD_HUGE;
-> >>>
-> >>> -     vstart =3D vstart & PMD_MASK;
-> >>> -     vend =3D ALIGN(vend, PMD_SIZE);
-> >>> -     for (; vstart < vend; vstart +=3D PMD_SIZE) {
-> >>> -             pgd_t *pgd =3D vmemmap_pgd_populate(vstart, node);
-> >>> -             unsigned long pte;
-> >>> -             p4d_t *p4d;
-> >>> -             pud_t *pud;
-> >>> -             pmd_t *pmd;
-> >>> -
-> >>> -             if (!pgd)
-> >>> -                     return -ENOMEM;
-> >>> -
-> >>> -             p4d =3D vmemmap_p4d_populate(pgd, vstart, node);
-> >>> -             if (!p4d)
-> >>> -                     return -ENOMEM;
-> >>> -
-> >>> -             pud =3D vmemmap_pud_populate(p4d, vstart, node);
-> >>> -             if (!pud)
-> >>> -                     return -ENOMEM;
-> >>> -
-> >>> -             pmd =3D pmd_offset(pud, vstart);
-> >>> -             pte =3D pmd_val(*pmd);
-> >>> -             if (!(pte & _PAGE_VALID)) {
-> >>> -                     void *block =3D vmemmap_alloc_block(PMD_SIZE, n=
-ode);
-> >>> +     pmd_val(*pmd) =3D pte_base | __pa(p);
-> >>> +}
-> >>>
-> >>> -                     if (!block)
-> >>> -                             return -ENOMEM;
-> >>> +bool __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
-> >>> +{
-> >>> +     return true;
-> >>> +}
-> >>>
-> >>> -                     pmd_val(*pmd) =3D pte_base | __pa(block);
-> >>> -             }
-> >>> -     }
-> >>> +int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
-> >>> +                             unsigned long addr, unsigned long next)
-> >>> +{
-> >>> +     vmemmap_verify((pte_t *)pmdp, node, addr, next);
-> >>> +     return 1;
-> >>> +}
-> >>>
-> >>> -     return 0;
-> >>> +int __meminit vmemmap_populate(unsigned long vstart, unsigned long v=
-end,
-> >>> +                            int node, struct vmem_altmap *altmap)
-> >>> +{
-> >>> +     return vmemmap_populate_hugepages(vstart, vend, node, altmap);
-> >>>    }
-> >>>    #endif /* CONFIG_SPARSEMEM_VMEMMAP */
-> >>>
-> >>> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> >>> index 15076261d0c2..5e005b0f947d 100644
-> >>> --- a/include/linux/mm.h
-> >>> +++ b/include/linux/mm.h
-> >>> @@ -4248,6 +4248,7 @@ void *vmemmap_alloc_block_buf(unsigned long siz=
-e, int node,
-> >>>    void vmemmap_verify(pte_t *, int, unsigned long, unsigned long);
-> >>>    void vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
-> >>>                     unsigned long addr, unsigned long next);
-> >>> +bool vmemmap_false_pmd(pmd_t *pmd, int node);
-> >>>    int vmemmap_check_pmd(pmd_t *pmd, int node,
-> >>>                      unsigned long addr, unsigned long next);
-> >>>    int vmemmap_populate_basepages(unsigned long start, unsigned long =
-end,
-> >>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> >>> index 37522d6cb398..bd54b8c6f56e 100644
-> >>> --- a/mm/sparse-vmemmap.c
-> >>> +++ b/mm/sparse-vmemmap.c
-> >>> @@ -407,6 +407,11 @@ void __weak __meminit vmemmap_set_pmd(pmd_t *pmd=
-, void *p, int node,
-> >>>    {
-> >>>    }
-> >>>
-> >>> +bool __weak __meminit vmemmap_false_pmd(pmd_t *pmd, int node)
-> >>> +{
-> >>> +     return 0;
-> >>> +}
-> >>> +
-> >>
-> >> Reading that function I have absolutely no clue what this is supposed =
-to
-> >> do. :)
-> >>
-> >> Also, why are you passing pmd+node when sparc ignores them completely
-> >> and statically returns "true" ?
-> >
-> > The pmd+node is indeed unnecessary. My original intention was
-> > to provide convenience for future architecture extensions, but
-> > upon reflection, this appears to be a case of over-engineering.
->
-> Jup.
->
-> >
-> >> If you can tell me what the semantics of that function should be, mayb=
-e
-> >> we can come up with a more descriptive name.
-> >
-> > In the SPARC architecture, the original vmemmap_populate
-> > function does not retry with vmemmap_populate_basepages
-> > after vmemmap_alloc_block fails. I suspect SPARC doesn't
-> > support basepages, which is why we need to modify
-> > vmemmap_populate_hugepages to provide an interface that
-> > skips basepages handling.
->
-> So, something like vmemmap_pte_fallback_allowed() ?
+> Thanks for the report. I have a fix ready; I'll clean it up and send it out
+> by EOD.
 
-LGTM=EF=BC=81
+The fix is available here
+https://lore.kernel.org/all/20251218-fix-parisc-conversion-v1-1-4a04d26b0168@nvidia.com/T/#u
 
---=20
-Yours,
-Kaitao Cheng
+Thanks
+
+>
+>> 
+>> Guenter
 
