@@ -1,44 +1,44 @@
-Return-Path: <sparclinux+bounces-5912-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-5920-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ACA2CEDBF9
-	for <lists+sparclinux@lfdr.de>; Fri, 02 Jan 2026 08:03:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0D3CEDC6D
+	for <lists+sparclinux@lfdr.de>; Fri, 02 Jan 2026 08:05:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9282630006F7
-	for <lists+sparclinux@lfdr.de>; Fri,  2 Jan 2026 07:03:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5EBDF300163D
+	for <lists+sparclinux@lfdr.de>; Fri,  2 Jan 2026 07:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE4D2DC763;
-	Fri,  2 Jan 2026 07:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A822EC096;
+	Fri,  2 Jan 2026 07:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qc3KtC8A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7gvefAb"
 X-Original-To: sparclinux@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D8C2DC333;
-	Fri,  2 Jan 2026 07:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AB92EBBB4;
+	Fri,  2 Jan 2026 07:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767337383; cv=none; b=uKgtc2yQOyPRcfmtDaKyjxikfG2Bya4Txg5J1Z8XbQ8Y1C/cGHHq3q15bruBuYQ65gJu1p7TxuP6e4I80MblMPmytUrHf8ob/nY+UUW6pCbaJXnruBrJ8dr6j9hwV6fsdhUaPicmVsuOUAm9Gwkp/RLj6wzr3qZP14Zt4Edtvlw=
+	t=1767337498; cv=none; b=h04Dp6DGSvNHijpO4vNOGeXZZ1lPHf9wff6OW+At5MwdgRPmCOHKVAWHHaoPbs0CxMWBforwbMofDoQOeHaUuVV9nJgzZfcDLpkB45wjYC9QHQnORx1JdfwbIZRDFCdFCw8L04bkUq2ip3g9rBbw3wBa7GvSbVpqvOlfcb1nMkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767337383; c=relaxed/simple;
-	bh=5jwx79jcXEjB7Ff6jLyMimZz3LM3kE0UW0s3xt/n05M=;
+	s=arc-20240116; t=1767337498; c=relaxed/simple;
+	bh=2fA0ShJu41IpFxgmfkKiNARLhjMIlJQdtqcPZZQwJv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSoPRORRdlnitC/hfPO8nld6NBjkMBBi3sNA/Z6nheqYt36M8u9qlydiyRwG0whGkryI2j377BZ913OOD80OsM5AueETjZaGpp2gxikDTgrfLX3bd9BuxLDPhL7ZbwJNHXPAMWfbSzk0E/BG1CWnWNU4+73uzwL8XtkKZTPy0zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qc3KtC8A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5CCC116B1;
-	Fri,  2 Jan 2026 07:02:48 +0000 (UTC)
+	 MIME-Version; b=q3oj4pZW+cI1cbh3mfsBdHZqFAtu8+zSMVfhn2/QsG4wiQbD2kq8valIZMgU8ouxHWiV1Z0u8iK6Y5BzHFbXK5HI0TIjl/h0Z9ejO1OoRCscbZu5RHQeRYfZfma3zBqmR3vzYCnh1owCIz6Vcl+FsoGD7ijL0tDTcjoyzYpLBCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7gvefAb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DB2C116B1;
+	Fri,  2 Jan 2026 07:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767337382;
-	bh=5jwx79jcXEjB7Ff6jLyMimZz3LM3kE0UW0s3xt/n05M=;
+	s=k20201202; t=1767337497;
+	bh=2fA0ShJu41IpFxgmfkKiNARLhjMIlJQdtqcPZZQwJv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qc3KtC8AFQ4d+AoWxnHd46tYFFfMCGfOgOZUwh7hPQu9V8GFwrLzacStrzurwyzfC
-	 sdwYpZL4opkD8ED1iFsJX1g4ynL3fYl4iZYIf26rGnmUqy0aoVseX41udl1joc8YLN
-	 b0l9aUDPoXNxkdtYtfpSrEipGrF3lv2aQvh/qrppryP5vxo149ycZiPv97YUg7SIVs
-	 xtERSPPWxwE1pVRnHfO3RI7nXLXJVR0hJDFKbLCkEZx9FVFXZmkpvgHHbGy8xsHI3K
-	 Muwf6NAlMOUSvFCm5/CFJwqbJNZUpLRWnYHLvjecYRlXI66YkfrDYdiK5VvE3i/rvK
-	 7Je6uYZRC2PQg==
+	b=T7gvefAbqeIT5CvtwMrVVTK3a8rwBZYgQQiC3jHQXzpJtttvm2Q6kTJvhapk6XZcb
+	 BxF+dcRK4sWnZDHuyEkhkSgVzVSkGMHcSd/3KadF+TMHf4PFBbT6C4ZlsbwfSZyy+F
+	 s+tJoke565QPqUJ3BSWynVtoU3vWCNU4D0WB5cy4Pj6qI7fE42bh/vZ1QFMsek2t7H
+	 8KgpY0BjGMbdV/PjHSJG1h5Rp2t2bV2PF7HizyPVMFjuPeL5kHGynDuCznGy7tyi69
+	 sNqgANgSfgAUJSU8eV6M1uaFWSVde2/T7fCS5n7hNnv/5BeiutkN335sYt5mdY+Y0b
+	 IsCntvk5rQtpQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -105,9 +105,9 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v2 11/28] nios2: introduce arch_zone_limits_init()
-Date: Fri,  2 Jan 2026 08:59:47 +0200
-Message-ID: <20260102070005.65328-12-rppt@kernel.org>
+Subject: [PATCH v2 19/28] um: introduce arch_zone_limits_init()
+Date: Fri,  2 Jan 2026 08:59:55 +0200
+Message-ID: <20260102070005.65328-20-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260102070005.65328-1-rppt@kernel.org>
 References: <20260102070005.65328-1-rppt@kernel.org>
@@ -129,36 +129,34 @@ during nodes and zones initialization and thus there won't be a need to
 call free_area_init() from every architecture.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
 ---
- arch/nios2/mm/init.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/um/kernel/mem.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/nios2/mm/init.c b/arch/nios2/mm/init.c
-index 94efa3de3933..2cb666a65d9e 100644
---- a/arch/nios2/mm/init.c
-+++ b/arch/nios2/mm/init.c
-@@ -38,6 +38,11 @@
- 
- pgd_t *pgd_current;
+diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+index 39c4a7e21c6f..2ac4e9debedd 100644
+--- a/arch/um/kernel/mem.c
++++ b/arch/um/kernel/mem.c
+@@ -84,6 +84,11 @@ void __init mem_init(void)
+ 	kmalloc_ok = 1;
+ }
  
 +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
 +{
-+	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
++	max_zone_pfns[ZONE_NORMAL] = high_physmem >> PAGE_SHIFT;
 +}
 +
- /*
-  * paging_init() continues the virtual memory environment setup which
-  * was begun by the code in arch/head.S.
-@@ -51,8 +56,7 @@ void __init paging_init(void)
- 	pagetable_init();
- 	pgd_current = swapper_pg_dir;
+ void __init paging_init(void)
+ {
+ 	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+@@ -94,7 +99,7 @@ void __init paging_init(void)
+ 		panic("%s: Failed to allocate %lu bytes align=%lx\n",
+ 		      __func__, PAGE_SIZE, PAGE_SIZE);
  
--	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
--
+-	max_zone_pfn[ZONE_NORMAL] = high_physmem >> PAGE_SHIFT;
 +	arch_zone_limits_init(max_zone_pfn);
- 	/* pass the memory from the bootmem allocator to the main allocator */
  	free_area_init(max_zone_pfn);
+ }
  
 -- 
 2.51.0
