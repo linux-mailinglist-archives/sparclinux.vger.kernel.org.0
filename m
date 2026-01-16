@@ -1,154 +1,196 @@
-Return-Path: <sparclinux+bounces-6139-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6142-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25449D32279
-	for <lists+sparclinux@lfdr.de>; Fri, 16 Jan 2026 14:54:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC131D3339B
+	for <lists+sparclinux@lfdr.de>; Fri, 16 Jan 2026 16:36:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D0CAD3006E26
-	for <lists+sparclinux@lfdr.de>; Fri, 16 Jan 2026 13:54:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C76BE30BE9B5
+	for <lists+sparclinux@lfdr.de>; Fri, 16 Jan 2026 15:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AD1286412;
-	Fri, 16 Jan 2026 13:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04AE33A9EF;
+	Fri, 16 Jan 2026 15:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="K9BQh4a8"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="W2tpy9u5"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4149274B5C
-	for <sparclinux@vger.kernel.org>; Fri, 16 Jan 2026 13:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01D933A038;
+	Fri, 16 Jan 2026 15:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768571670; cv=none; b=ONX08xjdrZQLrDrR/PNDyorLf11kfB+GPzRs8WWF48gGtqBSAvbXYmQgLXzU8KFjZ3hvuNzEWzHnkEWnw85/NuLjhQE0OQ21XaWvNqrJU/osj7lPrizNgP3HmFrAhWjZS+oqPiJuwUjS5fiRovzaKhR+NgjxEI5yxfvqyMocEKw=
+	t=1768577462; cv=none; b=RWKXu8UDzCVt7xTF4T4XmM5T99+Es0SuH3hM8kAxCfAuUT3omQzrj3GMg6zpdRZ6GKZ9TXWE4tcGfeoRHjs/2TtlNHLOPf/tsgSLkrxlirpHfF1RQkdewEeGAjZoUBt4RL0wAeq1qPDujd+MKahKtfSJ2sU0k9so4Tb9bAYRipc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768571670; c=relaxed/simple;
-	bh=2Jyc4vjPWHQ8N29GFPPd4QPUxfDxmdAZddY3K56YrUM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZcJLsmF6785zCEs/sUYt2S8MGxJw3y9k86n55A5xalymGE6NWINa84svYZRfHLuf1oTrDd6VRWMc2VPFklxyIKnZP1xuCzVNzB5BQXONhfprtDKUXG42eFA7kGP6grB9IykE+l7pQ4Hgz+LPMgbhnzNUBG5gwN36nXU78YXowCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=K9BQh4a8; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42fbc544b09so1465857f8f.1
-        for <sparclinux@vger.kernel.org>; Fri, 16 Jan 2026 05:54:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768571667; x=1769176467; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=2Jyc4vjPWHQ8N29GFPPd4QPUxfDxmdAZddY3K56YrUM=;
-        b=K9BQh4a8aZ5mcKvc22cHMHLYT6xwWRlRDeFBc2yLrCgG0AD47CVxTHoudVy98hUYOc
-         8bz86qaXlX2ZPMbs6RD/y5QKpWaA2GaVWL1SlttExDux1BkhdSSjJGj5/ElT8LfTRm0+
-         dj11njKu65iXAGj2QJJmrd4/HlC/cezwhU90d5bCTuuOxZZguFikqJKi4Zt3Q+he34s/
-         x546B1I5RhsHx3bVNBC5pay8PP+oIJKrC3sfGWazehRAVlttZgr5xF9YLRMrNBHA/fzP
-         SOvipZeJoypOVTD+4P+zmxHD/tNOqnJRl42CfhiuvQllYWg/t6psKMiZNwSnWmO4I2BZ
-         kWNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768571667; x=1769176467;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Jyc4vjPWHQ8N29GFPPd4QPUxfDxmdAZddY3K56YrUM=;
-        b=lfv9+Nr4lqNSyLnJi39zOTQWDsusAmPIZv8nV0F6QLAmsGIrdUPFXp0pqlxWbN98Zu
-         Q2HqQLL1lcyFdw8O1WzwsHjFu7SgqJe6thG31Q8sx4V77TjgFfeCxysnNbX2ehtFjSAI
-         q4AYweQVUxL4fxcMwEFufcfhF8h8rUzOEVj/o54xJmcdeq+uNoszaGHXViSfGqWQ73YO
-         5d/4sO8TKv7prV/qY+ZARPzbCp/ob3T9q1YUTnTBZcIoVxipH7uhn8N0OD7vzQJi5Kqg
-         jktB9zhoNbT6ThPZHL5ACGHUfLGahlMALT6QNtSpvUi3rBkRt+n1C0TV/zNEydIrXcF+
-         EfYw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCUls0kTIN9amGQ2omwz2JJBf1DHWG3jIMdewr3F2ZRyoL1IjwxQVG6v/93j4Y4xi28+go2IlKt9Ly@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5JYd4Ny/yxQZTNmNyGfncjYYPVIVcSnt8Ml87myaMte4MIhqT
-	hAM7ZgvHXPyHNs6EdGYaSo1okI9s/r1TdxDb1CQwUBjlP1uFC1LHIC7NjIqTfkBx1ZY=
-X-Gm-Gg: AY/fxX7YbN8uvmXSAjrTWK2c5BRVl9I2TtghtZeD/5GwD2usMpWnaGP9bU/u+/RGCVk
-	iLohZaoAnVZdzNDUKNvpwTh2Rxy3lnhGEj76TrkC5LG/qC/1zkaegFLfPPlWh2wxy9PXoStc+sH
-	u7rUFpFYn8NJ4lXnQPFVg8E/vnNO606BE7rjZ7tfIbUg+iVnhnz0l30bB0IFNKOsbaoDW8IfGtb
-	afIGJlyOcTYuvtqTwe23Ef9Mf2/xC0mG/bdXgRBSUkLtnMvGNvzuRqCweUvccAPgyyD9ioVz+qY
-	2J8+q+sJfHpRN5Wq9SNXwglRpj2Lvc2wDV2mkrQdSF1zs3PxZqR/9B92zXtkaj8nl8y/+tWBvPq
-	mB8kzo+MOLcxrvQ3hSsNS6NgeGXQwxOeb05AgO9fOjmHtrrA+eiC0Tyx95nIsFzvRABSc1TnPeK
-	jZsDXIcWMVF4NYxGR4uQvtlSfVgqe3Qjgt6FohLuw=
-X-Received: by 2002:a05:6000:4387:b0:431:1ae:a3d0 with SMTP id ffacd0b85a97d-435699810a1mr3695386f8f.25.1768571667158;
-        Fri, 16 Jan 2026 05:54:27 -0800 (PST)
-Received: from [192.168.3.33] (97.36.160.45.gramnet.com.br. [45.160.36.97])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435696fbea8sm5433542f8f.0.2026.01.16.05.54.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 05:54:26 -0800 (PST)
-Message-ID: <6168099632390068c8544b48f2e81bf737aa10d7.camel@suse.com>
-Subject: Re: [PATCH 14/19] drivers: hwtracing: stm: console.c: Migrate to
- register_console_force helper
-From: Marcos Paulo de Souza <mpdesouza@suse.com>
-To: Alexander Shishkin <alexander.shishkin@linux.intel.com>, Richard
- Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg	
- <johannes@sipsolutions.net>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  Jason Wessel <jason.wessel@windriver.com>,
- Daniel Thompson <danielt@kernel.org>, Douglas Anderson	
- <dianders@chromium.org>, Petr Mladek <pmladek@suse.com>, Steven Rostedt	
- <rostedt@goodmis.org>, John Ogness <john.ogness@linutronix.de>, Sergey
- Senozhatsky <senozhatsky@chromium.org>, Jiri Slaby <jirislaby@kernel.org>,
- Breno Leitao <leitao@debian.org>,  Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet	
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni	
- <pabeni@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Kees Cook	
- <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"	
- <gpiccoli@igalia.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy	 <christophe.leroy@csgroup.eu>, Andreas Larsson
- <andreas@gaisler.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Jacky Huang	
- <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, Laurentiu
- Tudor	 <laurentiu.tudor@nxp.com>
-Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	sparclinux@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Date: Fri, 16 Jan 2026 10:54:14 -0300
-In-Reply-To: <83zf6daetu.fsf@black.igk.intel.com>
-References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
-	 <20251227-printk-cleanup-part3-v1-14-21a291bcf197@suse.com>
-	 <83zf6daetu.fsf@black.igk.intel.com>
-Autocrypt: addr=mpdesouza@suse.com; prefer-encrypt=mutual;
- keydata=mDMEZ/0YqhYJKwYBBAHaRw8BAQdA4JZz0FED+JD5eKlhkNyjDrp6lAGmgR3LPTduPYGPT
- Km0Kk1hcmNvcyBQYXVsbyBkZSBTb3V6YSA8bXBkZXNvdXphQHN1c2UuY29tPoiTBBMWCgA7FiEE2g
- gC66iLbhUsCBoBemssEuRpLLUFAmf9GKoCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgk
- QemssEuRpLLWGxwD/S1I0bjp462FlKb81DikrOfWbeJ0FOJP44eRzmn20HmEBALBZIMrfIH2dJ5eM
- GO8seNG8sYiP6JfRjl7Hyqca6YsE
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (by Flathub.org) 
+	s=arc-20240116; t=1768577462; c=relaxed/simple;
+	bh=RY6pfNgV1RdOj/4RK6+IpUtx77UH9DxhG3jpaG0qipg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Pha1CzMDPq/Aa+t/BKAzYTQt6rV+ZNZVX+zZQKaS8zlTH0lzP4Rk81S+80OMYFIBFrS+GDJiRFnR+fCSsYtqHRLXveP+e8P3lxe1ZQ8ZQvjMkZFCkj4eYdEUjt3cQKcqlYT55tDk+ryRO9iLXbBqUZG5PJL3bATxv3xPzM2CrH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=W2tpy9u5 reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4dt3hq3l50z1FRly;
+	Fri, 16 Jan 2026 16:30:51 +0100 (CET)
+Received: from ludwig.got.gaisler.com (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	by smtp.simply.com (Simply.com) with ESMTPA id 4dt3hq1N9hz1DDgV;
+	Fri, 16 Jan 2026 16:30:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1768577451;
+	bh=LhDUPw2qXMIkqdF+jPUkW4WGVV/SiP/4Sdj49M3ShNM=;
+	h=From:To:Cc:Subject:Date;
+	b=W2tpy9u5In7kOuEtCivz64aa1lPLwTZqKFVrTMMLqR89JK+1noXNT8CRwukztjaTU
+	 rKGIshF9vJl7rstqpzXjO51f5UghrdiG2LtxR8kgXKVCtIWUQN6NEjvAO+mduikOSr
+	 s6Y1pshnGBobLdpx9SVJSQyM+TkKc+OxhYPSLhscmQwWkBO6ZoFOE9hYXO07vINwlt
+	 JZCgsdh+/oJH1Ydm+t3Hv3sfgn6t9zuNYfagz6FHYEOt4SliJIler9DDPsSOhReGAD
+	 uQHfo/wql571ankiIGJOBKsn4HSYBClcuGo2uINCWncqOHtqBE0cbSMo6GcvJGBs6K
+	 X4G3oCI8XrteA==
+From: Ludwig Rydberg <ludwig.rydberg@gaisler.com>
+To: davem@davemloft.net,
+	andreas@gaisler.com,
+	brauner@kernel.org,
+	shuah@kernel.org
+Cc: sparclinux@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	arnd@arndb.de,
+	glaubitz@physik.fu-berlin.de,
+	geert@linux-m68k.org,
+	schuster.simon@siemens-energy.com
+Subject: [PATCH 0/3] sparc: Add architecture support for clone3
+Date: Fri, 16 Jan 2026 16:30:48 +0100
+Message-Id: <20260116153051.21678-1-ludwig.rydberg@gaisler.com>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2026-01-16 at 14:04 +0100, Alexander Shishkin wrote:
-> Marcos Paulo de Souza <mpdesouza@suse.com> writes:
->=20
-> > The register_console_force function was introduced to register
-> > consoles
-> > even on the presence of default consoles, replacing the CON_ENABLE
-> > flag
-> > that was forcing the same behavior.
-> >=20
-> > No functional changes.
-> >=20
-> > Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
->=20
-> Acked-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Hi all,
 
-Thanks Alexander!
+This series adds support for the clone3 system call to the SPARC{32|64}
+architectures and also adds a related patch for clone/fork/vfork that fix an
+issue previously reported[1] that could result in -EFAULT for no good reason.
+Without this patch, the clone3 system call would need the same mitigation as
+introduced in glibc[2] for the clone system call.
 
->=20
-> Should I pick this up or will you send this with the rest of the
-> series?
+About "sparc: Synchronize user stack on fork and clone"
+---------------------------------------------------------
 
-I'll need a v2, since some things will also change in other parts of
-the patchset, so I would wait for the next version.
+The clone3 implementation is developed on top of a fix for an issue reported
+by Adrian Glaubitz[1], where a clone call could return -EFAULT. This problem
+has since been mitigated in glibc[2] by synchronizing the user stack before
+calling clone.
 
->=20
-> Cheers,
-> --
-> Alex
+The root cause analysis of the kernel side when running the program in [1]
+shows that the window spill handler routine on both SPARC{32|64} is unable to
+flush a user window to the stack (due to MMU related faults) when flushing all
+windows before handling the syscall. This then results in a -EFAULT when
+copy_thread() fails to clone the uncommited stackframe of the parent.
+
+For SPARC32:
+Prior to calling the syscall wrappers for clone/fork/vork all windows are
+flushed by a macro (FLUSH_ALL_KERNEL_WINDOWS).
+In the window spill trap handler, MMU fault-handling is temporarily
+disabled while storing the window. If the window can't be stored
+(which normally would have triggered a fault trap) the routine
+backups the user window and increments a thread counter (wsaved).
+
+For SPARC64:
+Prior to calling the syscall wrappers for clone/fork/vork all windows are
+flushed by issuing the flushw instruction.
+In the window spill trap handler, if an exception triggers, then the user
+window is added to the thread's user window buffer (in kernel memory) and
+a thread counter (wsaved) counter is incremented.
+
+Both SPARC{32|64}:
+Eventually copy_thread will be called, which then will fail to clone the parent
+stackframe to the child as the user window has not been flushed to the stack.
+
+Fixed by adding a call to synchronize_user_stack() prior to calling
+kernel_clone(). The patch has been tested both with and without the mitigation
+in glibc by running the program mentioned in [1].
+
+SPARC32:
+- Tested in QEMU emulating sun4m using Buildroot 2025.02
+  (qemu_sparc_ss10_defconfig).
+- Tested on LEON using a GR-CPCI-GR740 development board from
+  Frontgrade Gaisler.
+
+SPARC64:
+- Tested in QEMU emulating sun4u using Buildroot 2025.02
+  (qemu_sparc64_sun4u_defconfig).
+
+About the clone3 implementation:
+--------------------------------
+
+The implementation in the architectural port follows the same pattern as for the
+original clone syscall. But instead of explicitly calling kernel_clone (as in
+sparc_clone) the clone3 handler calls the generic sys_clone3 handler
+(in kernel/fork). To get this to work without a user provided stack,
+the copy_thread functions had to be updated to handle cl_args.stack == NULL.
+In this case the stack of the parent is re-used.
+
+When applying the patch series on top of v6.19-rc1 the relevant clone3 tests of
+kselftest pass:
+
+# /usr/lib/kselftests/run_kselftest.sh -c clone3 -s
+kselftest: Running tests in clone3
+TAP version 13
+1..4
+# selftests: clone3: clone3
+ok 1 selftests: clone3: clone3
+# selftests: clone3: clone3_clear_sighand
+ok 2 selftests: clone3: clone3_clear_sighand
+# selftests: clone3: clone3_set_tid
+ok 3 selftests: clone3: clone3_set_tid
+# selftests: clone3: clone3_cap_checkpoint_restore
+ok 4 selftests: clone3: clone3_cap_checkpoint_restore
+
+Note that the clone3_cap_checkpoint test failed in the same way as mentioned in
+[3] (due to incompatibility with the libcap version on my system).
+When applying the patch from [4] or by downgrading libcap to 2.59 the test pass.
+
+SPARC32:
+- Tested in QEMU emulating sun4m using Buildroot 2025.02
+  (qemu_sparc_ss10_defconfig).
+- Tested on LEON using a GR-CPCI-GR740 development board from
+  Frontgrade Gaisler.
+
+SPARC64:
+- Tested in QEMU emulating sun4u using Buildroot 2025.02
+  (qemu_sparc64_sun4u_defconfig).
+- Tested on UltraSparc T4
+
+[1]: https://lore.kernel.org/sparclinux/3ae4130c-c5aa-428e-b819-44cf2daf2af1@mkarcher.dialup.fu-berlin.de/
+[2]: https://sourceware.org/bugzilla/show_bug.cgi?id=31394
+[3]: https://lore.kernel.org/all/20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com/
+[4]: https://lore.kernel.org/all/20241105062948.1037011-1-zhouyuhang1010@163.com/
+
+Andreas Larsson (1):
+  sparc: Synchronize user stack on fork and clone
+
+Ludwig Rydberg (2):
+  sparc: Add architecture support for clone3
+  selftests/clone3: Add sys_clone3 wrapper for SPARC
+
+ arch/sparc/include/asm/syscalls.h             |  1 +
+ arch/sparc/include/asm/unistd.h               |  2 -
+ arch/sparc/kernel/entry.S                     | 15 ++++
+ arch/sparc/kernel/kernel.h                    |  1 +
+ arch/sparc/kernel/process.c                   | 63 ++++++++++++----
+ arch/sparc/kernel/process_32.c                |  2 +-
+ arch/sparc/kernel/process_64.c                |  2 +-
+ arch/sparc/kernel/syscalls.S                  |  6 ++
+ arch/sparc/kernel/syscalls/syscall.tbl        |  2 +-
+ .../selftests/clone3/clone3_selftests.h       | 75 +++++++++++++++++++
+ 10 files changed, 150 insertions(+), 19 deletions(-)
+
+
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+-- 
+2.35.3
+
 
