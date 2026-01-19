@@ -1,107 +1,210 @@
-Return-Path: <sparclinux+bounces-6166-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6169-lists+sparclinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+sparclinux@lfdr.de
 Delivered-To: lists+sparclinux@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15EAFD3AA8A
-	for <lists+sparclinux@lfdr.de>; Mon, 19 Jan 2026 14:41:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BCED3AD6F
+	for <lists+sparclinux@lfdr.de>; Mon, 19 Jan 2026 16:00:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 16F283016EDD
-	for <lists+sparclinux@lfdr.de>; Mon, 19 Jan 2026 13:41:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E9F443013A1A
+	for <lists+sparclinux@lfdr.de>; Mon, 19 Jan 2026 14:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953B436A006;
-	Mon, 19 Jan 2026 13:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4CF3803C6;
+	Mon, 19 Jan 2026 14:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jaNERwwI";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eLEuXHsn"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="YW03cCuF"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2495E36999D;
-	Mon, 19 Jan 2026 13:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D07A37E307;
+	Mon, 19 Jan 2026 14:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768830078; cv=none; b=cp2epA1DW5DZC3bQlO/CvmtGPAVnfC2EvYtqOSG6Kcd5nUmilVdrcZ7WvOXld7cuEoR07pzi7nNJZLPmFd2/PWoUKsTVarVh4TZwgzvB7T3buLsk/CvW2nodAPhNq16QdRCFfHU/7joScK+1b8YUne27TXxKK5qdkzBicJePlZ8=
+	t=1768834082; cv=none; b=qgoYhq6GnQnffF6eVkkELSXAkhTyTOgAH9daAHkBexakFzJ5Uoi/1/1FovMj8p8sapdYMyf0XxWNMjh81dsSHyLWAppBH6ldj2dBNG9KhTeJ5XpVBvoTWf1AIweJKdpJRVZV2DeYp/+rWmm7Hi8168gByfM/WDw1ECT+EUGNkyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768830078; c=relaxed/simple;
-	bh=oVdx3cIc0dMEnIutawq+qTTWCVNcuBjYE9hqwaaxoM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XGC+40Evsk7ojb+giTXlu1luA3mjEprVo96YYXHMt4p34e7KnG7J6us/5uMDqYSufTBjars0k9u+icUbjCSlq0T+CJMSjhu/Xwirl9bYlwCo2PQS9u1CH6Ha65gG2U0RM0fa1GDtCq977Fk66vx7d5TdjjKwes88br3RGV2Ax5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jaNERwwI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eLEuXHsn; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 19 Jan 2026 14:41:09 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768830075;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v8DQuCSjqZcOp0ukZjubxvPi4HiOBJqZty0BJ1RXCO4=;
-	b=jaNERwwIwOe8s10At6ZYavtCo9DOHAtmhY/ziVl8LqVmv4uM0FcaONWPZWA6XrGza9SLqG
-	yvMmuKZNPJVwTY2tCIJ+beFIG6OvLzMyiHFBU7On5tpEU49O3rxQRsLUztqJLXVBXLD0ZZ
-	lZNkFCIubGb0JSeGwom5yIxIl2eWauzcqtvFQVJR4LxA4K8SYrn4u9tj3ThUXwY085PwnH
-	yM+kuMCMBHwHJTU9BEiQzZUpbwzO3Mc/0xCSpsnlH4ezTyBkqn5Suf8499oPPUwztc0p78
-	de2C74kHoo87muA5eGS/tDJ5oxZvY+hJF3cj0Ywi35Jr2+1c9brb/kzcC2pMzQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768830075;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v8DQuCSjqZcOp0ukZjubxvPi4HiOBJqZty0BJ1RXCO4=;
-	b=eLEuXHsnNhwpAu5MO+KusHxbyTsxnbvRmPuhpR4aYjFbn3FIMd1vbkN9DFtK0CZC2BXUpo
-	05BX7Va86/oRcdCQ==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: David Laight <david.laight.linux@gmail.com>, 
-	"David S . Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org
-Subject: Re: [PATCH 4/4] asm-generic/bitsperlong.h: Add sanity checks for
- __BITS_PER_LONG
-Message-ID: <20260119143735-ca5b7901-b501-4cb8-8e5d-10f4e2f8b650@linutronix.de>
-References: <20260116-vdso-compat-checkflags-v1-0-4a83b4fbb0d3@linutronix.de>
- <20260116-vdso-compat-checkflags-v1-4-4a83b4fbb0d3@linutronix.de>
- <20260119100619.479bcff3@pumpkin>
- <20260119111037-4decf57f-2094-4fac-bcf4-03506791b197@linutronix.de>
- <20260119103758.3afb5927@pumpkin>
- <20260119114526-a15e7172-fc4c-40d0-a651-7c4a21acb1c8@linutronix.de>
- <72a2744a-debc-4d8f-b418-5d6a595c2578@app.fastmail.com>
+	s=arc-20240116; t=1768834082; c=relaxed/simple;
+	bh=uDd8MiQA27O4LxKde4FCSElUpVXwtFGGsD/yuIyKElo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pBU6I+dlPp3daG7eXs9V7y8mLN/FB7NhgRH7ciSfS0T7SvFwxXnqqQk2fYXbV5g3hvUxlhuZuWWPGS6kXCXo5MDxvz0Z1epR7Yt7cq8AM+JaGFpcDsJNzRHjTmGgeP5bVX0f3L2PHJm/6rEC0dUSyFgiXYxXpJk/ivM2ckbnWyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=YW03cCuF reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4dvtbt3mYdz1Fg8F;
+	Mon, 19 Jan 2026 15:47:54 +0100 (CET)
+Received: from ludwig.got.gaisler.com (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	by smtp.simply.com (Simply.com) with ESMTPA id 4dvtbt16Vjz1DDgY;
+	Mon, 19 Jan 2026 15:47:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1768834074;
+	bh=hD/sYbENU9n8pjIP0AZIl3G8lES0piJGCBXxHhfEnt8=;
+	h=From:To:Cc:Subject:Date;
+	b=YW03cCuFE7vdKRXd9bYxt2wa3JEBtwhyRtO3ri89uQV+79YAIdaq1xv/Ru/HyEX91
+	 8v18XIxAX+yBjC0AVVjFF9+9zCZvsHN1t/7BU0orNzpwQAKS+F5JT/NDV8ObZOwA1s
+	 wEkcBJU4BWgAhegB4LePw84UDDILeMW+RG9GaFdx0CSA0ylPEfo0fSRXwzKWw/o5mp
+	 weUFefhbKTjEHrSJxXcS3ZJyJJUmnvHUDZ2wx1lJf4LdMcK7l+Qc+w86d/EhwZ9guy
+	 7Vvk6ChCcTwfuGgBFEpNHmkYQH/4OPaFwQVqCCGwhieEmbzk2dYV8IT418AraQmrDc
+	 UnBApUKOoWj3Q==
+From: Ludwig Rydberg <ludwig.rydberg@gaisler.com>
+To: davem@davemloft.net,
+	andreas@gaisler.com,
+	brauner@kernel.org,
+	shuah@kernel.org
+Cc: sparclinux@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	arnd@arndb.de,
+	glaubitz@physik.fu-berlin.de,
+	geert@linux-m68k.org,
+	schuster.simon@siemens-energy.com,
+	jrtc27@jrtc27.com
+Subject: [PATCH v2 0/2] sparc: Add architecture support for clone3
+Date: Mon, 19 Jan 2026 15:47:51 +0100
+Message-Id: <20260119144753.27945-1-ludwig.rydberg@gaisler.com>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <72a2744a-debc-4d8f-b418-5d6a595c2578@app.fastmail.com>
 
-On Mon, Jan 19, 2026 at 01:45:04PM +0100, Arnd Bergmann wrote:
-> On Mon, Jan 19, 2026, at 11:56, Thomas Weißschuh wrote:
-> > On Mon, Jan 19, 2026 at 10:37:58AM +0000, David Laight wrote:
-> >> 
-> >> Don't you need a check that it isn't wrong on a user system?
-> >> Which is what I thought it was doing.
-> >
-> > Not really. The overrides defined by arch/*/include/uapi/asm/bitsperlong.h are
-> > being tested here. If they work in the kernel build I assume they also work
-> > in userspace.
-> 
-> I think You could just move check into include/asm-generic/bitsperlong.h
-> to make this more obvious with the #ifdef __KERNEL__, and remove the
-> disabled check from my original version there.
+Hi all,
 
-Ok. I'd like to keep your existing test though, as it tests something different
-and it would be nice to have that too at some point.
+This series adds support for the clone3 system call to the SPARC{32|64}
+architectures and also adds a related patch for clone/fork/vfork that fix an
+issue previously reported[1] that could result in -EFAULT for no good reason.
+Without this patch, the clone3 system call would need the same mitigation as
+introduced in glibc[2] for the clone system call.
+
+About "sparc: Synchronize user stack on fork and clone"
+---------------------------------------------------------
+
+The clone3 implementation is developed on top of a fix for an issue reported
+by Adrian Glaubitz[1], where a clone call could return -EFAULT. This problem
+has since been mitigated in glibc[2] by synchronizing the user stack before
+calling clone.
+
+The root cause analysis of the kernel side when running the program in [1]
+shows that the window spill handler routine on both SPARC{32|64} is unable to
+flush a user window to the stack (due to MMU related faults) when flushing all
+windows before handling the syscall. This then results in a -EFAULT when
+copy_thread() fails to clone the uncommitted stackframe of the parent.
+
+For SPARC32:
+Prior to calling the syscall wrappers for clone/fork/vork all windows are
+flushed by a macro (FLUSH_ALL_KERNEL_WINDOWS).
+In the window spill trap handler, MMU fault-handling is temporarily
+disabled while storing the window. If the window can't be stored
+(which normally would have triggered a fault trap) the routine
+backups the user window and increments a thread counter (wsaved).
+
+For SPARC64:
+Prior to calling the syscall wrappers for clone/fork/vork all windows are
+flushed by issuing the flushw instruction.
+In the window spill trap handler, if an exception triggers, then the user
+window is added to the thread's user window buffer (in kernel memory) and
+a thread counter (wsaved) counter is incremented.
+
+Both SPARC{32|64}:
+Eventually copy_thread will be called, which then will fail to clone the parent
+stackframe to the child as the user window has not been flushed to the stack.
+
+Fixed by adding a call to synchronize_user_stack() prior to calling
+kernel_clone(). The patch has been tested both with and without the mitigation
+in glibc by running the program mentioned in [1].
+
+SPARC32:
+- Tested in QEMU emulating sun4m using Buildroot 2025.02
+  (qemu_sparc_ss10_defconfig).
+- Tested on LEON using a GR-CPCI-GR740 development board from
+  Frontgrade Gaisler.
+
+SPARC64:
+- Tested in QEMU emulating sun4u using Buildroot 2025.02
+  (qemu_sparc64_sun4u_defconfig).
+
+About the clone3 implementation:
+--------------------------------
+
+The implementation in the architectural port follows the same pattern as for the
+original clone syscall. But instead of explicitly calling kernel_clone (as in
+sparc_clone) the clone3 handler calls the generic sys_clone3 handler
+(in kernel/fork). To get this to work without a user provided stack,
+the copy_thread functions had to be updated to handle cl_args.stack == NULL.
+In this case the stack of the parent is re-used.
+
+The return value convention for clone3 follows the regular kernel return
+value convention (in contrast to the original clone/fork on SPARC).
+
+In sparc_{clone|vfork|fork} there is a workaround due to the SunOS
+return value convention which is not needed for clone3.
+
+When applying the patch series on top of v6.19-rc1 the relevant clone3 tests of
+kselftest pass:
+
+# /usr/lib/kselftests/run_kselftest.sh -c clone3 -s
+kselftest: Running tests in clone3
+TAP version 13
+1..4
+# selftests: clone3: clone3
+ok 1 selftests: clone3: clone3
+# selftests: clone3: clone3_clear_sighand
+ok 2 selftests: clone3: clone3_clear_sighand
+# selftests: clone3: clone3_set_tid
+ok 3 selftests: clone3: clone3_set_tid
+# selftests: clone3: clone3_cap_checkpoint_restore
+ok 4 selftests: clone3: clone3_cap_checkpoint_restore
+
+Note that the clone3_cap_checkpoint test failed in the same way as mentioned in
+[3] (due to incompatibility with the libcap version on my system).
+When applying the patch from [4] or by downgrading libcap to 2.59 the test pass.
+
+SPARC32:
+- Tested in QEMU emulating sun4m using Buildroot 2025.02
+  (qemu_sparc_ss10_defconfig).
+- Tested on LEON using a GR-CPCI-GR740 development board from
+  Frontgrade Gaisler.
+
+SPARC64:
+- Tested in QEMU emulating sun4u using Buildroot 2025.02
+  (qemu_sparc64_sun4u_defconfig).
+- Tested on UltraSparc T4
+
+[1]: https://lore.kernel.org/sparclinux/3ae4130c-c5aa-428e-b819-44cf2daf2af1@mkarcher.dialup.fu-berlin.de/
+[2]: https://sourceware.org/bugzilla/show_bug.cgi?id=31394
+[3]: https://lore.kernel.org/all/20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com/
+[4]: https://lore.kernel.org/all/20241105062948.1037011-1-zhouyuhang1010@163.com/
+
+---
+Changes in v2:
+- Added Tested-by tag from Adrian Glaubitz
+- Implement generic Linux return value convention for clone3
+- Drop SPARC handling for sys_clone3 in selftests
+- Remove legacy ABI return value handling in sparc_clone3
+- Link to v1: https://lore.kernel.org/sparclinux/20260116153051.21678-1-ludwig.rydberg@gaisler.com/
+---
+
+Andreas Larsson (1):
+  sparc: Synchronize user stack on fork and clone
+
+Ludwig Rydberg (1):
+  sparc: Add architecture support for clone3
+
+ arch/sparc/include/asm/syscalls.h      |  1 +
+ arch/sparc/include/asm/unistd.h        |  2 -
+ arch/sparc/kernel/entry.S              | 15 ++++++++
+ arch/sparc/kernel/kernel.h             |  1 +
+ arch/sparc/kernel/process.c            | 52 +++++++++++++++++++-------
+ arch/sparc/kernel/process_32.c         | 23 +++++++++---
+ arch/sparc/kernel/process_64.c         | 27 ++++++++++---
+ arch/sparc/kernel/syscalls.S           |  8 ++++
+ arch/sparc/kernel/syscalls/syscall.tbl |  2 +-
+ 9 files changed, 102 insertions(+), 29 deletions(-)
 
 
-Thomas
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+-- 
+2.35.3
+
 
