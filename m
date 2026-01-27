@@ -1,50 +1,50 @@
-Return-Path: <sparclinux+bounces-6202-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6203-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MAcDEWteGlasAEAu9opvQ
-	(envelope-from <sparclinux+bounces-6202-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Tue, 27 Jan 2026 13:19:17 +0100
+	id yPYNKXCteGlasAEAu9opvQ
+	(envelope-from <sparclinux+bounces-6203-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Tue, 27 Jan 2026 13:20:00 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C681B9431B
-	for <lists+sparclinux@lfdr.de>; Tue, 27 Jan 2026 13:19:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C5AF94363
+	for <lists+sparclinux@lfdr.de>; Tue, 27 Jan 2026 13:20:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3512307C322
-	for <lists+sparclinux@lfdr.de>; Tue, 27 Jan 2026 12:16:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B0D6308FFAB
+	for <lists+sparclinux@lfdr.de>; Tue, 27 Jan 2026 12:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DA9312836;
-	Tue, 27 Jan 2026 12:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A90346E7E;
+	Tue, 27 Jan 2026 12:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FIbdx3Kz"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wc/LzcSY"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A063126B3
-	for <sparclinux@vger.kernel.org>; Tue, 27 Jan 2026 12:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E940C30AAB0
+	for <sparclinux@vger.kernel.org>; Tue, 27 Jan 2026 12:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769516207; cv=none; b=sbp3Rt/1WeqmcL4Z0o3DxVMV9tBLmbg+C0um0GQXDBwPqtcCmAbL5fsc6srN5uq+OGbpHmmvCLMIG8PZQesmWaZYnu63njJ7zw9HIjjK+MHVaMS6ZfoRXmGXF00brE2vBUccH7W7sJZjNRsaa5+B07b6PPkLG9IhmLttt4sN5pQ=
+	t=1769516213; cv=none; b=t8rHvNeZz0iLrRzDah9NVUG4Eoblq8PKjm1kWNcfG77dNNcUcmcbY0/QDrlq/d+oMunDrMzzYH8gBoIs09gRaAVzIjuN/+0UmNNgCEz3RcpQTrVxD2BJKuZy6G/j+wIdWrh3Te6toERZ0fK42bV5me23T1XxYuYutmQ7qeZh+M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769516207; c=relaxed/simple;
-	bh=JBGvtd6lIDpE88cwSn1qvAi5ZYQhW95obYt/hFyoa6o=;
+	s=arc-20240116; t=1769516213; c=relaxed/simple;
+	bh=RY9iG5O6CRC3b3IlwlQVEJmAqDrdvdhuqhPIwDBxGks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUZOZlhEkjE2IfEMWM+Nf8msfon04a6vOSH1hp7lrWGvGPCNnIx2hY3ooemvMT+Dwk1feSJwQShTYX8JfSs7ogFkapuviWeooonevndpcdBPj1IaZNoivOXFw0pV9z84oFo3CpCXrtx63uz7n7ELc6rigM0mB6OV/XvY6Ah4To4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FIbdx3Kz; arc=none smtp.client-ip=95.215.58.182
+	 MIME-Version; b=NVwUpQ0cNYAfAmQ5TLiTeghjdLmKhH+p0K7efaP0rzTC02/XLsjwCAi3KJBrlOQ5XpvbVkhZrWo7xvwtAz5LD4z/uYvETYwxrsJ5g5NzYYCGPX+NgpQJgwOFk4WgCwiYmhGb9CvRpkRzZSKw5/6uuF3CYXY3I6KIRtBRfpG66wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wc/LzcSY; arc=none smtp.client-ip=95.215.58.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769516203;
+	t=1769516209;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8PNYJl+4luznSu7Qs41hn6BnOWw9fSYJ1f3qY5qKkjU=;
-	b=FIbdx3KzT3ZzuPWcHXh6lZeu0knjRgXOY2FCQKsdr3pHR7oc/n8z24+0bCjEsSNByQL3i0
-	6SwoaMgXgtfA9BWg4CrNy8gMxJBXcNgtiljra9XdM5cxUx+WSsUy2hZfxCkH+JPhZqVh5a
-	kHtoJcZoWzF8ijbWfD8mCP8Ts6pi/D4=
+	bh=e0pQYHM1jhSwp9PHWAhzAtLgw7dAo1EQ0j0b9Rhu8lM=;
+	b=wc/LzcSY84XUN/M01s5VcIBtD1/lXhQlVZzRwxMLJY1XGT2wxJOzGUzWA5oPCfbPCsb1/O
+	ht9YXkU/ZBWYV/j9FZpfqWjqnjxWaip5QHGmFskLEMQc1kWqyHjiSkHOF+suDP3tIX1G7K
+	JeMpI6zZYGFo3G12ozp0269DFGB3g9I=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: david@kernel.org,
 	andreas@gaisler.com,
@@ -67,11 +67,12 @@ Cc: linux-arch@vger.kernel.org,
 	linux-um@lists.infradead.org,
 	sparclinux@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH v4 5/8] parisc: mm: enable MMU_GATHER_RCU_TABLE_FREE
-Date: Tue, 27 Jan 2026 20:12:58 +0800
-Message-ID: <b827939046dbc94bc7c585cdbed8522baab75b15.1769515122.git.zhengqi.arch@bytedance.com>
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>
+Subject: [PATCH v4 6/8] um: mm: enable MMU_GATHER_RCU_TABLE_FREE
+Date: Tue, 27 Jan 2026 20:12:59 +0800
+Message-ID: <e2217546504668b8a87a39eb0e378839339a1bb4.1769515122.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1769515122.git.zhengqi.arch@bytedance.com>
 References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
 Precedence: bulk
@@ -86,21 +87,20 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6202-lists,sparclinux=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gaisler.com,gmail.com,infradead.org,arm.com,linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[23];
+	TAGGED_FROM(0.00)[bounces-6203-lists,sparclinux=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kvack.org,lists.linux.dev,lists.infradead.org,bytedance.com,HansenPartnership.com,gmx.de];
+	FREEMAIL_TO(0.00)[kernel.org,gaisler.com,gmail.com,infradead.org,arm.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -108,11 +108,11 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[sparclinux];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hansenpartnership.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:mid,bytedance.com:email,linux.dev:dkim]
-X-Rspamd-Queue-Id: C681B9431B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,nod.at:email,sipsolutions.net:email,cambridgegreys.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:mid,bytedance.com:email]
+X-Rspamd-Queue-Id: 4C5AF94363
 X-Rspamd-Action: no action
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
@@ -123,40 +123,25 @@ first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
 PT_RECLAIM feature, which resolves this problem.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
 ---
- arch/parisc/Kconfig           | 1 +
- arch/parisc/include/asm/tlb.h | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/um/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 47fd9662d8005..62d5a89d5c7bc 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -79,6 +79,7 @@ config PARISC
- 	select GENERIC_CLOCKEVENTS
- 	select CPU_NO_EFFICIENT_FFS
+diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+index 8415d39b0d430..098cda44db225 100644
+--- a/arch/um/Kconfig
++++ b/arch/um/Kconfig
+@@ -42,6 +42,7 @@ config UML
+ 	select HAVE_SYSCALL_TRACEPOINTS
  	select THREAD_INFO_IN_TASK
+ 	select SPARSE_IRQ
 +	select MMU_GATHER_RCU_TABLE_FREE
- 	select NEED_DMA_MAP_STATE
- 	select NEED_SG_DMA_LENGTH
- 	select HAVE_ARCH_KGDB
-diff --git a/arch/parisc/include/asm/tlb.h b/arch/parisc/include/asm/tlb.h
-index 44235f367674d..4501fee0a8fa4 100644
---- a/arch/parisc/include/asm/tlb.h
-+++ b/arch/parisc/include/asm/tlb.h
-@@ -5,8 +5,8 @@
- #include <asm-generic/tlb.h>
  
- #if CONFIG_PGTABLE_LEVELS == 3
--#define __pmd_free_tlb(tlb, pmd, addr)	pmd_free((tlb)->mm, pmd)
-+#define __pmd_free_tlb(tlb, pmd, addr)	tlb_remove_ptdesc((tlb), virt_to_ptdesc(pmd))
- #endif
--#define __pte_free_tlb(tlb, pte, addr)	pte_free((tlb)->mm, pte)
-+#define __pte_free_tlb(tlb, pte, addr)	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
- 
- #endif
+ config MMU
+ 	bool
 -- 
 2.20.1
 
