@@ -1,79 +1,81 @@
-Return-Path: <sparclinux+bounces-6217-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6215-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAA7AUwQf2nijAIAu9opvQ
-	(envelope-from <sparclinux+bounces-6217-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Sun, 01 Feb 2026 09:35:24 +0100
+	id jp+OM0v0fmnFhQIAu9opvQ
+	(envelope-from <sparclinux+bounces-6215-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Sun, 01 Feb 2026 07:35:55 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B37C5429
-	for <lists+sparclinux@lfdr.de>; Sun, 01 Feb 2026 09:35:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59385C504C
+	for <lists+sparclinux@lfdr.de>; Sun, 01 Feb 2026 07:35:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BCCF93003811
-	for <lists+sparclinux@lfdr.de>; Sun,  1 Feb 2026 08:35:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4C0393002318
+	for <lists+sparclinux@lfdr.de>; Sun,  1 Feb 2026 06:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E3B1A0BE0;
-	Sun,  1 Feb 2026 08:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5A32D8DC3;
+	Sun,  1 Feb 2026 06:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CmkSJyZX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jIK9N5Jp"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7242E62A6
-	for <sparclinux@vger.kernel.org>; Sun,  1 Feb 2026 08:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4724229D29D
+	for <sparclinux@vger.kernel.org>; Sun,  1 Feb 2026 06:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769934919; cv=none; b=Jt7enfskKhWmFRkNx6KjCPwzNT/LCy8sBtmfMJ0G+xiy9uorAdbcZKKKeiMV5DIs7jMycwKAunIPFma2M6vN3oS5x4GeIAcC06MygZ2D4gGLQMqfKpHlfi8hC9KLnfK04yGDMk2PZ1tkGTZOAlgwClQM6FH8mmN1Evs54d4y4V0=
+	t=1769927751; cv=none; b=Bwo6LdPR7RGBtJDbXaaatwWidm79rykgLfQE4zMIGNRX0G1N7G5tVxekR8pkVIV06+iRk4yoEi6Pr6mBhk7Kyh6KPKLAt1YJU5m2uTOCu3CQ1/35OzQjCgILlobgI3/R9bqCnpxQLHTluc5N6DQDvIudyVpFhmravY8HHbg3zho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769934919; c=relaxed/simple;
-	bh=Jq3TH0XhSi0dRpQ1ehkC4waWr/uSuDhMY8cMzjBNwKA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jnLT4oUggImn9E4zl27oe8XtqJA70KzwbgvcDkhrvFbMlZCIb8+rUvz7M68TvP9JkeuCWNG5c/5UuRtTaAs29CIrj2+wjuRtZG+xst6fpyvL+jM/30cp6Jg9aMJfkZC1MjiZGrgsgmv9CeNyGt3FRpPgJZCgzOaFtAmG7DSDf/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CmkSJyZX; arc=none smtp.client-ip=209.85.222.176
+	s=arc-20240116; t=1769927751; c=relaxed/simple;
+	bh=3And2LhMsuiGESl8ELxQXs3/NkJV7CahODQ4j4lgPSw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XVs/Cj9JcLcA3bZmBRlpsgCreKSH0G3W3jIOhtPfLQTq+5sV/SDUI6I+7VXjEOTJ+r1Lu/2C5woDtYi+na2kKpnutzXCD/ul9laykzeeZ2CAZECWnpKMnyxAlZqFAdunqjLX5u4Nhhx5hQFzHjk9VGkeWBbOeGvt7kPksYwmrY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jIK9N5Jp; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8ca01dc7d40so87801285a.1
-        for <sparclinux@vger.kernel.org>; Sun, 01 Feb 2026 00:35:17 -0800 (PST)
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-823081bb15fso1772227b3a.3
+        for <sparclinux@vger.kernel.org>; Sat, 31 Jan 2026 22:35:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769934917; x=1770539717; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6eutNLEmldLaIWi2QOrKdJ7W1VjSKq79ja0CoQ+cj7Y=;
-        b=CmkSJyZXT4TCSklCAMBnTrMOqRAVOBOW+j8jX5enwgLpi50G10GL1DoQpHYUTVW9ns
-         PQ890fskhIwzbDBr/uiqTk927yyjtkb7TZLlBbliSB+EbUpfY5cot2PQUNvPnvtBBi0e
-         6AP/SVKXkCaX4F9HRkcFyuHghNMESFFt6V9BvgNK3nvD7+MKcnSlg+NrhK/NDtPWem72
-         pXdAQNulLZLviRZtLAAs3EL9o8NQM+FFMUzzDM22SgTURrETW0qb4mefEl4WGTRIU6M2
-         +PbTVwMQR7MtQEqgJ4Fs94TjhTempffamhbmHEIhwDzopPfxFBxIn8dNy0Oa5UkoJH8d
-         8pZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769934917; x=1770539717;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769927749; x=1770532549; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6eutNLEmldLaIWi2QOrKdJ7W1VjSKq79ja0CoQ+cj7Y=;
-        b=IB5tQ488iDBa6dSirznz7mZN5jCofI3pJHG2Eu2Y6D9FjzxMVSSCXOXuJUkXY9kvj/
-         GRZdgxFKUrSiaQa31s50mgzTVjyG0I6Qkdndt6aPSGdPE9+NEdOKqLrFKkadaZ9UZUoN
-         Pmicobq9BOGLw5/NjmFoGIyatet9bOKbRTgzp5WrKmQlpwvICpC9Ky8q4yKYFnChwt74
-         xLqp6UlNNebQObLgh8kTB7fee00bKl6CWQVzw56HsFdgvy7le+ixECpfx6Ug5kUgBzFy
-         3FywEOHcHoexfvGF7nlhOhlHhWO/2FDwbmcp75FNN/UTxQu1epC/Bl8id2fSyrouu2BK
-         QG+A==
-X-Forwarded-Encrypted: i=1; AJvYcCWXkNZwdZJKooMp5wczGF/8xnKvGh8UPBr5s+3goBAyK2cbjCgM5OkUfZMsK83BBXTHItrUbg1lBZdq@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNlNjEgpomOWi8cmS7UJE0r0zPsUq4Xg8TqvipmiwidP6KxjPk
-	VGTILYk/HmPr8RWBWgm8ppQfcwpX19QQvduBUmJdTlaMuFCEw48/Acjr
-X-Gm-Gg: AZuq6aIQq4XGd4SG7cPDF1NSyzYJi1xInxDG9ydfJ/WzWf+BQcEtZb2Nu7WcST19qbf
-	/nF/fFMa7NP0tNhXhQUvkZ/4U007FrcEgCk7DSoJ4iqu/KDkMD8HkFhzTrT/6R0Z4MxYKCDSiqT
-	5FTsAEF32BRJjFo1GvDZe5QsSG3MuZk2NCXi2NQjYaA3we/VxernElqPbnvgX7wPGCVNKwTY3rM
-	CV+TAR6HPXUgsv0EXj5dJMxIIcRuYhQGphU2IeNT0+4iEZM8OTKpOBbBbDpLr+nA1Q12Ony62o7
-	WXTpT6xaDS+oML2AxDNTTyxWlz0VpilK4ca+ydHp5OqFUopQwsai4qMeQdUYCOTepm9CVCYfvan
-	ZgjZdtx9Diw0kOzmYnFcz/I1ek7IY1FwRH3dmq57a1NkW92SDAlBdLsDSrpWn9XRA0oCq44fume
-	Or9ATn718VQuYGrKXGdWMxZMTNU9Ap299r4LXa6QWhzg==
-X-Received: by 2002:a05:6a00:21c3:b0:821:7d75:f42d with SMTP id d2e1a72fcca58-823aa710b20mr7502550b3a.42.1769927743937;
-        Sat, 31 Jan 2026 22:35:43 -0800 (PST)
+        bh=6+k5sDfrzGc/t0c0Zqa3NksQEBMmv727qk80IVOuHas=;
+        b=jIK9N5JpWEO1euCr4de38lYDPUnNi8Pf0R7KCwPFLx/l9C4qtsacmrCbFqOtZjTe+X
+         gEElGSAimIk2EBd7OBLp723tUgz/m+Ugrp36hHNpMEMbV/yP/mo/FN9igFzsEPbw3ySs
+         vNb8BrxBA+qTnutZsQ8BhcJyt79JVvRCwQ/cgQmZnghcj9IV0wd4liUHsE4FxLnWupKd
+         ay8s4maK7ldcwsSzi65W+gnDJCdKUcI64nwxGzF6Y2NGRmDFf7C7EU3RyE7d1n1AYBiK
+         /ovNMvwVcyhNk/Id1KCudgJpe89cLxm6kceOJMkQpasdRlLhpplpGxxEtVS6d8mjebYE
+         EL+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769927749; x=1770532549;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6+k5sDfrzGc/t0c0Zqa3NksQEBMmv727qk80IVOuHas=;
+        b=UKZVLiRjQQIk8VLplZXhpBGlPcbZADp3eYIa0oltguJg+4p5dAT9FAedSrHF7nZm8e
+         Kcn5ekdbpSPGkb5S7JMCLiCZD8tk3iG1X12r8GYLtF8WVCXRlBPKlH2uC+Iy7GAC6M3i
+         8XynHebnKCbyzKnvcIs1jnqMi9cKSaYYRM6Kso4Gwx2NvBDoyuh02/4tg/9fiHmZlgxU
+         gpfHJ4WBMN7zxTBihqBWfQwB0Z1cKuoHa5+IucXKRkz433WyWFcAV3OF/AzYkcDzzBXb
+         5cOMFydl/SQjXvsGxR3XsAymMuB56wcCjDJDrISnIwIawkTdb4yZsaBdswqtAEupG2O4
+         2Zfw==
+X-Forwarded-Encrypted: i=1; AJvYcCUTsWkhIZHIPD6YuL6MO7+UyVxuSCk4xFFVNEVdfnUwQwclViFXHcJzOPe6DZnSkJpfMWhfXdlssAOW@vger.kernel.org
+X-Gm-Message-State: AOJu0YynI0myoPNr5d++Rdab8beppN9FZI/nVPB9FoUtnaRJRD58B+AI
+	1LRg0s5leHsweBfI0YvhIzSI9UO1PvZfOnTnTNxLZ5k7XeZC2R3IxBuN
+X-Gm-Gg: AZuq6aLulBw4qmp40TZpHI69Jx1GE+a80bzFhwOkO4L6tSb2fq0rd4I98pDJp8ODex2
+	kSGmTKQ4vZsXy07suoGogHPhcGYIXXsV2R0EK5IkU6tW04PfaTYHAJHqP99ldGLLIwJQ37O+Bfd
+	fNHcgZOkj8/6hyKQCyBI1IePSDt0UxU0+ovPCcyHEiWGCGNbJCsROCnzXXoYZya9qdHLTabDz4b
+	j9sda0U2uoxD6Q2o0qSNsnjqCgNP4nhkuM8vnPrca7iePDNU6JqVDiIDEnUyRiwXuRVv94vWE82
+	ZcDGlD51Ivma/2TmpAtaPGmbTknZDsHxBoYKPDTpJTnojf6IyqamRjVeJV3iuGmu9rDH/UCPGE6
+	5TmwuDqh27Bf4OtcCJf5zHcqlhOFq9dke/3yTDzhZsym+sG2VX4BtvpcUkuDP3zUQSsMKpKKhh4
+	WM2qmsuUQx7f0Jl+OGEZQ41QehbDduygioi2HrUTDIvg==
+X-Received: by 2002:a05:6a00:4b46:b0:821:70e7:b10a with SMTP id d2e1a72fcca58-823aa40d7e9mr9263325b3a.8.1769927749584;
+        Sat, 31 Jan 2026 22:35:49 -0800 (PST)
 Received: from localhost.localdomain ([113.218.252.120])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b6b2bdsm12149294b3a.30.2026.01.31.22.35.37
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b6b2bdsm12149294b3a.30.2026.01.31.22.35.44
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 31 Jan 2026 22:35:43 -0800 (PST)
+        Sat, 31 Jan 2026 22:35:49 -0800 (PST)
 From: chengkaitao <pilgrimtao@gmail.com>
 To: davem@davemloft.net,
 	andreas@gaisler.com,
@@ -93,12 +95,13 @@ Cc: kevin.brodsky@arm.com,
 	zhengqi.arch@bytedance.com,
 	sparclinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	chengkaitao <pilgrimtao@gmail.com>
-Subject: [PATCH v6 0/2] Generalize vmemmap_populate_hugepages to sparc
-Date: Sun,  1 Feb 2026 14:35:30 +0800
-Message-ID: <20260201063532.44807-1-pilgrimtao@gmail.com>
+	linux-mm@kvack.org
+Subject: [PATCH v6 1/2] sparc: Use vmemmap_populate_hugepages for vmemmap_populate
+Date: Sun,  1 Feb 2026 14:35:31 +0800
+Message-ID: <20260201063532.44807-2-pilgrimtao@gmail.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260201063532.44807-1-pilgrimtao@gmail.com>
+References: <20260201063532.44807-1-pilgrimtao@gmail.com>
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
@@ -108,89 +111,117 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[arm.com,linux.intel.com,nvidia.com,kylinos.cn,infradead.org,bytedance.com,vger.kernel.org,kvack.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-6217-lists,sparclinux=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6215-lists,sparclinux=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_NEQ_ENVFROM(0.00)[pilgrimtao@gmail.com,sparclinux@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pilgrimtao@gmail.com,sparclinux@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[sparclinux];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[sparclinux];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 32B37C5429
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 59385C504C
 X-Rspamd-Action: no action
 
-Change sparc's implementation of vmemmap_populate() using
-vmemmap_populate_hugepages() to streamline the code. Another
-benefit is that it allows us to eliminate the external declarations
-of vmemmap_p?d_populate functions and convert them to static functions.
+From: Chengkaitao <chengkaitao@kylinos.cn>
 
-Since vmemmap_populate_hugepages may fallback to vmemmap_populate-
-_basepages, which differs from sparc's original implementation.
-During the v1 discussion with Mike Rapoport, sparc uses base pages
-in the kernel page tables, so it should be able to use them in
-vmemmap as well. Consequently, no additional special handling is
-required.
+1. In the SPARC architecture, reimplement vmemmap_populate using
+vmemmap_populate_hugepages.
+2. Allow the SPARC arch to fallback to vmemmap_populate_basepages(),
+when vmemmap_alloc_block returns NULL.
 
-Changes in v6:
-- Ignore handling of altmap
-
-Changes in v5:
-- Remove [PATCH v4 3/3] sparc: Remove unnecessary whitespace
-
-Changes in v4:
-- Add commit message
-- Add verification that pmd actually maps a large page in the
-vmemmap_check_pmd function
-
-Changes in v3:
-- Allow sparc to fallback to vmemmap_populate_basepages
-- Convert vmemmap_p?d_populate() to static functions
-- Split the v1 patch
-
-Changes in v2:
-- Revert the whitespace deletions
-- Change vmemmap_false_pmd to vmemmap_pte_fallback_allowed
-
-Link to V5:
-https://lore.kernel.org/all/20260111074453.66728-1-pilgrimtao@gmail.com/
-Link to V4:
-https://lore.kernel.org/all/20251219115812.65855-1-pilgrimtao@gmail.com/
-Link to V3:
-https://lore.kernel.org/all/20251218174749.45965-1-pilgrimtao@gmail.com/
-Link to V2:
-https://lore.kernel.org/all/20251218130957.36892-1-pilgrimtao@gmail.com/
-Link to V1:
-https://lore.kernel.org/all/20251217120858.18713-1-pilgrimtao@gmail.com/
-
-Chengkaitao (2):
-  sparc: Use vmemmap_populate_hugepages for vmemmap_populate
-  mm: Convert vmemmap_p?d_populate() to static functions
-
+Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
+---
  arch/sparc/mm/init_64.c | 47 ++++++++++++++---------------------------
- include/linux/mm.h      |  7 ------
- mm/sparse-vmemmap.c     | 10 ++++-----
- 3 files changed, 21 insertions(+), 43 deletions(-)
+ 1 file changed, 16 insertions(+), 31 deletions(-)
 
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index df9f7c444c39..f1981adc99ac 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
+ EXPORT_SYMBOL(_PAGE_CACHE);
+ 
+ #ifdef CONFIG_SPARSEMEM_VMEMMAP
+-int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+-			       int node, struct vmem_altmap *altmap)
++void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
++			       unsigned long addr, unsigned long next)
+ {
+ 	unsigned long pte_base;
+ 
+@@ -2595,39 +2595,24 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+ 
+ 	pte_base |= _PAGE_PMD_HUGE;
+ 
+-	vstart = vstart & PMD_MASK;
+-	vend = ALIGN(vend, PMD_SIZE);
+-	for (; vstart < vend; vstart += PMD_SIZE) {
+-		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+-		unsigned long pte;
+-		p4d_t *p4d;
+-		pud_t *pud;
+-		pmd_t *pmd;
+-
+-		if (!pgd)
+-			return -ENOMEM;
+-
+-		p4d = vmemmap_p4d_populate(pgd, vstart, node);
+-		if (!p4d)
+-			return -ENOMEM;
+-
+-		pud = vmemmap_pud_populate(p4d, vstart, node);
+-		if (!pud)
+-			return -ENOMEM;
++	pmd_val(*pmd) = pte_base | __pa(p);
++}
+ 
+-		pmd = pmd_offset(pud, vstart);
+-		pte = pmd_val(*pmd);
+-		if (!(pte & _PAGE_VALID)) {
+-			void *block = vmemmap_alloc_block(PMD_SIZE, node);
++int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
++				unsigned long addr, unsigned long next)
++{
++	int large = pmd_leaf(*pmdp);
+ 
+-			if (!block)
+-				return -ENOMEM;
++	if (large)
++		vmemmap_verify((pte_t *)pmdp, node, addr, next);
+ 
+-			pmd_val(*pmd) = pte_base | __pa(block);
+-		}
+-	}
++	return large;
++}
+ 
+-	return 0;
++int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
++			       int node, struct vmem_altmap *altmap)
++{
++	return vmemmap_populate_hugepages(vstart, vend, node, NULL);
+ }
+ #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+ 
 -- 
 2.50.1 (Apple Git-155)
 
