@@ -1,227 +1,210 @@
-Return-Path: <sparclinux+bounces-6216-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6218-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kK1GHGr0fmnFhQIAu9opvQ
-	(envelope-from <sparclinux+bounces-6216-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Sun, 01 Feb 2026 07:36:26 +0100
+	id KEdpLFTNf2k1xwIAu9opvQ
+	(envelope-from <sparclinux+bounces-6218-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Sun, 01 Feb 2026 23:01:56 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E061FC505B
-	for <lists+sparclinux@lfdr.de>; Sun, 01 Feb 2026 07:36:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66655C7549
+	for <lists+sparclinux@lfdr.de>; Sun, 01 Feb 2026 23:01:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B01530125F9
-	for <lists+sparclinux@lfdr.de>; Sun,  1 Feb 2026 06:35:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4C75C30048F3
+	for <lists+sparclinux@lfdr.de>; Sun,  1 Feb 2026 22:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEAC2D028A;
-	Sun,  1 Feb 2026 06:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2442EA73D;
+	Sun,  1 Feb 2026 22:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FMYYQqjb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YUP16xwB"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A1620459A
-	for <sparclinux@vger.kernel.org>; Sun,  1 Feb 2026 06:35:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769927757; cv=none; b=joiB/z8stVlcpHEvL7qlpneqyYetfWwQm79vWN9jsJGyDX2PafZ7z/+sZoy9tvVZOO7+omUKXpT4GKrjx2+zchk50EZB3jsdzn4v048XKLUyQukNvr4BGrWX7nI/Il9Wef9z8I1hSGtOkJyHkOrmRWxbo9pJ5EYk7fPlnHYx/0c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769927757; c=relaxed/simple;
-	bh=C+apFGFIBagzKzCME1/KFpsVUJDOqSILLOFYxYu0L7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftYLa8BF912BTlvZwLFCAqmv3IQGEUN2B/oOSq78YWR4XQwte49peGlOlO3Tc5DdV3/VcSRYSHZ/0iL3PQDJ+nkoaVWLVrrzdc+trkbK0jO8vJ4muOv9Stcg3l7ow24vWkSo//kR91mvuyUFuN6p83RBnGAOwKBNpE6uEXDoybc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FMYYQqjb; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799BF1DF751
+	for <sparclinux@vger.kernel.org>; Sun,  1 Feb 2026 22:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769983306; cv=pass; b=DepbA4H5eXbCgr46MxkMynfP7RLjnHL2w7guS6uHMwdspxYlOlzHCu52w8Hc9tB+zh2cRrUSYx/6gspLDCvC5IWPHgx+r0FgsnLKTYN19IWhnBx35GVSv3lR6nOP1ZGnkrpwVp7ESruj3LVPFTU26gPxKbOmE4EisctxMQa39hg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769983306; c=relaxed/simple;
+	bh=wl7Jk6JsU5yKG4duQoEsXxxYC+OIwiJhzlKIg8HfxyQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QoP5pBJyOuam4sAHnbhHKemdYS2wKOADevHwqzvOi3Q/j05va+k8w5OFEHVREF28uZvQYnoVq02+8VeHtfiVQxxPKeBZ7eiY/9yeNWfH01okL0l6U6Zf+PS2OqhSjJhxtopOAToEtgfZs2/GMg1aulnIPCAFLVeSNUMkZKl5uOs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YUP16xwB; arc=pass smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-823210d1d8eso1738243b3a.1
-        for <sparclinux@vger.kernel.org>; Sat, 31 Jan 2026 22:35:56 -0800 (PST)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6580dbdb41eso5832183a12.0
+        for <sparclinux@vger.kernel.org>; Sun, 01 Feb 2026 14:01:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769983302; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RKMR4k/5uyJWNUg4+iIKNX6aAmlMs4WO031MlRU3Qe6Jcuwo7FlGkvaHh+JqyIeR03
+         +N2nIrsaTyhMmAJGNs1Fx1kL1L+WxwZHSrnRXYgO2Ua5Z3e4brTG2c677PnMUYnva2qu
+         4RrvR10fPKWXrdKtWIJ1OBfSmGqSX9h+SThs5+IF+9SGRvSGHsvOzYICVXNEVbOr/aAB
+         8UOymYFknAjYvlzwZ2G3d0aWVqJbGiilEyptaa9eWVupohxTZOIUvODUQJew/QrxeuE6
+         dc8cjqBe47/7qriM64G0wGcHGEzGN8fbNtoLKbRQ4f8tMv+q4oLsirIrshKBRdIoDCcD
+         Snew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nxxXeMZ2Mj2NhEcakAGevZjWJ8Zk/OwUaMBA61xjWow=;
+        fh=MPlq+OHoljNPzWlzBOEIZnJ9LvvpIZArq5uN7tN755E=;
+        b=WuWUjIstvwvlH2rzpePqZqoW2sO67O32dzmD6tXtzj3RdmNd0WPwC1IuPqXtIDNTkl
+         AQusDIy7FBP+IsR25jcDYcmGm9v5tR+Q7jNaSlz6rMimT/+CLI1PIkelT+xXPGHgDb88
+         JFfqiXv0rdFlQyaRWK9CA5dl2zRl1dIGyH5ecDYKmHBKbkkFbASltw0OJAuAhLNcn6xJ
+         Uzt3llITMbAYDKE6i2v7EAgNo2QfojeZhh26R0xV0Wq1xdeWD30+wsK8SXMHiHnnUTN9
+         2BJ/rFfe7d9Y4VhzsZT2bT5GeLc5JFdweKGpMWN7cYwl6VWyeblGQIs1eoA8VQjO5ipI
+         Xy9A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769927755; x=1770532555; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769983302; x=1770588102; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z8AdoB6sry4rs5wh+etYdnccb09faRPmAEKL/AFwYIU=;
-        b=FMYYQqjb2g7feftXCtFDYauM5tTZfEyHwQYaR01MW3Jh1D5rePMZu94fj3lnVrM22/
-         MECVksiH/jGkvj80LFT8NiQUkF/OCppLC08q0/PzGuydFmiawwpn2z6yCYrlRjIVqAIh
-         9zGHk2pOEr+j1EJbCWt/FV9M1XM25/Y9ET19udYgWmm9ld5lknz6pbi06hfnrpdycYAc
-         JRz/ZOwSRKUxqpMCu9FATKpsOBz7+gWn3Vi2AynVLbmiZGaUdRkg23enUEvtpYNPDJ74
-         G6rRi8WYl7b+2z19ELnjXX7sRkDt4h5+iUsNpltYwgOMuPgNx5dfSVw1Ian3g6sl33iJ
-         LHJQ==
+        bh=nxxXeMZ2Mj2NhEcakAGevZjWJ8Zk/OwUaMBA61xjWow=;
+        b=YUP16xwBByuCeANUpL+tqGPZtwW0ekBJQXjxvYHrQ+BVuJhzXlLPUbdngsjT9o0vf6
+         uYUmzrEUKPWDyYwqImODBU03rkq/5q2r1ZRse77/5jbzZ2ZbdPfRWoEgDFXi7tvZQDib
+         KKiwOMyTyPNTlE6DbDFUXbRkge9P5LbCelPWFufvSIQsld51sSM4Eb+aQDvPUDu+HqZ5
+         c/EuzGYP26bua1tM6AhlMjxuishxSbB0C/tRmJtMEllP01kG1m4La3rFduj7FChnHhy9
+         DMXci+K0JH5BarH9OsbnSb+egVIt1mbKSHqf6Rg3thvWSqfOWPIJWg6A+uJuZWSkOoYT
+         3FYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769927755; x=1770532555;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1769983302; x=1770588102;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=z8AdoB6sry4rs5wh+etYdnccb09faRPmAEKL/AFwYIU=;
-        b=aFKrA6QcSOQiapiRzncTiRHizes0J5ALUJpCb/GB0TWO+dbL5vwGp5JjkP6sGyBc/G
-         EzmfuAvmDVJOy8pFNvn4MB+NHXVBC/GjATahUMnUZJMncAkHup32Fn08vUHH4GNeIEgb
-         BVcQH2SatWX0oTxuwJ4mvXDgurA/yJaGzInTQYFhbxKC0SMXeFLn0iLRNyhughWBMau5
-         jBN47+/NimeCsBvkQH9+K42XBLHnQR+5SI92TuRd52pQzr+fA+4Zqcvbe891u3yI5fsA
-         oKMGEGtnBvaKhfm+MPPZRxUt31XzZZ+wx85m5N8E6X++u7co3eM610YJhQFfdnlejBD6
-         0sCA==
-X-Forwarded-Encrypted: i=1; AJvYcCV872a3z+sjunPIrWeFh1SdO5G2PdIgJgBlGycSd6xxgo2oQWE/xlKPe7FwLLmt0sXGPgK2mlII5E15@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3dnclROh+XJrmYJkes1DDWRZDeHl8aoJXlrpmr/HzLB70qKSM
-	xqsZAkpRF1Jm5ot2k2kz6MuVts4kqIql16v1xK2TElX82n6dSLqnDDEA
-X-Gm-Gg: AZuq6aKQjiTEIDLnpyEEeQ9RuXWBhX9t2qmOtDLrzDERiDqVGFCexo6KVAPG6/MQ1YT
-	a6cdBE6/aoIHNActPaxSAl9h2RVX12m0sfd74n2rzzi0tVlp1L/ikEXDJyOZbr1cUMb1K9CX5AA
-	+sBPmZM9F1Ylv7PAPf8NOJZTOX2a/VQbudZk5oCj+eJOuJ5p5J5x0u17vPsyDF+lnAeIRt5OQVz
-	3YtYRfDAFGg7oXs5kbijuZiu9W/gXb9I6ZMN9LJiUvA7grdf52fO0szu4AwBpnaD3zXm3NZir69
-	OTMqsRcwhQutaOiBdGutmuZ41WDx4ZaA8OrhT7vW9Kwo7I+mXrZfTnEzXJNmjMGKOuCtUNA4bVE
-	9RoE9JYr0GR//UU8vFc6N4/AtxLc58K2bT33taTebCe1ZwJzVTFNJAynArky8cQq1jD4H3YXHhT
-	a2kbr08CllvJX9ZF1swMVebXmJLkWlM/N7B4B7zYTLCQ==
-X-Received: by 2002:a05:6a00:12d1:b0:7a4:460e:f86a with SMTP id d2e1a72fcca58-823aa634e4fmr8121991b3a.25.1769927755539;
-        Sat, 31 Jan 2026 22:35:55 -0800 (PST)
-Received: from localhost.localdomain ([113.218.252.120])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b6b2bdsm12149294b3a.30.2026.01.31.22.35.49
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 31 Jan 2026 22:35:55 -0800 (PST)
-From: chengkaitao <pilgrimtao@gmail.com>
-To: davem@davemloft.net,
-	andreas@gaisler.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com
-Cc: kevin.brodsky@arm.com,
-	dave.hansen@linux.intel.com,
-	ziy@nvidia.com,
-	chengkaitao@kylinos.cn,
-	willy@infradead.org,
-	zhengqi.arch@bytedance.com,
-	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v6 2/2] mm: Convert vmemmap_p?d_populate() to static functions
-Date: Sun,  1 Feb 2026 14:35:32 +0800
-Message-ID: <20260201063532.44807-3-pilgrimtao@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260201063532.44807-1-pilgrimtao@gmail.com>
-References: <20260201063532.44807-1-pilgrimtao@gmail.com>
+        bh=nxxXeMZ2Mj2NhEcakAGevZjWJ8Zk/OwUaMBA61xjWow=;
+        b=YVZXlcyW7763V/8FKC5xa6bKgTpF6qlVibmf7L+hLiIzCImDK5EkPHq8ztqUMi1vox
+         h7rj6XTf0JLhdHEm9WS2KHwfyzKrD0tsrPcb4g274tG11Mcdr9rjmgJcfKWikOaj3T5l
+         OUCz0Q0Q6L/WRShoeWACBl61Xb4165Ft+HwY5BHcZ7OWMZ01F/PV56a3+xDH2ySCxC6Q
+         1XH4iFwBP4H6il7WhDkXWpaos1lRYdcd0aMeXcYxH4E7s6AJS2fM2nyMLqHayO0xuD2Z
+         ycMxNpGXM8D0Gk4HrYp6YCgj9PsCrVl/HPykcVdX9GPcT5P6K+Wka+wkVVw9I0J3aPAF
+         UQlA==
+X-Forwarded-Encrypted: i=1; AJvYcCUqRE9fJY9pJXKlBvxEeBBQpHdH2ZYVLEUDmO8kOTuTU+KLcpijG2OK8GT7Sm5bfaZvSfQNATcYGuVs@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoTBs8xXa3+h6cit5DnwLKQM14fGsn7bmpvF+oJe4izaswFfWg
+	y6cuEOS9ToST7bZQtdXiziMSSnY50kkoORmnLAXkxFk95v9je52jY5jB/Pl0BtowfntKcW/SjDS
+	lbRPBLwySFlr7+O1gUD1oJnNDMBu8160=
+X-Gm-Gg: AZuq6aIegyKANIF6/S1nUzoMYFMHjBUHRmr90ivxjuGDURvPoChaZEvnj2CXVw4JiQ3
+	Ws1xgh7eLTpuh67reyZDHNdWlLfsAUKQeRdpN5OyNDcMb0GHqoopl9N2/aJUpdiI+D7KRs53XjB
+	rV/QcPWaodpt8ktP9q4UapQmUzeDHgIJT85YwIgmMxWI03Uvcvjft5U9kipK0WF4fxdYBF6fgrH
+	ckir9H5DHpcCDM3ekuUf+1PnZyAEqxTujuXJ3DWRLnZk30QYluVybVwSDqA+B+1xU1dMUMle8IJ
+	iehD8xdmulD+nZkPPjFBO4Tg9p08
+X-Received: by 2002:a05:6402:90b:b0:64c:9e19:9858 with SMTP id
+ 4fb4d7f45d1cf-658de58d61fmr5598076a12.22.1769983301701; Sun, 01 Feb 2026
+ 14:01:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1769515122.git.zhengqi.arch@bytedance.com> <3380f40a89b73c488202c85f9a8abf99fb08543b.1769515122.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <3380f40a89b73c488202c85f9a8abf99fb08543b.1769515122.git.zhengqi.arch@bytedance.com>
+From: Magnus Lindholm <linmag7@gmail.com>
+Date: Sun, 1 Feb 2026 23:01:30 +0100
+X-Gm-Features: AZwV_Qj9VNkT5OuGD6ka3IvGbnZ780_iMCZkDjCZeudKZ-RrGhxplhYBmunMjcY
+Message-ID: <CA+=Fv5RhxvyxKr2t+pHd1tbGrK57P-+b3pGe1nVaK_OLiFt2wg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/8] alpha: mm: enable MMU_GATHER_RCU_TABLE_FREE
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: david@kernel.org, andreas@gaisler.com, richard.weiyang@gmail.com, 
+	will@kernel.org, peterz@infradead.org, aneesh.kumar@kernel.org, 
+	npiggin@gmail.com, dev.jain@arm.com, ioworker0@gmail.com, 
+	akpm@linux-foundation.org, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-alpha@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linux-um@lists.infradead.org, 
+	sparclinux@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-6216-lists,sparclinux=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pilgrimtao@gmail.com,sparclinux@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-6218-lists,sparclinux=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[sparclinux];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	FREEMAIL_CC(0.00)[kernel.org,gaisler.com,gmail.com,infradead.org,arm.com,linux-foundation.org,vger.kernel.org,kvack.org,lists.linux.dev,lists.infradead.org,bytedance.com,linaro.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	SUBJECT_HAS_QUESTION(0.00)[]
-X-Rspamd-Queue-Id: E061FC505B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linmag7@gmail.com,sparclinux@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[sparclinux];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email,bytedance.com:email,linux.dev:email]
+X-Rspamd-Queue-Id: 66655C7549
 X-Rspamd-Action: no action
 
-From: Chengkaitao <chengkaitao@kylinos.cn>
+On Tue, Jan 27, 2026 at 1:16=E2=80=AFPM Qi Zheng <qi.zheng@linux.dev> wrote=
+:
+>
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>
+> On a 64-bit system, madvise(MADV_DONTNEED) may cause a large number of
+> empty PTE page table pages (such as 100GB+). To resolve this problem,
+> first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
+> PT_RECLAIM feature, which resolves this problem.
+>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Cc: Richard Henderson <richard.henderson@linaro.org>
+> Cc: Matt Turner <mattst88@gmail.com>
+> ---
+>  arch/alpha/Kconfig           | 1 +
+>  arch/alpha/include/asm/tlb.h | 6 +++---
+>  2 files changed, 4 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+> index 80367f2cf821c..6c7dbf0adad62 100644
+> --- a/arch/alpha/Kconfig
+> +++ b/arch/alpha/Kconfig
+> @@ -38,6 +38,7 @@ config ALPHA
+>         select OLD_SIGSUSPEND
+>         select CPU_NO_EFFICIENT_FFS if !ALPHA_EV67
+>         select MMU_GATHER_NO_RANGE
+> +       select MMU_GATHER_RCU_TABLE_FREE
+>         select SPARSEMEM_EXTREME if SPARSEMEM
+>         select ZONE_DMA
+>         help
+> diff --git a/arch/alpha/include/asm/tlb.h b/arch/alpha/include/asm/tlb.h
+> index 4f79e331af5ea..ad586b898fd6b 100644
+> --- a/arch/alpha/include/asm/tlb.h
+> +++ b/arch/alpha/include/asm/tlb.h
+> @@ -4,7 +4,7 @@
+>
+>  #include <asm-generic/tlb.h>
+>
+> -#define __pte_free_tlb(tlb, pte, address)              pte_free((tlb)->m=
+m, pte)
+> -#define __pmd_free_tlb(tlb, pmd, address)              pmd_free((tlb)->m=
+m, pmd)
+> -
+> +#define __pte_free_tlb(tlb, pte, address)      tlb_remove_ptdesc((tlb), =
+page_ptdesc(pte))
+> +#define __pmd_free_tlb(tlb, pmd, address)      tlb_remove_ptdesc((tlb), =
+virt_to_ptdesc(pmd))
+> +
+>  #endif
+> --
+> 2.20.1
+>
 
-Since the vmemmap_p?d_populate functions are unused outside the mm
-subsystem, we can remove their external declarations and convert
-them to static functions.
+Looks good from an Alpha perspective.
 
-Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
----
- include/linux/mm.h  |  7 -------
- mm/sparse-vmemmap.c | 10 +++++-----
- 2 files changed, 5 insertions(+), 12 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index f0d5be9dc736..10a0664b4ce2 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4238,13 +4238,6 @@ unsigned long section_map_size(void);
- struct page * __populate_section_memmap(unsigned long pfn,
- 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
- 		struct dev_pagemap *pgmap);
--pgd_t *vmemmap_pgd_populate(unsigned long addr, int node);
--p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
--pud_t *vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node);
--pmd_t *vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node);
--pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
--			    struct vmem_altmap *altmap, unsigned long ptpfn,
--			    unsigned long flags);
- void *vmemmap_alloc_block(unsigned long size, int node);
- struct vmem_altmap;
- void *vmemmap_alloc_block_buf(unsigned long size, int node,
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 37522d6cb398..67f9a08c2376 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -151,7 +151,7 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
- 			start, end - 1);
- }
- 
--pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
-+static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
- 				       struct vmem_altmap *altmap,
- 				       unsigned long ptpfn, unsigned long flags)
- {
-@@ -195,7 +195,7 @@ static void * __meminit vmemmap_alloc_block_zero(unsigned long size, int node)
- 	return p;
- }
- 
--pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
-+static pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
- {
- 	pmd_t *pmd = pmd_offset(pud, addr);
- 	if (pmd_none(*pmd)) {
-@@ -208,7 +208,7 @@ pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
- 	return pmd;
- }
- 
--pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
-+static pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
- {
- 	pud_t *pud = pud_offset(p4d, addr);
- 	if (pud_none(*pud)) {
-@@ -221,7 +221,7 @@ pud_t * __meminit vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node)
- 	return pud;
- }
- 
--p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
-+static p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
- {
- 	p4d_t *p4d = p4d_offset(pgd, addr);
- 	if (p4d_none(*p4d)) {
-@@ -234,7 +234,7 @@ p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
- 	return p4d;
- }
- 
--pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
-+static pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
- {
- 	pgd_t *pgd = pgd_offset_k(addr);
- 	if (pgd_none(*pgd)) {
--- 
-2.50.1 (Apple Git-155)
-
+Acked-by: Magnus Lindholm <linmag7@gmail.com>
 
