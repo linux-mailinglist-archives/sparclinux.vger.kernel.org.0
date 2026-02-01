@@ -1,57 +1,104 @@
-Return-Path: <sparclinux+bounces-6214-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6217-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4C/1J/SFfmn0aAIAu9opvQ
-	(envelope-from <sparclinux+bounces-6214-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Sat, 31 Jan 2026 23:45:08 +0100
+	id oAA7AUwQf2nijAIAu9opvQ
+	(envelope-from <sparclinux+bounces-6217-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Sun, 01 Feb 2026 09:35:24 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D985C4407
-	for <lists+sparclinux@lfdr.de>; Sat, 31 Jan 2026 23:45:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B37C5429
+	for <lists+sparclinux@lfdr.de>; Sun, 01 Feb 2026 09:35:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D804430054E2
-	for <lists+sparclinux@lfdr.de>; Sat, 31 Jan 2026 22:45:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BCCF93003811
+	for <lists+sparclinux@lfdr.de>; Sun,  1 Feb 2026 08:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79102376479;
-	Sat, 31 Jan 2026 22:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E3B1A0BE0;
+	Sun,  1 Feb 2026 08:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NALdNRVY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CmkSJyZX"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF99836AB79
-	for <sparclinux@vger.kernel.org>; Sat, 31 Jan 2026 22:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7242E62A6
+	for <sparclinux@vger.kernel.org>; Sun,  1 Feb 2026 08:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769899506; cv=none; b=SONrZoJ0dZXXovvF2czWrh8ufnkGXCQxdEdChhiIH0YIwEk4oB/d28eM9uoqKN4hBJCTQN6RvQAqCE9rrjSTYihjO3iEt32OyAUHESqgZX/Du1fV+YHL7FwCIaJ2wE/FSIHHDZ0XhH0GgPICZAHXmILg2PrTEExHdZr998Az1G8=
+	t=1769934919; cv=none; b=Jt7enfskKhWmFRkNx6KjCPwzNT/LCy8sBtmfMJ0G+xiy9uorAdbcZKKKeiMV5DIs7jMycwKAunIPFma2M6vN3oS5x4GeIAcC06MygZ2D4gGLQMqfKpHlfi8hC9KLnfK04yGDMk2PZ1tkGTZOAlgwClQM6FH8mmN1Evs54d4y4V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769899506; c=relaxed/simple;
-	bh=vj9KzDQ8pbEmM59VbkkSTwe/l9ZYsPVdEfuACv7077U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fARaRXVoCfPq+8PJlNgRC3vK3M697uX1uWXmtZOP7NgUfN8pMAhm2TEj/ltdJoDd1T/H084xBtw/h8+rscOOoX7V0kRq1nqM+YHIsGdGwWdvZpwuh/3Bh9gbvQL/SJ7ZKLnECRxL+0jR79D4xeQSY7RAWzrn/9MJSj5mYFyZHvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NALdNRVY; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769899492;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=SM87LpUC+3IR2vTANL07qz7fL7oEl904Az/N3IIT/eY=;
-	b=NALdNRVYBvVli+daj7X6NNDMtk6QIuifFk43V7wboDdJvz4S6O+0Fxrovy6Uvg3ZIvgpSf
-	7wWnFt3EY+Prlq8t6x2TiDkKB6l2crmjD+ZEz4zqfirO7paPmqxeQVdEd8YjJWJtEMg4f+
-	Kg8nRt9qHwnchc/pLtmQGpOM7G0kUuY=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	s=arc-20240116; t=1769934919; c=relaxed/simple;
+	bh=Jq3TH0XhSi0dRpQ1ehkC4waWr/uSuDhMY8cMzjBNwKA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jnLT4oUggImn9E4zl27oe8XtqJA70KzwbgvcDkhrvFbMlZCIb8+rUvz7M68TvP9JkeuCWNG5c/5UuRtTaAs29CIrj2+wjuRtZG+xst6fpyvL+jM/30cp6Jg9aMJfkZC1MjiZGrgsgmv9CeNyGt3FRpPgJZCgzOaFtAmG7DSDf/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CmkSJyZX; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8ca01dc7d40so87801285a.1
+        for <sparclinux@vger.kernel.org>; Sun, 01 Feb 2026 00:35:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769934917; x=1770539717; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6eutNLEmldLaIWi2QOrKdJ7W1VjSKq79ja0CoQ+cj7Y=;
+        b=CmkSJyZXT4TCSklCAMBnTrMOqRAVOBOW+j8jX5enwgLpi50G10GL1DoQpHYUTVW9ns
+         PQ890fskhIwzbDBr/uiqTk927yyjtkb7TZLlBbliSB+EbUpfY5cot2PQUNvPnvtBBi0e
+         6AP/SVKXkCaX4F9HRkcFyuHghNMESFFt6V9BvgNK3nvD7+MKcnSlg+NrhK/NDtPWem72
+         pXdAQNulLZLviRZtLAAs3EL9o8NQM+FFMUzzDM22SgTURrETW0qb4mefEl4WGTRIU6M2
+         +PbTVwMQR7MtQEqgJ4Fs94TjhTempffamhbmHEIhwDzopPfxFBxIn8dNy0Oa5UkoJH8d
+         8pZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769934917; x=1770539717;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6eutNLEmldLaIWi2QOrKdJ7W1VjSKq79ja0CoQ+cj7Y=;
+        b=IB5tQ488iDBa6dSirznz7mZN5jCofI3pJHG2Eu2Y6D9FjzxMVSSCXOXuJUkXY9kvj/
+         GRZdgxFKUrSiaQa31s50mgzTVjyG0I6Qkdndt6aPSGdPE9+NEdOKqLrFKkadaZ9UZUoN
+         Pmicobq9BOGLw5/NjmFoGIyatet9bOKbRTgzp5WrKmQlpwvICpC9Ky8q4yKYFnChwt74
+         xLqp6UlNNebQObLgh8kTB7fee00bKl6CWQVzw56HsFdgvy7le+ixECpfx6Ug5kUgBzFy
+         3FywEOHcHoexfvGF7nlhOhlHhWO/2FDwbmcp75FNN/UTxQu1epC/Bl8id2fSyrouu2BK
+         QG+A==
+X-Forwarded-Encrypted: i=1; AJvYcCWXkNZwdZJKooMp5wczGF/8xnKvGh8UPBr5s+3goBAyK2cbjCgM5OkUfZMsK83BBXTHItrUbg1lBZdq@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNlNjEgpomOWi8cmS7UJE0r0zPsUq4Xg8TqvipmiwidP6KxjPk
+	VGTILYk/HmPr8RWBWgm8ppQfcwpX19QQvduBUmJdTlaMuFCEw48/Acjr
+X-Gm-Gg: AZuq6aIQq4XGd4SG7cPDF1NSyzYJi1xInxDG9ydfJ/WzWf+BQcEtZb2Nu7WcST19qbf
+	/nF/fFMa7NP0tNhXhQUvkZ/4U007FrcEgCk7DSoJ4iqu/KDkMD8HkFhzTrT/6R0Z4MxYKCDSiqT
+	5FTsAEF32BRJjFo1GvDZe5QsSG3MuZk2NCXi2NQjYaA3we/VxernElqPbnvgX7wPGCVNKwTY3rM
+	CV+TAR6HPXUgsv0EXj5dJMxIIcRuYhQGphU2IeNT0+4iEZM8OTKpOBbBbDpLr+nA1Q12Ony62o7
+	WXTpT6xaDS+oML2AxDNTTyxWlz0VpilK4ca+ydHp5OqFUopQwsai4qMeQdUYCOTepm9CVCYfvan
+	ZgjZdtx9Diw0kOzmYnFcz/I1ek7IY1FwRH3dmq57a1NkW92SDAlBdLsDSrpWn9XRA0oCq44fume
+	Or9ATn718VQuYGrKXGdWMxZMTNU9Ap299r4LXa6QWhzg==
+X-Received: by 2002:a05:6a00:21c3:b0:821:7d75:f42d with SMTP id d2e1a72fcca58-823aa710b20mr7502550b3a.42.1769927743937;
+        Sat, 31 Jan 2026 22:35:43 -0800 (PST)
+Received: from localhost.localdomain ([113.218.252.120])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b6b2bdsm12149294b3a.30.2026.01.31.22.35.37
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 31 Jan 2026 22:35:43 -0800 (PST)
+From: chengkaitao <pilgrimtao@gmail.com>
+To: davem@davemloft.net,
+	andreas@gaisler.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com
+Cc: kevin.brodsky@arm.com,
+	dave.hansen@linux.intel.com,
+	ziy@nvidia.com,
+	chengkaitao@kylinos.cn,
+	willy@infradead.org,
+	zhengqi.arch@bytedance.com,
 	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] sparc: vio: Replace snprintf with strscpy in vio_create_one
-Date: Sat, 31 Jan 2026 23:44:11 +0100
-Message-ID: <20260131224413.559324-2-thorsten.blum@linux.dev>
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	chengkaitao <pilgrimtao@gmail.com>
+Subject: [PATCH v6 0/2] Generalize vmemmap_populate_hugepages to sparc
+Date: Sun,  1 Feb 2026 14:35:30 +0800
+Message-ID: <20260201063532.44807-1-pilgrimtao@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
@@ -59,68 +106,92 @@ List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6214-lists,sparclinux=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[arm.com,linux.intel.com,nvidia.com,kylinos.cn,infradead.org,bytedance.com,vger.kernel.org,kvack.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-6217-lists,sparclinux=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,sparclinux@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[pilgrimtao@gmail.com,sparclinux@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[sparclinux];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8D985C4407
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 32B37C5429
 X-Rspamd-Action: no action
 
-Replace snprintf("%s", ...) with the faster and more direct strscpy().
+Change sparc's implementation of vmemmap_populate() using
+vmemmap_populate_hugepages() to streamline the code. Another
+benefit is that it allows us to eliminate the external declarations
+of vmemmap_p?d_populate functions and convert them to static functions.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- arch/sparc/kernel/vio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Since vmemmap_populate_hugepages may fallback to vmemmap_populate-
+_basepages, which differs from sparc's original implementation.
+During the v1 discussion with Mike Rapoport, sparc uses base pages
+in the kernel page tables, so it should be able to use them in
+vmemmap as well. Consequently, no additional special handling is
+required.
 
-diff --git a/arch/sparc/kernel/vio.c b/arch/sparc/kernel/vio.c
-index 1a1a9d6b8f2e..8c7dd72ef334 100644
---- a/arch/sparc/kernel/vio.c
-+++ b/arch/sparc/kernel/vio.c
-@@ -12,6 +12,7 @@
- 
- #include <linux/kernel.h>
- #include <linux/slab.h>
-+#include <linux/string.h>
- #include <linux/irq.h>
- #include <linux/export.h>
- #include <linux/init.h>
-@@ -378,8 +379,7 @@ static struct vio_dev *vio_create_one(struct mdesc_handle *hp, u64 mp,
- 	 * the parent doesn't require the MD node info.
- 	 */
- 	if (node_name != NULL) {
--		(void) snprintf(vdev->node_name, VIO_MAX_NAME_LEN, "%s",
--				node_name);
-+		strscpy(vdev->node_name, node_name);
- 
- 		err = mdesc_get_node_info(hp, mp, node_name,
- 					  &vdev->md_node_info);
+Changes in v6:
+- Ignore handling of altmap
+
+Changes in v5:
+- Remove [PATCH v4 3/3] sparc: Remove unnecessary whitespace
+
+Changes in v4:
+- Add commit message
+- Add verification that pmd actually maps a large page in the
+vmemmap_check_pmd function
+
+Changes in v3:
+- Allow sparc to fallback to vmemmap_populate_basepages
+- Convert vmemmap_p?d_populate() to static functions
+- Split the v1 patch
+
+Changes in v2:
+- Revert the whitespace deletions
+- Change vmemmap_false_pmd to vmemmap_pte_fallback_allowed
+
+Link to V5:
+https://lore.kernel.org/all/20260111074453.66728-1-pilgrimtao@gmail.com/
+Link to V4:
+https://lore.kernel.org/all/20251219115812.65855-1-pilgrimtao@gmail.com/
+Link to V3:
+https://lore.kernel.org/all/20251218174749.45965-1-pilgrimtao@gmail.com/
+Link to V2:
+https://lore.kernel.org/all/20251218130957.36892-1-pilgrimtao@gmail.com/
+Link to V1:
+https://lore.kernel.org/all/20251217120858.18713-1-pilgrimtao@gmail.com/
+
+Chengkaitao (2):
+  sparc: Use vmemmap_populate_hugepages for vmemmap_populate
+  mm: Convert vmemmap_p?d_populate() to static functions
+
+ arch/sparc/mm/init_64.c | 47 ++++++++++++++---------------------------
+ include/linux/mm.h      |  7 ------
+ mm/sparse-vmemmap.c     | 10 ++++-----
+ 3 files changed, 21 insertions(+), 43 deletions(-)
+
 -- 
-Thorsten Blum <thorsten.blum@linux.dev>
-GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
+2.50.1 (Apple Git-155)
 
 
