@@ -1,136 +1,145 @@
-Return-Path: <sparclinux+bounces-6227-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6231-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNBhFrKehGmI3wMAu9opvQ
-	(envelope-from <sparclinux+bounces-6227-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Thu, 05 Feb 2026 14:44:18 +0100
+	id MApECUPGhWnAGAQAu9opvQ
+	(envelope-from <sparclinux+bounces-6231-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Fri, 06 Feb 2026 11:45:23 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC277F377D
-	for <lists+sparclinux@lfdr.de>; Thu, 05 Feb 2026 14:44:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3409AFCC1F
+	for <lists+sparclinux@lfdr.de>; Fri, 06 Feb 2026 11:45:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D57883061CD3
-	for <lists+sparclinux@lfdr.de>; Thu,  5 Feb 2026 13:40:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7DADA3007B24
+	for <lists+sparclinux@lfdr.de>; Fri,  6 Feb 2026 10:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0EA522DA1C;
-	Thu,  5 Feb 2026 13:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDB32D948D;
+	Fri,  6 Feb 2026 10:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HQFtKBtz"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="bP1Wad4T"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3F222A4D6
-	for <sparclinux@vger.kernel.org>; Thu,  5 Feb 2026 13:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F4D86353;
+	Fri,  6 Feb 2026 10:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770298823; cv=none; b=P6Lkopnistn1FIZ/htW6nhqgaveclvE7geFeWz1ioGnae3GlNDoRzXJKCAG4gPIdzo25EHZ5IkrQTq/aSCGAq+o5VQZjTpGBGJOjN6bc8Z3rr1LIgsccOmRD3PHMjtGjtC22/RFe8ayZ35YusreHxBgtW9hr28pDhqjEaMM1ecs=
+	t=1770374717; cv=none; b=FQaOBFL8AYNCFYyOiMU6bMp8Pff7buDu6aNg6B04wXXmfh5vsz8g88Mrgweci0P7F/+fR3sDV/eMvsIOvvHnLbbP1jax+Mlz4AB7aXslJ6wcUy/NMjTRh2WWS2bpMC2K1dona7ryw2LGhKd1jcOxF2yOQDRNmYQ3t4YpCC0mbIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770298823; c=relaxed/simple;
-	bh=SsI9AbF+M4sRTUlIYuRSIpvqIQsoogaUtAPhCHpHM9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A4p6T/iWLx4QsxVfvKNby+GRUqZInxsoVN6PfFH7D7qWTimYy8U9X6noFG9bMPqz2NGGwrBOMf0cDNJ71BKthc6C5wqFYgn9YnUhKDdX0pCsjNI6NyrYMCU792tjPCk7kchw/43Bn31t13bn2ox52pge93hOChTryBdayboahQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HQFtKBtz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9ACC4CEF7;
-	Thu,  5 Feb 2026 13:40:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770298823;
-	bh=SsI9AbF+M4sRTUlIYuRSIpvqIQsoogaUtAPhCHpHM9I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HQFtKBtzxcTDGxgU7qV1Br4x2uMK7LtjT14p+iX09ng4ZIYRkQlyOViixMm7zc3CH
-	 PY+Pj8NADp8qKmnEsFIgrfL8Qt9g7eqHWEa2HH/M5GBY2odLcZ2dtt0xNcRHrj3jEQ
-	 rBiIUJdLNbzJsdouq4oJ0eAk2xeSItp+KQ2jzDkibIOPLPP9TNar9RWkapNU0VNF7+
-	 fzyMVcdpnUr/FoIEOHnIwXC+jwkJ7XGAJpBqTox4TSym2VTVmmE/TNCMQ5JUaE+Vhz
-	 nRzTLyhhmEJlVGsSichNKsBnWsA2YTyX/GUh1MYc4GcILWqHtWDo7ZDnPDcbkaeNql
-	 FXDx05LTm3j3Q==
-From: alexs@kernel.org
-To: 
-Cc: Alex Shi <alexs@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	sparclinux@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH v2] sparc: remove unused variable strtab
-Date: Thu,  5 Feb 2026 21:39:59 +0800
-Message-ID: <20260205134007.31647-1-alexs@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1770374717; c=relaxed/simple;
+	bh=g36gGgJ987iw+9/ldLasHbPw+mEBGkb487CgA9aE00s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UK+/mQjVXpwKRDRHlyMUWc9F3DBPW6YsHcBfHD6V93/e9sEXOH7nCG5XT86v120JmfPjAjr17ZG5yBxevIlZ0zL1g6VsCkrLiFqqpQrymo4UPPCyUxN4+avD/yKQhSadtLnVPzsrXMsSz1s/kIk5A7mY26HAcjmSPpkPxj54Y7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=bP1Wad4T reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4f6rCd4DHPz1DQrn;
+	Fri,  6 Feb 2026 11:38:21 +0100 (CET)
+Received: from [10.10.15.18] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4f6rCd23Wqz1DR2b;
+	Fri,  6 Feb 2026 11:38:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1770374301;
+	bh=VhZbm9gQWN7xq1Fz5NZq8VZ90NrJOYkZWPqsJ/s5DMg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bP1Wad4TZNICU2FOrN8BiolPoBrf6qGYiQcaAJ0BQZS1BtVFR/unXCgk6w34ROPUP
+	 UbwaSFJybmrWIGjLC+ACCJyEDIfIcEvA7dXp8fkIj96L7B3QXcOKH+yKwTn50BPSp3
+	 r7/Gg8TUA1P5AtcgMilU9pBEfa1ntaUNZa15QZy+7R2adnDisX9kUNYRweL5bDpJWt
+	 7Uu5ZypN6Io1tFoXwf22kVYztJVUBQnJ2iKxUuqBtufHXnUve7jhtCoS8HjXOzmgbn
+	 nJw+Af2ctaTGubouAfPDXH2zf9O+Rt2bAeLwbpxcFXQjHMalzkWAI6KeYZ7SL9SESx
+	 ZSdkAbonIttrg==
+Message-ID: <ba8111d4-d695-4ac2-9ccd-5722e6aacd7f@gaisler.com>
+Date: Fri, 6 Feb 2026 11:38:20 +0100
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] sparc: vio: Replace snprintf with strscpy in
+ vio_create_one
+To: Thorsten Blum <thorsten.blum@linux.dev>,
+ "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260131224413.559324-2-thorsten.blum@linux.dev>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20260131224413.559324-2-thorsten.blum@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[gaisler.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6227-lists,sparclinux=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-6231-lists,sparclinux=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_NO_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	R_DKIM_PERMFAIL(0.00)[gaisler.com:s=simplycom2];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gaisler.com:~];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_SPAM(0.00)[0.991];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexs@kernel.org,sparclinux@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[sparclinux];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[andreas@gaisler.com,sparclinux@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gaisler.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,davemloft.net:email,intel.com:email]
-X-Rspamd-Queue-Id: CC277F377D
+	TAGGED_RCPT(0.00)[sparclinux];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gaisler.com:mid,gaisler.com:email,linux.dev:email]
+X-Rspamd-Queue-Id: 3409AFCC1F
 X-Rspamd-Action: no action
 
-From: Alex Shi <alexs@kernel.org>
+On 2026-01-31 23:44, Thorsten Blum wrote:
+> Replace snprintf("%s", ...) with the faster and more direct strscpy().
+> 
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>  arch/sparc/kernel/vio.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/sparc/kernel/vio.c b/arch/sparc/kernel/vio.c
+> index 1a1a9d6b8f2e..8c7dd72ef334 100644
+> --- a/arch/sparc/kernel/vio.c
+> +++ b/arch/sparc/kernel/vio.c
+> @@ -12,6 +12,7 @@
+>  
+>  #include <linux/kernel.h>
+>  #include <linux/slab.h>
+> +#include <linux/string.h>
+>  #include <linux/irq.h>
+>  #include <linux/export.h>
+>  #include <linux/init.h>
+> @@ -378,8 +379,7 @@ static struct vio_dev *vio_create_one(struct mdesc_handle *hp, u64 mp,
+>  	 * the parent doesn't require the MD node info.
+>  	 */
+>  	if (node_name != NULL) {
+> -		(void) snprintf(vdev->node_name, VIO_MAX_NAME_LEN, "%s",
+> -				node_name);
+> +		strscpy(vdev->node_name, node_name);
+>  
+>  		err = mdesc_get_node_info(hp, mp, node_name,
+>  					  &vdev->md_node_info);
 
-The commit 1b35a57b1c178 ("sparc32: Kill off software 32-bit multiply/divide
- routines") removed the last usage of strtab in funtion module_frob_arch_sections
-Therefore, it can be removed now.
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
 
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: sparclinux@vger.kernel.org
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Alex Shi <alexs@kernel.org>
----
-v1->v2:
- Change subject prefix: arch/sparc32 -> sparc
+Picking this up to my for-next.
 
- arch/sparc/kernel/module.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/sparc/kernel/module.c b/arch/sparc/kernel/module.c
-index 49740450a685..2a8770369beb 100644
---- a/arch/sparc/kernel/module.c
-+++ b/arch/sparc/kernel/module.c
-@@ -29,7 +29,6 @@ int module_frob_arch_sections(Elf_Ehdr *hdr,
- {
- 	unsigned int symidx;
- 	Elf_Sym *sym;
--	char *strtab;
- 	int i;
- 
- 	for (symidx = 0; sechdrs[symidx].sh_type != SHT_SYMTAB; symidx++) {
-@@ -39,7 +38,6 @@ int module_frob_arch_sections(Elf_Ehdr *hdr,
- 		}
- 	}
- 	sym = (Elf_Sym *)sechdrs[symidx].sh_addr;
--	strtab = (char *)sechdrs[sechdrs[symidx].sh_link].sh_addr;
- 
- 	for (i = 1; i < sechdrs[symidx].sh_size / sizeof(Elf_Sym); i++) {
- 		if (sym[i].st_shndx == SHN_UNDEF) {
--- 
-2.43.0
+Thanks,
+Andreas
 
 
