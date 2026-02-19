@@ -1,163 +1,227 @@
-Return-Path: <sparclinux+bounces-6299-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6300-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yN7FCwtJl2m2wQIAu9opvQ
-	(envelope-from <sparclinux+bounces-6299-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Thu, 19 Feb 2026 18:31:55 +0100
+	id kHdWBldKl2m2wQIAu9opvQ
+	(envelope-from <sparclinux+bounces-6300-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Thu, 19 Feb 2026 18:37:27 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76E616136D
-	for <lists+sparclinux@lfdr.de>; Thu, 19 Feb 2026 18:31:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71842161493
+	for <lists+sparclinux@lfdr.de>; Thu, 19 Feb 2026 18:37:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 292913003637
-	for <lists+sparclinux@lfdr.de>; Thu, 19 Feb 2026 17:31:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0B773016938
+	for <lists+sparclinux@lfdr.de>; Thu, 19 Feb 2026 17:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87ADF33A719;
-	Thu, 19 Feb 2026 17:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A19634F481;
+	Thu, 19 Feb 2026 17:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EE1AbYSe"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Cs7eIaIO"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F32296BAF;
-	Thu, 19 Feb 2026 17:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3C334FF40;
+	Thu, 19 Feb 2026 17:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771522311; cv=none; b=qIt/h4ME7mRIPXJBHaKmmEMR4YphRfP42G6xgFBGjp42W3zYCzevzWirxRf9yLbmLu70v0OX9XaZfwjomARrUY6JpM6xboPRJheEgIkfyuSItcE5Dw9sxFPm72J3wOfFHnwG2LyE/nP6YbqqeqZgSfqas8a74LoxLC6EiGn6sq4=
+	t=1771522644; cv=none; b=EC6QnvsQVnxQl6DdonMTgemlvQIhXbs29vJolQRIpyAxtuUnwwnYfT5SFf143yU9gO7q2mgR0pDqMGvXRZ6dF5XErAsR4iteL3/3bEeUKg+3aHrD/UKUd7cGkCBOqoJC5Z/Cu8aXCFPnohUFCkUlAXOY2qRvojCMw/6hqx/uQCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771522311; c=relaxed/simple;
-	bh=0dApmxehIq0f8g9XqkVrjuvILuR13XJVXhzmBt9EhFs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=axft+X8WaELV6d2lj+owYoA/tMqf5fR81kZC1WwZgR1+lAt4nrECYuSh93mH2b5vVHhAd6s+bdbjQvBlYJQfDPFTJ54xUgxXYbBRKhsTP9tZuKUjNUkUZZejlbvNreI3UCIDmrPwXabM46Uy6XLWL0YJv644dZaGVYRalsRiovI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EE1AbYSe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC62C4CEF7;
-	Thu, 19 Feb 2026 17:31:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771522311;
-	bh=0dApmxehIq0f8g9XqkVrjuvILuR13XJVXhzmBt9EhFs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=EE1AbYSeKETi2ThDlSv0TnnumMJA/WnZ349B6kNnGdpgA9LW/9+vC7JayIZNWGJSZ
-	 hEs+ayWmYXnxhqOQLanbr2uZHkKEDjAA9D6xvTp7fL0IePQVB2XeboRqLwoV82QKtw
-	 ZLK5YLmh8GHnmmahCi+0QjAjEZmIk2meP4n3FFiP9rZFrhicOFDwFMY5feIqmkwiq8
-	 idKz/foFLrSwzQtL8BkTL9L+4XBl59WRnJSr/iU5D9g3UiZGyX4QrJI2aS36gc0iOv
-	 hVOUqM+A9TH5uJeDCATcOfemJe+0O08Cl8OQKJd5zu/yjepam7Xlc5ZNQWHbZ3aFhP
-	 QJw4S7nCQjCrQ==
-Date: Thu, 19 Feb 2026 11:31:49 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Nilay Shroff <nilay@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
-	wangruikang@iscas.ac.cn, tglx@kernel.org, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
-	gjoyce@ibm.com, "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org
-Subject: Re: [PATCH] powerpc/pci: Initialize msi_addr_mask for OF-created PCI
- devices
-Message-ID: <20260219173149.GA3486808@bhelgaas>
+	s=arc-20240116; t=1771522644; c=relaxed/simple;
+	bh=lX1hnLN1OOqhBIpO8jC29BzHDnuNF40ts7a/m18UObw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UaaJlkoRA8XZSO7FHZ6zTGQo4SbTdYkWRFoidu1F2M+q37zrXPmxfb8qre7Q+cV8rH2lnRyXTDLCEyEX21KJJo2SyQ+p6r3PeHoplAt1hL9OnuE/JHT0PzYv/qp3nG8Nr3xkhZ9mT47/4n/3skgUetcx5Q/wK3+qIAQiqO9n4Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Cs7eIaIO; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61J99tXr1600918;
+	Thu, 19 Feb 2026 17:37:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=KzUa/D
+	AODjPXOJZk+zAZxaDHAy0uF4q50JpQeGI7vUs=; b=Cs7eIaIOR6mpPx6OX2Wf4/
+	rStp2r3A/nRexuR9jl8YKNfmCFmoFTxMgDB2tsSSWu7Tk60Psz31F+HJsQoCncv2
+	2fcThhrONaaaTGgct0o/welIJO9zsrPxMFRzCzjysICLQf7v+8F7Xy4Tz4KUnyP/
+	nc2KePRIV6QwWqduyHY89PGjV0NBQhTsKqFdW935Du+oPva5obrcDKOPtt/TQG3s
+	0EGtrn9CjXS5rc+NdFMQhK79JSOXD0S2q1Vvp82KnI6GWUVbpwo7PYTqZMYWOOg5
+	OiZZXlU1XV45/jf2cOF4ELDJPVc5LVUOsCOQ9XsM9C8zZkcfr5E2ZjyRShcdVi3A
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cajcr7bca-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Feb 2026 17:37:05 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61JHZRq1024327;
+	Thu, 19 Feb 2026 17:37:04 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb45d699-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Feb 2026 17:37:04 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61JHb3mN14680590
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Feb 2026 17:37:03 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B94AF58062;
+	Thu, 19 Feb 2026 17:37:03 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AE5F458052;
+	Thu, 19 Feb 2026 17:36:56 +0000 (GMT)
+Received: from [9.111.6.127] (unknown [9.111.6.127])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Feb 2026 17:36:56 +0000 (GMT)
+Message-ID: <4eaa7872-6bae-4419-9281-203c04f1996d@linux.ibm.com>
+Date: Thu, 19 Feb 2026 23:06:54 +0530
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260217174537.1154686-1-nilay@linux.ibm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/pci: Initialize msi_addr_mask for OF-created PCI
+ devices
+To: Bjorn Helgaas <helgaas@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+        wangruikang@iscas.ac.cn, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        npiggin@gmail.com, chleroy@kernel.org, gjoyce@ibm.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org
+References: <20260219173149.GA3486808@bhelgaas>
+Content-Language: en-US
+From: Nilay Shroff <nilay@linux.ibm.com>
+In-Reply-To: <20260219173149.GA3486808@bhelgaas>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: i2oEi-oEaCIUdP7mOfcn8jNXprvsrnrx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE5MDE1NSBTYWx0ZWRfX6fztuDLfQP78
+ bs3iMVzUMjYjN4HReCzlptyDs1e/aVd5gc28eUa3+0C2e1fLhqAb6j5XVUcJ1S1avz9ojUvbIBj
+ tjkOk+P7R3piB88A/3A1AIPjRdb92BdQQ34C4asuNzbUhmqB7K8O1AbimaSnriwRjj5kanTjBtj
+ jP3rZTrbdtCl1Tg1dRoocVhJ7uRQGzWvEPkfmAUIgG042ydXE2JYTGKXMp35dpN/USEqr5n4uui
+ ZdnSXYcZkDqbRlXNtr809t0+tSMD9Z/Aa/daO6pvSuFfONTLf3pyAMqKmQNFvqNhwFCtQDWR1/X
+ LIQiEL2f7q1uhFWG5ReA/9GqUazbW0/gBrevjUxe8k2pYbjY3JE8XaknSh5cVkqjYVf+YOmqypM
+ RGH8ABSvkly4bWHGRuLRS5fG/izUxaNvGDAIAVbppjSynUyMjREnZ7G8bkKFqsPDST1Fdnz7W0n
+ G52t2XnceWl9Dhwe/2A==
+X-Authority-Analysis: v=2.4 cv=UPXQ3Sfy c=1 sm=1 tr=0 ts=69974a42 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=3Jw2BVf9RI64lIZzIOoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: xgNA2-reBvL-KTMEoudIcSE0TvYu7ral
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-19_04,2026-02-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 phishscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602190155
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6299-lists,sparclinux=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,iscas.ac.cn,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,ibm.com,davemloft.net,gaisler.com];
+	TAGGED_FROM(0.00)[bounces-6300-lists,sparclinux=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,iscas.ac.cn,kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,ibm.com,davemloft.net,gaisler.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nilay@linux.ibm.com,sparclinux@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,sparclinux@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[sparclinux];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C76E616136D
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 71842161493
 X-Rspamd-Action: no action
 
-[+cc sparc folks, PCI enumeration via OF likely broken]
 
-On Tue, Feb 17, 2026 at 11:15:26PM +0530, Nilay Shroff wrote:
-> Recent changes [1] replaced the use of no_64bit_msi with msi_addr_mask.
-> As a result, msi_addr_mask is now expected to be initialized to
-> DMA_BIT_MASK(64) when a pci_dev is set up. However, this initialization
-> was missed on powerpc due to differences in the device initialization
-> path compared to other architectures. Due to this, now pci device probe
-> method fails on powerpc system.
 
-s/pci/PCI/ to match below.
-
-> On powerpc systems, struct pci_dev instances are created from device
-> tree nodes via of_create_pci_dev(). Because msi_addr_mask was not
-> initialized there, it remained zero. Later, during MSI setup,
-> msi_verify_entries() validates the programmed MSI address against
-> pdev->msi_addr_mask. Since the mask was not set correctly, the
-> validation fails, causing PCI driver probe failures for devices on
-> powerpc systems.
+On 2/19/26 11:01 PM, Bjorn Helgaas wrote:
+> [+cc sparc folks, PCI enumeration via OF likely broken]
 > 
-> Initialize pdev->msi_addr_mask to DMA_BIT_MASK(64) in
-> of_create_pci_dev() so that MSI address validation succeeds and device
-> probe works as expected.
+> On Tue, Feb 17, 2026 at 11:15:26PM +0530, Nilay Shroff wrote:
+>> Recent changes [1] replaced the use of no_64bit_msi with msi_addr_mask.
+>> As a result, msi_addr_mask is now expected to be initialized to
+>> DMA_BIT_MASK(64) when a pci_dev is set up. However, this initialization
+>> was missed on powerpc due to differences in the device initialization
+>> path compared to other architectures. Due to this, now pci device probe
+>> method fails on powerpc system.
 > 
-> [1] https://lore.kernel.org/all/20260129-pci-msi-addr-mask-v4-0-70da998f2750@iscas.ac.cn/
+> s/pci/PCI/ to match below.
+Ack
 > 
-> Fixes: 386ced19e9a3 ("PCI/MSI: Convert the boolean no_64bit_msi flag to a DMA address mask")
-> Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-
-Looks like this and a similar sparc fix need to be in v7.0.  Would be
-great if they could make v7.0-rc1 (Sunday), but that's pretty close.
-
-Thomas, you merged 386ced19e9a3.  I'm happy to merge the powerpc and
-sparc fixes, given acks from you and the powerpc & sparc folks, or
-feel free to take them yourself.
-
-> ---
->  arch/powerpc/kernel/pci_of_scan.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>> On powerpc systems, struct pci_dev instances are created from device
+>> tree nodes via of_create_pci_dev(). Because msi_addr_mask was not
+>> initialized there, it remained zero. Later, during MSI setup,
+>> msi_verify_entries() validates the programmed MSI address against
+>> pdev->msi_addr_mask. Since the mask was not set correctly, the
+>> validation fails, causing PCI driver probe failures for devices on
+>> powerpc systems.
+>>
+>> Initialize pdev->msi_addr_mask to DMA_BIT_MASK(64) in
+>> of_create_pci_dev() so that MSI address validation succeeds and device
+>> probe works as expected.
+>>
+>> [1] https://lore.kernel.org/all/20260129-pci-msi-addr-mask-v4-0-70da998f2750@iscas.ac.cn/
+>>
+>> Fixes: 386ced19e9a3 ("PCI/MSI: Convert the boolean no_64bit_msi flag to a DMA address mask")
+>> Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
 > 
-> diff --git a/arch/powerpc/kernel/pci_of_scan.c b/arch/powerpc/kernel/pci_of_scan.c
-> index 756043dd06e9..26ec97ce6b40 100644
-> --- a/arch/powerpc/kernel/pci_of_scan.c
-> +++ b/arch/powerpc/kernel/pci_of_scan.c
-> @@ -211,6 +211,12 @@ struct pci_dev *of_create_pci_dev(struct device_node *node,
->  	dev->current_state = PCI_UNKNOWN;	/* unknown power state */
->  	dev->error_state = pci_channel_io_normal;
->  	dev->dma_mask = 0xffffffff;
-
-It's typical to add a blank line between the code above and the
-comment below, as was done in 386ced19e9a3.
-
-> +	/*
-> +	 * Assume 64-bit addresses for MSI initially. Will be changed to 32-bit
-> +	 * if MSI (rather than MSI-X) capability does not have
-> +	 * PCI_MSI_FLAGS_64BIT. Can also be overridden by driver.
-> +	 */
-> +	dev->msi_addr_mask = DMA_BIT_MASK(64);
->  
->  	/* Early fixups, before probing the BARs */
->  	pci_fixup_device(pci_fixup_early, dev);
-> -- 
-> 2.52.0
+> Looks like this and a similar sparc fix need to be in v7.0.  Would be
+> great if they could make v7.0-rc1 (Sunday), but that's pretty close.
 > 
+> Thomas, you merged 386ced19e9a3.  I'm happy to merge the powerpc and
+> sparc fixes, given acks from you and the powerpc & sparc folks, or
+> feel free to take them yourself.
+> 
+>> ---
+>>  arch/powerpc/kernel/pci_of_scan.c | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>>
+>> diff --git a/arch/powerpc/kernel/pci_of_scan.c b/arch/powerpc/kernel/pci_of_scan.c
+>> index 756043dd06e9..26ec97ce6b40 100644
+>> --- a/arch/powerpc/kernel/pci_of_scan.c
+>> +++ b/arch/powerpc/kernel/pci_of_scan.c
+>> @@ -211,6 +211,12 @@ struct pci_dev *of_create_pci_dev(struct device_node *node,
+>>  	dev->current_state = PCI_UNKNOWN;	/* unknown power state */
+>>  	dev->error_state = pci_channel_io_normal;
+>>  	dev->dma_mask = 0xffffffff;
+> 
+> It's typical to add a blank line between the code above and the
+> comment below, as was done in 386ced19e9a3.
+
+Okay will fix this in v2.
+> 
+>> +	/*
+>> +	 * Assume 64-bit addresses for MSI initially. Will be changed to 32-bit
+>> +	 * if MSI (rather than MSI-X) capability does not have
+>> +	 * PCI_MSI_FLAGS_64BIT. Can also be overridden by driver.
+>> +	 */
+>> +	dev->msi_addr_mask = DMA_BIT_MASK(64);
+>>  
+>>  	/* Early fixups, before probing the BARs */
+>>  	pci_fixup_device(pci_fixup_early, dev);
+>> -- 
+>> 2.52.0
+>>
+
+Thanks,
+--Nilay
+
+
 
