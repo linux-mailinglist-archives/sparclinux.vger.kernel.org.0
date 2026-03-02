@@ -1,145 +1,144 @@
-Return-Path: <sparclinux+bounces-6400-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6402-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMFMKaiDpWmxCwYAu9opvQ
-	(envelope-from <sparclinux+bounces-6400-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Mon, 02 Mar 2026 13:33:44 +0100
+	id MEkTBWcdpmmeKQAAu9opvQ
+	(envelope-from <sparclinux+bounces-6402-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Tue, 03 Mar 2026 00:29:43 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267241D8977
-	for <lists+sparclinux@lfdr.de>; Mon, 02 Mar 2026 13:33:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC4E1E6A7C
+	for <lists+sparclinux@lfdr.de>; Tue, 03 Mar 2026 00:29:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 15D37309C9F7
-	for <lists+sparclinux@lfdr.de>; Mon,  2 Mar 2026 12:26:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D12943191119
+	for <lists+sparclinux@lfdr.de>; Mon,  2 Mar 2026 23:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF43B399023;
-	Mon,  2 Mar 2026 12:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDB131D757;
+	Mon,  2 Mar 2026 23:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bjv0a6y3";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BYfC3Feg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojWXYkOY"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B276B37472E;
-	Mon,  2 Mar 2026 12:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891933AC00;
+	Mon,  2 Mar 2026 23:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772454356; cv=none; b=FluORprMvq4dhG5ZOIcagJeiGxumgCNEDTpfve4nKF8/DyjSgfkmTIu94qmXkcM+VGSQVMOLw+YRJPlicUmzLQEO25QTuSoUg14EruJOGPq2UISPxdNJWxVDGDpfSkjt6UCwlkbMccopiEtfjFI9ETSM324LBYht8l8HzWCY2E4=
+	t=1772492874; cv=none; b=k/HSeXhdUxjcxwspRyGJrR5NU6hTm/XMKIKB6sxq4yhGf3+dV6/H2THdeZOIGe6ZT1Xo68bQL3JMLhf3B1W/AqIM2yYd4WEbjhtP8KxthjkisDYKPEbHJ9h8ecn+JumCV+Xxvjy3AWaBZz6KEr0MvHpnWbK2WL/kWfo4EI6uIkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772454356; c=relaxed/simple;
-	bh=3SgKzX2uaURwdk6BulOU26vMp194sxSrGIKk7+4gH+o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YW9OxaqX28eWCi6RqPzxV0keumuS3Y2/sler+WrMEpA2vCyeEmhes7EOQtkQFXZCvULAPhUPVleqxG976Yq8FLRlcetB9sK/uiNZjlP8JaxOIKJ65kuj2uMAzs5Dhag1W/Qyz/6nw2yPxRJuweBu+RB3d1S5JLeVqPXVf3NtFEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bjv0a6y3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BYfC3Feg; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772454353;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Gk+DNY1FnX2Is9++3W7weFVsUWOyhOhif2Eu1mxTHc8=;
-	b=bjv0a6y3jCZ57+M0uFA88aCV5qSJ4Nd0obqTh1cZRZ6IaeWWNg/CTFwcAHwXw//lfMMUVu
-	m1Mpa8otbmrWDJUuqL59FPydBljYCAaaGVif88nsL7FmUoVnPZ45eBu/dbmrRuw0f6Yo6w
-	v9eNArcvNvWsTi5mM3dGszF37CncJy76utUKDIR7HGZiggCkaqipBC1lZDaBI2haLxXiKZ
-	M35kORuqVQt+esRy8qf4cdpa+eJ/GDFoQkajHSv+QyO+Ky0KkAVVx8uVkOXMDX0AEguZXr
-	nuJHkW7DK+/9SJ98zVgc7fjaR+AC8titmzEOvetbJ5VW1vSlFpSMgU0fO2yfFw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772454353;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Gk+DNY1FnX2Is9++3W7weFVsUWOyhOhif2Eu1mxTHc8=;
-	b=BYfC3Fegaop1FFBF9oem1OjAUVs0XyTKiFOs56Iip+kmC013SL48mBu/X4JFdKO5qcaRVH
-	9OQ9T+TEdCCCwCCw==
-Date: Mon, 02 Mar 2026 13:25:39 +0100
-Subject: [PATCH 15/15] auxvec.h: Drop fallback AT_VECTOR_SIZE_ARCH
+	s=arc-20240116; t=1772492874; c=relaxed/simple;
+	bh=nzWc5hLi+XmBuDD+BGsrmDcYrcD7xRFj1OgmUPYza+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=u0bdE3OL6SrLAqEV6sWvLOHxV7vexNoClE1VANeOk1Tq+xIFLKs6UPRu2GuzlGNL5+1v4rKYObb2sASoPc7fpfkprEY1jzyleDZ+H8GFHFMZjHvsxKVGdDG+oGt4zYKaerCHSC2k8/oAaFVYVQteEV/s4tZTaWVaKQNXTL8iCOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojWXYkOY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D773C19423;
+	Mon,  2 Mar 2026 23:07:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772492874;
+	bh=nzWc5hLi+XmBuDD+BGsrmDcYrcD7xRFj1OgmUPYza+Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ojWXYkOYIKhn66nudcCk8Y/GU6W3TuYnBtpvFJsKP2MnMtUbhRvAyX1WWGXRHTlkg
+	 dj0a58+jJyhag958yoJSG5aBih25/HAQPYB/SWsBk7+1gBf4tNcMwW2IF/f0WKZVrH
+	 FmsmboQmUEc+jI5i3NKgdLX84p5QHExSeRJMGYU+7j/vjoATBqnJUAqekrzVElXPL5
+	 TfKX6Kc2DTA72Qs3MkYquLMNDmXvsndf0lmdAuV9mI36OQi8nOGT/zhzwskVfQPCCV
+	 xMRliO/w+Ea1EfUpIflOIigUDCXaBQRapBeDWEv7f2hCpVmP5cp9vQzuiBQsi3HHWE
+	 N3scqRm5dCqDg==
+Date: Mon, 2 Mar 2026 17:07:53 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Nilay Shroff <nilay@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+	sparclinux@vger.kernel.org, wangruikang@iscas.ac.cn,
+	tglx@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+	npiggin@gmail.com, chleroy@kernel.org, gjoyce@ibm.com,
+	davem@davemloft.net, andreas@gaisler.com,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Han Gao <gaohan@iscas.ac.cn>,
+	Nathaniel Roach <nroach44@nroach44.id.au>,
+	Venkat <venkat88@linux.ibm.com>, Nam Cao <namcao@linutronix.de>
+Subject: Re: [PATCHv2 0/2] pci: fix msi_addr_mask on powerpc and sparc systems
+Message-ID: <20260302230753.GA4034944@bhelgaas>
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260302-at-vector-size-arch-v1-15-a11f03ba2ca8@linutronix.de>
-References: <20260302-at-vector-size-arch-v1-0-a11f03ba2ca8@linutronix.de>
-In-Reply-To: <20260302-at-vector-size-arch-v1-0-a11f03ba2ca8@linutronix.de>
-To: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
- linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, 
- linux-sh@vger.kernel.org, linux-alpha@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772454343; l=730;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=3SgKzX2uaURwdk6BulOU26vMp194sxSrGIKk7+4gH+o=;
- b=vht2sJN2rUis/ZgzV++4P2sJ59ygy9DcT8yNfNbBA9oZ/PokJlfDEb+BAVSUMWrI8Um52Kvy2
- /R46rtq58zdC0ybNyXouxNGCbUYsNmMjl7tobyboz5eg/Pw0p7lpe82
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260220070239.1693303-1-nilay@linux.ibm.com>
+X-Rspamd-Queue-Id: 8DC4E1E6A7C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6400-lists,sparclinux=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-6402-lists,sparclinux=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,iscas.ac.cn,kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,ibm.com,davemloft.net,gaisler.com,physik.fu-berlin.de,nroach44.id.au,linutronix.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,sparclinux@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[sparclinux];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:mid,linutronix.de:dkim,linutronix.de:email]
-X-Rspamd-Queue-Id: 267241D8977
+	NEURAL_HAM(-0.00)[-0.993];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,sparclinux@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[sparclinux];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-All asm headers now define this constant.
+On Fri, Feb 20, 2026 at 12:32:26PM +0530, Nilay Shroff wrote:
+> Hi,
+> 
+> Recent changes [1] which replaced pci_dev::no_64bit_msi with pci_dev::
+> msi_addr_mask inadvertently missed to initialize the pci_dev::msi_addr_mask
+> to the DMA_BIT_MASK(64) on powerpc platform. Due to this, later the 
+> validation the programmed MSI address against the msi_addr_mask fails.
+> This causes pci device probe method failures on powerpc platform. We also
+> realized that similar issue could potentially happen on sparc system as
+> well. So this series initializes pci_dev::msi_addr_mask to DMA_BIT_MASK(64)
+> when pci_dev is instantiated for both powerpc and sparc platforms.
+> 
+> The first patch in the series fixes this on powerpc platform. The second
+> patch fixes this issue on sparc platform. Please note that as I don't have
+> access to the sparc platform, this patch was only compile tested on the
+> sparc system. Anyone from the community is welcome to test it who has
+> access to the sparc machine.
+> 
+> [1] https://lore.kernel.org/all/20260129-pci-msi-addr-mask-v4-0-70da998f2750@iscas.ac.cn/
+> 
+> Changes since v1:
+>   - Initialize the pci_dev:msi_addr_mask on sparc platform (Vivian Wang)
+>   - Some minor cosmetic fixes (Bjorn Helgaas)
+> 
+> Nilay Shroff (2):
+>   powerpc/pci: Initialize msi_addr_mask for OF-created PCI devices
+>   sparc/pci: Initialize msi_addr_mask for OF-created PCI devices
+> 
+>  arch/powerpc/kernel/pci_of_scan.c | 7 +++++++
+>  arch/sparc/kernel/pci.c           | 7 +++++++
+>  2 files changed, 14 insertions(+)
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
- include/linux/auxvec.h | 4 ----
- 1 file changed, 4 deletions(-)
+I applied both of these to pci/for-linus for v7.0 since they fix
+regressions.
 
-diff --git a/include/linux/auxvec.h b/include/linux/auxvec.h
-index 68c9d6b118a9..814f984726d6 100644
---- a/include/linux/auxvec.h
-+++ b/include/linux/auxvec.h
-@@ -9,10 +9,6 @@
- #define AT_VECTOR_SIZE_BASE 22 /* NEW_AUX_ENT entries in auxiliary table */
-   /* number of "#define AT_.*" above, minus {AT_NULL, AT_IGNORE, AT_NOTELF} */
- 
--#ifndef AT_VECTOR_SIZE_ARCH
--#define AT_VECTOR_SIZE_ARCH 0
--#endif
--
- #define AT_VECTOR_SIZE (2*(AT_VECTOR_SIZE_ARCH + AT_VECTOR_SIZE_BASE + 1))
- 
- #endif /* _LINUX_AUXVEC_H */
+Thanks to Han and Nathaniel for testing on sparc and Venkat and Nam
+for testing on powerpc.
 
--- 
-2.53.0
+Let me know if you have issues with these or prefer to merge via
+another tree; I'll be happy to drop.
 
+Bjorn
 
