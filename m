@@ -1,40 +1,40 @@
-Return-Path: <sparclinux+bounces-6449-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6450-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Gh1EMPBr2kucAIAu9opvQ
-	(envelope-from <sparclinux+bounces-6449-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Tue, 10 Mar 2026 08:01:23 +0100
+	id qIs6CgozsGl2hAIAu9opvQ
+	(envelope-from <sparclinux+bounces-6450-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Tue, 10 Mar 2026 16:04:42 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2A324614B
-	for <lists+sparclinux@lfdr.de>; Tue, 10 Mar 2026 08:01:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A92252D1C
+	for <lists+sparclinux@lfdr.de>; Tue, 10 Mar 2026 16:04:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D0BC30E73A7
-	for <lists+sparclinux@lfdr.de>; Tue, 10 Mar 2026 06:59:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 82A5B3224B9E
+	for <lists+sparclinux@lfdr.de>; Tue, 10 Mar 2026 14:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D583D9029;
-	Tue, 10 Mar 2026 06:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621A3391E56;
+	Tue, 10 Mar 2026 14:00:35 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46953D6689;
-	Tue, 10 Mar 2026 06:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DACE38D6AE;
+	Tue, 10 Mar 2026 14:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773125936; cv=none; b=W5D04D/I/17SOGRKMWDqqB+kse9d2gGSXABrspb5tNtau9Xdnu9wQxOVfIxfbDmnSVvwX+5+/7STnRRisjRV8bb/5RHOajylmpEf836BX5YZeNe+6uZShZtH273pp6qOPWIH6Jl6l8o8W7ahaOU0zXAdRjZ7K6k59YHGLPvkh2w=
+	t=1773151235; cv=none; b=dTigyRm/6no5hNC/1+W4GVG3r23clSRFPz5aSpwCehvfZN1ZoTdFsH1QWvGcM9b5SHoHkCWk5ULUPPSUUZJCR4w3ebz5dINBCU/FIwS4ZcoxWuW9di4Kafc7tYy+3Bp5uh4RTmgY/3pPKUOGDxdduLxp38/1rXkEzDU1CoIQT7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773125936; c=relaxed/simple;
-	bh=TWEzqV1T6nOJN1sLUnuVvgCbRiWOhKncO+7Ywdr8dcg=;
+	s=arc-20240116; t=1773151235; c=relaxed/simple;
+	bh=9cKCbksrXdq7qQIbd19mcsGEruocKNk/N9O3kK26goI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uFiCDo2FgRGG98yt4wiLph8pvzLSJk5gg4xRjhFoBC2itq+PaxDL4LblSrolnkUNr3MAcO+6HtpNhmObpvD9o6YH3GNS3T47tWNqPtKsVOQ6fBZ4lXotrDyWNpl9TvaTXBpj3+Jh8DUbjoKke8yGc7PMjWs7nqqhEC/5cuK5bfA=
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y5M/knTJZpROdKPf4OzTi7qwkwVZqS5+ihgieGpmmHOd7QEIWm0k9DPUkYGohGCwo9NAcKR89qanOPhBJ3eg97MabfWwZEiP8fCalLs15dI6W3J8aUPGt5Zwr4nPIClZrQh9iWTgpHoAtd1bmyeHpsceC5ddHHLsTuCRrav3NTA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id 7056668AFE; Tue, 10 Mar 2026 07:58:40 +0100 (CET)
-Date: Tue, 10 Mar 2026 07:58:40 +0100
+	id 9EFDD68C4E; Tue, 10 Mar 2026 15:00:21 +0100 (CET)
+Date: Tue, 10 Mar 2026 15:00:20 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Eric Biggers <ebiggers@kernel.org>
 Cc: Christoph Hellwig <hch@lst.de>,
@@ -77,9 +77,10 @@ Cc: Christoph Hellwig <hch@lst.de>,
 	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
 	linux-crypto@vger.kernel.org, linux-btrfs@vger.kernel.org,
 	linux-arch@vger.kernel.org, linux-raid@vger.kernel.org
-Subject: Re: [PATCH 21/25] xor: add a better public API
-Message-ID: <20260310065840.GA10296@lst.de>
-References: <20260226151106.144735-1-hch@lst.de> <20260226151106.144735-22-hch@lst.de> <20260228065038.GH65277@quark>
+Subject: Re: [PATCH 09/25] xor: move generic implementations out of
+ asm-generic/xor.h
+Message-ID: <20260310140020.GA8490@lst.de>
+References: <20260226151106.144735-1-hch@lst.de> <20260226151106.144735-10-hch@lst.de> <20260228071521.GK65277@quark> <20260303160911.GI7021@lst.de>
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
@@ -88,48 +89,45 @@ List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260228065038.GH65277@quark>
+In-Reply-To: <20260303160911.GI7021@lst.de>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Queue-Id: AF2A324614B
+X-Rspamd-Queue-Id: D1A92252D1C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[lst.de,linux-foundation.org,linaro.org,gmail.com,armlinux.org.uk,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,ghiti.fr,davemloft.net,gaisler.com,nod.at,cambridgegreys.com,sipsolutions.net,redhat.com,alien8.de,linux.intel.com,zytor.com,gondor.apana.org.au,intel.com,fb.com,suse.com,arndb.de,fnnas.com,huawei.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-6449-lists,sparclinux=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6450-lists,sparclinux=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	NEURAL_SPAM(0.00)[0.151];
+	NEURAL_SPAM(0.00)[0.166];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[hch@lst.de,sparclinux@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_GT_50(0.00)[56];
 	MID_RHS_MATCH_FROM(0.00)[];
 	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[sparclinux];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lst.de:mid]
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 10:50:38PM -0800, Eric Biggers wrote:
-> > +void xor_gen(void *dest, void **srcss, unsigned int src_cnt,
-> > +		unsigned int bytes);
-> 
-> srcss => srcs
-> 
-> Ideally the source vectors would be 'const' as well.
+On Tue, Mar 03, 2026 at 05:09:11PM +0100, Christoph Hellwig wrote:
+> And earlier version did this, but it's a bit ugly.  What I might
+> consider is to require architectures that provide optimized version
+> to opt into any generic one they want to use.  This would require
+> extra kconfig symbols, but be a lot cleaner overall.
 
-I looked at the constification, and it's a bit painful because the
-same source arrays are also passed to the raid6 code by the callers.
-I'll clean up the raid6 API first, and then will give it another
-spin.
-
+I looked into this, but because the static_call requires a default
+version I gave up on it for now.  In theory we could build just
+a single generic one for that and make the others optional, but
+that feels a bit odd.
 
