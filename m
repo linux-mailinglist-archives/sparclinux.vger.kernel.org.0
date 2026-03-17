@@ -1,111 +1,156 @@
-Return-Path: <sparclinux+bounces-6490-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6491-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFLaF2rOuGlfjgEAu9opvQ
-	(envelope-from <sparclinux+bounces-6490-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Tue, 17 Mar 2026 04:45:46 +0100
+	id YCj6Nr8AuWkxnAEAu9opvQ
+	(envelope-from <sparclinux+bounces-6491-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Tue, 17 Mar 2026 08:20:31 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE12F2A34D5
-	for <lists+sparclinux@lfdr.de>; Tue, 17 Mar 2026 04:45:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 866432A4B39
+	for <lists+sparclinux@lfdr.de>; Tue, 17 Mar 2026 08:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 00848301081C
-	for <lists+sparclinux@lfdr.de>; Tue, 17 Mar 2026 03:45:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5C3E301AE6C
+	for <lists+sparclinux@lfdr.de>; Tue, 17 Mar 2026 07:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26122313E33;
-	Tue, 17 Mar 2026 03:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B492238C428;
+	Tue, 17 Mar 2026 07:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nWzM+OJx"
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="RvrrbF6k"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026DE31353B;
-	Tue, 17 Mar 2026 03:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDCF28314C;
+	Tue, 17 Mar 2026 07:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773719142; cv=none; b=aXXt1eejTRBXdEPuGi4zOH4EBsKvcdqSuQOmgwbizXjxI93lj2ubKK4z/h8PzAq+IBenkLMJJ3Fl6MCBOX0Li8akCpXBeLf4G15iieiJCC+wStZrfjHqkZ5Bc7CxALhjTOmvnhRaVhP/Ngex9d2J5smTAjWelW3xrhA8YvnMZWo=
+	t=1773732029; cv=none; b=lVmXMzQ6xASUeKVp1BUobP0xF8klrpkYkCe93WejeioCZAWOSKArXHzV1ozo8qvf5kiZKw3N3zTljIlJ1YpP+++SkohSrI9FxRDyseinqgneJT3mEUOgF7zUekreFDeCuvCuVpi2stoiZcT8gMYD8S4GBuNgEUcbPsbsgEwZ4g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773719142; c=relaxed/simple;
-	bh=yP//LXP0yhYsMTrCo6kiuueFfEOJz8sdsLEYQ85ngj4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LGUAB9gIoDpm+8Pk9LTmJ2l5N9cezfL+1YICUL8OnBNso4OSWsnSwCZctHUJQdcmhG3HgLZYtfoKxJN0urK4/kaDFGCuchBIhAX+dyEedBNPnc/vdkpql5E8+kkfYy3TfA3x9jg0tra+Je3AzjBIX4UTlh0VjjABl4Wrkk58Rx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nWzM+OJx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DED4C4CEF7;
-	Tue, 17 Mar 2026 03:45:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773719141;
-	bh=yP//LXP0yhYsMTrCo6kiuueFfEOJz8sdsLEYQ85ngj4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nWzM+OJxjMu86d6mcSF25H2FT2DHr0/3GWsfoESHGgG3r9IGDu9Qg4ffKNcnmBJ7d
-	 semjD3o4S9JyzdUDcJYJluxcdeD4AIbsIZKVBJxbaTu8j3QgD4WQtSLc/7Yfr+2pBb
-	 hmYQKNgfnD1HJHW9XGjEQ2BXjY2cDi9oRGOeuVgb8nfs+5gHpIlEF/3k6kDcltDOTU
-	 eap24m4ebZcRF7ckjk5KCFO1QRT1KNlgP75BRplQGSeGGF6ANqMAkhgGkJd9LlQX3B
-	 FVstmMyQj2Y01ZgggSZGUf8lBU79eWjrQE/e5f5qnbDff+VG0/lVmNXL+454WM2A16
-	 ZHajepEgZHO2Q==
-Date: Tue, 17 Mar 2026 03:45:39 +0000
-From: Eric Biggers <ebiggers@kernel.org>
-To: Nathaniel Roach <nroach44@nroach44.id.au>
-Cc: Andreas Larsson <andreas@gaisler.com>,
-	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org,
-	linux-crypto@vger.kernel.org
+	s=arc-20240116; t=1773732029; c=relaxed/simple;
+	bh=E5sZVEq2WWpN/+wuHFT2HtcxRzclcrs/30GgikonGv8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gP6xV+60XTNb+j8jSscD+L0L91ukRJEw+BS0gvObw/KqsotUWMPid0FosnTdG4twRhFUR9QHUdbX8aZLbaFd9ruZSs1HJXbK/UddDudbP/L7mYTIREX6YV8G11IkGaL4/N+r/iuTF5Ruxtvzp6yYJDVLZwJZ5ml/otrm/9HfLe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=RvrrbF6k; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=MLK/MzCSFDXEBzGQYYqULug04vL9DbdvEieFHbU2S1Q=; t=1773732026;
+	x=1774336826; b=RvrrbF6k1rFzRzev2ivdktlmIORxGE16aZtxqUJrrkTm9AqprYSVGhw7+Et1R
+	GPnw9pyZk6me35nnmENNcdH+HGu89J6mTcGpp2Yxk+9WLYdSnvp53dxA0S5xBiORQvstkap45w+KF
+	c+9KFuLgq1pMJGTuzz9OyVbqSjbnGpDW+LYqeZAJP8SBhbGcY7EbCypDbTRta4Ge/LntxISC3Ezj6
+	NvSLfFw5pev6xIlUMSxVfxcCCaaGv4RGtaEKlG/UG8x10BrJ01T9UAcKkBE9wW9QZIGTh9JlEkpVb
+	LpPm3i6TpQ6DhgTNQyp21+K9cvzDytVmLmu3n8UxzibGYtIs+A==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.99)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1w2Ofh-00000001XeU-0O8o; Tue, 17 Mar 2026 08:16:57 +0100
+Received: from p5dc55f29.dip0.t-ipconnect.de ([93.197.95.41] helo=suse-laptop.fritz.box)
+          by inpost2.zedat.fu-berlin.de (Exim 4.99)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1w2Ofg-00000003shH-3fVs; Tue, 17 Mar 2026 08:16:57 +0100
+Message-ID: <76ed4ac4c86341c5c9168aeee8cd53566e018001.camel@physik.fu-berlin.de>
 Subject: Re: Does the SPARC optimized crypto and CRC code actually work?
-Message-ID: <20260317034539.GA2705965@google.com>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Eric Biggers <ebiggers@kernel.org>, Nathaniel Roach
+	 <nroach44@nroach44.id.au>
+Cc: Andreas Larsson <andreas@gaisler.com>, "David S. Miller"	
+ <davem@davemloft.net>, sparclinux@vger.kernel.org,
+ linux-crypto@vger.kernel.org
+Date: Tue, 17 Mar 2026 08:16:56 +0100
+In-Reply-To: <20260317034539.GA2705965@google.com>
 References: <20260316204211.GA2661@quark>
- <ca9ba2ec-849c-4f86-8ac9-274ac4b5f885@nroach44.id.au>
+	 <ca9ba2ec-849c-4f86-8ac9-274ac4b5f885@nroach44.id.au>
+	 <20260317034539.GA2705965@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ca9ba2ec-849c-4f86-8ac9-274ac4b5f885@nroach44.id.au>
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	SUBJECT_ENDS_QUESTION(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[fu-berlin.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[fu-berlin.de:s=fub01];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6490-lists,sparclinux=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6491-lists,sparclinux=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[fu-berlin.de:+];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,sparclinux@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[glaubitz@physik.fu-berlin.de,sparclinux@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[sparclinux];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BE12F2A34D5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 866432A4B39
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 10:48:52AM +0800, Nathaniel Roach wrote:
-> I've been testing some of the PCI changes that have come through on my T5-2.
-> I'll happily add some tests for the crypto functions, I've just got no idea
-> how to do so.
+Hi Eric,
 
-Well, try enabling all KUnit tests in lib/crc/ and lib/crypto/, as well
-as CONFIG_CRYPTO_SELFTESTS=y and CONFIG_CRYPTO_SELFTESTS_FULL=y.
+On Tue, 2026-03-17 at 03:45 +0000, Eric Biggers wrote:
+> On Tue, Mar 17, 2026 at 10:48:52AM +0800, Nathaniel Roach wrote:
+> > I've been testing some of the PCI changes that have come through on my =
+T5-2.
+> > I'll happily add some tests for the crypto functions, I've just got no =
+idea
+> > how to do so.
+>=20
+> Well, try enabling all KUnit tests in lib/crc/ and lib/crypto/, as well
+> as CONFIG_CRYPTO_SELFTESTS=3Dy and CONFIG_CRYPTO_SELFTESTS_FULL=3Dy.
+>=20
+> However, will this be a regular testing run, or only a one-off run?  If
+> it will only be one-off, we'll quickly be back to where we started.
+>=20
+> We need regular testing on either hardware or QEMU.
 
-However, will this be a regular testing run, or only a one-off run?  If
-it will only be one-off, we'll quickly be back to where we started.
+If Nathaniel can test the code from time to time for the time being, we sho=
+uld
+already get some coverage. In the near future, we could certainly set up a =
+CI
+job if you let me know what infrastructure to use for it.
 
-We need regular testing on either hardware or QEMU.
+Please keep in mind that a lot of us are doing this as volunteers and we do=
+n't
+always have the possibilities to respond to such requests within a short ti=
+me.
 
-- Eric
+Feel free to use the sparclinux issue tracker if you want to file any reque=
+sts:
+
+https://github.com/sparclinux/issues/issues
+
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
