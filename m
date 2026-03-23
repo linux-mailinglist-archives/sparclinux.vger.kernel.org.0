@@ -1,117 +1,152 @@
-Return-Path: <sparclinux+bounces-6511-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6512-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qE2oBuQDwGlcDAQAu9opvQ
-	(envelope-from <sparclinux+bounces-6511-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Sun, 22 Mar 2026 15:59:48 +0100
+	id x0L0OajWwGmWNAQAu9opvQ
+	(envelope-from <sparclinux+bounces-6512-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Mon, 23 Mar 2026 06:59:04 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79ED02E9BAF
-	for <lists+sparclinux@lfdr.de>; Sun, 22 Mar 2026 15:59:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 131272ECC2D
+	for <lists+sparclinux@lfdr.de>; Mon, 23 Mar 2026 06:59:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3985B300CCBB
-	for <lists+sparclinux@lfdr.de>; Sun, 22 Mar 2026 14:59:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AC9330086E1
+	for <lists+sparclinux@lfdr.de>; Mon, 23 Mar 2026 05:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DBD195811;
-	Sun, 22 Mar 2026 14:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEA72A1AA;
+	Mon, 23 Mar 2026 05:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikPoubLc"
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="R559Z5WY"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6111A40DFCE;
-	Sun, 22 Mar 2026 14:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6077D2BDC32;
+	Mon, 23 Mar 2026 05:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774191584; cv=none; b=UKDDvofGlGNWDU1fGDlDEcGqP28WB0VwZ/YybwgpON2BBl1Szwh2MP/Hu8TJPpwGyy0cjTsJAKmlojSECBTxfd7309ab3wyY26apoNriQSx+1yhufglH+jsgMAcf4mlzQfEhK0Q1u4xjG2cLSw4pquSWUVUruXlrMxQNUWeBI2Y=
+	t=1774245541; cv=none; b=mC2iEWLShVW/b2mqNnf0glxNlpFE8tqZJME3Bt2LhL9Al3ONR1sXMg3rONqWMBZv8afv+E0o67WC1zYZimEkKLNDkoq+/598Qh1kJw4IyVx8jWJxWUCciumqWnjFhLWKgWqyTrIIQTCpazkuJidlBYmE/KAlrjr9ZGqoLpmsk04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774191584; c=relaxed/simple;
-	bh=oltgeAFkxFhiXhV1pHRk95/2v1mkP9N7BoapbN3xjSc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LQHflBbEl/N7imfh5Y1s+nGKDXo8PrLXqLjpx43NJgWwMSn7KmAIiHlCQhQvEy4UlVNs2OAhodVb7nHO8415TuWlGigLEWAvMCthK39aiJyCAOKzrW2wWOb1pJBaK8MKcfkj55BSvLzU5KovXD0ACeAk/3LO0tacD3p4idUomGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikPoubLc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65E2C19424;
-	Sun, 22 Mar 2026 14:59:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774191584;
-	bh=oltgeAFkxFhiXhV1pHRk95/2v1mkP9N7BoapbN3xjSc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ikPoubLcyotaJ+uw6tDK6SVNWe04bq19yfLWvaN2xLRHSvl+pcT4oJ2/qqJ+on8i/
-	 jk8JiHOlQkS6sqlMgE1WvR6Tuaakh4CpZCjiYMSP1E3bg1yCPnC8dKBE1PqdZrPgx4
-	 c6CoX5uGov2KCYgE0+0W2CkzYJcCqWrVmqqInBGqQOLGLrPeMLBsPnywspgdkCWwiC
-	 CqRdc6bhS/LqkVUyVlhEfSjmAC41sD/c8Nj7uc/e+RUHjmZ4jBCPxqU7SqaZi2TnW6
-	 7TAUv9tiEo8nK1ebsACLD+vhs2e9Y6e1FumYXtBXojifM9dvbVg8IC6xlOig2+sHX1
-	 VSr6UuYIvCOWg==
-Date: Sun, 22 Mar 2026 07:59:42 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Theodore Tso <tytso@mit.edu>, Nathaniel Roach <nroach44@nroach44.id.au>,
-	Andreas Larsson <andreas@gaisler.com>,
-	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org,
-	linux-crypto@vger.kernel.org
+	s=arc-20240116; t=1774245541; c=relaxed/simple;
+	bh=Vg/xBF3NXYGQ+zrAZqIBO337o96acGFvhStDZAgTD28=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Zm13IONp7W5EGAz7uhqo2/7drE9ppdPS9OCVzkWkHUCEauXqk3dSXcp5aebuQty8fLd5yyvbEH6yf0/5uoYBv3vDNhR9wx9GRpAzltIBN/clGQgGvosavRiMyrnE+9WQtIeItYegbtzVPB+H3NwpDzDcur+NCbM65vXUvlZ9MUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=R559Z5WY; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=ID/+fzubTHmX9ksTAeRtaR4gUCuxD/4KgWX680S959s=; t=1774245538;
+	x=1774850338; b=R559Z5WYQuug+JyiF3Vj6NoPXBzpxf+8pXBq+RBXXuEvjhjM37kEE5qFgG+CS
+	MP8GpdEcBFD+nzJndHhYRk8JwoSqy06jwPsA5eH9lrJCrb5zyLK6d63ArR/5RbZ1LmUUab871lkHi
+	rQbqefBPehG3i/hCh2Gfon+tZuxvT3oUke/yl+X2FlRHG4dbYrMfxyIVPHzFt1j2P17cKEJO/uXMP
+	HLMNJ+VC+v3/hSNGe5SuNgLLg8WGGi69/S348zI2csiuTtuPw327q6tqHFHje4lB/e+6FfGNnkkAt
+	rIyAJ5qQIfdsMgNoljIlGm+RT2uJFM3FVQj056X21rSViPaUNA==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.99)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1w4YJJ-000000019kX-2MEI; Mon, 23 Mar 2026 06:58:45 +0100
+Received: from p5dc55f29.dip0.t-ipconnect.de ([93.197.95.41] helo=[192.168.178.61])
+          by inpost2.zedat.fu-berlin.de (Exim 4.99)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1w4YJJ-000000007dU-1PSn; Mon, 23 Mar 2026 06:58:45 +0100
+Message-ID: <5e284a6fa72c2fed6690f91e5f4079b6d339efb3.camel@physik.fu-berlin.de>
 Subject: Re: Does the SPARC optimized crypto and CRC code actually work?
-Message-ID: <20260322145942.GC2183@quark>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Theodore Tso <tytso@mit.edu>, Nathaniel Roach <nroach44@nroach44.id.au>,
+  Andreas Larsson <andreas@gaisler.com>, "David S. Miller"
+ <davem@davemloft.net>, sparclinux@vger.kernel.org, 
+	linux-crypto@vger.kernel.org
+Date: Mon, 23 Mar 2026 06:58:44 +0100
+In-Reply-To: <20260322145942.GC2183@quark>
 References: <20260316204211.GA2661@quark>
- <ca9ba2ec-849c-4f86-8ac9-274ac4b5f885@nroach44.id.au>
- <20260317034539.GA2705965@google.com>
- <76ed4ac4c86341c5c9168aeee8cd53566e018001.camel@physik.fu-berlin.de>
- <20260317140646.GC53921@macsyma-wired.lan>
- <079d287944ffe94903286ea73fc1df167206321a.camel@physik.fu-berlin.de>
+	 <ca9ba2ec-849c-4f86-8ac9-274ac4b5f885@nroach44.id.au>
+	 <20260317034539.GA2705965@google.com>
+	 <76ed4ac4c86341c5c9168aeee8cd53566e018001.camel@physik.fu-berlin.de>
+	 <20260317140646.GC53921@macsyma-wired.lan>
+	 <079d287944ffe94903286ea73fc1df167206321a.camel@physik.fu-berlin.de>
+	 <20260322145942.GC2183@quark>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <079d287944ffe94903286ea73fc1df167206321a.camel@physik.fu-berlin.de>
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	SUBJECT_ENDS_QUESTION(1.00)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	DMARC_POLICY_ALLOW(-0.50)[fu-berlin.de,none];
+	R_DKIM_ALLOW(-0.20)[fu-berlin.de:s=fub01];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6511-lists,sparclinux=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[fu-berlin.de:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,sparclinux@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[sparclinux];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 79ED02E9BAF
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-6512-lists,sparclinux=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[glaubitz@physik.fu-berlin.de,sparclinux@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[sparclinux];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fu-berlin.de:dkim,physik.fu-berlin.de:mid]
+X-Rspamd-Queue-Id: 131272ECC2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 03:14:50PM +0100, John Paul Adrian Glaubitz wrote:
-> Hi Ted,
-> 
-> On Tue, 2026-03-17 at 10:06 -0400, Theodore Tso wrote:
-> > How hard would it be to add support for the Sparc crypto accleration
-> > opcodes to QEMU?  Is that something that could be, say, an GSOC or
-> > Outreachy project?
-> 
-> Good idea. I'll ask someone who has been mentoring QEMU enhancements in the past.
-> 
-> Adrian
+Hi Eric,
 
-FYI, I filed https://github.com/sparclinux/issues/issues/77
+On Sun, 2026-03-22 at 07:59 -0700, Eric Biggers wrote:
+> On Tue, Mar 17, 2026 at 03:14:50PM +0100, John Paul Adrian Glaubitz wrote=
+:
+> > Hi Ted,
+> >=20
+> > On Tue, 2026-03-17 at 10:06 -0400, Theodore Tso wrote:
+> > > How hard would it be to add support for the Sparc crypto accleration
+> > > opcodes to QEMU?  Is that something that could be, say, an GSOC or
+> > > Outreachy project?
+> >=20
+> > Good idea. I'll ask someone who has been mentoring QEMU enhancements in=
+ the past.
+> >=20
+> > Adrian
+>=20
+> FYI, I filed https://github.com/sparclinux/issues/issues/77
 
-- Eric
+That's a very well crafted bug report! I appreciate the effort and will try=
+ to reach
+out to the QEMU people and see if we can get something done within GSoC.
+
+@Nathanial: Can you run the crypto tests and report back?
+
+Thanks,
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
