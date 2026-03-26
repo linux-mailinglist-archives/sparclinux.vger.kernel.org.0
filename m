@@ -1,153 +1,138 @@
-Return-Path: <sparclinux+bounces-6564-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6565-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKC7FrzBxGku3QQAu9opvQ
-	(envelope-from <sparclinux+bounces-6564-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Thu, 26 Mar 2026 06:18:52 +0100
+	id WKzuOVuUxWmq/gQAu9opvQ
+	(envelope-from <sparclinux+bounces-6565-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Thu, 26 Mar 2026 21:17:31 +0100
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC4832F4CA
-	for <lists+sparclinux@lfdr.de>; Thu, 26 Mar 2026 06:18:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C45933B555
+	for <lists+sparclinux@lfdr.de>; Thu, 26 Mar 2026 21:17:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5493F301F6A0
-	for <lists+sparclinux@lfdr.de>; Thu, 26 Mar 2026 05:18:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C26F3073FA9
+	for <lists+sparclinux@lfdr.de>; Thu, 26 Mar 2026 20:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C339633688B;
-	Thu, 26 Mar 2026 05:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F853A3E6C;
+	Thu, 26 Mar 2026 20:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hJNjV9YJ"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E609E26159E;
-	Thu, 26 Mar 2026 05:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E043A3800;
+	Thu, 26 Mar 2026 20:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774502326; cv=none; b=JZPT25COfHYPxt5ZBeQMsC51RQLdl5g6r2hVhc8AiDAl2sv3SrpIEhVcK3TEYL/tZj4pO1mwWS24hOYvME4IuVGGxc5aFPE+tIVX30ew5MLbqpvHc/OF3WBHBcR/YruPvluh6nEwskB1Jk/cVmBsqh4R2SBAvPqQyup8R55o36E=
+	t=1774555973; cv=none; b=BfP6l4qdyRu2uOiAmSpRCnlSFpgc4wqVWGWkP+NMmVqHtPYxs/sSclOB7XIZpbXtiYIoDD8BxMDPDsc8NwdZU/3O62mfLJaeQVIi8f/X1PhzzzQLZ9keapWi2Vj2x4pPs+sIBPB3/4uZThWcHgrUGmyyNdKnjPQATV+ovpz1s8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774502326; c=relaxed/simple;
-	bh=LQ2AOVAyiIuqBIVY7X3bbSu1jE1YtSBoBtGFX3IePZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Il7kQUO/SmmAuaU3o7Kg+qlV+zh/8Dbt+VJu4O0/OmPhjTsWOuIbKZQiObpkhto7HGfDXkB2/5F1hzJkYVdFU3eJ8nn0iI6/IqaGL3ZQD5bcnB9SC6dClL9QR8MTWWlOApCOKS3fYf8Vtzj5gzOAFwIz7qaWFKr6Cx//bBz8H4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 7351F68B05; Thu, 26 Mar 2026 06:18:37 +0100 (CET)
-Date: Thu, 26 Mar 2026 06:18:37 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Dan Williams <dan.j.williams@intel.com>, Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>, Arnd Bergmann <arnd@arndb.de>,
-	Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
-	Li Nan <linan122@huawei.com>, Theodore Ts'o <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>, linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-crypto@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-raid@vger.kernel.org
-Subject: Re: cleanup the RAID5 XOR library v3
-Message-ID: <20260326051837.GA22847@lst.de>
-References: <20260324062211.3216301-1-hch@lst.de> <20260325193954.GC2305@quark>
+	s=arc-20240116; t=1774555973; c=relaxed/simple;
+	bh=Jncs6DjzXM9ebzv1x3ezfUU5Po/qgF4SZLeP17IU7gQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XaPpCbh/IbyH2lvxpc8OofbAZmms3gCpNEytt9e5lsZsIb0DTfIYAtZYZEv5aqrmAz9LMBX2MlRQb3/Bexklrvfti2Hh1Qs5MXn6BoDHr2zTTGimItqzBifOhMDq1o1EbMaqDFhvmK+8d8Grilq3f0XXq8sLJeXSlUNHxD3HEPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hJNjV9YJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD5FC19423;
+	Thu, 26 Mar 2026 20:12:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774555973;
+	bh=Jncs6DjzXM9ebzv1x3ezfUU5Po/qgF4SZLeP17IU7gQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hJNjV9YJP3MOknABU+M4uPH5auJM6rEiAndYCc+kq4jOBJaMwKFDBlEptLvWPGrAZ
+	 STPz8Jp7E8DmOfpsrdi7+X3BRQPomzgZIxhq19FadUiK/PMTP6LE9qA2DUaFBDHu8g
+	 VapmWXBJ2cl4FmE8jEgewKmrUfCE2OHOuu3CLHPLl42hHt94BmQ7ogShyaGgyTogee
+	 /D2Mqw7iGiFdbtmEaA4tzOeiCmnFXvMBu8u4K6aQL1F1NLlEVDQOJDl3pVpw66jOKD
+	 SgJyva9DlU91njD9kNB2o41JGptkdvb6noJCfZh2rVq3lRTIhugs29Lromblh7cLmW
+	 m2P32X4AcO0QQ==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Cc: linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 0/3] crypto: Remove arch-optimized des and des3_ede code
+Date: Thu, 26 Mar 2026 13:12:42 -0700
+Message-ID: <20260326201246.57544-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325193954.GC2305@quark>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Spamd-Result: default: False [-1.36 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lst.de,linux-foundation.org,linaro.org,gmail.com,armlinux.org.uk,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,ghiti.fr,davemloft.net,gaisler.com,nod.at,cambridgegreys.com,sipsolutions.net,redhat.com,alien8.de,linux.intel.com,zytor.com,gondor.apana.org.au,intel.com,fb.com,suse.com,arndb.de,fnnas.com,huawei.com,mit.edu,zx2c4.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6564-lists,sparclinux=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6565-lists,sparclinux=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[sparclinux];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,sparclinux@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hch@lst.de,sparclinux@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[59];
-	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sashiko.dev:url]
-X-Rspamd-Queue-Id: EFC4832F4CA
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[sparclinux];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4C45933B555
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 12:39:54PM -0700, Eric Biggers wrote:
-> This generally looks good, but yes, please check the comments from
-> https://sashiko.dev/#/patchset/20260324062211.3216301-1-hch@lst.de, as
-> Andrew mentioned.
+DES and 3DES are cryptographically obsolete and insecure by modern
+standards.  Continuing to maintain highly specific, complex assembly and
+glue code for them, especially when the code isn't testable in QEMU
+(s390 and sparc), is unnecessary and risky.
 
-Yes, I've looked into them and fixed the, the current version in the
-git branch already has the changes.
+Thus, this series removes the architecture-optimized DES and 3DES code
+for the three architectures that had it: s390, sparc, and x86.
 
-> looks real as well, though I haven't tested it.  If preemption is indeed
-> not the right thing to check, then I guess (following up from
-> https://lore.kernel.org/linux-crypto/20260303195517.GC2846@sol/) it
-> would need to be something like:
-> 
->     WARN_ON_ONCE(!in_task() || irqs_disabled() || softirq_count() != 0);
-> 
-> Ugly, but we're running out of options.
+This series is targeting cryptodev/master.
 
-So far I've just reverted back to the in_interrupted() check we had
-before.  I can switch to the above, though.
+Eric Biggers (3):
+  crypto: s390 - Remove des and des3_ede code
+  crypto: sparc - Remove des and des3_ede code
+  crypto: x86 - Remove des and des3_ede code
 
-> (This sort of thing is why the functions in lib/crypto/ and lib/crc/ are
-> just supported in all contexts instead.  If FPU/vector/SIMD registers
-> cannot be used in the current context, then a scalar fallback is used.)
+ arch/s390/configs/debug_defconfig |   1 -
+ arch/s390/configs/defconfig       |   1 -
+ arch/s390/crypto/Kconfig          |  16 -
+ arch/s390/crypto/Makefile         |   1 -
+ arch/s390/crypto/des_s390.c       | 502 ------------------
+ arch/sparc/crypto/Kconfig         |  14 -
+ arch/sparc/crypto/Makefile        |   2 -
+ arch/sparc/crypto/des_asm.S       | 419 ---------------
+ arch/sparc/crypto/des_glue.c      | 482 -----------------
+ arch/x86/crypto/Kconfig           |  14 -
+ arch/x86/crypto/Makefile          |   3 -
+ arch/x86/crypto/des3_ede-asm_64.S | 831 ------------------------------
+ arch/x86/crypto/des3_ede_glue.c   | 391 --------------
+ 13 files changed, 2677 deletions(-)
+ delete mode 100644 arch/s390/crypto/des_s390.c
+ delete mode 100644 arch/sparc/crypto/des_asm.S
+ delete mode 100644 arch/sparc/crypto/des_glue.c
+ delete mode 100644 arch/x86/crypto/des3_ede-asm_64.S
+ delete mode 100644 arch/x86/crypto/des3_ede_glue.c
 
-We could do this fairly easily, but I'm not sure it is a good idea.
-The callers of these routines are extremely limited, so we'd have to
-add code for this which will then only be used by the new extensive
-test code we'd have to add for it.
+
+base-commit: f9bbd547cfb98b1c5e535aab9b0671a2ff22453a
+-- 
+2.53.0
 
 
