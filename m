@@ -1,672 +1,200 @@
-Return-Path: <sparclinux+bounces-6637-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6635-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENIhFTkY0WlfFAcAu9opvQ
-	(envelope-from <sparclinux+bounces-6637-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Sat, 04 Apr 2026 15:55:05 +0200
+	id mO5FLkMC0WmNDQcAu9opvQ
+	(envelope-from <sparclinux+bounces-6635-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Sat, 04 Apr 2026 14:21:23 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C2839B475
-	for <lists+sparclinux@lfdr.de>; Sat, 04 Apr 2026 15:55:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 672CB39B0F0
+	for <lists+sparclinux@lfdr.de>; Sat, 04 Apr 2026 14:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF53D300AECC
-	for <lists+sparclinux@lfdr.de>; Sat,  4 Apr 2026 13:55:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5631300C93B
+	for <lists+sparclinux@lfdr.de>; Sat,  4 Apr 2026 12:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1DD264617;
-	Sat,  4 Apr 2026 13:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC1921A447;
+	Sat,  4 Apr 2026 12:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="LBhcPAvn"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D3061FFE;
-	Sat,  4 Apr 2026 13:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BB329A9C8
+	for <sparclinux@vger.kernel.org>; Sat,  4 Apr 2026 12:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775310900; cv=none; b=e9ChpKy9H/Tsn8oSBYu1Zb5x73rWVYAWckoFGB+4dmYXJO7p6AmbZck10A0sTKMfXv7tET07xK9vd2hD7M1Y7Yp8w458hYsGUakR0Y9gSXgDyYo1DOvdIy5j+ZQBYA/3Zwd9/prdNhSmtX5KZLuMCKAnWx0RO0vSutW4naR7FiM=
+	t=1775305280; cv=none; b=HPQNQ45SKXUfTGlLJ3JJ2veq0P1NjYhPYSan/9B2HrhoKHTLw/rklC0y2VgpEBZEyRaPSsRJt9lSb9BOmwrjHA77zeN1GpvzZ9Ev6pPD51NQhlijTD/mUqI/2FDfQMnzoSYeF38yn5bhaLLYNC4RbftAlsEejWITkMibo+7w3lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775310900; c=relaxed/simple;
-	bh=dQSzIADc6sP5vJjxkJmrIIMyUJ0eKm79JNtVfcJUQLc=;
-	h=From:Date:Message-ID:To:Cc:Subject; b=dn+StjzAqWePim4VEUkaX7wTi+JqhHVxbnANdL0kJehOsR8qF1JVyubEv2xqfhOcFl5IxjJ97X6487Zjky+nCugUpZP+HTTGkGSoP2IeYdib9WSlQ4pa2s0eAywSj/6NbjlI23z4XxvseSOBnfEDV2zTmNDl9in409CWOuSudvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from 0003-sparc-prom.eml (unknown [111.196.245.197])
-	by APP-03 (Coremail) with SMTP id rQCowAA3VdwmGNFpyyvfDA--.50966S2;
-	Sat, 04 Apr 2026 21:54:46 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Date: Sat, 4 Apr 2026 17:32:20 +0800
-Message-ID: <20260404190003.3-sparc-prom-pengpeng@iscas.ac.cn>
-To: "David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, pengpeng@iscas.ac.cn
-Subject: [PATCH] sparc/prom: size path-component buffers to fit node names
-X-CM-TRANSID:rQCowAA3VdwmGNFpyyvfDA--.50966S2
-X-Coremail-Antispam: 1UD129KBjvAXoWfGr1Dur4rXw18KryUZryfXrb_yoW8Cr17Go
-	W3WwnYqw18AF4S9rWkG3Z8trZ8Z3W5Wr93AFn5Ja1DZFy7AF909FyxAa9xXa4qqr4xGasx
-	ZFsaq3yDGr97Wr4xn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UjIYCTnIWjp_UUUYT7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xva
-	j40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l87I20VAvwVCjjxC26r1F6r13M28lY4IEw2IIxx
-	k0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK
-	6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4
-	vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v
-	4I1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
-	73UjIFyTuYvjfU5oGQDUUUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+	s=arc-20240116; t=1775305280; c=relaxed/simple;
+	bh=reEz+myQ6H+KBDbMQirfBVvSjeJsGQrNL/qo1D1VFUk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DmdXS0cCI+Pc8doYYoA8gfGayIjiMMJJICZc2K12nNd4/0gHDy9GE416d0VS/0rkAplfN5/S58fkKDoVWiaO6QcZ9WugB6E/J6FaXkPvNgdsQoBK275VpuPCyx8Ui8Y0SSOLWg+DcNrXR2dp6mxAGd1rUl0clKgwoYlbJWY76mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=LBhcPAvn; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-824c9da9928so1734998b3a.3
+        for <sparclinux@vger.kernel.org>; Sat, 04 Apr 2026 05:21:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1775305278; x=1775910078; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XmD+wUZmRVhtkrDT5Nt1vWAFME2ljMO3CvkEWHIVAgE=;
+        b=LBhcPAvnw0FjtQ6ubMw5Lun8Ih6wN9cUM2D+259XGoRBExYw4eUrPjP9tTneMdUkKE
+         /1mXXawETKXrfKeWx19IYdcKOxw0FUQqPDw5Fe8MWPDpZA1tmca7d2669zkPPrG1RBze
+         gttCrWUhVpfHfgePkC1SGq6nxkHzKiQkL/hjoJjZ4+ovSdHGgIkijhmnmBMSU80QCodF
+         JbiY93wLe5vmPDf1gGpVxFuMdJNf2hR1E+Us7fayz7g1kIFX3ZWaZL2WqUvP7iW+VBYD
+         kAi6ahw+KeHdBnps4iEQvmhig0cC3IJSKAxqwcXhUGVR3XWxVzmi5EDgMkO5HjFO0sFn
+         6gCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775305278; x=1775910078;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XmD+wUZmRVhtkrDT5Nt1vWAFME2ljMO3CvkEWHIVAgE=;
+        b=c6+cfiSZyysPYpD4jS7az5e6qD1gqD2B/B60TE1P4g+MeVXmiGg/gL2WjNwbVY+BPT
+         xwObcpZl08JXUY7+DSd19FayTn1BB2Gtj0g4bZTLT/k5WjH0jUFjekK5tmBXcTh0myNG
+         uLNGN+WGo+mX6YMUlKCEuQBFEvsuuu0ATNt44eCXNziUPSS2XJE9caEkJMUfEq8I7vYQ
+         UB/OBTE1Z0LqdWrz/1krJQscMewwZHQqDoC+0Yx3oDHe7ksDFA03Ne2MXynKuU5exp7X
+         T6EznrTxk5E+dqoOXE+bawpLyInGpvxO1SRBiCgINPb4UuyRbPJoaxV+6NpoRhHvxwrg
+         v5ug==
+X-Forwarded-Encrypted: i=1; AJvYcCWuSWmrUV7BUgQJl79PbN0xa6NB6jDlZ/PsFQ2XRHm3JOy83UlBSO1FDkK1DL2KYePRv/dnxCNm/fi6@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGrOglKF0MYuhWq/sBPPd4wg6p6AYpQkKN8aRZDlzU8RSfKGRO
+	y+tD6YUAH37cqn/8Tm1cKr4637N2t8SBgrUprrAzLbfnbxaSOEmBQ/cMkihBrL4wrsM=
+X-Gm-Gg: AeBDieugE4EC5RHF4g8kkSOo6gpbnb/3Y9H33W7D4nDBe+Rrv4uZ+yv1oTENQlsrce1
+	/ryXYOdU+wEqLXbG2AgaUzdCsvc+ff/NAxaxSQt56x2tVFMpjsL02uAM632R82DwIKaxisc893+
+	6r1KYD6j+TDqUfCR/u+uv7+Q06KJEh+aZSlCUm4tNxo9kXh4i904LMXTEfW63L9eREbiu42xqxG
+	GHffYRjcZ157j9dzQwxU9Lc4lMZfrYuLamcFohKImxK+m3cGHc0gPfjenz3aSAoeJh/OZy9bB9Y
+	TX+vKLByv9UTPaueQ/9TG/4QEYB/YPjxtc4jTizar4anxzjWXAnJdCKq4yuvvZSF1iLigB6xneh
+	xtKW+miNGnq8Og1mzrskeswJ0/MaggEGpl9/tjNDzv0GMFfhreyDrwiYhHkcCBm1amMsrY7rGH8
+	KjWwggBmUQWmwdW7EcAYu6Q4EfkDJI8TGHOdCbpiz7tDmYHw+KcuBTtA==
+X-Received: by 2002:a05:6a00:ab87:b0:82c:24a9:d5f1 with SMTP id d2e1a72fcca58-82d0db3f376mr5931662b3a.30.1775305277918;
+        Sat, 04 Apr 2026 05:21:17 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.98])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cfebe5b23sm8327063b3a.59.2026.04.04.05.21.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Apr 2026 05:21:17 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: linux-mm@kvack.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Junhui Liu <junhui.liu@pigmoral.tech>,
+	Austin Kim <austin.kim@lge.com>,
+	Chengkaitao <chengkaitao@kylinos.cn>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Alex Shi <alexs@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	sparclinux@vger.kernel.org
+Subject: [PATCH v2 0/5] mm/sparse-vmemmap: provide generic vmemmap_set_pmd() and vmemmap_check_pmd()
+Date: Sat,  4 Apr 2026 20:20:53 +0800
+Message-Id: <20260404122105.3989557-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.04 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[bytedance.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6637-lists,sparclinux=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[kvack.org,bytedance.com,linux.dev,xen0n.name,ghiti.fr,kernel.org,oracle.com,google.com,suse.com,arm.com,os.amperecomputing.com,gmail.com,pigmoral.tech,lge.com,kylinos.cn,infradead.org,lists.infradead.org,vger.kernel.org,lists.linux.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[39];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-6635-lists,sparclinux=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,sparclinux@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
+	FROM_NEQ_ENVFROM(0.00)[songmuchun@bytedance.com,sparclinux@vger.kernel.org];
+	DKIM_TRACE(0.00)[bytedance.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[sparclinux];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 08C2839B475
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 672CB39B0F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-build_path_component() in both sparc PROM variants formats fully-named
-path components in a fixed 64-byte local buffer and feeds raw firmware
-node names
-into a chain of sprintf() helpers.
+The two weak functions vmemmap_set_pmd() and vmemmap_check_pmd() are
+currently no-ops on every architecture, forcing each platform that needs
+them to duplicate the same handful of lines. Provide a generic implementation:
 
-That leaves two problems in the current tree: malformed or unterminated
-name properties are treated as C strings, and long node names can
-overflow the fixed local scratch buffer before the formatted path
-component is copied into early memory.
+- vmemmap_set_pmd() simply sets a huge PMD with PAGE_KERNEL protection.
 
-Read the node name with of_property_read_string(), size the destination
-buffer from the validated name length plus the maximum address suffix, and
-use bounded formatting in the helper chain.
+- vmemmap_check_pmd() verifies that the PMD is present and leaf,
+  then calls the existing vmemmap_verify() helper.
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
----
- arch/sparc/kernel/prom_32.c |  84 +++++++++---------
- arch/sparc/kernel/prom_64.c | 172 +++++++++++++++++-------------------
- 2 files changed, 122 insertions(+), 134 deletions(-)
+Architectures that need special handling can continue to override the
+weak symbols; everyone else gets the standard version for free.
 
-diff --git a/arch/sparc/kernel/prom_32.c b/arch/sparc/kernel/prom_32.c
-index cd94f1e8d644..b2a717a44105 100644
---- a/arch/sparc/kernel/prom_32.c
-+++ b/arch/sparc/kernel/prom_32.c
-@@ -16,6 +16,7 @@
- #include <linux/string.h>
- #include <linux/mm.h>
- #include <linux/memblock.h>
-+#include <linux/of.h>
- 
- #include <asm/prom.h>
- #include <asm/oplib.h>
-@@ -24,6 +25,8 @@
- 
- #include "prom.h"
- 
-+#define SPARC_PATH_COMPONENT_EXTRA 32
-+
- void * __init prom_early_alloc(unsigned long size)
- {
- 	void *ret;
-@@ -52,9 +55,10 @@ void * __init prom_early_alloc(unsigned long size)
-  * we walk up the tree until we discover a "device_type" property
-  * we recognize and we go from there.
-  */
--static void __init sparc32_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init sparc32_path_component(const char *name,
-+					  struct device_node *dp,
-+					  char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct linux_prom_registers *regs;
- 	struct property *rprop;
- 
-@@ -63,15 +67,14 @@ static void __init sparc32_path_component(struct device_node *dp, char *tmp_buf)
- 		return;
- 
- 	regs = rprop->value;
--	sprintf(tmp_buf, "%s@%x,%x",
--		name,
--		regs->which_io, regs->phys_addr);
-+	scnprintf(tmp_buf, len, "%s@%x,%x",
-+		  name, regs->which_io, regs->phys_addr);
- }
- 
- /* "name@slot,offset"  */
--static void __init sbus_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init sbus_path_component(const char *name, struct device_node *dp,
-+				       char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct linux_prom_registers *regs;
- 	struct property *prop;
- 
-@@ -80,16 +83,14 @@ static void __init sbus_path_component(struct device_node *dp, char *tmp_buf)
- 		return;
- 
- 	regs = prop->value;
--	sprintf(tmp_buf, "%s@%x,%x",
--		name,
--		regs->which_io,
--		regs->phys_addr);
-+	scnprintf(tmp_buf, len, "%s@%x,%x",
-+		  name, regs->which_io, regs->phys_addr);
- }
- 
- /* "name@devnum[,func]" */
--static void __init pci_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init pci_path_component(const char *name, struct device_node *dp,
-+				      char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct linux_prom_pci_registers *regs;
- 	struct property *prop;
- 	unsigned int devfn;
-@@ -101,21 +102,17 @@ static void __init pci_path_component(struct device_node *dp, char *tmp_buf)
- 	regs = prop->value;
- 	devfn = (regs->phys_hi >> 8) & 0xff;
- 	if (devfn & 0x07) {
--		sprintf(tmp_buf, "%s@%x,%x",
--			name,
--			devfn >> 3,
--			devfn & 0x07);
-+		scnprintf(tmp_buf, len, "%s@%x,%x",
-+			  name, devfn >> 3, devfn & 0x07);
- 	} else {
--		sprintf(tmp_buf, "%s@%x",
--			name,
--			devfn >> 3);
-+		scnprintf(tmp_buf, len, "%s@%x", name, devfn >> 3);
- 	}
- }
- 
- /* "name@addrhi,addrlo" */
--static void __init ebus_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init ebus_path_component(const char *name, struct device_node *dp,
-+				       char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct linux_prom_registers *regs;
- 	struct property *prop;
- 
-@@ -125,15 +122,15 @@ static void __init ebus_path_component(struct device_node *dp, char *tmp_buf)
- 
- 	regs = prop->value;
- 
--	sprintf(tmp_buf, "%s@%x,%x",
--		name,
--		regs->which_io, regs->phys_addr);
-+	scnprintf(tmp_buf, len, "%s@%x,%x",
-+		  name, regs->which_io, regs->phys_addr);
- }
- 
- /* "name@irq,addrlo" */
--static void __init ambapp_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init ambapp_path_component(const char *name,
-+					 struct device_node *dp,
-+					 char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct amba_prom_registers *regs;
- 	unsigned int *intr;
- 	unsigned int reg0;
-@@ -158,45 +155,46 @@ static void __init ambapp_path_component(struct device_node *dp, char *tmp_buf)
- 	else
- 		intr = prop->value;
- 
--	sprintf(tmp_buf, "%s@%x,%x", name, *intr, reg0);
-+	scnprintf(tmp_buf, len, "%s@%x,%x", name, *intr, reg0);
- }
- 
--static void __init __build_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init __build_path_component(const char *name,
-+					  struct device_node *dp,
-+					  char *tmp_buf, size_t len)
- {
- 	struct device_node *parent = dp->parent;
- 
- 	if (parent != NULL) {
- 		if (of_node_is_type(parent, "pci") ||
- 		    of_node_is_type(parent, "pciex"))
--			return pci_path_component(dp, tmp_buf);
-+			return pci_path_component(name, dp, tmp_buf, len);
- 		if (of_node_is_type(parent, "sbus"))
--			return sbus_path_component(dp, tmp_buf);
-+			return sbus_path_component(name, dp, tmp_buf, len);
- 		if (of_node_is_type(parent, "ebus"))
--			return ebus_path_component(dp, tmp_buf);
-+			return ebus_path_component(name, dp, tmp_buf, len);
- 		if (of_node_is_type(parent, "ambapp"))
--			return ambapp_path_component(dp, tmp_buf);
-+			return ambapp_path_component(name, dp, tmp_buf, len);
- 
- 		/* "isa" is handled with platform naming */
- 	}
- 
- 	/* Use platform naming convention.  */
--	return sparc32_path_component(dp, tmp_buf);
-+	return sparc32_path_component(name, dp, tmp_buf, len);
- }
- 
- char * __init build_path_component(struct device_node *dp)
- {
--	const char *name = of_get_property(dp, "name", NULL);
--	char tmp_buf[64], *n;
-+	const char *name = "";
-+	char *n;
- 	size_t n_sz;
- 
--	tmp_buf[0] = '\0';
--	__build_path_component(dp, tmp_buf);
--	if (tmp_buf[0] == '\0')
--		strscpy(tmp_buf, name);
--
--	n_sz = strlen(tmp_buf) + 1;
-+	of_property_read_string(dp, "name", &name);
-+	n_sz = strlen(name) + SPARC_PATH_COMPONENT_EXTRA;
- 	n = prom_early_alloc(n_sz);
--	strscpy(n, tmp_buf, n_sz);
-+	n[0] = '\0';
-+	__build_path_component(name, dp, n, n_sz);
-+	if (n[0] == '\0')
-+		strscpy(n, name, n_sz);
- 
- 	return n;
- }
-diff --git a/arch/sparc/kernel/prom_64.c b/arch/sparc/kernel/prom_64.c
-index aa4799cbb9c1..e8053cf545ea 100644
---- a/arch/sparc/kernel/prom_64.c
-+++ b/arch/sparc/kernel/prom_64.c
-@@ -28,6 +28,8 @@
- 
- #include "prom.h"
- 
-+#define SPARC_PATH_COMPONENT_EXTRA 32
-+
- void * __init prom_early_alloc(unsigned long size)
- {
- 	void *ret = memblock_alloc(size, SMP_CACHE_BYTES);
-@@ -63,9 +65,10 @@ void * __init prom_early_alloc(unsigned long size)
-  *
-  *	/pci@1e,600000/ide@d/disk@0,0:c
-  */
--static void __init sun4v_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init sun4v_path_component(const char *name,
-+					struct device_node *dp,
-+					char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct linux_prom64_registers *regs;
- 	struct property *rprop;
- 	u32 high_bits, low_bits, type;
-@@ -76,10 +79,10 @@ static void __init sun4v_path_component(struct device_node *dp, char *tmp_buf)
- 
- 	regs = rprop->value;
- 	if (!of_node_is_root(dp->parent)) {
--		sprintf(tmp_buf, "%s@%x,%x",
--			name,
--			(unsigned int) (regs->phys_addr >> 32UL),
--			(unsigned int) (regs->phys_addr & 0xffffffffUL));
-+		scnprintf(tmp_buf, len, "%s@%x,%x",
-+			  name,
-+			  (unsigned int)(regs->phys_addr >> 32UL),
-+			  (unsigned int)(regs->phys_addr & 0xffffffffUL));
- 		return;
- 	}
- 
-@@ -91,23 +94,20 @@ static void __init sun4v_path_component(struct device_node *dp, char *tmp_buf)
- 		const char *prefix = (type == 0) ? "m" : "i";
- 
- 		if (low_bits)
--			sprintf(tmp_buf, "%s@%s%x,%x",
--				name, prefix,
--				high_bits, low_bits);
-+			scnprintf(tmp_buf, len, "%s@%s%x,%x",
-+				  name, prefix, high_bits, low_bits);
- 		else
--			sprintf(tmp_buf, "%s@%s%x",
--				name,
--				prefix,
--				high_bits);
-+			scnprintf(tmp_buf, len, "%s@%s%x",
-+				  name, prefix, high_bits);
- 	} else if (type == 12) {
--		sprintf(tmp_buf, "%s@%x",
--			name, high_bits);
-+		scnprintf(tmp_buf, len, "%s@%x", name, high_bits);
- 	}
- }
- 
--static void __init sun4u_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init sun4u_path_component(const char *name,
-+					struct device_node *dp,
-+					char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct linux_prom64_registers *regs;
- 	struct property *prop;
- 
-@@ -117,10 +117,10 @@ static void __init sun4u_path_component(struct device_node *dp, char *tmp_buf)
- 
- 	regs = prop->value;
- 	if (!of_node_is_root(dp->parent)) {
--		sprintf(tmp_buf, "%s@%x,%x",
--			name,
--			(unsigned int) (regs->phys_addr >> 32UL),
--			(unsigned int) (regs->phys_addr & 0xffffffffUL));
-+		scnprintf(tmp_buf, len, "%s@%x,%x",
-+			  name,
-+			  (unsigned int)(regs->phys_addr >> 32UL),
-+			  (unsigned int)(regs->phys_addr & 0xffffffffUL));
- 		return;
- 	}
- 
-@@ -133,17 +133,16 @@ static void __init sun4u_path_component(struct device_node *dp, char *tmp_buf)
- 		if (tlb_type >= cheetah)
- 			mask = 0x7fffff;
- 
--		sprintf(tmp_buf, "%s@%x,%x",
--			name,
--			*(u32 *)prop->value,
--			(unsigned int) (regs->phys_addr & mask));
-+		scnprintf(tmp_buf, len, "%s@%x,%x",
-+			  name, *(u32 *)prop->value,
-+			  (unsigned int)(regs->phys_addr & mask));
- 	}
- }
- 
- /* "name@slot,offset"  */
--static void __init sbus_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init sbus_path_component(const char *name, struct device_node *dp,
-+				       char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct linux_prom_registers *regs;
- 	struct property *prop;
- 
-@@ -152,16 +151,14 @@ static void __init sbus_path_component(struct device_node *dp, char *tmp_buf)
- 		return;
- 
- 	regs = prop->value;
--	sprintf(tmp_buf, "%s@%x,%x",
--		name,
--		regs->which_io,
--		regs->phys_addr);
-+	scnprintf(tmp_buf, len, "%s@%x,%x",
-+		  name, regs->which_io, regs->phys_addr);
- }
- 
- /* "name@devnum[,func]" */
--static void __init pci_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init pci_path_component(const char *name, struct device_node *dp,
-+				      char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct linux_prom_pci_registers *regs;
- 	struct property *prop;
- 	unsigned int devfn;
-@@ -173,21 +170,17 @@ static void __init pci_path_component(struct device_node *dp, char *tmp_buf)
- 	regs = prop->value;
- 	devfn = (regs->phys_hi >> 8) & 0xff;
- 	if (devfn & 0x07) {
--		sprintf(tmp_buf, "%s@%x,%x",
--			name,
--			devfn >> 3,
--			devfn & 0x07);
-+		scnprintf(tmp_buf, len, "%s@%x,%x",
-+			  name, devfn >> 3, devfn & 0x07);
- 	} else {
--		sprintf(tmp_buf, "%s@%x",
--			name,
--			devfn >> 3);
-+		scnprintf(tmp_buf, len, "%s@%x", name, devfn >> 3);
- 	}
- }
- 
- /* "name@UPA_PORTID,offset" */
--static void __init upa_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init upa_path_component(const char *name, struct device_node *dp,
-+				      char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct linux_prom64_registers *regs;
- 	struct property *prop;
- 
-@@ -201,16 +194,15 @@ static void __init upa_path_component(struct device_node *dp, char *tmp_buf)
- 	if (!prop)
- 		return;
- 
--	sprintf(tmp_buf, "%s@%x,%x",
--		name,
--		*(u32 *) prop->value,
--		(unsigned int) (regs->phys_addr & 0xffffffffUL));
-+	scnprintf(tmp_buf, len, "%s@%x,%x",
-+		  name, *(u32 *)prop->value,
-+		  (unsigned int)(regs->phys_addr & 0xffffffffUL));
- }
- 
- /* "name@reg" */
--static void __init vdev_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init vdev_path_component(const char *name, struct device_node *dp,
-+				       char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct property *prop;
- 	u32 *regs;
- 
-@@ -220,13 +212,13 @@ static void __init vdev_path_component(struct device_node *dp, char *tmp_buf)
- 
- 	regs = prop->value;
- 
--	sprintf(tmp_buf, "%s@%x", name, *regs);
-+	scnprintf(tmp_buf, len, "%s@%x", name, *regs);
- }
- 
- /* "name@addrhi,addrlo" */
--static void __init ebus_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init ebus_path_component(const char *name, struct device_node *dp,
-+				       char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct linux_prom64_registers *regs;
- 	struct property *prop;
- 
-@@ -236,16 +228,16 @@ static void __init ebus_path_component(struct device_node *dp, char *tmp_buf)
- 
- 	regs = prop->value;
- 
--	sprintf(tmp_buf, "%s@%x,%x",
--		name,
--		(unsigned int) (regs->phys_addr >> 32UL),
--		(unsigned int) (regs->phys_addr & 0xffffffffUL));
-+	scnprintf(tmp_buf, len, "%s@%x,%x",
-+		  name,
-+		  (unsigned int)(regs->phys_addr >> 32UL),
-+		  (unsigned int)(regs->phys_addr & 0xffffffffUL));
- }
- 
- /* "name@bus,addr" */
--static void __init i2c_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init i2c_path_component(const char *name, struct device_node *dp,
-+				      char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct property *prop;
- 	u32 *regs;
- 
-@@ -258,14 +250,13 @@ static void __init i2c_path_component(struct device_node *dp, char *tmp_buf)
- 	/* This actually isn't right... should look at the #address-cells
- 	 * property of the i2c bus node etc. etc.
- 	 */
--	sprintf(tmp_buf, "%s@%x,%x",
--		name, regs[0], regs[1]);
-+	scnprintf(tmp_buf, len, "%s@%x,%x", name, regs[0], regs[1]);
- }
- 
- /* "name@reg0[,reg1]" */
--static void __init usb_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init usb_path_component(const char *name, struct device_node *dp,
-+				      char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct property *prop;
- 	u32 *regs;
- 
-@@ -276,18 +267,17 @@ static void __init usb_path_component(struct device_node *dp, char *tmp_buf)
- 	regs = prop->value;
- 
- 	if (prop->length == sizeof(u32) || regs[1] == 1) {
--		sprintf(tmp_buf, "%s@%x",
--			name, regs[0]);
-+		scnprintf(tmp_buf, len, "%s@%x", name, regs[0]);
- 	} else {
--		sprintf(tmp_buf, "%s@%x,%x",
--			name, regs[0], regs[1]);
-+		scnprintf(tmp_buf, len, "%s@%x,%x", name, regs[0], regs[1]);
- 	}
- }
- 
- /* "name@reg0reg1[,reg2reg3]" */
--static void __init ieee1394_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init ieee1394_path_component(const char *name,
-+					   struct device_node *dp,
-+					   char *tmp_buf, size_t len)
- {
--	const char *name = of_get_property(dp, "name", NULL);
- 	struct property *prop;
- 	u32 *regs;
- 
-@@ -298,51 +288,52 @@ static void __init ieee1394_path_component(struct device_node *dp, char *tmp_buf
- 	regs = prop->value;
- 
- 	if (regs[2] || regs[3]) {
--		sprintf(tmp_buf, "%s@%08x%08x,%04x%08x",
--			name, regs[0], regs[1], regs[2], regs[3]);
-+		scnprintf(tmp_buf, len, "%s@%08x%08x,%04x%08x",
-+			  name, regs[0], regs[1], regs[2], regs[3]);
- 	} else {
--		sprintf(tmp_buf, "%s@%08x%08x",
--			name, regs[0], regs[1]);
-+		scnprintf(tmp_buf, len, "%s@%08x%08x", name, regs[0], regs[1]);
- 	}
- }
- 
--static void __init __build_path_component(struct device_node *dp, char *tmp_buf)
-+static void __init __build_path_component(const char *name,
-+					  struct device_node *dp,
-+					  char *tmp_buf, size_t len)
- {
- 	struct device_node *parent = dp->parent;
- 
- 	if (parent != NULL) {
- 		if (of_node_is_type(parent, "pci") ||
- 		    of_node_is_type(parent, "pciex")) {
--			pci_path_component(dp, tmp_buf);
-+			pci_path_component(name, dp, tmp_buf, len);
- 			return;
- 		}
- 		if (of_node_is_type(parent, "sbus")) {
--			sbus_path_component(dp, tmp_buf);
-+			sbus_path_component(name, dp, tmp_buf, len);
- 			return;
- 		}
- 		if (of_node_is_type(parent, "upa")) {
--			upa_path_component(dp, tmp_buf);
-+			upa_path_component(name, dp, tmp_buf, len);
- 			return;
- 		}
- 		if (of_node_is_type(parent, "ebus")) {
--			ebus_path_component(dp, tmp_buf);
-+			ebus_path_component(name, dp, tmp_buf, len);
- 			return;
- 		}
- 		if (of_node_name_eq(parent, "usb") ||
- 		    of_node_name_eq(parent, "hub")) {
--			usb_path_component(dp, tmp_buf);
-+			usb_path_component(name, dp, tmp_buf, len);
- 			return;
- 		}
- 		if (of_node_is_type(parent, "i2c")) {
--			i2c_path_component(dp, tmp_buf);
-+			i2c_path_component(name, dp, tmp_buf, len);
- 			return;
- 		}
- 		if (of_node_is_type(parent, "firewire")) {
--			ieee1394_path_component(dp, tmp_buf);
-+			ieee1394_path_component(name, dp, tmp_buf, len);
- 			return;
- 		}
- 		if (of_node_is_type(parent, "virtual-devices")) {
--			vdev_path_component(dp, tmp_buf);
-+			vdev_path_component(name, dp, tmp_buf, len);
- 			return;
- 		}
- 		/* "isa" is handled with platform naming */
-@@ -350,27 +341,26 @@ static void __init __build_path_component(struct device_node *dp, char *tmp_buf)
- 
- 	/* Use platform naming convention.  */
- 	if (tlb_type == hypervisor) {
--		sun4v_path_component(dp, tmp_buf);
-+		sun4v_path_component(name, dp, tmp_buf, len);
- 		return;
- 	} else {
--		sun4u_path_component(dp, tmp_buf);
-+		sun4u_path_component(name, dp, tmp_buf, len);
- 	}
- }
- 
- char * __init build_path_component(struct device_node *dp)
- {
--	const char *name = of_get_property(dp, "name", NULL);
--	char tmp_buf[64], *n;
-+	const char *name = "";
-+	char *n;
- 	size_t n_sz;
- 
--	tmp_buf[0] = '\0';
--	__build_path_component(dp, tmp_buf);
--	if (tmp_buf[0] == '\0')
--		strscpy(tmp_buf, name);
--
--	n_sz = strlen(tmp_buf) + 1;
-+	of_property_read_string(dp, "name", &name);
-+	n_sz = strlen(name) + SPARC_PATH_COMPONENT_EXTRA;
- 	n = prom_early_alloc(n_sz);
--	strscpy(n, tmp_buf, n_sz);
-+	n[0] = '\0';
-+	__build_path_component(name, dp, n, n_sz);
-+	if (n[0] == '\0')
-+		strscpy(n, name, n_sz);
- 
- 	return n;
- }
+This series drops the custom implementations in arm64, riscv, loongarch,
+and sparc, replacing them with the generic implementation introduced
+in the first patch.
+
+v1 -> v2:
+- Fixed a tooling issue in v1 where duplicate/conflicting patches
+  were incorrectly sent to the mailing list. No code changes compared
+  to the intended v1.
+
+
+Muchun Song (5):
+  mm/sparse-vmemmap: provide generic vmemmap_set_pmd() and
+    vmemmap_check_pmd()
+  arm64/mm: drop vmemmap_pmd helpers and use generic code
+  riscv/mm: drop vmemmap_pmd helpers and use generic code
+  loongarch/mm: drop vmemmap_check_pmd helper and use generic code
+  sparc/mm: drop vmemmap_check_pmd helper and use generic code
+
+ arch/arm64/mm/mmu.c      | 14 --------------
+ arch/loongarch/mm/init.c | 11 -----------
+ arch/riscv/mm/init.c     | 13 -------------
+ arch/sparc/mm/init_64.c  | 11 -----------
+ mm/sparse-vmemmap.c      |  7 ++++++-
+ 5 files changed, 6 insertions(+), 50 deletions(-)
+
 -- 
-2.50.1 (Apple Git-155)
+2.20.1
 
 
