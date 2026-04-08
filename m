@@ -1,171 +1,182 @@
-Return-Path: <sparclinux+bounces-6636-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6638-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6F6NIWkC0WmNDQcAu9opvQ
-	(envelope-from <sparclinux+bounces-6636-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Sat, 04 Apr 2026 14:22:01 +0200
+	id 4KK8FSJb1mk1EggAu9opvQ
+	(envelope-from <sparclinux+bounces-6638-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Wed, 08 Apr 2026 15:41:54 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC14A39B108
-	for <lists+sparclinux@lfdr.de>; Sat, 04 Apr 2026 14:22:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E033BD10F
+	for <lists+sparclinux@lfdr.de>; Wed, 08 Apr 2026 15:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 74DBE30072A9
-	for <lists+sparclinux@lfdr.de>; Sat,  4 Apr 2026 12:21:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EEC3D304EA96
+	for <lists+sparclinux@lfdr.de>; Wed,  8 Apr 2026 13:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EE32DFA25;
-	Sat,  4 Apr 2026 12:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9D83CF028;
+	Wed,  8 Apr 2026 13:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="SsIKU/97"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TCO6/05K"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6DE21A447
-	for <sparclinux@vger.kernel.org>; Sat,  4 Apr 2026 12:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B4440DFB6;
+	Wed,  8 Apr 2026 13:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775305309; cv=none; b=rDKg2492Eqi2D8bZvJTWf8Wk3xKffS0dZ+2+rxJGVky84aiA2Vb/3depu6v8N0Xx01q9NffXtSMqn0Mvnn9WXt3cxrinYdA622FnS5QOW9rrPQwAmicwgnoizaA35tIdw4KsplZBrvrpcxgyV4cscmE9Z/8P2r+1Wa05FKmKSDc=
+	t=1775655326; cv=none; b=rq5vq+J/gwWX90sBlaNxlRbG21EDyKEo7HrrQNuUoz37K2OmigQKtCTKhSI98nFYwUe4u8QV+Cam0O/CLfZ63HFQbJl/lKS6ldeGAgJq6eW4SiLokwSqGtYUsCQzjWtxjBrijcuE2bku5ApktoJ2AYFgsp2KrUQ8NLBNTmvOsD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775305309; c=relaxed/simple;
-	bh=w6hr2fger12ipP4mMrn/hi71iV0xtfKYCOSttrgEhLU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Vux8nvZdzgXkMsq/UiF5q9gx8Xt3oI7ePYqrIk3fVda8J4/0ubgxtnrdTPtnTZCLNZqQBVof0uCP4t6SuVW+nrbOLm1FKFHx3n7HDTL/QRTDQsYLLnOM4/A/mVEAM48lCXEvtK4hZlRKEE6+NR0Pmy8b48zcpy4o96xVPteBBAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=SsIKU/97; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c06cb8004e8so956628a12.0
-        for <sparclinux@vger.kernel.org>; Sat, 04 Apr 2026 05:21:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1775305306; x=1775910106; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8Y4Zwv844O5BRtbiO3p0keEYr5wdjmq4nDT8xkCMxlw=;
-        b=SsIKU/97RXE6gNQsSkQ9w53pEBxGXLfc6fdhsGgMhrk8PjZXVKUoHu6/0ADAogojmY
-         aE25zaEfdCU8vGbUSSfU6UcQf+poN+FgepTFlwGI74sq1zkfagBQEdOQ2KOPFbDOwv6i
-         4a9+HBWci54X5rID8a3z5cn2eZlyEGRsU3TKqwen5wMk2yJZfKxdE6rov9ikhcWJGaWl
-         TEiH79aD6zVW6tLALvssZi8T4k7MMokhl0DpKeQgigkkeJN+FxZZ8RuB1K0rvQaBn2L2
-         y8nu0s3RuxfnCdANdf3rcSQZUXav+N4n+qIU+wZZ55A7k//ct2gjNlpYkCAqCWJ9k+Uc
-         DEXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775305306; x=1775910106;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8Y4Zwv844O5BRtbiO3p0keEYr5wdjmq4nDT8xkCMxlw=;
-        b=SyKN7JbTb4nyqE9gtfThD3/d6Jm62tyawXO3tq86wBA2vy5G5ZtFCZTtPeL56DAsmc
-         KzbwMWrhdlFSWLe3MnsT7jYkV1t33dCKkBZ6mYqvgvXtnIPYCE0IchulC42QpkQlHF4t
-         G2fJxcL40SOHtQPEePDRe7RoFW6/ai2Pt3cvOD0Au7OnShpoxjywNoH0dlADGRfZZ8LE
-         UBdiuHn2ZhjTLI9qWMqcMc2SES4Cp4MRf/WvJP83kCvwJo+hCOUfocOPaDUS9+Sqv/6p
-         mRm1ZJSduMqhMN9K7G0DF1YtrXmapVSJ+4uXmhSJ7WidWwGnETKgwpd75nt63zgUwzCF
-         jXFw==
-X-Forwarded-Encrypted: i=1; AJvYcCV5pdZI+xB8rz1VVD545AuOFJRWA4KRG55gUGWrTe1f0iW1r6o/cd+dc03Do1aETkUpMo9BEIOnXm6P@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxxdi8ziJYg894H6UmxBddYxj3MW/Iro3m951SQOcmnM+QzvzAk
-	6HON8ad8Eca6Za3FqoA6Is2X0EyTQFx7i27cMTwYjKA4KRsEJIslGUWMPdxBe2HV+jE=
-X-Gm-Gg: AeBDieslpyP/lK2xLAEMC3eVXA0RO29BJorj4KtHHA9cmE9+k/iCuF+K/nOHYrFbLMs
-	D7O6dHyyx+3D6zAY2q0Xq+dc16HnPmUgg0HvGzBoZRvLFskXy9MPMItuh9YZQm2dgxWJ3Kdk3ZY
-	on3RWrvbyh2wO683mRwucoTeH/9p+XhPNYhf5BmaZUalPa8QTIVtKPTKlsdpP3HW3XoaJRss9AY
-	fHZcQgB8CIAUKbt4QkacSwykwFK5CIb+dfJXPZxa7eE5KRnEKIXoCCQtz0EYJWpQQzQKKRtCoGz
-	vZmeqp60AfANvNc5x1CuAjR1vyrCxQ+wTvArwOgo+NThzh1Ega5ztjqY6k4He54Zzll9JGFmrzi
-	rEjwYKEGnlm6UWUcQsX7OlDskrwGn1i6TFiVJCQv3ghD0Adej+8udMoeEvprLKNTjY7EmfkVdBF
-	12f90/BolkEaJhXqwC+xAACw2LURV9gQRzRTCuZgZysEc=
-X-Received: by 2002:a05:6300:2109:b0:39c:c07:1450 with SMTP id adf61e73a8af0-39f2f20dfd2mr5649641637.42.1775305306320;
-        Sat, 04 Apr 2026 05:21:46 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.98])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cfebe5b23sm8327063b3a.59.2026.04.04.05.21.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Apr 2026 05:21:45 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>
-Cc: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Kees Cook <kees@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Chengkaitao <chengkaitao@kylinos.cn>,
-	Alex Shi <alexs@kernel.org>,
-	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] sparc/mm: drop vmemmap_check_pmd helper and use generic code
-Date: Sat,  4 Apr 2026 20:20:58 +0800
-Message-Id: <20260404122105.3989557-6-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260404122105.3989557-1-songmuchun@bytedance.com>
-References: <20260404122105.3989557-1-songmuchun@bytedance.com>
+	s=arc-20240116; t=1775655326; c=relaxed/simple;
+	bh=pKYwxd4LBTqEhM6hCZIw3Kn68SmgW59VpsnURopbGDA=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=D/HV3Nu4I4NkYN8//Nk5FVy2wEKYD2TrR24oLJIq5BD2sHDpF/KKWU1ImfrGzmPJVkSWnjD2VAjKTGVqrYNmnI2lue7wfGpR8SSHSnmZh6+gMsBKW3RBrxsFNRBaogA0bW2AaiKkML2+IaPDKaiuZADOnXZQqgrSJ4FlBiglKjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TCO6/05K; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6387GlMf2297870;
+	Wed, 8 Apr 2026 13:35:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:to; s=pp1;
+	 bh=d5Y3KY0dMo0TgrLopZUKISrQg98Co+2h0Y1v4hiJY28=; b=TCO6/05KJrzf
+	WEOthB7UJf0GP/bSE43RBLCDkIteri73tcDi3h9CZGB05Mp4gbLfdz/4LVcb7aQU
+	wL/uMWQmKjCT/AKCH87h8ewTyiFVg4o9BGWxPKNNyKhPIQ++2MIAjrBDPD7EnjgL
+	X3+jRRR8R/3+njLgCVjTjCl10qIdbgCP8o2xL3T/JjnXB7syBDTNK+rteGJwCBUP
+	+aBvAMV5AsR+YbuletvcixvfBbl0st0cXp18e3ykg5ivPL1JHDkyZ6f6oFAKFoQz
+	XMRFL5O12BDThH2vZJ4p1dXHIahxk+kYY0MyAaLAJp6dKuL9NofJndRyWtjXN/09
+	TCm4yEIcPA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2fymq4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Apr 2026 13:35:16 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 638BDP2H014375;
+	Wed, 8 Apr 2026 13:35:15 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcmg4qjp8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Apr 2026 13:35:15 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 638DZEZi54133228
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Apr 2026 13:35:14 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 867AB58051;
+	Wed,  8 Apr 2026 13:35:14 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 17DA258060;
+	Wed,  8 Apr 2026 13:35:14 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  8 Apr 2026 13:35:14 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Date: Wed, 08 Apr 2026 15:35:13 +0200
+From: Harald Freudenberger <freude@linux.ibm.com>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org,
+        Holger Dengler <dengler@linux.ibm.com>
+Subject: Re: [PATCH 0/3] crypto: Remove arch-optimized des and des3_ede code
+Reply-To: freude@linux.ibm.com
+Mail-Reply-To: freude@linux.ibm.com
+In-Reply-To: <0982d4341f58e2f1181bc472dc9c9d8542148e3c.camel@physik.fu-berlin.de>
+References: <20260326201246.57544-1-ebiggers@kernel.org>
+ <0982d4341f58e2f1181bc472dc9c9d8542148e3c.camel@physik.fu-berlin.de>
+Message-ID: <ccb1363db0aa040838396090155b3e66@linux.ibm.com>
+X-Sender: freude@linux.ibm.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=KeridwYD c=1 sm=1 tr=0 ts=69d65994 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=OYnC2Dc2cL2ZEEg1iL4A:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: Let_FE7PP79Oblt4XoC5LMQd5IYZHbeL
+X-Proofpoint-GUID: Let_FE7PP79Oblt4XoC5LMQd5IYZHbeL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDEyMyBTYWx0ZWRfX4VnxltOHjW9r
+ IAqA5nFhl1Ec5hzY172frg3xLp23tfItBNfnmGBeuq6/Mzqi6VcEI++IKPxpzFjRcKbEkH01Kq0
+ QDjgoNVtecjsrk+v74FYJk7RAGKa2c4IDDpd8q0xbke9owmahihjeEP+PuphjXtMTRZrY7YvbMW
+ f9Si40rFKOW0wU4Ky621B7m9Ba/9WftC/zluz340+e6w0xL9+w3MP0jx/g+8PfPT1vzqrLf5NN8
+ 6sJc4fK4q7+3WPbIDtTOkZfvoJ4WA2cbZ9Ea6uucV/zxuMM1SDf0BYTpqP7zGl/hpMOUZHqM18K
+ BGJa5pXPzwC4Wdm1pIgp46TDjM/wJCcF1yXTujRBnq7mPoCA8nMRrrDr8xOraLFYx9pUCNJa1z2
+ jTNtTLHvGwToUTFki/QIuO6GzVp3sQDzUzc/InwOCdCPOwgr0burT3Xtz5NPG3LY4mEn6M2CfDN
+ sKCjfflSKW0u2Wunorg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-08_04,2026-04-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
+ clxscore=1011 phishscore=0 priorityscore=1501 spamscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604080123
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[bytedance.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-6636-lists,sparclinux=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[bytedance.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[songmuchun@bytedance.com,sparclinux@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6638-lists,sparclinux=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[sparclinux];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.ibm.com:replyto,linux.ibm.com:mid];
+	HAS_REPLYTO(0.00)[freude@linux.ibm.com];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[freude@linux.ibm.com,sparclinux@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BC14A39B108
+	TAGGED_RCPT(0.00)[sparclinux];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: A7E033BD10F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The generic implementations now suffice; remove the sparc copies.
+On 2026-03-26 21:20, John Paul Adrian Glaubitz wrote:
+> On Thu, 2026-03-26 at 13:12 -0700, Eric Biggers wrote:
+>> DES and 3DES are cryptographically obsolete and insecure by modern
+>> standards.  Continuing to maintain highly specific, complex assembly 
+>> and
+>> glue code for them, especially when the code isn't testable in QEMU
+>> (s390 and sparc), is unnecessary and risky.
+> 
+> We're working on getting crypto instructions added to QEMU though.
+> 
+> Adrian
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- arch/sparc/mm/init_64.c | 11 -----------
- 1 file changed, 11 deletions(-)
+Hi Adrian
 
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 367c269305e5..4a089da0a490 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -2579,17 +2579,6 @@ void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
- 	pmd_val(*pmd) = pte_base | __pa(p);
- }
- 
--int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
--				unsigned long addr, unsigned long next)
--{
--	int large = pmd_leaf(*pmdp);
--
--	if (large)
--		vmemmap_verify((pte_t *)pmdp, node, addr, next);
--
--	return large;
--}
--
- int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
- 			       int node, struct vmem_altmap *altmap)
- {
--- 
-2.20.1
+I am about to implement some of the cpacf instructions for qemu.
+Eric and others complained about being unable to test the s390 in-kernel 
+crypto
+implementations and thus I am about to improve this. As soon as my patch 
+series
+is in a good shape I'll forward it to you. As of now my main focus is on 
+AES (ECB,
+CTR, CBC, XTS) with and without protected key support.
+Please let us not do this work twice - so get in contact with me and 
+Holger
+about possible s390 specific crypto implementations for qemu.
 
+Harald Freudenberger
 
