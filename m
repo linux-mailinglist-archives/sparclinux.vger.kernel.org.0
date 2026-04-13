@@ -1,196 +1,127 @@
-Return-Path: <sparclinux+bounces-6694-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6695-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AoqLcOc22mCEAkAu9opvQ
-	(envelope-from <sparclinux+bounces-6694-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Sun, 12 Apr 2026 15:23:15 +0200
+	id OLBBHLWD3GnnSAkAu9opvQ
+	(envelope-from <sparclinux+bounces-6695-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Mon, 13 Apr 2026 07:48:37 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E3C3E3F8E
-	for <lists+sparclinux@lfdr.de>; Sun, 12 Apr 2026 15:23:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD5E3E790E
+	for <lists+sparclinux@lfdr.de>; Mon, 13 Apr 2026 07:48:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 006183014126
-	for <lists+sparclinux@lfdr.de>; Sun, 12 Apr 2026 13:23:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BD19F3012C76
+	for <lists+sparclinux@lfdr.de>; Mon, 13 Apr 2026 05:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE2937C904;
-	Sun, 12 Apr 2026 13:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dccArJm9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C3A303CAB;
+	Mon, 13 Apr 2026 05:47:49 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219D137C915
-	for <sparclinux@vger.kernel.org>; Sun, 12 Apr 2026 13:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776000187; cv=pass; b=peDzCv91KPImT/Ib4gsbXoR3/M7bk7SkSmzsaXbbiFbyW/vBu4DLEjbvT34HwN6TVlLHizVR7gBv66JppOoD2nKamyk7zpndfOysU6Qk/r42ZvdoBzLtl7qoLZhXMaGN+4bbFsowqYm5FasKriZxOOO0uc88PaDNjLzs73csGSc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776000187; c=relaxed/simple;
-	bh=1p6x7PvyQL+5PGqdAnx23TY8v0cVXdqCOnUZdmPD2Po=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ng4tRDlopiGY1SIQhRNq8Jkv6BFMVVBNBzASKGygQFn8R8CGigqwaJ6q8OV/scKIoOReyrPtejx1XzeJ2cCw2cwpm5Xdzpm8ZodtxA6j97SpvxKAExfdXJ0vLx4yE8oE21TItu+yVX7+bOUjrjU6xVLwxRkY4XZjvswAkJNwfCg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dccArJm9; arc=pass smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b9c3e2cf3c0so546931766b.1
-        for <sparclinux@vger.kernel.org>; Sun, 12 Apr 2026 06:23:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776000183; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BvLnInWFLvWXSJOrncTiMK5Pnvd5jfFqEltbFVRenqOEb7fZRefwEZoSra64MPWYqj
-         7qIAOOPooVtBpJKj/sF0DJOHuKZeUtvVIYEuw+p0oxa3JRpkuA/Aj6NIDn2j/PuFP2VE
-         7r9sV6kSDkoya0+L8UQn4nr/fuRMUIYw3KZB36fTmF2/XflSHIDkvq4utep8AxAtp//S
-         8ukqd0IL8w0sgRVfuydLpYvxFwn0KAGO/q1g66j8tYj3YhdvH7EHyykwUwHilyP9Uxd2
-         j48J4t7LrCLA0sCux78egB8ZSpXBYTcp8R1QwBrhRc3Liut5Jn4jiLq9tZFJtccx5PXc
-         Hh6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gDdA9vu4Fz00bgurrj0mXlyC2hJ8rRfiuCUxuR8xwe8=;
-        fh=30SjVQYjCKBO/8bRjkzNH1wKyoT3dGERRKNKqdPFy8M=;
-        b=fwYJeM9CwZZA6P6DLnYWqZ5xfmnGxaX36KmoI56ViS9mALSDBW69LnNS6BkTt4PuyW
-         qD3wfnHUO6KSqnHikBJB4SfOkLTo55M2YzlaNLydrjtA28TeHuZpxNhJ5M0RDaDTMH40
-         egiF2Ce5/Cxb2YmHbZylFMHy6vhtB++ZVbUrJAluXOqdHcxVkRa1ZRBzE+5zn+9r5Yor
-         1a3R6NnpwqnuQ8avUj4FA3Wi/xoqWzI7T3d3GLGY3kuzNvHF3rOfMXj8GgqKlEXvKkH4
-         mZSD4IYwv0E2PyoZXIsk8457s1rrnec+PoDNK3+a3kOFwFVC7R8HjygIN/1wHiMWxzyw
-         eWFw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776000183; x=1776604983; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gDdA9vu4Fz00bgurrj0mXlyC2hJ8rRfiuCUxuR8xwe8=;
-        b=dccArJm9v6h9Fdk8lDGNWZnQG14AQ9ZokHDnv7DAL1GW0R6BDoMR0waR0wHnO++sNY
-         YJPJSDf/Eo4Jqw4GQ8Gz/T/rsLkNap5uTZ+EpwANfeQ1dFGXyG88+fN/49+h4JvC9C7c
-         2+asFn0yzVsL4n2hJqrH+GINWtCINsNrMCDz6yHqeLWKks0EsNy7ssNes4vhdFLCd+tg
-         k2Ys2/EuxonOOeyCkSNs/L20e6zSdmHhXIY25hzHxXat+VjZowRiCo0VNk9bdjlPvxYt
-         DV9owUMCQ8VWv/4Ldm8HtUCj9QQlhYJyZr8JnJBv87EbzYIfO7KpnQu2sRPezsHrfV9J
-         1U2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776000183; x=1776604983;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gDdA9vu4Fz00bgurrj0mXlyC2hJ8rRfiuCUxuR8xwe8=;
-        b=S4/P9jLbfopMa9gyYXdGvwJnH/Ol6/Iob/OcoZx5yAdra7jOz6Ea3BX8Sj1avYwV4m
-         mGgC6xEut/Y7ZVEG5MnvGj3zZ8acBhmLMhTZQgaU3Zc9mSoItcq6aWFaVh3v7yM44O81
-         R4ZLc1Br4/dAO/uuCn7XxHdE4XIUMVMzepp7r7ABUDdlYTknARa+8SEcO7e41RkfsUgo
-         D1NGdvtCpZfQCR/T1MDzYES81EWCDCiScsfgWpwsRqLWWdzglAnN/tkSTnV6CvQEMylj
-         UmGj1mleFL5Ydntz6Clkb3ASLcSxaFyqONehfGuSnw8fSgQu9KgCfEp/bKkuil+BlMZi
-         v3JA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSlk1lKDoY6T1iG7C7KCvvQxK++yoVIaikz49zhhyrJwpTxDZQd7uzwEDQ+HSDdW+BVcCgTYP0vtXA@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdHWbA+DqeYP9HWc0TmuHBiQ1uku1PQZi27qP9M2wyNIOsR1us
-	78Ok8crhDs2MERxSqsRJyqphU1lNe0y3wpxNG7W0pNWkFd9W01LxvgDkzkRDyJumzm/USc3I9B0
-	xH3ByJXdiKLRrvYVFPCowAu6SHi+8mPk=
-X-Gm-Gg: AeBDieuV+tveCWckf18LyYDmSjE3Ttndl47OlX2Xzyg2353NYfOM+YCYPY+4liogI/o
-	FynueaN8Jd6HXMBd254woI2bBZz389H16TndykVCmiNq/QyvCEp9zn/ONDNMJnjlk1Qk8xXS9/r
-	EYOOfeya69ZHGgc96BzHz3umEn2jkyk/ZATADWC7aeFzlgg/grYuCUeniA2vHL+2TGgNagyktQ/
-	4OY78VkcgXA/MKdTqXTv2jCkeryJz/1OIZCHbWsft/uo3mxQ30UWjZBeOQGPXZ+q2D81vptUbSS
-	/uhljz17WnJV6Aui/iGkx10PUJBRZMuBBNGVeIGS
-X-Received: by 2002:a17:907:e113:b0:b9c:6ef1:ed18 with SMTP id
- a640c23a62f3a-b9d727aa4fdmr352963766b.25.1776000183133; Sun, 12 Apr 2026
- 06:23:03 -0700 (PDT)
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7222773E5;
+	Mon, 13 Apr 2026 05:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776059269; cv=none; b=QeSSnTQ5WCx2Uj3fQdKD5vClqnMl+kAXwHmoQSJ7Xs9dksD57pMKsWjzf8ew395QnU6gG7A8xHfQ/5HRlSo+Ooelzk2PAceFZkBb0WVjZnWcwVm+2JFeL9NF5PCSnBjDXXtyzGERfi8IpNVFQRf0vUsE4RLqWnt795LtRmapbk8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776059269; c=relaxed/simple;
+	bh=YxepDZzylg7DLxJ1UuKV5wvO8y/p14MplYX7PzmcQ08=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=MWbOo9tARfrBcn9eCmjchtLcu1r1J5lRuBc0zX4vTTkBRHjrM005QWIXYzagKgVmbOA1+vcY/1KRpr+8fALLgx5V8fd5yZ9xvRcO92MT2JFxDdxJKKXegRxQ3RbBl/dgtmtyV2UHqPH0cPMUsH8IqkMp1AyutpAbh+2ZqvUfQSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 2FA4892009C; Mon, 13 Apr 2026 07:47:45 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 283D292009B;
+	Mon, 13 Apr 2026 06:47:45 +0100 (BST)
+Date: Mon, 13 Apr 2026 06:47:45 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Thomas Gleixner <tglx@kernel.org>
+cc: LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+    x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
+    Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
+    linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
+    linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
+    linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>, 
+    Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
+    Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, 
+    Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+    Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+    Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org, 
+    "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+    Richard Henderson <richard.henderson@linaro.org>, 
+    linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
+    linux-arm-kernel@lists.infradead.org, 
+    Catalin Marinas <catalin.marinas@arm.com>, 
+    Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev, 
+    Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org, 
+    Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
+    linux-openrisc@vger.kernel.org, Helge Deller <deller@gmx.de>, 
+    linux-parisc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
+    linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, 
+    linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>, 
+    linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+    sparclinux@vger.kernel.org
+Subject: Re: [patch 28/38] mips: Select ARCH_HAS_RANDOM_ENTROPY
+In-Reply-To: <20260410120319.462206386@kernel.org>
+Message-ID: <alpine.DEB.2.21.2604130638270.29980@angie.orcam.me.uk>
+References: <20260410120044.031381086@kernel.org> <20260410120319.462206386@kernel.org>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260410120044.031381086@kernel.org> <20260410120319.131582521@kernel.org>
-In-Reply-To: <20260410120319.131582521@kernel.org>
-From: Magnus Lindholm <linmag7@gmail.com>
-Date: Sun, 12 Apr 2026 15:22:51 +0200
-X-Gm-Features: AQROBzAeMsaeSVePCJ__tEd4f2rWAY6MixXzp_fii2b8vyUpLt4xjSbtYzENFaw
-Message-ID: <CA+=Fv5S68wZQapeaYTspOfsuGk=nBj60sx-ojHBSqrxV59Q+ZA@mail.gmail.com>
-Subject: Re: [patch 23/38] alpha: Select ARCH_HAS_RANDOM_ENTROPY
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, 
-	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
-	Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, 
-	iommu@lists.linux.dev, Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
-	David Woodhouse <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
-	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
-	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
-	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
-	Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	loongarch@lists.linux.dev, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	linux-m68k@lists.linux-m68k.org, Dinh Nguyen <dinguyen@kernel.org>, 
-	Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, 
-	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
-	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
-	Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org, 
-	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [0.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-6695-lists,sparclinux=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6694-lists,sparclinux=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[orcam.me.uk];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
 	RCPT_COUNT_TWELVE(0.00)[49];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linaro.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linmag7@gmail.com,sparclinux@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[macro@orcam.me.uk,sparclinux@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[sparclinux];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 69E3C3E3F8E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,angie.orcam.me.uk:mid]
+X-Rspamd-Queue-Id: CAD5E3E790E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 10, 2026 at 2:36=E2=80=AFPM Thomas Gleixner <tglx@kernel.org> w=
-rote:
->
-> The only remaining usage of get_cycles() is to provide
-> random_get_entropy().
->
-> Switch alpha over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
-> and providing random_get_entropy() in asm/random.h.
->
-> Remove asm/timex.h as it has no functionality anymore.
->
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> Cc: Richard Henderson <richard.henderson@linaro.org>
-> Cc: linux-alpha@vger.kernel.org
-> ---
->  arch/alpha/Kconfig              |    1 +
->  arch/alpha/include/asm/random.h |   14 ++++++++++++++
->  arch/alpha/include/asm/timex.h  |   26 --------------------------
->  3 files changed, 15 insertions(+), 26 deletions(-)
+On Fri, 10 Apr 2026, Thomas Gleixner wrote:
 
-Hi,
+> The only solution for now is to uninline random_get_entropy().  Fix up all
+> other dependencies on the content of asm/timex.h in those files which
+> really depend on it.
 
-The Alpha side looks fine to me.
+ Oh dear!  I'd yet have to fully evaluate the consequences, but offhand 
+this has clearly turned what compiles to a single CPU instruction on the 
+vast majority of MIPS platforms into an expensive function call, possibly 
+also changing the caller from a leaf to a nested function with all the 
+associated execution penalty.  Is there no other way?
 
-I've applied this patch on top of v7.0-rc7, built a kernel successfully,
-boot-tested it on an Alpha UP2000+ (SMP) without issues.
+ Cf. commit 06947aaaf9bf ("MIPS: Implement random_get_entropy with CP0 
+Random").
 
-Acked-by: Magnus Lindholm <linmag7@gmail.com>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
+  Maciej
 
