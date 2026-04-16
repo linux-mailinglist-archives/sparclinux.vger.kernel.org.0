@@ -1,98 +1,98 @@
-Return-Path: <sparclinux+bounces-6713-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6716-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHACD4a64GmIlAAAu9opvQ
-	(envelope-from <sparclinux+bounces-6713-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Thu, 16 Apr 2026 12:31:34 +0200
+	id YG1LMkvI4GnjlwAAu9opvQ
+	(envelope-from <sparclinux+bounces-6716-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Thu, 16 Apr 2026 13:30:19 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B45540CF08
-	for <lists+sparclinux@lfdr.de>; Thu, 16 Apr 2026 12:31:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 462AD40D6ED
+	for <lists+sparclinux@lfdr.de>; Thu, 16 Apr 2026 13:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 43A813009FA0
-	for <lists+sparclinux@lfdr.de>; Thu, 16 Apr 2026 10:29:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 06696302F7F1
+	for <lists+sparclinux@lfdr.de>; Thu, 16 Apr 2026 11:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60EDD38E11E;
-	Thu, 16 Apr 2026 10:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CF03A8FE6;
+	Thu, 16 Apr 2026 11:30:17 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C6C3126B2
-	for <sparclinux@vger.kernel.org>; Thu, 16 Apr 2026 10:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFE33A875A
+	for <sparclinux@vger.kernel.org>; Thu, 16 Apr 2026 11:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776335394; cv=none; b=hNETTX5AuA1P89ivwoQT1I7TcGgTXVfsSQe+LTR7KEejgbMpoOM3Z90CsFGTYc6091pKhzrliAy4bLnrHA2UhT0dYj1FzLfTQ1eM4NSeHYifS+598zhUavzv70COe4Q1CLRaSE31K/WDI0jj002thySzga67esvFOR+aPs2JznE=
+	t=1776339017; cv=none; b=UxD+fmLxNkmU9LbBQC0RLZoGOx+jnlHaw8YFoO9y9HeTZ742RRB4kPF/nZW1V6SJcigDs3RmNPgG3QowsM5VLUezKvNP9tk4HGHeDNOlANsCX6Zfyt9lxUmFby2647lgjaDYI+pqgjlldBk1VmQFZu3bipBTIXQOnIt9O9slqTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776335394; c=relaxed/simple;
-	bh=Il5EilNKbQmVM1qv4XgxLAe02Z9+zxydkwUqJc2BPRU=;
+	s=arc-20240116; t=1776339017; c=relaxed/simple;
+	bh=FSgVIzpnraycKQsxAztrNgNSM9On/XU1ftEj+pCL/gg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wm5pUp5UGa/bEXNsoB2OvCTlnP7ErEkAT3fYLkWkdE8OMLyv94Dk6gDbuAryGU44Bg2YfLXoggc2OGVUkaR3YSlp7r0F4+mDBaYYzl48SAtG0V41vWdDRrtTxwUh0mXW23vE33VMJ1tIFieZMjgWZc/JxrmjUzq2zsE7OKt6xB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.42
+	 To:Cc:Content-Type; b=lXCd5hk0azNf9YbhnAj16W1TnoPztbQPFRFmo5LZcGCcLQI6trKZO/xbzfdISMogdKKmVc9Z9jWSBHFaqLLx23Cu4ActsTfr4qWS4nzIqQlGdx9hrSpruH0W7UUOWr33t6r9O25o5pQobNh3mWIw5IzKAQRcLR10GLCAjbqrMEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-40efc77933fso5166940fac.3
-        for <sparclinux@vger.kernel.org>; Thu, 16 Apr 2026 03:29:51 -0700 (PDT)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-40ede943bf0so4770184fac.2
+        for <sparclinux@vger.kernel.org>; Thu, 16 Apr 2026 04:30:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776335390; x=1776940190;
+        d=1e100.net; s=20251104; t=1776339015; x=1776943815;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z9HEDsaws+1AaPEcUyrGjtCss1Kv3jZQFAB8Oib7mmY=;
-        b=jy+fRSxFRDtGDsTwTauyncMI4p9XtRZqY2HQ+PhFXc08NYbWGYDR7kkHlC3+WMpY5r
-         71vR5L8LP908L4NGJ04MNSMcol3SzlYiSOLQjZbt2s/jK+u6QtKSEA93Bvru/FJrTQm4
-         Yc1GQ94jhYQbKxhe0ndYCcZQrVMytIaweMD/5qEuf8iJ5E1ohdSQsqI0yEegzBpwRU0E
-         2t4oiDWMTQE6vW8Xpmy2MU9Wc6ixh3/54vdd8izjlF0QYBjli2z6tNtuYrhPA2jNBroQ
-         2BOiHVtDjCxTb5EGSKSE38A7rF6s8fPjcSGCd3WjaQkxalZd2jBPlkdfs0jpGfnbdn53
-         xHjA==
-X-Forwarded-Encrypted: i=1; AFNElJ8xATZ/ixDRTzC6GxKif8RGVRgt1OzAx/8Riiu0W+BlNWTsOw9NzaCatSxKV76IEXlkYL2UM3824/L7@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlJYcmzwOj+CuyapyrqrEdBDHuG4KE5Fi1qPUni0E/kANJ32w9
-	2Xc6aat1Qvreb4e+z7Gc3+B0pMpr4myYgLF4gQ6at64ovnGV2eDpPqBP0EAWahRi
-X-Gm-Gg: AeBDies07OLTBtx2qlOqNJysk0P4FjghtXMrD6Qi2UIl9UU3YCBKAOom18Izk2mEDT9
-	JMCM7RdCIKJm5/Lqb13UzocQTTNhIiurP9Xd1J0uM2r7nEaz6TQcelE53I/QTRkik3Dx95H8XlA
-	v0sWiwOJ3qsgyB9pmoe52QvCjdNTMPofCUbfIS38kpH4fpeJ2XBQ5ihzRxWNTuEkB0/VUK46sB1
-	cD/7tG8kz13ZLlOmEbqyIxxj7qqpTrt2jq2Hnxc6pfI8Z474y+WgzdmNed3FtcoUbCTSMdb/xnB
-	4QT6R470mUnu97xopfOQg/piaasJPN69HoLNzIwZ/P9GwLP81LMM3qOH1bu30x/dugTTl2apl4z
-	ZfsCPhfkFFol0HdVRjwtQLCt8PZbtRwXccl8Gg3ewyBohq+hE3pAZmfYTj9+VOjiESP1hq8ho7p
-	XQO3m83TsN4SbqL9x965FKrDAvms2+dOOV4KL421yMh5FmRVdQgYV2xyAHlOGVQTsgnv2TTT4=
-X-Received: by 2002:a05:6870:31ad:b0:424:88f:e8e8 with SMTP id 586e51a60fabf-424089014b7mr11930142fac.36.1776335390534;
-        Thu, 16 Apr 2026 03:29:50 -0700 (PDT)
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com. [209.85.161.51])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-42666bcb7afsm3554347fac.7.2026.04.16.03.29.50
+        bh=AptjVPQ97g683jPGYCmYUacoTRTAG/3/TQY5t1TSdkk=;
+        b=pJHukSNOa2wozyoz+7zh6GyC5GvVZgZjJ79QGN64ZP7MK1V2EHBoNUB9auQct3I82d
+         OT3gNHdB/PCOUtNZV6WAdCCvrzyWwXtOxRdlR4/cYwAfOYszrhHhWAsfo0LJOzOPRS1z
+         u1FzZL9pmp6BY/feKmWNFqMpt/sjcNRodrM8XsCfELH4fCWgXR+s4Atv41BQwSFvmWq/
+         oow82qvI2qZtj0MwkFU/MCFmmXRRANWfwQA4HjrfguFLgtE/h+FeN0UHkshLTLYno43o
+         RR80zZHhR3aA/KG6d+bdcGo/IpUHYig7vEN3VY0z+mJeS63UJxklKcjUbR5XsmKclmr3
+         ggsg==
+X-Forwarded-Encrypted: i=1; AFNElJ9V58vvZbcgoOYDI+OltMhMmQVhn1zGIm+dCBFW0+TTO97KDlnD6885Kh8O1x1j7Nd+QEDlIQAuH6ir@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQJAtD/SQqakttPOz7vI799wdqEhFXI7OHM+D//nB6CrW2u8ZZ
+	gEzjoUB8kgbMd1DakC7f3WAmYl8IW8X2dQP+EhiQSBZovdnBn9e4w1vhEn+qAGPx
+X-Gm-Gg: AeBDiev4xrtFF46fpSWBzMUTlP7ajm9gd4OsGM5+VqMXDe4lq9JuD3EMBZQIw45wwoa
+	s8O4ESY822Y0hE+F/OLw6yBULnAOq4Oo6Jmoyg8Fp+RV0DTKvEHeFTZsUKeUeNQiS/C2bF7klvM
+	IgxYVe16T8zT/c6+pSPHHgoKLyeXguImmBbvaIlM9F6Wqc8wANOyt/8bKB4ztZK3DZWrduYqf4A
+	2QK4LsQBBJvdqUHqxdbxj2EOGoGUVDM/hrx8anuEMnU7vvWVEeCebklSTIrXPbaevs4GtpK2XPu
+	k3Ogf0TCRoOdIfIrKt6jKGLnat8W5jNQ27FcMWKQ7TIAGH0X1HGpJVTgF53qEvxgMHYvMxvfel6
+	LI7VQhWeOjTp03iBfer2g8Vyl4bY4TBLLpWQzYRrCZrc0hZnRA+GI70wKVr2fnuRticWnZbd4p9
+	zddWKufsBRRZxYo98HhLreoUQbXbxH/tXm1Ap8Nno+6hjsqe5mXw6mvkHLks9VhlIOLlUey7c=
+X-Received: by 2002:a05:6870:45aa:b0:41c:6512:8419 with SMTP id 586e51a60fabf-423e10dbd2cmr13932555fac.28.1776339015270;
+        Thu, 16 Apr 2026 04:30:15 -0700 (PDT)
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com. [209.85.160.42])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4268963be6csm3521020fac.10.2026.04.16.04.30.15
         for <sparclinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Apr 2026 03:29:50 -0700 (PDT)
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6841e6a5e51so4350636eaf.3
-        for <sparclinux@vger.kernel.org>; Thu, 16 Apr 2026 03:29:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9TqUU+Qvt9JBB28NPJahf5e0jJ7a7LK0KnHzQtJWrEx0NT48HFCxV8MRsEcbxv6pRDklIpo+x3YXaG@vger.kernel.org
-X-Received: by 2002:a05:6102:c48:b0:608:cd24:354c with SMTP id
- ada2fe7eead31-609fe9b0d22mr11966750137.3.1776335071251; Thu, 16 Apr 2026
- 03:24:31 -0700 (PDT)
+        Thu, 16 Apr 2026 04:30:15 -0700 (PDT)
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-40ede943bf0so4770174fac.2
+        for <sparclinux@vger.kernel.org>; Thu, 16 Apr 2026 04:30:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/hbOtdFHskOgEgdb6Y4YUDTyc3DfVo8TnY6wdwOkv+2Wo4bbWN48PjBGwRMyqjy2xzqpXJDsukG5fP@vger.kernel.org
+X-Received: by 2002:a05:6122:788:b0:56f:1ed6:1d29 with SMTP id
+ 71dfb90a1353d-56f3bca6059mr11244615e0c.9.1776338533353; Thu, 16 Apr 2026
+ 04:22:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260410120044.031381086@kernel.org> <20260410120318.794680738@kernel.org>
-In-Reply-To: <20260410120318.794680738@kernel.org>
+References: <20260410120044.031381086@kernel.org> <20260410120317.910770161@kernel.org>
+In-Reply-To: <20260410120317.910770161@kernel.org>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 16 Apr 2026 12:24:18 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVerN6Pz07CQH+hcvT=-ZD-r9VNrSrGzTQZBEsuecK_ig@mail.gmail.com>
-X-Gm-Features: AQROBzDRGGELVSySTko37h6zEj8YoV3p6pwZDCVQUlUW6sZbw_W5mbJzFIh35nQ
-Message-ID: <CAMuHMdVerN6Pz07CQH+hcvT=-ZD-r9VNrSrGzTQZBEsuecK_ig@mail.gmail.com>
-Subject: Re: [patch 18/38] lib/tests: Replace get_cycles() with ktime_get()
+Date: Thu, 16 Apr 2026 13:22:02 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdX1aShz8esbYzJ7T-0Na6++_Yi315aCiUx0Cnsgod5uUg@mail.gmail.com>
+X-Gm-Features: AQROBzBwwjc8yd10cT00Tu5Dl2qrCYQStWr3Lcobhh8coMrpPeCH9vhBSNokYJk
+Message-ID: <CAMuHMdX1aShz8esbYzJ7T-0Na6++_Yi315aCiUx0Cnsgod5uUg@mail.gmail.com>
+Subject: Re: [patch 05/38] treewide: Remove CLOCK_TICK_RATE
 To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, 
+Cc: LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, 
 	Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
 	Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
+	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
 	David Woodhouse <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
-	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, Marco Elver <elver@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
 	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
 	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
 	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
@@ -109,12 +109,12 @@ Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [0.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux-foundation.org,gmail.com,kvack.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,infradead.org,plugable.com,mit.edu,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
-	TAGGED_FROM(0.00)[bounces-6713-lists,sparclinux=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	TAGGED_FROM(0.00)[bounces-6716-lists,sparclinux=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[linux-m68k.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -127,89 +127,34 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,sparclinux@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.993];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[sparclinux];
 	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-m68k.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 9B45540CF08
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-m68k.org:email]
+X-Rspamd-Queue-Id: 462AD40D6ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Thomas,
-
-On Fri, 10 Apr 2026 at 14:20, Thomas Gleixner <tglx@kernel.org> wrote:
-> get_cycles() is the historical access to a fine grained time source, but it
-> is a suboptimal choice for two reasons:
+On Fri, 10 Apr 2026 at 14:18, Thomas Gleixner <tglx@kernel.org> wrote:
+> This has been scheduled for removal more than a decade ago and the comments
+> related to it have been dutifully ignored. The last dependencies are gone.
 >
->    - get_cycles() is not guaranteed to be supported and functional on all
->      systems/platforms. If not supported or not functional it returns 0,
->      which makes benchmarking moot.
->
->    - get_cycles() returns the raw counter value of whatever the
->      architecture platform provides. The original x86 Time Stamp Counter
->      (TSC) was despite its name tied to the actual CPU core frequency.
->      That's not longer the case. So the counter value is only meaningful
->      when the CPU operates at the same frequency as the TSC or the value is
->      adjusted to the actual CPU frequency. Other architectures and
->      platforms provide similar disjunct counters via get_cycles(), so the
->      result is operations per BOGO-cycles, which is not really meaningful.
->
-> Use ktime_get() instead which provides nanosecond timestamps with the
-> granularity of the underlying hardware counter, which is not different to
-> the variety of get_cycles() implementations.
->
-> This provides at least understandable metrics, i.e. operations/nanoseconds,
-> and is available on all platforms. As with get_cycles() the result might
-> have to be put into relation with the CPU operating frequency, but that's
-> not any different.
->
-> This is part of a larger effort to remove get_cycles() usage from
-> non-architecture code.
+> Remove it along with various now empty asm/timex.h files.
 >
 > Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 
-Thanks for your patch!
+>  arch/m68k/include/asm/timex.h       |   15 ---------------
 
-> --- a/lib/interval_tree_test.c
-> +++ b/lib/interval_tree_test.c
-> @@ -65,13 +65,13 @@ static void init(void)
->  static int basic_check(void)
->  {
->         int i, j;
-> -       cycles_t time1, time2, time;
-> +       ktime_t time1, time2, time;
->
->         printk(KERN_ALERT "interval tree insert/remove");
->
->         init();
->
-> -       time1 = get_cycles();
-> +       time1 = ktime_get();
->
->         for (i = 0; i < perf_loops; i++) {
->                 for (j = 0; j < nnodes; j++)
-> @@ -80,11 +80,11 @@ static int basic_check(void)
->                         interval_tree_remove(nodes + j, &root);
->         }
->
-> -       time2 = get_cycles();
-> +       time2 = ktime_get();
->         time = time2 - time1;
->
->         time = div_u64(time, perf_loops);
-> -       printk(" -> %llu cycles\n", (unsigned long long)time);
-> +       printk(" -> %llu nsecs\n", (unsigned long long)time);
-
-While cycles_t was unsigned long or long long, ktime_t is always s64,
-so "%lld", and the cast can be dropped (everywhere).
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
 
 Gr{oetje,eeting}s,
 
                         Geert
 
--- 
+
+--
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
