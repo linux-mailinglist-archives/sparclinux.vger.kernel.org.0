@@ -1,296 +1,191 @@
-Return-Path: <sparclinux+bounces-6721-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6723-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJcxFwIM4mkg1AAAu9opvQ
-	(envelope-from <sparclinux+bounces-6721-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Fri, 17 Apr 2026 12:31:30 +0200
+	id 0NBAD/Id52mY4AEAu9opvQ
+	(envelope-from <sparclinux+bounces-6723-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Tue, 21 Apr 2026 08:49:22 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E78D041A20A
-	for <lists+sparclinux@lfdr.de>; Fri, 17 Apr 2026 12:31:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB8643722C
+	for <lists+sparclinux@lfdr.de>; Tue, 21 Apr 2026 08:49:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CA713063577
-	for <lists+sparclinux@lfdr.de>; Fri, 17 Apr 2026 10:24:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58A6F3009B14
+	for <lists+sparclinux@lfdr.de>; Tue, 21 Apr 2026 06:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52413B6364;
-	Fri, 17 Apr 2026 10:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF60813D638;
+	Tue, 21 Apr 2026 06:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1gqdm1+K";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fLWGHfzh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J4HdCsEQ"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C028B3A6F15;
-	Fri, 17 Apr 2026 10:24:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1400A281525
+	for <sparclinux@vger.kernel.org>; Tue, 21 Apr 2026 06:49:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776421475; cv=none; b=EsgC7JmTZ2+G3WT7oNAT1ZyYdqAnsvkyQODdFQKUBu8fwmNegstLHh4zQZzWtzmSToDqe9M3WaobuGJ+IPJ01dGpElszoWK+e7RuIMXfEQCpk6onLX/bnxsh0tXvEe4ISq3gCUmTSThc1h2ZGcIi87cesVYU4JgVf14Jep7L6Yk=
+	t=1776754155; cv=none; b=WpmPNGeKZjw02Vkj0jCX1yJf7AgXahNo622RTjyMpsiiRbBC/jgJfLXI0VW3HktjN1TbDGPfY9g6unGSXsgKdO3DwWAaP1HzfenG1KbRdVlmyiJ7D19XVpaay6gpSMFSK3/G/pq3Md4WzuXDIYDjRFt7HTX8+Ntx52j+IZdPQAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776421475; c=relaxed/simple;
-	bh=pizWJrvuQ48cGLUkst8VVI51daUIasrR1V7+pSa+3gY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G63c3GQt0gmi4mRBDaNgrZsaNCksRyy9bXnPlnHmmjEIGvjaTzIwiDHiL93yl5esu2AaFjuocZmP6x+UblESU2EBVur3HOoY9WfLM5pnWKVLVQ2IZWGE9SNJ21HROFHuCGK5J+v3XUSQ6rc4g5Z6FG/4EWEUhICCyYUtqePjl24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1gqdm1+K; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fLWGHfzh; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1776421464;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GMrkWwsRJJM8nf2vHkNwRnlQxiLbrNpUSyN/P1PXVuU=;
-	b=1gqdm1+KQYmc0lEaKrij2m/6iN7QFvYv3SdOnrNnO3SQ1wiZPG7keCQDQS/EHzu7rYSJjx
-	oJYIZYC7rWtTseO47NUH2BarudQdV3LxY/ouu2PE7mvadxv7BbskGH0GtJmDBgcQAELXRi
-	HFIpXvcs+6U8+PB2JDCmJdgwf+vws3F84XiquOpqtoNZETiE2qZw87Acz6gOQtIDhxucuJ
-	exTPPcqTcj9C8X2f1qI9P8rhoNnfCtu8i3OEose6YbeUN81e9u0xCAD4ncMqUDF31UIkJ8
-	bHZ9sdkkeNVnWaMdQ0GBHltkPl17ml2MK76xbsc2OckN1+qgjvTzclWhDJnuXw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1776421464;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GMrkWwsRJJM8nf2vHkNwRnlQxiLbrNpUSyN/P1PXVuU=;
-	b=fLWGHfzhqiorZuAalaeL38ZW4UB8KT8DPAXlcCpsSmhp/s5uf+e10bZ3MXAqW5jtletG/x
-	EYf5LmNSdHizcLDQ==
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	linux-serial@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	sparclinux@vger.kernel.org
-Subject: [PATCH tty v3 2/6] serial: Replace driver usage of UPF_CONS_FLOW
-Date: Fri, 17 Apr 2026 12:30:15 +0206
-Message-ID: <20260417102423.40984-3-john.ogness@linutronix.de>
-In-Reply-To: <20260417102423.40984-1-john.ogness@linutronix.de>
-References: <20260417102423.40984-1-john.ogness@linutronix.de>
+	s=arc-20240116; t=1776754155; c=relaxed/simple;
+	bh=am3smhs96M1Iz0Y0JDciE1ZjrAK1dDbEC7UccjVq/eg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sAYYHJcGKw/5Y5AbxKEfKWEqROoyz6rpXIlR7DPTAaRGGudrc8VLYMEMPGvcJ75kNCNqcYq0zUXG2cDwTSjE9CqbA2MF5YF5aitOhXt+n7XR5x9Ae1+/N7zmcF77qTRsMCXMO6tmm+0o0A+gvO7tNp7lbXAEIlh2hw7IQTlftJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J4HdCsEQ; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-356337f058aso2502934a91.2
+        for <sparclinux@vger.kernel.org>; Mon, 20 Apr 2026 23:49:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776754153; x=1777358953; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VdNywBu7apdyTFV9cnt3GZxXLndr1pBULjY0WptzCm8=;
+        b=J4HdCsEQzBF52HS7kv/2N9GJ8av6ANJwagpeEgdEx1yRdELMEGjQ4U1u/N87NO4FNi
+         O6KdpnQd2wlsQteyBgo3JKT5dhLZvpI1wyEsq4drfOlNwbEJ6WcOJKua2hfbgUn7f/qO
+         TzEOq5j4q1kIqn9Y+uIFyo3FhWMNPvAyfGSeTx2OrK0/Srjf3V26Ep8QZ8qfFqhXNK/n
+         ZxjbuMVDQk5kg1icO+a9j//B79M0Kg9jntS58arF/1IdYz8rvP1GqYJvmDueJh+a2H6V
+         AcrX5EqwWq4kixz6oUFeG2btwWnpqWtN0xGCez+9Lm3iTdeVYKxGHu2/uM273h/aIkCV
+         n8bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776754153; x=1777358953;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VdNywBu7apdyTFV9cnt3GZxXLndr1pBULjY0WptzCm8=;
+        b=Cp9fMdxu20g3sVc1ZhYx8QSmLybwfjx37C6gs6N2JUgDgJqPofHUIOqfX9vahfzxgx
+         g3Bd5GYS45TJ/gZRQVVZrD26uHBwY4ebAyIrPMQaviZHCMZ0SEs8Ng+yCi/qQ4c8S8al
+         Qf9JGkr4eITiSi6v+37PP2HbA0Q34QShIUqATIdBmNeg/Yy8Z0KUDW7yTd0USH77YFCA
+         0WadtiXZl5OhG06U9SIx6a89Rsii2k4F9j/LO9K9QikhJ5DaGPitJXGUI1B0E0HZ4gv8
+         CKd17J0PTCWcsk5Gvc3auMe4sIh0hohV72pLpXCId7McUa2iZu25dq6oI+HSi5NH27lN
+         l2Xw==
+X-Forwarded-Encrypted: i=1; AFNElJ/rjV4gapY8Okz6WWFzRUoWonrGKyOjzkPRXjtNzWnFX8L40ISnI8K4Q47Ke45K3PbE0LZ4PqzY3G4m@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmxrMjPh1qOGMYogJ4M7lwJLhXKdV60OzMLCz+R0GNNhzcCxer
+	x9lZ5nxMZZFzbcE0X3DhgTG6e5AfM5Tg4pMLB6Ci7QVHEzqxVUhygFcB
+X-Gm-Gg: AeBDievP0g5Rif0bvo0UEi4I15yuq/FG9AZZskIMz+6uBcq0QewrMCOiMAPBHyMv6KZ
+	fX3XeZzcABJYaZYwjhel7ZEREmJ8cfRzLEHeUHV0a/I/SH67tmwyP/kZeP5f2IQ7U4RlX4mQjyj
+	4cADon1DYHFvJNIQpKrwafGYg/L4NCiIlHhXMWKDU/B8kO/pJGQ2hsv9qdCDYx9MOfPqhdLDczQ
+	9ZGPWmNJW6jy7ErWvQyuf9QvENj/yelFCmh5pl+j5Cf6K6fgKlzPVjGECQLFXuO5rdPJGmBWCy/
+	BwgZjwm8GJT0ubKkhhzr4VsCAMCzlvHcbly4HdY72ZOx7q/RQepVVgI/8dqf9+ZXHaGqwUJYD2G
+	m9cFV5HeuGJKKZDIV4wPv3pkGZtpGpaT6SCICKfBqUUgTLu+ZiZdRkb7b9DbnhZUa2sZk1fi0iB
+	1GXWfH8/1Gk+/reEX1Z1RRaw/Tix+6IdUQhFIeCti/yMVdRlFmesGF7WeZzFO3S1CFvd2jBfr/f
+	iXYgOaLdkzRLEhb
+X-Received: by 2002:a17:90a:dfd0:b0:35e:30bc:96ed with SMTP id 98e67ed59e1d1-36140402361mr16891174a91.10.1776754153374;
+        Mon, 20 Apr 2026 23:49:13 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3614195a8f0sm12278674a91.12.2026.04.20.23.48.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 23:49:13 -0700 (PDT)
+Date: Tue, 21 Apr 2026 12:18:55 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, Arnd Bergmann <arnd@arndb.de>, 
+	x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
+	Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	Herbert Xu <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org, 
+	Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>, 
+	Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, Theodore Tso <tytso@mit.edu>, 
+	linux-ext4@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
+	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
+	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org, 
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, 
+	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, Paul Walmsley <pjw@kernel.org>, 
+	linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: Re: [patch 32/38] powerpc/spufs: Use mftb() directly
+Message-ID: <aecdpyvTLJOjCdFp@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260410120044.031381086@kernel.org>
+ <20260410120319.723429844@kernel.org>
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260410120319.723429844@kernel.org>
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,samsung.com,davemloft.net,linux.intel.com,gmail.com,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-6721-lists,sparclinux=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6723-lists,sparclinux=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[john.ogness@linutronix.de,sparclinux@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,ellerman.id.au,lists.ozlabs.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,linux-m68k.org,lists.linux-m68k.org,southpole.se,gmx.de,linux.ibm.com,davemloft.net];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[49];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[sparclinux];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email,linutronix.de:dkim,linutronix.de:mid]
-X-Rspamd-Queue-Id: E78D041A20A
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mkchauras@gmail.com,sparclinux@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[sparclinux];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ozlabs.org:email,li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9EB8643722C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Rather than using the UPF_CONS_FLOW bit of uart_port.flags to track
-the user configuration of console flow control, use the newly added
-uart_port.cons_flow (via its get/set functions).
-
-A coccinelle script was used to perform the search/replace.
-
-Note1: The sh-sci driver is blindly copying platform data
-       configuration flags to uart_port.flags. Thus UPF_CONS_FLOW
-       could get set. A follow-up commit will address this.
-
-Note2: Aside from sh-sci, the samsung_tty driver is also using
-       UPF_CONS_FLOW as a platform data configuration flag.
-
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
----
- drivers/tty/serial/8250/8250_port.c | 4 ++--
- drivers/tty/serial/bcm63xx_uart.c   | 2 +-
- drivers/tty/serial/omap-serial.c    | 2 +-
- drivers/tty/serial/pch_uart.c       | 2 +-
- drivers/tty/serial/pxa.c            | 2 +-
- drivers/tty/serial/samsung_tty.c    | 8 ++++----
- drivers/tty/serial/serial_txx9.c    | 4 ++--
- drivers/tty/serial/sunsu.c          | 2 +-
- 8 files changed, 13 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index af78cc02f38e7..c91b0fa7111a7 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1988,7 +1988,7 @@ static void wait_for_xmitr(struct uart_8250_port *up, int bits)
- 	wait_for_lsr(up, bits);
- 
- 	/* Wait up to 1s for flow control if necessary */
--	if (up->port.flags & UPF_CONS_FLOW) {
-+	if (uart_get_cons_flow(&up->port)) {
- 		for (tmout = 1000000; tmout; tmout--) {
- 			unsigned int msr = serial_in(up, UART_MSR);
- 			up->msr_saved_flags |= msr & MSR_SAVE_FLAGS;
-@@ -3351,7 +3351,7 @@ void serial8250_console_write(struct uart_8250_port *up, const char *s,
- 		 * it regardless of the CTS state. Therefore, only use fifo
- 		 * if we don't use control flow.
- 		 */
--		!(up->port.flags & UPF_CONS_FLOW);
-+		!uart_get_cons_flow(&up->port);
- 
- 	if (likely(use_fifo))
- 		serial8250_console_fifo_write(up, s, count);
-diff --git a/drivers/tty/serial/bcm63xx_uart.c b/drivers/tty/serial/bcm63xx_uart.c
-index 51df9d2d8bfc5..be6777dfdc532 100644
---- a/drivers/tty/serial/bcm63xx_uart.c
-+++ b/drivers/tty/serial/bcm63xx_uart.c
-@@ -675,7 +675,7 @@ static void wait_for_xmitr(struct uart_port *port)
- 	}
- 
- 	/* Wait up to 1s for flow control if necessary */
--	if (port->flags & UPF_CONS_FLOW) {
-+	if (uart_get_cons_flow(port)) {
- 		tmout = 1000000;
- 		while (--tmout) {
- 			unsigned int val;
-diff --git a/drivers/tty/serial/omap-serial.c b/drivers/tty/serial/omap-serial.c
-index 0b85f47ff19e0..a9879bc655745 100644
---- a/drivers/tty/serial/omap-serial.c
-+++ b/drivers/tty/serial/omap-serial.c
-@@ -1092,7 +1092,7 @@ static void __maybe_unused wait_for_xmitr(struct uart_omap_port *up)
- 	} while (!uart_lsr_tx_empty(status));
- 
- 	/* Wait up to 1s for flow control if necessary */
--	if (up->port.flags & UPF_CONS_FLOW) {
-+	if (uart_get_cons_flow(&up->port)) {
- 		for (tmout = 1000000; tmout; tmout--) {
- 			unsigned int msr = serial_in(up, UART_MSR);
- 
-diff --git a/drivers/tty/serial/pch_uart.c b/drivers/tty/serial/pch_uart.c
-index 6729d8e83c3c5..08cb9ff30506f 100644
---- a/drivers/tty/serial/pch_uart.c
-+++ b/drivers/tty/serial/pch_uart.c
-@@ -1444,7 +1444,7 @@ static void wait_for_xmitr(struct eg20t_port *up, int bits)
- 	}
- 
- 	/* Wait up to 1s for flow control if necessary */
--	if (up->port.flags & UPF_CONS_FLOW) {
-+	if (uart_get_cons_flow(&up->port)) {
- 		unsigned int tmout;
- 		for (tmout = 1000000; tmout; tmout--) {
- 			unsigned int msr = ioread8(up->membase + UART_MSR);
-diff --git a/drivers/tty/serial/pxa.c b/drivers/tty/serial/pxa.c
-index fea0255067ccd..80afa47f09880 100644
---- a/drivers/tty/serial/pxa.c
-+++ b/drivers/tty/serial/pxa.c
-@@ -573,7 +573,7 @@ static void wait_for_xmitr(struct uart_pxa_port *up)
- 	} while (!uart_lsr_tx_empty(status));
- 
- 	/* Wait up to 1s for flow control if necessary */
--	if (up->port.flags & UPF_CONS_FLOW) {
-+	if (uart_get_cons_flow(&up->port)) {
- 		tmout = 1000000;
- 		while (--tmout &&
- 		       ((serial_in(up, UART_MSR) & UART_MSR_CTS) == 0))
-diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
-index e27806bf2cf3e..f9b0dbded1f43 100644
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -319,7 +319,7 @@ static void s3c24xx_serial_stop_tx(struct uart_port *port)
- 	ourport->tx_enabled = 0;
- 	ourport->tx_in_progress = 0;
- 
--	if (port->flags & UPF_CONS_FLOW)
-+	if (uart_get_cons_flow(port))
- 		s3c24xx_serial_rx_enable(port);
- 
- 	ourport->tx_mode = 0;
-@@ -493,7 +493,7 @@ static void s3c24xx_serial_start_tx(struct uart_port *port)
- 	struct tty_port *tport = &port->state->port;
- 
- 	if (!ourport->tx_enabled) {
--		if (port->flags & UPF_CONS_FLOW)
-+		if (uart_get_cons_flow(port))
- 			s3c24xx_serial_rx_disable(port);
- 
- 		ourport->tx_enabled = 1;
-@@ -781,7 +781,7 @@ static void s3c24xx_serial_rx_drain_fifo(struct s3c24xx_uart_port *ourport)
- 		uerstat = rd_regl(port, S3C2410_UERSTAT);
- 		ch = rd_reg(port, S3C2410_URXH);
- 
--		if (port->flags & UPF_CONS_FLOW) {
-+		if (uart_get_cons_flow(port)) {
- 			bool txe = s3c24xx_serial_txempty_nofifo(port);
- 
- 			if (ourport->rx_enabled) {
-@@ -1830,7 +1830,7 @@ static int s3c24xx_serial_init_port(struct s3c24xx_uart_port *ourport,
- 
- 	if (cfg->uart_flags & UPF_CONS_FLOW) {
- 		dev_dbg(port->dev, "enabling flow control\n");
--		port->flags |= UPF_CONS_FLOW;
-+		uart_set_cons_flow(port, true);
- 	}
- 
- 	/* sort our the physical and virtual addresses for each UART */
-diff --git a/drivers/tty/serial/serial_txx9.c b/drivers/tty/serial/serial_txx9.c
-index 436a559234dfe..103f03c1fe748 100644
---- a/drivers/tty/serial/serial_txx9.c
-+++ b/drivers/tty/serial/serial_txx9.c
-@@ -422,7 +422,7 @@ static void wait_for_xmitr(struct uart_port *up)
- 		udelay(1);
- 
- 	/* Wait up to 1s for flow control if necessary */
--	if (up->flags & UPF_CONS_FLOW) {
-+	if (uart_get_cons_flow(up)) {
- 		tmout = 1000000;
- 		while (--tmout &&
- 		       (sio_in(up, TXX9_SICISR) & TXX9_SICISR_CTSS))
-@@ -857,7 +857,7 @@ serial_txx9_console_write(struct console *co, const char *s, unsigned int count)
- 	 *	Disable flow-control if enabled (and unnecessary)
- 	 */
- 	flcr = sio_in(up, TXX9_SIFLCR);
--	if (!(up->flags & UPF_CONS_FLOW) && (flcr & TXX9_SIFLCR_TES))
-+	if (!uart_get_cons_flow(up) && (flcr & TXX9_SIFLCR_TES))
- 		sio_out(up, TXX9_SIFLCR, flcr & ~TXX9_SIFLCR_TES);
- 
- 	uart_console_write(up, s, count, serial_txx9_console_putchar);
-diff --git a/drivers/tty/serial/sunsu.c b/drivers/tty/serial/sunsu.c
-index 6505a1930da9a..97019b5ec49e2 100644
---- a/drivers/tty/serial/sunsu.c
-+++ b/drivers/tty/serial/sunsu.c
-@@ -1245,7 +1245,7 @@ static void wait_for_xmitr(struct uart_sunsu_port *up)
- 	} while (!uart_lsr_tx_empty(status));
- 
- 	/* Wait up to 1s for flow control if necessary */
--	if (up->port.flags & UPF_CONS_FLOW) {
-+	if (uart_get_cons_flow(&up->port)) {
- 		tmout = 1000000;
- 		while (--tmout &&
- 		       ((serial_in(up, UART_MSR) & UART_MSR_CTS) == 0))
--- 
-2.47.3
-
+On Fri, Apr 10, 2026 at 02:21:04PM +0200, Thomas Gleixner wrote:
+> There is no reason to indirect via get_cycles(), which is about to be
+> removed.
+> 
+> Use mftb() directly.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> ---
+>  arch/powerpc/platforms/cell/spufs/switch.c |    5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> --- a/arch/powerpc/platforms/cell/spufs/switch.c
+> +++ b/arch/powerpc/platforms/cell/spufs/switch.c
+> @@ -34,6 +34,7 @@
+>  #include <asm/spu_priv1.h>
+>  #include <asm/spu_csa.h>
+>  #include <asm/mmu_context.h>
+> +#include <asm/time.h>
+>  
+>  #include "spufs.h"
+>  
+> @@ -279,7 +280,7 @@ static inline void save_timebase(struct
+>  	 *    Read PPE Timebase High and Timebase low registers
+>  	 *    and save in CSA.  TBD.
+>  	 */
+> -	csa->suspend_time = get_cycles();
+> +	csa->suspend_time = mftb();
+>  }
+>  
+>  static inline void remove_other_spu_access(struct spu_state *csa,
+> @@ -1261,7 +1262,7 @@ static inline void setup_decr(struct spu
+>  	 *     in LSCSA.
+>  	 */
+>  	if (csa->priv2.mfc_control_RW & MFC_CNTL_DECREMENTER_RUNNING) {
+> -		cycles_t resume_time = get_cycles();
+> +		cycles_t resume_time = mftb();
+>  		cycles_t delta_time = resume_time - csa->suspend_time;
+>  
+>  		csa->lscsa->decr_status.slot[0] = SPU_DECR_STATUS_RUNNING;
+> 
+Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
 
