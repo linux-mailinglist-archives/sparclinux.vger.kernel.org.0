@@ -1,154 +1,175 @@
-Return-Path: <sparclinux+bounces-6757-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6758-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOVTKdLh+GnM2gIAu9opvQ
-	(envelope-from <sparclinux+bounces-6757-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Mon, 04 May 2026 20:13:38 +0200
+	id qOzNFag1+WkG6gIAu9opvQ
+	(envelope-from <sparclinux+bounces-6758-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Tue, 05 May 2026 02:11:20 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B1C4C259D
-	for <lists+sparclinux@lfdr.de>; Mon, 04 May 2026 20:13:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D381D4C524D
+	for <lists+sparclinux@lfdr.de>; Tue, 05 May 2026 02:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E1F1300863F
-	for <lists+sparclinux@lfdr.de>; Mon,  4 May 2026 18:13:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D30D83040235
+	for <lists+sparclinux@lfdr.de>; Tue,  5 May 2026 00:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336A73E1208;
-	Mon,  4 May 2026 18:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666F12744F;
+	Tue,  5 May 2026 00:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hjd6mmwy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O8PjGcf4"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A422E1C861D
-	for <sparclinux@vger.kernel.org>; Mon,  4 May 2026 18:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFEA42AB7
+	for <sparclinux@vger.kernel.org>; Tue,  5 May 2026 00:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777918413; cv=none; b=PpY9PxXgloTZ8Zk7trtq+cvBGZibYmP1Ub11C5hm0+OUKUChHKAh4strmvWaGdEENr5BoJo+erFunWc1uodXi5Pci34rs90WWwi+/ZWXgCpupIYNlgfTJ8EJCYvbKa1KFQ0KGDhnUtKYtbJ8DvvPwl6/gv3dSGKCYuICmI+lmeI=
+	t=1777939769; cv=none; b=UW+YpKLpy8T8RJBWlsL0LN41X8++Ubfmz5EvnUGCuKCLeqnUGFspiYzuPCf4MZ8Cynpc71ejTifDIblWB7TgiivEo3c44ZX6LZzaqPVHOleTDqxA3Lmu7JGVKujIG4lww/R/L08lm4hsS9ioOkzIPjq4b+EW6h3ybrrf2QAu8WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777918413; c=relaxed/simple;
-	bh=tlFL8ChItjemz0vXXsv/W+8TvOqaR2U36ov7vwpCF1E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JMtRfNt0kRgb+K+2+SuTF71nfj0yoZVqQma291slYiUwwDbhqA+3who6MrqBFHDl76jGItQ1lKu1LV80kLElWegnQuqJARtFG5fiBPhx2Dnf9aC8sXjIH2JCi3KK70tpTa0zcSpTBc/r3VLvE3l9bA2oD4TKHucgemn4ev6eQMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hjd6mmwy; arc=none smtp.client-ip=95.215.58.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777918410;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Yo/vp8ckmH5+wr7xeteGlSDNMbPclc1e9B0ZY6/l4EE=;
-	b=hjd6mmwyd18MWCLf+CRUDRu7gWtVcQzLUP1UZT897rlro7qvYbK/G6BBorp/0QrNcYMuTK
-	cJWQLJH1hm3Qlgvsrl83AIzMZUBYJaC1RFhILLbn+VTbZbDuRv1Mrm/hCkX8g+xRU2MGVD
-	SgEnpTxP0HIui3PQVNo03/dzqkzXd4Y=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Kees Cook <kees@kernel.org>
-Cc: sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND] sparc: vio: use sysfs_emit in sysfs show functions
-Date: Mon,  4 May 2026 20:13:20 +0200
-Message-ID: <20260504181320.143003-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1777939769; c=relaxed/simple;
+	bh=ffdFtLX0QriqrCpK5790vZSF1WkZbc+9EpOUnwocJj0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G8+ATi1+pg3FTuu6rtRveDXrLiR6XQI44QUWLMHoLXoGTSTWuameXpybOE2EGIKz2c2hf+pGsqzqvTvl8v9wGPNVusEpkG89tmwYFUrH3FO1tRoVFN6MbDCwt07bwd1tTTZlmh2qnbPguzwZtEmXu426hMkHOi+xiC20gkJEJ0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O8PjGcf4; arc=none smtp.client-ip=74.125.82.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-12c19d23b19so6817079c88.0
+        for <sparclinux@vger.kernel.org>; Mon, 04 May 2026 17:09:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777939767; x=1778544567; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6SiGGmk1W7rGOAmTgu0wNG7K88mTT/h+RH+oM7T/g74=;
+        b=O8PjGcf46TLb6NR649Xh5ZTyga/BCn1dT8nl5CARSadrx5YRodCvITbEa7F/CX0A5k
+         rikYDCFuYllT3k33AeR8qPVfo7nZXmhH6/1KP45hllRnACepEJB0xZG430YY/etYkXrp
+         O5fgGRSSqMuB5nqKEc65wHs2orGMfc0WYy2la/Ty/k3ZqbanbAy7eJJuy+XEw0PzP8rS
+         c/YafPEReYxbRWoYfIMPRn0YXRh0Qf+hYeNy/F+7KOOCScfi2O1DACm36jY0qGasIKZ7
+         oaZ3b5HqaoOUztq5P6vd+ZJyRNnvLgVTQVRkMyy/nSWpiQPz8AeMRw/1RpASh33Ep+bK
+         p9zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777939767; x=1778544567;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6SiGGmk1W7rGOAmTgu0wNG7K88mTT/h+RH+oM7T/g74=;
+        b=dnBfv0fhJx4AEM2s0Goq9yqKfmvIfBXtZwv8h7exNyyZ14T68vjBYOzkQzmtthLNA3
+         IlhHBBLDNYZW5hhLbTJOg4puHa6kgtqZaSuw4Esbu87pqSnBGetW6ONr4s2Kv5BOFY65
+         7h18kTcle1QGACZFU9KMiQ0tQaYj+q4uH1Qguq2gpseLD30a/aZIYBR4hCTLUbZAclPm
+         ybjtk+Z+TbaT3g6WmGVk2vU421iXWvCT3LUBwb2HQ8reOJiU4vwIjQrNVPXgJ/53+hLZ
+         BC/JCxBLR0V4p5n9HovQHq9NNAgpTl1qlowHxOIv2N2j37YvD4QnhdYj/7EiQ3VxuoE8
+         FK9w==
+X-Gm-Message-State: AOJu0Yw/ce3JdqFvlo4P6twZjbp72GfiYNbrvS4DFk+0/NAr0IXWhewK
+	zLd63m+bFyQPdG3XVbUMZuLY+FWh66lQb83+9uzCN677n9OVCjkuWq4I9WZBmtiN
+X-Gm-Gg: AeBDievgLJRMqjZkpQt9leBzjM6qhTlFe1mHR2DcS1gAB+CPYSvvmoe3LBw99jRDXsE
+	hQ6q4bEFv7yo4MAhG0OMFE1LNvyDpqyEbE0oNhBLp3vJMByGj+RUxRzFvec62zrvHpQnI8WgELb
+	sHP9C/DPR1wZPoQbXTMmFKaEw9FLAO0w3oHpCf1zBtJ5di/uYd1qpUhKa6/MfO15S99dRAhxRRE
+	ustF0k4AmF+5Y4EdranwVRdfx8Zw71G9irIc5GIcWOrxC3dVVWhO6HdOFUtAA51a7IFwXzfxfXk
+	KYdVZ+TWvcfupUCTqpg2kKaqp1wnhHnuPk2BEXqxnvgA5GPXuoNo8XHrQOugFV+aOzhHH2T2hqO
+	ccmYboTi4tC4JmOLkdxCKSN8Wjdnvp6gBHg4Kxr6/Ojmlfdf/US36Ia1f6gNNbA99QdjqyfpjZF
+	pdmMeBwD6GG+C8lEcHYapBfedVXQwtQFWGiHDqJV0YmYL2RgqC3mYPIsMZHCjZNeRDbi+Cr99Lz
+	aY3iYILG0G9DTrh6MzlbqzdJFc/kkbbGKqIjkAK2WxdadL6DXTgb/Lbb1wplgd5kM0Rix3PmaAJ
+	SbMJvN5K93YpzEgp/Sw/53go3/WK
+X-Received: by 2002:a05:7022:b8f:b0:128:d577:dc21 with SMTP id a92af1059eb24-12dfd7bd8fcmr4329561c88.13.1777939766982;
+        Mon, 04 May 2026 17:09:26 -0700 (PDT)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12df82a141asm20608603c88.8.2026.05.04.17.09.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 17:09:26 -0700 (PDT)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: sparclinux@vger.kernel.org
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>
+Subject: [PATCH] sparc: remove unused SERIAL_CONSOLE config option
+Date: Mon,  4 May 2026 17:09:12 -0700
+Message-ID: <20260505000913.25576-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1872; i=thorsten.blum@linux.dev; h=from:subject; bh=tlFL8ChItjemz0vXXsv/W+8TvOqaR2U36ov7vwpCF1E=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDJk/Hh5Y4Zn1LePGeVM2zuXHpwVO4C15f3dSmqLwqZO33 ts9VXCY0VHKwiDGxSArpsjyYNaPGb6lNZWbTCJ2wsxhZQIZwsDFKQATORvGyDDzzmG77cXHs327 GNdPWfJ/zonTX53Ct0y+3bReeV+wW912Robt8XnL10uval+5m/+whsf7X8vvbuhimj/XlWXp+o3 JfwI4AA==
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: A3B1C4C259D
+X-Rspamd-Queue-Id: D381D4C524D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6757-lists,sparclinux=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,gaisler.com];
+	TAGGED_FROM(0.00)[bounces-6758-lists,sparclinux=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,sparclinux@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,sparclinux@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[sparclinux];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:dkim,linux.dev:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Replace sprintf() and scnprintf() with sysfs_emit() in sysfs show
-functions. sysfs_emit() is preferred to format sysfs output as it
-provides better bounds checking.
+There are no references to this option in SPARC or
+architecture-independent code. Remove it to simplify the configuration
+process.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 ---
- arch/sparc/kernel/vio.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/sparc/Kconfig | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-diff --git a/arch/sparc/kernel/vio.c b/arch/sparc/kernel/vio.c
-index 8b4f55047716..b7b06752a038 100644
---- a/arch/sparc/kernel/vio.c
-+++ b/arch/sparc/kernel/vio.c
-@@ -13,6 +13,7 @@
- #include <linux/kernel.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-+#include <linux/sysfs.h>
- #include <linux/irq.h>
- #include <linux/export.h>
- #include <linux/init.h>
-@@ -121,7 +122,7 @@ static ssize_t devspec_show(struct device *dev,
- 	else if (!strcmp(vdev->type, "vdc-port"))
- 		str = "vdisk";
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index a6b787efc2c4..fb53b21a8696 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -327,30 +327,6 @@ config SPARC_LED
+ 	  by reading /proc/led and its blinking mode can be changed
+ 	  via writes to /proc/led
  
--	return sprintf(buf, "%s\n", str);
-+	return sysfs_emit(buf, "%s\n", str);
- }
- static DEVICE_ATTR_RO(devspec);
- 
-@@ -129,7 +130,7 @@ static ssize_t type_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
- 	struct vio_dev *vdev = to_vio_dev(dev);
--	return sprintf(buf, "%s\n", vdev->type);
-+	return sysfs_emit(buf, "%s\n", vdev->type);
- }
- static DEVICE_ATTR_RO(type);
- 
-@@ -138,7 +139,7 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
- {
- 	const struct vio_dev *vdev = to_vio_dev(dev);
- 
--	return sprintf(buf, "vio:T%sS%s\n", vdev->type, vdev->compat);
-+	return sysfs_emit(buf, "vio:T%sS%s\n", vdev->type, vdev->compat);
- }
- static DEVICE_ATTR_RO(modalias);
- 
-@@ -192,7 +193,7 @@ show_pciobppath_attr(struct device *dev, struct device_attribute *attr,
- 	vdev = to_vio_dev(dev);
- 	dp = vdev->dp;
- 
--	return scnprintf(buf, PAGE_SIZE, "%pOF\n", dp);
-+	return sysfs_emit(buf, "%pOF\n", dp);
- }
- 
- static DEVICE_ATTR(obppath, S_IRUSR | S_IRGRP | S_IROTH,
+-config SERIAL_CONSOLE
+-	bool
+-	depends on SPARC32
+-	default y
+-	help
+-	  If you say Y here, it will be possible to use a serial port as the
+-	  system console (the system console is the device which receives all
+-	  kernel messages and warnings and which allows logins in single user
+-	  mode). This could be useful if some terminal or printer is connected
+-	  to that serial port.
+-
+-	  Even if you say Y here, the currently visible virtual console
+-	  (/dev/tty0) will still be used as the system console by default, but
+-	  you can alter that using a kernel command line option such as
+-	  "console=ttyS1". (Try "man bootparam" or see the documentation of
+-	  your boot loader (silo) about how to pass options to the kernel at
+-	  boot time.)
+-
+-	  If you don't have a graphics card installed and you say Y here, the
+-	  kernel will automatically use the first serial line, /dev/ttyS0, as
+-	  system console.
+-
+-	  If unsure, say N.
+-
+ config SPARC_LEON
+ 	bool "Sparc Leon processor family"
+ 	depends on SPARC32
+-- 
+2.43.0
+
 
