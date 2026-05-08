@@ -1,193 +1,164 @@
-Return-Path: <sparclinux+bounces-6763-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6764-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJg4AIFg/Gm7OwAAu9opvQ
-	(envelope-from <sparclinux+bounces-6763-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Thu, 07 May 2026 11:50:57 +0200
+	id wWqbC58p/WnhYQAAu9opvQ
+	(envelope-from <sparclinux+bounces-6764-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Fri, 08 May 2026 02:09:03 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018784E63E4
-	for <lists+sparclinux@lfdr.de>; Thu, 07 May 2026 11:50:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C6D4F06CC
+	for <lists+sparclinux@lfdr.de>; Fri, 08 May 2026 02:09:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DFEDE3004411
-	for <lists+sparclinux@lfdr.de>; Thu,  7 May 2026 09:50:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E1C0302C0E1
+	for <lists+sparclinux@lfdr.de>; Fri,  8 May 2026 00:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B40F3793BC;
-	Thu,  7 May 2026 09:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DE3199D8;
+	Fri,  8 May 2026 00:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="leWMdPdy";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Tq2nphDt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s6IyKBER"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F4B19992C;
-	Thu,  7 May 2026 09:50:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BBE2F8EBB
+	for <sparclinux@vger.kernel.org>; Fri,  8 May 2026 00:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778147451; cv=none; b=gX5ff4EBeKaQNbP0+yYSXvXG9oiKiNZNBJO+h6HHd/mXUMyNJGrtk9viS7gHsVoyZLR7LGjmT68Grr9PJK17vosDNVN8+b4BnFnF1F1jWH7+Ok83v3qRzAJs7UyYBLf15bF3oIxJm7UnkLYxg6leTN7Gz4AcJAplfgz9xQfQ7Ls=
+	t=1778198936; cv=none; b=cIY/qfYjCHjEOxaylk37+ZzASx2xd73sResNwcOEUjerAnPpnBuQlVBFRIZyHtwMMIG0gVlDtLHRYa3luEOf7CLPFCEz2xgnD+dnzQoYPixrPhE+44G/5DY/RdScdYcHlQ/KN2y1Vh91W9KGQSIYzfOkD5FoMoD+TPDWk+Cz4I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778147451; c=relaxed/simple;
-	bh=6/O4g5sKOzC1QkhFRj0XV8eT+wsdg3hxXAqmP1cUrkw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=aK0WwUYIfNboo2tFVHzKUwTpRGumG5daSKkymYg3gkAf1e/MaC8asdlhrvo5giPojaOppK34xhAd0keFw4r38AznyW/tbTTi2EGyz2MjqhBduzmWLfzvIKAFQh6SFzIZrp6pJrlZ5HFZ3/rQcvk40pPYQpIc5Bg30njPn8A8YHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=leWMdPdy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Tq2nphDt; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1778147447;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NBH0jyNZrOzmMWTTXswtxOpylKAjIZZm3k5vmlmFTBY=;
-	b=leWMdPdyfke1PG9kBHkhG5M8+CkYZqJLTLAqeCjYiODinG+/j5IfywZS4BLtwSeOnAhR6D
-	pw/eSfCLzgoMv61xYkcFltHJt75Aj5NL592c/QId6geF4NJndJWESdEbRgVpzZJaKCAEAk
-	S46RxvcRAIZA9ahHYcTAxrtRU+Lc+i248yF5/kVapuIJ8z3dVEqbikVTF3jyXqEuOI+x3T
-	3bevzAN4DzkSVknLp5v6SvQ6O8TC9Rp1nxTnpME2Yz+kDQdJ86k1KXyx7rg0SDmJQCUrew
-	Jl0XoiQVfdJ919Xfgwb85G6jo2BOn+QjO9UZmH6nOsM9NQzLPu3et2OdyeeYug==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1778147447;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NBH0jyNZrOzmMWTTXswtxOpylKAjIZZm3k5vmlmFTBY=;
-	b=Tq2nphDtcvBpFn3zxihLGoMnyKDvoUWprRrJufVzWFnDKGTEAFUEQ7hCJcHsFd6FLZEOal
-	HAqr18N14WAjRFBg==
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Kees Cook <kees@kernel.org>, linux-serial@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH tty v4 2/6] serial: Replace driver usage of UPF_CONS_FLOW
-In-Reply-To: <20260506121606.5805-3-john.ogness@linutronix.de>
-References: <20260506121606.5805-1-john.ogness@linutronix.de>
- <20260506121606.5805-3-john.ogness@linutronix.de>
-Date: Thu, 07 May 2026 11:56:46 +0206
-Message-ID: <87lddvy2dl.fsf@jogness.linutronix.de>
+	s=arc-20240116; t=1778198936; c=relaxed/simple;
+	bh=S8BZCxovO9b7N1yNjqQbGm2G8ks95+KJFQvDYlcZ6nI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ydd/4hWeT7dkvKW+Vk6ig4X7DAuszNAEU+pEWR/P5X9qyySbKbHXDRB64IhwNvU8FvXA+oTI7viN9/Zk+pgiXSixgOxfMBWBZ8XEgfBnlQnHJtSFqEh544Q8nGb7tYhXshqnJ903j58fCBLEWY4KJVtjD8LugNwq2HW3uI4/imU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s6IyKBER; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8b3d6b215cfso23873446d6.3
+        for <sparclinux@vger.kernel.org>; Thu, 07 May 2026 17:08:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778198934; x=1778803734; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JiMsd4QNZdhgq2TeK7b6UP9/6dhJg0SmZyNtOPTS9/w=;
+        b=s6IyKBERxtS40KGyUh1gjC+OPYX8gZShdafZ0cNxuDDsbr5qVPc0OklU7BqB+3r+Iz
+         Dh/biwI1COxrPIAlDJ5XeGgqr1nV9yCeW8F2UAm0iNNdxMw35ejpGWXGd361TBnlE57P
+         v9ZMiS31lbIyvqZCllGaUURdxhTU2SPgxErIX1XPoZMNA+CtR7YLkaA5CbdZxpSQXyOj
+         AdCgXTBSzCRyXJ9RA67Jgn8y6uqrUPT7a5QKopCt3Cm86eojRQfwKkAeJVxbHH8zrkcg
+         ajiUQRfs1gq5CmDfCKQDvBLArORIYQ9xFbv8WSd0OAITwca0hXmZ4cgE//kMO0IysOnv
+         B86g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778198934; x=1778803734;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JiMsd4QNZdhgq2TeK7b6UP9/6dhJg0SmZyNtOPTS9/w=;
+        b=oE/jy+Rr55cfNsDfLXz2Sd/ADPXV35s1WrzJ7mtXyzY1Rb86TEo5HFT801BojY7YDM
+         /uj/ZEI6bw1uJbj2/AE+M2xNYMxLCAOKMI5JTmsO+UTySQofkEIB+Pr964UNI/qNoNs/
+         AC+VIxMhamF8Hemz6irn+1YqHDTD5/U1XWYyDQvQ8tiW/H6czjoB5cId66Ej+XvZAaVz
+         uYbHnSO+w8kyrIB5cPKxo9XZ/gChpE7luPtKfUOj7t7gYqSkvIY3AgjDVWLyzZLnk7gg
+         0cpCj8YSjGZgV/hkxkW1P412KwPgWTq9Z+EfGpJWty5+wIB7K301i1lM8NgMXMFgs6mi
+         fy1Q==
+X-Gm-Message-State: AOJu0YzZwLl/0a/ADCTmNyuqmGqfum5lM7PW1pSD4PoIMan6XhWEdfwl
+	j34R+jgJ9yF4NXdtoqb8ILz9xQeaPMyyumJGAyBmifZCxNVqbH54HAlwdX9RkmDX
+X-Gm-Gg: Acq92OGmzEr/kWYDXnyViTzfUdgbYq7/TbWROjDGcJg2QmFs+7z7pI3+CzyD7XT9uTN
+	7LD/vnQ4R5fIAagWlQuTsYr/6zqXWCuUVT44tXQ1QQL69D1tGyD7rNnpRvJ3bVm/hvgJ7hOy7U5
+	RV0J7WITDkQuSZLiXmzuS9obUlIlZU5fSnZF1VeJ0APNs12/HzSvy0TYtcWgz84qxysgS3/lOeU
+	pkiTv79UQ7Lw2XSWOVZ3Jcw/aKR4UdW8cW5WInX9w9syurnjdY/rr/u6a8qPzrNXNeKTlfxeKon
+	K8KoDlP8Qo7whRD2f0aDG62x/ooqrR1ed41HRjBh7uBFyHBD9KZ2KK2FH33bvoV8Svx7O7AYYJ8
+	5C6BIetAdJ5MT6MUHZxiBCvrjKqvZS0aMBEHOkCJTzEOhm6K/0KcgrfPgCZ8Mr0nGwyPv1kSCBB
+	9mVIYdrnUnf6cGXMnItjHcBeVreQz31KbpidAE75sy+Ty0xWkWoJbQda9gQSPdRupVb3yAUeawu
+	BgdGmznhn8iUBbtiK+2kp65dUby/jrkCRZB7mSA2JS/jw==
+X-Received: by 2002:a05:6214:2424:b0:89c:e2b4:4ee9 with SMTP id 6a1803df08f44-8bc462f7c01mr163074446d6.46.1778198934362;
+        Thu, 07 May 2026 17:08:54 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b53d450dcbsm222060286d6.45.2026.05.07.17.08.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 17:08:53 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: sparclinux@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-kernel@vger.kernel.org (open list),
+	llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT:Keyword:\b(?i:clang|llvm)\b)
+Subject: [PATCH] sparc: Disable compat support with LLD
+Date: Thu,  7 May 2026 17:08:34 -0700
+Message-ID: <20260508000834.834824-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 018784E63E4
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 74C6D4F06CC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6763-lists,sparclinux=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[davemloft.net,gaisler.com,kernel.org,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,davemloft.net,linux.intel.com,kernel.org,lists.infradead.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-6764-lists,sparclinux=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[john.ogness@linutronix.de,sparclinux@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,sparclinux@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linutronix.de:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[sparclinux];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linutronix.de:dkim]
+	TAGGED_RCPT(0.00)[sparclinux,lkml];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Hi,
+An LLVM=1 sparc64 allmodconfig enables COMPAT and then tries to
+build the 32-bit vDSO. That path cannot be linked with ld.lld:
 
-(This email is particularly directed at the Samsung folks.)
+  ld.lld: error: unknown emulation: elf32_sparc
 
-Responding to Sashiko:
+ld.lld does not support the 32-bit SPARC ELF emulation used for
+the compat vDSO, so keep COMPAT disabled when LLD is the linker.
+This avoids selecting an unsupported build path while leaving the
+existing GNU ld configuration unchanged.
 
-https://sashiko.dev/#/patchset/20260506121606.5805-1-john.ogness%40linutronix.de
+Assisted-by: Codex:GPT-5.5
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ arch/sparc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 2026-05-06, Sashiko wrote:
->> diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
->> index e27806bf2cf3e..2f94fc798cffb 100644
->> --- a/drivers/tty/serial/samsung_tty.c
->> +++ b/drivers/tty/serial/samsung_tty.c
->> @@ -319,7 +319,7 @@ static void s3c24xx_serial_stop_tx(struct uart_port *port)
->>  	ourport->tx_enabled = 0;
->>  	ourport->tx_in_progress = 0;
->>  
->> -	if (port->flags & UPF_CONS_FLOW)
->> +	if (uart_cons_flow_enabled(port))
->>  		s3c24xx_serial_rx_enable(port);
->
-> This isn't a new bug introduced by this patch, but does this code
-> result in a recursive spinlock acquisition and deadlock when console
-> flow control is enabled?
->
-> The serial core framework calls port->ops->stop_tx() with the
-> port->lock spinlock already held. When uart_cons_flow_enabled(port)
-> evaluates to true, s3c24xx_serial_stop_tx() invokes
-> s3c24xx_serial_rx_enable().
->
-> Looking at s3c24xx_serial_rx_enable(), it unconditionally attempts to
-> acquire the exact same lock again:
->
-> static void s3c24xx_serial_rx_enable(struct uart_port *port)
-> {
-> 	struct s3c24xx_uart_port *ourport = to_ourport(port);
-> 	unsigned long flags;
-> 	...
-> 	uart_port_lock_irqsave(port, &flags);
-> 	...
-> }
->
-> Because spinlocks are not recursive in the kernel, it appears this
-> sequence would cause an immediate deadlock on the same CPU.
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index a6b787efc2c4..681ab2fd3d8a 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -474,6 +474,7 @@ endmenu
+ config COMPAT
+ 	bool
+ 	depends on SPARC64
++	depends on !LD_IS_LLD
+ 	default y
+ 	select HAVE_UID16
+ 	select ARCH_WANT_OLD_COMPAT_IPC
+-- 
+2.54.0
 
-Although out of scope for my series, the reported issue is real. Perhaps
-something for Krzysztof or Alim to look into.
-
->> @@ -493,7 +493,7 @@ static void s3c24xx_serial_start_tx(struct uart_port *port)
->>  	struct tty_port *tport = &port->state->port;
->>  
->>  	if (!ourport->tx_enabled) {
->> -		if (port->flags & UPF_CONS_FLOW)
->> +		if (uart_cons_flow_enabled(port))
->>  			s3c24xx_serial_rx_disable(port);
->
-> Similarly here, s3c24xx_serial_start_tx() is also called with
-> port->lock held, and s3c24xx_serial_rx_disable() will attempt to
-> acquire port->lock again:
->
-> static void s3c24xx_serial_rx_disable(struct uart_port *port)
-> {
-> 	struct s3c24xx_uart_port *ourport = to_ourport(port);
-> 	unsigned long flags;
-> 	...
-> 	uart_port_lock_irqsave(port, &flags);
-> 	...
-> }
->
-> Could this pre-existing locking issue in the samsung_tty driver be
-> addressed so that the rx enable/disable helpers do not try to take the
-> port lock when it is already held by the caller?
-
-Also legitimate. But out of scope for my series.
-
-John Ogness
 
