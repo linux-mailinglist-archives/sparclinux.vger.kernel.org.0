@@ -1,79 +1,79 @@
-Return-Path: <sparclinux+bounces-6764-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6765-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wWqbC58p/WnhYQAAu9opvQ
-	(envelope-from <sparclinux+bounces-6764-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Fri, 08 May 2026 02:09:03 +0200
+	id OEePNmJG/WkGaAAAu9opvQ
+	(envelope-from <sparclinux+bounces-6765-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Fri, 08 May 2026 04:11:46 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C6D4F06CC
-	for <lists+sparclinux@lfdr.de>; Fri, 08 May 2026 02:09:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F974F0B4B
+	for <lists+sparclinux@lfdr.de>; Fri, 08 May 2026 04:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E1C0302C0E1
-	for <lists+sparclinux@lfdr.de>; Fri,  8 May 2026 00:08:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63B4E302451A
+	for <lists+sparclinux@lfdr.de>; Fri,  8 May 2026 02:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DE3199D8;
-	Fri,  8 May 2026 00:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AD124BBEE;
+	Fri,  8 May 2026 02:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s6IyKBER"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jAH0mD71"
 X-Original-To: sparclinux@vger.kernel.org
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BBE2F8EBB
-	for <sparclinux@vger.kernel.org>; Fri,  8 May 2026 00:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071F324503B
+	for <sparclinux@vger.kernel.org>; Fri,  8 May 2026 02:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778198936; cv=none; b=cIY/qfYjCHjEOxaylk37+ZzASx2xd73sResNwcOEUjerAnPpnBuQlVBFRIZyHtwMMIG0gVlDtLHRYa3luEOf7CLPFCEz2xgnD+dnzQoYPixrPhE+44G/5DY/RdScdYcHlQ/KN2y1Vh91W9KGQSIYzfOkD5FoMoD+TPDWk+Cz4I0=
+	t=1778206300; cv=none; b=SQ7ffcP1x9gv03OmhJNhws8oAzgSWot5Ojkh19NvahDt3RXVXIgJlL3X8ZJIfpd6gpsY7Tmbd/S9qJWnevR4ur5zmFx4WHrAjkjYjlKz1j87L3FfHnwoxwDopKTl0Ic6QU/iXzsiFlO8WyY+aO0pr2K4JJ6UOMddIPy9rzrjk7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778198936; c=relaxed/simple;
-	bh=S8BZCxovO9b7N1yNjqQbGm2G8ks95+KJFQvDYlcZ6nI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ydd/4hWeT7dkvKW+Vk6ig4X7DAuszNAEU+pEWR/P5X9qyySbKbHXDRB64IhwNvU8FvXA+oTI7viN9/Zk+pgiXSixgOxfMBWBZ8XEgfBnlQnHJtSFqEh544Q8nGb7tYhXshqnJ903j58fCBLEWY4KJVtjD8LugNwq2HW3uI4/imU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s6IyKBER; arc=none smtp.client-ip=209.85.219.41
+	s=arc-20240116; t=1778206300; c=relaxed/simple;
+	bh=zcuDlvfTQjwKaid2r4G4QhvfGnrUZyPpYyuO+iIQo/o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b3oy1j6xMkq35hC22JG6FI82uzfTQ0+GzCdXxQpcgsHMyOlpKmSihsd+a2dJymzvZl8ocXcPJMiEIxTq7eYB/EZEDhw9+Vy6O84dWPiYD9An5LW0Fi3jhSJJT/uAhD69//svItVn04IHz74jwX0bVVyHxzUjE3eGZTnOzvnq3bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jAH0mD71; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8b3d6b215cfso23873446d6.3
-        for <sparclinux@vger.kernel.org>; Thu, 07 May 2026 17:08:55 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ba6485d219so9879785ad.3
+        for <sparclinux@vger.kernel.org>; Thu, 07 May 2026 19:11:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778198934; x=1778803734; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778206298; x=1778811098; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JiMsd4QNZdhgq2TeK7b6UP9/6dhJg0SmZyNtOPTS9/w=;
-        b=s6IyKBERxtS40KGyUh1gjC+OPYX8gZShdafZ0cNxuDDsbr5qVPc0OklU7BqB+3r+Iz
-         Dh/biwI1COxrPIAlDJ5XeGgqr1nV9yCeW8F2UAm0iNNdxMw35ejpGWXGd361TBnlE57P
-         v9ZMiS31lbIyvqZCllGaUURdxhTU2SPgxErIX1XPoZMNA+CtR7YLkaA5CbdZxpSQXyOj
-         AdCgXTBSzCRyXJ9RA67Jgn8y6uqrUPT7a5QKopCt3Cm86eojRQfwKkAeJVxbHH8zrkcg
-         ajiUQRfs1gq5CmDfCKQDvBLArORIYQ9xFbv8WSd0OAITwca0hXmZ4cgE//kMO0IysOnv
-         B86g==
+        bh=Kjl5jAW0z3TEk+mYG+Ravixfsv3DlsZiiyMW4sxaDzQ=;
+        b=jAH0mD71v7jTQDqVEd7+Hm2cFGA4mqMwO4FzvY9Hf9XLaRRpbMaXpg3gnjqOEdSuxp
+         3vROZ5YQ0lkd/4WPXuSe3JO3x37/p33LIyyN14frxqPc1ru1tQDz22odL+xZ0bQQ3Ynl
+         LkEnL1rCg7g4EhbgcasUMpPF5ssNnXjghhjbZapvmud2mJ4ozAgY7etWM68TaEsYTRMb
+         qBNJ/2srKP69gd73TplcpoJWlGpRqw3ZZFkXJsH3bppt3oqZNIfXqgydr0VaHQpUp82w
+         5hycWe/WAnm86+jtJJLfopZAghPg7VvyPJKRsXe7+OUIdBlIWv4EOaLeBLntqENVI8Ok
+         NiNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778198934; x=1778803734;
+        d=1e100.net; s=20251104; t=1778206298; x=1778811098;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JiMsd4QNZdhgq2TeK7b6UP9/6dhJg0SmZyNtOPTS9/w=;
-        b=oE/jy+Rr55cfNsDfLXz2Sd/ADPXV35s1WrzJ7mtXyzY1Rb86TEo5HFT801BojY7YDM
-         /uj/ZEI6bw1uJbj2/AE+M2xNYMxLCAOKMI5JTmsO+UTySQofkEIB+Pr964UNI/qNoNs/
-         AC+VIxMhamF8Hemz6irn+1YqHDTD5/U1XWYyDQvQ8tiW/H6czjoB5cId66Ej+XvZAaVz
-         uYbHnSO+w8kyrIB5cPKxo9XZ/gChpE7luPtKfUOj7t7gYqSkvIY3AgjDVWLyzZLnk7gg
-         0cpCj8YSjGZgV/hkxkW1P412KwPgWTq9Z+EfGpJWty5+wIB7K301i1lM8NgMXMFgs6mi
-         fy1Q==
-X-Gm-Message-State: AOJu0YzZwLl/0a/ADCTmNyuqmGqfum5lM7PW1pSD4PoIMan6XhWEdfwl
-	j34R+jgJ9yF4NXdtoqb8ILz9xQeaPMyyumJGAyBmifZCxNVqbH54HAlwdX9RkmDX
-X-Gm-Gg: Acq92OGmzEr/kWYDXnyViTzfUdgbYq7/TbWROjDGcJg2QmFs+7z7pI3+CzyD7XT9uTN
-	7LD/vnQ4R5fIAagWlQuTsYr/6zqXWCuUVT44tXQ1QQL69D1tGyD7rNnpRvJ3bVm/hvgJ7hOy7U5
-	RV0J7WITDkQuSZLiXmzuS9obUlIlZU5fSnZF1VeJ0APNs12/HzSvy0TYtcWgz84qxysgS3/lOeU
-	pkiTv79UQ7Lw2XSWOVZ3Jcw/aKR4UdW8cW5WInX9w9syurnjdY/rr/u6a8qPzrNXNeKTlfxeKon
-	K8KoDlP8Qo7whRD2f0aDG62x/ooqrR1ed41HRjBh7uBFyHBD9KZ2KK2FH33bvoV8Svx7O7AYYJ8
-	5C6BIetAdJ5MT6MUHZxiBCvrjKqvZS0aMBEHOkCJTzEOhm6K/0KcgrfPgCZ8Mr0nGwyPv1kSCBB
-	9mVIYdrnUnf6cGXMnItjHcBeVreQz31KbpidAE75sy+Ty0xWkWoJbQda9gQSPdRupVb3yAUeawu
-	BgdGmznhn8iUBbtiK+2kp65dUby/jrkCRZB7mSA2JS/jw==
-X-Received: by 2002:a05:6214:2424:b0:89c:e2b4:4ee9 with SMTP id 6a1803df08f44-8bc462f7c01mr163074446d6.46.1778198934362;
-        Thu, 07 May 2026 17:08:54 -0700 (PDT)
+        bh=Kjl5jAW0z3TEk+mYG+Ravixfsv3DlsZiiyMW4sxaDzQ=;
+        b=T6rustdWRBn6iTCZsXSZ1J18GqhfWRt4V7nb6PgYZpECeVHG7OvUfH0QoOqeH3bO6R
+         KBvDsblvaqK8CNK3qiV3oCzmxOb6NPI5odckRT6ZqV6qgDOLHJ2UDTjf1H4CcH4ync7n
+         qN2p/jyg6YlafTH5Znruqzce+vClsmVssTX9JJIv4HolQjUJIuREOW1k6Eexba7nPaNW
+         EY0I80yemNgHH1cpraOpQnlr1zNsOw4to2ZmcD6t7ZTJNQTxpDMRIVx/oLdAUl0Qs5ML
+         A//qbUzBPzhfORJnfxyXiXByx+YBj5/3O8Ya/a+HtiIIoKfr2ab/OjlyM75muo6gA9Sf
+         mJjA==
+X-Gm-Message-State: AOJu0Yy+khf4MalnvXmnpisEwO3LAbcKFG2cHAG728o1muSFz4Qqvtjx
+	h2ufe+fgrxUNNUTU8W9mhJAFEpfAZ+h2xEyPk5IHYVo23kHMxpqn5tfN8j4qDRl+
+X-Gm-Gg: Acq92OG6O+44jcrLYXEZiRc6a32Pgx6RhOBiOjswUlyLiZrmPFCieFdbehV9EAUV9bw
+	Mjrgg1xQ4mcoOZx4pForMwmXh3b3qSnoHIcp/XLW2buGFjStZ9HZzMmpUm9FKD0tnkthFBtFrzn
+	UlzpTMEyUNtASmpBj2n9sVni9kOd1YiqL3SzW2BnFwwVAtdBc1T2YX4yRKi4Ufh5HEbU/DBcJVP
+	NPHbi3W9xaEXKf4zrXoDL/+EaY7eeo2/q+50/ob/J33b9j58gO9FEj9qjYBgPaXSqY16mP1kR01
+	B57NZTa/nzUrEBVw9Bs7/LoFsL/j+udaE4AmiN2KJmWRXCCd0VtCFahgT55wd6/tg4Po9bQWbi+
+	8Smnk4e2A8bQ6r6GMmVjjKMK1HwDF+7ZSTXvGA9vT7DDuadseLatK5dTGyNoebfob9xonU4+nOY
+	sUdcBpKMlUTJWqpbcVfsuNbZfFLbd2B4yvEKWt+CmIEg2jRNwd33SasIQ7OJ55dTZjWyM3NzMHW
+	c+yaBAFNp2nww6YqU525RiLCe47q0DUF+08CmDUOisk0w==
+X-Received: by 2002:a17:903:46c6:b0:2ba:9e1c:7c93 with SMTP id d9443c01a7336-2ba9e1c7ddamr80600225ad.40.1778206297843;
+        Thu, 07 May 2026 19:11:37 -0700 (PDT)
 Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b53d450dcbsm222060286d6.45.2026.05.07.17.08.52
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d4094fsm2124135ad.19.2026.05.07.19.11.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 17:08:53 -0700 (PDT)
+        Thu, 07 May 2026 19:11:37 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: sparclinux@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -84,9 +84,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Justin Stitt <justinstitt@google.com>,
 	linux-kernel@vger.kernel.org (open list),
 	llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT:Keyword:\b(?i:clang|llvm)\b)
-Subject: [PATCH] sparc: Disable compat support with LLD
-Date: Thu,  7 May 2026 17:08:34 -0700
-Message-ID: <20260508000834.834824-1-rosenp@gmail.com>
+Subject: [PATCH] sparc: Export mcount for Clang-built modules
+Date: Thu,  7 May 2026 19:11:19 -0700
+Message-ID: <20260508021119.1635054-1-rosenp@gmail.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
@@ -95,69 +95,69 @@ List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 74C6D4F06CC
+X-Rspamd-Queue-Id: 52F974F0B4B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FREEMAIL_CC(0.00)[davemloft.net,gaisler.com,kernel.org,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6765-lists,sparclinux=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-6764-lists,sparclinux=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,sparclinux@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[sparclinux,lkml];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[sparclinux,lkml];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-An LLVM=1 sparc64 allmodconfig enables COMPAT and then tries to
-build the 32-bit vDSO. That path cannot be linked with ld.lld:
+Clang emits calls to mcount for -pg on sparc64, while the
+existing ftrace support only exports the _mcount name. With
+FUNCTION_TRACER enabled, modules can therefore keep relocations
+against mcount and fail during modpost:
 
-  ld.lld: error: unknown emulation: elf32_sparc
+  ERROR: modpost: "mcount" [arch/sparc/kernel/chmc.ko] undefined!
 
-ld.lld does not support the 32-bit SPARC ELF emulation used for
-the compat vDSO, so keep COMPAT disabled when LLD is the linker.
-This avoids selecting an unsupported build path while leaving the
-existing GNU ld configuration unchanged.
+_mcount and mcount are aliases in arch/sparc/lib/mcount.S. Export
+the plain mcount alias as well so Clang-built modules can resolve
+their profiling call target.
 
-Assisted-by: Codex:GPT-5.5
+Assisted-by: Codex:GPT-5
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- arch/sparc/Kconfig | 1 +
+ arch/sparc/lib/mcount.S | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index a6b787efc2c4..681ab2fd3d8a 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -474,6 +474,7 @@ endmenu
- config COMPAT
- 	bool
- 	depends on SPARC64
-+	depends on !LD_IS_LLD
- 	default y
- 	select HAVE_UID16
- 	select ARCH_WANT_OLD_COMPAT_IPC
+diff --git a/arch/sparc/lib/mcount.S b/arch/sparc/lib/mcount.S
+index f7f7910eb41e..0309ba2c4712 100644
+--- a/arch/sparc/lib/mcount.S
++++ b/arch/sparc/lib/mcount.S
+@@ -21,6 +21,7 @@
+ 	EXPORT_SYMBOL(_mcount)
+ 	.globl		mcount
+ 	.type		mcount,#function
++	EXPORT_SYMBOL(mcount)
+ _mcount:
+ mcount:
+ #ifdef CONFIG_FUNCTION_TRACER
 -- 
 2.54.0
 
