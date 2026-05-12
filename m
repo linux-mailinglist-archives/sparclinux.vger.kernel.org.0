@@ -1,160 +1,143 @@
-Return-Path: <sparclinux+bounces-6785-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6786-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBzfL/DiAmpEyQEAu9opvQ
-	(envelope-from <sparclinux+bounces-6785-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Tue, 12 May 2026 10:21:04 +0200
+	id IEzJJLnkAmpEyQEAu9opvQ
+	(envelope-from <sparclinux+bounces-6786-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Tue, 12 May 2026 10:28:41 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F4C51C976
-	for <lists+sparclinux@lfdr.de>; Tue, 12 May 2026 10:21:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3831751CB33
+	for <lists+sparclinux@lfdr.de>; Tue, 12 May 2026 10:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E251B300694A
-	for <lists+sparclinux@lfdr.de>; Tue, 12 May 2026 08:17:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B10BB301AF60
+	for <lists+sparclinux@lfdr.de>; Tue, 12 May 2026 08:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A468A492199;
-	Tue, 12 May 2026 08:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZ8JYoOJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875944921AB;
+	Tue, 12 May 2026 08:28:10 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CEC4921A0;
-	Tue, 12 May 2026 08:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B5A492199
+	for <sparclinux@vger.kernel.org>; Tue, 12 May 2026 08:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778573865; cv=none; b=pNrWI3rpUQclB8DvB6B7HimLWwlOEigXcFyQ+0sOE3N1xVMpLuBxaNM4V14CZHBzGRtCslHAuvG6pBY7F/MLLOFTfcXJS4+XLVOuHN76kWuoTxqG86clw6nvx3MrYPo6geo8xsyffXXfj7qYxk3Vm8M+SwzFP1JwuUtu/pNwnic=
+	t=1778574490; cv=none; b=pWu1a6vl3EFxCehRXea7BCy2lIXW1zgW8NYUyhi8LUFS43NGo+Pku8S82wT/W5jOu4XGVWQG3tSsVFI1qEp95hwz4Yu6lKYKNPjteqeAP9Jh53kJH+aDCxRfEkRdunvqJQBv/0hLP1+HrqPDOkNitOwOD10bruHiBCmPsSphvbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778573865; c=relaxed/simple;
-	bh=wYyyzgZZXOeKgdcWpmGuhU1Q+C6chQuc5I0CN1aHGkk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=F7qggq+htHNQhDMPOf91yKATtGPZCVTrtyLiJcdl4OaWUwbjcuO+Tx6/43LrsvJwEXQeGE7CFPXyFs1KVnQrVLIISOmoCK3bx0Qp9VMhDNd8n33imx2SndvsWZ4fSKSuCdxAQmZ6HrHPB8ftvMTq3+CBsyriNrdSEeQh2XKpNJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZ8JYoOJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30857C2BCB8;
-	Tue, 12 May 2026 08:17:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778573864;
-	bh=wYyyzgZZXOeKgdcWpmGuhU1Q+C6chQuc5I0CN1aHGkk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=HZ8JYoOJ9CknhyGiIdFqvEqaOqo8AH0OI/1gPlqApCPcaMVPCbrExPNNRfwDzntNb
-	 ZzFiTU5/poR3gAdVdKrVO1WhuvW68otRIIvk8RRhZ3wUTJX634xrSkk+o6xLwddsnG
-	 xiiBY9piemhiRVAb3uLoILLASIS+v4eieQmoKrmKIMIHs1wHT6NeiBluqIc4nfBqPr
-	 tyeZr2CxZbYHdexcWrVSP3ZDJ/JEUC3BMXqRv1PGn0BjlH3upJfsc6zOLGku/MldKN
-	 R+zz3PoEZOj5o9FioGfuXeSNzWAVSYEBaEX3gdRaDcXxEr/Wc5VAPH2TDtLuey4ghI
-	 qsiRv1qlxvJlg==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Tony Rodriguez <unixpro1970@gmail.com>
-Cc: Linux kernel regressions list <regressions@lists.linux.dev>, LKML
- <linux-kernel@vger.kernel.org>, sparclinux@vger.kernel.org, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thorsten Leemhuis
- <regressions@leemhuis.info>
-Subject: Re: the stuttering regression in 7.0: should I have done something
- different
-In-Reply-To: <088e6cfa-0167-4748-af6c-458ade2f303a@gmail.com>
-References: <ffb44522-f01c-4be3-849d-27dc17fbca7f@leemhuis.info>
- <D5D19776-C809-4284-9417-F9A860877B98@gmail.com>
- <1c165caf-36b4-4673-97fd-ed86bef17b88@leemhuis.info>
- <3332123b-9e11-4895-9ab3-1707fba5815c@gmail.com> <871pfj9cmj.ffs@tglx>
- <a7a0d78b-435e-43c8-b436-5e7f4dd39dee@gmail.com>
- <088e6cfa-0167-4748-af6c-458ade2f303a@gmail.com>
-Date: Tue, 12 May 2026 10:17:41 +0200
-Message-ID: <878q9p82je.ffs@tglx>
+	s=arc-20240116; t=1778574490; c=relaxed/simple;
+	bh=lhH5bmNuT8IdQcgW5uaKxGoNPJWX08NZO/5EO7pcznU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R95d3rfuLV4lyqu9ccPDBdIoHMEypKinYAT4bTkrua0TpGrgEZxt3O5TdYEB77h+b9VArHWAUUWTO65kV2kvEOBGtKR5UUa8lZJ/6YV7PvUIGWrAbvfBUG3lqRHI7TPY4+tZofYSxdko0y0VF+9N4h0ou0H25YBENNgqtoNaGEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A9F1567AD1;
+	Tue, 12 May 2026 08:28:07 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 75CE8593A9;
+	Tue, 12 May 2026 08:28:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Uc6mGZbkAmqOegAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 12 May 2026 08:28:06 +0000
+Date: Tue, 12 May 2026 10:28:04 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/8] sparc/mm: remove register_page_bootmem_info()
+Message-ID: <agLklK9iCcV6lsSn@localhost.localdomain>
+References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
+ <20260511-bootmem_info_prep-v1-1-3fb0be6fc688@kernel.org>
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 23F4C51C976
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260511-bootmem_info_prep-v1-1-3fb0be6fc688@kernel.org>
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Score: -4.00
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 3831751CB33
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6785-lists,sparclinux=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[davemloft.net,gaisler.com,kernel.org,linux-foundation.org,linux.ibm.com,ellerman.id.au,gmail.com,infradead.org,google.com,suse.com,vger.kernel.org,kvack.org,lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	TAGGED_FROM(0.00)[bounces-6786-lists,sparclinux=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,sparclinux@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[osalvador@suse.de,sparclinux@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[sparclinux];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email]
 X-Rspamd-Action: no action
 
-On Mon, May 11 2026 at 22:03, Tony Rodriguez wrote:
->> Can you apply the debug patch below, which will disable tracing once it
->> hits the hung task detector and then retrieve the trace?=20
-> As requested, I applied your debug patch to v7.1=E2=80=91rc3 and captured=
- the
-> trace output.  On the SPARC64 S7=E2=80=912 system the machine becomes
-> unresponsive and produces many thousands of lines of trace data that
-> do not appear to terminate.
+On Mon, May 11, 2026 at 04:05:29PM +0200, David Hildenbrand (Arm) wrote:
+> sparc does not select CONFIG_HAVE_BOOTMEM_INFO_NODE, therefore,
+> register_page_bootmem_info_node() is a nop.
+> 
+> Let's just get rid of register_page_bootmem_info().
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Yes, it takes a while to spill out over serial.
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-> Posting the full output inline or as an attachment may be impractical,
-> so I=E2=80=99ve included the key sections below.
 
-Kinda.
-
-> If you prefer the complete trace, please let me know the best way to=20
-> provide it. Guessing the kernel mailing isn't best to attach that?
-
-Correct.
-
-> [=C2=A0 249.004209] [<0000000000000000>] 0x0
-> [=C2=A0 249.019116] Dumping ftrace buffer:
-> [=C2=A0 249.025666] ---------------------------------
-> [=C2=A0 249.034534]=C2=A0 =C2=A0<idle>-0=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A00d.... 1836659us :=20
-> clockevents_program_event: Successfully programmed 4000000 4000000
-> [=C2=A0 249.055418]=C2=A0 =C2=A0<idle>-0=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A00d.h.. 1845926us : timer_interrupt:=20
-
-So this is the interesting part, but that's starting at 1.836659s
-while the actual problem happens ~120 seconds later and the detection
-takes another 120 seconds.
-
-Assuming that one of the CPUs does not get timer interrupts anymore, the
-trace of that CPU should end around the time the last programming
-happened. So the interesting part is at the end of the output. The
-default buffer size per CPU is 1408k, which holds about 150k entries, so
-we can just shorten the buffers to make this less painful.
-
-Can you add 'trace_buf_size=3D50k' to the kernel command line, which
-limits the buffer size to about 640 entries. Assuming 115200 Baud this
-should then take about 4 seconds per CPU to dump, which still is a bunch
-on a large machine, but definitely way more workable than the default.
-
-IIRC, SPARC64 S7=E2=80=912 has 128 threads total, so the resulting uncompre=
-ssed
-output should be around 7-8M. That's highly compressable text, so the
-resulting dump.xz should be suitable to be stored in github. If github
-does not allow you, let me know and we work something out.
-
-Thanks,
-
-        tglx
-
+-- 
+Oscar Salvador
+SUSE Labs
 
