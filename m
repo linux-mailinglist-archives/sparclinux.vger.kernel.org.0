@@ -1,51 +1,51 @@
-Return-Path: <sparclinux+bounces-6866-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6867-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AqrI197HWrEbAkAu9opvQ
-	(envelope-from <sparclinux+bounces-6866-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Mon, 01 Jun 2026 14:30:23 +0200
+	id zlSlMXZ8HWoSbQkAu9opvQ
+	(envelope-from <sparclinux+bounces-6867-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Mon, 01 Jun 2026 14:35:02 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36F561F483
-	for <lists+sparclinux@lfdr.de>; Mon, 01 Jun 2026 14:30:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E23D61F51F
+	for <lists+sparclinux@lfdr.de>; Mon, 01 Jun 2026 14:35:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5217309B0AC
-	for <lists+sparclinux@lfdr.de>; Mon,  1 Jun 2026 12:23:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B9AF301177E
+	for <lists+sparclinux@lfdr.de>; Mon,  1 Jun 2026 12:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E91377EBC;
-	Mon,  1 Jun 2026 12:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D79376481;
+	Mon,  1 Jun 2026 12:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6Qh0QtI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d+eMkbxi"
 X-Original-To: sparclinux@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8A6356770;
-	Mon,  1 Jun 2026 12:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5CD371880;
+	Mon,  1 Jun 2026 12:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780316596; cv=none; b=JL4dG0utkcjEZFESXxphHkvlxDGH9jfJHsQptq0lwEXGY1VJuTf/ziSgE0+WtKQcwGYrMu0Rmcd1ynd5hT5sSd36JpOFVydI8qBVFG/2l0pUyvldMdhXvcz8SBLCOC/JP4emK7YAvwTczZbwMyNjSgzv2KLC16G0V/N4LC1iyWE=
+	t=1780316614; cv=none; b=iF0NvsDBlJ/Rz8dOi05BPh2hj2K/jz+QvTizS2JDq282Ty/XycJriFfmz1UUPtW+uFzjH1EvblF3OaJV3BcCNrBYwFj/foQRJwGtd36W+dqAHXa3d98ut4qHNJn87SbDLmKvQTuuQMNDZrqjIU3KmPVvlu+1kfe0uNQFjoCHD0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780316596; c=relaxed/simple;
-	bh=e3um0bPfkVmVxZkc+i/nsMtGGJzm8jv9b5Qv5CVX7ZE=;
+	s=arc-20240116; t=1780316614; c=relaxed/simple;
+	bh=BA2C+YWycRfSHrsInEvD97uMQOvpToIgAcRccCJygcw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N5721Fbx/dZYDk1BveRVMxutYErfKjO+Ma8l7IXmXEcRXmy40qng5N7ljHC6kVqb51XBx9oKIu2qye/T3Zhro3KvQ5fUczYm6DT2VuqKjJuWLITZybvgpnNaZQx+FE2OcaKrkf20V22kBzjCsAeQh6GdmBgunlMx1AIVLCBCun8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6Qh0QtI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FAC1F00893;
-	Mon,  1 Jun 2026 12:23:09 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Ca0oHTF8vwCdFbWzutgj97yVr7p3P/sTNABFqRftjE5laUAUcRu9Ads3eP90iIi1QnK7L5SuvqDGYUDYlNXKjpDflO+pNjOgRf1PfewRAsJ0LI4ThysQrWjk4RcFWko+OoeDmphuwn4x9I3FKYxC9TXbc35pPEFhmeBj9swgsow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d+eMkbxi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36061F00898;
+	Mon,  1 Jun 2026 12:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780316595;
-	bh=nJCaoM91VpKZfWQWP/5PUdBhVElKt1iDyT7TnkO/j00=;
+	s=k20260515; t=1780316613;
+	bh=2jL9F3lhDa+fKvFgKIGzLd1nrDxZ1QfJTb/ldHq2VUY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=J6Qh0QtILNf67i7Bca2/p59Xf4vTiAbfvsb2nezebefYadRAp0p9yWFug/E12s1jD
-	 RQvXWD4MSepeDA9QX0uC2wG4HjENaCS8GNifYaTqB/bY2KdWthhslFdCnMWk29pUCC
-	 R2vdEDETX2GkLw5N7k5vZNZgflMkksMyLL8nKCJ/NYml9hBve0TEEPXWkRMTCYKgMj
-	 ssQLCkU/O8+jBOXJu57NfQ2Mkr2UG00LCi304riFqeGL54E02Y/p4omgSdNe167K5t
-	 ZLrz/YoHBzIslYWCLKvZm6gUWzbNW2QfPhsgg1CKk89OYjLHIlyFF5tBV4MJlshJhM
-	 ezMshiJz2UAMQ==
-Message-ID: <c9783e61-cbc0-449a-9a0b-db40fb335e99@kernel.org>
-Date: Mon, 1 Jun 2026 14:23:08 +0200
+	b=d+eMkbxiEzNQVN3beMSGIxtTo/UBQjNwIb0lTvrLMpXxhwlmOdQP+/MUDVWLqaZ7b
+	 jZHZeBlkXMSGV+Y0K+J9yo0l0nLfknUtjh7yDEt+OCTHeIWOTb8Q83PG2hyAPwjZN0
+	 Qu0818JbsOuhfgLEpwAmPevpFkSFqsZ1uPrvkWgertlNVlh38Ine7hDv/3m+OVV7M7
+	 Ov4iEl6zMTBGlddA5gMxDK/kA4Kol1XeirMPSCP0V/F4ajKZpMSgM6WWU1Try/0ViS
+	 Svdtf2/4gYRCFE+oFNXU/ofIDkG/z4bw+VQqaRuBsvfoxOJopm2UsDtI7k0Xzy+liO
+	 fGXvRG/MqfyBQ==
+Message-ID: <87985f48-2668-4fd0-aae9-3754d2f6bd93@kernel.org>
+Date: Mon, 1 Jun 2026 14:23:26 +0200
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] arm64/mm: drop vmemmap_pmd helpers and use generic
+Subject: Re: [PATCH v3 3/5] riscv/mm: drop vmemmap_pmd helpers and use generic
  code
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -70,7 +70,7 @@ Cc: Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
 References: <20260601084845.3792171-1-songmuchun@bytedance.com>
- <20260601084845.3792171-3-songmuchun@bytedance.com>
+ <20260601084845.3792171-4-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -117,26 +117,26 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260601084845.3792171-3-songmuchun@bytedance.com>
+In-Reply-To: <20260601084845.3792171-4-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6866-lists,sparclinux=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6867-lists,sparclinux=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[25];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,sparclinux@vger.kernel.org];
@@ -145,16 +145,15 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[sparclinux];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F36F561F483
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1E23D61F51F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 On 6/1/26 10:48, Muchun Song wrote:
-> The generic implementations now suffice; remove the arm64 copies.
+> The generic implementations now suffice; remove the riscv copies.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Will Deacon <will@kernel.org>
 > ---
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
