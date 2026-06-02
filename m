@@ -1,50 +1,50 @@
-Return-Path: <sparclinux+bounces-6876-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6877-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICGdMBJgHmo/iwkAu9opvQ
-	(envelope-from <sparclinux+bounces-6876-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Tue, 02 Jun 2026 06:46:10 +0200
+	id eIIQDsZgHmrCiwkAu9opvQ
+	(envelope-from <sparclinux+bounces-6877-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Tue, 02 Jun 2026 06:49:10 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4076E6282E2
-	for <lists+sparclinux@lfdr.de>; Tue, 02 Jun 2026 06:46:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B169628301
+	for <lists+sparclinux@lfdr.de>; Tue, 02 Jun 2026 06:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 68865301FB3D
-	for <lists+sparclinux@lfdr.de>; Tue,  2 Jun 2026 04:45:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0242530265A8
+	for <lists+sparclinux@lfdr.de>; Tue,  2 Jun 2026 04:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22552BE655;
-	Tue,  2 Jun 2026 04:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D1E29BDB5;
+	Tue,  2 Jun 2026 04:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+z0zlI4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVUczLjs"
 X-Original-To: sparclinux@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF31299929;
-	Tue,  2 Jun 2026 04:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B280C270ED7;
+	Tue,  2 Jun 2026 04:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780375542; cv=none; b=Kww7U4HH2diiF4PJYFakhb1WpEAWrC8X4oe0+zFc0oJb9HmgUMUZ3QLyx6vUs204ssNHSu9iZmwEdE+eWCrbmZ3XLQIxoouKttaKzGAKxvLIu667uRDNXzJo8tYnlulvkdC/rLpRn6RxzWzCPROMJWIxu0JKeGXK4jTshh0M8Ps=
+	t=1780375627; cv=none; b=oFP0ldZy+ZivQ7IAV04Rw9TgfLUWp+czH5NKHEg2ng4wTniWq4qFU5R80EJnQCaE0SAm0E6VCSgOB4oASolXsNR2kOizwdcrG3bhXIhz68j8pVJdCoFA6S4RsYjKbNKb5RWnEUNb9d4d5NawW8EXIowqNdo0RKfIb1+BUGNK0Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780375542; c=relaxed/simple;
-	bh=KQRZx6klhnDitUGYNJxW0ZAtlK/jCtxqgfZx4aT+ouA=;
+	s=arc-20240116; t=1780375627; c=relaxed/simple;
+	bh=ns8vYxbGh6iN5fLcvPFhgTFXp/m3fvEhis8nN+wp/1c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JGYbeDhAuN7Nvv6p26j68/GnGRP7wCsnS0inLXInOTKpHhKdOaswrQ2u0dFXbbdYny4qGNh3kFEi1otpuCKcpcr++2Wbb7TBesOmvU7GZuoO6NPrlz/godv/t/kwqDWjj/2wM+MMjTTWXja3apO7T8wsFny9s1b9RiP/uqyGzd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+z0zlI4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FB71F00893;
-	Tue,  2 Jun 2026 04:45:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lomawnue3rH5pksEpp6ubYsgU8Vh4H2sazcmq+ZEFUkxmO6UGNnwY+s64K8ezqFF/VVxgmhYJGykwTrSquhNYTdmV71z7ouiZdFbn6zrrr965CHQOPhwGpa/nQK8J+bmutiWGnFmUcm0qRwdQuA8N1z9pd85u5nEIUgwWZ+MDSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVUczLjs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867101F00893;
+	Tue,  2 Jun 2026 04:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780375541;
-	bh=RI1EMaQf2aC+jwKCogVgIAXfxFKnj7BpW+hiYAKrFZ8=;
+	s=k20260515; t=1780375626;
+	bh=w2vFw2b6Dq4kXYpDSqPPl/I2tXbfPjM4tacHe5F7/ME=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m+z0zlI4cyMGOnMErPfrIMqf0iWtdk7EX1MfOrHUoTqiO7tPcBlCZpccxp8Un4k54
-	 d2qBnpIBm2HfPas5jkKo+5CiqJTc0hHlU6AGKeMoGVU1Q7onXg6zaSw4wfyk+8qynC
-	 fOpFEFW8m8wmylq4C3Q2V2uuIW7bdmjx3cp2g6nLNRMD5/JGUisgSZxJcEUNv0i5ei
-	 bBOxMYGMiY2f/W7BXDrfjO7bVl/eWwFhDqSgdpRZjbfGCWHOr6ep2sW/mNsYJZ+kRn
-	 AAgXzr10EYrOk7kJVfNJWscoQxhNKbyolztYkQYSqJyOsapQn/9pfNt4IyVsGxoWUr
-	 ABHGwIkedbhLg==
-Date: Tue, 2 Jun 2026 06:45:32 +0200
+	b=YVUczLjsw80yEWH3gu3NkaGjxurIFsxviLifgTASl5KmyxzFoZ9D6BRbFnC647FHj
+	 lx/XsyIDDrgeNc880H1ZCzZ6k2GAkGqLt2HPVSKtCr9mjn6m2DCwScX7GkN79pS6Kb
+	 Ybu4ua2edqgSU8v2FiaC7J5DsTHfum101oh9NnXGGFgdKNTpHz803fqOarf2Aq/REj
+	 rrFf4M6W83xFQsgAsvLEXmOIlSUp/imXkfYWMxxsDexeQ3reNFAuz1/La1vSHOW9B9
+	 ecfNlu1N+o672xehcI60o8JlzLchfcXr0Hdq8pu+MVpFykxKhmlLGaQmBsGApTcQm1
+	 IWYYOlv9b/uSQ==
+Date: Tue, 2 Jun 2026 06:46:55 +0200
 From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -65,11 +65,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v3 4/5] loongarch/mm: drop vmemmap_check_pmd helper and
- use generic code
-Message-ID: <ah5f7NlrmO0bw-pX@localhost.localdomain>
+Subject: Re: [PATCH v3 5/5] sparc/mm: drop vmemmap_check_pmd helper and use
+ generic code
+Message-ID: <ah5gPx1TuEH1wFzC@localhost.localdomain>
 References: <20260601084845.3792171-1-songmuchun@bytedance.com>
- <20260601084845.3792171-5-songmuchun@bytedance.com>
+ <20260601084845.3792171-6-songmuchun@bytedance.com>
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
@@ -78,17 +78,17 @@ List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260601084845.3792171-5-songmuchun@bytedance.com>
+In-Reply-To: <20260601084845.3792171-6-songmuchun@bytedance.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6876-lists,sparclinux=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6877-lists,sparclinux=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -103,14 +103,14 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[sparclinux];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,bytedance.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4076E6282E2
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,localhost.localdomain:mid]
+X-Rspamd-Queue-Id: 8B169628301
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Jun 01, 2026 at 04:48:43PM +0800, Muchun Song wrote:
-> The generic implementations now suffice; remove the loongarch copies.
+On Mon, Jun 01, 2026 at 04:48:44PM +0800, Muchun Song wrote:
+> The generic implementations now suffice; remove the sparc copies.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
