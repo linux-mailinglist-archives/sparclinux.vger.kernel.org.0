@@ -1,163 +1,162 @@
-Return-Path: <sparclinux+bounces-6895-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6896-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id o42UFlntIWqIQgEAu9opvQ
-	(envelope-from <sparclinux+bounces-6895-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Thu, 04 Jun 2026 23:25:45 +0200
+	id NdngLmZ/ImpgYwEAu9opvQ
+	(envelope-from <sparclinux+bounces-6896-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Fri, 05 Jun 2026 09:48:54 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F217364397E
-	for <lists+sparclinux@lfdr.de>; Thu, 04 Jun 2026 23:25:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8C66461F0
+	for <lists+sparclinux@lfdr.de>; Fri, 05 Jun 2026 09:48:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=CptyadUw;
-	spf=pass (mail.lfdr.de: domain of "sparclinux+bounces-6895-lists+sparclinux=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="sparclinux+bounces-6895-lists+sparclinux=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=acm.org;
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "sparclinux+bounces-6896-lists+sparclinux=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="sparclinux+bounces-6896-lists+sparclinux=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5A44304E33F
-	for <lists+sparclinux@lfdr.de>; Thu,  4 Jun 2026 21:17:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 490643002B58
+	for <lists+sparclinux@lfdr.de>; Fri,  5 Jun 2026 07:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281033890F9;
-	Thu,  4 Jun 2026 21:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A753B3BB115;
+	Fri,  5 Jun 2026 07:38:16 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDF6290DBB;
-	Thu,  4 Jun 2026 21:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7413644D695
+	for <sparclinux@vger.kernel.org>; Fri,  5 Jun 2026 07:38:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780607855; cv=none; b=MoPZzR6PrJeop6iGULlokpRZ5EjwiSaXZTtiK1q5a8XO2SkeuOi3MrDN2onPgEARv9yk/s/q2HtbCXfnWzsVi5gO8SsW354KY2tLSJflWQJOUIEt64YxMpd75cBd63ksPjxrQ0qAPOweFwsFBJmcgUpuCClHgopOqWTwhuJR3g4=
+	t=1780645096; cv=none; b=KxrqLYVQoAC37PxQzwQWSYui89ddSGeK832TVRBFeewvZmyymof+c2O9RcGXFbBeGGfVxjYWyYLlxdlfByWULPq6nfoEgduFyF9kV/fq18aw0gmsZiQisuTt1b7GCSbBlSSirzd9L80yIR7yrsjGLEKYL8gvoQkz3aex4I1Nz9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780607855; c=relaxed/simple;
-	bh=KAfQ7xAXqal0HebQHX2AJv1NTkbivpLwUQtmbGAY2mM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y4zQyOoIhCzzfKhO9So/sjTojzJRwA9DpyknQKuB+K0mPq7Bhj66yLWjqC0tf+U8flcNdCuUiebOsOc+UrnxLFjWbIn11+fP05l6vao9FJjh+5dFJcarLrEIOqMI0yOIkaDrHLN/JjtMJgzHpYw3VucVKviAouD2DAWKoomIvCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=CptyadUw; arc=none smtp.client-ip=199.89.1.16
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4gWcpj1s8Rzlgtd3;
-	Thu,  4 Jun 2026 21:17:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1780607843; x=1783199844; bh=xb19kbWiqrpSFbyUlwb6WaMy
-	4XfoRK0lb/vr/qLyz9c=; b=CptyadUwIPy8kaG7jLQ+DM8ZF1tvdDQR49aNulrh
-	biH5o5y8+awSGeH7xaIZj701xjLsC1bHmc42FVzVlpTIh2OS3Peu/J3qE2vTgqUj
-	WJfPQ8IiwOfAoJTyGBKQby/pVQ+vc0RAWGKj17HfYY0rgOM0PJ1HGGwVZsdk0pKH
-	meGPJvZL7KzYbTsEN/KB/WvbFufh6zwd9oG3uVsF4x7VmHPXxVgH//3XfzkGvOKc
-	2Sr4BitSc4ofZicGR45Q6f13yrmVZ9DqpsIJg7pLZzntbpDTtkAf5IZYA/2iU6Qa
-	JRodaXwS6v4/BTVYf2M7DcaY3SHOb9/dTVQCz5Rq0puSqg==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id 2cgALRHoL-Mr; Thu,  4 Jun 2026 21:17:23 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4gWcpQ0CxzzlgtdF;
-	Thu,  4 Jun 2026 21:17:17 +0000 (UTC)
-Message-ID: <99f038f8-04a9-40a0-9520-8df3dd1e609b@acm.org>
-Date: Thu, 4 Jun 2026 14:17:16 -0700
+	s=arc-20240116; t=1780645096; c=relaxed/simple;
+	bh=5W/tWie+s0GyiFfiVzYnA5c+lJxiUZ1i+gzNpq+8JKc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e8wk9VGIMMnUmV+lCo0bqweFrjNpXU7WWHn1G681ClQE0fd2XP0EUEYi6AAtgGYrs9gKEzJBZ8y3qnrfUUvsvv7iSYLZFEFC25n5Igr2XSZhSJt9JBCnia+BnlvdVYcT6YhHjSdU0Yq+NT1tCmIV9WdA11V7BMGQ7jEnKm/xuGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.169
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5873983d19eso1547869e0c.2
+        for <sparclinux@vger.kernel.org>; Fri, 05 Jun 2026 00:38:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780645094; x=1781249894;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JJPTFXFfEVfaClOO5icEXfzsJcEhxZLVJwj7hX3l3SM=;
+        b=QBQ20JIJ/aaka8Yzn2pDfpwAtRQLJqhYne0iXL4E1Z5FJuD88V2y2GUJVFAlaHPAOP
+         RXE8mxMMMCAzVccT8/28otoIvqaQJbjn69aeseNl9FQ4KUEW58BhXw6TPOqBac2aKivG
+         VfAlAZcCWJ1WljLa4gcY84jg/A0huBFHXgNIFkv75fd8sOscxhSpZt+4qKJWU0SW9P8w
+         pTcz16WHH2CndKoWeYB3FOFgn/BjF+YCSXCl7RtrBo8OnF4+UFc4OCRQWxJcUf+TIlBE
+         kHUwfaNjzXpFOOQZ8cn/Eab8talYkrbUtqEY8O7ZZNTHgcJqw15NaWyNwaPw6E843cuW
+         3IYw==
+X-Forwarded-Encrypted: i=1; AFNElJ8c6a8ty8LoPsb5WNpl5UvIzvaDnwMg51c5pRPaItOr+M7K9qzmFkc3tWBdbEB543grHEzZjID9h5ma@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVWA6FdMIzg4OQ5AUe6ed5Qt4WW1xgJP0T4+EwEhJPavALUeUF
+	D46rOu4WuXcPJMOAlKpybFH9xPdlD51aM2tjWZAl8njrGuPJCXql4EKKTYiIU998oGA=
+X-Gm-Gg: Acq92OHl3/+4s0djfAM6zozLrRs2psd2NCeg9uSKpeGyj+Gf68Fu5QsLi2eJJtAwuzP
+	f3jxAgEetzEWS2Uck/qwcmr/fD0mqQm2PVEa3iUzfv34XGfFuI10nDopl9FCPah+UZ189lzoxVf
+	j2TM+3a1LjfJXQuoJ5wiQKNirPrXUEVHVCP5N8pR+QzlfOqtKH0jj8x3aeEDpyoNmuW7/WWjWeN
+	KGQ716ZBOGyuKqx9iwupQHsoHunp85Ewdkoj3piprd0jGIPqDjEvV3Ekx/XmrO8ORGgzzS4aeQP
+	0jBqZBXi64ppqzXDr+kyDzTnNDZvN4XiYrCHQku8ppNKy7JmeYjWxS4WGPXrM1VGz+yoSOZZGjI
+	WC+K9vWQrwT/DN1vNfNtq9+9lL/lgqwQWvy+awyWTMdqmeh+HZ/mX87h9HcWczOgYwPZuevQUIM
+	qsJuRIFYyuztpvfsufp/CYod0sAIw4eArQE4MR9dbRePbIC0jThajoLmlQ7MVQMp4l/6FPOsc=
+X-Received: by 2002:a05:6122:8282:b0:5ab:26f:49f5 with SMTP id 71dfb90a1353d-5ac50312b75mr1163347e0c.6.1780645094438;
+        Fri, 05 Jun 2026 00:38:14 -0700 (PDT)
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com. [209.85.217.42])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5a6dc44d226sm6670926e0c.11.2026.06.05.00.38.14
+        for <sparclinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Jun 2026 00:38:14 -0700 (PDT)
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-6cfb0a137c9so1035136137.1
+        for <sparclinux@vger.kernel.org>; Fri, 05 Jun 2026 00:38:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9uezji9SQsXrEV2qSNfj13INgACtmXj9e6dU13mdRl+TEU4Kqw55pZZFBNqQtTptVOw+ECQKnMPtRf@vger.kernel.org
+X-Received: by 2002:a05:6102:cc8:b0:62f:3abe:907f with SMTP id
+ ada2fe7eead31-6feed1adbffmr1189675137.4.1780644646130; Fri, 05 Jun 2026
+ 00:30:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
 List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] Remove remaining references to the pktcdvd driver
-To: Catalin Iacob <iacobcatalin@gmail.com>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Jens Axboe <axboe@kernel.dk>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-scsi@vger.kernel.org
-References: <20260530-remove-pktcdvd-references-v1-1-aa56941d4315@gmail.com>
- <20260604-remove-pktcdvd-references-v3-0-e2f06fb4eef4@gmail.com>
- <96a48e65-6ee2-4b81-91f8-821a2de707db@acm.org> <aiHbj0zn4y9X6qV2@toolbx>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <aiHbj0zn4y9X6qV2@toolbx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260604-remove-pktcdvd-references-v3-0-e2f06fb4eef4@gmail.com>
+ <20260604-remove-pktcdvd-references-v3-1-e2f06fb4eef4@gmail.com> <88d9bb41-e51d-4b71-a6d9-f1b79eccd496@acm.org>
+In-Reply-To: <88d9bb41-e51d-4b71-a6d9-f1b79eccd496@acm.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 5 Jun 2026 09:30:35 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVhjYBhKUPzx-FAKWAAkUwcpYh0v2V5w64OMJtREZr4PQ@mail.gmail.com>
+X-Gm-Features: AVVi8CdzPUN0PjO13sCwZaAxIjLcvwA5tXzyJ1zGjjn5YbgvhAb6LM_UbfPQhv4
+Message-ID: <CAMuHMdVhjYBhKUPzx-FAKWAAkUwcpYh0v2V5w64OMJtREZr4PQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/6] scsi: core: Remove remaining reference to the
+ pktcdvd driver
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Catalin Iacob <iacobcatalin@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Jens Axboe <axboe@kernel.dk>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, linux-mips@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-scsi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[acm.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[acm.org:s=mr01];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-6896-lists,sparclinux=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-6895-lists,sparclinux=lfdr.de];
-	FORGED_SENDER(0.00)[bvanassche@acm.org,sparclinux@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:iacobcatalin@gmail.com,m:tsbogend@alpha.franken.de,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:dalias@libc.org,m:glaubitz@physik.fu-berlin.de,m:davem@davemloft.net,m:andreas@gaisler.com,m:James.Bottomley@hansenpartnership.com,m:martin.petersen@oracle.com,m:axboe@kernel.dk,m:ysato@users.sourceforge.jp,m:linux-mips@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-scsi@vger.kernel.org,s:lists@lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[alpha.franken.de,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,libc.org,physik.fu-berlin.de,davemloft.net,gaisler.com,hansenpartnership.com,oracle.com,kernel.dk,users.sourceforge.jp,vger.kernel.org,lists.ozlabs.org];
+	DMARC_NA(0.00)[linux-m68k.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:bvanassche@acm.org,m:iacobcatalin@gmail.com,m:tsbogend@alpha.franken.de,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:dalias@libc.org,m:glaubitz@physik.fu-berlin.de,m:davem@davemloft.net,m:andreas@gaisler.com,m:James.Bottomley@hansenpartnership.com,m:martin.petersen@oracle.com,m:axboe@kernel.dk,m:ysato@users.sourceforge.jp,m:linux-mips@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-scsi@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[geert@linux-m68k.org,sparclinux@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FREEMAIL_CC(0.00)[gmail.com,alpha.franken.de,linux.ibm.com,ellerman.id.au,kernel.org,libc.org,physik.fu-berlin.de,davemloft.net,gaisler.com,hansenpartnership.com,oracle.com,kernel.dk,users.sourceforge.jp,vger.kernel.org,lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bvanassche@acm.org,sparclinux@vger.kernel.org];
-	DKIM_TRACE(0.00)[acm.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,sparclinux@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[sparclinux];
-	TO_DN_SOME(0.00)[]
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-m68k.org:from_mime,linux-m68k.org:email,vger.kernel.org:from_smtp,mail.gmail.com:mid,acm.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F217364397E
+X-Rspamd-Queue-Id: 1E8C66461F0
 
+Hoi Bart,
 
-On 6/4/26 1:59 PM, Catalin Iacob wrote:
-> For learning purposes, do you mind quickly sharing your rationale for
-> combining 1 and 2? To me they are in the same area but still separate
-> things: one removes dead code, the other increases encapsulation. Each
-> is a small but worthwhile cleanup, they can be applied in any order and
-> each can be applied without the other. It's true that, while patch 2
-> without patch 1 works, it would increase confusion but I find that an
-> argument to order 2 after 1, not to say they are one thing.
-> 
-> I'd also find it hard to describe what that combined patch does except
-> by calling out two things: "remove dead code and move the declaration".
-> Your suggested "unexport" seems more confusing than clarifying, I'd
-> argue that today the symbol is not exported since that ifdef always
-> compiles the export out.
+On Thu, 4 Jun 2026 at 18:01, Bart Van Assche <bvanassche@acm.org> wrote:
+> On 6/4/26 6:20 AM, Catalin Iacob wrote:
+> > Commit 1cea5180f2f8 ("block: remove pktcdvd driver") left behind an
+> > export that is now dead code. Remove it.
+> The subject should say something like "Unexport
+> scsi_device_from_queue()".
 
-"Unexport" is commonly used terminology in the Linux kernel for removing
-EXPORT_SYMBOL*().
+<pedantic>
+But that is not what it does: the symbol is never exported, as
+CONFIG_CDROM_PKTCDVD_MODULE can never be set?
+</pedantic>
 
-I proposed to combine patches 1 and 2 because it is normal that the
-declaration of a function is moved from a public to a private header
-file if it is unexported.
+Gr{oetje,eeting}s,
 
-If patches 1 and 2 are combined, the most important change is removal
-of EXPORT_SYMBOL_GPL(). So I think that "Unexport
-scsi_device_from_queue()" would still be an appropriate description for
-such a patch.
+                        Geert
 
-Thanks,
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Bart.
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
