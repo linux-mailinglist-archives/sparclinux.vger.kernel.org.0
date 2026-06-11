@@ -1,53 +1,53 @@
-Return-Path: <sparclinux+bounces-6910-lists+sparclinux=lfdr.de@vger.kernel.org>
+Return-Path: <sparclinux+bounces-6911-lists+sparclinux=lfdr.de@vger.kernel.org>
 Delivered-To: lists+sparclinux@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id X1Z6OvjMKmqyxAMAu9opvQ
-	(envelope-from <sparclinux+bounces-6910-lists+sparclinux=lfdr.de@vger.kernel.org>)
-	for <lists+sparclinux@lfdr.de>; Thu, 11 Jun 2026 16:58:00 +0200
+	id 1rXFN/LeKmoNygMAu9opvQ
+	(envelope-from <sparclinux+bounces-6911-lists+sparclinux=lfdr.de@vger.kernel.org>)
+	for <lists+sparclinux@lfdr.de>; Thu, 11 Jun 2026 18:14:42 +0200
 X-Original-To: lists+sparclinux@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DA2672DD2
-	for <lists+sparclinux@lfdr.de>; Thu, 11 Jun 2026 16:58:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 876556735C7
+	for <lists+sparclinux@lfdr.de>; Thu, 11 Jun 2026 18:14:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O++plUEx;
-	spf=pass (mail.lfdr.de: domain of "sparclinux+bounces-6910-lists+sparclinux=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="sparclinux+bounces-6910-lists+sparclinux=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WFYZ4g3c;
+	spf=pass (mail.lfdr.de: domain of "sparclinux+bounces-6911-lists+sparclinux=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="sparclinux+bounces-6911-lists+sparclinux=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7CBC33655F8
-	for <lists+sparclinux@lfdr.de>; Thu, 11 Jun 2026 14:57:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 01A4A300EE81
+	for <lists+sparclinux@lfdr.de>; Thu, 11 Jun 2026 16:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6932A3B71C3;
-	Thu, 11 Jun 2026 14:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F14E405844;
+	Thu, 11 Jun 2026 16:14:41 +0000 (UTC)
 X-Original-To: sparclinux@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DDE346E6C;
-	Thu, 11 Jun 2026 14:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6CD403B06;
+	Thu, 11 Jun 2026 16:14:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781189878; cv=none; b=KwjOuFYMInHem9guQ8VejsBaBUHq9XCXzaixV3Qbn5wJvorpFGpHh2Yae2AWVwZN6ssQLQKl5bLeM7mshUNwWQUQRYJgWvj+qec3F+JMYhxarQLeNghAuh3lSuUP28aSotq8BQwgC7pyy5qhYoHTXHWkqFC0uCmIm0OeADvxoWI=
+	t=1781194481; cv=none; b=SKfs8Zp30xYNNl++vOny1Gck4car+y7TUntzejzU+DDPMBKV7Q89DcHmPrezrUlElR5TY2dzqjx9yTR1rahahNZtwGs12IgjvXN+LFIOspYFfi9jxue4YNwuY2BrExMi7cxw01cySIAYXQ9080TN6WSL86863166QK8+yqmTg08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781189878; c=relaxed/simple;
-	bh=cv0UquzZB2EuKqCKw77vGmjDC6P7+g0g/OmE7pYygbE=;
+	s=arc-20240116; t=1781194481; c=relaxed/simple;
+	bh=dgzHqFbPebtJp+cQB/gKA9YiJLDnhc5gRJOvxb5qiUk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LYCJhlnfv/qp1R2+DUH0WJ0fx1r0CpNogpdgWDdnUzDTDwWoxnMf6Kpz+2tT9wRCN1WadI0/zJMkzyze2UmMxfEDWu2GItQthIykNn+vKVbCiKkbfguvq69ndcuWMdUv0jwSWrUKANk4V8WS8P2VQH+E2obO0BxUorp5SiAH3Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O++plUEx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917941F00898;
-	Thu, 11 Jun 2026 14:57:53 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=qRVw5FqHWygizNZTfXd8x98TcpljCl0xd5p/8PNRffxrrwhTa5KEYjK+Euaz2tfG3zKCvwiSnxdXOtv571QKY80NzTptf8a3+SY1PYRwnW2qLcXdiM8z3E/xPzneBx0tWycZ2Bgg0lKruEtXKoQNvOMOWUnTMG9fxOmZybV1gPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFYZ4g3c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C7D1F00893;
+	Thu, 11 Jun 2026 16:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781189877;
-	bh=wz9ItHliZGhJvKRUZ4gAmxcUKtvEMcuTAQo5bvyQH6c=;
+	s=k20260515; t=1781194479;
+	bh=4ZPJ8VpwizTlbeh4MnEjVeW3YDzCQKUKA/8eV3uJMXY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=O++plUExQDTLTfRaG6pFrkzLMrG5CRRssZX2tQl6B6x921jcKkinyn1IDVOsRfAQj
-	 QgVQl3VkYQPcrJ41mO1WNPBBIqVI2Uq0gbPOxTNEX7pOyA+oVXViqg6e5WSLG6823f
-	 uO5BRfQxSurW2O5wpkUzr6dtet5+CPVlQuIXNVf04am5m5zOmzb8+mN3BD/jahIY4P
-	 qvpGimdhqXdQyx4MpH7HRc1P24vsudiSx5mUE4B5iNINSTQBwP+CmKKtwQ7N+bsAEV
-	 DWLuxm/70VpePzLALuDJEiVtY5Aoh/Ue2eUtB7xUBGe2nb5ZLIlh6peT3mJUx1vS94
-	 HaIZRxumXmcmQ==
-Message-ID: <266c82ff-8788-49ff-8a14-5ae57b880f80@kernel.org>
-Date: Thu, 11 Jun 2026 16:57:50 +0200
+	b=WFYZ4g3cimuTsAvhb4VQ5dsYIpyDMS9pJEsBFt2vFir53tbLfjvB4NfymH9AsUK3v
+	 YGSjur1wcJo2Ydm9JVvvxrllso1YaR8yqIN6EKfWbwpV78dR5/UX+St9WYcmu151Pz
+	 /Jjrf3KoFhKylUvsgvfIJyXXb9Fn3WyeX2HzxCypd82u8L1OeiJkZ344SFn3johBM2
+	 qJ3I51ty1X8PmfGpjrwZNgBSsmqTbpJmkBrN9INVr7s1VFaq4ADO0si3idzsO6GWwR
+	 qWfauHPhKPHABQLcuhjhDDO0UtBW1qok1TPhFtaMS/s3KqjAo2PLpdZNW3/+D9PY1w
+	 r9g7WLUZfafEw==
+Message-ID: <e9412b6c-ed3c-4c0c-977f-fc019297d875@kernel.org>
+Date: Thu, 11 Jun 2026 18:14:34 +0200
 Precedence: bulk
 X-Mailing-List: sparclinux@vger.kernel.org
 List-Id: <sparclinux.vger.kernel.org>
@@ -55,7 +55,8 @@ List-Subscribe: <mailto:sparclinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:sparclinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] mm: drop pte_clear_not_present_full()
+Subject: Re: [PATCH 3/3] mm: cleanup clear_not_present_full_ptes() and rename
+ to clear_non_present_ptes()
 To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -66,8 +67,8 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  Peter Zijlstra <peterz@infradead.org>, sparclinux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20260611-clear_not_present_full_ptes-v1-0-49865fc82629@kernel.org>
- <20260611-clear_not_present_full_ptes-v1-2-49865fc82629@kernel.org>
- <aiq86-eKAeDi-CQd@localhost.localdomain>
+ <20260611-clear_not_present_full_ptes-v1-3-49865fc82629@kernel.org>
+ <aiq_3rp9fwFHyLwl@localhost.localdomain>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -114,7 +115,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aiq86-eKAeDi-CQd@localhost.localdomain>
+In-Reply-To: <aiq_3rp9fwFHyLwl@localhost.localdomain>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
@@ -122,7 +123,7 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -133,7 +134,7 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	FORGED_SENDER(0.00)[david@kernel.org,sparclinux@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-6910-lists,sparclinux=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6911-lists,sparclinux=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
@@ -147,27 +148,47 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[sparclinux];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 43DA2672DD2
+X-Rspamd-Queue-Id: 876556735C7
 
-On 6/11/26 15:49, Oscar Salvador (SUSE) wrote:
-> On Thu, Jun 11, 2026 at 01:50:48PM +0200, David Hildenbrand (Arm) wrote:
->> In general, there is no good reason to do anything special when clearing
->> non-present PTEs.
+On 6/11/26 16:02, Oscar Salvador (SUSE) wrote:
+> On Thu, Jun 11, 2026 at 01:50:49PM +0200, David Hildenbrand (Arm) wrote:
+>> Let's clean it up a bit:
 >>
->> In theory, HW that does have to invalidate TLBs for non-present PTEs could
->> benefit from a "full" parameter, but fortunately
+>> (1) There is no need to pass "full" anymore.
+>>
+>> (2) No architecture overwrites it, and there isn't really a good reason
+>>     to do so when dealing with non-resent PTEs.
+>>
+>> (3) While at it, call it "non-present", similar to copy_nonpresent_pte()
+>>     and zap_nonpresent_ptes().
+>>
+>> It's a shame that we have clear_non_present_ptes() correspond to
+>> pte_clear() and clear_ptes() correspond to ptep_get_and_clear*().
+>>
+>> Likely we should rename pte_clear() to pte_clear_nonpresent() or sth.
+>> like that, to make it clearer that it is usually the wrong interface
+>> for dealing with present PTEs.
 > 
-> That would be on arches like arm64 where it can cache non-present
-> entries, right?
+> Is that always the case, that pte_clear() is only used on non-present
+> entries? Or there maybe users that do not care about the current value
+> and just want it to nuke?
 
-arm64 cannot cache them, it may only have them in the CPU pipeline temporarily,
-and a special barrier (isb) is sufficient.
+Usually, you want to get access and dirty bits, and that requires get_and_clear
+semantics. I suspect there are some more details to the low-level helpers.
 
-Risc-v has something like that, but they seem to handle it differently.
+> 
+> I guess that such a renaming would have to first audit that all current
+> users obey that? Othen than that, is there anything else stopping us
+> from doing so?
+
+When I last skimmed over some users, they were all dealing with non-present
+entries. (mremap.c, rmap.c, mpreotect.c, memory.c, madvise.c)
+
+But yes, we would have to audit and make sure that's the case.
 
 -- 
 Cheers,
